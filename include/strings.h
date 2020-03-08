@@ -2825,6 +2825,8 @@ extern const u8 gText_Lower[];
 extern const u8 gText_Symbols[];
 extern const u8 gText_Register2[];
 extern const u8 gText_Exit2[];
+extern const u8 gOtherText_ExpShareOn[];
+extern const u8 gOtherText_ExpShareOff[];
 
 // Dodrio Berry Picking
 extern const u8 gText_BerryPickingRecords[];

@@ -24,6 +24,7 @@ void ItemUseOutOfBattle_EvolutionStone(u8);
 void ItemUseOutOfBattle_Berry(u8);
 void ItemUseOutOfBattle_EnigmaBerry(u8);
 void ItemUseOutOfBattle_CannotUse(u8);
+void ItemUseOutOfBattle_ExpShare(u8);
 void ItemUseInBattle_PokeBall(u8);
 void ItemUseInBattle_StatIncrease(u8);
 void ItemUseInBattle_Medicine(u8);
