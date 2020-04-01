@@ -1529,7 +1529,7 @@ void SetUpBagMenuActionItems(u8 unused)
                         {
                             gBagMenu->unk828 = 4;
                             memcpy(&gBagMenu->unk824, &sRegisterMenuActions, NELEMS(sRegisterMenuActions));
-                            //sRegisterSubMenu = FALSE;
+                            sRegisterSubMenu = FALSE;
                         }
                         
                         if (gSaveBlock1Ptr->registeredItemSelect == gSpecialVar_ItemId)
