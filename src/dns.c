@@ -352,11 +352,12 @@ const u16 gNightFilter = RGB2(14, 14, 6);   //19CE
  * loaded in different slots each time.                             */
 const u16 gPaletteTagExceptions[] =
 {
-    0xD6FF, //TAG_HEALTHBOX_PLAYER1_TILE
-    0xD700, //TAG_HEALTHBOX_PLAYER2_TILE
-    0xD701, //TAG_HEALTHBOX_OPPONENT1_TILE
-    0xD702, //TAG_HEALTHBOX_OPPONENT2_TILE
+    0xD6FF, //TAG_HEALTHBOX_PAL
+    0xD704, //TAG_HEALTHBAR_PAL
+    0xD710, //TAG_STATUS_SUMMARY_BAR_PAL
+    0xD712, //TAG_STATUS_SUMMARY_BALLS_PAL
 };
+
 /***********************************************
  * --------- DNS CONFIGURATION END ----------- *
  * ******************************************* */
@@ -412,7 +413,7 @@ void DnsApplyFilters()
     palExceptionFlags = gMain.inBattle ? gCombatPalExceptions : gOWPalExceptions;   //Init pal exception slots
 
     for (palNum = 0; palNum < 32; palNum++)
-        if (palExceptionFlags.pal[palNum] && (palNum < 15 || IsSpritePaletteTagDnsException(palNum - 16)))
+        if (palExceptionFlags.pal[palNum] && (palNum < 15 || !IsSpritePaletteTagDnsException(palNum - 16)))
             for (colNum = 0; colNum < 16; colNum++) //Transfer filtered palette to buffer
                 sDnsPaletteDmaBuffer[palNum * 16 + colNum] = DnsApplyProportionalFilterToColour(gPlttBufferFaded[palNum * 16 + colNum], rgbFilter);
         else
@@ -529,7 +530,7 @@ static bool8 IsSpritePaletteTagDnsException(u8 palNum)
     u8 i;
 
     for (i = 0; i < sizeof(gPaletteTagExceptions)/sizeof(gPaletteTagExceptions[0]); i++)
-        if (GetSpritePaletteTagByPaletteNum(gPaletteTagExceptions[i]))
+        if (GetSpritePaletteTagByPaletteNum(palNum) == gPaletteTagExceptions[i])
             return TRUE;
     return FALSE;
 }
