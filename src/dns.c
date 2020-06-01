@@ -492,8 +492,15 @@ static void DoDnsLightning()
     {
         u16 colourSlot = gLightingColours[i].paletteNum * 16 + gLightingColours[i].colourNum;
         
-        sDnsPaletteDmaBuffer[colourSlot] = gPlttBufferFaded[colourSlot];
-        gPlttBufferUnfaded[colourSlot] = gLightingColours[i].lightColour;
+        if (gPaletteFade.active || gPlttBufferUnfaded[colourSlot] != 0x0000)
+        {
+            sDnsPaletteDmaBuffer[colourSlot] = gPlttBufferFaded[colourSlot];
+            gPlttBufferUnfaded[colourSlot] = gLightingColours[i].lightColour;
+        }
+        else
+        {
+            sDnsPaletteDmaBuffer[colourSlot] = gLightingColours[i].lightColour;
+        }
     }
 }
 
