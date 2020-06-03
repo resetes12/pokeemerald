@@ -428,4 +428,16 @@ void SetObjectEventSpriteGraphics(u8 objectEventId, u8 graphicsId);
 void SetObjectEventSpriteAnim(u8 objectEventId, u8 animNum);
 bool32 IsObjectEventSpriteAnimating(u8 objectEventId);
 
+// run slow
+u8 GetPlayerRunSlowMovementAction(u32);
+//sideways stairs
+u8 GetSidewaysStairsToRightDirection(s16, s16, u8);
+u8 GetSidewaysStairsToLeftDirection(s16, s16, u8);
+u8 GetDiagonalRightStairsMovement(u32);
+u8 GetDiagonalLeftStairsMovement(u32);
+u8 GetDiagonalRightStairsRunningMovement(u32);
+u8 GetDiagonalLeftStairsRunningMovement(u32);
+u8 GetDiagonalLeftAcroBikeMovement(u32);
+u8 GetDiagonalRightAcroBikeMovement(u32);
+
 #endif //GUARD_EVENT_OBJECT_MOVEMENT_H

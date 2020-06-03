@@ -261,6 +261,26 @@ u8 MovementAction_FlyUp_Step1(struct ObjectEvent *, struct Sprite *);
 u8 MovementAction_Fly_Finish(struct ObjectEvent *, struct Sprite *);
 u8 MovementAction_FlyDown_Step0(struct ObjectEvent *, struct Sprite *);
 u8 MovementAction_FlyDown_Step1(struct ObjectEvent *, struct Sprite *);
+//slow running
+u8 MovementActionFunc_RunSlowDown_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite);
+u8 MovementActionFunc_RunSlowUp_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite);
+u8 MovementActionFunc_RunSlowLeft_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite);
+u8 MovementActionFunc_RunSlowRight_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite);
+u8 MovementActionFunc_RunSlow_Step1(struct ObjectEvent *objectEvent, struct Sprite *sprite);
+//sideways stairs
+u8 MovementAction_WalkStairDiagonalUpLeft_Step0(struct ObjectEvent *, struct Sprite *);
+u8 MovementAction_WalkStairDiagonalUpRight_Step0(struct ObjectEvent *, struct Sprite *);
+u8 MovementAction_WalkStairDiagonalDownLeft_Step0(struct ObjectEvent *, struct Sprite *);
+u8 MovementAction_WalkStairDiagonalDownRight_Step0(struct ObjectEvent *, struct Sprite *);
+u8 MovementAction_RunStairDiagonalUpLeft_Step0(struct ObjectEvent *, struct Sprite *);
+u8 MovementAction_RunStairDiagonalUpRight_Step0(struct ObjectEvent *, struct Sprite *);
+u8 MovementAction_RunStairDiagonalDownLeft_Step0(struct ObjectEvent *, struct Sprite *);
+u8 MovementAction_RunStairDiagonalDownRight_Step0(struct ObjectEvent *, struct Sprite *);
+u8 MovementAction_RunStairDiagonal_Step1(struct ObjectEvent *, struct Sprite *);
+u8 MovementAction_AcroBikeDiagonalUpLeft_Step0(struct ObjectEvent *, struct Sprite *);
+u8 MovementAction_AcroBikeDiagonalDownLeft_Step0(struct ObjectEvent *, struct Sprite *);
+u8 MovementAction_AcroBikeDiagonalUpRight_Step0(struct ObjectEvent *, struct Sprite *);
+u8 MovementAction_AcroBikeDiagonalDownRight_Step0(struct ObjectEvent *, struct Sprite *);
 
 u8 (*const gMovementActionFuncs_FaceDown[])(struct ObjectEvent *, struct Sprite *);
 u8 (*const gMovementActionFuncs_FaceUp[])(struct ObjectEvent *, struct Sprite *);
@@ -420,6 +440,24 @@ u8 (*const gMovementActionFuncs_DestroyExtraTaskIfAtTop[])(struct ObjectEvent *,
 u8 (*const gMovementActionFuncs_Figure8[])(struct ObjectEvent *, struct Sprite *);
 u8 (*const gMovementActionFuncs_FlyUp[])(struct ObjectEvent *, struct Sprite *);
 u8 (*const gMovementActionFuncs_FlyDown[])(struct ObjectEvent *, struct Sprite *);
+//run slow
+u8 (*const gMovementActionFuncs_RunDownSlow[])(struct ObjectEvent *, struct Sprite *);
+u8 (*const gMovementActionFuncs_RunUpSlow[])(struct ObjectEvent *, struct Sprite *);
+u8 (*const gMovementActionFuncs_RunLeftSlow[])(struct ObjectEvent *, struct Sprite *);
+u8 (*const gMovementActionFuncs_RunRightSlow[])(struct ObjectEvent *, struct Sprite *);
+//sideways stairs
+u8 (*const gMovementActionFuncs_WalkStairDiagonalUpLeft[])(struct ObjectEvent *, struct Sprite *);
+u8 (*const gMovementActionFuncs_WalkStairDiagonalUpRight[])(struct ObjectEvent *, struct Sprite *);
+u8 (*const gMovementActionFuncs_WalkStairDiagonalDownLeft[])(struct ObjectEvent *, struct Sprite *);
+u8 (*const gMovementActionFuncs_WalkStairDiagonalDownRight[])(struct ObjectEvent *, struct Sprite *);
+u8 (*const gMovementActionFuncs_RunStairDiagonalUpLeft[])(struct ObjectEvent *, struct Sprite *);
+u8 (*const gMovementActionFuncs_RunStairDiagonalUpRight[])(struct ObjectEvent *, struct Sprite *);
+u8 (*const gMovementActionFuncs_RunStairDiagonalDownLeft[])(struct ObjectEvent *, struct Sprite *);
+u8 (*const gMovementActionFuncs_RunStairDiagonalDownRight[])(struct ObjectEvent *, struct Sprite *);
+u8 (*const gMovementActionFuncs_AcroBikeDiagonalUpLeft[])(struct ObjectEvent *, struct Sprite *);
+u8 (*const gMovementActionFuncs_AcroBikeDiagonalDownLeft[])(struct ObjectEvent *, struct Sprite *);
+u8 (*const gMovementActionFuncs_AcroBikeDiagonalUpRight[])(struct ObjectEvent *, struct Sprite *);
+u8 (*const gMovementActionFuncs_AcroBikeDiagonalDownRight[])(struct ObjectEvent *, struct Sprite *);
 
 u8 (*const *const gMovementActionFuncs[])(struct ObjectEvent *, struct Sprite *) = {
     [MOVEMENT_ACTION_FACE_DOWN] = gMovementActionFuncs_FaceDown,
@@ -580,6 +618,24 @@ u8 (*const *const gMovementActionFuncs[])(struct ObjectEvent *, struct Sprite *)
     [MOVEMENT_ACTION_FIGURE_8] = gMovementActionFuncs_Figure8,
     [MOVEMENT_ACTION_FLY_UP] = gMovementActionFuncs_FlyUp,
     [MOVEMENT_ACTION_FLY_DOWN] = gMovementActionFuncs_FlyDown,
+    //run slow
+    [MOVEMENT_ACTION_RUN_DOWN_SLOW] = gMovementActionFuncs_RunDownSlow,
+    [MOVEMENT_ACTION_RUN_UP_SLOW] = gMovementActionFuncs_RunUpSlow,
+    [MOVEMENT_ACTION_RUN_LEFT_SLOW] = gMovementActionFuncs_RunLeftSlow,
+    [MOVEMENT_ACTION_RUN_RIGHT_SLOW] = gMovementActionFuncs_RunRightSlow,
+    //sideways stairs
+    [MOVEMENT_ACTION_WALK_STAIRS_DIAGONAL_UP_LEFT] = gMovementActionFuncs_WalkStairDiagonalUpLeft,
+    [MOVEMENT_ACTION_WALK_STAIRS_DIAGONAL_UP_RIGHT] = gMovementActionFuncs_WalkStairDiagonalUpRight,
+    [MOVEMENT_ACTION_WALK_STAIRS_DIAGONAL_DOWN_LEFT] = gMovementActionFuncs_WalkStairDiagonalDownLeft,
+    [MOVEMENT_ACTION_WALK_STAIRS_DIAGONAL_DOWN_RIGHT] = gMovementActionFuncs_WalkStairDiagonalDownRight,
+    [MOVEMENT_ACTION_WALK_STAIRS_DIAGONAL_UP_LEFT_RUNNING] = gMovementActionFuncs_RunStairDiagonalUpLeft,
+    [MOVEMENT_ACTION_WALK_STAIRS_DIAGONAL_UP_RIGHT_RUNNING] = gMovementActionFuncs_RunStairDiagonalUpRight,
+    [MOVEMENT_ACTION_WALK_STAIRS_DIAGONAL_DOWN_LEFT_RUNNING] = gMovementActionFuncs_RunStairDiagonalDownLeft,
+    [MOVEMENT_ACTION_WALK_STAIRS_DIAGONAL_DOWN_RIGHT_RUNNING] = gMovementActionFuncs_RunStairDiagonalDownRight,
+    [MOVEMENT_ACTION_RIDE_WATER_CURRENT_UP_LEFT] = gMovementActionFuncs_AcroBikeDiagonalUpLeft,
+    [MOVEMENT_ACTION_RIDE_WATER_CURRENT_UP_RIGHT] = gMovementActionFuncs_AcroBikeDiagonalUpRight,
+    [MOVEMENT_ACTION_RIDE_WATER_CURRENT_DOWN_LEFT] = gMovementActionFuncs_AcroBikeDiagonalDownLeft,
+    [MOVEMENT_ACTION_RIDE_WATER_CURRENT_DOWN_RIGHT] = gMovementActionFuncs_AcroBikeDiagonalDownRight,
 };
 
 u8 (*const gMovementActionFuncs_FaceDown[])(struct ObjectEvent *, struct Sprite *) = {
@@ -1511,3 +1567,103 @@ u8 (*const gMovementActionFuncs_DestroyExtraTaskIfAtTop[])(struct ObjectEvent *,
     MovementAction_DestroyExtraTaskIfAtTop_Step0,
     MovementAction_Finish,
 };
+
+//slow running
+u8 (*const gMovementActionFuncs_RunDownSlow[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementActionFunc_RunSlowDown_Step0,
+    MovementActionFunc_RunSlow_Step1,
+    MovementAction_PauseSpriteAnim,
+};
+
+u8 (*const gMovementActionFuncs_RunUpSlow[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementActionFunc_RunSlowUp_Step0,
+    MovementActionFunc_RunSlow_Step1,
+    MovementAction_PauseSpriteAnim,
+};
+
+u8 (*const gMovementActionFuncs_RunLeftSlow[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementActionFunc_RunSlowLeft_Step0,
+    MovementActionFunc_RunSlow_Step1,
+    MovementAction_PauseSpriteAnim,
+};
+
+u8 (*const gMovementActionFuncs_RunRightSlow[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementActionFunc_RunSlowRight_Step0,
+    MovementActionFunc_RunSlow_Step1,
+    MovementAction_PauseSpriteAnim,
+};
+
+//sideways stairs
+u8 (*const gMovementActionFuncs_WalkStairDiagonalUpLeft[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementAction_WalkStairDiagonalUpLeft_Step0,
+    MovementAction_WalkSlowDiagonalUpLeft_Step1,
+    MovementAction_PauseSpriteAnim,
+};
+
+u8 (*const gMovementActionFuncs_WalkStairDiagonalUpRight[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementAction_WalkStairDiagonalUpRight_Step0,
+    MovementAction_WalkSlowDiagonalUpRight_Step1,
+    MovementAction_PauseSpriteAnim,
+};
+
+u8 (*const gMovementActionFuncs_WalkStairDiagonalDownLeft[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementAction_WalkStairDiagonalDownLeft_Step0,
+    MovementAction_WalkSlowDiagonalDownLeft_Step1,
+    MovementAction_PauseSpriteAnim,
+};
+
+u8 (*const gMovementActionFuncs_WalkStairDiagonalDownRight[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementAction_WalkStairDiagonalDownRight_Step0,
+    MovementAction_WalkSlowDiagonalDownRight_Step1,
+    MovementAction_PauseSpriteAnim,
+};
+
+u8 (*const gMovementActionFuncs_RunStairDiagonalUpLeft[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementAction_RunStairDiagonalUpLeft_Step0,
+    MovementAction_RunStairDiagonal_Step1,
+    MovementAction_PauseSpriteAnim,
+};
+
+u8 (*const gMovementActionFuncs_RunStairDiagonalUpRight[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementAction_RunStairDiagonalUpRight_Step0,
+    MovementAction_RunStairDiagonal_Step1,
+    MovementAction_PauseSpriteAnim,
+};
+
+u8 (*const gMovementActionFuncs_RunStairDiagonalDownLeft[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementAction_RunStairDiagonalDownLeft_Step0,
+    MovementAction_RunStairDiagonal_Step1,
+    MovementAction_PauseSpriteAnim,
+};
+
+u8 (*const gMovementActionFuncs_RunStairDiagonalDownRight[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementAction_RunStairDiagonalDownRight_Step0,
+    MovementAction_RunStairDiagonal_Step1,
+    MovementAction_PauseSpriteAnim,
+};
+
+u8 (*const gMovementActionFuncs_AcroBikeDiagonalUpLeft[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementAction_AcroBikeDiagonalUpLeft_Step0,
+    MovementAction_RideWaterCurrentLeft_Step1,
+    MovementAction_PauseSpriteAnim,
+};
+
+u8 (*const gMovementActionFuncs_AcroBikeDiagonalDownLeft[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementAction_AcroBikeDiagonalDownLeft_Step0,
+    MovementAction_RideWaterCurrentLeft_Step1,
+    MovementAction_PauseSpriteAnim,
+};
+
+u8 (*const gMovementActionFuncs_AcroBikeDiagonalUpRight[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementAction_AcroBikeDiagonalUpRight_Step0,
+    MovementAction_RideWaterCurrentRight_Step1,
+    MovementAction_PauseSpriteAnim,
+};
+
+u8 (*const gMovementActionFuncs_AcroBikeDiagonalDownRight[])(struct ObjectEvent *, struct Sprite *) = {
+    MovementAction_AcroBikeDiagonalDownRight_Step0,
+    MovementAction_RideWaterCurrentRight_Step1,
+    MovementAction_PauseSpriteAnim,
+};
+
+

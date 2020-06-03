@@ -179,6 +179,9 @@ static u8 GetMachBikeTransition(u8 *dirTraveling)
 // the difference between face direction and turn direction is that one changes direction while the other does the animation of turning as well as changing direction.
 static void MachBikeTransition_FaceDirection(u8 direction)
 {
+    //if (direction > DIR_EAST)
+    //    direction -= DIR_EAST;
+    
     PlayerFaceDirection(direction);
     Bike_SetBikeStill();
 }
@@ -187,6 +190,9 @@ static void MachBikeTransition_TurnDirection(u8 direction)
 {
     struct ObjectEvent *playerObjEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
 
+    //if (direction > DIR_EAST)
+    //    direction -= DIR_EAST;
+
     if (CanBikeFaceDirOnMetatile(direction, playerObjEvent->currentMetatileBehavior))
     {
         PlayerTurnInPlace(direction);
@@ -194,6 +200,9 @@ static void MachBikeTransition_TurnDirection(u8 direction)
     }
     else
     {
+        //if (playerObjEvent->facingDirection > DIR_EAST)
+        //    playerObjEvent->facingDirection -= DIR_EAST;
+        
         MachBikeTransition_FaceDirection(playerObjEvent->facingDirection);
     }
 }
@@ -231,9 +240,28 @@ static void MachBikeTransition_TrySpeedUp(u8 direction)
                     PlayerOnBikeCollide(direction);
             }
         }
+        else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT_WALKING)
+        {
+            gPlayerAvatar.bikeFrameCounter = 0;
+            gPlayerAvatar.bikeSpeed = SPEED_STANDING;
+            PlayerGoSpeed2(GetLeftStairsDirection(direction));
+            //PlayerSidewaysStairsToAcroBikeLeft(direction);
+            return;
+        }
+        else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT_WALKING)
+        {
+            gPlayerAvatar.bikeFrameCounter = 0;
+            gPlayerAvatar.bikeSpeed = SPEED_STANDING;
+            //PlayerSidewaysStairsToAcroBikeRight(direction);
+            PlayerGoSpeed2(GetRightStairsDirection(direction));
+            return;
+        }
         else
         {
-            // we did not hit anything that can slow us down, so perform the advancement callback depending on the bikeFrameCounter and try to increase the mach bike's speed.
+            // to do: this sometimes crashes based on the metatile behaviours (eg. holding up while traveling down sideways stairs to sw)
+            if (PlayerIsMovingOnRockStairs(direction))
+                gPlayerAvatar.bikeFrameCounter--;
+            
             sMachBikeSpeedCallbacks[gPlayerAvatar.bikeFrameCounter](direction);
             gPlayerAvatar.bikeSpeed = gPlayerAvatar.bikeFrameCounter + (gPlayerAvatar.bikeFrameCounter >> 1); // same as dividing by 2, but compiler is insistent on >> 1
             if (gPlayerAvatar.bikeFrameCounter < 2) // do not go faster than the last element in the mach bike array
@@ -268,6 +296,18 @@ static void MachBikeTransition_TrySlowDown(u8 direction)
     }
     else
     {
+        /*
+        if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT_WALKING)
+        {
+            return PlayerGoSpeed2(GetLeftStairsDirection(direction));
+            //return PlayerSidewaysStairsToLeftMachBike(direction);
+        }
+        else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT_WALKING)
+        {
+            return PlayerGoSpeed2(GetRightStairsDirection(direction));
+            //return PlayerSidewaysStairsToRightMachBike(direction);
+        }*/
+        
         sMachBikeSpeedCallbacks[gPlayerAvatar.bikeFrameCounter](direction);
     }
 }
@@ -563,7 +603,27 @@ static void AcroBikeTransition_Moving(u8 direction)
     }
     else
     {
-        PlayerRideWaterCurrent(direction);
+        if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT_WALKING)
+            return PlayerGoSpeed2(GetRightStairsDirection(direction));
+        else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT_WALKING)
+            return PlayerGoSpeed2(GetLeftStairsDirection(direction));
+
+        if (PlayerIsMovingOnRockStairs(direction))
+            PlayerGoSpeed2(direction);
+        else
+            PlayerRideWaterCurrent(direction);
+            
+        /* works, but might be better to keep rock stairs to up/down for mach bike
+        if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT_WALKING)
+            direction = GetRightStairsDirection(direction);
+        else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT_WALKING)
+            direction = GetLeftStairsDirection(direction);
+        
+        if (PlayerIsMovingOnRockStairs(direction))
+            PlayerGoSpeed2(direction);
+        else
+            PlayerRideWaterCurrent(direction);
+        */
     }
 }
 
@@ -632,6 +692,11 @@ static void AcroBikeTransition_WheelieHoppingMoving(u8 direction)
         else
         {
         derp:
+            /*if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT_WALKING)
+                direction = GetLeftStairsDirection(direction);
+            else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT_WALKING)
+                direction = GetRightStairsDirection(direction);
+            */
             PlayerMovingHoppingWheelie(direction);
         }
     }
@@ -699,6 +764,12 @@ static void AcroBikeTransition_WheelieMoving(u8 direction)
         }
         return;
     }
+    
+    /*if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT_WALKING)
+        direction = GetLeftStairsDirection(direction);
+    else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT_WALKING)
+        direction = GetRightStairsDirection(direction);*/
+    
     PlayerWheelieMove(direction);
     gPlayerAvatar.runningState = MOVING;
 }

@@ -83,9 +83,9 @@ static const u8 sTileBitAttributes[] =
     [MB_SLIDE_NORTH] = TILE_ATTRIBUTES(TRUE, FALSE, FALSE),
     [MB_SLIDE_SOUTH] = TILE_ATTRIBUTES(TRUE, FALSE, FALSE),
     [MB_TRICK_HOUSE_PUZZLE_8_FLOOR] = TILE_ATTRIBUTES(TRUE, FALSE, FALSE),
-    [MB_UNUSED_49] = TILE_ATTRIBUTES(TRUE, FALSE, FALSE),
-    [MB_UNUSED_4A] = TILE_ATTRIBUTES(TRUE, FALSE, FALSE),
-    [MB_UNUSED_4B] = TILE_ATTRIBUTES(FALSE, FALSE, FALSE),
+    [MB_SIDEWAYS_STAIRS_RIGHT] = TILE_ATTRIBUTES(FALSE, FALSE, FALSE),
+    [MB_SIDEWAYS_STAIRS_LEFT] = TILE_ATTRIBUTES(FALSE, FALSE, FALSE),
+    [MB_ROCK_STAIRS] = TILE_ATTRIBUTES(FALSE, FALSE, FALSE),
     [MB_UNUSED_4C] = TILE_ATTRIBUTES(FALSE, FALSE, FALSE),
     [MB_UNUSED_4D] = TILE_ATTRIBUTES(FALSE, FALSE, FALSE),
     [MB_UNUSED_4E] = TILE_ATTRIBUTES(FALSE, FALSE, FALSE),
@@ -1491,6 +1491,30 @@ bool8 MetatileBehavior_IsLongGrassSouthEdge(u8 metatileBehavior)
 bool8 MetatileBehavior_IsTrainerHillTimer(u8 metatileBehavior)
 {
     if (metatileBehavior == MB_TRAINER_HILL_TIMER)
+        return TRUE;
+    else
+        return FALSE;
+}
+
+bool8 MetatileBehavior_IsSidewaysStairsRight(u8 metatileBehavior)
+{
+    if (metatileBehavior == MB_SIDEWAYS_STAIRS_RIGHT)
+        return TRUE;
+    else
+        return FALSE;
+}
+
+bool8 MetatileBehavior_IsSidewaysStairsLeft(u8 metatileBehavior)
+{
+    if (metatileBehavior == MB_SIDEWAYS_STAIRS_LEFT)
+        return TRUE;
+    else
+        return FALSE;
+}
+
+bool8 MetatileBehavior_IsRockStairs(u8 metatileBehavior)
+{
+    if (metatileBehavior == MB_ROCK_STAIRS) // || metatileBehavior == MB_SIDEWAYS_STAIRS_LEFT || metatileBehavior == MB_SIDEWAYS_STAIRS_RIGHT)
         return TRUE;
     else
         return FALSE;
