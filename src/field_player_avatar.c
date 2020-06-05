@@ -690,31 +690,11 @@ bool32 PlayerIsMovingOnRockStairs(u8 direction)
         case DIR_SOUTH:
             MoveCoords(DIR_SOUTH, &x, &y);
             return MetatileBehavior_IsRockStairs(MapGridGetMetatileBehaviorAt(x, y));
-        /*
-        case DIR_WEST:
-            MoveCoords(DIR_WEST, &x, &y);
-            return MetatileBehavior_IsRockStairs(MapGridGetMetatileBehaviorAt(x, y));
-        case DIR_EAST:
-            MoveCoords(DIR_EAST, &x, &y);
-            return MetatileBehavior_IsRockStairs(MapGridGetMetatileBehaviorAt(x, y));
-        case DIR_SOUTHWEST:
-            MoveCoords(DIR_SOUTHWEST, &x, &y);
-            return MetatileBehavior_IsRockStairs(MapGridGetMetatileBehaviorAt(x, y));
-        case DIR_SOUTHEAST:
-            MoveCoords(DIR_SOUTHEAST, &x, &y);
-            return MetatileBehavior_IsRockStairs(MapGridGetMetatileBehaviorAt(x, y));
-        case DIR_NORTHWEST:
-            MoveCoords(DIR_NORTHWEST, &x, &y);
-            return MetatileBehavior_IsRockStairs(MapGridGetMetatileBehaviorAt(x, y));
-        case DIR_NORTHEAST:
-            MoveCoords(DIR_NORTHEAST, &x, &y);
-            return MetatileBehavior_IsRockStairs(MapGridGetMetatileBehaviorAt(x, y));
-        */
         default:
             return FALSE;
         }
     #else
-        return FALSE
+        return FALSE;
     #endif
 }
 
@@ -2344,24 +2324,6 @@ static u8 TrySpinPlayerForWarp(struct ObjectEvent *object, s16 *delayTimer)
 }
 
 //sideways stairs
-/*
-static bool8 IsSidewaysStairToRight(s16 x, s16 y, u8 z)
-{
-    if (GetSidewaysStairsToRightDirection(x, y, z) != 0)
-        return TRUE;
-    else
-        return FALSE;
-}
-
-static bool8 IsSidewaysStairToLeft(s16 x, s16 y, u8 z)
-{
-    if (GetSidewaysStairsToLeftDirection(x, y, z) != 0)
-        return TRUE;
-    else
-        return FALSE;
-}
-*/
-
 u8 GetRightSideStairsDirection(u8 direction)
 {
     switch (direction)
@@ -2413,14 +2375,3 @@ void PlayerSidewaysStairsLeftSideRunning(u8 direction)
 {
     PlayerSetAnimId(GetDiagonalLeftStairsRunningMovement(direction), 8);
 }
-
-void PlayerSidewaysStairsToAcroBikeLeft(u8 direction)
-{
-    PlayerSetAnimId(GetDiagonalLeftAcroBikeMovement(direction), 8);
-}
-
-void PlayerSidewaysStairsToAcroBikeRight(u8 direction)
-{
-    PlayerSetAnimId(GetDiagonalRightAcroBikeMovement(direction), 8);
-}
-

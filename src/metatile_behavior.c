@@ -1566,7 +1566,7 @@ bool8 MetatileBehavior_IsSidewaysStairsLeftSideAny(u8 metatileBehavior)
 
 bool8 MetatileBehavior_IsRockStairs(u8 metatileBehavior)
 {
-    if (metatileBehavior == MB_ROCK_STAIRS) // || metatileBehavior == MB_SIDEWAYS_STAIRS_LEFT || metatileBehavior == MB_SIDEWAYS_STAIRS_RIGHT)
+    if (metatileBehavior == MB_ROCK_STAIRS)
         return TRUE;
     else
         return FALSE;

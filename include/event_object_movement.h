@@ -437,7 +437,6 @@ u8 GetDiagonalRightStairsMovement(u32);
 u8 GetDiagonalLeftStairsMovement(u32);
 u8 GetDiagonalRightStairsRunningMovement(u32);
 u8 GetDiagonalLeftStairsRunningMovement(u32);
-u8 GetDiagonalLeftAcroBikeMovement(u32);
-u8 GetDiagonalRightAcroBikeMovement(u32);
+extern u8 gSidewaysStairsDirection;
 
 #endif //GUARD_EVENT_OBJECT_MOVEMENT_H

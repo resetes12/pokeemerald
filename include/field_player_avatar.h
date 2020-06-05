@@ -72,7 +72,5 @@ void PlayerSidewaysStairsRightSide(u8 direction);
 void PlayerSidewaysStairsLeftSide(u8 direction);
 void PlayerSidewaysStairsRightSideRunning(u8 direction);
 void PlayerSidewaysStairsLeftSideRunning(u8 direction);
-void PlayerSidewaysStairsToAcroBikeLeft(u8 direction);
-void PlayerSidewaysStairsToAcroBikeRight(u8 direction);
 
 #endif // GUARD_FIELD_PLAYER_AVATAR_H

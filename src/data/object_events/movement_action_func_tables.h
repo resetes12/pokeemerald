@@ -1596,25 +1596,41 @@ u8 (*const gMovementActionFuncs_RunRightSlow[])(struct ObjectEvent *, struct Spr
 //sideways stairs
 u8 (*const gMovementActionFuncs_WalkStairDiagonalUpLeft[])(struct ObjectEvent *, struct Sprite *) = {
     MovementAction_WalkStairDiagonalUpLeft_Step0,
-    MovementAction_WalkSlowDiagonalUpLeft_Step1,
+    #if SLOW_MOVEMENT_ON_STAIRS == TRUE
+        MovementAction_WalkSlowDiagonalUpLeft_Step1,
+    #else
+        MovementAction_WalkNormalDiagonalUpLeft_Step1,
+    #endif
     MovementAction_PauseSpriteAnim,
 };
 
 u8 (*const gMovementActionFuncs_WalkStairDiagonalUpRight[])(struct ObjectEvent *, struct Sprite *) = {
     MovementAction_WalkStairDiagonalUpRight_Step0,
-    MovementAction_WalkSlowDiagonalUpRight_Step1,
+    #if SLOW_MOVEMENT_ON_STAIRS == TRUE
+        MovementAction_WalkSlowDiagonalUpRight_Step1,
+    #else
+        MovementAction_WalkNormalDiagonalUpRight_Step1,
+    #endif
     MovementAction_PauseSpriteAnim,
 };
 
 u8 (*const gMovementActionFuncs_WalkStairDiagonalDownLeft[])(struct ObjectEvent *, struct Sprite *) = {
     MovementAction_WalkStairDiagonalDownLeft_Step0,
-    MovementAction_WalkSlowDiagonalDownLeft_Step1,
+    #if SLOW_MOVEMENT_ON_STAIRS == TRUE
+        MovementAction_WalkSlowDiagonalDownLeft_Step1,
+    #else
+        MovementAction_WalkNormalDiagonalDownLeft_Step1,
+    #endif
     MovementAction_PauseSpriteAnim,
 };
 
 u8 (*const gMovementActionFuncs_WalkStairDiagonalDownRight[])(struct ObjectEvent *, struct Sprite *) = {
     MovementAction_WalkStairDiagonalDownRight_Step0,
-    MovementAction_WalkSlowDiagonalDownRight_Step1,
+    #if SLOW_MOVEMENT_ON_STAIRS == TRUE
+        MovementAction_WalkSlowDiagonalDownRight_Step1,
+    #else
+        MovementAction_WalkNormalDiagonalDownRight_Step1,
+    #endif
     MovementAction_PauseSpriteAnim,
 };
 
