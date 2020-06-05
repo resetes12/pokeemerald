@@ -240,25 +240,24 @@ static void MachBikeTransition_TrySpeedUp(u8 direction)
                     PlayerOnBikeCollide(direction);
             }
         }
-        else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT_WALKING)
+        else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT)
         {
             gPlayerAvatar.bikeFrameCounter = 0;
             gPlayerAvatar.bikeSpeed = SPEED_STANDING;
-            PlayerGoSpeed2(GetLeftStairsDirection(direction));
+            PlayerGoSpeed2(GetLeftSideStairsDirection(direction));
             //PlayerSidewaysStairsToAcroBikeLeft(direction);
             return;
         }
-        else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT_WALKING)
+        else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT)
         {
             gPlayerAvatar.bikeFrameCounter = 0;
             gPlayerAvatar.bikeSpeed = SPEED_STANDING;
             //PlayerSidewaysStairsToAcroBikeRight(direction);
-            PlayerGoSpeed2(GetRightStairsDirection(direction));
+            PlayerGoSpeed2(GetRightSideStairsDirection(direction));
             return;
         }
         else
         {
-            // to do: this sometimes crashes based on the metatile behaviours (eg. holding up while traveling down sideways stairs to sw)
             if (PlayerIsMovingOnRockStairs(direction))
                 gPlayerAvatar.bikeFrameCounter--;
             
@@ -296,15 +295,14 @@ static void MachBikeTransition_TrySlowDown(u8 direction)
     }
     else
     {
-        /*
-        if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT_WALKING)
+        /*if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT)
         {
-            return PlayerGoSpeed2(GetLeftStairsDirection(direction));
+            return PlayerGoSpeed2(GetLeftSideStairsDirection(direction));
             //return PlayerSidewaysStairsToLeftMachBike(direction);
         }
-        else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT_WALKING)
+        else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT)
         {
-            return PlayerGoSpeed2(GetRightStairsDirection(direction));
+            return PlayerGoSpeed2(GetRightSideStairsDirection(direction));
             //return PlayerSidewaysStairsToRightMachBike(direction);
         }*/
         
@@ -315,6 +313,7 @@ static void MachBikeTransition_TrySlowDown(u8 direction)
 // the acro bike requires the input handler to be executed before the transition can.
 static void MovePlayerOnAcroBike(u8 newDirection, u16 newKeys, u16 heldKeys)
 {
+    
     sAcroBikeTransitions[CheckMovementInputAcroBike(&newDirection, newKeys, heldKeys)](newDirection);
 }
 
@@ -603,10 +602,10 @@ static void AcroBikeTransition_Moving(u8 direction)
     }
     else
     {
-        if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT_WALKING)
-            return PlayerGoSpeed2(GetRightStairsDirection(direction));
-        else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT_WALKING)
-            return PlayerGoSpeed2(GetLeftStairsDirection(direction));
+        if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT)
+            return PlayerGoSpeed2(GetRightSideStairsDirection(direction));
+        else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT)
+            return PlayerGoSpeed2(GetLeftSideStairsDirection(direction));
 
         if (PlayerIsMovingOnRockStairs(direction))
             PlayerGoSpeed2(direction);
@@ -614,10 +613,10 @@ static void AcroBikeTransition_Moving(u8 direction)
             PlayerRideWaterCurrent(direction);
             
         /* works, but might be better to keep rock stairs to up/down for mach bike
-        if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT_WALKING)
-            direction = GetRightStairsDirection(direction);
-        else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT_WALKING)
-            direction = GetLeftStairsDirection(direction);
+        if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT)
+            direction = GetRightSideStairsDirection(direction);
+        else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT)
+            direction = GetLeftSideStairsDirection(direction);
         
         if (PlayerIsMovingOnRockStairs(direction))
             PlayerGoSpeed2(direction);
@@ -692,10 +691,10 @@ static void AcroBikeTransition_WheelieHoppingMoving(u8 direction)
         else
         {
         derp:
-            /*if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT_WALKING)
-                direction = GetLeftStairsDirection(direction);
-            else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT_WALKING)
-                direction = GetRightStairsDirection(direction);
+            /*if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT)
+                direction = GetLeftSideStairsDirection(direction);
+            else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT)
+                direction = GetRightSideStairsDirection(direction);
             */
             PlayerMovingHoppingWheelie(direction);
         }
@@ -765,10 +764,10 @@ static void AcroBikeTransition_WheelieMoving(u8 direction)
         return;
     }
     
-    /*if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT_WALKING)
-        direction = GetLeftStairsDirection(direction);
-    else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT_WALKING)
-        direction = GetRightStairsDirection(direction);*/
+    /*if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT)
+        direction = GetLeftSideStairsDirection(direction);
+    else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT)
+        direction = GetRightSideStairsDirection(direction);*/
     
     PlayerWheelieMove(direction);
     gPlayerAvatar.runningState = MOVING;

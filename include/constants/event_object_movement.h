@@ -1,8 +1,6 @@
 #ifndef GUARD_CONSTANTS_EVENT_OBJECT_MOVEMENT_H
 #define GUARD_CONSTANTS_EVENT_OBJECT_MOVEMENT_H
 
-#define SLOW_MOVEMENT_ON_STAIRS         TRUE        // change to false to keep emerald's normal movement speed on outdoor stairs
-
 #define MOVEMENT_TYPE_NONE                             0x0
 #define MOVEMENT_TYPE_LOOK_AROUND                      0x1
 #define MOVEMENT_TYPE_WANDER_AROUND                    0x2
@@ -264,7 +262,6 @@
 #define MOVEMENT_ACTION_RIDE_WATER_CURRENT_DOWN_LEFT            0xAC
 #define MOVEMENT_ACTION_RIDE_WATER_CURRENT_DOWN_RIGHT           0xAD
 //sideways stairs - mach bike
-
 
 #define MOVEMENT_ACTION_STEP_END 0xFE
 

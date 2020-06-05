@@ -1122,33 +1122,33 @@ const u8 gRunSlowMovementActions[] = {
 };
 
 // sideways stairs
-const u8 gDiagonalStairRightMovementActions[] = {
-    [DIR_NONE] = MOVEMENT_ACTION_JUMP_2_RIGHT,
-    [DIR_SOUTH] = MOVEMENT_ACTION_JUMP_2_DOWN,
-    [DIR_NORTH] = MOVEMENT_ACTION_JUMP_2_UP,
+const u8 gDiagonalStairLeftSideMovementActions[] = {    //movement actions for stairs on left side of a wall (southwest and northeast)
+    [DIR_NONE] = MOVEMENT_ACTION_WALK_SLOW_DOWN,
+    [DIR_SOUTH] = MOVEMENT_ACTION_WALK_SLOW_DOWN,
+    [DIR_NORTH] = MOVEMENT_ACTION_RUN_UP_SLOW,
     [DIR_WEST] = MOVEMENT_ACTION_WALK_STAIRS_DIAGONAL_DOWN_LEFT,
     [DIR_EAST] = MOVEMENT_ACTION_WALK_STAIRS_DIAGONAL_UP_RIGHT,
 };
-const u8 gDiagonalStairLeftMovementActions[] = {
-    [DIR_NONE] = MOVEMENT_ACTION_JUMP_2_LEFT,
-    [DIR_SOUTH] = MOVEMENT_ACTION_JUMP_2_DOWN,
-    [DIR_NORTH] = MOVEMENT_ACTION_JUMP_2_UP,
+const u8 gDiagonalStairRightSideMovementActions[] = {   //movement actions for stairs on right side of a wall (southeast and northwest)
+    [DIR_NONE] = MOVEMENT_ACTION_WALK_SLOW_DOWN,
+    [DIR_SOUTH] = MOVEMENT_ACTION_WALK_SLOW_DOWN,
+    [DIR_NORTH] = MOVEMENT_ACTION_RUN_UP_SLOW,
     [DIR_WEST] = MOVEMENT_ACTION_WALK_STAIRS_DIAGONAL_UP_LEFT,
     [DIR_EAST] = MOVEMENT_ACTION_WALK_STAIRS_DIAGONAL_DOWN_RIGHT,
 };
-const u8 gDiagonalStairRightRunningMovementActions[] = {
-    [DIR_NONE] = MOVEMENT_ACTION_JUMP_2_RIGHT,
-    [DIR_SOUTH] = MOVEMENT_ACTION_JUMP_2_DOWN,
-    [DIR_NORTH] = MOVEMENT_ACTION_JUMP_2_UP,
-    [DIR_WEST] = MOVEMENT_ACTION_WALK_STAIRS_DIAGONAL_DOWN_LEFT_RUNNING,
-    [DIR_EAST] = MOVEMENT_ACTION_WALK_STAIRS_DIAGONAL_UP_RIGHT_RUNNING,
-};
-const u8 gDiagonalStairLeftRunningMovementActions[] = {
-    [DIR_NONE] = MOVEMENT_ACTION_JUMP_2_LEFT,
-    [DIR_SOUTH] = MOVEMENT_ACTION_JUMP_2_DOWN,
-    [DIR_NORTH] = MOVEMENT_ACTION_JUMP_2_UP,
+const u8 gDiagonalStairRightSideRunningMovementActions[] = {
+    [DIR_NONE] = MOVEMENT_ACTION_RUN_DOWN_SLOW,
+    [DIR_SOUTH] = MOVEMENT_ACTION_RUN_DOWN_SLOW,
+    [DIR_NORTH] = MOVEMENT_ACTION_RUN_UP_SLOW,
     [DIR_WEST] = MOVEMENT_ACTION_WALK_STAIRS_DIAGONAL_UP_LEFT_RUNNING,
     [DIR_EAST] = MOVEMENT_ACTION_WALK_STAIRS_DIAGONAL_DOWN_RIGHT_RUNNING,
+};
+const u8 gDiagonalStairLeftSideRunningMovementActions[] = {
+    [DIR_NONE] = MOVEMENT_ACTION_RUN_DOWN_SLOW,
+    [DIR_SOUTH] = MOVEMENT_ACTION_RUN_DOWN_SLOW,
+    [DIR_NORTH] = MOVEMENT_ACTION_RUN_UP_SLOW,
+    [DIR_WEST] = MOVEMENT_ACTION_WALK_STAIRS_DIAGONAL_DOWN_LEFT_RUNNING,
+    [DIR_EAST] = MOVEMENT_ACTION_WALK_STAIRS_DIAGONAL_UP_RIGHT_RUNNING,
 };
 const u8 gDiagonalStairLeftAcroBikeMovementActions[] = {
     [DIR_NONE] = MOVEMENT_ACTION_RIDE_WATER_CURRENT_LEFT,
@@ -5160,10 +5160,10 @@ u8 name(u32 idx)\
 }
 
 //sideways stairs
-dirn_to_anim(GetDiagonalRightStairsMovement, gDiagonalStairRightMovementActions);
-dirn_to_anim(GetDiagonalLeftStairsMovement, gDiagonalStairLeftMovementActions);
-dirn_to_anim(GetDiagonalRightStairsRunningMovement, gDiagonalStairRightRunningMovementActions);
-dirn_to_anim(GetDiagonalLeftStairsRunningMovement, gDiagonalStairLeftRunningMovementActions);
+dirn_to_anim(GetDiagonalRightStairsMovement, gDiagonalStairRightSideMovementActions);
+dirn_to_anim(GetDiagonalLeftStairsMovement, gDiagonalStairLeftSideMovementActions);
+dirn_to_anim(GetDiagonalRightStairsRunningMovement, gDiagonalStairRightSideRunningMovementActions);
+dirn_to_anim(GetDiagonalLeftStairsRunningMovement, gDiagonalStairLeftSideRunningMovementActions);
 dirn_to_anim(GetDiagonalLeftAcroBikeMovement, gDiagonalStairLeftAcroBikeMovementActions);
 dirn_to_anim(GetDiagonalRightAcroBikeMovement, gDiagonalStairRightAcroBikeMovementActions);
 
@@ -9227,57 +9227,63 @@ bool8 MovementActionFunc_RunSlow_Step1(struct ObjectEvent *objectEvent, struct S
 }
 
 //sideways stairs
+/*
 u8 GetSidewaysStairsToRightDirection(s16 x, s16 y, u8 z)
 {
-    static bool8 (*const direction[])(u8) = {
+    static bool8 (*const sRightStairsBehaviors[])(u8) = {
         MetatileBehavior_IsWalkSouth,
         MetatileBehavior_IsWalkNorth,
         MetatileBehavior_IsSidewaysStairsRight,
         MetatileBehavior_IsSidewaysStairsRight,
     };
 
-    u8 b;
+    u8 metatileBehavior;
     u8 index = z;
 
-    if (index == 0)
-        return 0;
-    else if (index > 4)
-        index -= 4;
+    if (index == DIR_NONE)
+        return DIR_NONE;
+    else if (index > DIR_EAST)
+        index -= DIR_EAST;
 
     index--;
-    b = MapGridGetMetatileBehaviorAt(x, y);
-
-    if (direction[index](b) == 1)
+    metatileBehavior = MapGridGetMetatileBehaviorAt(x, y);
+    if (MetatileBehavior_IsEastBlocked(metatileBehavior))
+        return DIR_NONE;
+    
+    if (sRightStairsBehaviors[index](metatileBehavior))
         return index + 1;
 
-    return 0;
+    return DIR_NONE;
 }
 
 u8 GetSidewaysStairsToLeftDirection(s16 x, s16 y, u8 z)
 {
-    static bool8 (*const direction[])(u8) = {
+    static bool8 (*const sLeftStairsBehaviors[])(u8) = {
         MetatileBehavior_IsWalkSouth,
         MetatileBehavior_IsWalkNorth,
         MetatileBehavior_IsSidewaysStairsLeft,
         MetatileBehavior_IsSidewaysStairsLeft,
     };
 
-    u8 b;
+    u8 metatileBehavior;
     u8 index = z;
 
-    if (index == 0)
-        return 0;
+    if (index == DIR_NONE)
+        return DIR_NONE;
     else if (index > 4)
         index -= 4;
 
     index--;
-    b = MapGridGetMetatileBehaviorAt(x, y);
+    metatileBehavior = MapGridGetMetatileBehaviorAt(x, y);
+    if (MetatileBehavior_IsWestBlocked(metatileBehavior))
+        return DIR_NONE;
 
-    if (direction[index](b) == 1)
+    if (sLeftStairsBehaviors[index](metatileBehavior) == 1)
         return index + 1;
 
-    return 0;
+    return DIR_NONE;
 }
+*/
 
 bool8 MovementAction_WalkStairDiagonalUpLeft_Step0(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {

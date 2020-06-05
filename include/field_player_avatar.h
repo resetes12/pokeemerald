@@ -66,12 +66,12 @@ u8 player_get_pos_including_state_based_drift(s16 *x, s16 *y);
 void StartFishing(u8 rod);
 bool32 PlayerIsMovingOnRockStairs(u8 direction);
 //sideways stairs
-u8 GetRightStairsDirection(u8 direction);
-u8 GetLeftStairsDirection(u8 direction);
-void PlayerSidewaysStairsToRight(u8 direction);
-void PlayerSidewaysStairsToLeft(u8 direction);
-void PlayerSidewaysStairsToRightRunning(u8 direction);
-void PlayerSidewaysStairsToLeftRunning(u8 direction);
+u8 GetRightSideStairsDirection(u8 direction);
+u8 GetLeftSideStairsDirection(u8 direction);
+void PlayerSidewaysStairsRightSide(u8 direction);
+void PlayerSidewaysStairsLeftSide(u8 direction);
+void PlayerSidewaysStairsRightSideRunning(u8 direction);
+void PlayerSidewaysStairsLeftSideRunning(u8 direction);
 void PlayerSidewaysStairsToAcroBikeLeft(u8 direction);
 void PlayerSidewaysStairsToAcroBikeRight(u8 direction);
 

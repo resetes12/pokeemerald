@@ -83,13 +83,13 @@ static const u8 sTileBitAttributes[] =
     [MB_SLIDE_NORTH] = TILE_ATTRIBUTES(TRUE, FALSE, FALSE),
     [MB_SLIDE_SOUTH] = TILE_ATTRIBUTES(TRUE, FALSE, FALSE),
     [MB_TRICK_HOUSE_PUZZLE_8_FLOOR] = TILE_ATTRIBUTES(TRUE, FALSE, FALSE),
-    [MB_SIDEWAYS_STAIRS_RIGHT] = TILE_ATTRIBUTES(FALSE, FALSE, FALSE),
-    [MB_SIDEWAYS_STAIRS_LEFT] = TILE_ATTRIBUTES(FALSE, FALSE, FALSE),
+    [MB_SIDEWAYS_STAIRS_RIGHT_SIDE] = TILE_ATTRIBUTES(FALSE, FALSE, FALSE),
+    [MB_SIDEWAYS_STAIRS_LEFT_SIDE] = TILE_ATTRIBUTES(FALSE, FALSE, FALSE),
+    [MB_SIDEWAYS_STAIRS_RIGHT_SIDE_TOP] = TILE_ATTRIBUTES(FALSE, FALSE, FALSE),
+    [MB_SIDEWAYS_STAIRS_LEFT_SIDE_TOP] = TILE_ATTRIBUTES(FALSE, FALSE, FALSE),
+    [MB_SIDEWAYS_STAIRS_RIGHT_SIDE_BOTTOM] = TILE_ATTRIBUTES(FALSE, FALSE, FALSE),
+    [MB_SIDEWAYS_STAIRS_LEFT_SIDE_BOTTOM] = TILE_ATTRIBUTES(FALSE, FALSE, FALSE),
     [MB_ROCK_STAIRS] = TILE_ATTRIBUTES(FALSE, FALSE, FALSE),
-    [MB_UNUSED_4C] = TILE_ATTRIBUTES(FALSE, FALSE, FALSE),
-    [MB_UNUSED_4D] = TILE_ATTRIBUTES(FALSE, FALSE, FALSE),
-    [MB_UNUSED_4E] = TILE_ATTRIBUTES(FALSE, FALSE, FALSE),
-    [MB_UNUSED_4F] = TILE_ATTRIBUTES(FALSE, FALSE, FALSE),
     [MB_EASTWARD_CURRENT] = TILE_ATTRIBUTES(TRUE, TRUE, FALSE),
     [MB_WESTWARD_CURRENT] = TILE_ATTRIBUTES(TRUE, TRUE, FALSE),
     [MB_NORTHWARD_CURRENT] = TILE_ATTRIBUTES(TRUE, TRUE, FALSE),
@@ -1496,17 +1496,69 @@ bool8 MetatileBehavior_IsTrainerHillTimer(u8 metatileBehavior)
         return FALSE;
 }
 
-bool8 MetatileBehavior_IsSidewaysStairsRight(u8 metatileBehavior)
+bool8 MetatileBehavior_IsSidewaysStairsRightSide(u8 metatileBehavior)
 {
-    if (metatileBehavior == MB_SIDEWAYS_STAIRS_RIGHT)
+    if (metatileBehavior == MB_SIDEWAYS_STAIRS_RIGHT_SIDE || metatileBehavior == MB_SIDEWAYS_STAIRS_RIGHT_SIDE_BOTTOM)
         return TRUE;
     else
         return FALSE;
 }
 
-bool8 MetatileBehavior_IsSidewaysStairsLeft(u8 metatileBehavior)
+bool8 MetatileBehavior_IsSidewaysStairsLeftSide(u8 metatileBehavior)
 {
-    if (metatileBehavior == MB_SIDEWAYS_STAIRS_LEFT)
+    if (metatileBehavior == MB_SIDEWAYS_STAIRS_LEFT_SIDE || metatileBehavior == MB_SIDEWAYS_STAIRS_LEFT_SIDE_BOTTOM)
+        return TRUE;
+    else
+        return FALSE;
+}
+
+bool8 MetatileBehavior_IsSidewaysStairsRightSideTop(u8 metatileBehavior)
+{
+    if (metatileBehavior == MB_SIDEWAYS_STAIRS_RIGHT_SIDE_TOP)
+        return TRUE;
+    else
+        return FALSE;
+}
+
+bool8 MetatileBehavior_IsSidewaysStairsLeftSideTop(u8 metatileBehavior)
+{
+    if (metatileBehavior == MB_SIDEWAYS_STAIRS_LEFT_SIDE_TOP)
+        return TRUE;
+    else
+        return FALSE;
+}
+
+bool8 MetatileBehavior_IsSidewaysStairsRightSideBottom(u8 metatileBehavior)
+{
+    if (metatileBehavior == MB_SIDEWAYS_STAIRS_RIGHT_SIDE_BOTTOM)
+        return TRUE;
+    else
+        return FALSE;
+}
+
+bool8 MetatileBehavior_IsSidewaysStairsLeftSideBottom(u8 metatileBehavior)
+{
+    if (metatileBehavior == MB_SIDEWAYS_STAIRS_LEFT_SIDE_BOTTOM)
+        return TRUE;
+    else
+        return FALSE;
+}
+
+bool8 MetatileBehavior_IsSidewaysStairsRightSideAny(u8 metatileBehavior)
+{
+    if (metatileBehavior == MB_SIDEWAYS_STAIRS_RIGHT_SIDE
+     || metatileBehavior == MB_SIDEWAYS_STAIRS_RIGHT_SIDE_BOTTOM
+     || metatileBehavior == MB_SIDEWAYS_STAIRS_RIGHT_SIDE_TOP)
+        return TRUE;
+    else
+        return FALSE;
+}
+
+bool8 MetatileBehavior_IsSidewaysStairsLeftSideAny(u8 metatileBehavior)
+{
+    if (metatileBehavior == MB_SIDEWAYS_STAIRS_LEFT_SIDE 
+     || metatileBehavior == MB_SIDEWAYS_STAIRS_LEFT_SIDE_BOTTOM
+     || metatileBehavior == MB_SIDEWAYS_STAIRS_LEFT_SIDE_TOP)
         return TRUE;
     else
         return FALSE;

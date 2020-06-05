@@ -624,24 +624,20 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
             PlayerNotOnBikeCollideWithFarawayIslandMew(direction);
             return;
         }
-        else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT_WALKING)
+        else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT)
         {
-            PlayerSidewaysStairsToRight(direction);
+            if (heldKeys & B_BUTTON && FlagGet(FLAG_SYS_B_DASH))
+                PlayerSidewaysStairsRightSideRunning(direction);
+            else
+                PlayerSidewaysStairsRightSide(direction);
             return;
         }
-        else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT_WALKING)
+        else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT)
         {
-            PlayerSidewaysStairsToLeft(direction);
-            return;
-        }
-        else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT_RUNNING)
-        {
-            PlayerSidewaysStairsToRightRunning(direction);
-            return;
-        }
-        else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT_RUNNING)
-        {
-            PlayerSidewaysStairsToLeftRunning(direction);
+            if (heldKeys & B_BUTTON && FlagGet(FLAG_SYS_B_DASH))
+                return PlayerSidewaysStairsLeftSideRunning(direction);
+            else
+                return PlayerSidewaysStairsLeftSide(direction);
             return;
         }
         else
@@ -748,6 +744,8 @@ static u8 sub_808B028(u8 direction)
 u8 CheckForObjectEventCollision(struct ObjectEvent *objectEvent, s16 x, s16 y, u8 direction, u8 metatileBehavior)
 {
     u8 collision = GetCollisionAtCoords(objectEvent, x, y, direction);
+    u8 currentBehavior = MapGridGetMetatileBehaviorAt(objectEvent->currentCoords.x, objectEvent->currentCoords.y);
+    
     if (collision == COLLISION_ELEVATION_MISMATCH && CanStopSurfing(x, y, direction))
         return COLLISION_STOP_SURFING;
 
@@ -766,25 +764,50 @@ u8 CheckForObjectEventCollision(struct ObjectEvent *objectEvent, s16 x, s16 y, u
         CheckAcroBikeCollision(x, y, metatileBehavior, &collision);
     }
     
-    if (collision != COLLISION_IMPASSABLE)
+    //sideways stairs logic
+    if (MetatileBehavior_IsSidewaysStairsLeftSideTop(metatileBehavior) && direction == DIR_EAST)
+        return COLLISION_IMPASSABLE;    //moving onto left-side top edge east from ground -> cannot move
+    else if (MetatileBehavior_IsSidewaysStairsRightSideTop(metatileBehavior) && direction == DIR_WEST)
+        return COLLISION_IMPASSABLE;    //moving onto left-side top edge east from ground -> cannot move
+    else if (MetatileBehavior_IsSidewaysStairsRightSideBottom(metatileBehavior) && (direction == DIR_EAST || direction == DIR_SOUTH))
+        return COLLISION_IMPASSABLE;
+    else if (MetatileBehavior_IsSidewaysStairsLeftSideBottom(metatileBehavior) && (direction == DIR_WEST || direction == DIR_SOUTH))
+        return COLLISION_IMPASSABLE;
+    
+    if (MetatileBehavior_IsSidewaysStairsLeftSide(metatileBehavior))
     {
-        if (IsSidewaysStairToRight(x, y, direction))
-        {
-            if (gMain.heldKeys & B_BUTTON)
-                return COLLISION_SIDEWAYS_STAIRS_TO_RIGHT_RUNNING;
-            else
-                return COLLISION_SIDEWAYS_STAIRS_TO_RIGHT_WALKING;
-        }
-        else if (IsSidewaysStairToLeft(x, y, direction))
-        {
-            if (gMain.heldKeys & B_BUTTON)
-                return COLLISION_SIDEWAYS_STAIRS_TO_LEFT_RUNNING;
-            else 
-                return COLLISION_SIDEWAYS_STAIRS_TO_LEFT_WALKING;
-        }
+        //moving ONTO left side stair
+        if (direction == DIR_WEST && currentBehavior != metatileBehavior)
+            return collision;   //moving onto top part of left-stair going left, so no diagonal
+        else
+            return COLLISION_SIDEWAYS_STAIRS_TO_LEFT; // move diagonally
+    }
+    else if (MetatileBehavior_IsSidewaysStairsRightSide(metatileBehavior))
+    {
+        //moving ONTO right side stair
+        if (direction == DIR_EAST && currentBehavior != metatileBehavior)
+            return collision;   //moving onto top part of right-stair going right, so no diagonal
+        else
+            return COLLISION_SIDEWAYS_STAIRS_TO_RIGHT;
+    }
+    else if (MetatileBehavior_IsSidewaysStairsLeftSideAny(currentBehavior))
+    {
+        //moving OFF of any left side stair
+        if (direction == DIR_WEST && metatileBehavior != currentBehavior)
+            return COLLISION_SIDEWAYS_STAIRS_TO_LEFT;   //moving off of left stairs onto non-stair -> move diagonal
+        else
+            return collision;   //moving off of left side stair to east -> move east
+    }
+    else if (MetatileBehavior_IsSidewaysStairsRightSideAny(currentBehavior))
+    {
+        //moving OFF of any right side stair
+        if (direction == DIR_EAST && metatileBehavior != currentBehavior)
+            return COLLISION_SIDEWAYS_STAIRS_TO_RIGHT;  //moving off right stair onto non-stair -> move diagonal
+        else
+            return collision;
     }
     
-    return collision; 
+    return collision;
 }
 
 static u8 sub_808B164(struct ObjectEvent *objectEvent, s16 x, s16 y, u8 direction, u8 metatileBehavior)
@@ -2321,6 +2344,7 @@ static u8 TrySpinPlayerForWarp(struct ObjectEvent *object, s16 *delayTimer)
 }
 
 //sideways stairs
+/*
 static bool8 IsSidewaysStairToRight(s16 x, s16 y, u8 z)
 {
     if (GetSidewaysStairsToRightDirection(x, y, z) != 0)
@@ -2336,24 +2360,9 @@ static bool8 IsSidewaysStairToLeft(s16 x, s16 y, u8 z)
     else
         return FALSE;
 }
+*/
 
-u8 GetRightStairsDirection(u8 direction)
-{
-    switch (direction)
-    {
-    case DIR_WEST:
-        return DIR_SOUTHWEST;
-    case DIR_EAST:
-        return DIR_NORTHEAST;
-    default:
-        if (direction > DIR_EAST)
-            direction -= DIR_EAST;
-        
-        return direction;
-    }           
-}
-
-u8 GetLeftStairsDirection(u8 direction)
+u8 GetRightSideStairsDirection(u8 direction)
 {
     switch (direction)
     {
@@ -2366,25 +2375,41 @@ u8 GetLeftStairsDirection(u8 direction)
             direction -= DIR_EAST;
         
         return direction;
+    }           
+}
+
+u8 GetLeftSideStairsDirection(u8 direction)
+{
+    switch (direction)
+    {
+    case DIR_WEST:
+        return DIR_SOUTHWEST;
+    case DIR_EAST:
+        return DIR_NORTHEAST;
+    default:
+        if (direction > DIR_EAST)
+            direction -= DIR_EAST;
+        
+        return direction;
     }
 }
 
-void PlayerSidewaysStairsToRight(u8 direction)
+void PlayerSidewaysStairsRightSide(u8 direction)
 {
     PlayerSetAnimId(GetDiagonalRightStairsMovement(direction), 8);
 }
 
-void PlayerSidewaysStairsToLeft(u8 direction)
+void PlayerSidewaysStairsLeftSide(u8 direction)
 {
     PlayerSetAnimId(GetDiagonalLeftStairsMovement(direction), 8);
 }
 
-void PlayerSidewaysStairsToRightRunning(u8 direction)
+void PlayerSidewaysStairsRightSideRunning(u8 direction)
 {
     PlayerSetAnimId(GetDiagonalRightStairsRunningMovement(direction), 8);
 }
 
-void PlayerSidewaysStairsToLeftRunning(u8 direction)
+void PlayerSidewaysStairsLeftSideRunning(u8 direction)
 {
     PlayerSetAnimId(GetDiagonalLeftStairsRunningMovement(direction), 8);
 }

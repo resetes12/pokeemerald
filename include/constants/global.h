@@ -118,4 +118,6 @@
 #define DIR_NORTHWEST   7
 #define DIR_NORTHEAST   8
 
+#define SLOW_MOVEMENT_ON_STAIRS         TRUE        // change to false to keep emerald's normal movement speed on outdoor stairs
+
 #endif // GUARD_CONSTANTS_GLOBAL_H
