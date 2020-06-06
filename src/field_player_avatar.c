@@ -753,6 +753,9 @@ u8 CheckForObjectEventCollision(struct ObjectEvent *objectEvent, s16 x, s16 y, u
         return COLLISION_IMPASSABLE;
     else if (MetatileBehavior_IsSidewaysStairsLeftSideBottom(metatileBehavior) && (direction == DIR_WEST || direction == DIR_SOUTH))
         return COLLISION_IMPASSABLE;
+    else if ((MetatileBehavior_IsSidewaysStairsLeftSideTop(currentBehavior) || MetatileBehavior_IsSidewaysStairsRightSideTop(currentBehavior))
+     && direction == DIR_NORTH && collision == COLLISION_NONE)
+        return COLLISION_IMPASSABLE;    //trying to move north off of top-most tile onto same level doesn't work
     
     if (MetatileBehavior_IsSidewaysStairsLeftSide(metatileBehavior))
     {
