@@ -129,13 +129,13 @@ void Task_ActuallyToss(u8);
 void ItemMenu_Cancel(u8);
 void sub_81AD350(u8);
 void BagMenu_PrintItemCantBeHeld(u8);
-void bag_menu_AddMoney_window(void);
-void sub_81AD680(u8);
+void DisplayCurrentMoneyWindow(void);
+void DisplaySellItemPriceAndConfirm(u8);
 void sub_81AD730(u8);
 void sub_81AD6E4(u8);
 void bag_menu_remove_money_window(void);
 void bag_menu_RemoveBagItem_message_window(u8);
-void sub_81AD794(u8);
+void Task_BuyHowManyDialogueHandleInput(u8);
 void sub_81AD8C8(u8);
 void sub_81AD9C0(u8);
 void sub_81ADB14(u8);
@@ -593,6 +593,8 @@ void vblank_cb_bag_menu(void)
     TransferPlttBuffer();
 }
 
+#define tItemCount data[8]
+
 void CB2_Bag(void)
 {
     while(sub_81221EC() != TRUE && SetupBagMenu() != TRUE && sub_81221AC() != TRUE) {};
@@ -673,7 +675,7 @@ bool8 SetupBagMenu(void)
         taskId = sub_81AB1F0(gBagPositionStruct.location);
         gTasks[taskId].data[0] = ListMenuInit(&gMultiuseListMenuTemplate, gBagPositionStruct.scrollPosition[gBagPositionStruct.pocket], gBagPositionStruct.cursorPosition[gBagPositionStruct.pocket]);
         gTasks[taskId].data[3] = 0;
-        gTasks[taskId].data[8] = 0;
+        gTasks[taskId].tItemCount = 0;
         gMain.state++;
         break;
     case 15:
@@ -1723,7 +1725,7 @@ void ItemMenu_Toss(u8 taskId)
     s16* data = gTasks[taskId].data;
 
     BagMenu_RemoveSomeWindow();
-    data[8] = 1;
+    tItemCount = 1;
     if (data[2] == 1)
     {
         BagMenu_TossItems(taskId);
@@ -1744,7 +1746,7 @@ void BagMenu_TossItems(u8 taskId)
     s16* data = gTasks[taskId].data;
 
     CopyItemName(gSpecialVar_ItemId, gStringVar1);
-    ConvertIntToDecimalStringN(gStringVar2, data[8], STR_CONV_MODE_LEFT_ALIGN, 3);
+    ConvertIntToDecimalStringN(gStringVar2, tItemCount, STR_CONV_MODE_LEFT_ALIGN, 3);
     StringExpandPlaceholders(gStringVar4, gText_ConfirmTossItems);
     FillWindowPixelBuffer(1, PIXEL_FILL(0));
     BagMenu_Print(1, 1, gStringVar4, 3, 1, 0, 0, 0, 0);
@@ -1764,9 +1766,9 @@ void Task_ChooseHowManyToToss(u8 taskId)
 {
     s16* data = gTasks[taskId].data;
 
-    if (AdjustQuantityAccordingToDPadInput(&data[8], data[2]) == TRUE)
+    if (AdjustQuantityAccordingToDPadInput(&tItemCount, data[2]) == TRUE)
     {
-        PrintItemDepositAmount(gBagMenu->unk817, data[8]);
+        PrintItemDepositAmount(gBagMenu->unk817, tItemCount);
     }
     else if (gMain.newKeys & A_BUTTON)
     {
@@ -1787,7 +1789,7 @@ void BagMenu_ConfirmToss(u8 taskId)
     s16* data = gTasks[taskId].data;
 
     CopyItemName(gSpecialVar_ItemId, gStringVar1);
-    ConvertIntToDecimalStringN(gStringVar2, data[8], STR_CONV_MODE_LEFT_ALIGN, 3);
+    ConvertIntToDecimalStringN(gStringVar2, tItemCount, STR_CONV_MODE_LEFT_ALIGN, 3);
     StringExpandPlaceholders(gStringVar4, gText_ThrewAwayVar2Var1s);
     FillWindowPixelBuffer(1, PIXEL_FILL(0));
     BagMenu_Print(1, 1, gStringVar4, 3, 1, 0, 0, 0, 0);
@@ -1803,7 +1805,7 @@ void Task_ActuallyToss(u8 taskId)
     if (gMain.newKeys & (A_BUTTON | B_BUTTON))
     {
         PlaySE(SE_SELECT);
-        RemoveBagItem(gSpecialVar_ItemId, data[8]);
+        RemoveBagItem(gSpecialVar_ItemId, tItemCount);
         DestroyListMenuTask(data[0], scrollPos, cursorPos);
         UpdatePocketItemList(gBagPositionStruct.pocket);
         SetInitialScrollAndCursorPositions(gBagPositionStruct.pocket);
@@ -1936,11 +1938,11 @@ void DisplaySellItemAskString(u8 taskId)
     }
     else
     {
-        data[8] = 1;
+        tItemCount = 1;
         if (data[2] == 1)
         {
-            bag_menu_AddMoney_window();
-            sub_81AD680(taskId);
+            DisplayCurrentMoneyWindow();
+            DisplaySellItemPriceAndConfirm(taskId);
         }
         else
         {
@@ -1951,11 +1953,11 @@ void DisplaySellItemAskString(u8 taskId)
     }
 }
 
-void sub_81AD680(u8 taskId)
+void DisplaySellItemPriceAndConfirm(u8 taskId)
 {
     s16* data = gTasks[taskId].data;
 
-    ConvertIntToDecimalStringN(gStringVar1, (ItemId_GetPrice(gSpecialVar_ItemId) / 2) * data[8], STR_CONV_MODE_LEFT_ALIGN, 6);
+    ConvertIntToDecimalStringN(gStringVar1, (ItemId_GetPrice(gSpecialVar_ItemId) / 2) * tItemCount, STR_CONV_MODE_LEFT_ALIGN, 6);
     StringExpandPlaceholders(gStringVar4, gText_ICanPayVar1);
     DisplayItemMessage(taskId, 1, gStringVar4, sub_81AD6E4);
 }
@@ -1980,24 +1982,24 @@ void sub_81AD730(u8 taskId)
     s16* data = gTasks[taskId].data;
     u8 windowId = BagMenu_AddWindow(8);
 
-    PrintItemSoldAmount(windowId, 1, (ItemId_GetPrice(gSpecialVar_ItemId) / 2) * data[8]);
-    bag_menu_AddMoney_window();
-    gTasks[taskId].func = sub_81AD794;
+    PrintItemSoldAmount(windowId, 1, (ItemId_GetPrice(gSpecialVar_ItemId) / 2) * tItemCount);
+    DisplayCurrentMoneyWindow();
+    gTasks[taskId].func = Task_BuyHowManyDialogueHandleInput;
 }
 
-void sub_81AD794(u8 taskId)
+void Task_BuyHowManyDialogueHandleInput(u8 taskId)
 {
     s16* data = gTasks[taskId].data;
 
-    if (AdjustQuantityAccordingToDPadInput(&data[8], data[2]) == TRUE)
+    if (AdjustQuantityAccordingToDPadInput(&tItemCount, data[2]) == TRUE)
     {
-        PrintItemSoldAmount(gBagMenu->unk818, data[8], (ItemId_GetPrice(gSpecialVar_ItemId) / 2) * data[8]);
+        PrintItemSoldAmount(gBagMenu->unk818, tItemCount, (ItemId_GetPrice(gSpecialVar_ItemId) / 2) * tItemCount);
     }
     else if (gMain.newKeys & A_BUTTON)
     {
         PlaySE(SE_SELECT);
         BagMenu_RemoveWindow(8);
-        sub_81AD680(taskId);
+        DisplaySellItemPriceAndConfirm(taskId);
     }
     else if (gMain.newKeys & B_BUTTON)
     {
@@ -2015,7 +2017,7 @@ void BagMenu_ConfirmSell(u8 taskId)
     s16* data = gTasks[taskId].data;
 
     CopyItemName(gSpecialVar_ItemId, gStringVar2);
-    ConvertIntToDecimalStringN(gStringVar1, (ItemId_GetPrice(gSpecialVar_ItemId) / 2) * data[8], STR_CONV_MODE_LEFT_ALIGN, 6);
+    ConvertIntToDecimalStringN(gStringVar1, (ItemId_GetPrice(gSpecialVar_ItemId) / 2) * tItemCount, STR_CONV_MODE_LEFT_ALIGN, 6);
     StringExpandPlaceholders(gStringVar4, gText_TurnedOverVar1ForVar2);
     DisplayItemMessage(taskId, 1, gStringVar4, sub_81AD8C8);
 }
@@ -2027,8 +2029,8 @@ void sub_81AD8C8(u8 taskId)
     u16* cursorPos = &gBagPositionStruct.cursorPosition[gBagPositionStruct.pocket];
 
     PlaySE(SE_REGI);
-    RemoveBagItem(gSpecialVar_ItemId, data[8]);
-    AddMoney(&gSaveBlock1Ptr->money, (ItemId_GetPrice(gSpecialVar_ItemId) / 2) * data[8]);
+    RemoveBagItem(gSpecialVar_ItemId, tItemCount);
+    AddMoney(&gSaveBlock1Ptr->money, (ItemId_GetPrice(gSpecialVar_ItemId) / 2) * tItemCount);
     DestroyListMenuTask(data[0], scrollPos, cursorPos);
     UpdatePocketItemList(gBagPositionStruct.pocket);
     SetInitialScrollAndCursorPositions(gBagPositionStruct.pocket);
@@ -2053,7 +2055,7 @@ void DisplayDepositItemAskString(u8 taskId)
 {
     s16* data = gTasks[taskId].data;
 
-    data[8] = 1;
+    tItemCount = 1;
     if (data[2] == 1)
     {
         sub_81ADB14(taskId);
@@ -2073,9 +2075,9 @@ void sub_81ADA7C(u8 taskId)
 {
     s16* data = gTasks[taskId].data;
 
-    if (AdjustQuantityAccordingToDPadInput(&data[8], data[2]) == TRUE)
+    if (AdjustQuantityAccordingToDPadInput(&tItemCount, data[2]) == TRUE)
     {
-        PrintItemDepositAmount(gBagMenu->unk817, data[8]);
+        PrintItemDepositAmount(gBagMenu->unk817, tItemCount);
     }
     else if (gMain.newKeys & A_BUTTON)
     {
@@ -2103,10 +2105,10 @@ void sub_81ADB14(u8 taskId)
         BagMenu_Print(1, 1, gText_CantStoreImportantItems, 3, 1, 0, 0, 0, 0);
         gTasks[taskId].func = sub_81ADC0C;
     }
-    else if (AddPCItem(gSpecialVar_ItemId, data[8]) == TRUE)
+    else if (AddPCItem(gSpecialVar_ItemId, tItemCount) == TRUE)
     {
         CopyItemName(gSpecialVar_ItemId, gStringVar1);
-        ConvertIntToDecimalStringN(gStringVar2, data[8], STR_CONV_MODE_LEFT_ALIGN, 3);
+        ConvertIntToDecimalStringN(gStringVar2, tItemCount, STR_CONV_MODE_LEFT_ALIGN, 3);
         StringExpandPlaceholders(gStringVar4, gText_DepositedVar2Var1s);
         BagMenu_Print(1, 1, gStringVar4, 3, 1, 0, 0, 0, 0);
         gTasks[taskId].func = Task_ActuallyToss;
@@ -2213,6 +2215,8 @@ void Task_WallyTutorialBagMenu(u8 taskId)
     }
 }
 
+#undef tItemCount
+
 void unknown_ItemMenu_Show(u8 taskId)
 {
     gSpecialVar_0x8005 = gSpecialVar_ItemId;
@@ -2314,6 +2318,7 @@ void BagMenu_Print(u8 windowId, u8 fontId, const u8 *str, u8 left, u8 top, u8 le
     AddTextPrinterParameterized4(windowId, fontId, left, top, letterSpacing, lineSpacing, sFontColorTable[h], speed, str);
 }
 
+//Unused
 u8 sub_81AE124(u8 a)
 {
     return gBagMenu->windowPointers[a];
@@ -2371,7 +2376,7 @@ void BagMenu_YesNo(u8 a, u8 b, const struct YesNoFuncTable *funcTable)
     CreateYesNoMenuWithCallbacks(a, &gUnknown_086141AC[b], 1, 0, 2, 1, 14, funcTable);
 }
 
-void bag_menu_AddMoney_window(void)
+void DisplayCurrentMoneyWindow(void)
 {
     u8 windowId = BagMenu_AddWindow(9);
     PrintMoneyAmountInMoneyBoxWithBorder(windowId, 1, 14, GetMoney(&gSaveBlock1Ptr->money));
