@@ -745,49 +745,40 @@ u8 CheckForObjectEventCollision(struct ObjectEvent *objectEvent, s16 x, s16 y, u
     }
     
     //sideways stairs logic
-    if (MetatileBehavior_IsSidewaysStairsLeftSideTop(metatileBehavior) && direction == DIR_EAST)
-        return COLLISION_IMPASSABLE;    //moving onto left-side top edge east from ground -> cannot move
-    else if (MetatileBehavior_IsSidewaysStairsRightSideTop(metatileBehavior) && direction == DIR_WEST)
-        return COLLISION_IMPASSABLE;    //moving onto left-side top edge east from ground -> cannot move
-    else if (MetatileBehavior_IsSidewaysStairsRightSideBottom(metatileBehavior) && (direction == DIR_EAST || direction == DIR_SOUTH))
-        return COLLISION_IMPASSABLE;
-    else if (MetatileBehavior_IsSidewaysStairsLeftSideBottom(metatileBehavior) && (direction == DIR_WEST || direction == DIR_SOUTH))
-        return COLLISION_IMPASSABLE;
-    else if ((MetatileBehavior_IsSidewaysStairsLeftSideTop(currentBehavior) || MetatileBehavior_IsSidewaysStairsRightSideTop(currentBehavior))
-     && direction == DIR_NORTH && collision == COLLISION_NONE)
-        return COLLISION_IMPASSABLE;    //trying to move north off of top-most tile onto same level doesn't work
-    
-    if (MetatileBehavior_IsSidewaysStairsLeftSide(metatileBehavior))
+    if (direction == DIR_WEST || direction == DIR_EAST)
     {
-        //moving ONTO left side stair
-        if (direction == DIR_WEST && currentBehavior != metatileBehavior)
-            return collision;   //moving onto top part of left-stair going left, so no diagonal
-        else
-            return COLLISION_SIDEWAYS_STAIRS_TO_LEFT; // move diagonally
-    }
-    else if (MetatileBehavior_IsSidewaysStairsRightSide(metatileBehavior))
-    {
-        //moving ONTO right side stair
-        if (direction == DIR_EAST && currentBehavior != metatileBehavior)
-            return collision;   //moving onto top part of right-stair going right, so no diagonal
-        else
-            return COLLISION_SIDEWAYS_STAIRS_TO_RIGHT;
-    }
-    else if (MetatileBehavior_IsSidewaysStairsLeftSideAny(currentBehavior))
-    {
-        //moving OFF of any left side stair
-        if (direction == DIR_WEST && metatileBehavior != currentBehavior)
-            return COLLISION_SIDEWAYS_STAIRS_TO_LEFT;   //moving off of left stairs onto non-stair -> move diagonal
-        else
-            return collision;   //moving off of left side stair to east -> move east
-    }
-    else if (MetatileBehavior_IsSidewaysStairsRightSideAny(currentBehavior))
-    {
-        //moving OFF of any right side stair
-        if (direction == DIR_EAST && metatileBehavior != currentBehavior)
-            return COLLISION_SIDEWAYS_STAIRS_TO_RIGHT;  //moving off right stair onto non-stair -> move diagonal
-        else
-            return collision;
+        if (MetatileBehavior_IsSidewaysStairsLeftSide(metatileBehavior))
+        {
+            //moving ONTO left side stair
+            if (direction == DIR_WEST && currentBehavior != metatileBehavior)
+                return collision;   //moving onto top part of left-stair going left, so no diagonal
+            else
+                return COLLISION_SIDEWAYS_STAIRS_TO_LEFT; // move diagonally
+        }
+        else if (MetatileBehavior_IsSidewaysStairsRightSide(metatileBehavior))
+        {
+            //moving ONTO right side stair
+            if (direction == DIR_EAST && currentBehavior != metatileBehavior)
+                return collision;   //moving onto top part of right-stair going right, so no diagonal
+            else
+                return COLLISION_SIDEWAYS_STAIRS_TO_RIGHT;
+        }
+        else if (MetatileBehavior_IsSidewaysStairsLeftSideAny(currentBehavior))
+        {
+            //moving OFF of any left side stair
+            if (direction == DIR_WEST && metatileBehavior != currentBehavior)
+                return COLLISION_SIDEWAYS_STAIRS_TO_LEFT;   //moving off of left stairs onto non-stair -> move diagonal
+            else
+                return collision;   //moving off of left side stair to east -> move east
+        }
+        else if (MetatileBehavior_IsSidewaysStairsRightSideAny(currentBehavior))
+        {
+            //moving OFF of any right side stair
+            if (direction == DIR_EAST && metatileBehavior != currentBehavior)
+                return COLLISION_SIDEWAYS_STAIRS_TO_RIGHT;  //moving off right stair onto non-stair -> move diagonal
+            else
+                return collision;
+        }
     }
     
     return collision;

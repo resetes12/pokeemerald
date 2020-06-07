@@ -4873,6 +4873,28 @@ static u8 GetCollisionInDirection(struct ObjectEvent *objectEvent, u8 direction)
 u8 GetCollisionAtCoords(struct ObjectEvent *objectEvent, s16 x, s16 y, u32 dir)
 {
     u8 direction = dir;
+    u8 currentBehavior = MapGridGetMetatileBehaviorAt(objectEvent->currentCoords.x, objectEvent->currentCoords.y);
+    u8 nextBehavior = MapGridGetMetatileBehaviorAt(x, y);
+    
+    //sideways stairs checks
+    if (MetatileBehavior_IsSidewaysStairsLeftSideTop(nextBehavior) && dir == DIR_EAST)
+        return COLLISION_IMPASSABLE;    //moving onto left-side top edge east from regular ground -> nope
+    else if (MetatileBehavior_IsSidewaysStairsRightSideTop(nextBehavior) && dir == DIR_WEST)
+        return COLLISION_IMPASSABLE;    //moving onto left-side top edge east from regular ground -> nope
+    else if (MetatileBehavior_IsSidewaysStairsRightSideBottom(nextBehavior) && (dir == DIR_EAST || dir == DIR_SOUTH))
+        return COLLISION_IMPASSABLE;    //moving into right-side bottom edge from regular ground -> nah
+    else if (MetatileBehavior_IsSidewaysStairsLeftSideBottom(nextBehavior) && (dir == DIR_WEST || dir == DIR_SOUTH))
+        return COLLISION_IMPASSABLE;    //moving onto left-side bottom edge from regular ground -> nah
+    else if ((MetatileBehavior_IsSidewaysStairsLeftSideTop(currentBehavior) || MetatileBehavior_IsSidewaysStairsRightSideTop(currentBehavior))
+     && dir == DIR_NORTH)
+        return COLLISION_IMPASSABLE;    //trying to move north off of top-most tile onto same level doesn't work
+    else if (!(MetatileBehavior_IsSidewaysStairsLeftSideTop(currentBehavior) || MetatileBehavior_IsSidewaysStairsRightSideTop(currentBehavior))
+     && dir == DIR_SOUTH && (MetatileBehavior_IsSidewaysStairsLeftSideTop(nextBehavior) || MetatileBehavior_IsSidewaysStairsRightSideTop(nextBehavior)))
+        return COLLISION_IMPASSABLE;    //trying to move south onto top stair tile at same level from non-stair -> no
+    else if (!(MetatileBehavior_IsSidewaysStairsLeftSideBottom(currentBehavior) || MetatileBehavior_IsSidewaysStairsRightSideBottom(currentBehavior))
+     && dir == DIR_NORTH && (MetatileBehavior_IsSidewaysStairsLeftSideBottom(nextBehavior) || MetatileBehavior_IsSidewaysStairsRightSideBottom(nextBehavior)))
+        return COLLISION_IMPASSABLE;    //trying to move north onto top stair tile at same level from non-stair -> no
+    
     if (IsCoordOutsideObjectEventMovementRange(objectEvent, x, y))
         return COLLISION_OUTSIDE_RANGE;
     else if (MapGridIsImpassableAt(x, y) || GetMapBorderIdAt(x, y) == -1 || IsMetatileDirectionallyImpassable(objectEvent, x, y, direction))
