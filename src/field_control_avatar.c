@@ -28,6 +28,7 @@
 #include "trainer_see.h"
 #include "trainer_hill.h"
 #include "wild_encounter.h"
+#include "follow_me.h"
 #include "constants/event_bg.h"
 #include "constants/event_objects.h"
 #include "constants/field_poison.h"
@@ -288,8 +289,39 @@ static const u8 *GetInteractedObjectEventScript(struct MapPosition *position, u8
 {
     u8 objectEventId;
     const u8 *script;
-
-    objectEventId = GetObjectEventIdByXYZ(position->x, position->y, position->height);
+    s16 currX = gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x;
+    s16 currY = gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y;
+    u8 currBehavior = MapGridGetMetatileBehaviorAt(currX, currY);
+        
+    switch (direction)
+    {
+    case DIR_EAST:
+        if (MetatileBehavior_IsSidewaysStairsLeftSideAny(metatileBehavior))
+            // sideways stairs left-side to your right -> check northeast
+            objectEventId = GetObjectEventIdByXYZ(currX + 1, currY - 1, position->height);
+        else if (MetatileBehavior_IsSidewaysStairsRightSideAny(currBehavior))
+            // on top of right-side stairs -> check southeast
+            objectEventId = GetObjectEventIdByXYZ(currX + 1, currY + 1, position->height);
+        else
+            // check in front of player
+            objectEventId = GetObjectEventIdByXYZ(position->x, position->y, position->height);
+        break;
+    case DIR_WEST:
+        if (MetatileBehavior_IsSidewaysStairsRightSideAny(metatileBehavior))
+            // facing sideways stairs right side -> check northwest
+            objectEventId = GetObjectEventIdByXYZ(currX - 1, currY - 1, position->height);
+        else if (MetatileBehavior_IsSidewaysStairsLeftSideAny(currBehavior))
+            // on top of left-side stairs -> check southwest
+            objectEventId = GetObjectEventIdByXYZ(currX - 1, currY + 1, position->height);
+        else
+            // check in front of player
+            objectEventId = GetObjectEventIdByXYZ(position->x, position->y, position->height);
+        break;
+    default:
+        objectEventId = GetObjectEventIdByXYZ(position->x, position->y, position->height);
+        break;
+    }
+    
     if (objectEventId == OBJECT_EVENTS_COUNT || gObjectEvents[objectEventId].localId == OBJ_EVENT_ID_PLAYER)
     {
         if (MetatileBehavior_IsCounter(metatileBehavior) != TRUE)
@@ -448,10 +480,10 @@ static const u8 *GetInteractedMetatileScript(struct MapPosition *position, u8 me
 
 static const u8 *GetInteractedWaterScript(struct MapPosition *unused1, u8 metatileBehavior, u8 direction)
 {
-    if (FlagGet(FLAG_BADGE05_GET) == TRUE && PartyHasMonWithSurf() == TRUE && IsPlayerFacingSurfableFishableWater() == TRUE)
+    if (FlagGet(FLAG_BADGE05_GET) == TRUE && PartyHasMonWithSurf() == TRUE && IsPlayerFacingSurfableFishableWater() == TRUE && CheckFollowerFlag(FOLLOWER_FLAG_CAN_SURF))
         return EventScript_UseSurf;
 
-    if (MetatileBehavior_IsWaterfall(metatileBehavior) == TRUE)
+    if (MetatileBehavior_IsWaterfall(metatileBehavior) == TRUE && CheckFollowerFlag(FOLLOWER_FLAG_CAN_WATERFALL))
     {
         if (FlagGet(FLAG_BADGE08_GET) == TRUE && IsPlayerSurfingNorth() == TRUE)
             return EventScript_UseWaterfall;
@@ -463,6 +495,9 @@ static const u8 *GetInteractedWaterScript(struct MapPosition *unused1, u8 metati
 
 static bool32 TrySetupDiveDownScript(void)
 {
+    if (!CheckFollowerFlag(FOLLOWER_FLAG_CAN_DIVE))
+        return FALSE;
+    
     if (FlagGet(FLAG_BADGE07_GET) && TrySetDiveWarp() == 2)
     {
         ScriptContext1_SetupScript(EventScript_UseDive);
@@ -473,6 +508,9 @@ static bool32 TrySetupDiveDownScript(void)
 
 static bool32 TrySetupDiveEmergeScript(void)
 {
+    if (!CheckFollowerFlag(FOLLOWER_FLAG_CAN_DIVE))
+        return FALSE;
+    
     if (FlagGet(FLAG_BADGE07_GET) && gMapHeader.mapType == MAP_TYPE_UNDERWATER && TrySetDiveWarp() == 1)
     {
         ScriptContext1_SetupScript(EventScript_UseDiveUnderwater);

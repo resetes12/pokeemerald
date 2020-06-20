@@ -241,27 +241,11 @@
 #define MOVEMENT_ACTION_FIGURE_8                        0x9B
 #define MOVEMENT_ACTION_FLY_UP                          0x9C
 #define MOVEMENT_ACTION_FLY_DOWN                        0x9D
-// slow running (for stairs)
+// slow running
 #define MOVEMENT_ACTION_RUN_DOWN_SLOW                   0x9E
 #define MOVEMENT_ACTION_RUN_UP_SLOW                     0x9F
 #define MOVEMENT_ACTION_RUN_LEFT_SLOW                   0xA0
 #define MOVEMENT_ACTION_RUN_RIGHT_SLOW                  0xA1
-// sideways stairs - walking
-#define MOVEMENT_ACTION_WALK_STAIRS_DIAGONAL_UP_LEFT            0xA2
-#define MOVEMENT_ACTION_WALK_STAIRS_DIAGONAL_UP_RIGHT           0xA3
-#define MOVEMENT_ACTION_WALK_STAIRS_DIAGONAL_DOWN_LEFT          0xA4
-#define MOVEMENT_ACTION_WALK_STAIRS_DIAGONAL_DOWN_RIGHT         0xA5
-// sideways stairs - running
-#define MOVEMENT_ACTION_WALK_STAIRS_DIAGONAL_UP_LEFT_RUNNING    0xA6
-#define MOVEMENT_ACTION_WALK_STAIRS_DIAGONAL_UP_RIGHT_RUNNING   0xA7
-#define MOVEMENT_ACTION_WALK_STAIRS_DIAGONAL_DOWN_LEFT_RUNNING  0xA8
-#define MOVEMENT_ACTION_WALK_STAIRS_DIAGONAL_DOWN_RIGHT_RUNNING 0xA9
-// sideways stairs - acro bike
-#define MOVEMENT_ACTION_RIDE_WATER_CURRENT_UP_LEFT              0xAA
-#define MOVEMENT_ACTION_RIDE_WATER_CURRENT_UP_RIGHT             0xAB
-#define MOVEMENT_ACTION_RIDE_WATER_CURRENT_DOWN_LEFT            0xAC
-#define MOVEMENT_ACTION_RIDE_WATER_CURRENT_DOWN_RIGHT           0xAD
-//sideways stairs - mach bike
 
 #define MOVEMENT_ACTION_STEP_END 0xFE
 

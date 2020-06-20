@@ -205,7 +205,8 @@ struct ObjectEvent
     /*0x1D*/ u8 trainerRange_berryTreeId;
     /*0x1E*/ u8 currentMetatileBehavior;
     /*0x1F*/ u8 previousMetatileBehavior;
-    /*0x20*/ u8 previousMovementDirection;
+    /*0x20*/ u8 previousMovementDirection:4;
+             u8 directionOverwrite:4;
     /*0x21*/ u8 directionSequenceIndex;
     /*0x22*/ u8 playerCopyableMovement;
     /*size = 0x24*/

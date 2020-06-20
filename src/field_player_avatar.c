@@ -20,6 +20,7 @@
 #include "strings.h"
 #include "task.h"
 #include "tv.h"
+#include "follow_me.h"
 #include "wild_encounter.h"
 #include "constants/abilities.h"
 #include "constants/event_objects.h"
@@ -624,22 +625,6 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
             PlayerNotOnBikeCollideWithFarawayIslandMew(direction);
             return;
         }
-        else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_RIGHT)
-        {
-            if (heldKeys & B_BUTTON && FlagGet(FLAG_SYS_B_DASH))
-                PlayerSidewaysStairsRightSideRunning(direction);
-            else
-                PlayerSidewaysStairsRightSide(direction);
-            return;
-        }
-        else if (collision == COLLISION_SIDEWAYS_STAIRS_TO_LEFT)
-        {
-            if (heldKeys & B_BUTTON && FlagGet(FLAG_SYS_B_DASH))
-                return PlayerSidewaysStairsLeftSideRunning(direction);
-            else
-                return PlayerSidewaysStairsLeftSide(direction);
-            return;
-        }
         else
         {
             u8 adjustedCollision = collision - COLLISION_STOP_SURFING;
@@ -659,43 +644,14 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
     if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_UNDERWATER) && (heldKeys & B_BUTTON) && FlagGet(FLAG_SYS_B_DASH)
      && IsRunningDisallowed(gObjectEvents[gPlayerAvatar.objectEventId].currentMetatileBehavior) == 0)
     {
-        if (PlayerIsMovingOnRockStairs(direction))
-            PlayerRunSlow(direction);
-        else
-            PlayerRun(direction);
-        
+        PlayerRun(direction);
         gPlayerAvatar.flags |= PLAYER_AVATAR_FLAG_DASH;
         return;
     }
     else
     {
-        if (PlayerIsMovingOnRockStairs(direction))
-            PlayerGoSlow(direction);
-        else
-            PlayerGoSpeed1(direction);
+        PlayerGoSpeed1(direction);
     }
-}
-
-bool32 PlayerIsMovingOnRockStairs(u8 direction)
-{
-    #if SLOW_MOVEMENT_ON_STAIRS
-        struct ObjectEvent *objectEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
-        s16 x = objectEvent->currentCoords.x;
-        s16 y = objectEvent->currentCoords.y;
-        
-        switch (direction)
-        {
-        case DIR_NORTH:
-            return MetatileBehavior_IsRockStairs(MapGridGetMetatileBehaviorAt(x, y));
-        case DIR_SOUTH:
-            MoveCoords(DIR_SOUTH, &x, &y);
-            return MetatileBehavior_IsRockStairs(MapGridGetMetatileBehaviorAt(x, y));
-        default:
-            return FALSE;
-        }
-    #else
-        return FALSE;
-    #endif
 }
 
 static u8 CheckForPlayerAvatarCollision(u8 direction)
@@ -745,42 +701,20 @@ u8 CheckForObjectEventCollision(struct ObjectEvent *objectEvent, s16 x, s16 y, u
     }
     
     //sideways stairs logic
-    if (direction == DIR_WEST || direction == DIR_EAST)
-    {
-        if (MetatileBehavior_IsSidewaysStairsLeftSide(metatileBehavior))
-        {
-            //moving ONTO left side stair
-            if (direction == DIR_WEST && currentBehavior != metatileBehavior)
-                return collision;   //moving onto top part of left-stair going left, so no diagonal
-            else
-                return COLLISION_SIDEWAYS_STAIRS_TO_LEFT; // move diagonally
-        }
-        else if (MetatileBehavior_IsSidewaysStairsRightSide(metatileBehavior))
-        {
-            //moving ONTO right side stair
-            if (direction == DIR_EAST && currentBehavior != metatileBehavior)
-                return collision;   //moving onto top part of right-stair going right, so no diagonal
-            else
-                return COLLISION_SIDEWAYS_STAIRS_TO_RIGHT;
-        }
-        else if (MetatileBehavior_IsSidewaysStairsLeftSideAny(currentBehavior))
-        {
-            //moving OFF of any left side stair
-            if (direction == DIR_WEST && metatileBehavior != currentBehavior)
-                return COLLISION_SIDEWAYS_STAIRS_TO_LEFT;   //moving off of left stairs onto non-stair -> move diagonal
-            else
-                return collision;   //moving off of left side stair to east -> move east
-        }
-        else if (MetatileBehavior_IsSidewaysStairsRightSideAny(currentBehavior))
-        {
-            //moving OFF of any right side stair
-            if (direction == DIR_EAST && metatileBehavior != currentBehavior)
-                return COLLISION_SIDEWAYS_STAIRS_TO_RIGHT;  //moving off right stair onto non-stair -> move diagonal
-            else
-                return collision;
-        }
-    }
-    
+    /*
+    if (MetatileBehavior_IsSidewaysStairsLeftSideTop(metatileBehavior) && direction == DIR_EAST)
+        return COLLISION_IMPASSABLE;    //moving onto left-side top edge east from ground -> cannot move
+    else if (MetatileBehavior_IsSidewaysStairsRightSideTop(metatileBehavior) && direction == DIR_WEST)
+        return COLLISION_IMPASSABLE;    //moving onto left-side top edge east from ground -> cannot move
+    else if (MetatileBehavior_IsSidewaysStairsRightSideBottom(metatileBehavior) && (direction == DIR_EAST || direction == DIR_SOUTH))
+        return COLLISION_IMPASSABLE;
+    else if (MetatileBehavior_IsSidewaysStairsLeftSideBottom(metatileBehavior) && (direction == DIR_WEST || direction == DIR_SOUTH))
+        return COLLISION_IMPASSABLE;
+    else if ((MetatileBehavior_IsSidewaysStairsLeftSideTop(currentBehavior) || MetatileBehavior_IsSidewaysStairsRightSideTop(currentBehavior))
+     && direction == DIR_NORTH && collision == COLLISION_NONE)
+        return COLLISION_IMPASSABLE;    //trying to move north off of top-most tile onto same level doesn't work
+    */
+        
     return collision;
 }
 
@@ -961,7 +895,7 @@ static void PlayerAvatarTransition_Underwater(struct ObjectEvent *objEvent)
     ObjectEventSetGraphicsId(objEvent, GetPlayerAvatarGraphicsIdByStateId(PLAYER_AVATAR_STATE_UNDERWATER));
     ObjectEventTurn(objEvent, objEvent->movementDirection);
     SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_UNDERWATER);
-    objEvent->fieldEffectSpriteId = sub_8155800(objEvent->spriteId);
+    objEvent->fieldEffectSpriteId = DoBobbingFieldEffect(objEvent->spriteId);
 }
 
 static void PlayerAvatarTransition_ReturnToField(struct ObjectEvent *objEvent)
@@ -1491,6 +1425,8 @@ void InitPlayerAvatar(s16 x, s16 y, u8 direction, u8 gender)
     gPlayerAvatar.spriteId = objectEvent->spriteId;
     gPlayerAvatar.gender = gender;
     SetPlayerAvatarStateMask(PLAYER_AVATAR_FLAG_5 | PLAYER_AVATAR_FLAG_ON_FOOT);
+    
+    CreateFollowerAvatar();
 }
 
 void SetPlayerInvisibility(bool8 invisible)
@@ -1730,12 +1666,14 @@ static void CreateStopSurfingTask(u8 direction)
     ScriptContext2_Enable();
     Overworld_ClearSavedMusic();
     Overworld_ChangeMusicToDefault();
-    gPlayerAvatar.flags &= ~PLAYER_AVATAR_FLAG_SURFING;
+    gPlayerAvatar.flags ^= PLAYER_AVATAR_FLAG_SURFING;
     gPlayerAvatar.flags |= PLAYER_AVATAR_FLAG_ON_FOOT;
     gPlayerAvatar.preventStep = TRUE;
     taskId = CreateTask(Task_StopSurfingInit, 0xFF);
     gTasks[taskId].data[0] = direction;
     Task_StopSurfingInit(taskId);
+    
+    PrepareFollowerDismountSurf();
 }
 
 static void Task_StopSurfingInit(u8 taskId)
@@ -2350,22 +2288,3 @@ u8 GetLeftSideStairsDirection(u8 direction)
     }
 }
 
-void PlayerSidewaysStairsRightSide(u8 direction)
-{
-    PlayerSetAnimId(GetDiagonalRightStairsMovement(direction), 8);
-}
-
-void PlayerSidewaysStairsLeftSide(u8 direction)
-{
-    PlayerSetAnimId(GetDiagonalLeftStairsMovement(direction), 8);
-}
-
-void PlayerSidewaysStairsRightSideRunning(u8 direction)
-{
-    PlayerSetAnimId(GetDiagonalRightStairsRunningMovement(direction), 8);
-}
-
-void PlayerSidewaysStairsLeftSideRunning(u8 direction)
-{
-    PlayerSetAnimId(GetDiagonalLeftStairsRunningMovement(direction), 8);
-}

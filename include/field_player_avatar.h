@@ -68,9 +68,5 @@ bool32 PlayerIsMovingOnRockStairs(u8 direction);
 //sideways stairs
 u8 GetRightSideStairsDirection(u8 direction);
 u8 GetLeftSideStairsDirection(u8 direction);
-void PlayerSidewaysStairsRightSide(u8 direction);
-void PlayerSidewaysStairsLeftSide(u8 direction);
-void PlayerSidewaysStairsRightSideRunning(u8 direction);
-void PlayerSidewaysStairsLeftSideRunning(u8 direction);
 
 #endif // GUARD_FIELD_PLAYER_AVATAR_H

@@ -82,6 +82,7 @@ bool8 TryGetObjectEventIdByLocalIdAndMap(u8, u8, u8, u8 *);
 u8 GetObjectEventIdByXY(s16, s16);
 void SetObjectEventDirection(struct ObjectEvent *, u8);
 u8 GetFirstInactiveObjectEventId(void);
+void RemoveObjectEvent(struct ObjectEvent *objectEvent);
 void RemoveObjectEventByLocalIdAndMap(u8, u8, u8);
 void LoadPlayerObjectReflectionPalette(u16, u8);
 void LoadSpecialObjectReflectionPalette(u16, u8);
@@ -125,6 +126,7 @@ u8 GetWalkInPlaceFastMovementAction(u32);
 u8 GetWalkInPlaceNormalMovementAction(u32);
 u8 GetWalkInPlaceSlowMovementAction(u32);
 u8 GetCollisionAtCoords(struct ObjectEvent *, s16, s16, u32);
+u8 GetCollisionInDirection(struct ObjectEvent *objectEvent, u8 direction);
 void MoveCoords(u8, s16 *, s16 *);
 bool8 ObjectEventIsHeldMovementActive(struct ObjectEvent *);
 u8 ObjectEventClearHeldMovementIfFinished(struct ObjectEvent *);
@@ -205,6 +207,8 @@ void CameraObjectReset2(void);
 u8 GetObjectEventBerryTreeId(u8 objectEventId);
 void SetBerryTreeJustPicked(u8 mapId, u8 mapNumber, u8 mapGroup);
 bool8 IsBerryTreeSparkling(u8, u8, u8);
+struct ObjectEventTemplate *GetObjectEventTemplateByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup);
+u8 TrySpawnObjectEventTemplate(struct ObjectEventTemplate *objectEventTemplate, u8 mapNum, u8 mapGroup, s16 cameraX, s16 cameraY);
 
 void MovementType_None(struct Sprite *);
 void MovementType_LookAround(struct Sprite *);
@@ -422,21 +426,23 @@ u8 MovementType_RunInPlace_Step0(struct ObjectEvent *, struct Sprite *);
 u8 MovementType_Invisible_Step0(struct ObjectEvent *, struct Sprite *);
 u8 MovementType_Invisible_Step1(struct ObjectEvent *, struct Sprite *);
 u8 MovementType_Invisible_Step2(struct ObjectEvent *, struct Sprite *);
+
 void SetObjectEventSpriteInvisibility(u8 objectEventId, bool32 invisible);
 bool32 IsObjectEventSpriteInvisible(u8 objectEventId);
 void SetObjectEventSpriteGraphics(u8 objectEventId, u8 graphicsId);
 void SetObjectEventSpriteAnim(u8 objectEventId, u8 animNum);
 bool32 IsObjectEventSpriteAnimating(u8 objectEventId);
 
+// NEW
+u16 GetMiniStepCount(u8 speed);
+void RunMiniStep(struct Sprite *sprite, u8 speed, u8 currentFrame);
+bool8 PlayerIsUnderWaterfall(struct ObjectEvent *objectEvent);
+
 // run slow
 u8 GetPlayerRunSlowMovementAction(u32);
 //sideways stairs
 u8 GetSidewaysStairsToRightDirection(s16, s16, u8);
 u8 GetSidewaysStairsToLeftDirection(s16, s16, u8);
-u8 GetDiagonalRightStairsMovement(u32);
-u8 GetDiagonalLeftStairsMovement(u32);
-u8 GetDiagonalRightStairsRunningMovement(u32);
-u8 GetDiagonalLeftStairsRunningMovement(u32);
-extern u8 gSidewaysStairsDirection;
+u8 GetSidewaysStairsCollision(struct ObjectEvent *objectEvent, u8 dir, u8 currentBehavior, u8 nextBehavior, u8 collision);
 
 #endif //GUARD_EVENT_OBJECT_MOVEMENT_H
