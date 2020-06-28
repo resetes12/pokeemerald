@@ -1081,7 +1081,7 @@ static void CreateBobbingEffect(struct ObjectEvent *objectEvent, struct Sprite *
     }
 }
 
-u8 sub_8155800(u8 oldSpriteId)
+u8 DoBobbingFieldEffect(u8 oldSpriteId)
 {
     u8 spriteId;
     struct Sprite *sprite;
