@@ -2218,18 +2218,14 @@ static void CreatePokedexList(u8 dexMode, u8 order)
         }
         else
         {
-            bool32 r10;
-            s16 r5;
-
-            r10 = r5 = i = 0;
-            for (i = 0; i < temp_dexCount; i++)
+            s16 r5, r10;
+            for (i = 0, r5 = 0, r10 = 0; i < temp_dexCount; i++)
             {
                 temp_dexNum = i + 1;
                 if (GetSetPokedexFlag(temp_dexNum, FLAG_GET_SEEN))
                     r10 = 1;
                 if (r10)
                 {
-                    asm("");    //Needed to match for some reason
                     sPokedexView->pokedexList[r5].dexNum = temp_dexNum;
                     sPokedexView->pokedexList[r5].seen = GetSetPokedexFlag(temp_dexNum, FLAG_GET_SEEN);
                     sPokedexView->pokedexList[r5].owned = GetSetPokedexFlag(temp_dexNum, FLAG_GET_CAUGHT);
@@ -4525,7 +4521,11 @@ static void UnusedPrintMonName(u8 windowId, const u8* name, u8 left, u8 top)
         ;
     for (i = 0; i < nameLength; i++)
         str[ARRAY_COUNT(str) - nameLength + i] = name[i];
+#ifdef UBFIX
+    str[ARRAY_COUNT(str) - 1] = EOS;
+#else
     str[ARRAY_COUNT(str)] = EOS;
+#endif
     PrintInfoSubMenuText(windowId, str, left, top);
 }
 
