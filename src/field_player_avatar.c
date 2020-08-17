@@ -2296,6 +2296,11 @@ bool8 ObjectMovingOnRockStairs(struct ObjectEvent *objectEvent, u8 direction)
         s16 x = objectEvent->currentCoords.x;
         s16 y = objectEvent->currentCoords.y;
         
+        #if FOLLOW_ME_IMPLEMENTED
+            if (PlayerHasFollower() && (objectEvent->isPlayer || objectEvent->localId == GetFollowerLocalId()))
+                return FALSE;
+        #endif
+        
         switch (direction)
         {
         case DIR_NORTH:

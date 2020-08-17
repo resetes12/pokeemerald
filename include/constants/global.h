@@ -119,5 +119,6 @@
 #define DIR_NORTHEAST   8
 
 #define SLOW_MOVEMENT_ON_STAIRS         TRUE
+#define FOLLOW_ME_IMPLEMENTED           TRUE    //for stairs movement. see ObjectMovingOnRockStairs in src/field_player_avatar.c
 
 #endif // GUARD_CONSTANTS_GLOBAL_H
