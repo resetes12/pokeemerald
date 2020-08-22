@@ -7900,12 +7900,17 @@ static void GetGroundEffectFlags_LongGrassOnBeginStep(struct ObjectEvent *objEve
 
 static void GetGroundEffectFlags_Tracks(struct ObjectEvent *objEvent, u32 *flags)
 {
-    if (MetatileBehavior_IsDeepSand(objEvent->previousMetatileBehavior))
+    u8 behavior = objEvent->previousMetatileBehavior;
+    
+    if (objEvent->directionOverwrite)
+        return;
+    
+    if (MetatileBehavior_IsDeepSand(behavior))
     {
         *flags |= GROUND_EFFECT_FLAG_DEEP_SAND;
     }
-    else if (MetatileBehavior_IsSandOrDeepSand(objEvent->previousMetatileBehavior)
-             || MetatileBehavior_IsFootprints(objEvent->previousMetatileBehavior))
+    else if (MetatileBehavior_IsSandOrDeepSand(behavior)
+             || MetatileBehavior_IsFootprints(behavior))
     {
         *flags |= GROUND_EFFECT_FLAG_SAND;
     }
