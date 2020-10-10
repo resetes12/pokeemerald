@@ -162,7 +162,7 @@ void NewGameInitData(void)
     ClearSav1();
     ClearMailData();
     gSaveBlock2Ptr->specialSaveWarpFlags = 0;
-    gSaveBlock2Ptr->field_A8 = 0;
+    gSaveBlock2Ptr->gcnLinkFlags = 0;
     InitPlayerTrainerId();
     PlayTimeCounter_Reset();
     ClearPokedexFlags();
@@ -197,7 +197,7 @@ void NewGameInitData(void)
     WarpToTruck();
     ScriptContext2_RunNewScript(EventScript_ResetAllMapFlags);
     ResetMiniGamesResults();
-    copy_strings_to_sav1();
+    InitUnionRoomChatRegisteredTexts();
     InitLilycoveLady();
     ResetAllApprenticeData();
     ClearRankingHallRecords();

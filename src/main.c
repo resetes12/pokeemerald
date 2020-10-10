@@ -75,13 +75,11 @@ static EWRAM_DATA u16 gTrainerId = 0;
 static void UpdateLinkAndCallCallbacks(void);
 static void InitMainCallbacks(void);
 static void CallCallbacks(void);
-static void SeedRngWithRtc(void);
+//static void SeedRngWithRtc(void);
 static void ReadKeys(void);
 void InitIntrHandlers(void);
 static void WaitForVBlank(void);
 void EnableVCountIntrAtLine150(void);
-
-#define B_START_SELECT (B_BUTTON | START_BUTTON | SELECT_BUTTON)
 
 void AgbMain()
 {
@@ -113,11 +111,12 @@ void AgbMain()
     InitIntrHandlers();
     m4aSoundInit();
     EnableVCountIntrAtLine150();
-    sub_800E6D0();
+    InitRFU();
     RtcInit();
     CheckForFlashMemory();
     InitMainCallbacks();
     InitMapMusic();
+    //SeedRngWithRtc(); see comment at SeedRngWithRtc declaration below
     ClearDma3Requests();
     ResetBgs();
     SetDefaultFontsPointer();
@@ -135,9 +134,11 @@ void AgbMain()
     {
         ReadKeys();
 
-        if (gSoftResetDisabled == FALSE
-         && (gMain.heldKeysRaw & A_BUTTON)
-         && (gMain.heldKeysRaw & B_START_SELECT) == B_START_SELECT)
+        if (!gSoftResetDisabled
+         && JOY_HELD_RAW(A_BUTTON)
+         && JOY_HELD_RAW(B_BUTTON)
+         && JOY_HELD_RAW(START_BUTTON)
+         && JOY_HELD_RAW(SELECT_BUTTON)) //The reset key combo A + B + START + SELECT
         {
             rfu_REQ_stopMode();
             rfu_waitREQComplete();
@@ -228,6 +229,14 @@ void EnableVCountIntrAtLine150(void)
     EnableInterrupts(INTR_FLAG_VCOUNT);
 }
 
+// oops! FRLG commented this out to remove RTC, however Emerald didnt undo this!
+//static void SeedRngWithRtc(void)
+//{
+//    u32 seed = RtcGetMinuteCount();
+//    seed = (seed >> 16) ^ (seed & 0xFFFF);
+//    SeedRng(seed);
+//}
+
 void InitKeys(void)
 {
     gKeyRepeatContinueDelay = 5;
@@ -253,9 +262,7 @@ static void ReadKeys(void)
 
     if (keyInput != 0 && gMain.heldKeys == keyInput)
     {
-        gMain.keyRepeatCounter--;
-
-        if (gMain.keyRepeatCounter == 0)
+        if (--gMain.keyRepeatCounter == 0)
         {
             gMain.newAndRepeatedKeys = keyInput;
             gMain.keyRepeatCounter = gKeyRepeatContinueDelay;
@@ -271,12 +278,12 @@ static void ReadKeys(void)
     gMain.heldKeys = gMain.heldKeysRaw;
 
     // Remap L to A if the L=A option is enabled.
-    if (gSaveBlock2Ptr->optionsButtonMode == 2)
+    if (gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_L_EQUALS_A)
     {
-        if (gMain.newKeys & L_BUTTON)
+        if (JOY_NEW(L_BUTTON))
             gMain.newKeys |= A_BUTTON;
 
-        if (gMain.heldKeys & L_BUTTON)
+        if (JOY_HELD(L_BUTTON))
             gMain.heldKeys |= A_BUTTON;
     }
 
@@ -334,7 +341,7 @@ static void VBlankIntr(void)
 {
     if (gWirelessCommType != 0)
         RfuVSync();
-    else if (gLinkVSyncDisabled == FALSE)
+    else if (!gLinkVSyncDisabled)
         LinkVSync();
 
     gMain.vblankCounter1++;
@@ -358,7 +365,7 @@ static void VBlankIntr(void)
     if (!gMain.inBattle || !(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_FRONTIER | BATTLE_TYPE_RECORDED)))
         Random();
 
-    sub_800E174();
+    UpdateWirelessStatusIndicatorSprite();
 
     INTR_CHECK |= INTR_FLAG_VBLANK;
     gMain.intrCheck |= INTR_FLAG_VBLANK;

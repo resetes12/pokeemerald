@@ -12,9 +12,10 @@
 #include "link_rfu.h"
 #include "main.h"
 #include "menu.h"
+#include "minigame_countdown.h"
 #include "palette.h"
 #include "random.h"
-#include "rom_8034C54.h"
+#include "digit_obj_util.h"
 #include "save.h"
 #include "script.h"
 #include "sound.h"
@@ -28,7 +29,6 @@
 #include "pokemon_jump.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
-#include "constants/species.h"
 
 struct PokemonJump1_MonInfo
 {
@@ -215,7 +215,7 @@ static bool32 sub_802C618(void);
 static bool32 sub_802C650(void);
 static void sub_802C688(int);
 static int sub_802C6B0(void);
-static bool32 sub_802C70C(void);
+static bool32 AreLinkQueuesEmpty(void);
 static int sub_802C73C(u8 *);
 static void sub_802C780(void);
 static int sub_802C790(int);
@@ -289,21 +289,8 @@ static void sub_802D5E4(void);
 static void sub_802D72C(void);
 static void sub_802D688(void);
 static void Task_ShowPokemonJumpRecords(u8 taskId);
-static void sub_802E6D0(u8 taskId);
-static void sub_802EB98(u8 taskId);
 static void sub_802E500(u16 windowId, int width);
 static void TruncateToFirstWordOnly(u8 *str);
-static void sub_802EF50(u16 tileTag, u16 palTag);
-static u8 sub_802EFA8(u16 tileTag, u16 palTag, s16 x, s16 y, u8 subpriority);
-static void sub_802EFFC(u16 tileTag, u16 palTag, s16 x, s16 y, u8 subpriority, s16 *spriteId1, s16 *spriteId2);
-static bool32 sub_802EC98(u8 spriteId);
-static bool32 sub_802EE30(u8 spriteId);
-static void sub_802EDCC(u8 spriteId1, u8 spriteId2, u8 spriteId3);
-static void sub_802EE5C(struct Sprite *sprite);
-static void sub_802E83C(u8 taskId);
-static void sub_802E8C8(u8 taskId);
-static void sub_802EA50(u8 taskId);
-static void sub_802EAB0(u8 taskId);
 
 EWRAM_DATA static struct PokemonJump1 *gUnknown_02022CFC = NULL;
 EWRAM_DATA static struct PokemonJump2 *gUnknown_02022D00 = NULL;
@@ -412,13 +399,13 @@ static const struct PokemonJumpMons gPkmnJumpSpecies[] =
     { .species = SPECIES_BAGON,      .unk2 = 1, },
 };
 
-void sub_802A9A8(u16 partyIndex, MainCallback callback)
+void StartPokemonJump(u16 partyIndex, MainCallback callback)
 {
     u8 taskId;
 
     if (gReceivedRemoteLinkPlayers)
     {
-        gUnknown_02022CFC = Alloc(sizeof(*gUnknown_02022CFC));
+        gUnknown_02022CFC = Alloc(sizeof(struct PokemonJump1));
         if (gUnknown_02022CFC)
         {
             ResetTasks();
@@ -588,7 +575,7 @@ static void sub_802ACA0(u8 taskId)
     case 2:
         if (!sub_802D0F0() && IsNotWaitingForBGMStop() == TRUE)
         {
-            FadeOutAndPlayNewMapMusic(MUS_RG_JUMP, 8);
+            FadeOutAndPlayNewMapMusic(MUS_RG_POKE_JUMP, 8);
             gUnknown_02022CFC->unk8++;
         }
         break;
@@ -888,7 +875,7 @@ static bool32 sub_802B31C(void)
         gUnknown_02022CFC->unk8++;
         // fall through
     case 1:
-        if (sub_802C70C())
+        if (AreLinkQueuesEmpty())
             return FALSE;
         break;
     }
@@ -1158,14 +1145,14 @@ static bool32 sub_802B720(void)
         }
         break;
     case 2:
-        if (sub_802C70C())
+        if (AreLinkQueuesEmpty())
         {
-            CreateTask(sub_8153688, 6);
+            CreateTask(Task_LinkSave, 6);
             gUnknown_02022CFC->unk8++;
         }
         break;
     case 3:
-        if (!FuncIsActiveTask(sub_8153688))
+        if (!FuncIsActiveTask(Task_LinkSave))
         {
             sub_802DA14();
             gUnknown_02022CFC->unk8++;
@@ -1257,7 +1244,7 @@ static bool32 sub_802B8CC(void)
             break;
         // fall through
     case 1:
-        if (gMain.newKeys & A_BUTTON)
+        if (JOY_NEW(A_BUTTON))
         {
             sub_802C164();
             sub_802AE14(3);
@@ -1348,7 +1335,7 @@ static bool32 sub_802BA58(void)
     case 2:
     case 5:
         gUnknown_02022CFC->unk3C++;
-        if (gMain.newKeys & (A_BUTTON | B_BUTTON) || gUnknown_02022CFC->unk3C > 180)
+        if (JOY_NEW(A_BUTTON | B_BUTTON) || gUnknown_02022CFC->unk3C > 180)
         {
             sub_802DA14();
             gUnknown_02022CFC->unkA++;
@@ -1475,7 +1462,7 @@ static bool32 sub_802BC60(void)
     case 4:
         if (!gPaletteFade.active)
         {
-            sub_800AC34();
+            SetCloseLinkCallback();
             gUnknown_02022CFC->unkA++;
         }
         break;
@@ -1733,7 +1720,7 @@ static void sub_802C1BC(void)
     gUnknown_02022CFC->unk83AC->unk10 = 0;
 }
 
-static const u16 gUnknown_082FB654[] = {SE_REGI, SE_REAPOKE, SE_W234, SE_RG_EXCELLENT};
+static const u16 gUnknown_082FB654[] = {SE_SHOP, SE_SHINY, SE_M_MORNING_SUN, SE_RG_POKE_JUMP_SUCCESS};
 
 static void sub_802C1DC(void)
 {
@@ -1810,9 +1797,9 @@ static void sub_802C280(void)
     }
 
     if (whichSound & 0x2)
-        PlaySE(SE_RG_NAWAMISS);
+        PlaySE(SE_RG_POKE_JUMP_FAILURE);
     else if (whichSound & 0x1)
-        PlaySE(SE_DANSA);
+        PlaySE(SE_LEDGE);
 }
 
 static const s8 gUnknown_082FB65C[][48] =
@@ -2037,9 +2024,9 @@ static int sub_802C6B0(void)
     return count;
 }
 
-static bool32 sub_802C70C(void)
+static bool32 AreLinkQueuesEmpty(void)
 {
-    return !Rfu.unk_124.unk_8c2 && !Rfu.unk_9e8.unk_232;
+    return !Rfu.recvQueue.count && !Rfu.sendQueue.count;
 }
 
 static int sub_802C73C(u8 *arg0)
@@ -2714,7 +2701,7 @@ static void sub_802CDD4(struct Sprite *sprite)
     switch (sprite->data[0])
     {
     case 0:
-        PlaySE(SE_JITE_PYOKO);
+        PlaySE(SE_BIKE_HOP);
         sprite->data[1] = 0;
         sprite->data[0]++;
         // fall through
@@ -2807,13 +2794,13 @@ static void sub_802CF50(struct PokemonJump2 *arg0, int arg1)
 
 static void sub_802D044(struct PokemonJump2 *arg0)
 {
-    sub_802EB24(9, 7, 120, 80, 0);
+    StartMinigameCountdown(9, 7, 120, 80, 0);
     sub_802CD3C(arg0);
 }
 
 static bool32 sub_802D068(void)
 {
-    return sub_802EB84();
+    return IsMinigameCountdownRunning();
 }
 
 static void sub_802D074(struct PokemonJump2 *arg0)
@@ -2831,7 +2818,7 @@ static void sub_802D074(struct PokemonJump2 *arg0)
 static void sub_802D0AC(void)
 {
     FreeAllWindowBuffers();
-    sub_8034CC8();
+    DigitObjUtil_Free();
 }
 
 static void sub_802D0BC(struct PokemonJump2 *arg0)
@@ -2978,18 +2965,18 @@ static void sub_802D150(void)
         ResetBgsAndClearDma3BusyFlags(0);
         InitBgsFromTemplates(0, gUnknown_082FE164, ARRAY_COUNT(gUnknown_082FE164));
         InitWindows(gUnknown_082FE174);
-        reset_temp_tile_data_buffers();
+        ResetTempTileDataBuffers();
         sub_802C974(gUnknown_02022D00);
         sub_802DD08();
         LoadPalette(gPkmnJumpBgPal, 0, 0x20);
-        decompress_and_copy_tile_data_to_vram(3, gPkmnJumpBgGfx, 0, 0, 0);
-        decompress_and_copy_tile_data_to_vram(3, gPkmnJumpBgTilemap, 0, 0, 1);
+        DecompressAndCopyTileDataToVram(3, gPkmnJumpBgGfx, 0, 0, 0);
+        DecompressAndCopyTileDataToVram(3, gPkmnJumpBgTilemap, 0, 0, 1);
         LoadPalette(gPkmnJumpVenusaurPal, 0x30, 0x20);
-        decompress_and_copy_tile_data_to_vram(2, gPkmnJumpVenusaurGfx, 0, 0, 0);
-        decompress_and_copy_tile_data_to_vram(2, gPkmnJumpVenusaurTilemap, 0, 0, 1);
+        DecompressAndCopyTileDataToVram(2, gPkmnJumpVenusaurGfx, 0, 0, 0);
+        DecompressAndCopyTileDataToVram(2, gPkmnJumpVenusaurTilemap, 0, 0, 1);
         LoadPalette(gPkmnJumpResultsPal, 0x10, 0x20);
-        decompress_and_copy_tile_data_to_vram(1, gPkmnJumpResultsGfx, 0, 0, 0);
-        decompress_and_copy_tile_data_to_vram(1, gPkmnJumpResultsTilemap, 0, 0, 1);
+        DecompressAndCopyTileDataToVram(1, gPkmnJumpResultsGfx, 0, 0, 0);
+        DecompressAndCopyTileDataToVram(1, gPkmnJumpResultsTilemap, 0, 0, 1);
         LoadPalette(gPkmnJumpPal3, 0x20, 0x20);
         SetBgTilemapBuffer(0, gUnknown_02022D00->tilemapBuffer);
         FillBgTilemapBufferRect_Palette0(0, 0, 0, 0, 0x20, 0x20);
@@ -3003,7 +2990,7 @@ static void sub_802D150(void)
         gUnknown_02022D00->unk4++;
         break;
     case 1:
-        if (!free_temp_tile_data_buffers_if_possible())
+        if (!FreeTempTileDataBuffersIfPossible())
         {
             sub_802DBF8();
             sub_802CE9C(gUnknown_02022D00);
@@ -3287,7 +3274,7 @@ static void sub_802D7E8(u16 itemId, u16 quantity)
     gUnknown_02022D00->unk12 = sub_802DA9C(4, 8, 22, 4);
     AddTextPrinterParameterized(gUnknown_02022D00->unk12, 1, gUnknown_02022D00->strBuff, 0, 1, TEXT_SPEED_FF, NULL);
     CopyWindowToVram(gUnknown_02022D00->unk12, 2);
-    gUnknown_02022D00->unk14 = MUS_FANFA1;
+    gUnknown_02022D00->unk14 = MUS_LEVEL_UP;
     gUnknown_02022D00->unkD = 0;
 }
 
@@ -3515,37 +3502,37 @@ static int sub_802DCCC(u8 flags)
 
 static void sub_802DD08(void)
 {
-    struct UnkStruct3 unkStruct;
-    struct UnkStruct3 *ptr = &unkStruct; // This temp variable is needed to match, don't ask me why.
+    struct DigitObjUtilTemplate template;
+    struct DigitObjUtilTemplate *ptr = &template; // This temp variable is needed to match, don't ask me why.
 
     ptr->shape = SPRITE_SHAPE(8x8);
     ptr->size = SPRITE_SIZE(8x8);
-    ptr->field_0_0 = 0;
+    ptr->strConvMode = 0;
     ptr->priority = 1;
-    ptr->field_1 = 5;
+    ptr->oamCount = 5;
     ptr->xDelta = 8;
     ptr->x = 108;
     ptr->y = 6;
     ptr->spriteSheet = (void*) &gUnknown_082FE1EC;
     ptr->spritePal = &gUnknown_082FE1F4;
 
-    sub_8034C54(2);
-    sub_8034D14(0, 0, ptr);
+    DigitObjUtil_Init(2);
+    DigitObjUtil_CreatePrinter(0, 0, ptr);
 
-    unkStruct.field_1 = 4;
-    unkStruct.x = 30;
-    unkStruct.y = 6;
-    sub_8034D14(1, 0, &unkStruct);
+    template.oamCount = 4;
+    template.x = 30;
+    template.y = 6;
+    DigitObjUtil_CreatePrinter(1, 0, &template);
 }
 
 static void sub_802DD64(int arg0)
 {
-    sub_8035044(0, arg0);
+    DigitObjUtil_PrintNumOn(0, arg0);
 }
 
 static void sub_802DD74(u16 arg0)
 {
-    sub_8035044(1, arg0);
+    DigitObjUtil_PrintNumOn(1, arg0);
 }
 
 static void sub_802DD88(u8 multiplayerId)
@@ -3696,14 +3683,14 @@ static void sub_802E0AC(struct PokemonJump1_MonInfo *arg0)
     packet.species = arg0->species,
     packet.otId = arg0->otId,
     packet.personality = arg0->personality,
-    sub_800FE50(&packet);
+    Rfu_SendPacket(&packet);
 }
 
 static bool32 sub_802E0D0(int multiplayerId, struct PokemonJump1_MonInfo *arg0)
 {
     struct MonInfoPacket packet;
 
-    if ((gRecvCmds[multiplayerId][0] & 0xFF00) != 0x2F00)
+    if ((gRecvCmds[multiplayerId][0] & 0xFF00) != RFUCMD_SEND_PACKET)
         return FALSE;
 
     memcpy(&packet, &gRecvCmds[multiplayerId][1], sizeof(packet));
@@ -3730,7 +3717,7 @@ static void sub_802E120(u32 arg0)
     struct UnkPacket2 packet;
     packet.id = 2;
     packet.unk4 = arg0;
-    sub_800FE50(&packet);
+    Rfu_SendPacket(&packet);
 }
 
 struct UnkPacket3
@@ -3758,14 +3745,14 @@ static void sub_802E138(struct PokemonJump1_82E4 *arg0, struct PokemonJump1Sub *
     packet.unk2 = arg0->unk10;
     packet.unk3_1 = arg0->unk14;
     packet.unk4 = arg0->unkE;
-    sub_800FE50(&packet);
+    Rfu_SendPacket(&packet);
 }
 
 static bool32 sub_802E1BC(struct PokemonJump1_82E4 *arg0, struct PokemonJump1Sub *arg1)
 {
     struct UnkPacket3 packet;
 
-    if ((gRecvCmds[0][0] & 0xFF00) != 0x2F00)
+    if ((gRecvCmds[0][0] & 0xFF00) != RFUCMD_SEND_PACKET)
         return FALSE;
 
     memcpy(&packet, &gRecvCmds[0][1], sizeof(packet));
@@ -3804,14 +3791,14 @@ static void sub_802E234(struct PokemonJump1_82E4 *arg0, u8 arg1, u16 arg2)
     packet.unk4 = arg0->unkE;
     packet.unk6 = arg1;
     packet.unk8 = arg2;
-    sub_800FE50(&packet);
+    Rfu_SendPacket(&packet);
 }
 
 static bool32 sub_802E264(struct PokemonJump1_82E4 *arg0, int multiplayerId, u8 *arg2, u16 *arg3)
 {
     struct UnkPacket4 packet;
 
-    if ((gRecvCmds[multiplayerId][0] & 0xFF00) != 0x2F00)
+    if ((gRecvCmds[multiplayerId][0] & 0xFF00) != RFUCMD_SEND_PACKET)
         return FALSE;
 
     memcpy(&packet, &gRecvCmds[multiplayerId][1], sizeof(packet));
@@ -3831,7 +3818,7 @@ static bool32 sub_802E2D0(struct PokemonJump1_82E4 *arg0, int multiplayerId)
 {
     struct UnkPacket4 packet;
 
-    if ((gRecvCmds[multiplayerId][0] & 0xFF00) != 0x2F00)
+    if ((gRecvCmds[multiplayerId][0] & 0xFF00) != RFUCMD_SEND_PACKET)
         return FALSE;
 
     memcpy(&packet, &gRecvCmds[multiplayerId][1], sizeof(packet));
@@ -3934,7 +3921,7 @@ static void Task_ShowPokemonJumpRecords(u8 taskId)
             data[0]++;
         break;
     case 2:
-        if (gMain.newKeys & (A_BUTTON | B_BUTTON))
+        if (JOY_NEW(A_BUTTON | B_BUTTON))
         {
             rbox_fill_rectangle(data[1]);
             CopyWindowToVram(data[1], 1);
@@ -3986,612 +3973,4 @@ static void TruncateToFirstWordOnly(u8 *str)
             break;
         }
     }
-}
-
-static const u16 gPkmnJump321StartPal1[] = INCBIN_U16("graphics/link_games/pkmnjump_321start1.gbapal");
-static const u32 gPkmnJump321StartGfx1[] = INCBIN_U32("graphics/link_games/pkmnjump_321start1.4bpp.lz");
-
-static const struct CompressedSpriteSheet gUnknown_082FE6C8[] =
-{
-    {gPkmnJump321StartGfx1, 0xC00, 0x2000},
-    {},
-};
-
-static const struct SpritePalette gUnknown_082FE6D8[] =
-{
-    {gPkmnJump321StartPal1, 0x2000},
-    {},
-};
-
-static const union AnimCmd sSpriteAnim_82FE6E8[] =
-{
-    ANIMCMD_FRAME(0, 0),
-    ANIMCMD_END
-};
-
-static const union AnimCmd sSpriteAnim_82FE6F0[] =
-{
-    ANIMCMD_FRAME(16, 0),
-    ANIMCMD_END
-};
-
-static const union AnimCmd sSpriteAnim_82FE6F8[] =
-{
-    ANIMCMD_FRAME(32, 0),
-    ANIMCMD_END
-};
-
-static const union AnimCmd sSpriteAnim_82FE700[] =
-{
-    ANIMCMD_FRAME(64, 0),
-    ANIMCMD_END
-};
-
-static const union AnimCmd sSpriteAnim_82FE708[] =
-{
-    ANIMCMD_FRAME(48, 0),
-    ANIMCMD_END
-};
-
-static const union AnimCmd sSpriteAnim_82FE710[] =
-{
-    ANIMCMD_FRAME(80, 0),
-    ANIMCMD_END
-};
-
-static const union AnimCmd *const sSpriteAnimTable_82FE718[] =
-{
-    sSpriteAnim_82FE6E8,
-    sSpriteAnim_82FE6F0,
-    sSpriteAnim_82FE6F8,
-    sSpriteAnim_82FE700,
-    sSpriteAnim_82FE708,
-    sSpriteAnim_82FE710
-};
-
-static const struct SpriteTemplate gUnknown_082FE730[] =
-{
-    {
-        .tileTag = 0x2000,
-        .paletteTag = 0x2000,
-        .oam = &gOamData_AffineOff_ObjNormal_32x32,
-        .anims = sSpriteAnimTable_82FE718,
-        .images = NULL,
-        .affineAnims = gDummySpriteAffineAnimTable,
-        .callback = SpriteCallbackDummy,
-    },
-};
-
-static const TaskFunc gUnknown_082FE748[][4] =
-{
-    {
-        sub_802E83C,
-        sub_802E8C8,
-        sub_802EA50,
-        sub_802EAB0
-    },
-};
-
-// There's only set of task functions.
-static u32 sub_802E63C(u8 funcSetId, u8 taskPriority)
-{
-    u8 taskId = CreateTask(sub_802E6D0, taskPriority);
-    struct Task *task = &gTasks[taskId];
-
-    task->data[0] = 1;
-    task->data[1] = funcSetId;
-    gUnknown_082FE748[funcSetId][0](taskId);
-    return taskId;
-}
-
-static bool32 sub_802E688(void)
-{
-    u8 taskId = FindTaskIdByFunc(sub_802E6D0);
-    if (taskId == 0xFF)
-        return FALSE;
-
-    gTasks[taskId].data[0] = 2;
-    return TRUE;
-}
-
-static bool32 sub_802E6BC(void)
-{
-    return FuncIsActiveTask(sub_802E6D0);
-}
-
-static void sub_802E6D0(u8 taskId)
-{
-    s16 *data = gTasks[taskId].data;
-
-    switch (data[0])
-    {
-    case 2:
-        gUnknown_082FE748[data[1]][2](taskId);
-        data[0] = 3;
-        break;
-    case 3:
-        gUnknown_082FE748[data[1]][3](taskId);
-        break;
-    case 4:
-        gUnknown_082FE748[data[1]][1](taskId);
-        DestroyTask(taskId);
-        break;
-    }
-}
-
-static void sub_802E75C(u8 taskId, s16 *data)
-{
-    u8 i;
-    struct Sprite *sprite;
-
-    LoadCompressedSpriteSheet(&gUnknown_082FE6C8[data[3]]);
-    LoadSpritePalette(&gUnknown_082FE6D8[data[4]]);
-    for (i = 0; i < data[8]; i++)
-        data[13 + i] = CreateSprite(&gUnknown_082FE730[data[2]], data[9], data[10], data[7]);
-    for (i = 0; i < data[8]; i++)
-    {
-        sprite = &gSprites[data[13 + i]];
-        sprite->oam.priority = data[6];
-        sprite->invisible = TRUE;
-        sprite->data[1] = data[5];
-        sprite->data[3] = taskId;
-        sprite->data[4] = i;
-        sprite->data[5] = data[13];
-    }
-}
-
-static void sub_802E83C(u8 taskId)
-{
-    s16 *data = gTasks[taskId].data;
-    data[2] = 0;
-    data[3] = 0;
-    data[4] = 0;
-    data[5] = 60;
-    data[6] = 0;
-    data[7] = 0;
-    data[8] = 3;
-    data[9] = 120;
-    data[10] = 88;
-    sub_802E75C(taskId, data);
-
-    StartSpriteAnim(&gSprites[data[14]], 4);
-    gSprites[data[14]].pos2.x = -32;
-
-    StartSpriteAnim(&gSprites[data[15]], 5);
-    gSprites[data[15]].pos2.x = 32;
-}
-
-static void sub_802E8C8(u8 taskId)
-{
-    u8 i = 0;
-    s16 *data = gTasks[taskId].data;
-
-    for (i = 0; i < data[8]; i++)
-        DestroySprite(&gSprites[data[13 + i]]);
-    FreeSpriteTilesByTag(gUnknown_082FE6C8[data[3]].tag);
-    FreeSpritePaletteByTag(gUnknown_082FE6D8[data[4]].tag);
-}
-
-static void sub_802E938(struct Sprite *sprite)
-{
-    s16 *data = gTasks[sprite->data[3]].data;
-
-    if (data[11] % data[5] != 0)
-        return;
-    if (data[11] == data[10])
-        return;
-
-    data[10] = data[11];
-    switch (sprite->data[2])
-    {
-    case 0:
-        sprite->invisible = FALSE;
-    case 1:
-    case 2:
-        PlaySE(SE_KON);
-        StartSpriteAnim(sprite, sprite->data[2]);
-        break;
-    case 3:
-        PlaySE(SE_PIN);
-        StartSpriteAnim(sprite, sprite->data[2]);
-        gSprites[data[14]].invisible = FALSE;
-        gSprites[data[15]].invisible = FALSE;
-        break;
-    case 4:
-        sprite->invisible = TRUE;
-        gSprites[data[14]].invisible = TRUE;
-        gSprites[data[15]].invisible = TRUE;
-        data[0] = 4;
-        return;
-    }
-    sprite->data[2]++;
-}
-
-static void sub_802EA50(u8 taskId)
-{
-    s16 *data = gTasks[taskId].data;
-    PlaySE(SE_KON);
-    gSprites[data[13]].callback = sub_802E938;
-    gSprites[data[13]].invisible = FALSE;
-    gTasks[taskId].data[0] = 3;
-}
-
-static void sub_802EAB0(u8 taskId)
-{
-    u16 packet[6];
-    s16 *data = gTasks[taskId].data;
-
-    if (gReceivedRemoteLinkPlayers != 0)
-    {
-        if (gRecvCmds[0][1] == 0x7FFF)
-            data[11] = gRecvCmds[0][2];
-        if (GetMultiplayerId() == 0)
-        {
-            data[12]++;
-            memset(packet, 0, sizeof(packet));
-            packet[0] = 0x7FFF;
-            packet[1] = data[12];
-            sub_800FE50(packet);
-        }
-    }
-    else
-    {
-        data[11]++;
-    }
-}
-
-void sub_802EB24(s16 tileTag, s16 palTag, s16 x, s16 y, u8 subpriority)
-{
-    u8 taskId = CreateTask(sub_802EB98, 0x50);
-    gTasks[taskId].data[2] = tileTag;
-    gTasks[taskId].data[3] = palTag;
-    gTasks[taskId].data[4] = x;
-    gTasks[taskId].data[5] = y;
-    gTasks[taskId].data[6] = subpriority;
-}
-
-bool32 sub_802EB84(void)
-{
-    return FuncIsActiveTask(sub_802EB98);
-}
-
-static void sub_802EB98(u8 taskId)
-{
-    s16 *data = gTasks[taskId].data;
-
-    switch (data[0])
-    {
-    case 0:
-        sub_802EF50(data[2], data[3]);
-        data[7] = sub_802EFA8(data[2], data[3], data[4], data[5], data[6]);
-        sub_802EFFC(data[2], data[3], data[4], data[5], data[6], &data[8], &data[9]);
-        data[0]++;
-        break;
-    case 1:
-        if (!sub_802EC98(data[7]))
-        {
-            sub_802EDCC(data[7], data[8], data[9]);
-            FreeSpriteOamMatrix(&gSprites[data[7]]);
-            DestroySprite(&gSprites[data[7]]);
-            data[0]++;
-        }
-        break;
-    case 2:
-        if (!sub_802EE30(data[8]))
-        {
-            DestroySprite(&gSprites[data[8]]);
-            DestroySprite(&gSprites[data[9]]);
-            FreeSpriteTilesByTag(data[2]);
-            FreeSpritePaletteByTag(data[3]);
-            DestroyTask(taskId);
-        }
-        break;
-    }
-}
-
-static bool32 sub_802EC98(u8 spriteId)
-{
-    struct Sprite *sprite = &gSprites[spriteId];
-
-    switch (sprite->data[0])
-    {
-    case 0:
-        sub_8007E18(sprite, 0x800, 0x1A);
-        sprite->data[0]++;
-    case 1:
-        if (sprite->data[2] == 0)
-            PlaySE(SE_KON2);
-        if (++sprite->data[2] >= 20)
-        {
-            sprite->data[2] = 0;
-            StartSpriteAffineAnim(sprite, 1);
-            sprite->data[0]++;
-        }
-        break;
-    case 2:
-        if (sprite->affineAnimEnded)
-            sprite->data[0]++;
-        break;
-    case 3:
-        if (++sprite->data[2] >= 4)
-        {
-            sprite->data[2] = 0;
-            sprite->data[0]++;
-            StartSpriteAffineAnim(sprite, 2);
-        }
-        break;
-    case 4:
-        sprite->pos1.y -= 4;
-        if (++sprite->data[2] >= 8)
-        {
-            if (sprite->data[4] <= 1)
-            {
-                StartSpriteAnim(sprite, sprite->data[4] + 1);
-                sprite->data[2] = 0;
-                sprite->data[0]++;
-            }
-            else
-            {
-                sprite->data[0] = 7;
-                return FALSE;
-            }
-        }
-        break;
-    case 5:
-        sprite->pos1.y += 4;
-        if (++sprite->data[2] >= 8)
-        {
-            sprite->data[2] = 0;
-            StartSpriteAffineAnim(sprite, 3);
-            sprite->data[0]++;
-        }
-        break;
-    case 6:
-        if (sprite->affineAnimEnded)
-        {
-            sprite->data[4]++;
-            sprite->data[0] = 1;
-        }
-        break;
-    case 7:
-        return FALSE;
-    }
-
-    return TRUE;
-}
-
-// First argument is unused.
-static void sub_802EDCC(u8 spriteId1, u8 spriteId2, u8 spriteId3)
-{
-    gSprites[spriteId2].pos2.y = -40;
-    gSprites[spriteId3].pos2.y = -40;
-    gSprites[spriteId2].invisible = FALSE;
-    gSprites[spriteId3].invisible = FALSE;
-    gSprites[spriteId2].callback = sub_802EE5C;
-    gSprites[spriteId3].callback = sub_802EE5C;
-}
-
-static bool32 sub_802EE30(u8 spriteId)
-{
-    return (gSprites[spriteId].callback == sub_802EE5C);
-}
-
-static void sub_802EE5C(struct Sprite *sprite)
-{
-    int y;
-    s16 *data = sprite->data;
-
-    switch (data[0])
-    {
-    case 0:
-        data[4] = 64;
-        data[5] = sprite->pos2.y << 4;
-        data[0]++;
-    case 1:
-        data[5] += data[4];
-        data[4]++;
-        sprite->pos2.y = data[5] >> 4;
-        if (sprite->pos2.y >= 0)
-        {
-            PlaySE(SE_KON2);
-            sprite->pos2.y = 0;
-            data[0]++;
-        }
-        break;
-    case 2:
-        data[1] += 12;
-        if (data[1] >= 128)
-        {
-            PlaySE(SE_KON2);
-            data[1] = 0;
-            data[0]++;
-        }
-        y = gSineTable[data[1]];
-        sprite->pos2.y = -(y >> 4);
-        break;
-    case 3:
-        data[1] += 16;
-        if (data[1] >= 128)
-        {
-            PlaySE(SE_KON2);
-            data[1] = 0;
-            data[0]++;
-        }
-        sprite->pos2.y = -(gSineTable[data[1]] >> 5);
-        break;
-    case 4:
-        if (++data[1] > 40)
-            sprite->callback = SpriteCallbackDummy;
-        break;
-    }
-}
-
-static const u16 gPkmnJump321StartPal2[] = INCBIN_U16("graphics/link_games/pkmnjump_321start2.gbapal");
-static const u32 gPkmnJump321StartGfx2[] = INCBIN_U32("graphics/link_games/pkmnjump_321start2.4bpp.lz");
-
-static void sub_802EF50(u16 tileTag, u16 palTag)
-{
-    struct CompressedSpriteSheet sprSheet = {gPkmnJump321StartGfx2, 0xE00, 0};
-    struct SpritePalette sprPal = {gPkmnJump321StartPal2, 0};
-
-    sprSheet.tag = tileTag;
-    sprPal.tag = palTag;
-
-    LoadCompressedSpriteSheet(&sprSheet);
-    LoadSpritePalette(&sprPal);
-}
-
-static const struct OamData sOamData_82FEBDC =
-{
-    .y = 0,
-    .affineMode = ST_OAM_AFFINE_DOUBLE,
-    .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = 0,
-    .bpp = ST_OAM_4BPP,
-    .shape = SPRITE_SHAPE(32x32),
-    .x = 0,
-    .matrixNum = 0,
-    .size = SPRITE_SIZE(32x32),
-    .tileNum = 0,
-    .priority = 0,
-    .paletteNum = 0,
-    .affineParam = 0
-};
-
-static const struct OamData sOamData_82FEBE4 =
-{
-    .y = 0,
-    .affineMode = ST_OAM_AFFINE_OFF,
-    .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = 0,
-    .bpp = ST_OAM_4BPP,
-    .shape = SPRITE_SHAPE(64x32),
-    .x = 0,
-    .matrixNum = 0,
-    .size = SPRITE_SIZE(64x32),
-    .tileNum = 0,
-    .priority = 0,
-    .paletteNum = 0,
-    .affineParam = 0
-};
-
-static const union AnimCmd sSpriteAnim_82FEBEC[] =
-{
-    ANIMCMD_FRAME(0, 1),
-    ANIMCMD_END
-};
-
-static const union AnimCmd sSpriteAnim_82FEBF4[] =
-{
-    ANIMCMD_FRAME(16, 1),
-    ANIMCMD_END
-};
-
-static const union AnimCmd sSpriteAnim_82FEBFC[] =
-{
-    ANIMCMD_FRAME(32, 1),
-    ANIMCMD_END
-};
-
-static const union AnimCmd *const sSpriteAnimTable_82FEC04[] =
-{
-    sSpriteAnim_82FEBEC,
-    sSpriteAnim_82FEBF4,
-    sSpriteAnim_82FEBFC
-};
-
-static const union AnimCmd sSpriteAnim_82FEC10[] =
-{
-    ANIMCMD_FRAME(48, 1),
-    ANIMCMD_END
-};
-
-static const union AnimCmd sSpriteAnim_82FEC18[] =
-{
-    ANIMCMD_FRAME(80, 1),
-    ANIMCMD_END
-};
-
-static const union AnimCmd *const sSpriteAnimTable_82FEC20[] =
-{
-    sSpriteAnim_82FEC10,
-    sSpriteAnim_82FEC18
-};
-
-static const union AffineAnimCmd sSpriteAffineAnim_82FEC28[] =
-{
-    AFFINEANIMCMD_FRAME(256, 256, 0, 0),
-    AFFINEANIMCMD_END
-};
-
-static const union AffineAnimCmd sSpriteAffineAnim_82FEC38[] =
-{
-    AFFINEANIMCMD_FRAME(256, 256, 0, 0),
-    AFFINEANIMCMD_FRAME(16, -16, 0, 8),
-    AFFINEANIMCMD_END
-};
-
-static const union AffineAnimCmd sSpriteAffineAnim_82FEC50[] =
-{
-    AFFINEANIMCMD_FRAME(-18, 18, 0, 8),
-    AFFINEANIMCMD_END
-};
-
-static const union AffineAnimCmd sSpriteAffineAnim_82FEC60[] =
-{
-    AFFINEANIMCMD_FRAME(6, -6, 0, 8),
-    AFFINEANIMCMD_FRAME(-4, 4, 0, 8),
-    AFFINEANIMCMD_FRAME(256, 256, 0, 0),
-    AFFINEANIMCMD_END
-};
-
-static const union AffineAnimCmd *const sSpriteAffineAnimTable_82FEC80[] =
-{
-    sSpriteAffineAnim_82FEC28,
-    sSpriteAffineAnim_82FEC38,
-    sSpriteAffineAnim_82FEC50,
-    sSpriteAffineAnim_82FEC60
-};
-
-static u8 sub_802EFA8(u16 tileTag, u16 palTag, s16 x, s16 y, u8 subpriority)
-{
-    u8 spriteId;
-    struct SpriteTemplate sprTemplate =
-    {
-        .tileTag = 0,
-        .paletteTag = 0,
-        .oam = &sOamData_82FEBDC,
-        .anims = sSpriteAnimTable_82FEC04,
-        .images = NULL,
-        .affineAnims = sSpriteAffineAnimTable_82FEC80,
-        .callback = SpriteCallbackDummy,
-    };
-
-    sprTemplate.tileTag = tileTag;
-    sprTemplate.paletteTag = palTag;
-    spriteId = CreateSprite(&sprTemplate, x, y, subpriority);
-    return spriteId;
-}
-
-static void sub_802EFFC(u16 tileTag, u16 palTag, s16 x, s16 y, u8 subpriority, s16 *spriteId1, s16 *spriteId2)
-{
-    struct SpriteTemplate sprTemplate =
-    {
-        .tileTag = 0,
-        .paletteTag = 0,
-        .oam = &sOamData_82FEBE4,
-        .anims = sSpriteAnimTable_82FEC20,
-        .images = NULL,
-        .affineAnims = gDummySpriteAffineAnimTable,
-        .callback = SpriteCallbackDummy,
-    };
-
-    sprTemplate.tileTag = tileTag;
-    sprTemplate.paletteTag = palTag;
-    *spriteId1 = CreateSprite(&sprTemplate, x - 32, y, subpriority);
-    *spriteId2 = CreateSprite(&sprTemplate, x + 32, y, subpriority);
-
-    gSprites[*spriteId1].invisible = TRUE;
-    gSprites[*spriteId2].invisible = TRUE;
-    StartSpriteAnim(&gSprites[*spriteId2], 1);
 }

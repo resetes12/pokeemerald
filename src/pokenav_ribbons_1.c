@@ -162,21 +162,21 @@ static u32 sub_81CFA68(struct PokenavSub9 *structPtr)
 
 static u32 sub_81CFA88(struct PokenavSub9 *structPtr)
 {
-    if (gMain.newAndRepeatedKeys & DPAD_UP)
+    if (JOY_REPEAT(DPAD_UP))
         return 1;
-    if (gMain.newAndRepeatedKeys & DPAD_DOWN)
+    if (JOY_REPEAT(DPAD_DOWN))
         return 2;
-    if (gMain.newKeys & DPAD_LEFT)
+    if (JOY_NEW(DPAD_LEFT))
         return 3;
-    if (gMain.newKeys & DPAD_RIGHT)
+    if (JOY_NEW(DPAD_RIGHT))
         return 4;
-    if (gMain.newKeys & B_BUTTON)
+    if (JOY_NEW(B_BUTTON))
     {
         structPtr->unk18 = 0;
         structPtr->unk0 = sub_81CFB08;
         return 5;
     }
-    if (gMain.newKeys & A_BUTTON)
+    if (JOY_NEW(A_BUTTON))
     {
         structPtr->unk1C->unk2 = GetSelectedMatchCall();
         structPtr->unk18 = 1;
@@ -188,7 +188,7 @@ static u32 sub_81CFA88(struct PokenavSub9 *structPtr)
 
 static u32 sub_81CFB08(struct PokenavSub9 *structPtr)
 {
-    return POKENAV_MENU_5;
+    return POKENAV_MAIN_MENU_CURSOR_ON_RIBBONS;
 }
 
 static u32 sub_81CFB10(struct PokenavSub9 *structPtr)
@@ -414,14 +414,14 @@ static u32 sub_81CFEB8(s32 state)
     {
     case 0:
         InitBgTemplates(gUnknown_086237B0, NELEMS(gUnknown_086237B0));
-        decompress_and_copy_tile_data_to_vram(1, gUnknown_08623604, 0, 0, 0);
+        DecompressAndCopyTileDataToVram(1, gUnknown_08623604, 0, 0, 0);
         SetBgTilemapBuffer(1, unk->buff);
         CopyToBgTilemapBuffer(1, gUnknown_086236CC, 0, 0);
         CopyPaletteIntoBufferUnfaded(gUnknown_086235E4, 0x10, 0x20);
         CopyBgTilemapBufferToVram(1);
         return LT_INC_AND_PAUSE;
     case 1:
-        if (free_temp_tile_data_buffers_if_possible())
+        if (FreeTempTileDataBuffersIfPossible())
             return LT_PAUSE;
         if (!sub_81CFB18())
             return LT_PAUSE;
@@ -430,7 +430,7 @@ static u32 sub_81CFEB8(s32 state)
         ShowBg(1);
         return LT_INC_AND_PAUSE;
     case 2:
-        if (free_temp_tile_data_buffers_if_possible())
+        if (FreeTempTileDataBuffersIfPossible())
             return LT_PAUSE;
         CopyPaletteIntoBufferUnfaded(gUnknown_08623790, 0x20, 0x20);
         sub_81D0304();
@@ -441,12 +441,12 @@ static u32 sub_81CFEB8(s32 state)
         sub_81D024C(unk);
         return LT_INC_AND_PAUSE;
     case 4:
-        if (free_temp_tile_data_buffers_if_possible())
+        if (FreeTempTileDataBuffersIfPossible())
             return LT_PAUSE;
         ShowBg(2);
         HideBg(3);
         PrintHelpBarText(HELPBAR_RIBBONS_MON_LIST);
-        sub_81C7AC0(1);
+        PokenavFadeScreen(1);
         if (!unk->unkC)
         {
             LoadLeftHeaderGfxForIndex(2);
@@ -601,7 +601,7 @@ static u32 sub_81D01DC(s32 state)
     {
     case 0:
         PlaySE(SE_SELECT);
-        sub_81C7AC0(0);
+        PokenavFadeScreen(0);
         sub_81C78A0();
         return LT_INC_AND_PAUSE;
     case 1:
@@ -621,7 +621,7 @@ static u32 sub_81D021C(s32 state)
     {
     case 0:
         PlaySE(SE_SELECT);
-        sub_81C7AC0(0);
+        PokenavFadeScreen(0);
         return LT_INC_AND_PAUSE;
     case 1:
         if (IsPaletteFadeActive())
@@ -724,7 +724,7 @@ static void BufferRibbonMonInfoText(struct PokenavMonList * item0, u8 * dest)
 
     s = StringCopy(gStringVar1, genderStr);
     *s++ = CHAR_SLASH;
-    *s++ = CHAR_SPECIAL_F9;
+    *s++ = CHAR_EXTRA_SYMBOL;
     *s++ = CHAR_LV_2;
     ConvertIntToDecimalStringN(s, level, STR_CONV_MODE_LEFT_ALIGN, 3);
     dest = sub_81DB494(dest, 1, gStringVar1, 54);

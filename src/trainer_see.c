@@ -17,6 +17,7 @@
 #include "constants/event_objects.h"
 #include "constants/event_object_movement.h"
 #include "constants/field_effects.h"
+#include "constants/trainer_types.h"
 
 // this file's functions
 static u8 CheckTrainer(u8 objectEventId);
@@ -181,18 +182,18 @@ bool8 CheckForTrainersWantingBattle(void)
 
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {
-        u8 retVal;
+        u8 numTrainers;
 
         if (!gObjectEvents[i].active)
             continue;
-        if (gObjectEvents[i].trainerType != 1 && gObjectEvents[i].trainerType != 3)
+        if (gObjectEvents[i].trainerType != TRAINER_TYPE_NORMAL && gObjectEvents[i].trainerType != TRAINER_TYPE_BURIED)
             continue;
 
-        retVal = CheckTrainer(i);
-        if (retVal == 2)
-            break; // two trainers have been found
+        numTrainers = CheckTrainer(i);
+        if (numTrainers == 2)
+            break;
 
-        if (retVal == 0) // no trainers
+        if (numTrainers == 0)
             continue;
 
         if (gNoOfApproachingTrainers > 1)
@@ -289,14 +290,14 @@ static u8 GetTrainerApproachDistance(struct ObjectEvent *trainerObj)
     u8 approachDistance;
 
     PlayerGetDestCoords(&x, &y);
-    if (trainerObj->trainerType == 1)  // can only see in one direction
+    if (trainerObj->trainerType == TRAINER_TYPE_NORMAL)  // can only see in one direction
     {
         approachDistance = sDirectionalApproachDistanceFuncs[trainerObj->facingDirection - 1](trainerObj, trainerObj->trainerRange_berryTreeId, x, y);
         return CheckPathBetweenTrainerAndPlayer(trainerObj, approachDistance, trainerObj->facingDirection);
     }
-    else  // can see in all directions
+    else // TRAINER_TYPE_SEE_ALL_DIRECTIONS, TRAINER_TYPE_BURIED
     {
-        for (i = 0; i < 4; i++)
+        for (i = 0; i < ARRAY_COUNT(sDirectionalApproachDistanceFuncs); i++)
         {
             approachDistance = sDirectionalApproachDistanceFuncs[i](trainerObj, trainerObj->trainerRange_berryTreeId, x, y);
             if (CheckPathBetweenTrainerAndPlayer(trainerObj, approachDistance, i + 1)) // directions are 1-4 instead of 0-3. south north west east
@@ -558,7 +559,7 @@ static bool8 PopOutOfAshHiddenTrainer(u8 taskId, struct Task *task, struct Objec
         gFieldEffectArguments[1] = trainerObj->currentCoords.y;
         gFieldEffectArguments[2] = gSprites[trainerObj->spriteId].subpriority - 1;
         gFieldEffectArguments[3] = 2;
-        task->tOutOfAshSpriteId = FieldEffectStart(FLDEFF_POP_OUT_OF_ASH);
+        task->tOutOfAshSpriteId = FieldEffectStart(FLDEFF_ASH_PUFF);
         task->tFuncId++;
     }
     return FALSE;
@@ -585,7 +586,7 @@ static bool8 JumpInPlaceHiddenTrainer(u8 taskId, struct Task *task, struct Objec
 
 static bool8 WaitRevealHiddenTrainer(u8 taskId, struct Task *task, struct ObjectEvent *trainerObj)
 {
-    if (!FieldEffectActiveListContains(FLDEFF_POP_OUT_OF_ASH))
+    if (!FieldEffectActiveListContains(FLDEFF_ASH_PUFF))
         task->tFuncId = 3;
 
     return FALSE;
@@ -602,14 +603,14 @@ static void sub_80B44C8(u8 taskId)
     struct ObjectEvent *objEvent;
 
     // another objEvent loaded into by loadword?
-    LoadWordFromTwoHalfwords(&task->data[1], (u32 *)&objEvent);
+    LoadWordFromTwoHalfwords((u16*)&task->data[1], (u32 *)&objEvent);
     if (!task->data[7])
     {
         ObjectEventClearHeldMovement(objEvent);
         task->data[7]++;
     }
     sTrainerSeeFuncList2[task->data[0]](taskId, task, objEvent);
-    if (task->data[0] == 3 && !FieldEffectActiveListContains(FLDEFF_POP_OUT_OF_ASH))
+    if (task->data[0] == 3 && !FieldEffectActiveListContains(FLDEFF_ASH_PUFF))
     {
         SetTrainerMovementType(objEvent, GetTrainerFacingDirectionMovementType(objEvent->facingDirection));
         TryOverrideTemplateCoordsForObjectEvent(objEvent, GetTrainerFacingDirectionMovementType(objEvent->facingDirection));
@@ -623,7 +624,7 @@ static void sub_80B44C8(u8 taskId)
 
 void sub_80B4578(struct ObjectEvent *var)
 {
-    StoreWordInTwoHalfwords(&gTasks[CreateTask(sub_80B44C8, 0)].data[1], (u32)var);
+    StoreWordInTwoHalfwords((u16 *)&gTasks[CreateTask(sub_80B44C8, 0)].data[1], (u32)var);
 }
 
 void EndTrainerApproach(void)

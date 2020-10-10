@@ -79,8 +79,8 @@ static void AnimAngel(struct Sprite *);
 static void AnimPinkHeart(struct Sprite *);
 static void AnimDevil(struct Sprite *);
 static void AnimFurySwipes(struct Sprite *);
-static void AnimMovmentWaves(struct Sprite *);
-static void AnimMovmentWaves_Step(struct Sprite *);
+static void AnimMovementWaves(struct Sprite *);
+static void AnimMovementWaves_Step(struct Sprite *);
 static void AnimJaggedMusicNote(struct Sprite *);
 static void AnimJaggedMusicNote_Step(struct Sprite *);
 static void AnimPerishSongMusicNote2(struct Sprite *);
@@ -1163,7 +1163,7 @@ const struct SpriteTemplate gMovementWavesSpriteTemplate =
     .anims = gMovementWavesAnimTable,
     .images = NULL,
     .affineAnims = gDummySpriteAffineAnimTable,
-    .callback = AnimMovmentWaves,
+    .callback = AnimMovementWaves,
 };
 
 static const union AffineAnimCmd sAffineAnims_UproarDistortion[] =
@@ -1578,7 +1578,7 @@ static void AnimAirWaveProjectile(struct Sprite *sprite)
     {
         sprite->data[0] = 8;
         task->data[5] = 4;
-        a = sub_8151624(0x1000);
+        a = MathUtil_Inv16(Q_8_8(16));
         sprite->pos1.x += sprite->pos2.x;
         sprite->pos1.y += sprite->pos2.y;
         sprite->pos2.y = 0;
@@ -1597,8 +1597,8 @@ static void AnimAirWaveProjectile(struct Sprite *sprite)
         sprite->data[1] = 0;
         sprite->data[6] = 0;
         sprite->data[5] = 0;
-        sprite->data[3] = sub_8151534(sub_8151534(b, a), sub_8151624(0x1C0));
-        sprite->data[4] = sub_8151534(sub_8151534(c, a), sub_8151624(0x1C0));
+        sprite->data[3] = MathUtil_Mul16(MathUtil_Mul16(b, a), MathUtil_Inv16(Q_8_8(1.75)));
+        sprite->data[4] = MathUtil_Mul16(MathUtil_Mul16(c, a), MathUtil_Inv16(Q_8_8(1.75)));
         sprite->callback = AnimAirWaveProjectile_Step1;
     }
 }
@@ -1632,7 +1632,7 @@ static void AirCutterProjectileStep1(u8 taskId)
         gTasks[taskId].data[gTasks[taskId].data[1] + 13] = spriteId;
         gTasks[taskId].data[0] = gTasks[taskId].data[3];
         gTasks[taskId].data[1]++;
-        PlaySE12WithPanning(SE_W059B, BattleAnimAdjustPanning(-63));
+        PlaySE12WithPanning(SE_M_BLIZZARD2, BattleAnimAdjustPanning(-63));
         if (gTasks[taskId].data[1] > 2)
             gTasks[taskId].func = AirCutterProjectileStep2;
     }
@@ -1689,18 +1689,18 @@ void AnimTask_AirCutterProjectile(u8 taskId)
     else
         xDiff = attackerX - targetX;
 
-    gTasks[taskId].data[5] = sub_8151534(xDiff, sub_8151624(gBattleAnimArgs[2] & ~1));
-    gTasks[taskId].data[6] = sub_8151534(gTasks[taskId].data[5], 0x80);
+    gTasks[taskId].data[5] = MathUtil_Mul16(xDiff, MathUtil_Inv16(gBattleAnimArgs[2] & ~1));
+    gTasks[taskId].data[6] = MathUtil_Mul16(gTasks[taskId].data[5], Q_8_8(0.5));
     gTasks[taskId].data[7] = gBattleAnimArgs[2];
     if (targetY >= attackerY)
     {
         yDiff = targetY - attackerY;
-        gTasks[taskId].data[8] = sub_8151534(yDiff, sub_8151624(gTasks[taskId].data[5])) & ~1;
+        gTasks[taskId].data[8] = MathUtil_Mul16(yDiff, MathUtil_Inv16(gTasks[taskId].data[5])) & ~1;
     }
     else
     {
         yDiff = attackerY - targetY;
-        gTasks[taskId].data[8] = sub_8151534(yDiff, sub_8151624(gTasks[taskId].data[5])) | 1;
+        gTasks[taskId].data[8] = MathUtil_Mul16(yDiff, MathUtil_Inv16(gTasks[taskId].data[5])) | 1;
     }
 
     gTasks[taskId].data[3] = gBattleAnimArgs[3];
@@ -1829,7 +1829,7 @@ static void AnimBulletSeed_Step1(struct Sprite *sprite)
     int i;
     u16 rand;
     s16* ptr;
-    PlaySE12WithPanning(SE_W030, BattleAnimAdjustPanning(63));
+    PlaySE12WithPanning(SE_M_HORN_ATTACK, BattleAnimAdjustPanning(63));
     sprite->pos1.x += sprite->pos2.x;
     sprite->pos1.y += sprite->pos2.y;
     sprite->pos2.y = 0;
@@ -2502,7 +2502,7 @@ static void AnimPencil_Step(struct Sprite *sprite)
             sprite->pos1.y -= 1;
             sprite->data[2]++;
             if (sprite->data[2] % 10 == 0)
-                PlaySE12WithPanning(SE_W166, sprite->data[6]);
+                PlaySE12WithPanning(SE_M_SKETCH, sprite->data[6]);
         }
         sprite->data[4] += sprite->data[3];
         if (sprite->data[4] > 31)
@@ -3606,7 +3606,7 @@ static void AnimFurySwipes(struct Sprite *sprite)
     }
 }
 
-static void AnimMovmentWaves(struct Sprite *sprite)
+static void AnimMovementWaves(struct Sprite *sprite)
 {
     if (!gBattleAnimArgs[2])
     {
@@ -3633,11 +3633,11 @@ static void AnimMovmentWaves(struct Sprite *sprite)
         sprite->data[0] = gBattleAnimArgs[2];
         sprite->data[1] = gBattleAnimArgs[1];
         StartSpriteAnim(sprite, sprite->data[1]);
-        sprite->callback = AnimMovmentWaves_Step;
+        sprite->callback = AnimMovementWaves_Step;
     }
 }
 
-static void AnimMovmentWaves_Step(struct Sprite *sprite)
+static void AnimMovementWaves_Step(struct Sprite *sprite)
 {
     if (sprite->animEnded)
     {

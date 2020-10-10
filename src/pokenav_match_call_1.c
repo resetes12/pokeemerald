@@ -12,7 +12,6 @@
 #include "sound.h"
 #include "string_util.h"
 #include "strings.h"
-#include "constants/flags.h"
 #include "constants/songs.h"
 
 struct Pokenav3Struct
@@ -30,7 +29,7 @@ struct Pokenav3Struct
 };
 
 static u32 CB2_HandleMatchCallInput(struct Pokenav3Struct *);
-static u32 sub_81CABFC(struct Pokenav3Struct *);
+static u32 GetExitMatchCallMenuId(struct Pokenav3Struct *);
 static u32 CB2_HandleMatchCallOptionsInput(struct Pokenav3Struct *);
 static u32 CB2_HandleCheckPageInput(struct Pokenav3Struct *);
 static u32 CB2_HandleCallInput(struct Pokenav3Struct *);
@@ -52,7 +51,7 @@ static const u8 sMatchCallOptionsHasCheckPage[] =
     MATCH_CALL_OPTION_CANCEL
 };
 
-bool32 PokenavCallback_Init_11(void)
+bool32 PokenavCallback_Init_MatchCall(void)
 {
     struct Pokenav3Struct *state = AllocSubstruct(5, sizeof(struct Pokenav3Struct));
     if (!state)
@@ -65,13 +64,13 @@ bool32 PokenavCallback_Init_11(void)
     return TRUE;
 }
 
-u32 sub_81CAB24(void)
+u32 GetMatchCallCallback(void)
 {
     struct Pokenav3Struct *state = GetSubstructPtr(5);
     return state->callback(state);
 }
 
-void sub_81CAB38(void)
+void FreeMatchCallSubstruct1(void)
 {
     FreePokenavSubstruct(5);
 }
@@ -80,16 +79,16 @@ static u32 CB2_HandleMatchCallInput(struct Pokenav3Struct *state)
 {
     int selection;
 
-    if (gMain.newAndRepeatedKeys & DPAD_UP)
+    if (JOY_REPEAT(DPAD_UP))
         return POKENAV_MC_FUNC_UP;
-    if (gMain.newAndRepeatedKeys & DPAD_DOWN)
+    if (JOY_REPEAT(DPAD_DOWN))
         return POKENAV_MC_FUNC_DOWN;
-    if (gMain.newAndRepeatedKeys & DPAD_LEFT)
+    if (JOY_REPEAT(DPAD_LEFT))
         return POKENAV_MC_FUNC_PG_UP;
-    if (gMain.newAndRepeatedKeys & DPAD_RIGHT)
+    if (JOY_REPEAT(DPAD_RIGHT))
         return POKENAV_MC_FUNC_PG_DOWN;
 
-    if (gMain.newKeys & A_BUTTON)
+    if (JOY_NEW(A_BUTTON))
     {
         state->callback = CB2_HandleMatchCallOptionsInput;
         state->optionCursorPos = 0;
@@ -109,43 +108,43 @@ static u32 CB2_HandleMatchCallInput(struct Pokenav3Struct *state)
         return POKENAV_MC_FUNC_SELECT;
     }
 
-    if (gMain.newKeys & B_BUTTON)
+    if (JOY_NEW(B_BUTTON))
     {
         if (GetPokenavMode() != POKENAV_MODE_FORCE_CALL_READY)
         {
-            state->callback = sub_81CABFC;
+            state->callback = GetExitMatchCallMenuId;
             return POKENAV_MC_FUNC_EXIT;
         }
         else
         {
             // Cant exit Match Call menu before calling Mr Stone during tutorial
-            PlaySE(SE_HAZURE);
+            PlaySE(SE_FAILURE);
         }
     }
 
     return POKENAV_MC_FUNC_NONE;
 }
 
-static u32 sub_81CABFC(struct Pokenav3Struct *state)
+static u32 GetExitMatchCallMenuId(struct Pokenav3Struct *state)
 {
-    return POKENAV_MENU_4;
+    return POKENAV_MAIN_MENU_CURSOR_ON_MATCH_CALL;
 }
 
 static u32 CB2_HandleMatchCallOptionsInput(struct Pokenav3Struct *state)
 {
-    if ((gMain.newKeys & DPAD_UP) && state->optionCursorPos)
+    if ((JOY_NEW(DPAD_UP)) && state->optionCursorPos)
     {
         state->optionCursorPos--;
         return POKENAV_MC_FUNC_MOVE_OPTIONS_CURSOR;
     }
 
-    if ((gMain.newKeys & DPAD_DOWN) && state->optionCursorPos < state->maxOptionId)
+    if ((JOY_NEW(DPAD_DOWN)) && state->optionCursorPos < state->maxOptionId)
     {
         state->optionCursorPos++;
         return POKENAV_MC_FUNC_MOVE_OPTIONS_CURSOR;
     }
 
-    if (gMain.newKeys & A_BUTTON)
+    if (JOY_NEW(A_BUTTON))
     {
         switch (state->matchCallOptions[state->optionCursorPos])
         {
@@ -167,7 +166,7 @@ static u32 CB2_HandleMatchCallOptionsInput(struct Pokenav3Struct *state)
         }
     }
 
-    if (gMain.newKeys & B_BUTTON)
+    if (JOY_NEW(B_BUTTON))
     {
         state->callback = CB2_HandleMatchCallInput;
         return POKENAV_MC_FUNC_CANCEL;
@@ -178,12 +177,12 @@ static u32 CB2_HandleMatchCallOptionsInput(struct Pokenav3Struct *state)
 
 static u32 CB2_HandleCheckPageInput(struct Pokenav3Struct *state)
 {
-    if (gMain.newAndRepeatedKeys & DPAD_UP)
+    if (JOY_REPEAT(DPAD_UP))
         return POKENAV_MC_FUNC_CHECK_PAGE_UP;
-    if (gMain.newAndRepeatedKeys & DPAD_DOWN)
+    if (JOY_REPEAT(DPAD_DOWN))
         return POKENAV_MC_FUNC_CHECK_PAGE_DOWN;
 
-    if (gMain.newKeys & B_BUTTON)
+    if (JOY_NEW(B_BUTTON))
     {
         state->callback = CB2_HandleMatchCallInput;
         return POKENAV_MC_FUNC_EXIT_CHECK_PAGE;
@@ -194,7 +193,7 @@ static u32 CB2_HandleCheckPageInput(struct Pokenav3Struct *state)
 
 static u32 CB2_HandleCallInput(struct Pokenav3Struct *state)
 {
-    if (gMain.newKeys & (A_BUTTON | B_BUTTON))
+    if (JOY_NEW(A_BUTTON | B_BUTTON))
     {
         state->callback = CB2_HandleMatchCallInput;
         return POKENAV_MC_FUNC_10;

@@ -6,6 +6,9 @@
 #include "config.h" // we need to define config before gba headers as print stuff needs the functions nulled before defines.
 #include "gba/gba.h"
 #include "constants/global.h"
+#include "constants/flags.h"
+#include "constants/vars.h"
+#include "constants/species.h"
 
 // Prevent cross-jump optimization.
 #define BLOCK_CROSS_JUMP asm("");
@@ -52,7 +55,7 @@
 #define Q_4_12(n)  ((s16)((n) * 4096))
 
 // Converts a number to Q24.8 fixed-point format
-#define Q_24_8(n)  ((s32)((n) * 256))
+#define Q_24_8(n)  ((s32)((n) << 8))
 
 // Converts a Q8.8 fixed-point format number to a regular integer
 #define Q_8_8_TO_INT(n) ((int)((n) / 256))
@@ -62,8 +65,6 @@
 
 // Converts a Q24.8 fixed-point format number to a regular integer
 #define Q_24_8_TO_INT(n) ((int)((n) >> 8))
-
-#define POKEMON_SLOTS_NUMBER 412
 
 #define min(a, b) ((a) < (b) ? (a) : (b))
 #define max(a, b) ((a) >= (b) ? (a) : (b))
@@ -97,9 +98,11 @@
 #define T2_READ_PTR(ptr) (void*) T2_READ_32(ptr)
 
 // Macros for checking the joypad
-#define TEST_BUTTON(field, button) ({(field) & (button);})
+#define TEST_BUTTON(field, button) ((field) & (button))
 #define JOY_NEW(button) TEST_BUTTON(gMain.newKeys,  button)
 #define JOY_HELD(button)  TEST_BUTTON(gMain.heldKeys, button)
+#define JOY_HELD_RAW(button) TEST_BUTTON(gMain.heldKeysRaw, button)
+#define JOY_REPEAT(button) TEST_BUTTON(gMain.newAndRepeatedKeys, button)
 
 #define S16TOPOSFLOAT(val)   \
 ({                           \
@@ -108,6 +111,11 @@
     if(v < 0) f += 65536.0f; \
     f;                       \
 })
+
+#define ROUND_BITS_TO_BYTES(numBits)(((numBits) / 8) + (((numBits) % 8) ? 1 : 0))
+
+#define DEX_FLAGS_NO (ROUND_BITS_TO_BYTES(NUM_SPECIES))
+#define NUM_FLAG_BYTES (ROUND_BITS_TO_BYTES(FLAGS_COUNT))
 
 struct Coords8
 {
@@ -152,8 +160,6 @@ struct Time
     /*0x03*/ s8 minutes;
     /*0x04*/ s8 seconds;
 };
-
-#define DEX_FLAGS_NO ((POKEMON_SLOTS_NUMBER / 8) + ((POKEMON_SLOTS_NUMBER % 8) ? 1 : 0))
 
 struct Pokedex
 {
@@ -466,7 +472,7 @@ struct SaveBlock2
     /*0x90*/ u8 filler_90[0x8];
     /*0x98*/ struct Time localTimeOffset;
     /*0xA0*/ struct Time lastBerryTreeUpdate;
-    /*0xA8*/ u32 field_A8; // Written to, but never read.
+    /*0xA8*/ u32 gcnLinkFlags; // Read by Pokemon Colosseum/XD
     /*0xAC*/ u32 encryptionKey;
     /*0xB0*/ struct PlayersApprentice playerApprentice;
     /*0xDC*/ struct Apprentice apprentices[APPRENTICE_COUNT];
@@ -475,7 +481,7 @@ struct SaveBlock2
     /*0x20C*/ struct BerryPickingResults berryPick;
     /*0x21C*/ struct RankingHall1P hallRecords1P[HALL_FACILITIES_COUNT][2][3]; // From record mixing.
     /*0x57C*/ struct RankingHall2P hallRecords2P[2][3]; // From record mixing.
-    /*0x624*/ u16 contestLinkResults[5][4]; // 4 positions for 5 categories.
+    /*0x624*/ u16 contestLinkResults[CONTEST_CATEGORIES_COUNT][CONTESTANT_COUNT];
     /*0x64C*/ struct BattleFrontier frontier;
 }; // sizeof=0xF2C
 
@@ -484,7 +490,7 @@ extern struct SaveBlock2 *gSaveBlock2Ptr;
 struct SecretBaseParty
 {
     u32 personality[PARTY_SIZE];
-    u16 moves[PARTY_SIZE * 4];
+    u16 moves[PARTY_SIZE * MAX_MON_MOVES];
     u16 species[PARTY_SIZE];
     u16 heldItems[PARTY_SIZE];
     u8 levels[PARTY_SIZE];
@@ -638,7 +644,7 @@ struct MauvilleManHipster
 struct MauvilleOldManTrader
 {
     u8 id;
-    u8 decorIds[NUM_TRADER_ITEMS];
+    u8 decorations[NUM_TRADER_ITEMS];
     u8 playerNames[NUM_TRADER_ITEMS][11];
     u8 alreadyTraded;
     u8 language[NUM_TRADER_ITEMS];
@@ -924,21 +930,21 @@ struct SaveBlock1
     /*0x9CA*/ u8 trainerRematches[MAX_REMATCH_ENTRIES];
     /*0xA30*/ struct ObjectEvent objectEvents[OBJECT_EVENTS_COUNT];
     /*0xC70*/ struct ObjectEventTemplate objectEventTemplates[OBJECT_EVENT_TEMPLATES_COUNT];
-    /*0x1270*/ u8 flags[FLAGS_COUNT];
+    /*0x1270*/ u8 flags[NUM_FLAG_BYTES];
     /*0x139C*/ u16 vars[VARS_COUNT];
     /*0x159C*/ u32 gameStats[NUM_GAME_STATS];
     /*0x169C*/ struct BerryTree berryTrees[BERRY_TREES_COUNT];
     /*0x1A9C*/ struct SecretBase secretBases[SECRET_BASES_COUNT];
-    /*0x271C*/ u8 playerRoomDecor[DECOR_MAX_PLAYERS_HOUSE];
-    /*0x2728*/ u8 playerRoomDecorPos[DECOR_MAX_PLAYERS_HOUSE];
-    /*0x2734*/ u8 decorDesk[10];
-    /*0x273E*/ u8 decorChair[10];
-    /*0x2748*/ u8 decorPlant[10];
-    /*0x2752*/ u8 decorOrnament[30];
-    /*0x2770*/ u8 decorMat[30];
-    /*0x278E*/ u8 decorPoster[10];
-    /*0x2798*/ u8 decorDoll[40];
-    /*0x27C0*/ u8 decorCushion[10];
+    /*0x271C*/ u8 playerRoomDecorations[DECOR_MAX_PLAYERS_HOUSE];
+    /*0x2728*/ u8 playerRoomDecorationPositions[DECOR_MAX_PLAYERS_HOUSE];
+    /*0x2734*/ u8 decorationDesks[10];
+    /*0x273E*/ u8 decorationChairs[10];
+    /*0x2748*/ u8 decorationPlants[10];
+    /*0x2752*/ u8 decorationOrnaments[30];
+    /*0x2770*/ u8 decorationMats[30];
+    /*0x278E*/ u8 decorationPosters[10];
+    /*0x2798*/ u8 decorationDolls[40];
+    /*0x27C0*/ u8 decorationCushions[10];
     /*0x27CA*/ u8 padding_27CA[2];
     /*0x27CC*/ TVShow tvShows[TV_SHOWS_COUNT];
     /*0x2B50*/ PokeNews pokeNews[POKE_NEWS_COUNT];
@@ -961,7 +967,7 @@ struct SaveBlock1
     /*0x2E20*/ u8 additionalPhrases[8]; // bitfield for 33 additional phrases in easy chat system
     /*0x2E28*/ OldMan oldMan;
     /*0x2e64*/ struct EasyChatPair easyChatPairs[5]; //Dewford trend [0] and some other stuff
-    /*0x2e90*/ struct ContestWinner contestWinners[13]; // 0 - 5 used in contest hall, 6 - 7 unused?, 8 - 12 museum
+    /*0x2e90*/ struct ContestWinner contestWinners[NUM_CONTEST_WINNERS]; // see CONTEST_WINNER_*
     /*0x3030*/ struct DayCare daycare;
     /*0x3150*/ struct LinkBattleRecords linkBattleRecords;
     /*0x31A8*/ u8 giftRibbons[52];
@@ -975,7 +981,7 @@ struct SaveBlock1
     /*0x3B24*/ u8 seen2[DEX_FLAGS_NO];
     /*0x3B58*/ LilycoveLady lilycoveLady;
     /*0x3B98*/ struct TrainerNameRecord trainerNameRecords[20];
-    /*0x3C88*/ u8 unk3C88[10][21];
+    /*0x3C88*/ u8 registeredTexts[UNION_ROOM_KB_ROW_COUNT][21];
     /*0x3D5A*/ u8 filler3D5A[0xA];
     /*0x3D64*/ struct SaveTrainerHill trainerHill;
     /*0x3D70*/ struct WaldaPhrase waldaPhrase;

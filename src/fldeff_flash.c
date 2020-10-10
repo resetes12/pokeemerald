@@ -50,7 +50,7 @@ static const struct FlashStruct sTransitionTypes[] =
     {MAP_TYPE_ROUTE,       MAP_TYPE_UNDERGROUND,  TRUE, FALSE, DoEnterCaveTransition},
     {MAP_TYPE_UNDERWATER,  MAP_TYPE_UNDERGROUND,  TRUE, FALSE, DoEnterCaveTransition},
     {MAP_TYPE_OCEAN_ROUTE, MAP_TYPE_UNDERGROUND,  TRUE, FALSE, DoEnterCaveTransition},
-    {MAP_TYPE_UNUSED_2,    MAP_TYPE_UNDERGROUND,  TRUE, FALSE, DoEnterCaveTransition},
+    {MAP_TYPE_UNKNOWN,     MAP_TYPE_UNDERGROUND,  TRUE, FALSE, DoEnterCaveTransition},
     {MAP_TYPE_INDOOR,      MAP_TYPE_UNDERGROUND,  TRUE, FALSE, DoEnterCaveTransition},
     {MAP_TYPE_SECRET_BASE, MAP_TYPE_UNDERGROUND,  TRUE, FALSE, DoEnterCaveTransition},
     {MAP_TYPE_UNDERGROUND, MAP_TYPE_TOWN,        FALSE,  TRUE, DoExitCaveTransition},
@@ -58,7 +58,7 @@ static const struct FlashStruct sTransitionTypes[] =
     {MAP_TYPE_UNDERGROUND, MAP_TYPE_ROUTE,       FALSE,  TRUE, DoExitCaveTransition},
     {MAP_TYPE_UNDERGROUND, MAP_TYPE_UNDERWATER,  FALSE,  TRUE, DoExitCaveTransition},
     {MAP_TYPE_UNDERGROUND, MAP_TYPE_OCEAN_ROUTE, FALSE,  TRUE, DoExitCaveTransition},
-    {MAP_TYPE_UNDERGROUND, MAP_TYPE_UNUSED_2,    FALSE,  TRUE, DoExitCaveTransition},
+    {MAP_TYPE_UNDERGROUND, MAP_TYPE_UNKNOWN,     FALSE,  TRUE, DoExitCaveTransition},
     {MAP_TYPE_UNDERGROUND, MAP_TYPE_INDOOR,      FALSE,  TRUE, DoExitCaveTransition},
     {MAP_TYPE_UNDERGROUND, MAP_TYPE_SECRET_BASE, FALSE,  TRUE, DoExitCaveTransition},
     {},
@@ -96,7 +96,7 @@ bool8 SetUpFieldMove_Flash(void)
 
 static void FieldCallback_Flash(void)
 {
-    u8 taskId = oei_task_add();
+    u8 taskId = CreateFieldMoveTask();
     gFieldEffectArguments[0] = GetCursorSelectionMonId();
     gTasks[taskId].data[8] = (uintptr_t)FldEff_UseFlash >> 16;
     gTasks[taskId].data[9] = (uintptr_t)FldEff_UseFlash;
@@ -104,9 +104,9 @@ static void FieldCallback_Flash(void)
 
 static void FldEff_UseFlash(void)
 {
-    PlaySE(SE_W115);
+    PlaySE(SE_M_REFLECT);
     FlagSet(FLAG_SYS_USE_FLASH);
-    ScriptContext1_SetupScript(EventScript_FldEffFlash);
+    ScriptContext1_SetupScript(EventScript_UseFlash);
 }
 
 static void CB2_ChangeMapMain(void)

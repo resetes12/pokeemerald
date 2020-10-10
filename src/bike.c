@@ -7,7 +7,6 @@
 #include "metatile_behavior.h"
 #include "overworld.h"
 #include "sound.h"
-#include "constants/flags.h"
 #include "constants/map_types.h"
 #include "constants/songs.h"
 
@@ -660,7 +659,7 @@ static void AcroBikeTransition_SideJump(u8 direction)
         }
     }
     playerObjEvent = &gObjectEvents[gPlayerAvatar.objectEventId];
-    PlaySE(SE_JITE_PYOKO);
+    PlaySE(SE_BIKE_HOP);
     playerObjEvent->facingDirectionLocked = 1;
     PlayerSetAnimId(GetJumpMovementAction(direction), 2);
 }
@@ -696,11 +695,11 @@ static void AcroBikeTransition_WheelieMoving(u8 direction)
             if (MetatileBehavior_IsBumpySlope(playerObjEvent->currentMetatileBehavior))
                 PlayerIdleWheelie(direction);
             else
-                sub_808B980(direction);  //hit wall?
+                PlayerWheelieInPlace(direction);  //hit wall?
         }
         return;
     }
-    sub_808B9BC(direction);
+    PlayerWheelieMove(direction);
     gPlayerAvatar.runningState = MOVING;
 }
 
@@ -730,11 +729,11 @@ static void AcroBikeTransition_WheelieRisingMoving(u8 direction)
             if (MetatileBehavior_IsBumpySlope(playerObjEvent->currentMetatileBehavior))
                 PlayerIdleWheelie(direction);
             else
-                sub_808B980(direction);  //hit wall?
+                PlayerWheelieInPlace(direction);  //hit wall?
         }
         return;
     }
-    sub_808B9A4(direction);
+    PlayerPopWheelieWhileMoving(direction);
     gPlayerAvatar.runningState = MOVING;
 }
 
@@ -757,7 +756,7 @@ static void AcroBikeTransition_WheelieLoweringMoving(u8 direction)
             PlayerEndWheelie(direction);
         return;
     }
-    sub_808B9D4(direction);
+    PlayerEndWheelieWhileMoving(direction);
 }
 
 void Bike_TryAcroBikeHistoryUpdate(u16 newKeys, u16 heldKeys)
@@ -836,7 +835,7 @@ static void Bike_UpdateDirTimerHistory(u8 dir)
 
     gPlayerAvatar.directionHistory = (gPlayerAvatar.directionHistory << 4) | (dir & 0xF);
 
-    for (i = 7; i != 0; i--)
+    for (i = ARRAY_COUNT(gPlayerAvatar.dirTimerHistory) - 1; i != 0; i--)
         gPlayerAvatar.dirTimerHistory[i] = gPlayerAvatar.dirTimerHistory[i - 1];
     gPlayerAvatar.dirTimerHistory[0] = 1;
 }
@@ -847,7 +846,7 @@ static void Bike_UpdateABStartSelectHistory(u8 input)
 
     gPlayerAvatar.abStartSelectHistory = (gPlayerAvatar.abStartSelectHistory << 4) | (input & 0xF);
 
-    for (i = 7; i != 0; i--)
+    for (i = ARRAY_COUNT(gPlayerAvatar.abStartSelectTimerHistory) - 1; i != 0; i--)
         gPlayerAvatar.abStartSelectTimerHistory[i] = gPlayerAvatar.abStartSelectTimerHistory[i - 1];
     gPlayerAvatar.abStartSelectTimerHistory[0] = 1;
 }
@@ -1001,10 +1000,10 @@ void BikeClearState(int newDirHistory, int newAbStartHistory)
     gPlayerAvatar.directionHistory = newDirHistory;
     gPlayerAvatar.abStartSelectHistory = newAbStartHistory;
 
-    for (i = 0; i < 8; i++)
+    for (i = 0; i < ARRAY_COUNT(gPlayerAvatar.dirTimerHistory); i++)
         gPlayerAvatar.dirTimerHistory[i] = 0;
 
-    for (i = 0; i < 8; i++)
+    for (i = 0; i < ARRAY_COUNT(gPlayerAvatar.abStartSelectTimerHistory); i++)
         gPlayerAvatar.abStartSelectTimerHistory[i] = 0;
 }
 
@@ -1049,14 +1048,14 @@ void Bike_HandleBumpySlopeJump(void)
         if (MetatileBehavior_IsBumpySlope(tileBehavior))
         {
             gPlayerAvatar.acroBikeState = ACRO_STATE_WHEELIE_STANDING;
-            sub_808C1B4(GetPlayerMovementDirection());
+            PlayerUseAcroBikeOnBumpySlope(GetPlayerMovementDirection());
         }
     }
 }
 
 bool32 IsRunningDisallowed(u8 metatile)
 {
-    if (!(gMapHeader.flags & MAP_ALLOW_RUN) || IsRunningDisallowedByMetatile(metatile) == TRUE)
+    if (!(gMapHeader.flags & MAP_ALLOW_RUNNING) || IsRunningDisallowedByMetatile(metatile) == TRUE)
         return TRUE;
     else
         return FALSE;

@@ -5,7 +5,6 @@
 #include "text.h"
 #include "item.h"
 #include "task.h"
-#include "constants/species.h"
 #include "save.h"
 #include "load_save.h"
 #include "pokemon.h"
@@ -169,10 +168,9 @@ static const u8 gUnknown_0858CFBE[3][4] =
 
 #define BUFFER_CHUNK_SIZE 200
 
-// Note: VAR_0x8005 contains the spotId.
 void RecordMixingPlayerSpotTriggered(void)
 {
-    sub_80B37D4(Task_RecordMixing_Main);
+    CreateTask_EnterCableClubSeat(Task_RecordMixing_Main);
 }
 
 // these variables were const in R/S, but had to become changeable because of saveblocks changing RAM position
@@ -232,7 +230,7 @@ static void PrepareExchangePacket(void)
 
     if (Link_AnyPartnersPlayingRubyOrSapphire())
     {
-        if (sub_800A03C() == 0)
+        if (LinkDummy_Return2() == 0)
             PrepareUnknownExchangePacket(&sSentRecord->ruby);
         else
             PrepareExchangePacketForRubySapphire(&sSentRecord->ruby);
@@ -303,7 +301,7 @@ static void Task_RecordMixing_SoundEffect(u8 taskId)
 {
     if (++gTasks[taskId].tCounter == 50)
     {
-        PlaySE(SE_W213);
+        PlaySE(SE_M_ATTRACT);
         gTasks[taskId].tCounter = 0;
     }
 }
@@ -327,7 +325,7 @@ static void Task_RecordMixing_Main(u8 taskId)
         VarSet(VAR_TEMP_0, 1);
         gUnknown_03001130 = FALSE;
         PrepareExchangePacket();
-        CreateRecordMixingSprite();
+        CreateRecordMixingLights();
         tState = 1;
         data[10] = CreateTask(Task_MixingRecordsRecv, 80);
         tSndEffTaskId = CreateTask(Task_RecordMixing_SoundEffect, 81);
@@ -337,21 +335,21 @@ static void Task_RecordMixing_Main(u8 taskId)
         {
             tState = 2;
             FlagSet(FLAG_SYS_MIX_RECORD);
-            DestroyRecordMixingSprite();
+            DestroyRecordMixingLights();
             DestroyTask(tSndEffTaskId);
         }
         break;
     case 2:
         data[10] = CreateTask(Task_DoRecordMixing, 10);
         tState = 3;
-        PlaySE(SE_W226);
+        PlaySE(SE_M_BATON_PASS);
         break;
     case 3: // wait for Task_DoRecordMixing
         if (!gTasks[data[10]].isActive)
         {
             tState = 4;
             if (gWirelessCommType == 0)
-                data[10] = sub_80B3050();
+                data[10] = CreateTask_ReestablishCableClubLink();
 
             PrintTextOnRecordMixing(gText_RecordMixingComplete);
             data[8] = 0;
@@ -502,7 +500,7 @@ static void Task_SendPacket(u8 taskId)
         break;
     case 1:
         if (GetMultiplayerId() == 0)
-            sub_800A4D8(1);
+            SendBlockRequest(1);
         task->data[0]++;
         break;
     case 2:
@@ -527,7 +525,7 @@ static void Task_CopyReceiveBuffer(u8 taskId)
     u8 status = GetBlockReceivedStatus();
     u8 handledPlayers = 0;
 
-    if (status == sub_800A9D8())
+    if (status == GetLinkPlayerCountAsBitFlags())
     {
         u8 i;
 
@@ -714,17 +712,18 @@ static u8 sub_80E7A9C(struct DayCareMail *rmMail)
     return rmMail->message.itemId;
 }
 
-static void sub_80E7AA4(struct RecordMixingDayCareMail *src, size_t recordSize, u8 (*idxs)[2], u8 which0, u8 which1)
+static void ExchangeMail(struct RecordMixingDayCareMail *src, size_t recordSize, u8 (*idxs)[2], u8 which0, u8 which1)
 {
     struct DayCareMail buffer;
     struct RecordMixingDayCareMail *mail1;
     struct RecordMixingDayCareMail *mail2;
 
     mail1 = (void *)src + recordSize * idxs[which0][0];
-    memcpy(&buffer, &mail1->mail[idxs[which0][1]], sizeof(struct DayCareMail));
+    buffer = mail1->mail[idxs[which0][1]];
+
     mail2 = (void *)src + recordSize * idxs[which1][0];
-    memcpy(&mail1->mail[idxs[which0][1]], &mail2->mail[idxs[which1][1]], sizeof(struct DayCareMail));
-    memcpy(&mail2->mail[idxs[which1][1]], &buffer, sizeof(struct DayCareMail));
+    mail1->mail[idxs[which0][1]] = mail2->mail[idxs[which1][1]];
+    mail2->mail[idxs[which1][1]] = buffer;
 }
 
 static void sub_80E7B2C(const u8 *src)
@@ -866,23 +865,22 @@ static void ReceiveDaycareMailData(struct RecordMixingDayCareMail *src, size_t r
         }
         else if (sp1c[i][0] == TRUE && sp1c[i][1] == TRUE)
         {
-            u32 var1, var2;
+            u8 mail1, mail2;
 
             sp24[j][0] = i;
-            var1 = sub_80E7A9C(&_src->mail[0]);
-            var2 = sub_80E7A9C(&_src->mail[1]);
-            if (!var1 && var2)
+            mail1 = sub_80E7A9C(&_src->mail[0]);
+            mail2 = sub_80E7A9C(&_src->mail[1]);
+            if (!(mail1 || mail2) || (mail1 && mail2)) //Logical (not bitwise) XOR. Should be ((mail1 || mail2) && !(mail1 && mail2)), but that doesn't match. 
             {
-                register u8 one asm("r0") = 1; // boo, a fakematch
-                sp24[j][1] = one;
+                sp24[j][1] = Random2() % 2;
             }
-            else if ((var1 && var2) || (!var1 && !var2))
-            {
-                 sp24[j][1] = Random2() % 2;
-            }
-            else if (var1 && !var2)
+            else if (mail1 && !mail2)
             {
                 sp24[j][1] = 0;
+            }
+            else if (!mail1 && mail2)
+            {
+                sp24[j][1] = 1;
             }
             j++;
         }
@@ -898,27 +896,27 @@ static void ReceiveDaycareMailData(struct RecordMixingDayCareMail *src, size_t r
     switch (sp34)
     {
     case 2:
-        sub_80E7AA4(src, recordSize, sp24, 0, 1);
+        ExchangeMail(src, recordSize, sp24, 0, 1);
         break;
     case 3:
         which0 = gUnknown_0858CFB8[tableId][0];
         which1 = gUnknown_0858CFB8[tableId][1];
-        sub_80E7AA4(src, recordSize, sp24, which0, which1);
+        ExchangeMail(src, recordSize, sp24, which0, which1);
         break;
     case 4:
         ptr = sp24;
         which0 = gUnknown_0858CFBE[tableId][0];
         which1 = gUnknown_0858CFBE[tableId][1];
-        sub_80E7AA4(src, recordSize, ptr, which0, which1);
+        ExchangeMail(src, recordSize, ptr, which0, which1);
         which0 = gUnknown_0858CFBE[tableId][2];
         which1 = gUnknown_0858CFBE[tableId][3];
-        sub_80E7AA4(src, recordSize, ptr, which0, which1);
+        ExchangeMail(src, recordSize, ptr, which0, which1);
         break;
     }
 
     _src = (void *)src + which * recordSize;
-    memcpy(&gSaveBlock1Ptr->daycare.mons[0].mail, &_src->mail[0], sizeof(struct DayCareMail));
-    memcpy(&gSaveBlock1Ptr->daycare.mons[1].mail, &_src->mail[1], sizeof(struct DayCareMail));
+    gSaveBlock1Ptr->daycare.mons[0].mail = _src->mail[0];
+    gSaveBlock1Ptr->daycare.mons[1].mail = _src->mail[1];
     SeedRng(oldSeed);
 }
 
@@ -974,7 +972,7 @@ static void Task_DoRecordMixing(u8 taskId)
     case 4: // Wait 10 frames
         if (++task->data[1] > 10)
         {
-            sub_800AC34();
+            SetCloseLinkCallback();
             task->data[0] ++;
         }
         break;
@@ -987,12 +985,12 @@ static void Task_DoRecordMixing(u8 taskId)
     case 6:
         if (!sub_801048C(FALSE))
         {
-            CreateTask(sub_8153688, 5);
+            CreateTask(Task_LinkSave, 5);
             task->data[0] ++;
         }
         break;
-    case 7: // wait for sub_8153688 to finish.
-        if (!FuncIsActiveTask(sub_8153688))
+    case 7: // wait for Task_LinkSave to finish.
+        if (!FuncIsActiveTask(Task_LinkSave))
         {
             if (gWirelessCommType)
             {
@@ -1006,7 +1004,7 @@ static void Task_DoRecordMixing(u8 taskId)
         }
         break;
     case 8:
-        sub_800ADF8();
+        SetLinkStandbyCallback();
         task->data[0] ++;
         break;
     case 9:

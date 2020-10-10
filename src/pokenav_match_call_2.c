@@ -23,12 +23,11 @@
 #include "constants/game_stat.h"
 #include "constants/region_map_sections.h"
 #include "constants/songs.h"
-#include "constants/species.h"
 
 struct Pokenav4Struct
 {
-    bool32 (*unk0)(void);
-    u32 unk4;
+    bool32 (*isTaskActiveCB)(void);
+    u32 loopTaskId;
     u8 filler8[0x6];
     u8 unkE;
     u8 unkF;
@@ -49,8 +48,8 @@ struct Pokenav4Struct
     u8 unk2028[0x20];
 };
 
-static bool32 sub_81CB310(void);
-static u32 sub_81CB324(s32);
+static bool32 GetCurrentLoopedTaskActive(void);
+static u32 LoopedTask_OpenMatchCall(s32);
 static void sub_81CBBB8(void);
 static void sub_81CBC1C(void);
 static void sub_81CC2B4(void);
@@ -274,32 +273,32 @@ static const struct SpriteTemplate sTrainerPicSpriteTemplate =
     .callback = SpriteCallbackDummy,
 };
 
-bool32 sub_81CB260(void)
+bool32 OpenMatchCall(void)
 {
     struct Pokenav4Struct *state = AllocSubstruct(6, sizeof(struct Pokenav4Struct));
     if (!state)
         return FALSE;
 
     state->unk19 = 0;
-    state->unk4 = CreateLoopedTask(sub_81CB324, 1);
-    state->unk0 = sub_81CB310;
+    state->loopTaskId = CreateLoopedTask(LoopedTask_OpenMatchCall, 1);
+    state->isTaskActiveCB = GetCurrentLoopedTaskActive;
     return TRUE;
 }
 
 void CreateMatchCallLoopedTask(s32 index)
 {
     struct Pokenav4Struct *state = GetSubstructPtr(6);
-    state->unk4 = CreateLoopedTask(sMatchCallLoopTaskFuncs[index], 1);
-    state->unk0 = sub_81CB310;
+    state->loopTaskId = CreateLoopedTask(sMatchCallLoopTaskFuncs[index], 1);
+    state->isTaskActiveCB = GetCurrentLoopedTaskActive;
 }
 
-u32 sub_81CB2CC(void)
+bool32 IsMatchCallLoopedTaskActive(void)
 {
     struct Pokenav4Struct *state = GetSubstructPtr(6);
-    return state->unk0();
+    return state->isTaskActiveCB();
 }
 
-void sub_81CB2E0(void)
+void FreeMatchCallSubstruct2(void)
 {
     struct Pokenav4Struct *state = GetSubstructPtr(6);
     sub_81CC2B4();
@@ -310,13 +309,13 @@ void sub_81CB2E0(void)
     FreePokenavSubstruct(6);
 }
 
-static bool32 sub_81CB310(void)
+static bool32 GetCurrentLoopedTaskActive(void)
 {
     struct Pokenav4Struct *state = GetSubstructPtr(6);
-    return IsLoopedTaskActive(state->unk4);
+    return IsLoopedTaskActive(state->loopTaskId);
 }
 
-static u32 sub_81CB324(s32 taskState)
+static u32 LoopedTask_OpenMatchCall(s32 taskState)
 {
     struct Pokenav4Struct *state = GetSubstructPtr(6);
     switch (taskState)
@@ -325,7 +324,7 @@ static u32 sub_81CB324(s32 taskState)
         InitBgTemplates(gUnknown_0862278C, ARRAY_COUNT(gUnknown_0862278C));
         ChangeBgX(2, 0, 0);
         ChangeBgY(2, 0, 0);
-        decompress_and_copy_tile_data_to_vram(2, sMatchCallUI_Gfx, 0, 0, 0);
+        DecompressAndCopyTileDataToVram(2, sMatchCallUI_Gfx, 0, 0, 0);
         SetBgTilemapBuffer(2, state->unk1024);
         CopyToBgTilemapBuffer(2, sMatchCallUI_Tilemap, 0, 0);
         CopyBgTilemapBufferToVram(2);
@@ -333,7 +332,7 @@ static u32 sub_81CB324(s32 taskState)
         CopyBgTilemapBufferToVram(2);
         return LT_INC_AND_PAUSE;
     case 1:
-        if (free_temp_tile_data_buffers_if_possible())
+        if (FreeTempTileDataBuffersIfPossible())
             return LT_PAUSE;
 
         sub_8199DF0(1, 0, 0, 1);
@@ -343,16 +342,16 @@ static u32 sub_81CB324(s32 taskState)
         CopyBgTilemapBufferToVram(1);
         return LT_INC_AND_PAUSE;
     case 2:
-        if (free_temp_tile_data_buffers_if_possible())
+        if (FreeTempTileDataBuffersIfPossible())
             return LT_PAUSE;
 
         sub_81CC034(state);
-        decompress_and_copy_tile_data_to_vram(3, gUnknown_08622760, 0, 0, 0);
+        DecompressAndCopyTileDataToVram(3, gUnknown_08622760, 0, 0, 0);
         CopyPaletteIntoBufferUnfaded(gUnknown_08622700, 0x30, 0x20);
         CopyPaletteIntoBufferUnfaded(gUnknown_08622720, 0x50, 0x20);
         return LT_INC_AND_PAUSE;
     case 3:
-        if (free_temp_tile_data_buffers_if_possible() || !sub_81CAE28())
+        if (FreeTempTileDataBuffersIfPossible() || !sub_81CAE28())
             return LT_PAUSE;
 
         sub_81CBBB8();
@@ -376,7 +375,7 @@ static u32 sub_81CB324(s32 taskState)
         sub_81CC214();
         LoadLeftHeaderGfxForIndex(3);
         sub_81C7FA0(3, 1, 0);
-        sub_81C7AC0(1);
+        PokenavFadeScreen(1);
         return LT_INC_AND_PAUSE;
     case 7:
         if (IsPaletteFadeActive() || sub_81C8010())
@@ -601,7 +600,7 @@ u32 DoMatchCallMessage(s32 taskState)
             return LT_PAUSE;
 
         PrintCallingDots(state);
-        PlaySE(SE_TOREEYE);
+        PlaySE(SE_POKENAV_CALL);
         state->unkE = 0;
         return LT_INC_AND_PAUSE;
     case 2:
@@ -654,7 +653,7 @@ u32 sub_81CB888(s32 taskState)
     {
     case 0:
         if (!state->unkE)
-            PlaySE(SE_TOREOFF);
+            PlaySE(SE_POKENAV_HANG_UP);
 
         PlaySE(SE_SELECT);
         break;
@@ -849,7 +848,7 @@ u32 ExitMatchCall(s32 taskState)
     case 0:
         PlaySE(SE_SELECT);
         sub_81CBC38(0);
-        sub_81C7AC0(0);
+        PokenavFadeScreen(0);
         sub_81C78A0();
         return LT_INC_AND_PAUSE;
     case 1:
@@ -1126,7 +1125,7 @@ static void PrintMatchCallMessage(struct Pokenav4Struct *state)
 
 static bool32 WaitForMatchCallMessageText(struct Pokenav4Struct *state)
 {
-    if (gMain.heldKeys & A_BUTTON)
+    if (JOY_HELD(A_BUTTON))
         gTextFlags.canABSpeedUpPrint = 1;
     else
         gTextFlags.canABSpeedUpPrint = 0;

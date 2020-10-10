@@ -188,26 +188,26 @@ void sub_81D04B8(void)
 
 u32 sub_81D04C4(struct PokenavSub13 *structPtr)
 {
-    if (gMain.newAndRepeatedKeys & DPAD_UP && structPtr->field_8->unk2 != 0)
+    if (JOY_REPEAT(DPAD_UP) && structPtr->field_8->unk2 != 0)
     {
         structPtr->field_8->unk2--;
         structPtr->field_C = 0;
         sub_81D0814(structPtr);
         return 1;
     }
-    else if (gMain.newAndRepeatedKeys & DPAD_DOWN && structPtr->field_8->unk2 < structPtr->field_8->unk0 - 1)
+    if (JOY_REPEAT(DPAD_DOWN) && structPtr->field_8->unk2 < structPtr->field_8->unk0 - 1)
     {
         structPtr->field_8->unk2++;
         structPtr->field_C = 0;
         sub_81D0814(structPtr);
         return 1;
     }
-    else if (gMain.newKeys & A_BUTTON)
+    if (JOY_NEW(A_BUTTON))
     {
         structPtr->field_98 = sub_81D0548;
         return 2;
     }
-    else if (gMain.newKeys & B_BUTTON)
+    if (JOY_NEW(B_BUTTON))
     {
         structPtr->field_98 = sub_81D05D4;
         return 5;
@@ -217,15 +217,15 @@ u32 sub_81D04C4(struct PokenavSub13 *structPtr)
 
 u32 sub_81D0548(struct PokenavSub13 *structPtr)
 {
-    if (gMain.newAndRepeatedKeys & DPAD_UP && sub_81D05DC(structPtr))
+    if (JOY_REPEAT(DPAD_UP) && sub_81D05DC(structPtr))
         return 3;
-    else if (gMain.newAndRepeatedKeys & DPAD_DOWN && sub_81D061C(structPtr))
+    if (JOY_REPEAT(DPAD_DOWN) && sub_81D061C(structPtr))
         return 3;
-    else if (gMain.newAndRepeatedKeys & DPAD_LEFT && sub_81D0664(structPtr))
+    if (JOY_REPEAT(DPAD_LEFT) && sub_81D0664(structPtr))
         return 3;
-    else if (gMain.newAndRepeatedKeys & DPAD_RIGHT && sub_81D0688(structPtr))
+    if (JOY_REPEAT(DPAD_RIGHT) && sub_81D0688(structPtr))
         return 3;
-    else if (gMain.newKeys & B_BUTTON)
+    if (JOY_NEW(B_BUTTON))
     {
         structPtr->field_98 = sub_81D04C4;
         return 4;
@@ -517,17 +517,17 @@ u32 sub_81D0A6C(s32 state)
     {
     case 0:
         InitBgTemplates(gUnknown_08624B98, ARRAY_COUNT(gUnknown_08624B98));
-        decompress_and_copy_tile_data_to_vram(2, gUnknown_08DDE030, 0, 0, 0);
+        DecompressAndCopyTileDataToVram(2, gUnknown_08DDE030, 0, 0, 0);
         SetBgTilemapBuffer(2, structPtr->tilemapBuffers[0]);
         CopyToBgTilemapBuffer(2, gUnknown_08DDE12C, 0, 0);
         CopyPaletteIntoBufferUnfaded(gUnknown_08DDE010, 0x10, 0x20);
         CopyBgTilemapBufferToVram(2);
         return LT_INC_AND_PAUSE;
     case 1:
-        if (!free_temp_tile_data_buffers_if_possible())
+        if (!FreeTempTileDataBuffersIfPossible())
         {
             sub_8199DF0(1, 0, 0, 1);
-            decompress_and_copy_tile_data_to_vram(1, sRibbonIconsSmall_Gfx, 0, 1, 0);
+            DecompressAndCopyTileDataToVram(1, sRibbonIconsSmall_Gfx, 0, 1, 0);
             SetBgTilemapBuffer(1, structPtr->tilemapBuffers[1]);
             FillBgTilemapBufferRect_Palette0(1, 0, 0, 0, 32, 20);
             CopyPaletteIntoBufferUnfaded(gUnknown_08623FF8, 0x20, 0xA0);
@@ -537,21 +537,21 @@ u32 sub_81D0A6C(s32 state)
         }
         return LT_PAUSE;
     case 2:
-        if (!free_temp_tile_data_buffers_if_possible())
+        if (!FreeTempTileDataBuffersIfPossible())
         {
             sub_81D0E60(structPtr);
             return LT_INC_AND_PAUSE;
         }
         return LT_PAUSE;
     case 3:
-        if (!free_temp_tile_data_buffers_if_possible())
+        if (!FreeTempTileDataBuffersIfPossible())
         {
             sub_81D0FCC(structPtr);
             return LT_INC_AND_PAUSE;
         }
         return LT_PAUSE;
     case 4:
-        if (!free_temp_tile_data_buffers_if_possible())
+        if (!FreeTempTileDataBuffersIfPossible())
         {
             sub_81D10A4(structPtr);
             return LT_INC_AND_PAUSE;
@@ -586,7 +586,7 @@ u32 sub_81D0A6C(s32 state)
             ShowBg(1);
             ShowBg(2);
             HideBg(3);
-            sub_81C7AC0(1);
+            PokenavFadeScreen(1);
             return LT_INC_AND_PAUSE;
         }
         return LT_PAUSE;
@@ -604,7 +604,7 @@ u32 sub_81D0C54(s32 state)
     {
     case 0:
         PlaySE(SE_SELECT);
-        sub_81C7AC0(0);
+        PokenavFadeScreen(0);
         return LT_INC_AND_PAUSE;
     case 1:
         if (IsPaletteFadeActive())
@@ -836,7 +836,7 @@ void sub_81D0FF0(struct PokenavSub14 *structPtr)
 
     txtPtr = StringCopy(gStringVar1, genderTxt);
     *(txtPtr++) = CHAR_SLASH;
-    *(txtPtr++) = CHAR_SPECIAL_F9;
+    *(txtPtr++) = CHAR_EXTRA_SYMBOL;
     *(txtPtr++) = CHAR_LV_2;
     ConvertIntToDecimalStringN(txtPtr, level, STR_CONV_MODE_LEFT_ALIGN, 3);
     AddTextPrinterParameterized(windowId, 1, gStringVar1, 60, 1, TEXT_SPEED_FF, NULL);
