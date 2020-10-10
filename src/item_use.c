@@ -198,7 +198,7 @@ void ItemUseOutOfBattle_ExpShare(u8 taskId)
 {
 	if (!gSaveBlock2Ptr->expShare)
 	{
-		PlaySE(SE_EXPMAX);
+		PlaySE(SE_EXP_MAX);
 		if (!gTasks[taskId].data[2]) // to account for pressing select in the overworld
 		{
 			DisplayItemMessageOnField(taskId, gOtherText_ExpShareOn, Task_CloseCantUseKeyItemMessage);
