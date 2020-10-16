@@ -49,6 +49,7 @@
 #include "tv.h"
 #include "util.h"
 #include "window.h"
+#include "dns.h"
 #include "constants/abilities.h"
 #include "constants/battle_move_effects.h"
 #include "constants/battle_string_ids.h"
@@ -1827,6 +1828,7 @@ void BattleMainCB2(void)
     RunTextPrinters();
     UpdatePaletteFade();
     RunTasks();
+    DnsApplyFilters();
 
     if (JOY_HELD(B_BUTTON) && gBattleTypeFlags & BATTLE_TYPE_RECORDED && sub_8186450())
     {
