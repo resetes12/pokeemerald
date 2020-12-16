@@ -931,7 +931,7 @@ void LaunchAnimationTaskForBackSprite(struct Sprite *sprite, u8 backAnimSet)
     gTasks[taskId].tPtrLo = (u32)(sprite);
 
     battlerId = sprite->data[0];
-    nature = GetNature(&gPlayerParty[gBattlerPartyIndexes[battlerId]]);
+    nature = GetNature(&gPlayerParty[gBattlerPartyIndexes[battlerId]], FALSE);
 
     animId = 3 * backAnimSet + sBackAnimNatureModTable[nature];
     gTasks[taskId].tAnimId = sBackAnimationIds[animId];
