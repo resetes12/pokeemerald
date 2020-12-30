@@ -2156,7 +2156,7 @@ static void Cb2_EnterPSS(u8 boxOption)
 {
     ResetTasks();
     sCurrentBoxOption = boxOption;
-    sPSSData = Alloc(sizeof(struct PokemonStorageSystemData));
+    sPSSData = Alloc(sizeof(*sPSSData));
     if (sPSSData == NULL)
     {
         SetMainCallback2(Cb2_ExitPSS);
@@ -2176,7 +2176,7 @@ static void Cb2_EnterPSS(u8 boxOption)
 static void Cb2_ReturnToPSS(void)
 {
     ResetTasks();
-    sPSSData = Alloc(sizeof(struct PokemonStorageSystemData));
+    sPSSData = Alloc(sizeof(*sPSSData));
     if (sPSSData == NULL)
     {
         SetMainCallback2(Cb2_ExitPSS);
@@ -6777,11 +6777,11 @@ static void SetCursorMonData(void *pokemon, u8 mode)
 {
     u8 *txtPtr;
     u16 gender;
-    bool8 sanityIsBagEgg;
+    bool8 sanityIsBadEgg;
 
     sPSSData->cursorMonItem = 0;
     gender = MON_MALE;
-    sanityIsBagEgg = FALSE;
+    sanityIsBadEgg = FALSE;
     if (mode == MODE_PARTY)
     {
         struct Pokemon *mon = (struct Pokemon *)pokemon;
@@ -6789,8 +6789,8 @@ static void SetCursorMonData(void *pokemon, u8 mode)
         sPSSData->cursorMonSpecies = GetMonData(mon, MON_DATA_SPECIES2);
         if (sPSSData->cursorMonSpecies != SPECIES_NONE)
         {
-            sanityIsBagEgg = GetMonData(mon, MON_DATA_SANITY_IS_BAD_EGG);
-            if (sanityIsBagEgg)
+            sanityIsBadEgg = GetMonData(mon, MON_DATA_SANITY_IS_BAD_EGG);
+            if (sanityIsBadEgg)
                 sPSSData->cursorMonIsEgg = TRUE;
             else
                 sPSSData->cursorMonIsEgg = GetMonData(mon, MON_DATA_IS_EGG);
@@ -6813,8 +6813,8 @@ static void SetCursorMonData(void *pokemon, u8 mode)
         if (sPSSData->cursorMonSpecies != SPECIES_NONE)
         {
             u32 otId = GetBoxMonData(boxMon, MON_DATA_OT_ID);
-            sanityIsBagEgg = GetBoxMonData(boxMon, MON_DATA_SANITY_IS_BAD_EGG);
-            if (sanityIsBagEgg)
+            sanityIsBadEgg = GetBoxMonData(boxMon, MON_DATA_SANITY_IS_BAD_EGG);
+            if (sanityIsBadEgg)
                 sPSSData->cursorMonIsEgg = TRUE;
             else
                 sPSSData->cursorMonIsEgg = GetBoxMonData(boxMon, MON_DATA_IS_EGG);
@@ -6846,7 +6846,7 @@ static void SetCursorMonData(void *pokemon, u8 mode)
     }
     else if (sPSSData->cursorMonIsEgg)
     {
-        if (sanityIsBagEgg)
+        if (sanityIsBadEgg)
             StringCopyPadded(sPSSData->cursorMonNickText, sPSSData->cursorMonNick, CHAR_SPACE, 5);
         else
             StringCopyPadded(sPSSData->cursorMonNickText, gText_EggNickname, CHAR_SPACE, 8);
@@ -7440,7 +7440,7 @@ static u8 HandleInput_OnButtons(void)
             sPSSData->field_CD7 = 1;
             break;
         }
-        
+
         if (JOY_REPEAT(DPAD_DOWN | START_BUTTON))
         {
             retVal = 1;
