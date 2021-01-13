@@ -38,11 +38,9 @@
 #include "text.h"
 #include "constants/event_bg.h"
 #include "constants/event_objects.h"
-#include "constants/flags.h"
 #include "constants/item_effects.h"
 #include "constants/items.h"
 #include "constants/songs.h"
-#include "constants/vars.h"
 
 static void SetUpItemUseCallback(u8 taskId);
 static void FieldCB_UseItemOnField(void);
@@ -55,7 +53,7 @@ static bool8 ItemfinderCheckForHiddenItems(const struct MapEvents *, u8);
 static u8 GetDirectionToHiddenItem(s16 distanceX, s16 distanceY);
 static void PlayerFaceHiddenItem(u8 a);
 static void CheckForHiddenItemsInMapConnection(u8 taskId);
-static void sub_80FDC00(u8 taskId);
+static void Task_OpenRegisteredPokeblockCase(u8 taskId);
 static void ItemUseOnFieldCB_Bike(u8 taskId);
 static void ItemUseOnFieldCB_Rod(u8);
 static void ItemUseOnFieldCB_Itemfinder(u8);
@@ -71,7 +69,7 @@ static void Task_StartUseRepel(u8 taskId);
 static void Task_UseRepel(u8 taskId);
 static void Task_CloseCantUseKeyItemMessage(u8 taskId);
 static void SetDistanceOfClosestHiddenItem(u8 taskId, s16 x, s16 y);
-static void CB2_OpenPokeblockCaseOnField(void);
+static void CB2_OpenPokeblockFromBag(void);
 
 // EWRAM variables
 EWRAM_DATA static void(*sItemUseOnFieldCB)(u8 taskId) = NULL;
@@ -330,7 +328,7 @@ static void Task_UseItemfinder(u8 taskId)
             }
             return;
         }
-        PlaySE(SE_DAUGI);
+        PlaySE(SE_ITEMFINDER);
         tItemfinderBeeps++;
     }
     tCounter = (tCounter + 1) & 0x1F;
@@ -399,7 +397,7 @@ static bool8 IsHiddenItemPresentInConnection(struct MapConnection *connection, i
     u32 localOffset;
     s32 localLength;
 
-    struct MapHeader const *const mapHeader = mapconnection_get_mapheader(connection);
+    struct MapHeader const *const mapHeader = GetMapHeaderFromConnection(connection);
 
     switch (connection->direction)
     {
@@ -617,23 +615,23 @@ void ItemUseOutOfBattle_PokeblockCase(u8 taskId)
     }
     else if (gTasks[taskId].tUsingRegisteredKeyItem != TRUE)
     {
-        gBagMenu->exitCallback = CB2_OpenPokeblockCaseOnField;
+        gBagMenu->exitCallback = CB2_OpenPokeblockFromBag;
         Task_FadeAndCloseBagMenu(taskId);
     }
     else
     {
-        gFieldCallback = sub_80AF6D4;
+        gFieldCallback = FieldCB_ReturnToFieldNoScript;
         FadeScreen(FADE_TO_BLACK, 0);
-        gTasks[taskId].func = sub_80FDC00;
+        gTasks[taskId].func = Task_OpenRegisteredPokeblockCase;
     }
 }
 
-static void CB2_OpenPokeblockCaseOnField(void)
+static void CB2_OpenPokeblockFromBag(void)
 {
     OpenPokeblockCase(PBLOCK_CASE_FIELD, CB2_ReturnToBagMenuPocket);
 }
 
-static void sub_80FDC00(u8 taskId)
+static void Task_OpenRegisteredPokeblockCase(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
@@ -794,7 +792,7 @@ static void BootUpSoundTMHM(u8 taskId)
 
 static void Task_ShowTMHMContainedMessage(u8 taskId)
 {
-    if (gMain.newKeys & (A_BUTTON | B_BUTTON))
+    if (JOY_NEW(A_BUTTON | B_BUTTON))
     {
         StringCopy(gStringVar1, gMoveNames[ItemIdToBattleMoveId(gSpecialVar_ItemId)]);
         StringExpandPlaceholders(gStringVar4, gText_TMHMContainedVar1);
@@ -847,7 +845,7 @@ static void Task_StartUseRepel(u8 taskId)
     if (++data[8] > 7)
     {
         data[8] = 0;
-        PlaySE(SE_TU_SAA);
+        PlaySE(SE_REPEL);
         gTasks[taskId].func = Task_UseRepel;
     }
 }
@@ -869,7 +867,7 @@ static void Task_UsedBlackWhiteFlute(u8 taskId)
 {
     if(++gTasks[taskId].data[8] > 7)
     {
-        PlaySE(SE_BIDORO);
+        PlaySE(SE_GLASS_FLUTE);
         if (!InBattlePyramid())
             DisplayItemMessage(taskId, 1, gStringVar4, BagMenu_InitListsMenu);
         else
@@ -958,7 +956,7 @@ void ItemUseInBattle_PokeBall(u8 taskId)
 
 static void Task_CloseStatIncreaseMessage(u8 taskId)
 {
-    if (gMain.newKeys & (A_BUTTON | B_BUTTON))
+    if (JOY_NEW(A_BUTTON | B_BUTTON))
     {
         if (!InBattlePyramid())
             Task_FadeAndCloseBagMenu(taskId);
@@ -971,7 +969,7 @@ static void Task_UseStatIncreaseItem(u8 taskId)
 {
     if(++gTasks[taskId].data[8] > 7)
     {
-        PlaySE(SE_KAIFUKU);
+        PlaySE(SE_USE_ITEM);
         RemoveBagItem(gSpecialVar_ItemId, 1);
         if (!InBattlePyramid())
             DisplayItemMessage(taskId, 1, UseStatIncreaseItem(gSpecialVar_ItemId), Task_CloseStatIncreaseMessage);

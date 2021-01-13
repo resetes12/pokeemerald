@@ -377,15 +377,15 @@ static u8 CheckPathBetweenTrainerAndPlayer(struct ObjectEvent *trainerObj, u8 ap
     }
 
     // preserve mapobj_unk_19 before clearing.
-    unk19_temp = trainerObj->range.as_nybbles.x;
-    unk19b_temp = trainerObj->range.as_nybbles.y;
-    trainerObj->range.as_nybbles.x = 0;
-    trainerObj->range.as_nybbles.y = 0;
+    unk19_temp = trainerObj->rangeX;
+    unk19b_temp = trainerObj->rangeY;
+    trainerObj->rangeX = 0;
+    trainerObj->rangeY = 0;
 
     collision = GetCollisionAtCoords(trainerObj, x, y, direction);
 
-    trainerObj->range.as_nybbles.x = unk19_temp;
-    trainerObj->range.as_nybbles.y = unk19b_temp;
+    trainerObj->rangeX = unk19_temp;
+    trainerObj->rangeY = unk19b_temp;
     if (collision == 4)
         return approachDistance;
 
@@ -559,7 +559,7 @@ static bool8 PopOutOfAshHiddenTrainer(u8 taskId, struct Task *task, struct Objec
         gFieldEffectArguments[1] = trainerObj->currentCoords.y;
         gFieldEffectArguments[2] = gSprites[trainerObj->spriteId].subpriority - 1;
         gFieldEffectArguments[3] = 2;
-        task->tOutOfAshSpriteId = FieldEffectStart(FLDEFF_POP_OUT_OF_ASH);
+        task->tOutOfAshSpriteId = FieldEffectStart(FLDEFF_ASH_PUFF);
         task->tFuncId++;
     }
     return FALSE;
@@ -586,7 +586,7 @@ static bool8 JumpInPlaceHiddenTrainer(u8 taskId, struct Task *task, struct Objec
 
 static bool8 WaitRevealHiddenTrainer(u8 taskId, struct Task *task, struct ObjectEvent *trainerObj)
 {
-    if (!FieldEffectActiveListContains(FLDEFF_POP_OUT_OF_ASH))
+    if (!FieldEffectActiveListContains(FLDEFF_ASH_PUFF))
         task->tFuncId = 3;
 
     return FALSE;
@@ -610,7 +610,7 @@ static void sub_80B44C8(u8 taskId)
         task->data[7]++;
     }
     sTrainerSeeFuncList2[task->data[0]](taskId, task, objEvent);
-    if (task->data[0] == 3 && !FieldEffectActiveListContains(FLDEFF_POP_OUT_OF_ASH))
+    if (task->data[0] == 3 && !FieldEffectActiveListContains(FLDEFF_ASH_PUFF))
     {
         SetTrainerMovementType(objEvent, GetTrainerFacingDirectionMovementType(objEvent->facingDirection));
         TryOverrideTemplateCoordsForObjectEvent(objEvent, GetTrainerFacingDirectionMovementType(objEvent->facingDirection));

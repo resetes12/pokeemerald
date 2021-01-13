@@ -69,10 +69,10 @@ static void LinkOpponentHandleTwoReturnValues(void);
 static void LinkOpponentHandleChosenMonReturnValue(void);
 static void LinkOpponentHandleOneReturnValue(void);
 static void LinkOpponentHandleOneReturnValue_Duplicate(void);
-static void LinkOpponentHandleCmd37(void);
-static void LinkOpponentHandleCmd38(void);
-static void LinkOpponentHandleCmd39(void);
-static void LinkOpponentHandleCmd40(void);
+static void LinkOpponentHandleClearUnkVar(void);
+static void LinkOpponentHandleSetUnkVar(void);
+static void LinkOpponentHandleClearUnkFlag(void);
+static void LinkOpponentHandleToggleUnkFlag(void);
 static void LinkOpponentHandleHitAnimation(void);
 static void LinkOpponentHandleCmd42(void);
 static void LinkOpponentHandlePlaySE(void);
@@ -104,63 +104,63 @@ static void sub_806782C(void);
 
 static void (*const sLinkOpponentBufferCommands[CONTROLLER_CMDS_COUNT])(void) =
 {
-    LinkOpponentHandleGetMonData,
-    LinkOpponentHandleGetRawMonData,
-    LinkOpponentHandleSetMonData,
-    LinkOpponentHandleSetRawMonData,
-    LinkOpponentHandleLoadMonSprite,
-    LinkOpponentHandleSwitchInAnim,
-    LinkOpponentHandleReturnMonToBall,
-    LinkOpponentHandleDrawTrainerPic,
-    LinkOpponentHandleTrainerSlide,
-    LinkOpponentHandleTrainerSlideBack,
-    LinkOpponentHandleFaintAnimation,
-    LinkOpponentHandlePaletteFade,
-    LinkOpponentHandleSuccessBallThrowAnim,
-    LinkOpponentHandleBallThrowAnim,
-    LinkOpponentHandlePause,
-    LinkOpponentHandleMoveAnimation,
-    LinkOpponentHandlePrintString,
-    LinkOpponentHandlePrintSelectionString,
-    LinkOpponentHandleChooseAction,
-    LinkOpponentHandleUnknownYesNoBox,
-    LinkOpponentHandleChooseMove,
-    LinkOpponentHandleChooseItem,
-    LinkOpponentHandleChoosePokemon,
-    LinkOpponentHandleCmd23,
-    LinkOpponentHandleHealthBarUpdate,
-    LinkOpponentHandleExpUpdate,
-    LinkOpponentHandleStatusIconUpdate,
-    LinkOpponentHandleStatusAnimation,
-    LinkOpponentHandleStatusXor,
-    LinkOpponentHandleDataTransfer,
-    LinkOpponentHandleDMA3Transfer,
-    LinkOpponentHandlePlayBGM,
-    LinkOpponentHandleCmd32,
-    LinkOpponentHandleTwoReturnValues,
-    LinkOpponentHandleChosenMonReturnValue,
-    LinkOpponentHandleOneReturnValue,
-    LinkOpponentHandleOneReturnValue_Duplicate,
-    LinkOpponentHandleCmd37,
-    LinkOpponentHandleCmd38,
-    LinkOpponentHandleCmd39,
-    LinkOpponentHandleCmd40,
-    LinkOpponentHandleHitAnimation,
-    LinkOpponentHandleCmd42,
-    LinkOpponentHandlePlaySE,
-    LinkOpponentHandlePlayFanfareOrBGM,
-    LinkOpponentHandleFaintingCry,
-    LinkOpponentHandleIntroSlide,
-    LinkOpponentHandleIntroTrainerBallThrow,
-    LinkOpponentHandleDrawPartyStatusSummary,
-    LinkOpponentHandleHidePartyStatusSummary,
-    LinkOpponentHandleEndBounceEffect,
-    LinkOpponentHandleSpriteInvisibility,
-    LinkOpponentHandleBattleAnimation,
-    LinkOpponentHandleLinkStandbyMsg,
-    LinkOpponentHandleResetActionMoveSelection,
-    LinkOpponentHandleCmd55,
-    LinkOpponentCmdEnd
+    [CONTROLLER_GETMONDATA]               = LinkOpponentHandleGetMonData,
+    [CONTROLLER_GETRAWMONDATA]            = LinkOpponentHandleGetRawMonData,
+    [CONTROLLER_SETMONDATA]               = LinkOpponentHandleSetMonData,
+    [CONTROLLER_SETRAWMONDATA]            = LinkOpponentHandleSetRawMonData,
+    [CONTROLLER_LOADMONSPRITE]            = LinkOpponentHandleLoadMonSprite,
+    [CONTROLLER_SWITCHINANIM]             = LinkOpponentHandleSwitchInAnim,
+    [CONTROLLER_RETURNMONTOBALL]          = LinkOpponentHandleReturnMonToBall,
+    [CONTROLLER_DRAWTRAINERPIC]           = LinkOpponentHandleDrawTrainerPic,
+    [CONTROLLER_TRAINERSLIDE]             = LinkOpponentHandleTrainerSlide,
+    [CONTROLLER_TRAINERSLIDEBACK]         = LinkOpponentHandleTrainerSlideBack,
+    [CONTROLLER_FAINTANIMATION]           = LinkOpponentHandleFaintAnimation,
+    [CONTROLLER_PALETTEFADE]              = LinkOpponentHandlePaletteFade,
+    [CONTROLLER_SUCCESSBALLTHROWANIM]     = LinkOpponentHandleSuccessBallThrowAnim,
+    [CONTROLLER_BALLTHROWANIM]            = LinkOpponentHandleBallThrowAnim,
+    [CONTROLLER_PAUSE]                    = LinkOpponentHandlePause,
+    [CONTROLLER_MOVEANIMATION]            = LinkOpponentHandleMoveAnimation,
+    [CONTROLLER_PRINTSTRING]              = LinkOpponentHandlePrintString,
+    [CONTROLLER_PRINTSTRINGPLAYERONLY]    = LinkOpponentHandlePrintSelectionString,
+    [CONTROLLER_CHOOSEACTION]             = LinkOpponentHandleChooseAction,
+    [CONTROLLER_UNKNOWNYESNOBOX]          = LinkOpponentHandleUnknownYesNoBox,
+    [CONTROLLER_CHOOSEMOVE]               = LinkOpponentHandleChooseMove,
+    [CONTROLLER_OPENBAG]                  = LinkOpponentHandleChooseItem,
+    [CONTROLLER_CHOOSEPOKEMON]            = LinkOpponentHandleChoosePokemon,
+    [CONTROLLER_23]                       = LinkOpponentHandleCmd23,
+    [CONTROLLER_HEALTHBARUPDATE]          = LinkOpponentHandleHealthBarUpdate,
+    [CONTROLLER_EXPUPDATE]                = LinkOpponentHandleExpUpdate,
+    [CONTROLLER_STATUSICONUPDATE]         = LinkOpponentHandleStatusIconUpdate,
+    [CONTROLLER_STATUSANIMATION]          = LinkOpponentHandleStatusAnimation,
+    [CONTROLLER_STATUSXOR]                = LinkOpponentHandleStatusXor,
+    [CONTROLLER_DATATRANSFER]             = LinkOpponentHandleDataTransfer,
+    [CONTROLLER_DMA3TRANSFER]             = LinkOpponentHandleDMA3Transfer,
+    [CONTROLLER_PLAYBGM]                  = LinkOpponentHandlePlayBGM,
+    [CONTROLLER_32]                       = LinkOpponentHandleCmd32,
+    [CONTROLLER_TWORETURNVALUES]          = LinkOpponentHandleTwoReturnValues,
+    [CONTROLLER_CHOSENMONRETURNVALUE]     = LinkOpponentHandleChosenMonReturnValue,
+    [CONTROLLER_ONERETURNVALUE]           = LinkOpponentHandleOneReturnValue,
+    [CONTROLLER_ONERETURNVALUE_DUPLICATE] = LinkOpponentHandleOneReturnValue_Duplicate,
+    [CONTROLLER_CLEARUNKVAR]              = LinkOpponentHandleClearUnkVar,
+    [CONTROLLER_SETUNKVAR]                = LinkOpponentHandleSetUnkVar,
+    [CONTROLLER_CLEARUNKFLAG]             = LinkOpponentHandleClearUnkFlag,
+    [CONTROLLER_TOGGLEUNKFLAG]            = LinkOpponentHandleToggleUnkFlag,
+    [CONTROLLER_HITANIMATION]             = LinkOpponentHandleHitAnimation,
+    [CONTROLLER_42]                       = LinkOpponentHandleCmd42,
+    [CONTROLLER_PLAYSE]                   = LinkOpponentHandlePlaySE,
+    [CONTROLLER_PLAYFANFAREORBGM]         = LinkOpponentHandlePlayFanfareOrBGM,
+    [CONTROLLER_FAINTINGCRY]              = LinkOpponentHandleFaintingCry,
+    [CONTROLLER_INTROSLIDE]               = LinkOpponentHandleIntroSlide,
+    [CONTROLLER_INTROTRAINERBALLTHROW]    = LinkOpponentHandleIntroTrainerBallThrow,
+    [CONTROLLER_DRAWPARTYSTATUSSUMMARY]   = LinkOpponentHandleDrawPartyStatusSummary,
+    [CONTROLLER_HIDEPARTYSTATUSSUMMARY]   = LinkOpponentHandleHidePartyStatusSummary,
+    [CONTROLLER_ENDBOUNCE]                = LinkOpponentHandleEndBounceEffect,
+    [CONTROLLER_SPRITEINVISIBILITY]       = LinkOpponentHandleSpriteInvisibility,
+    [CONTROLLER_BATTLEANIMATION]          = LinkOpponentHandleBattleAnimation,
+    [CONTROLLER_LINKSTANDBYMSG]           = LinkOpponentHandleLinkStandbyMsg,
+    [CONTROLLER_RESETACTIONMOVESELECTION] = LinkOpponentHandleResetActionMoveSelection,
+    [CONTROLLER_55]                       = LinkOpponentHandleCmd55,
+    [CONTROLLER_TERMINATOR_NOP]           = LinkOpponentCmdEnd
 };
 
 static void nullsub_28(void)
@@ -239,27 +239,27 @@ static void sub_8064520(void)
     {
         if (r4 || !IsBattlerSpriteVisible(BATTLE_PARTNER(gActiveBattler)))
         {
-            if (!gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].field_1_x1)
+            if (!gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].finishedShinyMonAnim)
                 return;
-            if (!gBattleSpritesDataPtr->healthBoxesData[BATTLE_PARTNER(gActiveBattler)].field_1_x1)
+            if (!gBattleSpritesDataPtr->healthBoxesData[BATTLE_PARTNER(gActiveBattler)].finishedShinyMonAnim)
                 return;
 
-            gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].flag_x80 = 0;
-            gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].field_1_x1 = 0;
+            gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].triedShinyMonAnim = FALSE;
+            gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].finishedShinyMonAnim = FALSE;
 
-            gBattleSpritesDataPtr->healthBoxesData[BATTLE_PARTNER(gActiveBattler)].flag_x80 = 0;
-            gBattleSpritesDataPtr->healthBoxesData[BATTLE_PARTNER(gActiveBattler)].field_1_x1 = 0;
+            gBattleSpritesDataPtr->healthBoxesData[BATTLE_PARTNER(gActiveBattler)].triedShinyMonAnim = FALSE;
+            gBattleSpritesDataPtr->healthBoxesData[BATTLE_PARTNER(gActiveBattler)].finishedShinyMonAnim = FALSE;
 
             FreeSpriteTilesByTag(0x27F9);
             FreeSpritePaletteByTag(0x27F9);
         }
         else
         {
-            if (!gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].field_1_x1)
+            if (!gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].finishedShinyMonAnim)
                 return;
 
-            gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].flag_x80 = 0;
-            gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].field_1_x1 = 0;
+            gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].triedShinyMonAnim = FALSE;
+            gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].finishedShinyMonAnim = FALSE;
 
             if (GetBattlerPosition(gActiveBattler) == B_POSITION_OPPONENT_RIGHT)
             {
@@ -278,17 +278,17 @@ static void sub_8064734(void)
     bool32 r10 = FALSE;
 
     if (!gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].ballAnimActive
-        && !gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].flag_x80
-        && !gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].field_1_x1)
+        && !gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].triedShinyMonAnim
+        && !gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].finishedShinyMonAnim)
     {
-        sub_8172EF0(gActiveBattler, &gEnemyParty[gBattlerPartyIndexes[gActiveBattler]]);
+        TryShinyAnimation(gActiveBattler, &gEnemyParty[gBattlerPartyIndexes[gActiveBattler]]);
     }
     if (!(gBattleTypeFlags & BATTLE_TYPE_MULTI)
         && !gBattleSpritesDataPtr->healthBoxesData[BATTLE_PARTNER(gActiveBattler)].ballAnimActive
-        && !gBattleSpritesDataPtr->healthBoxesData[BATTLE_PARTNER(gActiveBattler)].flag_x80
-        && !gBattleSpritesDataPtr->healthBoxesData[BATTLE_PARTNER(gActiveBattler)].field_1_x1)
+        && !gBattleSpritesDataPtr->healthBoxesData[BATTLE_PARTNER(gActiveBattler)].triedShinyMonAnim
+        && !gBattleSpritesDataPtr->healthBoxesData[BATTLE_PARTNER(gActiveBattler)].finishedShinyMonAnim)
     {
-        sub_8172EF0(BATTLE_PARTNER(gActiveBattler), &gEnemyParty[gBattlerPartyIndexes[BATTLE_PARTNER(gActiveBattler)]]);
+        TryShinyAnimation(BATTLE_PARTNER(gActiveBattler), &gEnemyParty[gBattlerPartyIndexes[BATTLE_PARTNER(gActiveBattler)]]);
     }
 
 
@@ -367,16 +367,16 @@ static void sub_8064B04(void)
     if (gSprites[gBattlerSpriteIds[gActiveBattler]].callback == SpriteCallbackDummy
      && gSprites[gBattlerSpriteIds[gActiveBattler]].pos2.x == 0)
     {
-        if (!gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].flag_x80)
+        if (!gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].triedShinyMonAnim)
         {
-            sub_8172EF0(gActiveBattler, &gEnemyParty[gBattlerPartyIndexes[gActiveBattler]]);
+            TryShinyAnimation(gActiveBattler, &gEnemyParty[gBattlerPartyIndexes[gActiveBattler]]);
         }
         else
         {
-            if (gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].field_1_x1)
+            if (gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].finishedShinyMonAnim)
             {
-                gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].flag_x80 = 0;
-                gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].field_1_x1 = 0;
+                gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].triedShinyMonAnim = FALSE;
+                gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].finishedShinyMonAnim = FALSE;
                 FreeSpriteTilesByTag(0x27F9);
                 FreeSpritePaletteByTag(0x27F9);
                 LinkOpponentBufferExecCompleted();
@@ -473,11 +473,11 @@ static void sub_8064DD0(void)
 
 static void sub_8064E50(void)
 {
-    if (gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].field_1_x1
+    if (gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].finishedShinyMonAnim
      && gSprites[gBattlerSpriteIds[gActiveBattler]].callback == SpriteCallbackDummy)
     {
-        gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].flag_x80 = 0;
-        gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].field_1_x1 = 0;
+        gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].triedShinyMonAnim = FALSE;
+        gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].finishedShinyMonAnim = FALSE;
 
         FreeSpriteTilesByTag(0x27F9);
         FreeSpritePaletteByTag(0x27F9);
@@ -495,9 +495,9 @@ static void sub_8064E50(void)
 static void sub_8064F40(void)
 {
     if (!gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].ballAnimActive
-        && !gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].flag_x80)
+        && !gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].triedShinyMonAnim)
     {
-        sub_8172EF0(gActiveBattler, &gEnemyParty[gBattlerPartyIndexes[gActiveBattler]]);
+        TryShinyAnimation(gActiveBattler, &gEnemyParty[gBattlerPartyIndexes[gActiveBattler]]);
     }
 
     if (gSprites[gUnknown_03005D7C[gActiveBattler]].callback == SpriteCallbackDummy
@@ -1267,9 +1267,9 @@ static void LinkOpponentHandleDrawTrainerPic(void)
     else
     {
         xPos = 176;
-        if (gTrainerBattleOpponent_A == TRAINER_OPPONENT_C00)
+        if (gTrainerBattleOpponent_A == TRAINER_UNION_ROOM)
         {
-            trainerPicId = sub_8068B48();
+            trainerPicId = GetUnionRoomTrainerPic();
         }
         else if ((gLinkPlayers[GetMultiplayerId() ^ BIT_SIDE].version & 0xFF) == VERSION_FIRE_RED
                  || (gLinkPlayers[GetMultiplayerId() ^ BIT_SIDE].version & 0xFF) == VERSION_LEAF_GREEN)
@@ -1357,7 +1357,7 @@ static void LinkOpponentHandleFaintAnimation(void)
         if (!gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].specialAnimActive)
         {
             gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].animationState = 0;
-            PlaySE12WithPanning(SE_POKE_DEAD, SOUND_PAN_TARGET);
+            PlaySE12WithPanning(SE_FAINT, SOUND_PAN_TARGET);
             gSprites[gBattlerSpriteIds[gActiveBattler]].callback = SpriteCB_FaintOpponentMon;
             gBattlerControllerFuncs[gActiveBattler] = sub_8064C14;
         }
@@ -1604,27 +1604,27 @@ static void LinkOpponentHandleOneReturnValue_Duplicate(void)
     LinkOpponentBufferExecCompleted();
 }
 
-static void LinkOpponentHandleCmd37(void)
+static void LinkOpponentHandleClearUnkVar(void)
 {
-    gUnknown_02022D0C.field_0 = 0;
+    gUnusedControllerStruct.unk = 0;
     LinkOpponentBufferExecCompleted();
 }
 
-static void LinkOpponentHandleCmd38(void)
+static void LinkOpponentHandleSetUnkVar(void)
 {
-    gUnknown_02022D0C.field_0 = gBattleBufferA[gActiveBattler][1];
+    gUnusedControllerStruct.unk = gBattleBufferA[gActiveBattler][1];
     LinkOpponentBufferExecCompleted();
 }
 
-static void LinkOpponentHandleCmd39(void)
+static void LinkOpponentHandleClearUnkFlag(void)
 {
-    gUnknown_02022D0C.flag_x80 = 0;
+    gUnusedControllerStruct.flag = 0;
     LinkOpponentBufferExecCompleted();
 }
 
-static void LinkOpponentHandleCmd40(void)
+static void LinkOpponentHandleToggleUnkFlag(void)
 {
-    gUnknown_02022D0C.flag_x80 ^= 1;
+    gUnusedControllerStruct.flag ^= 1;
     LinkOpponentBufferExecCompleted();
 }
 

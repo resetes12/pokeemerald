@@ -70,10 +70,10 @@ static void WallyHandleTwoReturnValues(void);
 static void WallyHandleChosenMonReturnValue(void);
 static void WallyHandleOneReturnValue(void);
 static void WallyHandleOneReturnValue_Duplicate(void);
-static void WallyHandleCmd37(void);
-static void WallyHandleCmd38(void);
-static void WallyHandleCmd39(void);
-static void WallyHandleCmd40(void);
+static void WallyHandleClearUnkVar(void);
+static void WallyHandleSetUnkVar(void);
+static void WallyHandleClearUnkFlag(void);
+static void WallyHandleToggleUnkFlag(void);
 static void WallyHandleHitAnimation(void);
 static void WallyHandleCmd42(void);
 static void WallyHandlePlaySE(void);
@@ -102,63 +102,63 @@ static void sub_816AC04(u8 taskId);
 
 static void (*const sWallyBufferCommands[CONTROLLER_CMDS_COUNT])(void) =
 {
-    WallyHandleGetMonData,
-    WallyHandleGetRawMonData,
-    WallyHandleSetMonData,
-    WallyHandleSetRawMonData,
-    WallyHandleLoadMonSprite,
-    WallyHandleSwitchInAnim,
-    WallyHandleReturnMonToBall,
-    WallyHandleDrawTrainerPic,
-    WallyHandleTrainerSlide,
-    WallyHandleTrainerSlideBack,
-    WallyHandleFaintAnimation,
-    WallyHandlePaletteFade,
-    WallyHandleSuccessBallThrowAnim,
-    WallyHandleBallThrowAnim,
-    WallyHandlePause,
-    WallyHandleMoveAnimation,
-    WallyHandlePrintString,
-    WallyHandlePrintSelectionString,
-    WallyHandleChooseAction,
-    WallyHandleUnknownYesNoBox,
-    WallyHandleChooseMove,
-    WallyHandleChooseItem,
-    WallyHandleChoosePokemon,
-    WallyHandleCmd23,
-    WallyHandleHealthBarUpdate,
-    WallyHandleExpUpdate,
-    WallyHandleStatusIconUpdate,
-    WallyHandleStatusAnimation,
-    WallyHandleStatusXor,
-    WallyHandleDataTransfer,
-    WallyHandleDMA3Transfer,
-    WallyHandlePlayBGM,
-    WallyHandleCmd32,
-    WallyHandleTwoReturnValues,
-    WallyHandleChosenMonReturnValue,
-    WallyHandleOneReturnValue,
-    WallyHandleOneReturnValue_Duplicate,
-    WallyHandleCmd37,
-    WallyHandleCmd38,
-    WallyHandleCmd39,
-    WallyHandleCmd40,
-    WallyHandleHitAnimation,
-    WallyHandleCmd42,
-    WallyHandlePlaySE,
-    WallyHandlePlayFanfareOrBGM,
-    WallyHandleFaintingCry,
-    WallyHandleIntroSlide,
-    WallyHandleIntroTrainerBallThrow,
-    WallyHandleDrawPartyStatusSummary,
-    WallyHandleHidePartyStatusSummary,
-    WallyHandleEndBounceEffect,
-    WallyHandleSpriteInvisibility,
-    WallyHandleBattleAnimation,
-    WallyHandleLinkStandbyMsg,
-    WallyHandleResetActionMoveSelection,
-    WallyHandleCmd55,
-    WallyCmdEnd
+    [CONTROLLER_GETMONDATA]               = WallyHandleGetMonData,
+    [CONTROLLER_GETRAWMONDATA]            = WallyHandleGetRawMonData,
+    [CONTROLLER_SETMONDATA]               = WallyHandleSetMonData,
+    [CONTROLLER_SETRAWMONDATA]            = WallyHandleSetRawMonData,
+    [CONTROLLER_LOADMONSPRITE]            = WallyHandleLoadMonSprite,
+    [CONTROLLER_SWITCHINANIM]             = WallyHandleSwitchInAnim,
+    [CONTROLLER_RETURNMONTOBALL]          = WallyHandleReturnMonToBall,
+    [CONTROLLER_DRAWTRAINERPIC]           = WallyHandleDrawTrainerPic,
+    [CONTROLLER_TRAINERSLIDE]             = WallyHandleTrainerSlide,
+    [CONTROLLER_TRAINERSLIDEBACK]         = WallyHandleTrainerSlideBack,
+    [CONTROLLER_FAINTANIMATION]           = WallyHandleFaintAnimation,
+    [CONTROLLER_PALETTEFADE]              = WallyHandlePaletteFade,
+    [CONTROLLER_SUCCESSBALLTHROWANIM]     = WallyHandleSuccessBallThrowAnim,
+    [CONTROLLER_BALLTHROWANIM]            = WallyHandleBallThrowAnim,
+    [CONTROLLER_PAUSE]                    = WallyHandlePause,
+    [CONTROLLER_MOVEANIMATION]            = WallyHandleMoveAnimation,
+    [CONTROLLER_PRINTSTRING]              = WallyHandlePrintString,
+    [CONTROLLER_PRINTSTRINGPLAYERONLY]    = WallyHandlePrintSelectionString,
+    [CONTROLLER_CHOOSEACTION]             = WallyHandleChooseAction,
+    [CONTROLLER_UNKNOWNYESNOBOX]          = WallyHandleUnknownYesNoBox,
+    [CONTROLLER_CHOOSEMOVE]               = WallyHandleChooseMove,
+    [CONTROLLER_OPENBAG]                  = WallyHandleChooseItem,
+    [CONTROLLER_CHOOSEPOKEMON]            = WallyHandleChoosePokemon,
+    [CONTROLLER_23]                       = WallyHandleCmd23,
+    [CONTROLLER_HEALTHBARUPDATE]          = WallyHandleHealthBarUpdate,
+    [CONTROLLER_EXPUPDATE]                = WallyHandleExpUpdate,
+    [CONTROLLER_STATUSICONUPDATE]         = WallyHandleStatusIconUpdate,
+    [CONTROLLER_STATUSANIMATION]          = WallyHandleStatusAnimation,
+    [CONTROLLER_STATUSXOR]                = WallyHandleStatusXor,
+    [CONTROLLER_DATATRANSFER]             = WallyHandleDataTransfer,
+    [CONTROLLER_DMA3TRANSFER]             = WallyHandleDMA3Transfer,
+    [CONTROLLER_PLAYBGM]                  = WallyHandlePlayBGM,
+    [CONTROLLER_32]                       = WallyHandleCmd32,
+    [CONTROLLER_TWORETURNVALUES]          = WallyHandleTwoReturnValues,
+    [CONTROLLER_CHOSENMONRETURNVALUE]     = WallyHandleChosenMonReturnValue,
+    [CONTROLLER_ONERETURNVALUE]           = WallyHandleOneReturnValue,
+    [CONTROLLER_ONERETURNVALUE_DUPLICATE] = WallyHandleOneReturnValue_Duplicate,
+    [CONTROLLER_CLEARUNKVAR]              = WallyHandleClearUnkVar,
+    [CONTROLLER_SETUNKVAR]                = WallyHandleSetUnkVar,
+    [CONTROLLER_CLEARUNKFLAG]             = WallyHandleClearUnkFlag,
+    [CONTROLLER_TOGGLEUNKFLAG]            = WallyHandleToggleUnkFlag,
+    [CONTROLLER_HITANIMATION]             = WallyHandleHitAnimation,
+    [CONTROLLER_42]                       = WallyHandleCmd42,
+    [CONTROLLER_PLAYSE]                   = WallyHandlePlaySE,
+    [CONTROLLER_PLAYFANFAREORBGM]         = WallyHandlePlayFanfareOrBGM,
+    [CONTROLLER_FAINTINGCRY]              = WallyHandleFaintingCry,
+    [CONTROLLER_INTROSLIDE]               = WallyHandleIntroSlide,
+    [CONTROLLER_INTROTRAINERBALLTHROW]    = WallyHandleIntroTrainerBallThrow,
+    [CONTROLLER_DRAWPARTYSTATUSSUMMARY]   = WallyHandleDrawPartyStatusSummary,
+    [CONTROLLER_HIDEPARTYSTATUSSUMMARY]   = WallyHandleHidePartyStatusSummary,
+    [CONTROLLER_ENDBOUNCE]                = WallyHandleEndBounceEffect,
+    [CONTROLLER_SPRITEINVISIBILITY]       = WallyHandleSpriteInvisibility,
+    [CONTROLLER_BATTLEANIMATION]          = WallyHandleBattleAnimation,
+    [CONTROLLER_LINKSTANDBYMSG]           = WallyHandleLinkStandbyMsg,
+    [CONTROLLER_RESETACTIONMOVESELECTION] = WallyHandleResetActionMoveSelection,
+    [CONTROLLER_55]                       = WallyHandleCmd55,
+    [CONTROLLER_TERMINATOR_NOP]           = WallyCmdEnd
 };
 
 static void SpriteCB_Null7(void)
@@ -285,10 +285,13 @@ static void CompleteOnChosenItem(void)
 
 static void sub_816864C(void)
 {
-    if (!gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].flag_x80 && !gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].ballAnimActive)
-        sub_8172EF0(gActiveBattler, &gPlayerParty[gBattlerPartyIndexes[gActiveBattler]]);
-    if (!gBattleSpritesDataPtr->healthBoxesData[gActiveBattler ^ BIT_FLANK].flag_x80 && !gBattleSpritesDataPtr->healthBoxesData[gActiveBattler ^ BIT_FLANK].ballAnimActive)
-        sub_8172EF0(gActiveBattler ^ BIT_FLANK, &gPlayerParty[gBattlerPartyIndexes[gActiveBattler ^ BIT_FLANK]]);
+    if (!gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].triedShinyMonAnim 
+     && !gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].ballAnimActive)
+        TryShinyAnimation(gActiveBattler, &gPlayerParty[gBattlerPartyIndexes[gActiveBattler]]);
+
+    if (!gBattleSpritesDataPtr->healthBoxesData[gActiveBattler ^ BIT_FLANK].triedShinyMonAnim 
+     && !gBattleSpritesDataPtr->healthBoxesData[gActiveBattler ^ BIT_FLANK].ballAnimActive)
+        TryShinyAnimation(gActiveBattler ^ BIT_FLANK, &gPlayerParty[gBattlerPartyIndexes[gActiveBattler ^ BIT_FLANK]]);
 
     if (!gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].ballAnimActive
         && !gBattleSpritesDataPtr->healthBoxesData[gActiveBattler ^ BIT_FLANK].ballAnimActive
@@ -320,14 +323,14 @@ static void sub_8168818(void)
     if (gSprites[gHealthboxSpriteIds[gActiveBattler]].callback == SpriteCallbackDummy)
         r4 = TRUE;
 
-    if (r4 && gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].field_1_x1
-        && gBattleSpritesDataPtr->healthBoxesData[gActiveBattler ^ BIT_FLANK].field_1_x1)
+    if (r4 && gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].finishedShinyMonAnim
+        && gBattleSpritesDataPtr->healthBoxesData[gActiveBattler ^ BIT_FLANK].finishedShinyMonAnim)
     {
-        gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].flag_x80 = 0;
-        gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].field_1_x1 = 0;
+        gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].triedShinyMonAnim = FALSE;
+        gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].finishedShinyMonAnim = FALSE;
 
-        gBattleSpritesDataPtr->healthBoxesData[gActiveBattler ^ BIT_FLANK].flag_x80 = 0;
-        gBattleSpritesDataPtr->healthBoxesData[gActiveBattler ^ BIT_FLANK].field_1_x1 = 0;
+        gBattleSpritesDataPtr->healthBoxesData[gActiveBattler ^ BIT_FLANK].triedShinyMonAnim = FALSE;
+        gBattleSpritesDataPtr->healthBoxesData[gActiveBattler ^ BIT_FLANK].finishedShinyMonAnim = FALSE;
 
         FreeSpriteTilesByTag(0x27F9);
         FreeSpritePaletteByTag(0x27F9);
@@ -1076,7 +1079,7 @@ static void WallyHandleSuccessBallThrowAnim(void)
 {
     gBattleSpritesDataPtr->animationData->ballThrowCaseId = BALL_3_SHAKES_SUCCESS;
     gDoingBattleAnim = TRUE;
-    InitAndLaunchSpecialAnimation(gActiveBattler, gActiveBattler, GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT), B_ANIM_SAFARI_BALL_THROW);
+    InitAndLaunchSpecialAnimation(gActiveBattler, gActiveBattler, GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT), B_ANIM_BALL_THROW_WITH_TRAINER);
     gBattlerControllerFuncs[gActiveBattler] = CompleteOnFinishedAnimation;
 }
 
@@ -1086,7 +1089,7 @@ static void WallyHandleBallThrowAnim(void)
 
     gBattleSpritesDataPtr->animationData->ballThrowCaseId = ballThrowCaseId;
     gDoingBattleAnim = TRUE;
-    InitAndLaunchSpecialAnimation(gActiveBattler, gActiveBattler, GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT), B_ANIM_SAFARI_BALL_THROW);
+    InitAndLaunchSpecialAnimation(gActiveBattler, gActiveBattler, GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT), B_ANIM_BALL_THROW_WITH_TRAINER);
     gBattlerControllerFuncs[gActiveBattler] = CompleteOnFinishedAnimation;
 }
 
@@ -1343,22 +1346,22 @@ static void WallyHandleOneReturnValue_Duplicate(void)
     WallyBufferExecCompleted();
 }
 
-static void WallyHandleCmd37(void)
+static void WallyHandleClearUnkVar(void)
 {
     WallyBufferExecCompleted();
 }
 
-static void WallyHandleCmd38(void)
+static void WallyHandleSetUnkVar(void)
 {
     WallyBufferExecCompleted();
 }
 
-static void WallyHandleCmd39(void)
+static void WallyHandleClearUnkFlag(void)
 {
     WallyBufferExecCompleted();
 }
 
-static void WallyHandleCmd40(void)
+static void WallyHandleToggleUnkFlag(void)
 {
     WallyBufferExecCompleted();
 }

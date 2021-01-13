@@ -917,9 +917,9 @@ static void DecorationItemsMenu_PrintDecorationInUse(u8 windowId, s32 itemIndex,
     if (itemIndex != -2)
     {
         if (IsDecorationIndexInSecretBase(itemIndex + 1) == TRUE)
-            blit_move_info_icon(windowId, 0x18, 0x5c, y + 2);
+            BlitMenuInfoIcon(windowId, MENU_INFO_ICON_BALL_RED, 92, y + 2);
         else if (IsDecorationIndexInPlayersRoom(itemIndex + 1) == TRUE)
-            blit_move_info_icon(windowId, 0x19, 0x5c, y + 2);
+            BlitMenuInfoIcon(windowId, MENU_INFO_ICON_BALL_BLUE, 92, y + 2);
     }
 }
 
@@ -1147,7 +1147,7 @@ static void DontTossDecoration(u8 taskId)
 
 static void ReturnToDecorationItemsAfterInvalidSelection(u8 taskId)
 {
-    if (gMain.newKeys & (A_BUTTON | B_BUTTON))
+    if (JOY_NEW(A_BUTTON | B_BUTTON))
     {
         ClearDialogWindowAndFrame(0, 0);
         AddDecorationWindow(WINDOW_DECORATION_CATEGORIES);
@@ -1210,7 +1210,7 @@ static void ShowDecorationOnMap_(u16 mapX, u16 mapY, u8 decWidth, u8 decHeight, 
         for (i = 0; i < decWidth; i++)
         {
             x = mapX + i;
-            behavior = GetBehaviorByMetatileId(0x200 + gDecorations[decoration].tiles[j * decWidth + i]);
+            behavior = GetBehaviorByMetatileId(NUM_TILES_IN_PRIMARY + gDecorations[decoration].tiles[j * decWidth + i]);
             if (MetatileBehavior_IsSecretBaseImpassable(behavior) == TRUE || (gDecorations[decoration].permission != DECORPERM_PASS_FLOOR && (behavior >> METATILE_ELEVATION_SHIFT)))
                 impassableFlag = METATILE_COLLISION_MASK;
             else
@@ -1224,9 +1224,9 @@ static void ShowDecorationOnMap_(u16 mapX, u16 mapY, u8 decWidth, u8 decHeight, 
 
             elevation = GetDecorationElevation(gDecorations[decoration].id, j * decWidth + i);
             if (elevation != 0xFFFF)
-                MapGridSetMetatileEntryAt(x, y, (gDecorations[decoration].tiles[j * decWidth + i] + (0x200 | overlapsWall)) | impassableFlag | elevation);
+                MapGridSetMetatileEntryAt(x, y, (gDecorations[decoration].tiles[j * decWidth + i] + (NUM_TILES_IN_PRIMARY | overlapsWall)) | impassableFlag | elevation);
             else
-                MapGridSetMetatileIdAt(x, y, (gDecorations[decoration].tiles[j * decWidth + i] + (0x200 | overlapsWall)) | impassableFlag);
+                MapGridSetMetatileIdAt(x, y, (gDecorations[decoration].tiles[j * decWidth + i] + (NUM_TILES_IN_PRIMARY | overlapsWall)) | impassableFlag);
         }
     }
 }
@@ -1524,7 +1524,7 @@ static bool8 CanPlaceDecoration(u8 taskId, const struct Decoration *decoration)
             {
                 curX = gTasks[taskId].tCursorX + j;
                 behaviorAt = MapGridGetMetatileBehaviorAt(curX, curY);
-                behaviorBy = GetBehaviorByMetatileId(0x200 + decoration->tiles[(mapY - 1 - i) * mapX + j]) & METATILE_ELEVATION_MASK;
+                behaviorBy = GetBehaviorByMetatileId(NUM_TILES_IN_PRIMARY + decoration->tiles[(mapY - 1 - i) * mapX + j]) & METATILE_ELEVATION_MASK;
                 if (!IsFloorOrBoardAndHole(behaviorAt, decoration))
                     return FALSE;
 
@@ -1545,7 +1545,7 @@ static bool8 CanPlaceDecoration(u8 taskId, const struct Decoration *decoration)
             {
                 curX = gTasks[taskId].tCursorX + j;
                 behaviorAt = MapGridGetMetatileBehaviorAt(curX, curY);
-                behaviorBy = GetBehaviorByMetatileId(0x200 + decoration->tiles[(mapY - 1 - i) * mapX + j]) & METATILE_ELEVATION_MASK;
+                behaviorBy = GetBehaviorByMetatileId(NUM_TILES_IN_PRIMARY + decoration->tiles[(mapY - 1 - i) * mapX + j]) & METATILE_ELEVATION_MASK;
                 if (!MetatileBehavior_IsNormal(behaviorAt) && !IsNonBlockNonElevated(behaviorAt, behaviorBy))
                     return FALSE;
 
@@ -1562,7 +1562,7 @@ static bool8 CanPlaceDecoration(u8 taskId, const struct Decoration *decoration)
         {
             curX = gTasks[taskId].tCursorX + j;
             behaviorAt = MapGridGetMetatileBehaviorAt(curX, curY);
-            behaviorBy = GetBehaviorByMetatileId(0x200 + decoration->tiles[j]) & METATILE_ELEVATION_MASK;
+            behaviorBy = GetBehaviorByMetatileId(NUM_TILES_IN_PRIMARY + decoration->tiles[j]) & METATILE_ELEVATION_MASK;
             if (!MetatileBehavior_IsNormal(behaviorAt) && !MetatileBehavior_IsSecretBaseNorthWall(behaviorAt))
                 return FALSE;
 
@@ -1623,7 +1623,7 @@ static void AttemptPlaceDecoration_(u8 taskId)
     }
     else
     {
-        PlaySE(SE_HAZURE);
+        PlaySE(SE_FAILURE);
         StringExpandPlaceholders(gStringVar4, gText_CantBePlacedHere);
         DisplayItemMessageOnField(taskId, gStringVar4, CantPlaceDecorationPrompt);
     }
@@ -1803,7 +1803,7 @@ static bool8 ApplyCursorMovement_IsInvalid(u8 taskId)
 
 static bool8 IsHoldingDirection(void)
 {
-    u16 heldKeys = gMain.heldKeys & DPAD_ANY;
+    u16 heldKeys = JOY_HELD(DPAD_ANY);
     if (heldKeys != DPAD_UP && heldKeys != DPAD_DOWN && heldKeys != DPAD_LEFT && heldKeys != DPAD_RIGHT)
         return FALSE;
 
@@ -1827,13 +1827,14 @@ static void Task_SelectLocation(u8 taskId)
             sPlacePutAwayYesNoFunctions[tDecorationItemsMenuCommand].yesFunc(taskId);
             return;
         }
-        else if (tButton == B_BUTTON)
+
+        if (tButton == B_BUTTON)
         {
             sPlacePutAwayYesNoFunctions[tDecorationItemsMenuCommand].noFunc(taskId);
             return;
         }
 
-        if ((gMain.heldKeys & DPAD_ANY) == DPAD_UP)
+        if ((JOY_HELD(DPAD_ANY)) == DPAD_UP)
         {
             sDecorationLastDirectionMoved = DIR_SOUTH;
             gSprites[sDecor_CameraSpriteObjectIdx1].data[2] =  0;
@@ -1841,7 +1842,7 @@ static void Task_SelectLocation(u8 taskId)
             tCursorY--;
         }
 
-        if ((gMain.heldKeys & DPAD_ANY) == DPAD_DOWN)
+        if ((JOY_HELD(DPAD_ANY)) == DPAD_DOWN)
         {
             sDecorationLastDirectionMoved = DIR_NORTH;
             gSprites[sDecor_CameraSpriteObjectIdx1].data[2] =  0;
@@ -1849,7 +1850,7 @@ static void Task_SelectLocation(u8 taskId)
             tCursorY++;
         }
 
-        if ((gMain.heldKeys & DPAD_ANY) == DPAD_LEFT)
+        if ((JOY_HELD(DPAD_ANY)) == DPAD_LEFT)
         {
             sDecorationLastDirectionMoved = DIR_WEST;
             gSprites[sDecor_CameraSpriteObjectIdx1].data[2] = -2;
@@ -1857,7 +1858,7 @@ static void Task_SelectLocation(u8 taskId)
             tCursorX--;
         }
 
-        if ((gMain.heldKeys & DPAD_ANY) == DPAD_RIGHT)
+        if ((JOY_HELD(DPAD_ANY)) == DPAD_RIGHT)
         {
             sDecorationLastDirectionMoved = DIR_EAST;
             gSprites[sDecor_CameraSpriteObjectIdx1].data[2] =  2;
@@ -1877,10 +1878,10 @@ static void Task_SelectLocation(u8 taskId)
 
     if (!tButton)
     {
-        if (gMain.newKeys & A_BUTTON)
+        if (JOY_NEW(A_BUTTON))
             tButton = A_BUTTON;
 
-        if (gMain.newKeys & B_BUTTON)
+        if (JOY_NEW(B_BUTTON))
             tButton = B_BUTTON;
     }
 }
@@ -1895,7 +1896,7 @@ static void ContinueDecorating(u8 taskId)
 
 static void CantPlaceDecorationPrompt(u8 taskId)
 {
-    if (gMain.newKeys & A_BUTTON || gMain.newKeys & B_BUTTON)
+    if (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))
         ContinueDecorating(taskId);
 }
 
@@ -1928,7 +1929,7 @@ static void CopyTile(u8 *dest, u16 tile)
     case BG_TILE_H_FLIP(0) >> 10:
         for (i = 0; i < 8; i++)
         {
-            dest[4 * i] = (buffer[4 * (i + 1) - 1] >> 4) + ((buffer[4 * (i + 1) - 1] & 0x0F) << 4);
+            dest[4 * i + 0] = (buffer[4 * (i + 1) - 1] >> 4) + ((buffer[4 * (i + 1) - 1] & 0x0F) << 4);
             dest[4 * i + 1] = (buffer[4 * (i + 1) - 2] >> 4) + ((buffer[4 * (i + 1) - 2] & 0x0F) << 4);
             dest[4 * i + 2] = (buffer[4 * (i + 1) - 3] >> 4) + ((buffer[4 * (i + 1) - 3] & 0x0F) << 4);
             dest[4 * i + 3] = (buffer[4 * (i + 1) - 4] >> 4) + ((buffer[4 * (i + 1) - 4] & 0x0F) << 4);
@@ -1937,7 +1938,7 @@ static void CopyTile(u8 *dest, u16 tile)
     case BG_TILE_V_FLIP(0) >> 10:
         for (i = 0; i < 8; i++)
         {
-            dest[4 * i] = buffer[4 * (7 - i)];
+            dest[4 * i + 0] = buffer[4 * (7 - i) + 0];
             dest[4 * i + 1] = buffer[4 * (7 - i) + 1];
             dest[4 * i + 2] = buffer[4 * (7 - i) + 2];
             dest[4 * i + 3] = buffer[4 * (7 - i) + 3];
@@ -1970,9 +1971,9 @@ static void SetDecorSelectionMetatiles(struct PlaceDecorationGraphicsDataBuffer 
     u8 shape;
 
     shape = data->decoration->shape;
-    for (i = 0; i < gUnknown_085A71B0[shape].size; i++)
+    for (i = 0; i < sDecorTilemaps[shape].size; i++)
     {
-        data->tiles[gUnknown_085A71B0[shape].tiles[i]] = GetMetatile(data->decoration->tiles[gUnknown_085A71B0[shape].y[i]] * 8 + gUnknown_085A71B0[shape].x[i]);
+        data->tiles[sDecorTilemaps[shape].tiles[i]] = GetMetatile(data->decoration->tiles[sDecorTilemaps[shape].y[i]] * 8 + sDecorTilemaps[shape].x[i]);
     }
 }
 
@@ -2386,7 +2387,7 @@ static void AttemptPutAwayDecoration_(u8 taskId)
 
 static void ContinuePuttingAwayDecorationsPrompt(u8 taskId)
 {
-    if (gMain.newKeys & A_BUTTON || gMain.newKeys & B_BUTTON)
+    if (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))
         ContinuePuttingAwayDecorations(taskId);
 }
 
