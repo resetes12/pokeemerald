@@ -427,11 +427,12 @@ u8 MovementType_Invisible_Step0(struct ObjectEvent *, struct Sprite *);
 u8 MovementType_Invisible_Step1(struct ObjectEvent *, struct Sprite *);
 u8 MovementType_Invisible_Step2(struct ObjectEvent *, struct Sprite *);
 
-void SetObjectEventSpriteInvisibility(u8 objectEventId, bool32 invisible);
-bool32 IsObjectEventSpriteInvisible(u8 objectEventId);
-void SetObjectEventSpriteGraphics(u8 objectEventId, u8 graphicsId);
-void SetObjectEventSpriteAnim(u8 objectEventId, u8 animNum);
-bool32 IsObjectEventSpriteAnimating(u8 objectEventId);
+void SetObjectEventSpriteInvisibility(u8 var, bool32 var2);
+bool32 IsObjectEventSpriteInvisible(u8 var);
+void SetObjectEventSpriteGraphics(u8 var1, u8 graphicsId);
+void SetObjectEventSpriteAnim(u8 var1, u8 var2);
+bool32 IsObjectEventSpriteAnimating(u8 var);
+u8 GetObjectEventIdByLocalId(u8 localId);
 
 // NEW
 u16 GetMiniStepCount(u8 speed);
