@@ -983,24 +983,27 @@ void TimePalette(u16 palOffset, u16 numEntries, u8 coeff, u16 blendColor) {
   u16 i;
   s8 r, g, b;
   struct PlttData *data2 = (struct PlttData *)&blendColor;
+  struct PlttData *data3;
+  struct PlttData *blendData;
+  u16 altBlendIndices = 0;
   for (i = 0; i < numEntries; i++) {
     u16 index = i + palOffset;
     struct PlttData *data1 = (struct PlttData *)&gPlttBufferUnfaded[index];
     if (i == 0) {
-      if (data1->unused_15) { // Use transparency color to blend
-        data2 = data1;
+      if (data1->unused_15) { // Color 0 is a bitmask for which colors to blend; color 15 is the alt blend color
         gPlttBufferFaded[index] = gPlttBufferUnfaded[index];
+        altBlendIndices = gPlttBufferUnfaded[index] & 0x7FFF;
+        data3 = (struct PlttData *)&gPlttBufferUnfaded[index+15];
       }
-      else if (data2->unused_15) // Set transparency/blending color
-        gPlttBufferUnfaded[index] = gPlttBufferFaded[index] = blendColor;
       continue;
     }
     r = data1->r;
     g = data1->g;
     b = data1->b;
-    gPlttBufferFaded[index] = RGB(r + (((data2->r - r) * coeff) >> 4),
-                                  g + (((data2->g - g) * coeff) >> 4),
-                                  b + (((data2->b - b) * coeff) >> 4));
+    blendData = (altBlendIndices && altBlendIndices & (1 << i)) ? data3 : data2;
+    gPlttBufferFaded[index] = RGB(r + (((blendData->r - r) * coeff) >> 4),
+                                  g + (((blendData->g - g) * coeff) >> 4),
+                                  b + (((blendData->b - b) * coeff) >> 4));
   }
 }
 
