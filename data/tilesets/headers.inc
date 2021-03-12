@@ -24,7 +24,7 @@ gTileset_Petalburg:: @ 83DF71C
 gTileset_Rustboro:: @ 83DF734
 	.byte TRUE @ is compressed
 	.byte TRUE @ is secondary tileset
-	.2byte 0 @ padding
+	.2byte 1 << 6 @ 1 << 6
 	.4byte gTilesetTiles_Rustboro
 	.4byte gTilesetPalettes_Rustboro
 	.4byte gMetatiles_Rustboro

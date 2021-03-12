@@ -884,8 +884,14 @@ void LoadTilesetPalette(struct Tileset const *tileset, u16 destOffset, u16 size)
         }
         else if (tileset->isSecondary == TRUE)
         {
+            u8 i;
             LoadPalette(((u16*)tileset->palettes) + (NUM_PALS_IN_PRIMARY * 16), destOffset, size);
-            FieldmapPaletteDummy(destOffset, size >> 1);
+            for (i = NUM_PALS_IN_PRIMARY; i < NUM_PALS_TOTAL; i++) {
+              if (tileset->lightPalettes & (1 << i)) {
+                u16 index = i * 16;
+                gPlttBufferFaded[index] = gPlttBufferUnfaded[index] |= 0x8000;
+              }
+            }
         }
         else
         {

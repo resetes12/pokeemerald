@@ -457,7 +457,7 @@ static u8 GetPaletteNumByUid(u16 uid)
 }
 
 // Like normal palette fade, but respects sprite/tile palettes immune to time of day fading
-static u8 UpdateTimeOfDayPaletteFade(void) // Like normal, but respects sprite palettes immune to fading
+static u8 UpdateTimeOfDayPaletteFade(void)
 {
     u8 paletteNum;
     u16 paletteOffset;
@@ -496,13 +496,13 @@ static u8 UpdateTimeOfDayPaletteFade(void) // Like normal, but respects sprite p
         if (gPaletteFade.yDec) {
           if (gPaletteFade.objPaletteToggle) { // sprite palettes
             if (gPaletteFade.y >= gPaletteFade.targetY || GetSpritePaletteTagByPaletteNum(paletteNum) & 0x8000)
-              BlendPalette(paletteOffset, 16, gPaletteFade.y, gPaletteFade.blendColor);
+              TimePalette(paletteOffset, 16, gPaletteFade.y, gPaletteFade.blendColor);
           // tile palettes
           } else if (gPaletteFade.y >= gPaletteFade.targetY || (paletteNum >= 13 && paletteNum <= 15)) {
-              BlendPalette(paletteOffset, 16, gPaletteFade.y, gPaletteFade.blendColor);
+              TimePalette(paletteOffset, 16, gPaletteFade.y, gPaletteFade.blendColor);
           }
         } else {
-          BlendPalette(paletteOffset, 16, gPaletteFade.y, gPaletteFade.blendColor);
+          TimePalette(paletteOffset, 16, gPaletteFade.y, gPaletteFade.blendColor);
         }
       }
     }
@@ -978,6 +978,42 @@ void BlendPalettes(u32 selectedPalettes, u8 coeff, u16 color)
     }
 }
 
+// Like BlendPalette, but ignores blendColor if the transparency high bit is set
+void TimePalette(u16 palOffset, u16 numEntries, u8 coeff, u16 blendColor) {
+  u16 i;
+  s8 r, g, b;
+  struct PlttData *data2 = (struct PlttData *)&blendColor;
+  for (i = 0; i < numEntries; i++) {
+    u16 index = i + palOffset;
+    struct PlttData *data1 = (struct PlttData *)&gPlttBufferUnfaded[index];
+    if (i == 0) {
+      if (data1->unused_15) { // Use transparency color to blend
+        data2 = data1;
+        gPlttBufferFaded[index] = gPlttBufferUnfaded[index];
+      }
+      else if (data2->unused_15) // Set transparency/blending color
+        gPlttBufferUnfaded[index] = gPlttBufferFaded[index] = blendColor;
+      continue;
+    }
+    r = data1->r;
+    g = data1->g;
+    b = data1->b;
+    gPlttBufferFaded[index] = RGB(r + (((data2->r - r) * coeff) >> 4),
+                                  g + (((data2->g - g) * coeff) >> 4),
+                                  b + (((data2->b - b) * coeff) >> 4));
+  }
+}
+
+// Apply time effect to a series of palettes
+void TimePalettes(u32 palettes, u8 coeff, u16 color) {
+  u16 paletteOffset;
+  for (paletteOffset = 0; palettes; paletteOffset += 16) {
+    if (palettes & 1)
+      TimePalette(paletteOffset, 16, coeff, color);
+    palettes >>= 1;
+  }
+}
+
 void BlendPalettesUnfaded(u32 selectedPalettes, u8 coeff, u16 color)
 {
     void *src = gPlttBufferUnfaded;
@@ -1123,8 +1159,8 @@ static bool32 IsBlendPalettesGraduallyTaskActive(u8 id)
     int i;
 
     for (i = 0; i < NUM_TASKS; i++)
-        if ((gTasks[i].isActive == TRUE) 
-            && (gTasks[i].func == Task_BlendPalettesGradually) 
+        if ((gTasks[i].isActive == TRUE)
+            && (gTasks[i].func == Task_BlendPalettesGradually)
             && (gTasks[i].tId == id))
             return TRUE;
 

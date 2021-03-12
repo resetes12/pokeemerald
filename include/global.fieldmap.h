@@ -29,6 +29,7 @@ struct Tileset
 {
     /*0x00*/ bool8 isCompressed;
     /*0x01*/ bool8 isSecondary;
+    /*0x02*/ u16 lightPalettes;
     /*0x04*/ void *tiles;
     /*0x08*/ void *palettes;
     /*0x0c*/ u16 *metatiles;
