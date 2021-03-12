@@ -1521,6 +1521,7 @@ void BlendPalettesWithTime(u32 palettes) {
         palettes &= ~(1 << (i + 16));
     }
     palettes &= ~0xE000; // Don't blend tile palettes [13,15]
+    palettes &= ~(1 << 6);
     gTimeOfDay = gTimeOfDay > TIME_OF_DAY_MAX ? TIME_OF_DAY_MAX : gTimeOfDay;
     BlendPalettes(palettes, sTimeOfDayBlendVars[gTimeOfDay].coeff, sTimeOfDayBlendVars[gTimeOfDay].blendColor);
   }
