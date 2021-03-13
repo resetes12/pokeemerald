@@ -846,7 +846,7 @@ void LoadMapFromCameraTransition(u8 mapGroup, u8 mapNum)
     RoamerMove();
     DoCurrentWeather();
     ResetFieldTasksArgs();
-    BlendPalettesWithTime(0xFFFFFFFF);
+    UpdatePalettesWithTime(0xFFFFFFFF);
     RunOnResumeMapScript();
 
     if (gMapHeader.regionMapSectionId != MAPSEC_BATTLE_FRONTIER
@@ -1512,7 +1512,7 @@ static bool8 FadePalettesWithTime(void) {
   }
 }
 
-void BlendPalettesWithTime(u32 palettes) {
+void UpdatePalettesWithTime(u32 palettes) {
   // Only blend if not transitioning between times and the map type allows
   if (gTimeOfDayState == 0 && MapHasNaturalLight(gMapHeader.mapType)) {
     u8 i;
@@ -1524,12 +1524,12 @@ void BlendPalettesWithTime(u32 palettes) {
     gTimeOfDay = min(TIME_OF_DAY_MAX, gTimeOfDay);
     if (!palettes)
       return;
-    TimePalettes(palettes, sTimeOfDayBlendVars[gTimeOfDay].coeff, sTimeOfDayBlendVars[gTimeOfDay].blendColor);
+    TimeBlendPalettes(palettes, sTimeOfDayBlendVars[gTimeOfDay].coeff, sTimeOfDayBlendVars[gTimeOfDay].blendColor);
   }
 }
 
 u8 UpdateSpritePaletteWithTime(u8 paletteNum) { // TODO: Optimize this
-  BlendPalettesWithTime(1 << (paletteNum + 16));
+  UpdatePalettesWithTime(1 << (paletteNum + 16));
   return paletteNum;
 }
 

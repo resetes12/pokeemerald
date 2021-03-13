@@ -887,9 +887,11 @@ void LoadTilesetPalette(struct Tileset const *tileset, u16 destOffset, u16 size)
             u8 i;
             LoadPalette(((u16*)tileset->palettes) + (NUM_PALS_IN_PRIMARY * 16), destOffset, size);
             for (i = NUM_PALS_IN_PRIMARY; i < NUM_PALS_TOTAL; i++) {
-              if (tileset->lightPalettes & (1 << i)) {
+              if (tileset->lightPalettes & (1 << (i - NUM_PALS_IN_PRIMARY))) { // Mark as light palette
                 u16 index = i * 16;
                 gPlttBufferFaded[index] = gPlttBufferUnfaded[index] |= 0x8000;
+                if (tileset->customLightColor & (1 << (i - NUM_PALS_IN_PRIMARY))) // Mark as custom light color
+                  gPlttBufferFaded[index+15] = gPlttBufferUnfaded[index+15] |= 0x8000;
               }
             }
         }

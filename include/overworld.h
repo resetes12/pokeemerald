@@ -136,7 +136,7 @@ void CleanupOverworldWindowsAndTilemaps(void);
 bool32 IsUpdateLinkStateCBActive(void);
 void CB1_Overworld(void);
 void CB2_OverworldBasic(void);
-void BlendPalettesWithTime(u32);
+void UpdatePalettesWithTime(u32);
 void CB2_Overworld(void);
 void SetMainCallback1(void (*cb)(void));
 void SetUnusedCallback(void *a0);

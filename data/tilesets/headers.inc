@@ -13,7 +13,7 @@ gTileset_General:: @ 83DF704
 gTileset_Petalburg:: @ 83DF71C
 	.byte TRUE @ is compressed
 	.byte TRUE @ is secondary tileset
-	.2byte 0xC0 @ lightPalettes 7,8
+  .2byte 3 @ lightPalettes 6,7
 	.4byte gTilesetTiles_Petalburg
 	.4byte gTilesetPalettes_Petalburg
 	.4byte gMetatiles_Petalburg
@@ -24,7 +24,7 @@ gTileset_Petalburg:: @ 83DF71C
 gTileset_Rustboro:: @ 83DF734
 	.byte TRUE @ is compressed
 	.byte TRUE @ is secondary tileset
-	.2byte 1 << 6 @ lightPalettes
+  .2byte 1 @ lightPalettes 6
 	.4byte gTilesetTiles_Rustboro
 	.4byte gTilesetPalettes_Rustboro
 	.4byte gMetatiles_Rustboro
@@ -46,7 +46,7 @@ gTileset_Dewford:: @ 83DF74C
 gTileset_Slateport:: @ 83DF764
 	.byte TRUE @ is compressed
 	.byte TRUE @ is secondary tileset
-	.2byte 1 << 12 @ lightPalettes
+  .2byte 0x41 @ lightPalettes 6,12
 	.4byte gTilesetTiles_Slateport
 	.4byte gTilesetPalettes_Slateport
 	.4byte gMetatiles_Slateport

@@ -29,7 +29,8 @@ struct Tileset
 {
     /*0x00*/ bool8 isCompressed;
     /*0x01*/ bool8 isSecondary;
-    /*0x02*/ u16 lightPalettes;
+    /*0x02*/ u8 lightPalettes; // Bitmask determining whether a palette should be time-blended as a light
+    /*0x03*/ u8 customLightColor; // Bitmask determining which light palettes have custom light colors (color 15)
     /*0x04*/ void *tiles;
     /*0x08*/ void *palettes;
     /*0x0c*/ u16 *metatiles;

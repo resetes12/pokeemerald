@@ -1142,7 +1142,7 @@ void Thunderstorm_Main(void)
         {
             ApplyWeatherGammaShiftIfIdle(3);
             if (gTimeOfDay != TIME_OF_DAY_DAY)
-              BlendPalettesWithTime(0xFFFFFFFF);
+              UpdatePalettesWithTime(0xFFFFFFFF);
             gWeatherPtr->thunderAllowEnd = TRUE;
             if (--gWeatherPtr->thunderShortRetries != 0)
             {
@@ -1183,7 +1183,7 @@ void Thunderstorm_Main(void)
     case TSTORM_STATE_FADE_THUNDER_LONG:
         if (--gWeatherPtr->thunderDelay == 0)
         {
-            gTimeOfDay == TIME_OF_DAY_DAY ? sub_80ABC7C(19, 3, 5) : BlendPalettesWithTime(0xFFFFFFFF);
+            gTimeOfDay == TIME_OF_DAY_DAY ? sub_80ABC7C(19, 3, 5) : UpdatePalettesWithTime(0xFFFFFFFF);
             gWeatherPtr->initStep++;
         }
         break;
