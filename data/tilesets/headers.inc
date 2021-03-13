@@ -46,7 +46,7 @@ gTileset_Dewford:: @ 83DF74C
 gTileset_Slateport:: @ 83DF764
 	.byte TRUE @ is compressed
 	.byte TRUE @ is secondary tileset
-	.2byte 0 @ padding
+	.2byte 1 << 12 @ lightPalettes
 	.4byte gTilesetTiles_Slateport
 	.4byte gTilesetPalettes_Slateport
 	.4byte gMetatiles_Slateport
