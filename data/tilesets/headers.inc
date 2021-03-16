@@ -57,7 +57,7 @@ gTileset_Slateport:: @ 83DF764
 gTileset_Mauville:: @ 83DF77C
 	.byte TRUE @ is compressed
 	.byte TRUE @ is secondary tileset
-	.2byte 0 @ padding
+	.2byte 0x12 @ lightPalettes 7,10
 	.4byte gTilesetTiles_Mauville
 	.4byte gTilesetPalettes_Mauville
 	.4byte gMetatiles_Mauville
