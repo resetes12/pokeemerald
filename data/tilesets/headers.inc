@@ -101,7 +101,7 @@ gTileset_Fortree:: @ 83DF7C4
 gTileset_Lilycove:: @ 83DF7DC
 	.byte TRUE @ is compressed
 	.byte TRUE @ is secondary tileset
-	.2byte 0 @ padding
+	.2byte 0x01 @ lightPalettes 6
 	.4byte gTilesetTiles_Lilycove
 	.4byte gTilesetPalettes_Lilycove
 	.4byte gMetatiles_Lilycove
