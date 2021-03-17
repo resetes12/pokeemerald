@@ -110,8 +110,8 @@ void (*const gWeatherPalStateFuncs[])(void) =
 {
     [WEATHER_PAL_STATE_CHANGING_WEATHER]  = UpdateWeatherGammaShift,
     [WEATHER_PAL_STATE_SCREEN_FADING_IN]  = FadeInScreenWithWeather,
-    [WEATHER_PAL_STATE_SCREEN_FADING_OUT] = DoNothing,               
-    [WEATHER_PAL_STATE_IDLE]              = DoNothing,             
+    [WEATHER_PAL_STATE_SCREEN_FADING_OUT] = DoNothing,
+    [WEATHER_PAL_STATE_IDLE]              = DoNothing,
 };
 
 // This table specifies which of the gamma shift tables should be
@@ -779,7 +779,7 @@ void FadeScreen(u8 mode, s8 delay)
 
     if (fadeOut)
     {
-        if (useWeatherPal)
+        if (TRUE || useWeatherPal) // TODO: Can copying Faded to Unfaded before fadeout cause problems ?
             CpuFastCopy(gPlttBufferFaded, gPlttBufferUnfaded, 0x400);
 
         BeginNormalPaletteFade(PALETTES_ALL, delay, 0, 16, fadeColor);
@@ -789,7 +789,7 @@ void FadeScreen(u8 mode, s8 delay)
     {
         gWeatherPtr->fadeDestColor = fadeColor;
         if (useWeatherPal)
-            gWeatherPtr->fadeScreenCounter = 0;
+          gWeatherPtr->fadeScreenCounter = 0;
         else
             BeginNormalPaletteFade(PALETTES_ALL, delay, 16, 0, fadeColor);
 

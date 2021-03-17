@@ -481,6 +481,7 @@ void Rain_InitVars(void)
     gWeatherPtr->gammaTargetIndex = gTimeOfDay == TIME_OF_DAY_DAY ? 3 : 0;
     gWeatherPtr->gammaStepDelay = 20;
     SetRainStrengthFromSoundEffect(SE_RAIN);
+    Weather_SetBlendCoeffs(8, 12); // preserve shadow darkness
 }
 
 void Rain_InitAll(void)
@@ -774,6 +775,7 @@ void Snow_InitVars(void)
     gWeatherPtr->gammaStepDelay = 20;
     gWeatherPtr->targetSnowflakeSpriteCount = 16;
     gWeatherPtr->snowflakeVisibleCounter = 0;
+    Weather_SetBlendCoeffs(8, 12); // preserve shadow darkness
 }
 
 void Snow_InitAll(void)
@@ -1049,6 +1051,7 @@ void Thunderstorm_InitVars(void)
     gWeatherPtr->weatherGfxLoaded = FALSE;  // duplicate assignment
     gWeatherPtr->thunderTriggered = FALSE;
     SetRainStrengthFromSoundEffect(SE_THUNDERSTORM);
+    Weather_SetBlendCoeffs(8, 12); // preserve shadow darkness
 }
 
 void Thunderstorm_InitAll(void)
@@ -1077,6 +1080,7 @@ void Downpour_InitVars(void)
     gWeatherPtr->gammaStepDelay = 20;
     gWeatherPtr->weatherGfxLoaded = FALSE;  // duplicate assignment
     SetRainStrengthFromSoundEffect(SE_DOWNPOUR);
+    Weather_SetBlendCoeffs(8, 12); // preserve shadow darkness
 }
 
 void Downpour_InitAll(void)
@@ -1525,8 +1529,8 @@ void Ash_InitVars(void)
     gWeatherPtr->ashUnused = 20; // Never read
     if (!gWeatherPtr->ashSpritesCreated)
     {
-        Weather_SetBlendCoeffs(0, 16);
-        SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(64, 63)); // These aren't valid blend coefficients!
+        Weather_SetBlendCoeffs(0, 12);
+        // SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(64, 63)); // These aren't valid blend coefficients!
     }
 }
 
@@ -1553,7 +1557,7 @@ void Ash_Main(void)
         if (!gWeatherPtr->ashSpritesCreated)
             CreateAshSprites();
 
-        Weather_SetTargetBlendCoeffs(16, 0, 1);
+        Weather_SetTargetBlendCoeffs(10, 12, 1);
         gWeatherPtr->initStep++;
         break;
     case 2:
@@ -1574,7 +1578,7 @@ bool8 Ash_Finish(void)
     switch (gWeatherPtr->finishStep)
     {
     case 0:
-        Weather_SetTargetBlendCoeffs(0, 16, 1);
+        Weather_SetTargetBlendCoeffs(0, 12, 1);
         gWeatherPtr->finishStep++;
         break;
     case 1:
@@ -2243,6 +2247,7 @@ void Shade_InitVars(void)
     gWeatherPtr->initStep = 0;
     gWeatherPtr->gammaTargetIndex = 3;
     gWeatherPtr->gammaStepDelay = 20;
+    Weather_SetBlendCoeffs(8, 12); // preserve shadow darkness
 }
 
 void Shade_InitAll(void)
