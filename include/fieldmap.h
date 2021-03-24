@@ -12,6 +12,7 @@
 #include "main.h"
 
 extern struct BackupMapLayout gBackupMapLayout;
+extern struct Coords16 gLightMetatiles[32];
 
 u32 MapGridGetMetatileIdAt(int, int);
 u32 MapGridGetMetatileBehaviorAt(int, int);
