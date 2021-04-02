@@ -29,7 +29,7 @@ static void UpdateAshFieldEffect_Step2(struct Sprite *);
 static void SynchroniseSurfAnim(struct ObjectEvent *, struct Sprite *);
 static void sub_81556E8(struct ObjectEvent *, struct Sprite *);
 static void CreateBobbingEffect(struct ObjectEvent *, struct Sprite *, struct Sprite *);
-static void sub_8155850(struct Sprite *);
+static void BobbingEffectSpriteCallback(struct Sprite *);
 static u32 ShowDisguiseFieldEffect(u8, u8, u8);
 
 #define sReflectionObjEventId       data[0]
@@ -1088,14 +1088,14 @@ u8 DoBobbingFieldEffect(u8 oldSpriteId)
 
     spriteId = CreateSpriteAtEnd(&gDummySpriteTemplate, 0, 0, -1);
     sprite = &gSprites[spriteId];
-    sprite->callback = sub_8155850;
+    sprite->callback = BobbingEffectSpriteCallback;
     sprite->invisible = TRUE;
     sprite->data[0] = oldSpriteId;
     sprite->data[1] = 1;
     return spriteId;
 }
 
-static void sub_8155850(struct Sprite *sprite)
+static void BobbingEffectSpriteCallback(struct Sprite *sprite)
 {
     struct Sprite *oldSprite;
 
