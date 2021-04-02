@@ -8,7 +8,7 @@ extern u8 *const gTVStringVarPtrs[3];
 
 void ClearTVShowData(void);
 void sub_80EE184(void);
-void sub_80EE35C(u16 foeSpecies, u16 species, u8 moveIdx, const u16 *movePtr, u16 betterMove);
+void TryPutBattleSeminarOnAir(u16 foeSpecies, u16 species, u8 moveIdx, const u16 *movePtr, u16 betterMove);
 void TryPutFrontierTVShowOnAir(u16 winStreak, u8 facility);
 void DoTVShow(void);
 void DoTVShowInSearchOfTrainers(void);
@@ -31,7 +31,7 @@ void AlertTVThatPlayerPlayedRoulette(u16 nCoinsSpent);
 void AlertTVOfNewCoinTotal(u16 nCoinsPaidOut);
 void TryPutSecretBaseSecretsOnAir(void);
 void TryPutTodaysRivalTrainerOnAir(void);
-void sub_80EDC60(const u16 *words);
+void TryPutTrendWatcherOnAir(const u16 *words);
 void sub_80EDA80(void);
 void ReceivePokeNewsData(void *src, u32 size, u8 masterIdx);
 void sub_80F0BB8(void);
