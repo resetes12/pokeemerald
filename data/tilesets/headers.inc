@@ -145,7 +145,7 @@ gTileset_Pacifidlog:: @ 83DF824
 gTileset_Sootopolis:: @ 83DF83C
 	.byte TRUE @ is compressed
 	.byte TRUE @ is secondary tileset
-	.2byte 0 @ padding
+	.2byte 0x101 @ lightPalettes 6, customLights 6
 	.4byte gTilesetTiles_Sootopolis
 	.4byte gTilesetPalettes_Sootopolis
 	.4byte gMetatiles_Sootopolis
