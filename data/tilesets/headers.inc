@@ -112,7 +112,7 @@ gTileset_Lilycove:: @ 83DF7DC
 gTileset_Mossdeep:: @ 83DF7F4
 	.byte TRUE @ is compressed
 	.byte TRUE @ is secondary tileset
-	.2byte 0 @ padding
+	.2byte 0 @ lightPalettes 8,9
 	.4byte gTilesetTiles_Mossdeep
 	.4byte gTilesetPalettes_Mossdeep
 	.4byte gMetatiles_Mossdeep
