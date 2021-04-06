@@ -79,7 +79,7 @@ gTileset_Lavaridge:: @ 83DF794
 gTileset_Fallarbor:: @ 83DF7AC
 	.byte TRUE @ is compressed
 	.byte TRUE @ is secondary tileset
-	.2byte 0 @ padding
+	.2byte 2 @ lightPalettes 7
 	.4byte gTilesetTiles_Fallarbor
 	.4byte gTilesetPalettes_Fallarbor
 	.4byte gMetatiles_Fallarbor
