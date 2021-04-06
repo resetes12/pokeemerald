@@ -35,7 +35,7 @@ gTileset_Rustboro:: @ 83DF734
 gTileset_Dewford:: @ 83DF74C
 	.byte TRUE @ is compressed
 	.byte TRUE @ is secondary tileset
-	.2byte 0 @ padding
+	.2byte 64 @ lightPalettes 12
 	.4byte gTilesetTiles_Dewford
 	.4byte gTilesetPalettes_Dewford
 	.4byte gMetatiles_Dewford
