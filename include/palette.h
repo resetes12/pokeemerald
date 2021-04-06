@@ -76,6 +76,7 @@ void BeginHardwarePaletteFade(u8, u8, u8, u8, u8);
 void BlendPalettes(u32 selectedPalettes, u8 coeff, u16 color);
 void BlendPalettesUnfaded(u32, u8, u16);
 void BlendPalettesGradually(u32 selectedPalettes, s8 delay, u8 coeff, u8 coeffTarget, u16 color, u8 priority, u8 id);
+void AveragePalettes(u16 *palette0, u16* palette1, u16* dest, u16 weight);
 void TimeBlendPalette(u16 palOffset, u16 numEntries, u8 coeff, u16 blendColor);
 void TintPalette_RGB_Copy(u16 palOffset, u16 numEntries, u8 coeff, u16 blendColor);
 void TimeBlendPalettes(u32 palettes, u8 coeff, u16 color);

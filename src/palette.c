@@ -978,6 +978,35 @@ void BlendPalettes(u32 selectedPalettes, u8 coeff, u16 color)
     }
 }
 
+// Computes a weighted average of two palettes, as (p0*weight + (256-weight)*p1)/256
+void AveragePalettes(u16 *palette0, u16* palette1, u16* dest, u16 weight) {
+  u8 i;
+  u32 tempColor;
+  u16 r0, g0, b0, r1, g1, b1, r, g, b;
+  u16 color0, color1, destColor;
+  *dest++ = *palette0++; // Copy palette0's transparency color as is
+  palette1++;
+  for (i = 1; i < 16; i++) { // Skip transparent color
+    color0 = *palette0++;
+    color1 = *palette1++;
+    r0 = color0 & 0x1F;
+    g0 = (color0 >> 5) & 0x1F;
+    b0 = (color0 >> 10) & 0x1F;
+    r1 = color1 & 0x1F;
+    g1 = (color1 >> 5) & 0x1F;
+    b1 = (color1 >> 10) & 0x1F;
+    r = (weight*r0 + (256-weight)*r1) >> 8;
+    g = (weight*g0 + (256-weight)*g1) >> 8;
+    b = (weight*b0 + (256-weight)*b1) >> 8;
+    r = r > 31 ? 31 : r;
+    g = g > 31 ? 31 : g;
+    b = b > 31 ? 31 : b;
+    destColor = (color0 | color1) & 0x8000;
+    destColor += r + (g << 5) + (b << 10);
+    *dest++ = destColor;
+  }
+}
+
 #define DEFAULT_LIGHT_COLOR 0x3f9f
 
 // Like BlendPalette, but ignores blendColor if the transparency high bit is set
