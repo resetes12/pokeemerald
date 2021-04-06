@@ -978,10 +978,12 @@ void BlendPalettes(u32 selectedPalettes, u8 coeff, u16 color)
     }
 }
 
+#define DEFAULT_LIGHT_COLOR 0x3f9f
+
 // Like BlendPalette, but ignores blendColor if the transparency high bit is set
 void TimeBlendPalette(u16 palOffset, u16 numEntries, u8 coeff, u16 blendColor) {
   u16 i;
-  u16 defaultBlendColor = 0x3f9f;
+  u16 defaultBlendColor = DEFAULT_LIGHT_COLOR;
   s8 r, g, b;
   struct PlttData *data2 = (struct PlttData *)&blendColor;
   struct PlttData *data3;
@@ -993,7 +995,7 @@ void TimeBlendPalette(u16 palOffset, u16 numEntries, u8 coeff, u16 blendColor) {
     if (i == 0) {
       if (data1->unused_15) { // Color 0 is a bitmask for which colors to blend; color 15 is the alt blend color
         gPlttBufferFaded[index] = gPlttBufferUnfaded[index];
-        altBlendIndices = gPlttBufferUnfaded[index] << 1; // bit 0 species color 1, etc.
+        altBlendIndices = gPlttBufferUnfaded[index] << 1; // bit 0 specifies color 1, etc.
         data3 = (struct PlttData *)&gPlttBufferUnfaded[index+15];
         if (!data3->unused_15) // use default blend color instead
           data3 = (struct PlttData *)&defaultBlendColor;
@@ -1117,6 +1119,56 @@ void TintPalette_CustomTone(u16 *palette, u16 count, u16 rTone, u16 gTone, u16 b
 
         *palette++ = RGB2(r, g, b);
     }
+}
+
+// Tints from Unfaded to Faded, using a 15-bit GBA color
+void TintPalette_RGB_Copy(u16 palOffset, u16 numEntries, u8 coeff, u16 blendColor) {
+  u16 rTone, gTone, bTone;
+  u16 defaultBlendColor = DEFAULT_LIGHT_COLOR;
+  s32 r, g, b, i;
+  u32 gray;
+  struct PlttData *data2 = (struct PlttData *)&blendColor;
+  struct PlttData *data3;
+  struct PlttData *blendData;
+  u16 altBlendIndices = 0;
+  u16* palette = &gPlttBufferUnfaded[palOffset];
+  for (i = 0; i < numEntries; i++) {
+    u16 index = i + palOffset;
+    struct PlttData *data1 = (struct PlttData *)palette;
+    if (i == 0) {
+      if (data1->unused_15) { // Color 0 is a bitmask for which colors to blend; color 15 is the alt blend color
+        gPlttBufferFaded[index] = gPlttBufferUnfaded[index];
+        altBlendIndices = gPlttBufferUnfaded[index] << 1; // bit 0 specifies color 1, etc.
+        data3 = (struct PlttData *)&gPlttBufferUnfaded[index+15];
+        if (!data3->unused_15) // use default blend color instead
+          data3 = (struct PlttData *)&defaultBlendColor;
+      }
+      palette++;
+      continue;
+    }
+    blendData = (altBlendIndices && altBlendIndices & (1 << i)) ? data3 : data2;
+    rTone = blendData->r << 3;
+    gTone = blendData->g << 3;
+    bTone = blendData->b << 3;
+
+    r = GET_R(*palette);
+    g = GET_G(*palette);
+    b = GET_B(*palette);
+    gray = (r * Q_8_8(0.3) + g * Q_8_8(0.59) + b * Q_8_8(0.1133)) >> 8;
+    r = (u16)((rTone * gray)) >> 8;
+    g = (u16)((gTone * gray)) >> 8;
+    b = (u16)((bTone * gray)) >> 8;
+
+    if (r > 31)
+        r = 31;
+    if (g > 31)
+        g = 31;
+    if (b > 31)
+        b = 31;
+
+    gPlttBufferFaded[index] = RGB2(r, g, b);
+    palette++;
+  }
 }
 
 #define tCoeff       data[0]
