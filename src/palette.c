@@ -1231,52 +1231,58 @@ void TintPalette_CustomTone(u16 *palette, u16 count, u16 rTone, u16 gTone, u16 b
 }
 
 // Tints from Unfaded to Faded, using a 15-bit GBA color
-void TintPalette_RGB_Copy(u16 palOffset, u16 numEntries, u8 coeff, u16 blendColor) {
-  u16 rTone, gTone, bTone;
-  u16 defaultBlendColor = DEFAULT_LIGHT_COLOR;
-  s32 r, g, b, i;
-  u32 gray;
-  struct PlttData *data2 = (struct PlttData *)&blendColor;
-  struct PlttData *data3;
-  struct PlttData *blendData;
-  u16 altBlendIndices = 0;
-  u16* palette = &gPlttBufferUnfaded[palOffset];
-  for (i = 0; i < numEntries; i++) {
-    u16 index = i + palOffset;
-    struct PlttData *data1 = (struct PlttData *)palette;
-    if (i == 0) {
-      if (data1->unused_15) { // Color 0 is a bitmask for which colors to blend; color 15 is the alt blend color
-        gPlttBufferFaded[index] = gPlttBufferUnfaded[index];
-        altBlendIndices = gPlttBufferUnfaded[index] << 1; // bit 0 specifies color 1, etc.
-        data3 = (struct PlttData *)&gPlttBufferUnfaded[index+15];
-        if (!data3->unused_15) // use default blend color instead
-          data3 = (struct PlttData *)&defaultBlendColor;
-      }
-      palette++;
-      continue;
+void TintPalette_RGB_Copy(u16 palOffset, u32 blendColor) {
+  s32 newR, newG, newB, rTone, gTone, bTone;
+  u16 * palDataSrc = gPlttBufferUnfaded + palOffset;
+  u16 * palDataDst = gPlttBufferFaded + palOffset;
+  u32 defaultBlendColor = DEFAULT_LIGHT_COLOR;
+  u16 *palDataSrcEnd = palDataSrc + 16;
+  u16 altBlendIndices = *palDataDst++ = *palDataSrc++; // color 0 is copied through unchanged
+  u32 altBlendColor;
+
+  newR = ((blendColor << 27) >> 27) << 3;
+  newG = ((blendColor << 22) >> 27) << 3;
+  newB = ((blendColor << 17) >> 27) << 3;
+
+  if (altBlendIndices >> 15) { // High bit set; bitmask of which colors to alt-blend
+    // Note that bit 0 of altBlendIndices specifies color 1
+    altBlendColor = palDataSrc[14]; // color 15
+    if (altBlendColor >> 15) { // Set alternate blend color
+      rTone = ((altBlendColor << 27) >> 27) << 3;
+      gTone = ((altBlendColor << 22) >> 27) << 3;
+      bTone = ((altBlendColor << 17) >> 27) << 3;
+    } else { // Set default blend color
+      rTone = ((defaultBlendColor << 27) >> 27) << 3;
+      gTone = ((defaultBlendColor << 22) >> 27) << 3;
+      bTone = ((defaultBlendColor << 17) >> 27) << 3;
     }
-    blendData = (altBlendIndices && altBlendIndices & (1 << i)) ? data3 : data2;
-    rTone = blendData->r << 3;
-    gTone = blendData->g << 3;
-    bTone = blendData->b << 3;
+  } else {
+    altBlendIndices = 0;
+  }
+  while (palDataSrc != palDataSrcEnd) {
+    u32 palDataSrcColor = *palDataSrc;
+    s32 r = (palDataSrcColor << 27) >> 27;
+    s32 g = (palDataSrcColor << 22) >> 27;
+    s32 b = (palDataSrcColor << 17) >> 27;
 
-    r = GET_R(*palette);
-    g = GET_G(*palette);
-    b = GET_B(*palette);
-    gray = (r * Q_8_8(0.3) + g * Q_8_8(0.59) + b * Q_8_8(0.1133)) >> 8;
-    r = (u16)((rTone * gray)) >> 8;
-    g = (u16)((gTone * gray)) >> 8;
-    b = (u16)((bTone * gray)) >> 8;
-
+    if (altBlendIndices & 1) {
+      r = (u16)((rTone * r)) >> 8;
+      g = (u16)((gTone * g)) >> 8;
+      b = (u16)((bTone * b)) >> 8;
+    } else { // Use provided blend color
+      r = (u16)((newR * r)) >> 8;
+      g = (u16)((newG * g)) >> 8;
+      b = (u16)((newB * b)) >> 8;
+    }
     if (r > 31)
         r = 31;
     if (g > 31)
         g = 31;
     if (b > 31)
         b = 31;
-
-    gPlttBufferFaded[index] = RGB2(r, g, b);
-    palette++;
+    palDataSrc++;
+    *palDataDst++ = RGB2(r, g, b);
+    altBlendIndices >>= 1;
   }
 }
 

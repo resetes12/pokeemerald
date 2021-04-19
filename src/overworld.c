@@ -1462,14 +1462,15 @@ void CB1_Overworld(void)
 }
 
 struct TimeOfDayBlend {
-  u8 coeff:4;
-  u16 blendColor;
+  u8 coeff:5;
+  u16 blendColor:15;
+  u16 isTint:1;
 };
 
 static const struct TimeOfDayBlend sTimeOfDayBlendVars[] =
 {
   [TIME_OF_DAY_NIGHT] = {.coeff = 10, .blendColor = 0x1400},
-  [TIME_OF_DAY_TWILIGHT] = {.coeff = 4, .blendColor = 0x155D},
+  [TIME_OF_DAY_TWILIGHT] = {.coeff = 4, .blendColor = 0x56dc, .isTint = TRUE},
   [TIME_OF_DAY_DAY] = {.coeff = 0, .blendColor = 0},
 };
 
@@ -1537,13 +1538,19 @@ void UpdatePalettesWithTime(u32 palettes) {
       return;
     for (i = 0; palettes; i++) {
       if (palettes & 1) {
-        TimeBlendPalette(i*16, sTimeOfDayBlendVars[currentTimeBlend.time0].coeff, sTimeOfDayBlendVars[currentTimeBlend.time0].blendColor);
+        if (sTimeOfDayBlendVars[currentTimeBlend.time0].isTint)
+          TintPalette_RGB_Copy(i*16, sTimeOfDayBlendVars[currentTimeBlend.time0].blendColor);
+        else
+          TimeBlendPalette(i*16, sTimeOfDayBlendVars[currentTimeBlend.time0].coeff, sTimeOfDayBlendVars[currentTimeBlend.time0].blendColor);
         if (currentTimeBlend.weight == 256) {
           palettes >>= 1;
           continue;
         }
         CpuFastCopy(&gPlttBufferFaded[i*16], tempPaletteBuffer, 32);
-        TimeBlendPalette(i*16, sTimeOfDayBlendVars[currentTimeBlend.time1].coeff, sTimeOfDayBlendVars[currentTimeBlend.time1].blendColor);
+        if (sTimeOfDayBlendVars[currentTimeBlend.time1].isTint)
+          TintPalette_RGB_Copy(i*16, sTimeOfDayBlendVars[currentTimeBlend.time1].blendColor);
+        else
+          TimeBlendPalette(i*16, sTimeOfDayBlendVars[currentTimeBlend.time1].coeff, sTimeOfDayBlendVars[currentTimeBlend.time1].blendColor);
         AveragePalettes(tempPaletteBuffer, &gPlttBufferFaded[i*16], &gPlttBufferFaded[i*16], currentTimeBlend.weight);
       }
       palettes >>= 1;
