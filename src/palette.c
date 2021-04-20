@@ -1131,6 +1131,83 @@ void TimeBlendPalettes(u32 palettes, u32 coeff, u32 blendColor) {
   } while (palettes);
 }
 
+// Blends a weighted average of two blend parameters
+void TimeMixPalettes(u32 palettes, u32 coeff0, u32 color0, u32 coeff1, u32 color1, u16 weight) {
+  s32 r0, g0, b0, r1, g1, b1, defR, defG, defB, altR, altG, altB;
+  u16 * palDataSrc;
+  u16 * palDataDst;
+  u32 defaultColor = DEFAULT_LIGHT_COLOR;
+
+  if (!palettes)
+    return;
+
+  // TODO: Check coeff for tint
+  coeff0 *= 2;
+  coeff1 *= 2;
+  r0 = (color0 << 27) >> 27;
+  g0 = (color0 << 22) >> 27;
+  b0 = (color0 << 17) >> 27;
+  r1 = (color1 << 27) >> 27;
+  g1 = (color1 << 22) >> 27;
+  b1 = (color1 << 17) >> 27;
+  defR = (defaultColor << 27) >> 27;
+  defG = (defaultColor << 22) >> 27;
+  defB = (defaultColor << 17) >> 27;
+  palDataSrc = gPlttBufferUnfaded;
+  palDataDst = gPlttBufferFaded;
+
+  do {
+    if (palettes & 1) {
+      u16 *palDataSrcEnd = palDataSrc + 16;
+      u16 altBlendIndices = *palDataDst++ = *palDataSrc++; // color 0 is copied through
+      u32 altBlendColor;
+      if (altBlendIndices >> 15) { // High bit set; bitmask of which colors to alt-blend
+        // Note that bit 0 of altBlendIndices specifies color 1
+        altBlendColor = palDataSrc[14]; // color 15
+        if (altBlendColor >> 15) { // Set alternate blend color
+          altR = (altBlendColor << 27) >> 27;
+          altG = (altBlendColor << 22) >> 27;
+          altB = (altBlendColor << 17) >> 27;
+        } else {
+          altBlendColor = 0;
+        }
+      } else {
+        altBlendIndices = 0;
+      }
+      while (palDataSrc != palDataSrcEnd) {
+        u32 palDataSrcColor = *palDataSrc;
+        s32 r = (palDataSrcColor << 27) >> 27;
+        s32 g = (palDataSrcColor << 22) >> 27;
+        s32 b = (palDataSrcColor << 17) >> 27;
+
+        if (altBlendIndices & 1) { // No need to average; colors will be the same
+          if (altBlendColor) { // Use alternate blend color
+            *palDataDst = ((r + (((altR - r) * coeff0) >> 5)) << 0)
+                        | ((g + (((altG - g) * coeff0) >> 5)) << 5)
+                        | ((b + (((altB - b) * coeff0) >> 5)) << 10);
+          } else { // Use default blend color
+            *palDataDst = ((r + (((defR - r) * coeff0) >> 5)) << 0)
+                        | ((g + (((defG - g) * coeff0) >> 5)) << 5)
+                        | ((b + (((defB - b) * coeff0) >> 5)) << 10);
+          }
+        } else { // Use provided blend colors
+          r = (weight*(r + (((r0 - r) * coeff0) >> 5)) + (256-weight)*(r + (((r1 - r) * coeff1) >> 5))) >> 8;
+          g = (weight*(g + (((g0 - g) * coeff0) >> 5)) + (256-weight)*(g + (((g1 - g) * coeff1) >> 5))) >> 8;
+          b = (weight*(b + (((b0 - b) * coeff0) >> 5)) + (256-weight)*(b + (((b1 - b) * coeff1) >> 5))) >> 8;
+          *palDataDst = RGB2(r, g, b);
+        }
+        palDataSrc++;
+        palDataDst++;
+        altBlendIndices >>= 1;
+      }
+    } else {
+      palDataSrc += 16;
+      palDataDst += 16;
+    }
+    palettes >>= 1;
+  } while (palettes);
+}
+
 void BlendPalettesUnfaded(u32 selectedPalettes, u8 coeff, u16 color)
 {
     void *src = gPlttBufferUnfaded;

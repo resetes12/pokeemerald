@@ -80,6 +80,7 @@ void AveragePalettes(u16 *palette0, u16* palette1, u16* dest, u16 weight);
 void TimeBlendPalette(u16 palOffset, u32 coeff, u32 blendColor);
 void TintPalette_RGB_Copy(u16 palOffset, u32 blendColor);
 void TimeBlendPalettes(u32 palettes, u32 coeff, u32 blendColor);
+void TimeMixPalettes(u32 palettes, u32 coeff0, u32 color0, u32 coeff1, u32 color1, u16 weight);
 void TintPalette_GrayScale(u16 *palette, u16 count);
 void TintPalette_GrayScale2(u16 *palette, u16 count);
 void TintPalette_SepiaTone(u16 *palette, u16 count);
