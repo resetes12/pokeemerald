@@ -97,39 +97,41 @@ static void LoadObjectReflectionPalette(struct ObjectEvent *objectEvent, struct 
 
 // Apply a blue tint effect to a palette
 static void ApplyPondFilter(u8 paletteNum, u16 *dest) {
-  u8 i, val, r, g, b;
-  // CpuCopy16(gPlttBufferUnfaded + 0x100 + paletteNum * 16, dest, 32);
+  u8 i;
+  s32 r, g, b;
   u16 *src = gPlttBufferUnfaded + 0x100 + paletteNum * 16;
   for (i = 0; i < 16; i++) {
-    r = src[i] & 0x1F;
-    g = (src[i] >> 5) & 0x1F;
-    b = (src[i] >> 10) & 0x1F;
+    u32 color = *src++;
+    r = (color << 27) >> 27;
+    g = (color << 22) >> 27;
+    b = (color << 17) >> 27;
     b += 10;
     if (b > 31)
       b = 31;
-    *dest++ = (b << 10) | (g << 5) | r;
+    *dest++ = r | (g << 5) | (b << 10);
   }
 }
 
 // Apply a ice tint effect to a palette
 static void ApplyIceFilter(u8 paletteNum, u16 *dest) {
-  u8 i, val, r, g, b;
-  // CpuCopy16(gPlttBufferUnfaded + 0x100 + paletteNum * 16, dest, 32);
+  u8 i;
+  s32 r, g, b;
   u16 *src = gPlttBufferUnfaded + 0x100 + paletteNum * 16;
   for (i = 0; i < 16; i++) {
-    r = src[i] & 0x1F;
+    u32 color = *src++;
+    r = (color << 27) >> 27;
+    g = (color << 22) >> 27;
+    b = (color << 17) >> 27;
     r -= 5;
-    if (r > 31)
+    if (r < 0)
       r = 0;
-    g = (src[i] >> 5) & 0x1F;
     g += 3;
     if (g > 31)
       g = 31;
-    b = (src[i] >> 10) & 0x1F;
     b += 16;
     if (b > 31)
       b = 31;
-    *dest++ = (b << 10) | (g << 5) | r;
+    *dest++ = r | (g << 5) | (b << 10);
   }
 }
 

@@ -1943,6 +1943,7 @@ void UpdateLightSprite(struct Sprite *sprite) {
     DestroySprite(sprite);
     FieldEffectFreeTilesIfUnused(sheetTileStart);
     FieldEffectFreePaletteIfUnused(paletteNum);
+    Weather_SetBlendCoeffs(7, 12); // TODO: Restore original blend coeffs at dawn
     return;
   }
 
