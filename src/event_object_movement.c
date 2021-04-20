@@ -1672,6 +1672,18 @@ static void FollowerSetGraphics(struct ObjectEvent *objectEvent, u16 species, u8
     if (IndexOfSpritePaletteTag(spritePalette->tag) == 0xFF) { // Load compressed palette
       LoadCompressedSpritePalette(spritePalette);
       sprite->oam.paletteNum = IndexOfSpritePaletteTag(spritePalette->tag); // Tag is always present
+      if (species == SPECIES_AMPHAROS) { // palette should be light-blended TODO: Add more glowing pokemon
+        // CHARIZARD_LINE ?
+        // CHINCHOU & LANTERN
+        // FLAAFY, MAREEP
+        // UMBREON
+        // VOLBEAT ?
+        // REGIS ?
+        u16 * palette = &gPlttBufferUnfaded[(sprite->oam.paletteNum+16)*16];
+        palette[0] |= 0x8000;
+        if (palette[0] & 0x4000) // If color 15 is blended, use it as the alternate color
+          palette[15] |= 0x8000;
+      }
       UpdateSpritePaletteWithTime(sprite->oam.paletteNum);
     } else
       sprite->oam.paletteNum = IndexOfSpritePaletteTag(spritePalette->tag); // Tag is always present
