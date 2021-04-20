@@ -46,6 +46,12 @@ struct PaletteFadeControl
     u8 deltaY:4; // rate of change of blend coefficient
 };
 
+struct BlendSettings {
+  u16 blendColor:15;
+  u16 isTint:1;
+  u8 coeff:5;
+};
+
 extern struct PaletteFadeControl gPaletteFade;
 extern u32 gPlttBufferTransferPending;
 extern u8 gPaletteDecompressionBuffer[];
@@ -76,11 +82,10 @@ void BeginHardwarePaletteFade(u8, u8, u8, u8, u8);
 void BlendPalettes(u32 selectedPalettes, u8 coeff, u16 color);
 void BlendPalettesUnfaded(u32, u8, u16);
 void BlendPalettesGradually(u32 selectedPalettes, s8 delay, u8 coeff, u8 coeffTarget, u16 color, u8 priority, u8 id);
-void AveragePalettes(u16 *palette0, u16* palette1, u16* dest, u16 weight);
 void TimeBlendPalette(u16 palOffset, u32 coeff, u32 blendColor);
 void TintPalette_RGB_Copy(u16 palOffset, u32 blendColor);
 void TimeBlendPalettes(u32 palettes, u32 coeff, u32 blendColor);
-void TimeMixPalettes(u32 palettes, u32 coeff0, u32 color0, u32 coeff1, u32 color1, u16 weight, bool8 tint0, bool8 tint1);
+void TimeMixPalettes(u32, u16 *, u16 *, struct BlendSettings *, struct BlendSettings *, u16);
 void TintPalette_GrayScale(u16 *palette, u16 count);
 void TintPalette_GrayScale2(u16 *palette, u16 count);
 void TintPalette_SepiaTone(u16 *palette, u16 count);

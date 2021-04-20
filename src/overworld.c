@@ -186,7 +186,6 @@ static u16 (*sPlayerKeyInterceptCallback)(u32);
 static bool8 sReceivingFromLink;
 static u8 sRfuKeepAliveTimer;
 
-static u8 gTimeOfDayState;
 static u8 timeCounter;
 static struct TimeBlendSettings currentTimeBlend;
 
@@ -1461,13 +1460,9 @@ void CB1_Overworld(void)
         DoCB1_Overworld(gMain.newKeys, gMain.heldKeys);
 }
 
-struct TimeOfDayBlend {
-  u8 coeff:5;
-  u16 blendColor:15;
-  u16 isTint:1;
-};
 
-static const struct TimeOfDayBlend sTimeOfDayBlendVars[] =
+
+static const struct BlendSettings sTimeOfDayBlendVars[] =
 {
   [TIME_OF_DAY_NIGHT] = {.coeff = 10, .blendColor = 0x1400},
   [TIME_OF_DAY_TWILIGHT] = {.coeff = 4, .blendColor = 0x56dc, .isTint = TRUE},
@@ -1516,7 +1511,6 @@ static bool8 MapHasNaturalLight(u8 mapType) { // Weather a map type is naturally
 }
 
 static bool8 FadePalettesWithTime(void) { // Only used to fade back in
-  gTimeOfDayState = 0;
   gTimeOfDay = UpdateTimeOfDay();
   if (MapHasNaturalLight(gMapHeader.mapType)) {
     ResetPaletteFade();
@@ -1536,13 +1530,11 @@ void UpdatePalettesWithTime(u32 palettes) {
     if (!palettes)
       return;
     TimeMixPalettes(palettes,
-      sTimeOfDayBlendVars[currentTimeBlend.time0].coeff,
-      sTimeOfDayBlendVars[currentTimeBlend.time0].blendColor,
-      sTimeOfDayBlendVars[currentTimeBlend.time1].coeff,
-      sTimeOfDayBlendVars[currentTimeBlend.time1].blendColor,
-      currentTimeBlend.weight,
-      sTimeOfDayBlendVars[currentTimeBlend.time0].isTint,
-      sTimeOfDayBlendVars[currentTimeBlend.time1].isTint);
+      gPlttBufferUnfaded,
+      gPlttBufferFaded,
+      (struct BlendSettings *)&sTimeOfDayBlendVars[currentTimeBlend.time0],
+      (struct BlendSettings *)&sTimeOfDayBlendVars[currentTimeBlend.time1],
+      currentTimeBlend.weight);
   }
 }
 

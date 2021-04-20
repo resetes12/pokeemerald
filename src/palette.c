@@ -966,45 +966,43 @@ static bool8 IsSoftwarePaletteFadeFinishing(void)
     }
 }
 
-void BlendPalettes(u32 selectedPalettes, u8 coeff, u16 color)
-{
-    u16 paletteOffset;
+// optimized based on lucktyphlosion's BlendPalettesFine
+static void BlendPalettesFine(u32 palettes, u16 *src, u16 *dst, u32 coeff, u32 color) {
+  s32 newR, newG, newB;
 
-    for (paletteOffset = 0; selectedPalettes; paletteOffset += 16)
-    {
-        if (selectedPalettes & 1)
-            BlendPalette(paletteOffset, 16, coeff, color);
-        selectedPalettes >>= 1;
+  if (!palettes)
+    return;
+
+  coeff *= 2;
+  newR = (color << 27) >> 27;
+  newG = (color << 22) >> 27;
+  newB = (color << 17) >> 27;
+
+  do {
+    if (palettes & 1) {
+      u16 *srcEnd = src + 16;
+      *dst++ = *src++; // transparency is copied-through
+      while (src != srcEnd) {
+        u32 srcColor = *src;
+        s32 r = (srcColor << 27) >> 27;
+        s32 g = (srcColor << 22) >> 27;
+        s32 b = (srcColor << 17) >> 27;
+
+        *dst++ = ((r + (((newR - r) * coeff) >> 5)) << 0)
+               | ((g + (((newG - g) * coeff) >> 5)) << 5)
+               | ((b + (((newB - b) * coeff) >> 5)) << 10);
+        src++;
+      }
+    } else {
+      src += 16;
+      dst + 16;
     }
+    palettes >>= 1;
+  } while (palettes);
 }
 
-// Computes a weighted average of two palettes, as (p0*weight + (256-weight)*p1)/256
-void AveragePalettes(u16 *palette0, u16* palette1, u16* dest, u16 weight) {
-  u8 i;
-  u32 tempColor;
-  u16 r0, g0, b0, r1, g1, b1, r, g, b;
-  u16 color0, color1, destColor;
-  *dest++ = *palette0++; // Copy palette0's transparency color as is
-  palette1++;
-  for (i = 1; i < 16; i++) { // Skip transparent color
-    color0 = *palette0++;
-    color1 = *palette1++;
-    r0 = color0 & 0x1F;
-    g0 = (color0 >> 5) & 0x1F;
-    b0 = (color0 >> 10) & 0x1F;
-    r1 = color1 & 0x1F;
-    g1 = (color1 >> 5) & 0x1F;
-    b1 = (color1 >> 10) & 0x1F;
-    r = (weight*r0 + (256-weight)*r1) >> 8;
-    g = (weight*g0 + (256-weight)*g1) >> 8;
-    b = (weight*b0 + (256-weight)*b1) >> 8;
-    r = r > 31 ? 31 : r;
-    g = g > 31 ? 31 : g;
-    b = b > 31 ? 31 : b;
-    destColor = (color0 | color1) & 0x8000;
-    destColor += r + (g << 5) + (b << 10);
-    *dest++ = destColor;
-  }
+void BlendPalettes(u32 palettes, u8 coeff, u16 color) {
+  BlendPalettesFine(palettes, gPlttBufferUnfaded, gPlttBufferFaded, coeff, color);
 }
 
 #define DEFAULT_LIGHT_COLOR 0x3f9f
@@ -1013,11 +1011,11 @@ void AveragePalettes(u16 *palette0, u16* palette1, u16* dest, u16 weight) {
 // Optimization help by lucktyphlosion
 void TimeBlendPalette(u16 palOffset, u32 coeff, u32 blendColor) {
   s32 newR, newG, newB, defR, defG, defB;
-  u16 * palDataSrc = gPlttBufferUnfaded + palOffset;
-  u16 * palDataDst = gPlttBufferFaded + palOffset;
+  u16 * src = gPlttBufferUnfaded + palOffset;
+  u16 * dst = gPlttBufferFaded + palOffset;
   u32 defaultBlendColor = DEFAULT_LIGHT_COLOR;
-  u16 *palDataSrcEnd = palDataSrc + 16;
-  u16 altBlendIndices = *palDataDst++ = *palDataSrc++; // color 0 is copied through unchanged
+  u16 *srcEnd = src + 16;
+  u16 altBlendIndices = *dst++ = *src++; // color 0 is copied through unchanged
   u32 altBlendColor;
 
   coeff *= 2;
@@ -1027,7 +1025,7 @@ void TimeBlendPalette(u16 palOffset, u32 coeff, u32 blendColor) {
 
   if (altBlendIndices >> 15) { // High bit set; bitmask of which colors to alt-blend
     // Note that bit 0 of altBlendIndices specifies color 1
-    altBlendColor = palDataSrc[14]; // color 15
+    altBlendColor = src[14]; // color 15
     if (altBlendColor >> 15) { // Set alternate blend color
       defR = (altBlendColor << 27) >> 27;
       defG = (altBlendColor << 22) >> 27;
@@ -1040,31 +1038,31 @@ void TimeBlendPalette(u16 palOffset, u32 coeff, u32 blendColor) {
   } else {
     altBlendIndices = 0;
   }
-  while (palDataSrc != palDataSrcEnd) {
-    u32 palDataSrcColor = *palDataSrc;
-    s32 r = (palDataSrcColor << 27) >> 27;
-    s32 g = (palDataSrcColor << 22) >> 27;
-    s32 b = (palDataSrcColor << 17) >> 27;
+  while (src != srcEnd) {
+    u32 srcColor = *src;
+    s32 r = (srcColor << 27) >> 27;
+    s32 g = (srcColor << 22) >> 27;
+    s32 b = (srcColor << 17) >> 27;
 
     if (altBlendIndices & 1) {
-      *palDataDst = ((r + (((defR - r) * coeff) >> 5)) << 0)
+      *dst = ((r + (((defR - r) * coeff) >> 5)) << 0)
                   | ((g + (((defG - g) * coeff) >> 5)) << 5)
                   | ((b + (((defB - b) * coeff) >> 5)) << 10);
     } else { // Use provided blend color
-      *palDataDst = ((r + (((newR - r) * coeff) >> 5)) << 0)
+      *dst = ((r + (((newR - r) * coeff) >> 5)) << 0)
                   | ((g + (((newG - g) * coeff) >> 5)) << 5)
                   | ((b + (((newB - b) * coeff) >> 5)) << 10);
     }
-    palDataSrc++;
-    palDataDst++;
+    src++;
+    dst++;
     altBlendIndices >>= 1;
   }
 }
 
 void TimeBlendPalettes(u32 palettes, u32 coeff, u32 blendColor) {
   s32 newR, newG, newB, defR, defG, defB, altR, altG, altB;
-  u16 * palDataSrc;
-  u16 * palDataDst;
+  u16 * src;
+  u16 * dst;
   u32 defaultBlendColor = DEFAULT_LIGHT_COLOR;
 
   if (!palettes)
@@ -1077,17 +1075,17 @@ void TimeBlendPalettes(u32 palettes, u32 coeff, u32 blendColor) {
   defR = (defaultBlendColor << 27) >> 27;
   defG = (defaultBlendColor << 22) >> 27;
   defB = (defaultBlendColor << 17) >> 27;
-  palDataSrc = gPlttBufferUnfaded;
-  palDataDst = gPlttBufferFaded;
+  src = gPlttBufferUnfaded;
+  dst = gPlttBufferFaded;
 
   do {
     if (palettes & 1) {
-      u16 *palDataSrcEnd = palDataSrc + 16;
-      u16 altBlendIndices = *palDataDst++ = *palDataSrc++; // color 0 is copied through
+      u16 *srcEnd = src + 16;
+      u16 altBlendIndices = *dst++ = *src++; // color 0 is copied through
       u32 altBlendColor;
       if (altBlendIndices >> 15) { // High bit set; bitmask of which colors to alt-blend
         // Note that bit 0 of altBlendIndices specifies color 1
-        altBlendColor = palDataSrc[14]; // color 15
+        altBlendColor = src[14]; // color 15
         if (altBlendColor >> 15) { // Set alternate blend color
           altR = (altBlendColor << 27) >> 27;
           altG = (altBlendColor << 22) >> 27;
@@ -1098,51 +1096,58 @@ void TimeBlendPalettes(u32 palettes, u32 coeff, u32 blendColor) {
       } else {
         altBlendIndices = 0;
       }
-      while (palDataSrc != palDataSrcEnd) {
-        u32 palDataSrcColor = *palDataSrc;
-        s32 r = (palDataSrcColor << 27) >> 27;
-        s32 g = (palDataSrcColor << 22) >> 27;
-        s32 b = (palDataSrcColor << 17) >> 27;
+      while (src != srcEnd) {
+        u32 srcColor = *src;
+        s32 r = (srcColor << 27) >> 27;
+        s32 g = (srcColor << 22) >> 27;
+        s32 b = (srcColor << 17) >> 27;
 
         if (altBlendIndices & 1) {
           if (altBlendColor) { // Use alternate blend color
-            *palDataDst = ((r + (((altR - r) * coeff) >> 5)) << 0)
+            *dst = ((r + (((altR - r) * coeff) >> 5)) << 0)
                         | ((g + (((altG - g) * coeff) >> 5)) << 5)
                         | ((b + (((altB - b) * coeff) >> 5)) << 10);
           } else { // Use default blend color
-            *palDataDst = ((r + (((defR - r) * coeff) >> 5)) << 0)
+            *dst = ((r + (((defR - r) * coeff) >> 5)) << 0)
                         | ((g + (((defG - g) * coeff) >> 5)) << 5)
                         | ((b + (((defB - b) * coeff) >> 5)) << 10);
           }
         } else { // Use provided blend color
-          *palDataDst = ((r + (((newR - r) * coeff) >> 5)) << 0)
+          *dst = ((r + (((newR - r) * coeff) >> 5)) << 0)
                       | ((g + (((newG - g) * coeff) >> 5)) << 5)
                       | ((b + (((newB - b) * coeff) >> 5)) << 10);
         }
-        palDataSrc++;
-        palDataDst++;
+        src++;
+        dst++;
         altBlendIndices >>= 1;
       }
     } else {
-      palDataSrc += 16;
-      palDataDst += 16;
+      src += 16;
+      dst += 16;
     }
     palettes >>= 1;
   } while (palettes);
 }
 
 // Blends a weighted average of two blend parameters
-void TimeMixPalettes(u32 palettes, u32 coeff0, u32 color0, u32 coeff1, u32 color1, u16 weight, bool8 tint0, bool8 tint1) {
+// TODO: Should pointers be marked as const?
+void TimeMixPalettes(u32 palettes, u16 *src, u16 *dst, struct BlendSettings *blend0, struct BlendSettings *blend1, u16 weight0) {
   s32 r0, g0, b0, r1, g1, b1, defR, defG, defB, altR, altG, altB;
-  u16 * palDataSrc;
-  u16 * palDataDst;
+  u32 color0, coeff0, color1, coeff1;
+  bool8 tint0, tint1;
+  u16 weight1;
   u32 defaultColor = DEFAULT_LIGHT_COLOR;
 
   if (!palettes)
     return;
 
-  coeff0 = tint0 ? 8*2 : coeff0 * 2;
-  coeff1 = tint1 ? 8*2 : coeff1 * 2;
+  color0 = blend0->blendColor;
+  tint0 = blend0->isTint;
+  coeff0 = tint0 ? 8*2 : blend0->coeff*2;
+  color1 = blend1->blendColor;
+  tint1 = blend1->isTint;
+  coeff1 = tint1 ? 8*2 : blend1->coeff*2;
+
   r0 = (color0 << 27) >> 27;
   g0 = (color0 << 22) >> 27;
   b0 = (color0 << 17) >> 27;
@@ -1152,17 +1157,16 @@ void TimeMixPalettes(u32 palettes, u32 coeff0, u32 color0, u32 coeff1, u32 color
   defR = (defaultColor << 27) >> 27;
   defG = (defaultColor << 22) >> 27;
   defB = (defaultColor << 17) >> 27;
-  palDataSrc = gPlttBufferUnfaded;
-  palDataDst = gPlttBufferFaded;
+  weight1 = 256 - weight0;
 
   do {
     if (palettes & 1) {
-      u16 *palDataSrcEnd = palDataSrc + 16;
-      u16 altBlendIndices = *palDataDst++ = *palDataSrc++; // color 0 is copied through
+      u16 *srcEnd = src + 16;
+      u16 altBlendIndices = *dst++ = *src++; // color 0 is copied through
       u32 altBlendColor;
       if (altBlendIndices >> 15) { // High bit set; bitmask of which colors to alt-blend
         // Note that bit 0 of altBlendIndices specifies color 1
-        altBlendColor = palDataSrc[14]; // color 15
+        altBlendColor = src[14]; // color 15
         if (altBlendColor >> 15) { // Set alternate blend color
           altR = (altBlendColor << 27) >> 27;
           altG = (altBlendColor << 22) >> 27;
@@ -1173,23 +1177,23 @@ void TimeMixPalettes(u32 palettes, u32 coeff0, u32 color0, u32 coeff1, u32 color
       } else {
         altBlendIndices = 0;
       }
-      while (palDataSrc != palDataSrcEnd) {
-        u32 palDataSrcColor = *palDataSrc;
-        s32 r = (palDataSrcColor << 27) >> 27;
-        s32 g = (palDataSrcColor << 22) >> 27;
-        s32 b = (palDataSrcColor << 17) >> 27;
+      while (src != srcEnd) {
+        u32 srcColor = *src;
+        s32 r = (srcColor << 27) >> 27;
+        s32 g = (srcColor << 22) >> 27;
+        s32 b = (srcColor << 17) >> 27;
 
         if (altBlendIndices & 1) {
           if (altBlendColor) { // Use alternate blend color
-            r = (weight*(r + (((altR - r) * coeff0) >> 5)) + (256-weight)*(r + (((altR - r) * coeff1) >> 5))) >> 8;
-            g = (weight*(g + (((altG - g) * coeff0) >> 5)) + (256-weight)*(g + (((altG - g) * coeff1) >> 5))) >> 8;
-            b = (weight*(b + (((altB - b) * coeff0) >> 5)) + (256-weight)*(b + (((altB - b) * coeff1) >> 5))) >> 8;
-            *palDataDst = RGB2(r, g, b);
+            r = (weight0*(r + (((altR - r) * coeff0) >> 5)) + weight1*(r + (((altR - r) * coeff1) >> 5))) >> 8;
+            g = (weight0*(g + (((altG - g) * coeff0) >> 5)) + weight1*(g + (((altG - g) * coeff1) >> 5))) >> 8;
+            b = (weight0*(b + (((altB - b) * coeff0) >> 5)) + weight1*(b + (((altB - b) * coeff1) >> 5))) >> 8;
+            *dst = RGB2(r, g, b);
           } else { // Use default blend color
-            r = (weight*(r + (((defR - r) * coeff0) >> 5)) + (256-weight)*(r + (((defR - r) * coeff1) >> 5))) >> 8;
-            g = (weight*(g + (((defG - g) * coeff0) >> 5)) + (256-weight)*(g + (((defG - g) * coeff1) >> 5))) >> 8;
-            b = (weight*(b + (((defB - b) * coeff0) >> 5)) + (256-weight)*(b + (((defB - b) * coeff1) >> 5))) >> 8;
-            *palDataDst = RGB2(r, g, b);
+            r = (weight0*(r + (((defR - r) * coeff0) >> 5)) + weight1*(r + (((defR - r) * coeff1) >> 5))) >> 8;
+            g = (weight0*(g + (((defG - g) * coeff0) >> 5)) + weight1*(g + (((defG - g) * coeff1) >> 5))) >> 8;
+            b = (weight0*(b + (((defB - b) * coeff0) >> 5)) + weight1*(b + (((defB - b) * coeff1) >> 5))) >> 8;
+            *dst = RGB2(r, g, b);
           }
         } else { // Use provided blend colors
           s32 r2, g2, b2, r3, g3, b3;
@@ -1223,21 +1227,18 @@ void TimeMixPalettes(u32 palettes, u32 coeff0, u32 color0, u32 coeff1, u32 color
             if (b3 > 31)
                 b3 = 31;
           }
-          r = (weight*r2 + (256-weight)*r3) >> 8;
-          g = (weight*g2 + (256-weight)*g3) >> 8;
-          b = (weight*b2 + (256-weight)*b3) >> 8;
-          // r = (weight*(r + (((r0 - r) * coeff0) >> 5)) + (256-weight)*(r + (((r1 - r) * coeff1) >> 5))) >> 8;
-          // g = (weight*(g + (((g0 - g) * coeff0) >> 5)) + (256-weight)*(g + (((g1 - g) * coeff1) >> 5))) >> 8;
-          // b = (weight*(b + (((b0 - b) * coeff0) >> 5)) + (256-weight)*(b + (((b1 - b) * coeff1) >> 5))) >> 8;
-          *palDataDst = RGB2(r, g, b);
+          r = (weight0*r2 + weight1*r3) >> 8;
+          g = (weight0*g2 + weight1*g3) >> 8;
+          b = (weight0*b2 + weight1*b3) >> 8;
+          *dst = RGB2(r, g, b);
         }
-        palDataSrc++;
-        palDataDst++;
+        src++;
+        dst++;
         altBlendIndices >>= 1;
       }
     } else {
-      palDataSrc += 16;
-      palDataDst += 16;
+      src += 16;
+      dst += 16;
     }
     palettes >>= 1;
   } while (palettes);
@@ -1345,11 +1346,11 @@ void TintPalette_CustomTone(u16 *palette, u16 count, u16 rTone, u16 gTone, u16 b
 // Tints from Unfaded to Faded, using a 15-bit GBA color
 void TintPalette_RGB_Copy(u16 palOffset, u32 blendColor) {
   s32 newR, newG, newB, rTone, gTone, bTone;
-  u16 * palDataSrc = gPlttBufferUnfaded + palOffset;
-  u16 * palDataDst = gPlttBufferFaded + palOffset;
+  u16 * src = gPlttBufferUnfaded + palOffset;
+  u16 * dst = gPlttBufferFaded + palOffset;
   u32 defaultBlendColor = DEFAULT_LIGHT_COLOR;
-  u16 *palDataSrcEnd = palDataSrc + 16;
-  u16 altBlendIndices = *palDataDst++ = *palDataSrc++; // color 0 is copied through unchanged
+  u16 *srcEnd = src + 16;
+  u16 altBlendIndices = *dst++ = *src++; // color 0 is copied through unchanged
   u32 altBlendColor;
 
   newR = ((blendColor << 27) >> 27) << 3;
@@ -1358,7 +1359,7 @@ void TintPalette_RGB_Copy(u16 palOffset, u32 blendColor) {
 
   if (altBlendIndices >> 15) { // High bit set; bitmask of which colors to alt-blend
     // Note that bit 0 of altBlendIndices specifies color 1
-    altBlendColor = palDataSrc[14]; // color 15
+    altBlendColor = src[14]; // color 15
     if (altBlendColor >> 15) { // Set alternate blend color
       rTone = ((altBlendColor << 27) >> 27) << 3;
       gTone = ((altBlendColor << 22) >> 27) << 3;
@@ -1371,11 +1372,11 @@ void TintPalette_RGB_Copy(u16 palOffset, u32 blendColor) {
   } else {
     altBlendIndices = 0;
   }
-  while (palDataSrc != palDataSrcEnd) {
-    u32 palDataSrcColor = *palDataSrc;
-    s32 r = (palDataSrcColor << 27) >> 27;
-    s32 g = (palDataSrcColor << 22) >> 27;
-    s32 b = (palDataSrcColor << 17) >> 27;
+  while (src != srcEnd) {
+    u32 srcColor = *src;
+    s32 r = (srcColor << 27) >> 27;
+    s32 g = (srcColor << 22) >> 27;
+    s32 b = (srcColor << 17) >> 27;
 
     if (altBlendIndices & 1) {
       r = (u16)((rTone * r)) >> 8;
@@ -1392,8 +1393,8 @@ void TintPalette_RGB_Copy(u16 palOffset, u32 blendColor) {
         g = 31;
     if (b > 31)
         b = 31;
-    palDataSrc++;
-    *palDataDst++ = RGB2(r, g, b);
+    src++;
+    *dst++ = RGB2(r, g, b);
     altBlendIndices >>= 1;
   }
 }
