@@ -1132,7 +1132,7 @@ void TimeBlendPalettes(u32 palettes, u32 coeff, u32 blendColor) {
 }
 
 // Blends a weighted average of two blend parameters
-void TimeMixPalettes(u32 palettes, u32 coeff0, u32 color0, u32 coeff1, u32 color1, u16 weight) {
+void TimeMixPalettes(u32 palettes, u32 coeff0, u32 color0, u32 coeff1, u32 color1, u16 weight, bool8 tint0, bool8 tint1) {
   s32 r0, g0, b0, r1, g1, b1, defR, defG, defB, altR, altG, altB;
   u16 * palDataSrc;
   u16 * palDataDst;
@@ -1141,9 +1141,8 @@ void TimeMixPalettes(u32 palettes, u32 coeff0, u32 color0, u32 coeff1, u32 color
   if (!palettes)
     return;
 
-  // TODO: Check coeff for tint
-  coeff0 *= 2;
-  coeff1 *= 2;
+  coeff0 = tint0 ? 8*2 : coeff0 * 2;
+  coeff1 = tint1 ? 8*2 : coeff1 * 2;
   r0 = (color0 << 27) >> 27;
   g0 = (color0 << 22) >> 27;
   b0 = (color0 << 17) >> 27;
@@ -1180,20 +1179,56 @@ void TimeMixPalettes(u32 palettes, u32 coeff0, u32 color0, u32 coeff1, u32 color
         s32 g = (palDataSrcColor << 22) >> 27;
         s32 b = (palDataSrcColor << 17) >> 27;
 
-        if (altBlendIndices & 1) { // No need to average; colors will be the same
+        if (altBlendIndices & 1) {
           if (altBlendColor) { // Use alternate blend color
-            *palDataDst = ((r + (((altR - r) * coeff0) >> 5)) << 0)
-                        | ((g + (((altG - g) * coeff0) >> 5)) << 5)
-                        | ((b + (((altB - b) * coeff0) >> 5)) << 10);
+            r = (weight*(r + (((altR - r) * coeff0) >> 5)) + (256-weight)*(r + (((altR - r) * coeff1) >> 5))) >> 8;
+            g = (weight*(g + (((altG - g) * coeff0) >> 5)) + (256-weight)*(g + (((altG - g) * coeff1) >> 5))) >> 8;
+            b = (weight*(b + (((altB - b) * coeff0) >> 5)) + (256-weight)*(b + (((altB - b) * coeff1) >> 5))) >> 8;
+            *palDataDst = RGB2(r, g, b);
           } else { // Use default blend color
-            *palDataDst = ((r + (((defR - r) * coeff0) >> 5)) << 0)
-                        | ((g + (((defG - g) * coeff0) >> 5)) << 5)
-                        | ((b + (((defB - b) * coeff0) >> 5)) << 10);
+            r = (weight*(r + (((defR - r) * coeff0) >> 5)) + (256-weight)*(r + (((defR - r) * coeff1) >> 5))) >> 8;
+            g = (weight*(g + (((defG - g) * coeff0) >> 5)) + (256-weight)*(g + (((defG - g) * coeff1) >> 5))) >> 8;
+            b = (weight*(b + (((defB - b) * coeff0) >> 5)) + (256-weight)*(b + (((defB - b) * coeff1) >> 5))) >> 8;
+            *palDataDst = RGB2(r, g, b);
           }
         } else { // Use provided blend colors
-          r = (weight*(r + (((r0 - r) * coeff0) >> 5)) + (256-weight)*(r + (((r1 - r) * coeff1) >> 5))) >> 8;
-          g = (weight*(g + (((g0 - g) * coeff0) >> 5)) + (256-weight)*(g + (((g1 - g) * coeff1) >> 5))) >> 8;
-          b = (weight*(b + (((b0 - b) * coeff0) >> 5)) + (256-weight)*(b + (((b1 - b) * coeff1) >> 5))) >> 8;
+          s32 r2, g2, b2, r3, g3, b3;
+          if (!tint0) { // blend-based
+            r2 = (r + (((r0 - r) * coeff0) >> 5));
+            g2 = (g + (((g0 - g) * coeff0) >> 5));
+            b2 = (b + (((b0 - b) * coeff0) >> 5));
+          } else { // tint-based
+            r2 = (u16)(((r0 << 3) * r)) >> 8;
+            g2 = (u16)(((g0 << 3) * g)) >> 8;
+            b2 = (u16)(((b0 << 3) * b)) >> 8;
+            if (r2 > 31)
+                r2 = 31;
+            if (g2 > 31)
+                g2 = 31;
+            if (b2 > 31)
+                b2 = 31;
+          }
+          if (!tint1) { // blend-based
+            r3 = (r + (((r1 - r) * coeff1) >> 5));
+            g3 = (g + (((g1 - g) * coeff1) >> 5));
+            b3 = (b + (((b1 - b) * coeff1) >> 5));
+          } else { // tint-based
+            r3 = (u16)(((r1 << 3) * r)) >> 8;
+            g3 = (u16)(((g1 << 3) * g)) >> 8;
+            b3 = (u16)(((b1 << 3) * b)) >> 8;
+            if (r3 > 31)
+                r3 = 31;
+            if (g3 > 31)
+                g3 = 31;
+            if (b3 > 31)
+                b3 = 31;
+          }
+          r = (weight*r2 + (256-weight)*r3) >> 8;
+          g = (weight*g2 + (256-weight)*g3) >> 8;
+          b = (weight*b2 + (256-weight)*b3) >> 8;
+          // r = (weight*(r + (((r0 - r) * coeff0) >> 5)) + (256-weight)*(r + (((r1 - r) * coeff1) >> 5))) >> 8;
+          // g = (weight*(g + (((g0 - g) * coeff0) >> 5)) + (256-weight)*(g + (((g1 - g) * coeff1) >> 5))) >> 8;
+          // b = (weight*(b + (((b0 - b) * coeff0) >> 5)) + (256-weight)*(b + (((b1 - b) * coeff1) >> 5))) >> 8;
           *palDataDst = RGB2(r, g, b);
         }
         palDataSrc++;
