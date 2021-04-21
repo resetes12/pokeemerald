@@ -28,7 +28,13 @@ enum
 
 struct PaletteFadeControl
 {
-    u32 multipurpose1;
+    u32 multipurpose1; // This field needs to exist or errors will occur
+    u16 blendColor1:15;
+    u16 tint1:1;
+    u32 tint0:1;
+    u32 coeff0:5;
+    u32 coeff1:5;
+    u32 weight:9;
     u8 delayCounter:6;
     u16 y:5; // blend coefficient
     u16 targetY:5; // target blend coefficient
@@ -66,7 +72,7 @@ u8 UpdatePaletteFade(void);
 void ResetPaletteFade(void);
 void ReadPlttIntoBuffers(void);
 bool8 BeginNormalPaletteFade(u32, s8, u8, u8, u16);
-bool8 BeginTimeOfDayPaletteFade(u32, s8, u8, u8, u16);
+bool8 BeginTimeOfDayPaletteFade(u32, s8, u8, u8, struct BlendSettings *, struct BlendSettings *, u16);
 bool8 unref_sub_8073D3C(u32, u8, u8, u8, u16);
 void unref_sub_8073D84(u8, u32 *);
 void ResetPaletteStructByUid(u16);

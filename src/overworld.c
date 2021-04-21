@@ -1514,7 +1514,10 @@ static bool8 FadePalettesWithTime(void) { // Only used to fade back in
   gTimeOfDay = UpdateTimeOfDay();
   if (MapHasNaturalLight(gMapHeader.mapType)) {
     ResetPaletteFade();
-    BeginTimeOfDayPaletteFade(0xFFFFFFFF, 0, 16, sTimeOfDayBlendVars[gTimeOfDay].coeff, sTimeOfDayBlendVars[gTimeOfDay].blendColor);
+    BeginTimeOfDayPaletteFade(0xFFFFFFFF, 0, 16, 0,
+      (struct BlendSettings *)&sTimeOfDayBlendVars[currentTimeBlend.time0],
+      (struct BlendSettings *)&sTimeOfDayBlendVars[currentTimeBlend.time1],
+      currentTimeBlend.weight);
   }
 }
 

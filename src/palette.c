@@ -55,6 +55,7 @@ static u8 UpdateTimeOfDayPaletteFade(void);
 static void UpdateBlendRegisters(void);
 static bool8 IsSoftwarePaletteFadeFinishing(void);
 static void Task_BlendPalettesGradually(u8 taskId);
+static void BlendPalettesFine(u32 palettes, u16 *src, u16 *dst, u32 coeff, u32 color);
 
 // palette buffers require alignment with agbcc because
 // unaligned word reads are issued in BlendPalette otherwise
@@ -204,10 +205,10 @@ bool8 BeginNormalPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 targe
 }
 
 // Like normal palette fade but respects sprite/tile palettes immune to time of day fading
-bool8 BeginTimeOfDayPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 targetY, u16 blendColor)
+// Blend color here is always assumed to be 0 (black).
+bool8 BeginTimeOfDayPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 targetY, struct BlendSettings *bld0, struct BlendSettings *bld1, u16 weight)
 {
     u8 temp;
-    u16 color = blendColor;
 
     if (gPaletteFade.active)
     {
@@ -228,9 +229,16 @@ bool8 BeginTimeOfDayPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 ta
         gPaletteFade_delay = delay;
         gPaletteFade.y = startY;
         gPaletteFade.targetY = targetY;
-        gPaletteFade.blendColor = color;
         gPaletteFade.active = 1;
         gPaletteFade.mode = TIME_OF_DAY_FADE;
+
+        gPaletteFade.blendColor = bld0->blendColor;
+        gPaletteFade.coeff0 = bld0->coeff;
+        gPaletteFade.tint0 = bld0->isTint;
+        gPaletteFade.blendColor1 = bld1->blendColor;
+        gPaletteFade.coeff1 = bld1->coeff;
+        gPaletteFade.tint1 = bld1->isTint;
+        gPaletteFade.weight = weight;
 
         if (startY < targetY)
             gPaletteFade.yDec = 0;
@@ -462,6 +470,12 @@ static u8 UpdateTimeOfDayPaletteFade(void)
     u8 paletteNum;
     u16 paletteOffset;
     u16 selectedPalettes;
+    u16 timePalettes = 0; // palettes passed to the time-blender
+    u16 copyPalettes;
+    u16 * src;
+    u16 * dst;
+    struct BlendSettings bld0;
+    struct BlendSettings bld1;
 
     if (!gPaletteFade.active)
         return PALETTE_FADE_STATUS_DONE;
@@ -491,21 +505,46 @@ static u8 UpdateTimeOfDayPaletteFade(void)
         paletteOffset = 256;
     }
 
-    for (paletteNum = 0; paletteNum < 16; paletteNum++, selectedPalettes >>= 1, paletteOffset += 16) {
-      if (selectedPalettes & 1) {
-        if (gPaletteFade.yDec) {
-          if (gPaletteFade.objPaletteToggle) { // sprite palettes
-            if (gPaletteFade.y >= gPaletteFade.targetY || GetSpritePaletteTagByPaletteNum(paletteNum) & 0x8000)
-              TimeBlendPalette(paletteOffset, gPaletteFade.y, gPaletteFade.blendColor);
-          // tile palettes
-          } else if (gPaletteFade.y >= gPaletteFade.targetY || (paletteNum >= 13 && paletteNum <= 15)) {
-              TimeBlendPalette(paletteOffset, gPaletteFade.y, gPaletteFade.blendColor);
-          }
-        } else {
-          TimeBlendPalette(paletteOffset, gPaletteFade.y, gPaletteFade.blendColor);
-        }
+    // Extract blend settings from palette fade struct TODO: Embed struct within gPaletteFade
+    bld0.blendColor = gPaletteFade.blendColor;
+    bld0.coeff = gPaletteFade.coeff0;
+    bld0.isTint = gPaletteFade.tint0;
+    bld1.blendColor = gPaletteFade.blendColor1;
+    bld1.coeff = gPaletteFade.coeff1;
+    bld1.isTint = gPaletteFade.tint1;
+
+    src = gPlttBufferUnfaded + paletteOffset;
+    dst = gPlttBufferFaded + paletteOffset;
+
+    // First pply TOD blend to relevant subset of palettes
+    if (gPaletteFade.objPaletteToggle) { // Sprite palettes, don't blend those with tags
+      u8 i;
+      u16 j = 1;
+      for (i = 0; i < 16; i++, j <<= 1) { // Mask out palettes that should not be light blended
+        if ((selectedPalettes & j) && !(GetSpritePaletteTagByPaletteNum(i) >> 15))
+          timePalettes |= j;
+      }
+
+    } else { // tile palettes, don't blend [13, 15]
+      timePalettes = selectedPalettes &= ~0xE000;
+    }
+    TimeMixPalettes(timePalettes, src, dst, &bld0, &bld1, gPaletteFade.weight);
+
+    // palettes that were not blended above must be copied through
+    if ((copyPalettes = ~timePalettes)) {
+      u16 * src1 = src;
+      u16 * dst1 = dst;
+      while (copyPalettes) {
+        if (copyPalettes & 1)
+          CpuFastCopy(src1, dst1, 64);
+        copyPalettes >>= 1;
+        src1 += 16;
+        dst1 += 16;
       }
     }
+
+    // Then, blend from faded->faded with native BlendPalettes
+    BlendPalettesFine(selectedPalettes, dst, dst, gPaletteFade.y, 0);
 
     gPaletteFade.objPaletteToggle ^= 1;
 
@@ -981,8 +1020,7 @@ static void BlendPalettesFine(u32 palettes, u16 *src, u16 *dst, u32 coeff, u32 c
   do {
     if (palettes & 1) {
       u16 *srcEnd = src + 16;
-      *dst++ = *src++; // transparency is copied-through
-      while (src != srcEnd) {
+      while (src != srcEnd) { // Transparency is blended because it can matter for tile palettes
         u32 srcColor = *src;
         s32 r = (srcColor << 27) >> 27;
         s32 g = (srcColor << 22) >> 27;
