@@ -526,7 +526,7 @@ static u8 UpdateTimeOfDayPaletteFade(void)
       }
 
     } else { // tile palettes, don't blend [13, 15]
-      timePalettes = selectedPalettes &= ~0xE000;
+      timePalettes = selectedPalettes & 0x1FFF;
     }
     TimeMixPalettes(timePalettes, src, dst, &bld0, &bld1, gPaletteFade.weight);
 

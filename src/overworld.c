@@ -1529,7 +1529,7 @@ void UpdatePalettesWithTime(u32 palettes) {
       if (GetSpritePaletteTagByPaletteNum(i) >> 15) // Don't blend special sprite palette tags
         palettes &= ~(1 << (i + 16));
     }
-    palettes &= ~0xE000; // Don't blend tile palettes [13,15]
+    palettes &= 0xFFFF1FFF; // Don't blend tile palettes [13,15]
     if (!palettes)
       return;
     TimeMixPalettes(palettes,
