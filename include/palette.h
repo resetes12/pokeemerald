@@ -84,6 +84,7 @@ void UnfadePlttBuffer(u32);
 void BeginFastPaletteFade(u8);
 void BeginHardwarePaletteFade(u8, u8, u8, u8, u8);
 void BlendPalettes(u32 selectedPalettes, u8 coeff, u16 color);
+void BlendPalettesFine(u32 palettes, u16 *src, u16 *dst, u32 coeff, u32 color);
 void BlendPalettesUnfaded(u32, u8, u16);
 void BlendPalettesGradually(u32 selectedPalettes, s8 delay, u8 coeff, u8 coeffTarget, u16 color, u8 priority, u8 id);
 void TimeBlendPalette(u16 palOffset, u32 coeff, u32 blendColor);
