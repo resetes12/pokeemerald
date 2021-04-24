@@ -45,7 +45,8 @@ struct Weather
     s8 gammaTargetIndex;
     u8 gammaStepDelay;
     u8 gammaStepFrameCounter;
-    u16 fadeDestColor;
+    u16 fadeDestColor:15;
+    u16 noShadows:1; // Certain weathers require blend coeffs that do not work nice with shadows
     u8 palProcessingState;
     u8 fadeScreenCounter;
     bool8 readyForInit;
