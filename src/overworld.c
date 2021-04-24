@@ -1511,6 +1511,7 @@ static bool8 MapHasNaturalLight(u8 mapType) { // Whether a map type is naturally
       || mapType == MAP_TYPE_OCEAN_ROUTE;
 }
 
+// TODO: Rewrite palette fading to work with FadeScreen
 static bool8 FadePalettesWithTime(void) { // Only used to fade back in
   gTimeOfDay = UpdateTimeOfDay();
   if (MapHasNaturalLight(gMapHeader.mapType)) {
