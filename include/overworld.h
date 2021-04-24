@@ -141,6 +141,7 @@ void CleanupOverworldWindowsAndTilemaps(void);
 bool32 IsUpdateLinkStateCBActive(void);
 void CB1_Overworld(void);
 void CB2_OverworldBasic(void);
+u8 UpdateTimeOfDay(void);
 void UpdatePalettesWithTime(u32);
 void CB2_Overworld(void);
 void SetMainCallback1(void (*cb)(void));

@@ -88,7 +88,6 @@ void BlendPalettesUnfaded(u32, u8, u16);
 void BlendPalettesGradually(u32 selectedPalettes, s8 delay, u8 coeff, u8 coeffTarget, u16 color, u8 priority, u8 id);
 void TimeBlendPalette(u16 palOffset, u32 coeff, u32 blendColor);
 void TintPalette_RGB_Copy(u16 palOffset, u32 blendColor);
-void TimeBlendPalettes(u32 palettes, u32 coeff, u32 blendColor);
 void TimeMixPalettes(u32, u16 *, u16 *, struct BlendSettings *, struct BlendSettings *, u16);
 void TintPalette_GrayScale(u16 *palette, u16 count);
 void TintPalette_GrayScale2(u16 *palette, u16 count);

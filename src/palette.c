@@ -1084,78 +1084,8 @@ void TimeBlendPalette(u16 palOffset, u32 coeff, u32 blendColor) {
   }
 }
 
-void TimeBlendPalettes(u32 palettes, u32 coeff, u32 blendColor) {
-  s32 newR, newG, newB, defR, defG, defB, altR, altG, altB;
-  u16 * src;
-  u16 * dst;
-  u32 defaultBlendColor = DEFAULT_LIGHT_COLOR;
-
-  if (!palettes)
-    return;
-
-  coeff *= 2;
-  newR = (blendColor << 27) >> 27;
-  newG = (blendColor << 22) >> 27;
-  newB = (blendColor << 17) >> 27;
-  defR = (defaultBlendColor << 27) >> 27;
-  defG = (defaultBlendColor << 22) >> 27;
-  defB = (defaultBlendColor << 17) >> 27;
-  src = gPlttBufferUnfaded;
-  dst = gPlttBufferFaded;
-
-  do {
-    if (palettes & 1) {
-      u16 *srcEnd = src + 16;
-      u16 altBlendIndices = *dst++ = *src++; // color 0 is copied through
-      u32 altBlendColor;
-      if (altBlendIndices >> 15) { // High bit set; bitmask of which colors to alt-blend
-        // Note that bit 0 of altBlendIndices specifies color 1
-        altBlendColor = src[14]; // color 15
-        if (altBlendColor >> 15) { // Set alternate blend color
-          altR = (altBlendColor << 27) >> 27;
-          altG = (altBlendColor << 22) >> 27;
-          altB = (altBlendColor << 17) >> 27;
-        } else {
-          altBlendColor = 0;
-        }
-      } else {
-        altBlendIndices = 0;
-      }
-      while (src != srcEnd) {
-        u32 srcColor = *src;
-        s32 r = (srcColor << 27) >> 27;
-        s32 g = (srcColor << 22) >> 27;
-        s32 b = (srcColor << 17) >> 27;
-
-        if (altBlendIndices & 1) {
-          if (altBlendColor) { // Use alternate blend color
-            *dst = ((r + (((altR - r) * coeff) >> 5)) << 0)
-                        | ((g + (((altG - g) * coeff) >> 5)) << 5)
-                        | ((b + (((altB - b) * coeff) >> 5)) << 10);
-          } else { // Use default blend color
-            *dst = ((r + (((defR - r) * coeff) >> 5)) << 0)
-                        | ((g + (((defG - g) * coeff) >> 5)) << 5)
-                        | ((b + (((defB - b) * coeff) >> 5)) << 10);
-          }
-        } else { // Use provided blend color
-          *dst = ((r + (((newR - r) * coeff) >> 5)) << 0)
-                      | ((g + (((newG - g) * coeff) >> 5)) << 5)
-                      | ((b + (((newB - b) * coeff) >> 5)) << 10);
-        }
-        src++;
-        dst++;
-        altBlendIndices >>= 1;
-      }
-    } else {
-      src += 16;
-      dst += 16;
-    }
-    palettes >>= 1;
-  } while (palettes);
-}
-
 // Blends a weighted average of two blend parameters
-// TODO: Should pointers be marked as const?
+// Parameters can be either blended (as in BlendPalettes) or tinted (as in TintPaletteRGB_Copy)
 void TimeMixPalettes(u32 palettes, u16 *src, u16 *dst, struct BlendSettings *blend0, struct BlendSettings *blend1, u16 weight0) {
   s32 r0, g0, b0, r1, g1, b1, defR, defG, defB, altR, altG, altB;
   u32 color0, coeff0, color1, coeff1;
