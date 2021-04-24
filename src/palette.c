@@ -204,8 +204,7 @@ bool8 BeginNormalPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 targe
 }
 
 // Like normal palette fade but respects sprite/tile palettes immune to time of day fading
-// Blend color here is always assumed to be 0 (black).
-bool8 BeginTimeOfDayPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 targetY, struct BlendSettings *bld0, struct BlendSettings *bld1, u16 weight)
+bool8 BeginTimeOfDayPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 targetY, struct BlendSettings *bld0, struct BlendSettings *bld1, u16 weight, u16 color)
 {
     u8 temp;
 
@@ -231,7 +230,7 @@ bool8 BeginTimeOfDayPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 ta
         gPaletteFade.active = 1;
         gPaletteFade.mode = TIME_OF_DAY_FADE;
 
-        gPaletteFade.blendColor = 0;
+        gPaletteFade.blendColor = color;
         gPaletteFade.bld0 = bld0;
         gPaletteFade.bld1 = bld1;
         gPaletteFade.weight = weight;
@@ -522,7 +521,7 @@ static u8 UpdateTimeOfDayPaletteFade(void)
       u16 * dst1 = dst;
       while (copyPalettes) {
         if (copyPalettes & 1)
-          CpuFastCopy(src1, dst1, 64);
+          CpuFastCopy(src1, dst1, 32);
         copyPalettes >>= 1;
         src1 += 16;
         dst1 += 16;
@@ -530,7 +529,7 @@ static u8 UpdateTimeOfDayPaletteFade(void)
     }
 
     // Then, blend from faded->faded with native BlendPalettes
-    BlendPalettesFine(selectedPalettes, dst, dst, gPaletteFade.y, 0);
+    BlendPalettesFine(selectedPalettes, dst, dst, gPaletteFade.y, gPaletteFade.blendColor);
 
     gPaletteFade.objPaletteToggle ^= 1;
 

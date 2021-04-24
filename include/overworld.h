@@ -62,10 +62,14 @@ extern void (*gFieldCallback)(void);
 extern bool8 (*gFieldCallback2)(void);
 extern u8 gLocalLinkPlayerId;
 extern u8 gFieldLinkPlayerCount;
+
 extern u8 gTimeOfDay;
+extern struct TimeBlendSettings currentTimeBlend;
 
 // Exported ROM declarations
 extern const struct UCoords32 gDirectionToVectors[];
+
+extern const struct BlendSettings gTimeOfDayBlend[];
 
 void DoWhiteOut(void);
 void Overworld_ResetStateAfterFly(void);
@@ -142,6 +146,7 @@ bool32 IsUpdateLinkStateCBActive(void);
 void CB1_Overworld(void);
 void CB2_OverworldBasic(void);
 u8 UpdateTimeOfDay(void);
+bool8 MapHasNaturalLight(u8 mapType);
 void UpdatePalettesWithTime(u32);
 void CB2_Overworld(void);
 void SetMainCallback1(void (*cb)(void));

@@ -472,6 +472,7 @@ static void ApplyGammaShift(u8 startPalIndex, u8 numPalettes, s8 gammaIndex)
         curPalIndex = startPalIndex;
 
         // Loop through the speficied palette range and apply necessary gamma shifts to the colors.
+        // TODO: Optimize this to work with time blending
         while (curPalIndex < numPalettes)
         {
             CpuFastCopy(gPlttBufferUnfaded + palOffset, gPlttBufferFaded + palOffset, 16 * sizeof(u16));
@@ -647,7 +648,7 @@ static void ApplyDroughtGammaShiftWithBlend(s8 gammaIndex, u8 blendCoeff, u16 bl
     }
 }
 
-static void ApplyFogBlend(u8 blendCoeff, u16 blendColor)
+static void ApplyFogBlend(u8 blendCoeff, u16 blendColor) // TODO: How does this interact with time
 {
     struct RGBColor color;
     u8 rBlend;
@@ -794,9 +795,18 @@ void FadeScreen(u8 mode, s8 delay)
     {
         gWeatherPtr->fadeDestColor = fadeColor;
         if (useWeatherPal)
-          gWeatherPtr->fadeScreenCounter = 0;
-        else
+          gWeatherPtr->fadeScreenCounter = 0; // Triggers gamma-shift-based fade-in
+        else {
+          UpdateTimeOfDay();
+          if (MapHasNaturalLight(gMapHeader.mapType)) {
+            BeginTimeOfDayPaletteFade(PALETTES_ALL, delay, 16, 0,
+              (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time0],
+              (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time1],
+              currentTimeBlend.weight, fadeColor);
+          } else {
             BeginNormalPaletteFade(PALETTES_ALL, delay, 16, 0, fadeColor);
+          }
+        }
 
         gWeatherPtr->palProcessingState = WEATHER_PAL_STATE_SCREEN_FADING_IN;
         gWeatherPtr->fadeInFirstFrame = TRUE;
