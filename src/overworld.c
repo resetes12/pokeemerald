@@ -1474,7 +1474,7 @@ u8 UpdateTimeOfDay(void) {
   RtcCalcLocalTime();
   hours = gLocalTime.hours;
   minutes = gLocalTime.minutes;
-  if (hours >= 22 || hours < 4) {
+  if (hours >= 22 || hours < 4) { // night
     currentTimeBlend.weight = 256;
     return gTimeOfDay = currentTimeBlend.time0 = currentTimeBlend.time1 = TIME_OF_DAY_NIGHT;
   } else if (hours >= 4 && hours < 7) { // night->twilight
@@ -1501,7 +1501,8 @@ u8 UpdateTimeOfDay(void) {
     currentTimeBlend.weight = 256 - 256 * ((hours - 20) * 60 + minutes) / ((22-20)*60);
     return gTimeOfDay = TIME_OF_DAY_NIGHT;
   } else { // This should never occur
-    return TIME_OF_DAY_MAX;
+    currentTimeBlend.weight = 256;
+    return gTimeOfDay = currentTimeBlend.time0 = currentTimeBlend.time1 = TIME_OF_DAY_DAY;
   }
 }
 
@@ -1557,6 +1558,7 @@ static void OverworldBasic(void)
     UpdatePaletteFade();
     UpdateTilesetAnimations();
     DoScheduledBgTilemapCopiesToVram();
+    // Every minute if no palette fade is active, update TOD blending as needed
     if (!(gPaletteFade.active || (timeCounter++ % 3600))) {
       struct TimeBlendSettings cachedBlend = {
         .time0 = currentTimeBlend.time0,
