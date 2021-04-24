@@ -4878,7 +4878,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                         temp2 = itemEffect[itemEffectParam];
                         dataSigned = GetMonData(mon, sGetMonDataEVConstants[temp1], NULL);
                         evChange = temp2;
-     
+
                         if (evChange > 0) // Increasing EV (HP or Atk)
                         {
                             // Has EV increase limit already been reached?
@@ -4976,7 +4976,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                         {
                             if (!usedByAI)
                             {
-                                // Restore HP 
+                                // Restore HP
                                 dataUnsigned = GetMonData(mon, MON_DATA_HP, NULL) + dataUnsigned;
                                 if (dataUnsigned > GetMonData(mon, MON_DATA_MAX_HP, NULL))
                                     dataUnsigned = GetMonData(mon, MON_DATA_MAX_HP, NULL);
@@ -5055,7 +5055,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
                                     dataUnsigned = CalculatePPWithBonus(moveId, GetMonData(mon, MON_DATA_PP_BONUSES, NULL), moveIndex);
                                 }
                                 SetMonData(mon, MON_DATA_PP1 + moveIndex, &dataUnsigned);
-                                
+
                                 // Heal battler PP too (if applicable)
                                 if (gMain.inBattle
                                  && battlerId != MAX_BATTLERS_COUNT && !(gBattleMons[battlerId].status2 & STATUS2_TRANSFORMED)
@@ -5092,7 +5092,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
         case 5:
             effectFlags = itemEffect[i];
             temp1 = 0;
-            
+
             // Loop through and try each of the ITEM5 effects
             while (effectFlags != 0)
             {
@@ -5437,13 +5437,13 @@ u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 mode, u16 evolutionItem)
                     targetSpecies = gEvolutionTable[species][i].targetSpecies;
                 break;
             case EVO_FRIENDSHIP_DAY:
-                RtcCalcLocalTime();
-                if (gLocalTime.hours >= 12 && gLocalTime.hours < 24 && friendship >= 220)
+                UpdateTimeOfDay();
+                if (gTimeOfDay != TIME_OF_DAY_NIGHT && friendship >= 220)
                     targetSpecies = gEvolutionTable[species][i].targetSpecies;
                 break;
             case EVO_FRIENDSHIP_NIGHT:
-                RtcCalcLocalTime();
-                if (gLocalTime.hours >= 0 && gLocalTime.hours < 12 && friendship >= 220)
+                UpdateTimeOfDay();
+                if (gTimeOfDay == TIME_OF_DAY_NIGHT && friendship >= 220)
                     targetSpecies = gEvolutionTable[species][i].targetSpecies;
                 break;
             case EVO_LEVEL:
