@@ -232,12 +232,9 @@ bool8 BeginTimeOfDayPaletteFade(u32 selectedPalettes, s8 delay, u8 startY, u8 ta
         gPaletteFade.active = 1;
         gPaletteFade.mode = TIME_OF_DAY_FADE;
 
-        gPaletteFade.blendColor = bld0->blendColor;
-        gPaletteFade.coeff0 = bld0->coeff;
-        gPaletteFade.tint0 = bld0->isTint;
-        gPaletteFade.blendColor1 = bld1->blendColor;
-        gPaletteFade.coeff1 = bld1->coeff;
-        gPaletteFade.tint1 = bld1->isTint;
+        gPaletteFade.blendColor = 0;
+        gPaletteFade.bld0 = bld0;
+        gPaletteFade.bld1 = bld1;
         gPaletteFade.weight = weight;
 
         if (startY < targetY)
@@ -474,8 +471,6 @@ static u8 UpdateTimeOfDayPaletteFade(void)
     u16 copyPalettes;
     u16 * src;
     u16 * dst;
-    struct BlendSettings bld0;
-    struct BlendSettings bld1;
 
     if (!gPaletteFade.active)
         return PALETTE_FADE_STATUS_DONE;
@@ -505,14 +500,6 @@ static u8 UpdateTimeOfDayPaletteFade(void)
         paletteOffset = 256;
     }
 
-    // Extract blend settings from palette fade struct TODO: Embed struct within gPaletteFade
-    bld0.blendColor = gPaletteFade.blendColor;
-    bld0.coeff = gPaletteFade.coeff0;
-    bld0.isTint = gPaletteFade.tint0;
-    bld1.blendColor = gPaletteFade.blendColor1;
-    bld1.coeff = gPaletteFade.coeff1;
-    bld1.isTint = gPaletteFade.tint1;
-
     src = gPlttBufferUnfaded + paletteOffset;
     dst = gPlttBufferFaded + paletteOffset;
 
@@ -528,7 +515,7 @@ static u8 UpdateTimeOfDayPaletteFade(void)
     } else { // tile palettes, don't blend [13, 15]
       timePalettes = selectedPalettes & 0x1FFF;
     }
-    TimeMixPalettes(timePalettes, src, dst, &bld0, &bld1, gPaletteFade.weight);
+    TimeMixPalettes(timePalettes, src, dst, gPaletteFade.bld0, gPaletteFade.bld1, gPaletteFade.weight);
 
     // palettes that were not blended above must be copied through
     if ((copyPalettes = ~timePalettes)) {
