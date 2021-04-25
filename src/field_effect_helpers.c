@@ -151,7 +151,7 @@ static void LoadObjectRegularReflectionPalette(struct ObjectEvent *objectEvent, 
         ApplyIceFilter(mainSprite->oam.paletteNum, filteredData);
       }
       paletteNum = LoadSpritePalette(&filteredPalette);
-      UpdateSpritePaletteWithWeather(paletteNum);
+      UpdateSpritePaletteWithWeather(paletteNum, TRUE);
     }
     sprite->oam.paletteNum = paletteNum;
     sprite->oam.objMode = 1; // Alpha blending
@@ -170,7 +170,7 @@ static void LoadObjectHighBridgeReflectionPalette(struct ObjectEvent *objectEven
       blueData[i] = 0x55c9;
     }
     sprite->oam.paletteNum = LoadSpritePalette(&bluePalette);
-    UpdateSpritePaletteWithWeather(sprite->oam.paletteNum);
+    UpdateSpritePaletteWithWeather(sprite->oam.paletteNum, TRUE);
 }
 
 static void UpdateObjectReflectionSprite(struct Sprite *reflectionSprite)
@@ -203,7 +203,7 @@ static void UpdateObjectReflectionSprite(struct Sprite *reflectionSprite)
           ApplyIceFilter(mainSprite->oam.paletteNum, filteredData);
         }
         paletteNum = LoadSpritePalette(&filteredPalette);
-        UpdateSpritePaletteWithWeather(paletteNum);
+        UpdateSpritePaletteWithWeather(paletteNum, TRUE);
       }
       reflectionSprite->oam.paletteNum = paletteNum;
     }

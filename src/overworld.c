@@ -821,7 +821,7 @@ void LoadMapFromCameraTransition(u8 mapGroup, u8 mapNum)
     CopySecondaryTilesetToVramUsingHeap(gMapHeader.mapLayout);
     LoadSecondaryTilesetPalette(gMapHeader.mapLayout);
 
-    for (paletteIndex = 6; paletteIndex < 13; paletteIndex++)
+    for (paletteIndex = 6; paletteIndex < 13; paletteIndex++) // TODO: Optimize gamma shifts
         ApplyWeatherGammaShiftToPal(paletteIndex);
 
     InitSecondaryTilesetAnimation();
@@ -829,7 +829,6 @@ void LoadMapFromCameraTransition(u8 mapGroup, u8 mapNum)
     RoamerMove();
     DoCurrentWeather();
     ResetFieldTasksArgs();
-    UpdatePalettesWithTime(PALETTES_ALL);
     RunOnResumeMapScript();
 
     if (gMapHeader.regionMapSectionId != MAPSEC_BATTLE_FRONTIER
@@ -1512,19 +1511,6 @@ bool8 MapHasNaturalLight(u8 mapType) { // Whether a map type is naturally lit/ou
       || mapType == MAP_TYPE_OCEAN_ROUTE;
 }
 
-// TODO: Rewrite palette fading to work with FadeScreen
-// Currently, this cancels the "Normal" palette fade started by FadeScreen
-static bool8 FadePalettesWithTime(void) { // Only used to fade back in
-  UpdateTimeOfDay();
-  if (MapHasNaturalLight(gMapHeader.mapType)) {
-    ResetPaletteFade();
-    BeginTimeOfDayPaletteFade(PALETTES_ALL, 0, 16, 0,
-      (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time0],
-      (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time1],
-      currentTimeBlend.weight, 0);
-  }
-}
-
 void UpdatePalettesWithTime(u32 palettes) {
   if (MapHasNaturalLight(gMapHeader.mapType)) {
     u16 i;
@@ -1546,7 +1532,18 @@ void UpdatePalettesWithTime(u32 palettes) {
 }
 
 u8 UpdateSpritePaletteWithTime(u8 paletteNum) {
-  UpdatePalettesWithTime(1 << (paletteNum + 16));
+  if (MapHasNaturalLight(gMapHeader.mapType)) {
+    u16 offset;
+    if (GetSpritePaletteTagByPaletteNum(paletteNum) >> 15)
+      return paletteNum;
+    offset = (paletteNum + 16) * 16;
+    TimeMixPalettes(1,
+      gPlttBufferUnfaded + offset,
+      gPlttBufferFaded + offset,
+      (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time0],
+      (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time1],
+      currentTimeBlend.weight);
+  }
   return paletteNum;
 }
 
@@ -1688,7 +1685,6 @@ static void CB2_LoadMap2(void)
     DoMapLoadLoop(&gMain.state);
     SetFieldVBlankCallback();
     SetMainCallback1(CB1_Overworld);
-    // FadePalettesWithTime();
     SetMainCallback2(CB2_Overworld);
 }
 
@@ -1745,7 +1741,6 @@ static void CB2_ReturnToFieldLocal(void)
     if (ReturnToFieldLocal(&gMain.state))
     {
         SetFieldVBlankCallback();
-        // FadePalettesWithTime();
         SetMainCallback2(CB2_Overworld);
     }
 }

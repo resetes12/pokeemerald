@@ -1684,7 +1684,7 @@ static void FollowerSetGraphics(struct ObjectEvent *objectEvent, u16 species, u8
         if (palette[0] & 0x4000) // If color 15 is blended, use it as the alternate color
           palette[15] |= 0x8000;
       }
-      UpdateSpritePaletteWithTime(sprite->oam.paletteNum);
+      UpdateSpritePaletteWithWeather(sprite->oam.paletteNum, FALSE);
     } else
       sprite->oam.paletteNum = IndexOfSpritePaletteTag(spritePalette->tag); // Tag is always present
   }
@@ -2186,7 +2186,7 @@ static u8 UpdateSpritePalette(const struct SpritePalette * spritePalette, struct
   sprite->inUse = TRUE;
   if (IndexOfSpritePaletteTag(spritePalette->tag) == 0xFF) {
     sprite->oam.paletteNum = LoadSpritePalette(spritePalette);
-    UpdateSpritePaletteWithTime(sprite->oam.paletteNum);
+    UpdateSpritePaletteWithWeather(sprite->oam.paletteNum, FALSE);
   } else {
     sprite->oam.paletteNum = LoadSpritePalette(spritePalette);
   }
@@ -2443,7 +2443,7 @@ static u8 LoadSpritePaletteIfTagExists(const struct SpritePalette *spritePalette
     if (IndexOfSpritePaletteTag(spritePalette->tag) != 0xFF)
         return 0xFF;
     paletteNum = LoadSpritePalette(spritePalette);
-    UpdateSpritePaletteWithTime(paletteNum);
+    UpdateSpritePaletteWithWeather(paletteNum, FALSE);
     return paletteNum;
 }
 
