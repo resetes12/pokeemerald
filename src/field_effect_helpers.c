@@ -152,7 +152,6 @@ static void LoadObjectRegularReflectionPalette(struct ObjectEvent *objectEvent, 
       }
       paletteNum = LoadSpritePalette(&filteredPalette);
       UpdateSpritePaletteWithWeather(paletteNum);
-      UpdateSpritePaletteWithTime(paletteNum);
     }
     sprite->oam.paletteNum = paletteNum;
     sprite->oam.objMode = 1; // Alpha blending
@@ -205,7 +204,6 @@ static void UpdateObjectReflectionSprite(struct Sprite *reflectionSprite)
         }
         paletteNum = LoadSpritePalette(&filteredPalette);
         UpdateSpritePaletteWithWeather(paletteNum);
-        UpdateSpritePaletteWithTime(paletteNum);
       }
       reflectionSprite->oam.paletteNum = paletteNum;
     }

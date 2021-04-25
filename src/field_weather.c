@@ -536,8 +536,13 @@ static void ApplyGammaShift(u8 startPalIndex, u8 numPalettes, s8 gammaIndex)
     }
     else
     {
-        // No palette blending.
+        u32 palettes = 0;
+        u32 mask = 1 << startPalIndex;
+        u8 i;
         CpuFastCopy(gPlttBufferUnfaded + startPalIndex * 16, gPlttBufferFaded + startPalIndex * 16, numPalettes * 16 * sizeof(u16));
+        for (i = 0; i < numPalettes; i++, mask <<= 1)
+          palettes |= mask;
+        UpdatePalettesWithTime(palettes);
     }
 }
 
@@ -825,7 +830,6 @@ void UpdateSpritePaletteWithWeather(u8 spritePaletteIndex)
 {
     u16 paletteIndex = 16 + spritePaletteIndex;
     u16 i;
-
     switch (gWeatherPtr->palProcessingState)
     {
     case WEATHER_PAL_STATE_SCREEN_FADING_IN:
@@ -853,7 +857,10 @@ void UpdateSpritePaletteWithWeather(u8 spritePaletteIndex)
         else
         {
             paletteIndex *= 16;
-            BlendPalette(paletteIndex, 16, 12, RGB(28, 31, 28));
+            // First blend with time
+            CpuFastCopy(gPlttBufferUnfaded + paletteIndex, gPlttBufferFaded + paletteIndex, 32);
+            UpdateSpritePaletteWithTime(spritePaletteIndex);
+            BlendPalettesFine(1 << (spritePaletteIndex + 16), gPlttBufferFaded + paletteIndex, gPlttBufferFaded + paletteIndex, 12, RGB(28, 31, 28));
         }
         break;
     }
@@ -876,8 +883,8 @@ static bool8 IsFirstFrameOfWeatherFadeIn(void)
 void LoadCustomWeatherSpritePalette(const u16 *palette)
 {
     LoadPalette(palette, 0x100 + gWeatherPtr->weatherPicSpritePalIndex * 16, 32);
-    UpdateSpritePaletteWithWeather(gWeatherPtr->weatherPicSpritePalIndex);
     UpdateSpritePaletteWithTime(gWeatherPtr->weatherPicSpritePalIndex);
+    UpdateSpritePaletteWithWeather(gWeatherPtr->weatherPicSpritePalIndex);
 }
 
 static void LoadDroughtWeatherPalette(u8 *gammaIndexPtr, u8 *a1)
