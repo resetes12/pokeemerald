@@ -1515,9 +1515,10 @@ void UpdatePalettesWithTime(u32 palettes) {
   if (MapHasNaturalLight(gMapHeader.mapType)) {
     u16 i;
     u16 tempPaletteBuffer[16];
-    for (i = 0; i < 16; i++) {
+    u32 mask = 1 << 16;
+    for (i = 0; i < 16; i++, mask <<= 1) {
       if (GetSpritePaletteTagByPaletteNum(i) >> 15) // Don't blend special sprite palette tags
-        palettes &= ~(1 << (i + 16));
+        palettes &= ~(mask);
     }
     palettes &= 0xFFFF1FFF; // Don't blend tile palettes [13,15]
     if (!palettes)
@@ -1536,7 +1537,7 @@ u8 UpdateSpritePaletteWithTime(u8 paletteNum) {
     u16 offset;
     if (GetSpritePaletteTagByPaletteNum(paletteNum) >> 15)
       return paletteNum;
-    offset = (paletteNum + 16) * 16;
+    offset = (paletteNum + 16) << 4;
     TimeMixPalettes(1,
       gPlttBufferUnfaded + offset,
       gPlttBufferFaded + offset,

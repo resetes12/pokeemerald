@@ -152,7 +152,7 @@ static bool8 AnimateSpriteInFigure8(struct Sprite *sprite);
 static void UpdateObjectEventSprite(struct Sprite *);
 
 u8 GetDirectionToFace(s16 x1, s16 y1, s16 x2, s16 y2);
-static void FollowerSetGraphics(struct ObjectEvent *, u16, u8, bool8);
+static void FollowerSetGraphics(struct ObjectEvent *, u16, u8, bool8, bool8);
 static void ObjectEventSetGraphics(struct ObjectEvent *, const struct ObjectEventGraphicsInfo *);
 static void DoShadowFieldEffect(struct ObjectEvent *);
 static void SetJumpSpriteData(struct Sprite *, u8, u8, u8);
@@ -1477,7 +1477,7 @@ TrySpawnObjectEventTemplate(struct ObjectEventTemplate *objectEventTemplate,
       species = gObjectEvents[objectEventId].extra.mon.species;
       form = gObjectEvents[objectEventId].extra.mon.form;
       shiny = gObjectEvents[objectEventId].extra.mon.shiny;
-      FollowerSetGraphics(&gObjectEvents[objectEventId], species, form, shiny);
+      FollowerSetGraphics(&gObjectEvents[objectEventId], species, form, shiny, TRUE);
     }
 
   }
@@ -1652,16 +1652,17 @@ static const struct ObjectEventGraphicsInfo * SpeciesToGraphicsInfo(u16 species,
 }
 
 // Set graphics & sprite for a follower object event by species & shininess.
-static void FollowerSetGraphics(struct ObjectEvent *objectEvent, u16 species, u8 form, bool8 shiny) {
+static void FollowerSetGraphics(struct ObjectEvent *objEvent, u16 species, u8 form, bool8 shiny, bool8 doPalette) {
   const struct ObjectEventGraphicsInfo *graphicsInfo = SpeciesToGraphicsInfo(species, form);
-  objectEvent->graphicsId = OBJ_EVENT_GFX_OW_MON;
-  ObjectEventSetGraphics(objectEvent, graphicsInfo);
-  objectEvent->graphicsId = OBJ_EVENT_GFX_OW_MON;
-  objectEvent->extra.mon.species = species;
-  objectEvent->extra.mon.form = form;
-  objectEvent->extra.mon.shiny = shiny;
-  if (graphicsInfo->paletteTag == OBJ_EVENT_PAL_TAG_DYNAMIC) { // Use palette from species palette table
-    struct Sprite *sprite = &gSprites[objectEvent->spriteId];
+  objEvent->graphicsId = OBJ_EVENT_GFX_OW_MON;
+  ObjectEventSetGraphics(objEvent, graphicsInfo);
+  objEvent->graphicsId = OBJ_EVENT_GFX_OW_MON;
+  objEvent->extra.mon.species = species;
+  objEvent->extra.mon.form = form;
+  objEvent->extra.mon.shiny = shiny;
+  if (graphicsInfo->paletteTag == OBJ_EVENT_PAL_TAG_DYNAMIC && doPalette) { // Use palette from species palette table
+    u8 paletteNum;
+    struct Sprite *sprite = &gSprites[objEvent->spriteId];
     // Note that the shiny palette tag is `species + SPECIES_SHINY_TAG`, which must be increased with more pokemon
     // so that palette tags do not overlap
     const struct CompressedSpritePalette *spritePalette = &(shiny ? gMonShinyPaletteTable : gMonPaletteTable)[species];
@@ -1669,24 +1670,19 @@ static void FollowerSetGraphics(struct ObjectEvent *objectEvent, u16 species, u8
     sprite->inUse = FALSE;
     FieldEffectFreePaletteIfUnused(sprite->oam.paletteNum);
     sprite->inUse = TRUE;
-    if (IndexOfSpritePaletteTag(spritePalette->tag) == 0xFF) { // Load compressed palette
+    if ((paletteNum = IndexOfSpritePaletteTag(spritePalette->tag)) == 0xFF) { // Load compressed palette
       LoadCompressedSpritePalette(spritePalette);
-      sprite->oam.paletteNum = IndexOfSpritePaletteTag(spritePalette->tag); // Tag is always present
+      sprite->oam.paletteNum = paletteNum = IndexOfSpritePaletteTag(spritePalette->tag); // Tag is always present
       if (species == SPECIES_AMPHAROS) { // palette should be light-blended TODO: Add more glowing pokemon
-        // CHARIZARD_LINE ?
-        // CHINCHOU & LANTERN
-        // FLAAFY, MAREEP
-        // UMBREON
-        // VOLBEAT ?
-        // REGIS ?
-        u16 * palette = &gPlttBufferUnfaded[(sprite->oam.paletteNum+16)*16];
+        // CHARIZARD LINE ? CHINCHOU LANTERN FLAAFY MAREEP UMBREON VOLBEAT ?
+        u16 * palette = &gPlttBufferUnfaded[(paletteNum+16)*16];
         palette[0] |= 0x8000;
         if (palette[0] & 0x4000) // If color 15 is blended, use it as the alternate color
           palette[15] |= 0x8000;
       }
-      UpdateSpritePaletteWithWeather(sprite->oam.paletteNum, FALSE);
+      UpdateSpritePaletteWithWeather(paletteNum, FALSE);
     } else
-      sprite->oam.paletteNum = IndexOfSpritePaletteTag(spritePalette->tag); // Tag is always present
+      sprite->oam.paletteNum = paletteNum;
   }
 }
 
@@ -1717,7 +1713,7 @@ void UpdateFollowingPokemon(void) { // Update following pokemon if any
       MoveObjectEventToMapCoords(objEvent, gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x, gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y);
       objEvent->invisible = TRUE;
     }
-    FollowerSetGraphics(objEvent, species, 0, shiny);
+    FollowerSetGraphics(objEvent, species, 0, shiny, TRUE);
     sprite->data[6] = 0; // set animation data
     objEvent->extra.mon.species = species;
     objEvent->extra.mon.shiny = shiny;
@@ -2147,7 +2143,7 @@ static void SpawnObjectEventOnReturnToField(u8 objectEventId, s16 x, s16 y)
         sprite->sObjEventId = objectEventId;
         objectEvent->spriteId = i;
         if (objectEvent->graphicsId == OBJ_EVENT_GFX_OW_MON) { // Set pokemon graphics
-          FollowerSetGraphics(objectEvent, objectEvent->extra.mon.species, objectEvent->extra.mon.form, objectEvent->extra.mon.shiny);
+          FollowerSetGraphics(objectEvent, objectEvent->extra.mon.species, objectEvent->extra.mon.form, objectEvent->extra.mon.shiny, TRUE);
         }
         if (!objectEvent->inanimate && objectEvent->movementType != MOVEMENT_TYPE_PLAYER)
             StartSpriteAnim(sprite, GetFaceDirectionAnimNum(objectEvent->facingDirection));
@@ -6494,11 +6490,11 @@ bool8 MovementAction_ExitPokeball_Step1(struct ObjectEvent *objectEvent, struct 
         return TRUE;
     // Restore graphicsId and set palette to white
     } else if ((duration == 0 && sprite->data[3] == 3) || (duration == 1 && sprite->data[3] == 7)) {
-      FollowerSetGraphics(objectEvent, objectEvent->extra.mon.species, objectEvent->extra.mon.form, objectEvent->extra.mon.shiny);
+      FollowerSetGraphics(objectEvent, objectEvent->extra.mon.species, objectEvent->extra.mon.form, objectEvent->extra.mon.shiny, FALSE);
       LoadWhiteFlashPalette(objectEvent, sprite);
     // Restore original palette
     } else if ((duration == 0 && sprite->data[3] == 1) || (duration == 1 && sprite->data[3] == 3)) {
-      FollowerSetGraphics(objectEvent, objectEvent->extra.mon.species, objectEvent->extra.mon.form, objectEvent->extra.mon.shiny);
+      FollowerSetGraphics(objectEvent, objectEvent->extra.mon.species, objectEvent->extra.mon.form, objectEvent->extra.mon.shiny, TRUE);
     }
     return FALSE;
 }
@@ -6526,7 +6522,7 @@ bool8 MovementAction_EnterPokeball_Step1(struct ObjectEvent *objectEvent, struct
 
 bool8 MovementAction_EnterPokeball_Step2(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
-    FollowerSetGraphics(objectEvent, objectEvent->extra.mon.species, objectEvent->extra.mon.form, objectEvent->extra.mon.shiny);
+    FollowerSetGraphics(objectEvent, objectEvent->extra.mon.species, objectEvent->extra.mon.form, objectEvent->extra.mon.shiny, FALSE);
     objectEvent->invisible = TRUE;
     sprite->data[1] = 0;
     sprite->data[6] = 0;
