@@ -468,19 +468,23 @@ static void ApplyGammaShift(u8 startPalIndex, u8 numPalettes, s8 gammaIndex)
     {
         gammaIndex--;
         palOffset = startPalIndex * 16;
+        CpuFastCopy(gPlttBufferUnfaded + palOffset, gPlttBufferFaded + palOffset, 32 * numPalettes);
         numPalettes += startPalIndex;
+        // Thunder gamma-shift looks bad on night-blended palettes, so ignore time blending in some situations
+        if (!(gammaIndex > 3 && gWeatherPtr->currWeather == WEATHER_RAIN_THUNDERSTORM)) {
+          // Create the palette mask
+          u32 palettes = PALETTES_ALL;
+          palettes = (palettes >> startPalIndex) << startPalIndex;
+          palettes = (palettes << (32-numPalettes)) >> (32-numPalettes);
+          UpdatePalettesWithTime(palettes);
+        }
         curPalIndex = startPalIndex;
-
         // Loop through the speficied palette range and apply necessary gamma shifts to the colors.
-        // TODO: Optimize this to work with time blending
         while (curPalIndex < numPalettes)
         {
-            CpuFastCopy(gPlttBufferUnfaded + palOffset, gPlttBufferFaded + palOffset, 16 * sizeof(u16));
-            UpdatePalettesWithTime(1 << (palOffset >> 4));
             if (sPaletteGammaTypes[curPalIndex] == GAMMA_NONE)
             {
                 // No palette change.
-                // CpuFastCopy(gPlttBufferUnfaded + palOffset, gPlttBufferFaded + palOffset, 16 * sizeof(u16));
                 palOffset += 16;
             }
             else
@@ -537,11 +541,11 @@ static void ApplyGammaShift(u8 startPalIndex, u8 numPalettes, s8 gammaIndex)
     else
     {
         if (MapHasNaturalLight(gMapHeader.mapType)) { // Time-blend
-          u32 palettes = 0;
-          u32 mask = 1 << startPalIndex;
-          u8 i;
-          for (i = 0; i < numPalettes; i++, mask <<= 1)
-            palettes |= mask;
+          // Create the palette mask
+          u32 palettes = PALETTES_ALL;
+          numPalettes += startPalIndex;
+          palettes = (palettes >> startPalIndex) << startPalIndex;
+          palettes = (palettes << (32-numPalettes)) >> (32-numPalettes);
           UpdatePalettesWithTime(palettes);
         } else { // copy
           CpuFastCopy(gPlttBufferUnfaded + startPalIndex * 16, gPlttBufferFaded + startPalIndex * 16, numPalettes * 16 * sizeof(u16));
