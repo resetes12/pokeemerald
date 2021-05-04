@@ -1018,7 +1018,7 @@ void BlendPalettesFine(u32 palettes, u16 *src, u16 *dst, u32 coeff, u32 color) {
       }
     } else {
       src += 16;
-      dst + 16;
+      dst += 16;
     }
     palettes >>= 1;
   } while (palettes);
