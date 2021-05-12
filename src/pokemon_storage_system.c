@@ -1642,7 +1642,7 @@ u8 CountPartyNonEggMons(void)
 {
     u16 i, count;
 
-    for (i = 0, count = 0; i < PARTY_SIZE; i++)
+    for (i = 0, count = 0; i < GetPartySize(); i++) //tx_difficulty_challenges
     {
         if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) != SPECIES_NONE
             && !GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG))
@@ -1777,7 +1777,7 @@ static void Task_PokemonStorageSystemPC(u8 taskId)
             DestroyTask(taskId);
             break;
         default:
-            if (task->data[2] == 0 && CountPartyMons() == PARTY_SIZE)
+            if (task->data[2] == 0 && CountPartyMons() == GetPartySize()) //tx_difficulty_challenges
             {
                 FillWindowPixelBuffer(0, PIXEL_FILL(1));
                 AddTextPrinterParameterized2(0, 1, gText_PartyFull, 0, NULL, 2, 1, 3);
@@ -2930,7 +2930,7 @@ static void Cb_WithdrawMon(u8 taskId)
     switch (sPSSData->state)
     {
     case 0:
-        if (CalculatePlayerPartyCount() == PARTY_SIZE)
+        if (CalculatePlayerPartyCount() == GetPartySize())
         {
             PrintStorageActionText(PC_TEXT_PARTY_FULL);
             sPSSData->state = 1;
@@ -5810,7 +5810,7 @@ static void sub_80CD444(u8 cursorArea, u8 cursorPosition, u16 *x, u16 *y)
             *x = 0x68;
             *y = 0x34;
         }
-        else if (cursorPosition == PARTY_SIZE)
+        else if (cursorPosition == GetPartySize()) //tx_difficulty_challenges
         {
             *x = 0x98;
             *y = 0x84;
@@ -6749,7 +6749,7 @@ static void sub_80CEB40(void)
         switch (sBoxCursorArea)
         {
         case CURSOR_AREA_IN_PARTY:
-            if (sBoxCursorPosition < PARTY_SIZE)
+            if (sBoxCursorPosition < GetPartySize()) //tx_difficulty_challenges
             {
                 SetCursorMonData(&gPlayerParty[sBoxCursorPosition], MODE_PARTY);
                 break;
@@ -7241,14 +7241,14 @@ static u8 HandleInput_InParty(void)
         if (JOY_REPEAT(DPAD_UP))
         {
             if (--cursorPosition < 0)
-                cursorPosition = PARTY_SIZE;
+                cursorPosition =  GetPartySize(); //tx_difficulty_challenges
             if (cursorPosition != sBoxCursorPosition)
                 retVal = 1;
             break;
         }
         else if (JOY_REPEAT(DPAD_DOWN))
         {
-            if (++cursorPosition > PARTY_SIZE)
+            if (++cursorPosition > GetPartySize()) //tx_difficulty_challenges
                 cursorPosition = 0;
             if (cursorPosition != sBoxCursorPosition)
                 retVal = 1;
@@ -7279,7 +7279,7 @@ static u8 HandleInput_InParty(void)
 
         if (JOY_NEW(A_BUTTON))
         {
-            if (sBoxCursorPosition == PARTY_SIZE)
+            if (sBoxCursorPosition == GetPartySize()) //tx_difficulty_challenges
             {
                 if (sPSSData->boxOption == BOX_OPTION_DEPOSIT)
                     return 4;

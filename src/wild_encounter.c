@@ -24,6 +24,8 @@
 #include "constants/species.h"
 #include "constants/weather.h"
 
+#include "tx_difficulty_challenges.h"
+
 extern const u8 EventScript_RepelWoreOff[];
 
 #define NUM_FEEBAS_SPOTS    6
@@ -341,6 +343,9 @@ static void CreateWildMon(u16 species, u8 level)
 
     ZeroEnemyPartyMons();
     checkCuteCharm = TRUE;
+
+    if (TX_RANDOM_ENCOUNTER) //tx_difficulty_challenges
+        species = GetSpeciesRandomSeeded(species, TX_RANDOM_OFFSET_ENCOUNTER, TX_RANDOM_ENCOUNTER, !TX_RANDOM_CHAOS_MODE);
 
     switch (gBaseStats[species].genderRatio)
     {
