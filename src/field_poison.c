@@ -18,6 +18,8 @@
 #include "constants/party_menu.h"
 #include "constants/species.h"
 
+#include "tx_difficulty_challenges.h"
+
 static bool32 IsMonValidSpecies(struct Pokemon *pokemon)
 {
     u16 species = GetMonData(pokemon, MON_DATA_SPECIES2);
@@ -52,6 +54,8 @@ static void FaintFromFieldPoison(u8 partyIdx)
     SetMonData(pokemon, MON_DATA_STATUS, &status);
     GetMonData(pokemon, MON_DATA_NICKNAME, gStringVar1);
     StringGetEnd10(gStringVar1);
+    if (TX_CHALLENGE_NUZLOCKE) //tx_difficulty_challenges
+        NuzlockeDeleteFaintedPartyPokemon();
 }
 
 static bool32 MonFaintedFromPoison(u8 partyIdx)

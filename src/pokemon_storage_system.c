@@ -670,7 +670,7 @@ static void sub_80CD444(u8 cursorArea, u8 cursorPosition, u16 *x, u16 *y);
 static void SetShiftedMonData(u8 boxId, u8 position);
 static void SetMovedMonData(u8 boxId, u8 position);
 static void SetPlacedMonData(u8 boxId, u8 position);
-static void PurgeMonOrBoxMon(u8 boxId, u8 position);
+// static void PurgeMonOrBoxMon(u8 boxId, u8 position); //tx_difficulty_challenges
 static void SetCursorMonData(void *pokemon, u8 mode);
 static bool32 AtLeastThreeUsableMons(void);
 static u8 InBoxInput_Normal(void);
@@ -6330,7 +6330,7 @@ static void SetPlacedMonData(u8 boxId, u8 position)
     }
 }
 
-static void PurgeMonOrBoxMon(u8 boxId, u8 position)
+void PurgeMonOrBoxMon(u8 boxId, u8 position) //static //tx_difficulty_challenges
 {
     if (boxId == TOTAL_BOXES_COUNT)
         ZeroMonData(&gPlayerParty[position]);
@@ -9882,5 +9882,38 @@ static void sub_80D2C1C(struct UnkStruct_2000028 *unkStruct)
     {
         Dma3FillLarge_(0, unkStruct->unk_04, unkStruct->unk_08, 16);
         unkStruct->unk_04 += 64;
+    }
+}
+
+//tx_difficulty_challenges
+// searches for first pokemon in PC starting at Box 1
+// returns index of that pokemon, or 420 (boxes count * in box count) for none found
+u16 GetFirstBoxPokemon(void) // @Kurausukun
+{
+    u16 i;
+    u16 j;
+
+    for (i = 0; i < TOTAL_BOXES_COUNT; i++)
+    {
+        for (j = 0; j < IN_BOX_COUNT; j++)
+        {
+            if (GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_SPECIES) != SPECIES_NONE &&
+            !GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_IS_EGG))
+            {
+                return (i * IN_BOX_COUNT) + j;
+            }
+        }
+    }
+    return IN_BOX_COUNT * TOTAL_BOXES_COUNT; // none found
+}
+void MoveFirstBoxPokemon(void) // @Kurausukun
+{
+    u16 position = GetFirstBoxPokemon();
+    if (position != IN_BOX_COUNT * TOTAL_BOXES_COUNT)
+    {
+        u16 boxNum = position / IN_BOX_COUNT;
+        u16 boxIndex = position - (boxNum * IN_BOX_COUNT);
+        BoxMonAtToMon(boxNum, boxIndex, &gPlayerParty[0]);
+        PurgeMonOrBoxMon(boxNum, boxIndex);
     }
 }

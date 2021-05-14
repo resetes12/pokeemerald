@@ -48,6 +48,8 @@
 #include "constants/songs.h"
 #include "constants/species.h"
 
+#include "tx_difficulty_challenges.h"
+
 // Screen titles (upper left)
 #define PSS_LABEL_WINDOW_POKEMON_INFO_TITLE 0
 #define PSS_LABEL_WINDOW_POKEMON_SKILLS_TITLE 1
@@ -2211,7 +2213,8 @@ static bool8 CanReplaceMove(void)
 {
     if (sMonSummaryScreen->firstMoveIndex == MAX_MON_MOVES
         || sMonSummaryScreen->newMove == MOVE_NONE
-        || IsMoveHm(sMonSummaryScreen->summary.moves[sMonSummaryScreen->firstMoveIndex]) != TRUE)
+        || IsMoveHm(sMonSummaryScreen->summary.moves[sMonSummaryScreen->firstMoveIndex]) != TRUE //)
+        || TX_CHALLENGE_NUZLOCKE) //tx_difficulty_challenges
         return TRUE;
     else
         return FALSE;

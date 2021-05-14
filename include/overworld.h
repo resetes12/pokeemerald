@@ -158,4 +158,6 @@ bool32 sub_8087634(void);
 bool32 sub_808766C(void);
 void ClearLinkPlayerObjectEvents(void);
 
+u8 NuzlockeGetCurrentRegionMapSectionId(void); //tx_difficulty_challenges
+
 #endif // GUARD_OVERWORLD_H

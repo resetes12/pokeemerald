@@ -18,6 +18,10 @@ extern u16 gTrainerBattleOpponent_A;
 extern u16 gTrainerBattleOpponent_B;
 extern u16 gPartnerTrainerId;
 
+//tx_difficulty_challenges
+extern u8 NuzlockeIsCaptureBlocked;
+extern u8 NuzlockeIsSpeciesClauseActive;
+
 void BattleSetup_StartWildBattle(void);
 void BattleSetup_StartBattlePikeWildBattle(void);
 void BattleSetup_StartRoamerBattle(void);
@@ -63,5 +67,7 @@ bool8 ShouldTryRematchBattle(void);
 bool8 IsTrainerReadyForRematch(void);
 void ShouldTryGetTrainerScript(void);
 u16 CountBattledRematchTeams(u16 trainerId);
+
+u8 NuzlockeIsCaptureBlockedBySpeciesClause(u16 species); //tx_difficulty_challenges
 
 #endif // GUARD_BATTLE_SETUP_H

@@ -61,7 +61,9 @@
 #include "constants/species.h"
 #include "constants/trainers.h"
 #include "cable_club.h"
+
 #include "tx_difficulty_challenges.h"
+#include "overworld.h"
 
 extern struct MusicPlayerInfo gMPlayInfo_SE1;
 extern struct MusicPlayerInfo gMPlayInfo_SE2;
@@ -1972,7 +1974,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                 fixedIV = partyData[i].iv * 31 / 255;
                 if (TX_RANDOM_TRAINER) //tx_difficulty_challenges
                 {
-                    species = GetSpeciesRandomSeeded(species, TX_RANDOM_OFFSET_TRAINER, TRUE, !TX_RANDOM_CHAOS_MODE);
+                    species = GetSpeciesRandomSeeded(partyData[i].species, TX_RANDOM_OFFSET_TRAINER, TRUE, !TX_RANDOM_CHAOS_MODE);
                     CreateMon(&party[i], species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
                 }
                 else
@@ -1990,7 +1992,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                 fixedIV = partyData[i].iv * 31 / 255;
                 if (TX_RANDOM_TRAINER) //tx_difficulty_challenges
                 {
-                    species = GetSpeciesRandomSeeded(species, TX_RANDOM_OFFSET_TRAINER, TRUE, !TX_RANDOM_CHAOS_MODE);
+                    species = GetSpeciesRandomSeeded(partyData[i].species, TX_RANDOM_OFFSET_TRAINER, TRUE, !TX_RANDOM_CHAOS_MODE);
                     CreateMon(&party[i], species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
                 }
                 else
@@ -2023,7 +2025,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                 fixedIV = partyData[i].iv * 31 / 255;
                 if (TX_RANDOM_TRAINER) //tx_difficulty_challenges
                 {
-                    species = GetSpeciesRandomSeeded(species, TX_RANDOM_OFFSET_TRAINER, TRUE, !TX_RANDOM_CHAOS_MODE);
+                    species = GetSpeciesRandomSeeded(partyData[i].species, TX_RANDOM_OFFSET_TRAINER, TRUE, !TX_RANDOM_CHAOS_MODE);
                     CreateMon(&party[i], species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
                 }
                 else
@@ -2043,7 +2045,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                 fixedIV = partyData[i].iv * 31 / 255;
                 if (TX_RANDOM_TRAINER) //tx_difficulty_challenges
                 {
-                    species = GetSpeciesRandomSeeded(species, TX_RANDOM_OFFSET_TRAINER, TRUE, !TX_RANDOM_CHAOS_MODE);
+                    species = GetSpeciesRandomSeeded(partyData[i].species, TX_RANDOM_OFFSET_TRAINER, TRUE, !TX_RANDOM_CHAOS_MODE);
                     CreateMon(&party[i], species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
                 }
                 else
@@ -5097,6 +5099,32 @@ static void HandleEndTurn_FinishBattle(void)
             && gBattleResults.shinyWildMon)
         {
             sub_80EE184();
+        }
+
+        //ty_difficulty_challenges
+        if (TX_CHALLENGE_NUZLOCKE)
+        {
+            NuzlockeDeleteFaintedPartyPokemon();
+            if (!(gBattleTypeFlags & (BATTLE_TYPE_DOUBLE
+                                        | BATTLE_TYPE_LINK
+                                        | BATTLE_TYPE_TRAINER
+                                        | BATTLE_TYPE_FIRST_BATTLE
+                                        | BATTLE_TYPE_20
+                                        | BATTLE_TYPE_MULTI
+                                        | BATTLE_TYPE_BATTLE_TOWER
+                                        | BATTLE_TYPE_WALLY_TUTORIAL
+                                        | BATTLE_TYPE_LEGENDARY
+                                        | BATTLE_TYPE_REGI
+                                        | BATTLE_TYPE_TWO_OPPONENTS
+                                        | BATTLE_TYPE_INGAME_PARTNER
+                                        | BATTLE_TYPE_x800000
+                                        | BATTLE_TYPE_x2000000)))
+            {
+                if (!NuzlockeIsSpeciesClauseActive)
+                    NuzlockeFlagSet(NuzlockeGetCurrentRegionMapSectionId());
+            }
+            NuzlockeIsCaptureBlocked = FALSE;
+            NuzlockeIsSpeciesClauseActive = FALSE;
         }
 
         sub_8186444();

@@ -2988,4 +2988,9 @@ extern const u8 gText_SavingDontTurnOff2[];
 extern const u8 gText_BlenderMaxSpeedRecord[];
 extern const u8 gText_234Players[];
 
+//tx_difficulty_challenges
+extern const u8 gText_NuzlockeCantThrowPokeBallRoute[];
+extern const u8 gText_NuzlockeCantThrowPokeBallSpeciesClause[];
+extern const u8 gText_NuzlockeCantThrowPokeBallAlreadyCaught[];
+
 #endif // GUARD_STRINGS_H

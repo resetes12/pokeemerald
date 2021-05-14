@@ -3,6 +3,7 @@
 
 #include "constants/pokemon.h"
 #include "sprite.h"
+#include "constants/species.h" //tx_difficulty_challenges
 
 struct PokemonSubstruct0
 {
@@ -258,6 +259,7 @@ extern const u8 gStatStageRatios[MAX_STAT_STAGE + 1][2];
 extern const u16 gLinkPlayerFacilityClasses[];
 extern const struct SpriteTemplate gUnknown_08329D98[];
 extern const s8 gNatureStatTable[][5];
+extern const u16 gEvolutionLines[NUM_SPECIES][EVOS_PER_LINE]; //tx_difficulty_challenges
 
 void ZeroBoxMonData(struct BoxPokemon *boxMon);
 void ZeroMonData(struct Pokemon *mon);
@@ -422,5 +424,7 @@ u8 GetTypeBySpecies(u16 species, u8 type);
 u16 GetSpeciesRandomSeeded(u16 species, u8 offset, u8 random, u8 seeded);
 u16 GetEvolutionTargetSpeciesRandom(u16 species, u8 random, u8 seeded);
 u8 GetPartySize();
+void NuzlockeDeletePartyMon(u8 position);
+void NuzlockeDeleteFaintedPartyPokemon(void) ;
 
 #endif // GUARD_POKEMON_H

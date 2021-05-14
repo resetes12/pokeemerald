@@ -42,6 +42,9 @@
 #include "constants/items.h"
 #include "constants/songs.h"
 
+#include "tx_difficulty_challenges.h"
+#include "battle_setup.h"
+
 static void SetUpItemUseCallback(u8 taskId);
 static void FieldCB_UseItemOnField(void);
 static void Task_CallItemUseOnFieldCallback(u8 taskId);
@@ -938,7 +941,13 @@ void ItemUseOutOfBattle_EvolutionStone(u8 taskId)
 
 void ItemUseInBattle_PokeBall(u8 taskId)
 {
-    if (IsPlayerPartyAndPokemonStorageFull() == FALSE) // have room for mon?
+    if (TX_CHALLENGE_NUZLOCKE && NuzlockeIsCaptureBlocked) //tx_difficulty_challenges
+        DisplayCannotUseItemMessage(taskId, FALSE, gText_NuzlockeCantThrowPokeBallRoute);
+    else if (TX_CHALLENGE_NUZLOCKE && NuzlockeIsSpeciesClauseActive == 2) //already have THIS_mon
+        DisplayCannotUseItemMessage(taskId, FALSE, gText_NuzlockeCantThrowPokeBallAlreadyCaught);
+    else if (TX_CHALLENGE_NUZLOCKE && NuzlockeIsSpeciesClauseActive)
+        DisplayCannotUseItemMessage(taskId, FALSE, gText_NuzlockeCantThrowPokeBallSpeciesClause);
+    else if (IsPlayerPartyAndPokemonStorageFull() == FALSE) // have room for mon?
     {
         RemoveBagItem(gSpecialVar_ItemId, 1);
         if (!InBattlePyramid())
