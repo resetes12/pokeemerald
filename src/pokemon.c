@@ -50,6 +50,11 @@
 #include "tx_difficulty_challenges.h"
 #include "constants/party_menu.h"
 
+// #include "printf.h"
+// #include "mgba.h"
+// #include "data.h"                 // for gSpeciesNames, which maps species number to species name.
+// #include "../gflib/string_util.h" // for ConvertToAscii()
+
 struct SpeciesItem
 {
     u16 species;
@@ -8401,7 +8406,7 @@ u8 *sub_806F4F8(u8 id, u8 arg1)
 }
 
 //******************* tx_difficulty_challenges
-static void RandomizeSpeciesListEWRAM(u16 seed)
+void RandomizeSpeciesListEWRAM(u16 seed)
 {
     //gRandomSpecies[RANDOM_SPECIES_COUNT]
     u16 i;
@@ -8410,14 +8415,48 @@ static void RandomizeSpeciesListEWRAM(u16 seed)
     memcpy(stemp, gRandomSpecies, sizeof(gRandomSpecies));
     ShuffleList(stemp, NELEMS(gRandomSpecies), seed);
 
+    // mgba_printf(MGBA_LOG_DEBUG, "NELEMS = %d", NELEMS(gRandomSpecies) );
+
     for (i=0; i<RANDOM_SPECIES_COUNT; i++)
     {
         sSpeciesList[gRandomSpecies[i]] = stemp[i];
+        // mgba_printf(MGBA_LOG_DEBUG, "sSpeciesList[%d] = %d", gRandomSpecies[i], stemp[i] );
     }
 }
 
-static u16 PickRandomizedSpeciesFromEWRAM(u16 species, u16 seed)
+static u16 PickRandomizedSpeciesFromEWRAM(u16 species, u16 depth)
 {
+    u8 i;
+
+    // switch (depth)
+    // {
+    // case TX_RANDOM_OFFSET_TRAINER  :
+    //     mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_TRAINER: species = %d", species );
+    //     break;
+    // case TX_RANDOM_OFFSET_TYPE     :
+    //     mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_TYPE: species = %d", species );
+    //     break;
+    // case TX_RANDOM_OFFSET_ABILITY  :
+    //     mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_ABILITY: species = %d", species );
+    //     break;
+    // case TX_RANDOM_OFFSET_MOVES    :
+    //     mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_MOVES: species = %d", species );
+    //     break;
+    // case TX_RANDOM_OFFSET_ENCOUNTER:
+    //     mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_ENCOUNTER: species = %d", species );
+    //     break;
+    // case TX_RANDOM_OFFSET_EVOLUTION:
+    //     mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_EVOLUTION: species = %d", species );
+    //     break;
+    // }
+
+    for (i = 0; i < depth; i++)
+    {
+        species = sSpeciesList[species];
+        // mgba_printf(MGBA_LOG_DEBUG, "depth[%d], species = %d", i, species );
+    }
+    // mgba_printf(MGBA_LOG_DEBUG, "depth[%d], species = %d", i, sSpeciesList[species] );
+    // mgba_printf(MGBA_LOG_DEBUG, "");
     return sSpeciesList[species];
 }
 
@@ -8441,7 +8480,7 @@ u8 GetTypeBySpecies(u16 species, u8 type)
     return result;
 }
 
-u16 GetSpeciesRandomSeeded(u16 species, u8 offset, u8 random, u8 seeded)
+u16 GetSpeciesRandomSeeded(u16 species, u8 depth, u8 random, u8 seeded)
 {
     u8 slot = gSpeciesMapping[species];
     if (!random || slot == EVO_TYPE_SELF)
@@ -8451,19 +8490,19 @@ u16 GetSpeciesRandomSeeded(u16 species, u8 offset, u8 random, u8 seeded)
         return gRandomSpecies[(Random() % RANDOM_SPECIES_COUNT) + 1];
 
     if (!TX_RANDOM_ENCOUNTER_SIMILAR)
-        return PickRandomizedSpeciesFromEWRAM(species, offset);  //return gRandomSpecies[(RandomSeeded(species+offset, seeded) % RANDOM_SPECIES_COUNT) + 1];
+        return PickRandomizedSpeciesFromEWRAM(species, depth);  //return gRandomSpecies[(RandomSeeded(species+offset, seeded) % RANDOM_SPECIES_COUNT) + 1];
 
     //if random, seeded and similar
     switch (slot)
     {
     case  EVO_TYPE_0:
-        return gRandomSpeciesEvo0[RandomSeeded(species+offset, seeded) % RANDOM_SPECIES_EVO_0_COUNT];
+        return gRandomSpeciesEvo0[RandomSeeded(species+depth*3, seeded) % RANDOM_SPECIES_EVO_0_COUNT];
         break;
     case  EVO_TYPE_1:
-        return gRandomSpeciesEvo1[RandomSeeded(species+offset, seeded) % RANDOM_SPECIES_EVO_1_COUNT];
+        return gRandomSpeciesEvo1[RandomSeeded(species+depth*3, seeded) % RANDOM_SPECIES_EVO_1_COUNT];
         break;
     case  EVO_TYPE_2:
-        return gRandomSpeciesEvo2[RandomSeeded(species+offset, seeded) % RANDOM_SPECIES_EVO_2_COUNT];
+        return gRandomSpeciesEvo2[RandomSeeded(species+depth*3, seeded) % RANDOM_SPECIES_EVO_2_COUNT];
         break;
     }
 

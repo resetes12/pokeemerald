@@ -205,6 +205,7 @@ void SaveSerializedGame(void)
 
 void LoadSerializedGame(void)
 {
+    RandomizeSpeciesListEWRAM(1);
     LoadPlayerParty();
     LoadObjectEvents();
 }
