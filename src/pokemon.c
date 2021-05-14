@@ -75,6 +75,9 @@ EWRAM_DATA struct Pokemon gEnemyParty[PARTY_SIZE] = {0};
 EWRAM_DATA struct SpriteTemplate gMultiuseSpriteTemplate = {0};
 EWRAM_DATA struct Unknown_806F160_Struct *gUnknown_020249B4[2] = {NULL, NULL};
 
+EWRAM_DATA static u16 stemp[365] = {0};
+EWRAM_DATA static u16 sSpeciesList[NUM_SPECIES] = {0};
+
 // const rom data
 #include "data/battle_moves.h"
 
@@ -2146,7 +2149,7 @@ static const struct SpriteTemplate gUnknown_08329F28 =
 #define EVO_TYPE_1 1
 #define EVO_TYPE_2 2
 #define EVO_TYPE_SELF 3
-#define RANDOM_SPECIES_COUNT 366
+#define RANDOM_SPECIES_COUNT 365
 static const u8 gSpeciesMapping[NUM_SPECIES+1] =
 {
     [SPECIES_NONE]            = EVO_TYPE_SELF,
@@ -2565,7 +2568,7 @@ static const u8 gSpeciesMapping[NUM_SPECIES+1] =
 };
 static const u16 gRandomSpecies[RANDOM_SPECIES_COUNT] =
 {
-    SPECIES_NONE                    ,
+    //SPECIES_NONE                    ,
     SPECIES_BULBASAUR               ,
     SPECIES_IVYSAUR                 ,
     SPECIES_VENUSAUR                ,
@@ -8398,6 +8401,26 @@ u8 *sub_806F4F8(u8 id, u8 arg1)
 }
 
 //******************* tx_difficulty_challenges
+static void RandomizeSpeciesListEWRAM(u16 seed)
+{
+    //gRandomSpecies[RANDOM_SPECIES_COUNT]
+    u16 i;
+    u16 k;
+
+    memcpy(stemp, gRandomSpecies, sizeof(gRandomSpecies));
+    ShuffleList(stemp, NELEMS(gRandomSpecies), seed);
+
+    for (i=0; i<RANDOM_SPECIES_COUNT; i++)
+    {
+        sSpeciesList[gRandomSpecies[i]] = stemp[i];
+    }
+}
+
+static u16 PickRandomizedSpeciesFromEWRAM(u16 species, u16 seed)
+{
+    return sSpeciesList[species];
+}
+
 u8 GetTypeBySpecies(u16 species, u8 type)
 {
     u8 result;
@@ -8428,7 +8451,7 @@ u16 GetSpeciesRandomSeeded(u16 species, u8 offset, u8 random, u8 seeded)
         return gRandomSpecies[(Random() % RANDOM_SPECIES_COUNT) + 1];
 
     if (!TX_RANDOM_ENCOUNTER_SIMILAR)
-        return gRandomSpecies[(RandomSeeded(species+offset, seeded) % RANDOM_SPECIES_COUNT) + 1];
+        return PickRandomizedSpeciesFromEWRAM(species, offset);  //return gRandomSpecies[(RandomSeeded(species+offset, seeded) % RANDOM_SPECIES_COUNT) + 1];
 
     //if random, seeded and similar
     switch (slot)

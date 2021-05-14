@@ -50,4 +50,16 @@ u16 RandomSeeded(u16 value, u8 seeded)
     }
     return result;
 }
+void ShuffleList(u16 *list, u16 count, u16 seed)
+{
+    u16 i;
+
+    for (i = (count - 1); i > 0; i--)
+    {
+        u16 j = RandomSeeded(seed, TRUE) % (i + 1);
+        u16 arr = list[j];
+        list[j] = list[i];
+        list[i] = arr;
+    }
+}
 
