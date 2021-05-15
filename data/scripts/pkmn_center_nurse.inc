@@ -1,6 +1,9 @@
 Common_EventScript_PkmnCenterNurse:: @ 827191E
     lock
     faceplayer
+    specialvar VAR_RESULT, GetPokemonCenterChallenge
+    compare VAR_RESULT, 0
+    goto_if_eq EventScript_PkmnCenterNurse_PkmnCenterChallenge_NoVisits
     setvar VAR_0x8004, 0
     specialvar VAR_RESULT, CountPlayerTrainerStars
     compare VAR_RESULT, 4
@@ -133,3 +136,12 @@ EventScript_PkmnCenterNurse_Bow: @ 8271AD0
     nurse_joy_bow
     delay_4
     step_end
+
+
+EventScript_PkmnCenterNurse_PkmnCenterChallenge_NoVisits:: @ tx_difficulty_challenges
+    message gText_PkmnCenterChallenge_NoVisitsLeft
+    waitmessage
+    applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown
+    waitmovement 0
+    release
+    end

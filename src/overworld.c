@@ -1568,6 +1568,11 @@ void CB2_WhiteOut(void)
     {
         FieldClearVBlankHBlankCallbacks();
         StopMapMusic();
+        if (TX_CHALLENGE_NUZLOCKE_HARDCORE) //tx_difficulty_challenges
+        {
+            ClearSaveData();
+            DoSoftReset();
+        }
         ResetSafariZoneFlag_();
         DoWhiteOut();
         ResetInitialPlayerAvatarState();

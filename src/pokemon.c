@@ -8565,3 +8565,17 @@ void NuzlockeDeleteFaintedPartyPokemon(void) // @Kurausukun
     }
     CompactPartySlots();
 }
+
+u8 GetPokemonCenterChallenge()
+{
+    if (!TX_CHALLENGE_PKMN_CENTER)
+        return 1;
+    else if (TX_CHALLENGE_PKMN_CENTER == 1)
+    {
+
+    }
+    else if (TX_CHALLENGE_PKMN_CENTER == 2)
+    {
+        return 0;
+    }
+}

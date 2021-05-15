@@ -144,6 +144,7 @@ gSpecials:: @ 81DBA64
 	def_special SwapRegisteredBike
 	def_special CalculatePlayerPartyCount
 	def_special GetPartySize @ tx_difficulty_challenges
+	def_special GetPokemonCenterChallenge @ tx_difficulty_challenges
 	def_special CountPartyNonEggMons
 	def_special CountPartyAliveNonEggMons_IgnoreVar0x8004Slot
 	def_special ShouldReadyContestArtist

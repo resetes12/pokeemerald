@@ -427,5 +427,6 @@ u16 GetEvolutionTargetSpeciesRandom(u16 species, u8 random, u8 seeded);
 u8 GetPartySize();
 void NuzlockeDeletePartyMon(u8 position);
 void NuzlockeDeleteFaintedPartyPokemon(void) ;
+u8 GetPokemonCenterChallenge();
 
 #endif // GUARD_POKEMON_H
