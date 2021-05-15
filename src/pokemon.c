@@ -5939,7 +5939,7 @@ bool8 IsPlayerPartyAndPokemonStorageFull(void)
 {
     s32 i;
 
-    for (i = 0; i < PARTY_SIZE; i++)
+    for (i = 0; i < GetPartySize(); i++)
         if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, NULL) == SPECIES_NONE)
             return FALSE;
 
@@ -8622,7 +8622,7 @@ u8 GetTypeEffectivenessRandom(u8 type)
     if (type == TYPE_NONE)
         return TYPE_NONE;
     
-    if (!TX_RANDOM_TYPE_Effectiveness)
+    if (!TX_RANDOM_TYPE_EFFECTIVENESS)
         return type;
 
     return sTypeEffectivenessList[type - 1];
