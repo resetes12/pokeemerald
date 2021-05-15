@@ -28,5 +28,6 @@
 #define TX_CHALLENGE_NO_ITEM_PLAYER 1
 #define TX_CHALLENGE_NO_ITEM_TRAINER 1
 #define TX_CHALLENGE_PKMN_CENTER 2 //0 no limit, 1 three visits, 2 none
+#define TX_CHALLENGE_TYPE TYPE_GRASS //TYPE_NONE for off
 
 #endif // GUARD_DIFFICULTY_H

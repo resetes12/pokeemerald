@@ -2992,6 +2992,7 @@ extern const u8 gText_234Players[];
 extern const u8 gText_NuzlockeCantThrowPokeBallRoute[];
 extern const u8 gText_NuzlockeCantThrowPokeBallSpeciesClause[];
 extern const u8 gText_NuzlockeCantThrowPokeBallAlreadyCaught[];
+extern const u8 gText_TypeChallengeCantThrowPokeBall[];
 extern const u8 gText_BattleRules_NoItems_Player[];
 
 #endif // GUARD_STRINGS_H

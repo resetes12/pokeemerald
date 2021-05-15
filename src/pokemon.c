@@ -3537,6 +3537,26 @@ static const u8 sTypeEffectivenessBaseList[NUMBER_OF_MON_TYPES] =
     TYPE_DRAGON,
     TYPE_DARK,
 };
+static const u8  sTypeChallengeValidTypes[NUMBER_OF_MON_TYPES-1] =
+{
+    TYPE_NORMAL   ,
+    TYPE_FIGHTING ,
+    TYPE_FLYING   ,
+    TYPE_POISON   ,
+    TYPE_GROUND   ,
+    TYPE_ROCK     ,
+    TYPE_BUG      ,
+    TYPE_GHOST    ,
+    TYPE_STEEL    ,
+    TYPE_FIRE     ,
+    TYPE_WATER    ,
+    TYPE_GRASS    ,
+    TYPE_ELECTRIC ,
+    TYPE_PSYCHIC  ,
+    TYPE_ICE      ,
+    TYPE_DRAGON   ,
+    TYPE_DARK     ,
+};
 //**********************
 
 // code
@@ -5757,6 +5777,11 @@ u8 GiveMonToPlayer(struct Pokemon *mon)
     }
 
     if (i >= GetPartySize()) //tx_difficulty_challenges
+        return SendMonToPC(mon);
+
+    if (TX_CHALLENGE_TYPE != TYPE_NONE && 
+                    GetTypeBySpecies(GetMonData(mon, MON_DATA_SPECIES, NULL), 1) != TX_CHALLENGE_TYPE && 
+                    GetTypeBySpecies(GetMonData(mon, MON_DATA_SPECIES, NULL), 2) != TX_CHALLENGE_TYPE)
         return SendMonToPC(mon);
 
     CopyMon(&gPlayerParty[i], mon, sizeof(*mon));
@@ -8479,6 +8504,12 @@ static u16 PickRandomizedSpeciesFromEWRAM(u16 species, u16 depth)
     // mgba_printf(MGBA_LOG_DEBUG, "depth[%d], species = %d", i, sSpeciesList[species] );
     // mgba_printf(MGBA_LOG_DEBUG, "");
     return sSpeciesList[species];
+}
+
+u8 PickRandomTypeChallengeType()
+{
+    u16 type = (RandomSeeded(1, TRUE) % (NUMBER_OF_MON_TYPES-1));
+    type = sTypeChallengeValidTypes[type];
 }
 
 u8 GetTypeBySpecies(u16 species, u8 type)

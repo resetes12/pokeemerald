@@ -5120,11 +5120,12 @@ static void HandleEndTurn_FinishBattle(void)
                                         | BATTLE_TYPE_x800000
                                         | BATTLE_TYPE_x2000000)))
             {
-                if (!NuzlockeIsSpeciesClauseActive)
+                if (!NuzlockeIsSpeciesClauseActive || !TypeChallengeCaptureBlocked)
                     NuzlockeFlagSet(NuzlockeGetCurrentRegionMapSectionId());
             }
             NuzlockeIsCaptureBlocked = FALSE;
             NuzlockeIsSpeciesClauseActive = FALSE;
+            TypeChallengeCaptureBlocked = FALSE;
         }
 
         sub_8186444();

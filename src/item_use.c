@@ -945,6 +945,8 @@ void ItemUseInBattle_PokeBall(u8 taskId)
         DisplayCannotUseItemMessage(taskId, FALSE, gText_NuzlockeCantThrowPokeBallRoute);
     else if (TX_CHALLENGE_NUZLOCKE && NuzlockeIsSpeciesClauseActive == 2) //already have THIS_mon
         DisplayCannotUseItemMessage(taskId, FALSE, gText_NuzlockeCantThrowPokeBallAlreadyCaught);
+    else if (TX_CHALLENGE_TYPE && TypeChallengeCaptureBlocked) //pkmn not of the TYPE CHALLANGE type
+        DisplayCannotUseItemMessage(taskId, FALSE, gText_TypeChallengeCantThrowPokeBall);
     else if (TX_CHALLENGE_NUZLOCKE && NuzlockeIsSpeciesClauseActive)
         DisplayCannotUseItemMessage(taskId, FALSE, gText_NuzlockeCantThrowPokeBallSpeciesClause);
     else if (IsPlayerPartyAndPokemonStorageFull() == FALSE) // have room for mon?

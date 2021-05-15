@@ -111,6 +111,7 @@ EWRAM_DATA static u8 sNoOfPossibleTrainerRetScripts = 0;
 //tx_difficulty_options
 EWRAM_DATA u8 NuzlockeIsCaptureBlocked = FALSE;
 EWRAM_DATA u8 NuzlockeIsSpeciesClauseActive = FALSE;
+EWRAM_DATA u8 TypeChallengeCaptureBlocked = FALSE;
 
 // const rom data
 
@@ -472,6 +473,10 @@ void BattleSetup_StartWildBattle(void)
         DoSafariBattle();
     else
         // tx_difficulty_challenges
+        TypeChallengeCaptureBlocked = (TX_CHALLENGE_TYPE != TYPE_NONE && 
+                    GetTypeBySpecies(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES), 1) != TX_CHALLENGE_TYPE && 
+                    GetTypeBySpecies(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES), 2) != TX_CHALLENGE_TYPE);
+
         if (TX_CHALLENGE_NUZLOCKE)
         {
             NuzlockeIsSpeciesClauseActive = NuzlockeIsCaptureBlockedBySpeciesClause(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES));

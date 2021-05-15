@@ -54,6 +54,8 @@
 #include "data.h"
 #include "constants/party_menu.h"
 
+#include "tx_difficulty_challenges.h"
+
 extern struct MusicPlayerInfo gMPlayInfo_BGM;
 
 extern const u8* const gBattleScriptsForMoveEffects[];
@@ -10128,7 +10130,11 @@ static void Cmd_trygivecaughtmonnick(void)
         }
         break;
     case 4:
-        if (CalculatePlayerPartyCount() == GetPartySize())
+        if (CalculatePlayerPartyCount() == GetPartySize()) //tx_difficulty_challenges
+            gBattlescriptCurrInstr += 5;
+        else if (TX_CHALLENGE_TYPE != TYPE_NONE && //tx_difficulty_challenges
+                            GetTypeBySpecies(GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_SPECIES), 1) != TX_CHALLENGE_TYPE && 
+                            GetTypeBySpecies(GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_SPECIES), 2) != TX_CHALLENGE_TYPE)
             gBattlescriptCurrInstr += 5;
         else
             gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
