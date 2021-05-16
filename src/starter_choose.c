@@ -356,8 +356,25 @@ static const struct SpriteTemplate sSpriteTemplate_StarterCircle =
 // .text
 u16 GetStarterPokemon(u16 chosenStarterId)
 {
+    u16 mon = sStarterMon[chosenStarterId]; //tx_difficulty_challenges
+
     if (chosenStarterId > STARTER_MON_COUNT)
         chosenStarterId = 0;
+
+    //tx_difficulty_challenges
+    if (gSaveBlock1Ptr->txRandTypeChallenge)
+    {
+        while (GetTypeBySpecies(mon, 1) != gSaveBlock1Ptr->txRandTypeChallenge || GetTypeBySpecies(mon, 2) != gSaveBlock1Ptr->txRandTypeChallenge)
+            mon = PickRandomEvo0Species(mon);
+        return mon;
+    }
+    else if (gSaveBlock1Ptr->txRandChaos && gSaveBlock1Ptr->txRandEncounter)
+        return PickRandomizedSpeciesFromEWRAM(sStarterMon[chosenStarterId], 3);
+    else if (gSaveBlock1Ptr->txRandEncounter)
+        return PickRandomEvo0Species(sStarterMon[chosenStarterId]);
+
+    return SPECIES_DEOXYS;
+
     return sStarterMon[chosenStarterId];
 }
 

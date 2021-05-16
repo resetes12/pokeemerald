@@ -8489,7 +8489,7 @@ void RandomizeSpeciesListEWRAM(u16 seed)
     gSaveBlock1Ptr->txRandPkmnCenter           =   TX_CHALLENGE_PKMN_CENTER;
 }
 
-static u16 PickRandomizedSpeciesFromEWRAM(u16 species, u16 depth)
+u16 PickRandomizedSpeciesFromEWRAM(u16 species, u16 depth)
 {
     u8 i;
 
@@ -8523,6 +8523,11 @@ static u16 PickRandomizedSpeciesFromEWRAM(u16 species, u16 depth)
     // mgba_printf(MGBA_LOG_DEBUG, "depth[%d], species = %d", i, sSpeciesList[species] );
     // mgba_printf(MGBA_LOG_DEBUG, "");
     return sSpeciesList[species];
+}
+
+u16 PickRandomEvo0Species(u16 species)
+{
+    return gRandomSpeciesEvo0[RandomSeeded(species, TRUE) % RANDOM_SPECIES_EVO_0_COUNT];
 }
 
 u8 PickRandomTypeChallengeType()
