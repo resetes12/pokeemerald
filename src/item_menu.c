@@ -1915,7 +1915,7 @@ void ItemMenu_Cancel(u8 taskId)
 void ItemMenu_UseInBattle(u8 taskId)
 {
     //tx_difficulty_challenges
-    if (TX_CHALLENGE_NO_ITEM_PLAYER && ItemId_GetBattleFunc(gSpecialVar_ItemId) != ItemUseInBattle_PokeBall)
+    if (gSaveBlock1Ptr->txRandNoItemPlayer && ItemId_GetBattleFunc(gSpecialVar_ItemId) != ItemUseInBattle_PokeBall)
     {
         DisplayCannotUseItemMessage(taskId, FALSE, gText_BattleRules_NoItems_Player);
         return;

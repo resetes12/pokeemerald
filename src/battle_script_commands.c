@@ -10064,6 +10064,8 @@ void BattleDestroyYesNoCursorAt(u8 cursorPosition)
 
 static void Cmd_trygivecaughtmonnick(void)
 {
+    u8 typeChallenge = gSaveBlock1Ptr->txRandTypeChallenge; //tx_difficulty_challenges
+
     switch (gBattleCommunication[MULTIUSE_STATE])
     {
     case 0:
@@ -10132,9 +10134,9 @@ static void Cmd_trygivecaughtmonnick(void)
     case 4:
         if (CalculatePlayerPartyCount() == GetPartySize()) //tx_difficulty_challenges
             gBattlescriptCurrInstr += 5;
-        else if (TX_CHALLENGE_TYPE != TYPE_NONE && //tx_difficulty_challenges
-                            GetTypeBySpecies(GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_SPECIES), 1) != TX_CHALLENGE_TYPE && 
-                            GetTypeBySpecies(GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_SPECIES), 2) != TX_CHALLENGE_TYPE)
+        else if (typeChallenge != TYPE_NONE && //tx_difficulty_challenges
+                            GetTypeBySpecies(GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_SPECIES), 1) != typeChallenge && 
+                            GetTypeBySpecies(GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_SPECIES), 2) != typeChallenge)
             gBattlescriptCurrInstr += 5;
         else
             gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);

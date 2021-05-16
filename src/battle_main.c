@@ -1972,9 +1972,9 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * 31 / 255;
-                if (TX_RANDOM_TRAINER) //tx_difficulty_challenges
+                if (gSaveBlock1Ptr->txRandTrainer) //tx_difficulty_challenges
                 {
-                    species = GetSpeciesRandomSeeded(partyData[i].species, TX_RANDOM_OFFSET_TRAINER, TRUE, !TX_RANDOM_CHAOS_MODE);
+                    species = GetSpeciesRandomSeeded(partyData[i].species, TX_RANDOM_OFFSET_TRAINER, TRUE, !gSaveBlock1Ptr->txRandChaos);
                     CreateMon(&party[i], species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
                 }
                 else
@@ -1990,9 +1990,9 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * 31 / 255;
-                if (TX_RANDOM_TRAINER) //tx_difficulty_challenges
+                if (gSaveBlock1Ptr->txRandTrainer) //tx_difficulty_challenges
                 {
-                    species = GetSpeciesRandomSeeded(partyData[i].species, TX_RANDOM_OFFSET_TRAINER, TRUE, !TX_RANDOM_CHAOS_MODE);
+                    species = GetSpeciesRandomSeeded(partyData[i].species, TX_RANDOM_OFFSET_TRAINER, TRUE, !gSaveBlock1Ptr->txRandChaos);
                     CreateMon(&party[i], species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
                 }
                 else
@@ -2000,7 +2000,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
 
                 for (j = 0; j < MAX_MON_MOVES; j++)
                 {
-                    if (TX_RANDOM_MOVES) //tx_difficulty_challenges
+                    if (gSaveBlock1Ptr->txRandMoves) //tx_difficulty_challenges
                     {
                         move = (RandomSeeded(partyData[i].moves[j], FALSE) % MOVES_COUNT) + 1;
                         SetMonData(&party[i], MON_DATA_MOVE1 + j, &move);
@@ -2023,9 +2023,9 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * 31 / 255;
-                if (TX_RANDOM_TRAINER) //tx_difficulty_challenges
+                if (gSaveBlock1Ptr->txRandTrainer) //tx_difficulty_challenges
                 {
-                    species = GetSpeciesRandomSeeded(partyData[i].species, TX_RANDOM_OFFSET_TRAINER, TRUE, !TX_RANDOM_CHAOS_MODE);
+                    species = GetSpeciesRandomSeeded(partyData[i].species, TX_RANDOM_OFFSET_TRAINER, TRUE, !gSaveBlock1Ptr->txRandChaos);
                     CreateMon(&party[i], species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
                 }
                 else
@@ -2043,9 +2043,9 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
 
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * 31 / 255;
-                if (TX_RANDOM_TRAINER) //tx_difficulty_challenges
+                if (gSaveBlock1Ptr->txRandTrainer) //tx_difficulty_challenges
                 {
-                    species = GetSpeciesRandomSeeded(partyData[i].species, TX_RANDOM_OFFSET_TRAINER, TRUE, !TX_RANDOM_CHAOS_MODE);
+                    species = GetSpeciesRandomSeeded(partyData[i].species, TX_RANDOM_OFFSET_TRAINER, TRUE, !gSaveBlock1Ptr->txRandChaos);
                     CreateMon(&party[i], species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
                 }
                 else
@@ -2055,7 +2055,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
 
                 for (j = 0; j < MAX_MON_MOVES; j++)
                 {
-                    if (TX_RANDOM_MOVES) //tx_difficulty_challenges
+                    if (gSaveBlock1Ptr->txRandMoves) //tx_difficulty_challenges
                     {
                         move = (RandomSeeded(partyData[i].moves[j], FALSE) % MOVES_COUNT) + 1;
                         SetMonData(&party[i], MON_DATA_MOVE1 + j, &move);
@@ -5102,7 +5102,7 @@ static void HandleEndTurn_FinishBattle(void)
         }
 
         //ty_difficulty_challenges
-        if (TX_CHALLENGE_NUZLOCKE)
+        if (gSaveBlock1Ptr->txRandNuzlocke)
         {
             NuzlockeDeleteFaintedPartyPokemon();
             if (!(gBattleTypeFlags & (BATTLE_TYPE_DOUBLE
@@ -5167,7 +5167,7 @@ static void TryEvolvePokemon(void)
 {
     s32 i;
 
-    while (gLeveledUpInBattle != 0 && TX_CHALLANGE_EVO_LIMIT != 2) //tx_difficulty_challenges
+    while (gLeveledUpInBattle != 0 && gSaveBlock1Ptr->txRandEvoLimit != 2) //tx_difficulty_challenges
     {
         for (i = 0; i < PARTY_SIZE; i++)
         {

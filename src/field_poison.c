@@ -54,7 +54,7 @@ static void FaintFromFieldPoison(u8 partyIdx)
     SetMonData(pokemon, MON_DATA_STATUS, &status);
     GetMonData(pokemon, MON_DATA_NICKNAME, gStringVar1);
     StringGetEnd10(gStringVar1);
-    if (TX_CHALLENGE_NUZLOCKE) //tx_difficulty_challenges
+    if (gSaveBlock1Ptr->txRandNuzlocke) //tx_difficulty_challenges
         NuzlockeDeleteFaintedPartyPokemon();
 }
 

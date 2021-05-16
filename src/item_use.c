@@ -941,13 +941,13 @@ void ItemUseOutOfBattle_EvolutionStone(u8 taskId)
 
 void ItemUseInBattle_PokeBall(u8 taskId)
 {
-    if (TX_CHALLENGE_NUZLOCKE && NuzlockeIsCaptureBlocked) //tx_difficulty_challenges
+    if (gSaveBlock1Ptr->txRandNuzlocke && NuzlockeIsCaptureBlocked) //tx_difficulty_challenges
         DisplayCannotUseItemMessage(taskId, FALSE, gText_NuzlockeCantThrowPokeBallRoute);
-    else if (TX_CHALLENGE_NUZLOCKE && NuzlockeIsSpeciesClauseActive == 2) //already have THIS_mon
+    else if (gSaveBlock1Ptr->txRandNuzlocke && NuzlockeIsSpeciesClauseActive == 2) //already have THIS_mon
         DisplayCannotUseItemMessage(taskId, FALSE, gText_NuzlockeCantThrowPokeBallAlreadyCaught);
-    else if (TX_CHALLENGE_TYPE && TypeChallengeCaptureBlocked) //pkmn not of the TYPE CHALLANGE type
+    else if (gSaveBlock1Ptr->txRandTypeChallenge && TypeChallengeCaptureBlocked) //pkmn not of the TYPE CHALLANGE type
         DisplayCannotUseItemMessage(taskId, FALSE, gText_TypeChallengeCantThrowPokeBall);
-    else if (TX_CHALLENGE_NUZLOCKE && NuzlockeIsSpeciesClauseActive)
+    else if (gSaveBlock1Ptr->txRandNuzlocke && NuzlockeIsSpeciesClauseActive)
         DisplayCannotUseItemMessage(taskId, FALSE, gText_NuzlockeCantThrowPokeBallSpeciesClause);
     else if (IsPlayerPartyAndPokemonStorageFull() == FALSE) // have room for mon?
     {

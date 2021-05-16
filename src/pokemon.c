@@ -4403,8 +4403,8 @@ void GiveBoxMonInitialMoveset(struct BoxPokemon *boxMon)
 
         move = (gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_ID);
 
-        if (TX_RANDOM_MOVES) //tx_difficulty_challenges
-            move = (RandomSeeded(move, !TX_RANDOM_CHAOS_MODE) % MOVES_COUNT) + 1;
+        if (gSaveBlock1Ptr->txRandMoves) //tx_difficulty_challenges
+            move = (RandomSeeded(move, !gSaveBlock1Ptr->txRandChaos) % MOVES_COUNT) + 1;
 
         if (GiveMoveToBoxMon(boxMon, move) == MON_HAS_MAX_MOVES)
             DeleteFirstMoveAndGiveMoveToBoxMon(boxMon, move);
@@ -4436,8 +4436,8 @@ u16 MonTryLearningNewMove(struct Pokemon *mon, bool8 firstMove)
     if ((gLevelUpLearnsets[species][sLearningMoveTableID] & LEVEL_UP_MOVE_LV) == (level << 9))
     {
         gMoveToLearn = (gLevelUpLearnsets[species][sLearningMoveTableID] & LEVEL_UP_MOVE_ID);
-        if (TX_RANDOM_MOVES) //tx_difficulty_challenges
-            gMoveToLearn = (RandomSeeded(gMoveToLearn, !TX_RANDOM_CHAOS_MODE) % MOVES_COUNT) + 1;
+        if (gSaveBlock1Ptr->txRandMoves) //tx_difficulty_challenges
+            gMoveToLearn = (RandomSeeded(gMoveToLearn, !gSaveBlock1Ptr->txRandChaos) % MOVES_COUNT) + 1;
         sLearningMoveTableID++;
         retVal = GiveMoveToMon(mon, gMoveToLearn);
     }
@@ -5765,6 +5765,7 @@ void CopyMon(void *dest, void *src, size_t size)
 u8 GiveMonToPlayer(struct Pokemon *mon)
 {
     s32 i;
+    u8 typeChallenge = gSaveBlock1Ptr->txRandTypeChallenge;
 
     SetMonData(mon, MON_DATA_OT_NAME, gSaveBlock2Ptr->playerName);
     SetMonData(mon, MON_DATA_OT_GENDER, &gSaveBlock2Ptr->playerGender);
@@ -5779,9 +5780,9 @@ u8 GiveMonToPlayer(struct Pokemon *mon)
     if (i >= GetPartySize()) //tx_difficulty_challenges
         return SendMonToPC(mon);
 
-    if (TX_CHALLENGE_TYPE != TYPE_NONE && 
-                    GetTypeBySpecies(GetMonData(mon, MON_DATA_SPECIES, NULL), 1) != TX_CHALLENGE_TYPE && 
-                    GetTypeBySpecies(GetMonData(mon, MON_DATA_SPECIES, NULL), 2) != TX_CHALLENGE_TYPE)
+    if (typeChallenge != TYPE_NONE && 
+                    GetTypeBySpecies(GetMonData(mon, MON_DATA_SPECIES, NULL), 1) != typeChallenge && 
+                    GetTypeBySpecies(GetMonData(mon, MON_DATA_SPECIES, NULL), 2) != typeChallenge)
         return SendMonToPC(mon);
 
     CopyMon(&gPlayerParty[i], mon, sizeof(*mon));
@@ -5890,7 +5891,7 @@ u8 GetMonsStateToDoubles_2(void)
 
 u8 GetAbilityBySpecies(u16 species, u8 abilityNum)
 {
-    if (TX_RANDOM_ABILITIES) //tx_difficulty_challenges
+    if (gSaveBlock1Ptr->txRandAbilities) //tx_difficulty_challenges
     {
         species = GetSpeciesRandomSeeded(species, TX_RANDOM_OFFSET_ABILITY, TRUE, TRUE);
         if (gBaseStats[species].abilities[1] == ABILITY_NONE)
@@ -6835,9 +6836,9 @@ u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 type, u16 evolutionItem)
     u16 upperPersonality = personality >> 16;
     u8 holdEffect;
 
-    if (TX_RANDOM_EVOLUTION_METHODE) //tx_difficulty_challenges
+    if (gSaveBlock1Ptr->txRandEvolutionMethodes) //tx_difficulty_challenges
     {
-        species = GetEvolutionTargetSpeciesRandom(species, TX_RANDOM_EVOLUTION, !TX_RANDOM_CHAOS_MODE);
+        species = GetEvolutionTargetSpeciesRandom(species, gSaveBlock1Ptr->txRandEvolutions, !gSaveBlock1Ptr->txRandChaos);
         if (species == SPECIES_NONE)
             return SPECIES_NONE;
     }
@@ -6945,8 +6946,8 @@ u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 type, u16 evolutionItem)
         break;
     }
 
-    if (TX_RANDOM_EVOLUTION && targetSpecies != SPECIES_NONE) //tx_difficulty_challenges
-        targetSpecies = GetSpeciesRandomSeeded(targetSpecies, TX_RANDOM_OFFSET_EVOLUTION, TRUE, !TX_RANDOM_CHAOS_MODE);
+    if (gSaveBlock1Ptr->txRandEvolutions && targetSpecies != SPECIES_NONE) //tx_difficulty_challenges
+        targetSpecies = GetSpeciesRandomSeeded(targetSpecies, TX_RANDOM_OFFSET_EVOLUTION, TRUE, !gSaveBlock1Ptr->txRandChaos);
 
     return targetSpecies;
 }
@@ -7550,9 +7551,9 @@ u32 CanMonLearnTMHM(struct Pokemon *mon, u8 tm)
 {
     u16 species = GetMonData(mon, MON_DATA_SPECIES2, 0);
     
-    if (TX_CHALLENGE_NUZLOCKE && (tm >= ITEM_HM01 - ITEM_TM01_FOCUS_PUNCH) )
+    if (gSaveBlock1Ptr->txRandNuzlocke && (tm >= ITEM_HM01 - ITEM_TM01_FOCUS_PUNCH) )
         return TRUE;
-    if (TX_RANDOM_MOVES) //tx_difficulty_challenges
+    if (gSaveBlock1Ptr->txRandMoves) //tx_difficulty_challenges
         species = GetSpeciesRandomSeeded(species, TX_RANDOM_OFFSET_MOVES + tm, TRUE, TRUE);
 
     if (species == SPECIES_EGG)
@@ -7573,7 +7574,7 @@ u32 CanMonLearnTMHM(struct Pokemon *mon, u8 tm)
 
 u32 CanSpeciesLearnTMHM(u16 species, u8 tm)
 {
-    if (TX_RANDOM_MOVES) //tx_difficulty_challenges
+    if (gSaveBlock1Ptr->txRandMoves) //tx_difficulty_challenges
         species = GetSpeciesRandomSeeded(species, TX_RANDOM_OFFSET_MOVES + tm, TRUE, TRUE);
 
     if (species == SPECIES_EGG)
@@ -7600,7 +7601,7 @@ u8 GetMoveRelearnerMoves(struct Pokemon *mon, u16 *moves)
     u8 level = GetMonData(mon, MON_DATA_LEVEL, 0);
     int i, j, k;
 
-    if (TX_RANDOM_MOVES) //tx_difficulty_challenges
+    if (gSaveBlock1Ptr->txRandMoves) //tx_difficulty_challenges
         species = GetSpeciesRandomSeeded(species, TX_RANDOM_OFFSET_MOVES, TRUE, TRUE);
 
     for (i = 0; i < MAX_MON_MOVES; i++)
@@ -7643,8 +7644,8 @@ u8 GetLevelUpMovesBySpecies(u16 species, u16 *moves)
     for (i = 0; i < MAX_LEVEL_UP_MOVES && gLevelUpLearnsets[species][i] != LEVEL_UP_END; i++)
     { //tx_difficulty_challenges
         move = gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_ID;
-        if (TX_RANDOM_MOVES) //tx_difficulty_challenges
-            move = (RandomSeeded(move, !TX_RANDOM_CHAOS_MODE) % MOVES_COUNT) + 1;
+        if (gSaveBlock1Ptr->txRandMoves) //tx_difficulty_challenges
+            move = (RandomSeeded(move, !gSaveBlock1Ptr->txRandChaos) % MOVES_COUNT) + 1;
         moves[numMoves++] = move; //gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_ID;
     }
 
@@ -7660,7 +7661,7 @@ u8 GetNumberOfRelearnableMoves(struct Pokemon *mon)
     u8 level = GetMonData(mon, MON_DATA_LEVEL, 0);
     int i, j, k;
 
-    if (TX_RANDOM_MOVES) //tx_difficulty_challenges
+    if (gSaveBlock1Ptr->txRandMoves) //tx_difficulty_challenges
         species = GetSpeciesRandomSeeded(species, TX_RANDOM_OFFSET_MOVES, TRUE, TRUE);
 
     if (species == SPECIES_EGG)
@@ -8468,6 +8469,24 @@ void RandomizeSpeciesListEWRAM(u16 seed)
         sSpeciesList[sRandomSpecies[i]] = stemp[i];
         // mgba_printf(MGBA_LOG_DEBUG, "sSpeciesList[%d] = %d", sRandomSpecies[i], stemp[i] );
     }
+    gSaveBlock1Ptr->txRandChaos                =   TX_RANDOM_CHAOS_MODE;
+    gSaveBlock1Ptr->txRandEncounter            =   TX_RANDOM_ENCOUNTER;
+    gSaveBlock1Ptr->txRandEncounterSimilar     =   TX_RANDOM_ENCOUNTER_SIMILAR;
+    gSaveBlock1Ptr->txRandType                 =   TX_RANDOM_TYPE;
+    gSaveBlock1Ptr->txRandTypeEffectiveness    =   TX_RANDOM_TYPE_EFFECTIVENESS;
+    gSaveBlock1Ptr->txRandAbilities            =   TX_RANDOM_ABILITIES;
+    gSaveBlock1Ptr->txRandMoves                =   TX_RANDOM_MOVES;
+    gSaveBlock1Ptr->txRandTrainer              =   TX_RANDOM_TRAINER;
+    gSaveBlock1Ptr->txRandEvolutions           =   TX_RANDOM_EVOLUTION;
+    gSaveBlock1Ptr->txRandEvolutionMethodes   =   TX_RANDOM_EVOLUTION_METHODE;
+    gSaveBlock1Ptr->txRandEvoLimit             =   TX_CHALLANGE_EVO_LIMIT;
+    gSaveBlock1Ptr->txRandNuzlocke             =   TX_CHALLENGE_NUZLOCKE;
+    gSaveBlock1Ptr->txRandNuzlockeHardcore     =   TX_CHALLENGE_NUZLOCKE_HARDCORE;
+    gSaveBlock1Ptr->txRandNoItemPlayer         =   TX_CHALLENGE_NO_ITEM_PLAYER;
+    gSaveBlock1Ptr->txRandNoItemTrainer        =   TX_CHALLENGE_NO_ITEM_TRAINER;
+    gSaveBlock1Ptr->txRandTypeChallenge        =   TX_CHALLENGE_TYPE;
+    gSaveBlock1Ptr->txRandPartyLimit           =   TX_CHALLANGE_PARTY_LIMIT;
+    gSaveBlock1Ptr->txRandPkmnCenter           =   TX_CHALLENGE_PKMN_CENTER;
 }
 
 static u16 PickRandomizedSpeciesFromEWRAM(u16 species, u16 depth)
@@ -8516,7 +8535,7 @@ u8 GetTypeBySpecies(u16 species, u8 type)
 {
     u8 result;
 
-    if (TX_RANDOM_TYPE)
+    if (gSaveBlock1Ptr->txRandType)
         species = GetSpeciesRandomSeeded(species, TX_RANDOM_OFFSET_TYPE, TRUE, TRUE);
 
     switch (type)
@@ -8541,7 +8560,7 @@ u16 GetSpeciesRandomSeeded(u16 species, u8 depth, u8 random, u8 seeded)
     if (!seeded)
         return sRandomSpecies[(Random() % RANDOM_SPECIES_COUNT) + 1];
 
-    if (!TX_RANDOM_ENCOUNTER_SIMILAR)
+    if (!gSaveBlock1Ptr->txRandEncounterSimilar)
         return PickRandomizedSpeciesFromEWRAM(species, depth);  //return sRandomSpecies[(RandomSeeded(species+offset, seeded) % RANDOM_SPECIES_COUNT) + 1];
 
     //if random, seeded and similar
@@ -8569,7 +8588,7 @@ u16 GetEvolutionTargetSpeciesRandom(u16 species, u8 random, u8 seeded)
     if (!seeded)
         return sRandomSpecies[(Random() % RANDOM_SPECIES_COUNT) + 1];
 
-    if (slot == EVO_TYPE_1 && TX_CHALLANGE_EVO_LIMIT == 1)
+    if (slot == EVO_TYPE_1 && gSaveBlock1Ptr->txRandEvoLimit == 1)
         return SPECIES_NONE;
 
     switch (slot)
@@ -8588,7 +8607,7 @@ u16 GetEvolutionTargetSpeciesRandom(u16 species, u8 random, u8 seeded)
 
 u8 GetPartySize()
 {
-    return TX_CHALLANGE_PARTY_LIMIT;
+    return gSaveBlock1Ptr->txRandPartyLimit;
 }
 
 void NuzlockeDeletePartyMon(u8 position)
@@ -8620,13 +8639,13 @@ void NuzlockeDeleteFaintedPartyPokemon(void) // @Kurausukun
 
 u8 GetPokemonCenterChallenge()
 {
-    if (!TX_CHALLENGE_PKMN_CENTER)
+    if (!gSaveBlock1Ptr->txRandPkmnCenter)
         return 1;
-    else if (TX_CHALLENGE_PKMN_CENTER == 1)
+    else if (gSaveBlock1Ptr->txRandPkmnCenter == 1)
     {
 
     }
-    else if (TX_CHALLENGE_PKMN_CENTER == 2)
+    else if (gSaveBlock1Ptr->txRandPkmnCenter == 2)
     {
         return 0;
     }
@@ -8653,7 +8672,7 @@ u8 GetTypeEffectivenessRandom(u8 type)
     if (type == TYPE_NONE)
         return TYPE_NONE;
     
-    if (!TX_RANDOM_TYPE_EFFECTIVENESS)
+    if (!gSaveBlock1Ptr->txRandTypeEffectiveness)
         return type;
 
     return sTypeEffectivenessList[type - 1];

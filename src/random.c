@@ -39,7 +39,7 @@ u16 RandomSeeded(u16 value, u8 seeded)
 {
     u16 otId, result;
 
-    if (TX_RANDOM_CHAOS_MODE && !seeded)
+    if (gSaveBlock1Ptr->txRandChaos && !seeded)
     {
         result = Random();
     }
