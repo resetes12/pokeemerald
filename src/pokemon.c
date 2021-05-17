@@ -5780,7 +5780,7 @@ u8 GiveMonToPlayer(struct Pokemon *mon)
     if (i >= GetPartySize()) //tx_difficulty_challenges
         return SendMonToPC(mon);
 
-    if (typeChallenge != TYPE_NONE && 
+    if (typeChallenge != TX_CHALLENGE_TYPE_OFF && 
                     GetTypeBySpecies(GetMonData(mon, MON_DATA_SPECIES, NULL), 1) != typeChallenge && 
                     GetTypeBySpecies(GetMonData(mon, MON_DATA_SPECIES, NULL), 2) != typeChallenge)
         return SendMonToPC(mon);

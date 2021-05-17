@@ -475,7 +475,7 @@ void BattleSetup_StartWildBattle(void)
         DoSafariBattle();
     else
         // tx_difficulty_challenges
-        TypeChallengeCaptureBlocked = (typeChallenge != TYPE_NONE && 
+        TypeChallengeCaptureBlocked = (typeChallenge != TX_CHALLENGE_TYPE_OFF && 
                     GetTypeBySpecies(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES), 1) != typeChallenge && 
                     GetTypeBySpecies(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES), 2) != typeChallenge);
 

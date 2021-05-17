@@ -10134,7 +10134,7 @@ static void Cmd_trygivecaughtmonnick(void)
     case 4:
         if (CalculatePlayerPartyCount() == GetPartySize()) //tx_difficulty_challenges
             gBattlescriptCurrInstr += 5;
-        else if (typeChallenge != TYPE_NONE && //tx_difficulty_challenges
+        else if (typeChallenge != TX_CHALLENGE_TYPE_OFF && //tx_difficulty_challenges
                             GetTypeBySpecies(GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_SPECIES), 1) != typeChallenge && 
                             GetTypeBySpecies(GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_SPECIES), 2) != typeChallenge)
             gBattlescriptCurrInstr += 5;

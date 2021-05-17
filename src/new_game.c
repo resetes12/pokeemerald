@@ -48,6 +48,11 @@
 
 #include "tx_difficulty_challenges.h"
 
+#include "printf.h"
+#include "mgba.h"
+#include "data.h"                 // for gSpeciesNames, which maps species number to species name.
+#include "../gflib/string_util.h" // for ConvertToAscii()
+
 extern const u8 EventScript_ResetAllMapFlags[];
 
 // this file's functions
@@ -102,25 +107,6 @@ static void SetDefaultOptions(void)
     gSaveBlock2Ptr->optionsBattleStyle = OPTIONS_BATTLE_STYLE_SHIFT;
     gSaveBlock2Ptr->optionsBattleSceneOff = FALSE;
     gSaveBlock2Ptr->regionMapZoom = FALSE;
-    //tx_difficulty_challenges
-    gSaveBlock1Ptr->txRandChaos                =   TX_RANDOM_CHAOS_MODE;
-    gSaveBlock1Ptr->txRandEncounter            =   TX_RANDOM_ENCOUNTER;
-    gSaveBlock1Ptr->txRandEncounterSimilar     =   TX_RANDOM_ENCOUNTER_SIMILAR;
-    gSaveBlock1Ptr->txRandType                 =   TX_RANDOM_TYPE;
-    gSaveBlock1Ptr->txRandTypeEffectiveness    =   TX_RANDOM_TYPE_EFFECTIVENESS;
-    gSaveBlock1Ptr->txRandAbilities            =   TX_RANDOM_ABILITIES;
-    gSaveBlock1Ptr->txRandMoves                =   TX_RANDOM_MOVES;
-    gSaveBlock1Ptr->txRandTrainer              =   TX_RANDOM_TRAINER;
-    gSaveBlock1Ptr->txRandEvolutions           =   TX_RANDOM_EVOLUTION;
-    gSaveBlock1Ptr->txRandEvolutionMethodes   =   TX_RANDOM_EVOLUTION_METHODE;
-    gSaveBlock1Ptr->txRandEvoLimit             =   TX_CHALLANGE_EVO_LIMIT;
-    gSaveBlock1Ptr->txRandNuzlocke             =   TX_CHALLENGE_NUZLOCKE;
-    gSaveBlock1Ptr->txRandNuzlockeHardcore     =   TX_CHALLENGE_NUZLOCKE_HARDCORE;
-    gSaveBlock1Ptr->txRandNoItemPlayer         =   TX_CHALLENGE_NO_ITEM_PLAYER;
-    gSaveBlock1Ptr->txRandNoItemTrainer        =   TX_CHALLENGE_NO_ITEM_TRAINER;
-    gSaveBlock1Ptr->txRandTypeChallenge        =   TX_CHALLENGE_TYPE;
-    gSaveBlock1Ptr->txRandPartyLimit           =   TX_CHALLANGE_PARTY_LIMIT;
-    gSaveBlock1Ptr->txRandPkmnCenter           =   TX_CHALLENGE_PKMN_CENTER;
 }
 
 static void ClearPokedexFlags(void)
@@ -149,6 +135,25 @@ static void ClearFrontierRecord(void)
 
 static void WarpToTruck(void)
 {
+    //tx_difficulty_challenges
+    gSaveBlock1Ptr->txRandChaos                =   TX_RANDOM_CHAOS_MODE;
+    gSaveBlock1Ptr->txRandEncounter            =   TX_RANDOM_ENCOUNTER;
+    gSaveBlock1Ptr->txRandEncounterSimilar     =   TX_RANDOM_ENCOUNTER_SIMILAR;
+    gSaveBlock1Ptr->txRandType                 =   TX_RANDOM_TYPE;
+    gSaveBlock1Ptr->txRandTypeEffectiveness    =   TX_RANDOM_TYPE_EFFECTIVENESS;
+    gSaveBlock1Ptr->txRandAbilities            =   TX_RANDOM_ABILITIES;
+    gSaveBlock1Ptr->txRandMoves                =   TX_RANDOM_MOVES;
+    gSaveBlock1Ptr->txRandTrainer              =   TX_RANDOM_TRAINER;
+    gSaveBlock1Ptr->txRandEvolutions           =   TX_RANDOM_EVOLUTION;
+    gSaveBlock1Ptr->txRandEvolutionMethodes    =   TX_RANDOM_EVOLUTION_METHODE;
+    gSaveBlock1Ptr->txRandEvoLimit             =   TX_CHALLANGE_EVO_LIMIT;
+    gSaveBlock1Ptr->txRandNuzlocke             =   TX_CHALLENGE_NUZLOCKE;
+    gSaveBlock1Ptr->txRandNuzlockeHardcore     =   TX_CHALLENGE_NUZLOCKE_HARDCORE;
+    gSaveBlock1Ptr->txRandNoItemPlayer         =   TX_CHALLENGE_NO_ITEM_PLAYER;
+    gSaveBlock1Ptr->txRandNoItemTrainer        =   TX_CHALLENGE_NO_ITEM_TRAINER;
+    gSaveBlock1Ptr->txRandTypeChallenge        =   TX_CHALLENGE_TYPE;
+    gSaveBlock1Ptr->txRandPartyLimit           =   TX_CHALLANGE_PARTY_LIMIT;
+    gSaveBlock1Ptr->txRandPkmnCenter           =   TX_CHALLENGE_PKMN_CENTER;
     SetWarpDestination(MAP_GROUP(INSIDE_OF_TRUCK), MAP_NUM(INSIDE_OF_TRUCK), -1, -1, -1);
     WarpIntoMap();
 }
