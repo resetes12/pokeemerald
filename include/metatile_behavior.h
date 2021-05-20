@@ -1,5 +1,5 @@
-#ifndef GUARD_METATILE_BEHAVIOR
-#define GUARD_METATILE_BEHAVIOR
+#ifndef GUARD_METATILE_BEHAVIOR_H
+#define GUARD_METATILE_BEHAVIOR_H
 
 bool8 MetatileBehavior_IsATile(u8);
 bool8 MetatileBehavior_IsEncounterTile(u8);
@@ -156,4 +156,4 @@ bool8 MetatileBehavior_IsSidewaysStairsLeftSideBottom(u8 metatileBehavior);
 bool8 MetatileBehavior_IsSidewaysStairsRightSideAny(u8 metatileBehavior);
 bool8 MetatileBehavior_IsSidewaysStairsLeftSideAny(u8 metatileBehavior);
 
-#endif // GUARD_METATILE_BEHAVIOR
+#endif // GUARD_METATILE_BEHAVIOR_H

@@ -107,8 +107,8 @@ static const struct SpriteTemplate sSpriteTemplate_MoveEffectMons[] =
 
 static const struct SpriteSheet sSpriteSheet_MoveEffectMons[] =
 {
-    { gMiscBlank_Gfx, 0x800, TAG_MOVE_EFFECT_MON_1, },
-    { gMiscBlank_Gfx, 0x800, TAG_MOVE_EFFECT_MON_2, },
+    { gMiscBlank_Gfx, MON_PIC_SIZE, TAG_MOVE_EFFECT_MON_1, },
+    { gMiscBlank_Gfx, MON_PIC_SIZE, TAG_MOVE_EFFECT_MON_2, },
 };
 
 u8 GetBattlerSpriteCoord(u8 battlerId, u8 coordType)
@@ -2068,7 +2068,7 @@ u8 CreateAdditionalMonSpriteForMoveAnim(u16 species, bool8 isBackpic, u8 id, s16
                                  FALSE);
     }
 
-    RequestDma3Copy(gMonSpritesGfxPtr->buffer, (void *)(OBJ_VRAM0 + (sheet * 0x20)), 0x800, 1);
+    RequestDma3Copy(gMonSpritesGfxPtr->buffer, (void *)(OBJ_VRAM0 + (sheet * 0x20)), MON_PIC_SIZE, 1);
     FREE_AND_SET_NULL(gMonSpritesGfxPtr->buffer);
 
     if (!isBackpic)
@@ -2078,8 +2078,8 @@ u8 CreateAdditionalMonSpriteForMoveAnim(u16 species, bool8 isBackpic, u8 id, s16
 
     if (IsContest())
     {
-        gSprites[spriteId].affineAnims = gUnknown_082FF6C0;
-        StartSpriteAffineAnim(&gSprites[spriteId], 0);
+        gSprites[spriteId].affineAnims = gAffineAnims_BattleSpriteContest;
+        StartSpriteAffineAnim(&gSprites[spriteId], BATTLER_AFFINE_NORMAL);
     }
     return spriteId;
 }
@@ -2273,7 +2273,7 @@ u8 CreateInvisibleSpriteCopy(int battlerId, u8 spriteId, int species)
     return newSpriteId;
 }
 
-void AnimUnused_80A8A6C(struct Sprite *sprite)
+void AnimTranslateLinearAndFlicker_Flipped(struct Sprite *sprite)
 {
     SetSpriteCoordsToAnimAttackerCoords(sprite);
     if (GetBattlerSide(gBattleAnimAttacker))
@@ -2296,7 +2296,7 @@ void AnimUnused_80A8A6C(struct Sprite *sprite)
 }
 
 // Used by three different unused battle anim sprite templates.
-void AnimUnused_80A8AEC(struct Sprite *sprite)
+void AnimTranslateLinearAndFlicker(struct Sprite *sprite)
 {
     if (GetBattlerSide(gBattleAnimAttacker) != B_SIDE_PLAYER)
     {
