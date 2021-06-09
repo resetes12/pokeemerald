@@ -10070,12 +10070,24 @@ static void Cmd_trygivecaughtmonnick(void)
     {
     case 0:
         HandleBattleWindow(0x18, 8, 0x1D, 0xD, 0);
-        BattlePutTextOnWindow(gText_BattleYesNoChoice, 0xC);
-        gBattleCommunication[MULTIUSE_STATE]++;
-        gBattleCommunication[CURSOR_POSITION] = 0;
-        BattleCreateYesNoCursorAt(0);
+
+        if (gSaveBlock1Ptr->txRandNuzlocke) //tx_difficulty_challenges
+        {
+            gBattleCommunication[MULTIUSE_STATE]++;
+            BeginFastPaletteFade(3);
+        }
+        else
+        {
+            BattlePutTextOnWindow(gText_BattleYesNoChoice, 0xC);
+            gBattleCommunication[MULTIUSE_STATE]++;
+            gBattleCommunication[CURSOR_POSITION] = 0;
+            BattleCreateYesNoCursorAt(0);
+        }
         break;
     case 1:
+        if (gSaveBlock1Ptr->txRandNuzlocke) //tx_difficulty_challenges
+            gBattleCommunication[MULTIUSE_STATE]++;
+
         if (JOY_NEW(DPAD_UP) && gBattleCommunication[CURSOR_POSITION] != 0)
         {
             PlaySE(SE_SELECT);

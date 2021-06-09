@@ -25,7 +25,7 @@
 #include "constants/species.h"
 #include "constants/rgb.h"
 
-// #include "tx_difficulty_challenges.h"
+#include "tx_difficulty_challenges.h"
 
 // #include "printf.h"
 // #include "mgba.h"
