@@ -18,6 +18,7 @@
 #include "gba/m4a_internal.h"
 #include "constants/rgb.h"
 #include "battle_main.h"
+#include "tx_difficulty_challenges.h"
 
 #define Y_DIFF 16 // Difference in pixels between items.
 
@@ -63,7 +64,7 @@ static void tx_DC_Task_OptionMenuProcessInput(u8 taskId);
 static void tx_DC_Task_OptionMenuSave(u8 taskId);
 static void tx_DC_Task_OptionMenuFadeOut(u8 taskId);
 static void tx_DC_HighlightOptionMenuItem(int cursor);
-static void tx_DC_DrawTextOption(void);
+static void tx_DC_DrawDescriptions(void);
 static void tx_DC_DrawOptionMenuTexts(void);
 static void DrawBgWindowFrames(void);
 static int tx_DC_FourOptions_ProcessInput(int selection);
@@ -135,7 +136,7 @@ static const u8 gText_TypeChall[] =         _("TYPE LIMIT");
 
 
 static const u8 gText_Save[] = _("SAVE");
-static const u8 *const sOptionMenuItemsNames[MENUITEM_COUNT] =
+static const u8 *const sOptionMenuItemNames[MENUITEM_COUNT] =
 {
     [MENUITEM_RAND_CHAOS]               = gText_Chaos,          
     [MENUITEM_RAND_ENCOUNTER]           = gText_Encounter,      
@@ -155,6 +156,42 @@ static const u8 *const sOptionMenuItemsNames[MENUITEM_COUNT] =
     [MENUITEM_CANCEL]                   = gText_Save,
 };
 
+static const u8 gText_Description_00[] = _("Enable Chaos mode");
+static const u8 gText_Description_01[] = _("Randomize wild encounters");
+static const u8 gText_Description_02[] = _("Randomize mon types");
+static const u8 gText_Description_03[] = _("Randomize type effectivness");
+static const u8 gText_Description_04[] = _("Randomize abilities");
+static const u8 gText_Description_05[] = _("Randomize moves");
+static const u8 gText_Description_06[] = _("Randomize enemy trainer parties");
+static const u8 gText_Description_07[] = _("Randomize evolutions");
+static const u8 gText_Description_08[] = _("Randomize evolution methodes");
+static const u8 gText_Description_09[] = _("Limit evolutions");
+static const u8 gText_Description_10[] = _("Limit your parties size");
+static const u8 gText_Description_11[] = _("Enable nuzlocke mode");
+static const u8 gText_Description_12[] = _("Impose item limits");
+static const u8 gText_Description_13[] = _("Disable Pokecenter use");
+static const u8 gText_Description_14[] = _("Enable only one allowed mon type");
+static const u8 gText_Description_15[] = _("Save your changes and proceed");
+static const u8 *const sOptionMenuItemDescriptions[MENUITEM_COUNT] =
+{
+    [MENUITEM_RAND_CHAOS]               = gText_Description_00,
+    [MENUITEM_RAND_ENCOUNTER]           = gText_Description_01,
+    [MENUITEM_RAND_TYPE]                = gText_Description_02,
+    [MENUITEM_RAND_TYPE_EFFEC]          = gText_Description_03,
+    [MENUITEM_RAND_ABILITIES]           = gText_Description_04,
+    [MENUITEM_RAND_MOVES]               = gText_Description_05,
+    [MENUITEM_RAND_TRAINER]             = gText_Description_06,
+    [MENUITEM_RAND_EVOLUTIONS]          = gText_Description_07,
+    [MENUITEM_RAND_EVOLUTIONS_METHODE]  = gText_Description_08,
+    [MENUITEM_DIFF_EVO_LIMIT]           = gText_Description_09,
+    [MENUITEM_DIFF_PARTY_LIMIT]         = gText_Description_10,
+    [MENUITEM_DIFF_NUZLOCKE]            = gText_Description_11,
+    [MENUITEM_DIFF_ITEM]                = gText_Description_12,
+    [MENUITEM_DIFF_POKECENTER]          = gText_Description_13,
+    [MENUITEM_DIFF_TYPE_CHALLENGE]      = gText_Description_14,
+    [MENUITEM_CANCEL]                   = gText_Description_15,
+};
+
 static const struct WindowTemplate sDifficultyChallengesOptionMenuWinTemplates[] =
 {
     {
@@ -164,16 +201,16 @@ static const struct WindowTemplate sDifficultyChallengesOptionMenuWinTemplates[]
         .width = 26,
         .height = 12,
         .paletteNum = 1,
-        .baseBlock = 0x36
+        .baseBlock = 2,
     },
     {
         .bg = 1,
         .tilemapLeft = 2,
-        .tilemapTop = 17,
+        .tilemapTop = 15,
         .width = 26,
         .height = 4,
         .paletteNum = 1,
-        .baseBlock = 2
+        .baseBlock = 314,
     },
     DUMMY_WIN_TEMPLATE
 };
@@ -278,7 +315,7 @@ void CB2_InitDifficultyChallengesOptionMenu(void)
         break;
     case 6:
         PutWindowTilemap(WIN_DESCRIPTION);
-        // tx_DC_DrawTextOption();
+        tx_DC_DrawDescriptions();
         gMain.state++;
         break;
     case 7:
@@ -357,7 +394,7 @@ static void ScrollMenu(int direction)
     FillWindowPixelRect(WIN_OPTIONS, PIXEL_FILL(1), 0, Y_DIFF * pos, 26 * 8, Y_DIFF);
     // Print
     DrawChoices(menuItem, pos * Y_DIFF, 0xFF);
-    AddTextPrinterParameterized(WIN_OPTIONS, 1, sOptionMenuItemsNames[menuItem], 8, (pos * Y_DIFF) + 1, 0xFF, NULL);
+    AddTextPrinterParameterized(WIN_OPTIONS, 1, sOptionMenuItemNames[menuItem], 8, (pos * Y_DIFF) + 1, 0xFF, NULL);
     CopyWindowToVram(WIN_OPTIONS, 2);
 }
 
@@ -390,7 +427,7 @@ static void ScrollAll(int direction) // to bottom or top
         else // From bottom to top
             menuItem = i, pos = i;
         DrawChoices(menuItem, pos * Y_DIFF, 0xFF);
-        AddTextPrinterParameterized(WIN_OPTIONS, 1, sOptionMenuItemsNames[menuItem], 8, (pos * Y_DIFF) + 1, 0xFF, NULL);
+        AddTextPrinterParameterized(WIN_OPTIONS, 1, sOptionMenuItemNames[menuItem], 8, (pos * Y_DIFF) + 1, 0xFF, NULL);
     }
     CopyWindowToVram(WIN_OPTIONS, 2);
 }
@@ -431,6 +468,7 @@ static void tx_DC_Task_OptionMenuProcessInput(u8 taskId)
             }
         }
         tx_DC_HighlightOptionMenuItem(sOptions->visibleCursor);
+        tx_DC_DrawDescriptions();
     }
     else if (JOY_NEW(DPAD_DOWN))
     {
@@ -456,6 +494,7 @@ static void tx_DC_Task_OptionMenuProcessInput(u8 taskId)
             }
         }
         tx_DC_HighlightOptionMenuItem(sOptions->visibleCursor);
+        tx_DC_DrawDescriptions();
     }
     else if (JOY_NEW(DPAD_LEFT | DPAD_RIGHT))
     {
@@ -539,7 +578,7 @@ static int tx_DC_FourOptions_ProcessInput(int selection)
 
 static int tx_DC_ElevenOptions_ProcessInput(int selection)
 {
-    return XOptions_ProcessInput(18, selection);
+    return XOptions_ProcessInput(NUMBER_OF_MON_TYPES, selection);
 }
 
 static int tx_DC_SixOptions_ProcessInput(int selection)
@@ -628,10 +667,11 @@ static int GetMiddleX(const u8 *txt1, const u8 *txt2, const u8 *txt3)
     return xMid;
 }
 
-static void tx_DC_DrawTextOption(void)
+static void tx_DC_DrawDescriptions(void)
 {
+    u8 n = sOptions->menuCursor;
     FillWindowPixelBuffer(WIN_DESCRIPTION, PIXEL_FILL(1));
-    AddTextPrinterParameterized(WIN_DESCRIPTION, 1, gText_Option, 8, 1, 0, NULL);
+    AddTextPrinterParameterized(WIN_DESCRIPTION, 1, sOptionMenuItemDescriptions[n], 8, 1, 0, NULL);
     CopyWindowToVram(WIN_DESCRIPTION, 3);
 }
 
@@ -641,7 +681,7 @@ static void tx_DC_DrawOptionMenuTexts(void)
 
     FillWindowPixelBuffer(WIN_OPTIONS, PIXEL_FILL(1));
     for (i = 0; i < 7; i++)
-        AddTextPrinterParameterized(WIN_OPTIONS, 1, sOptionMenuItemsNames[i], 8, (i * Y_DIFF) + 1, 0, NULL);
+        AddTextPrinterParameterized(WIN_OPTIONS, 1, sOptionMenuItemNames[i], 8, (i * Y_DIFF) + 1, 0, NULL);
 
     CopyWindowToVram(WIN_OPTIONS, 3);
 }
@@ -771,12 +811,12 @@ static void DrawChoices_Diff_TypeChallenge(int selection, int y, u8 textSpeed)
 {
     u8 n = selection;
 
-    if (n == 0)
+    if (n >= NUMBER_OF_MON_TYPES-1)
         DrawOptionMenuChoice(gText_Off, 104, y, 0, textSpeed);
-    else if (n >= 10)
-        DrawOptionMenuChoice(gTypeNames[n+2], 104, y, 0, textSpeed);
-    else
+    else if (n > 8)
         DrawOptionMenuChoice(gTypeNames[n+1], 104, y, 0, textSpeed);
+    else
+        DrawOptionMenuChoice(gTypeNames[n+0], 104, y, 0, textSpeed);
 
     // DrawOptionMenuChoice(text, 104, y, 0, textSpeed);
     // DrawOptionMenuChoice(text, 128, y, 1, textSpeed);
