@@ -1,5 +1,5 @@
 #include "global.h"
-#include "option_menu.h"
+// #include "option_menu.h"
 #include "main.h"
 #include "menu.h"
 #include "scanline_effect.h"
@@ -46,8 +46,8 @@ enum
 // Window Ids
 enum
 {
-    WIN_TEXT_OPTION,
-    WIN_OPTIONS
+    WIN_OPTIONS,
+    WIN_DESCRIPTION
 };
 
 struct tx_DC_OptionMenu
@@ -65,7 +65,7 @@ static void tx_DC_Task_OptionMenuFadeOut(u8 taskId);
 static void tx_DC_HighlightOptionMenuItem(int cursor);
 static void tx_DC_DrawTextOption(void);
 static void tx_DC_DrawOptionMenuTexts(void);
-static void sub_80BB154(void);
+static void DrawBgWindowFrames(void);
 static int tx_DC_FourOptions_ProcessInput(int selection);
 static int tx_DC_ThreeOptions_ProcessInput(int selection);
 static int tx_DC_TwoOptions_ProcessInput(int selection);
@@ -155,42 +155,32 @@ static const u8 *const sOptionMenuItemsNames[MENUITEM_COUNT] =
     [MENUITEM_CANCEL]                   = gText_Save,
 };
 
-
-static const struct WindowTemplate sOptionMenuWinTemplates[] =
+static const struct WindowTemplate sDifficultyChallengesOptionMenuWinTemplates[] =
 {
-    {
-        .bg = 1,
-        .tilemapLeft = 2,
-        .tilemapTop = 1,
-        .width = 26,
-        .height = 2,
-        .paletteNum = 1,
-        .baseBlock = 2
-    },
     {
         .bg = 0,
         .tilemapLeft = 2,
-        .tilemapTop = 5,
+        .tilemapTop = 1,
         .width = 26,
-        .height = 14,
+        .height = 12,
         .paletteNum = 1,
         .baseBlock = 0x36
+    },
+    {
+        .bg = 1,
+        .tilemapLeft = 2,
+        .tilemapTop = 17,
+        .width = 26,
+        .height = 4,
+        .paletteNum = 1,
+        .baseBlock = 2
     },
     DUMMY_WIN_TEMPLATE
 };
 
 static const struct BgTemplate sOptionMenuBgTemplates[] =
 {
-   {
-       .bg = 1,
-       .charBaseIndex = 1,
-       .mapBaseIndex = 30,
-       .screenSize = 0,
-       .paletteMode = 0,
-       .priority = 0,
-       .baseTile = 0
-   },
-   {
+    {
        .bg = 0,
        .charBaseIndex = 1,
        .mapBaseIndex = 31,
@@ -198,7 +188,16 @@ static const struct BgTemplate sOptionMenuBgTemplates[] =
        .paletteMode = 0,
        .priority = 1,
        .baseTile = 0
-   }
+    },
+    {
+       .bg = 1,
+       .charBaseIndex = 1,
+       .mapBaseIndex = 30,
+       .screenSize = 0,
+       .paletteMode = 0,
+       .priority = 0,
+       .baseTile = 0
+    },
 };
 
 static const u16 sOptionMenuBg_Pal[] = {RGB(17, 18, 31)};
@@ -243,7 +242,7 @@ void CB2_InitDifficultyChallengesOptionMenu(void)
         ResetBgsAndClearDma3BusyFlags(0);
         InitBgsFromTemplates(0, sOptionMenuBgTemplates, ARRAY_COUNT(sOptionMenuBgTemplates));
         ResetBgPositions();
-        InitWindows(sOptionMenuWinTemplates);
+        InitWindows(sDifficultyChallengesOptionMenuWinTemplates);
         DeactivateAllTextPrinters();
         SetGpuReg(REG_OFFSET_WIN0H, 0);
         SetGpuReg(REG_OFFSET_WIN0V, 0);
@@ -278,19 +277,19 @@ void CB2_InitDifficultyChallengesOptionMenu(void)
         gMain.state++;
         break;
     case 6:
-        PutWindowTilemap(0);
-        tx_DC_DrawTextOption();
+        PutWindowTilemap(WIN_DESCRIPTION);
+        // tx_DC_DrawTextOption();
         gMain.state++;
         break;
     case 7:
         gMain.state++;
         break;
     case 8:
-        PutWindowTilemap(1);
+        PutWindowTilemap(WIN_OPTIONS);
         tx_DC_DrawOptionMenuTexts();
         gMain.state++;
     case 9:
-        sub_80BB154();
+        DrawBgWindowFrames();
         gMain.state++;
         break;
     case 10:
@@ -322,7 +321,7 @@ void CB2_InitDifficultyChallengesOptionMenu(void)
         sOptions->sel[MENUITEM_DIFF_TYPE_CHALLENGE]      = gSaveBlock1Ptr->txRandTypeChallenge;
 
 
-        for (i = 0; i < 7; i++)
+        for (i = 0; i < 6; i++)
             DrawChoices(i, i * Y_DIFF, 0xFF);
 
         tx_DC_HighlightOptionMenuItem(sOptions->menuCursor);
@@ -348,7 +347,7 @@ static void ScrollMenu(int direction)
 {
     int menuItem, pos;
     if (direction == 0) // scroll down
-        menuItem = sOptions->menuCursor + 3, pos = 6;
+        menuItem = sOptions->menuCursor + 2, pos = 5;
     else
         menuItem = sOptions->menuCursor - 3, pos = 0;
 
@@ -365,29 +364,29 @@ static void ScrollMenu(int direction)
 static void ScrollAll(int direction) // to bottom or top
 {
     int i, y, menuItem, pos;
-    int scrollCount = MENUITEM_COUNT - 7;
+    int scrollCount = MENUITEM_COUNT - 6;
     // Move items up/down
     ScrollWindow(WIN_OPTIONS, direction, Y_DIFF * scrollCount, PIXEL_FILL(0));
 
     // Clear moved items
-    if (direction == 0)
-    {
-        y = 7 - scrollCount;
-        if (y < 0)
-            y = 7;
-        y *= Y_DIFF;
-    }
-    else
-    {
-        y = 0;
-    }
-
-    FillWindowPixelRect(WIN_OPTIONS, PIXEL_FILL(1), 0, y, 26 * 8, Y_DIFF * scrollCount);
+    // if (direction == 0)
+    // {
+    //     y = 6 - scrollCount;
+    //     if (y < 0)
+    //         y = 6;
+    //     y *= Y_DIFF;
+    // }
+    // else
+    // {
+    //     y = 0;
+    // }
+    FillWindowPixelRect(WIN_OPTIONS, PIXEL_FILL(1), 0, 0, 26 * 8, Y_DIFF * scrollCount);
+    
     // Print new texts
     for (i = 0; i < scrollCount; i++)
     {
         if (direction == 0) // From top to bottom
-            menuItem = MENUITEM_COUNT - 1 - i, pos = 6 - i;
+            menuItem = MENUITEM_COUNT - 1 - i, pos = 5 - i;
         else // From bottom to top
             menuItem = i, pos = i;
         DrawChoices(menuItem, pos * Y_DIFF, 0xFF);
@@ -398,7 +397,7 @@ static void ScrollAll(int direction) // to bottom or top
 
 static void tx_DC_Task_OptionMenuProcessInput(u8 taskId)
 {
-    int i, scrollCount = 0, itemsToRedraw;
+    int i, scrollCount = 0;
     if (JOY_NEW(A_BUTTON))
     {
         if (sOptions->menuCursor == MENUITEM_CANCEL)
@@ -423,7 +422,7 @@ static void tx_DC_Task_OptionMenuProcessInput(u8 taskId)
             {
                 sOptions->visibleCursor = sOptions->menuCursor = 3;
                 ScrollAll(0);
-                sOptions->visibleCursor = 6;
+                sOptions->visibleCursor = 5;
                 sOptions->menuCursor = MENUITEM_COUNT - 1;
             }
             else
@@ -437,14 +436,14 @@ static void tx_DC_Task_OptionMenuProcessInput(u8 taskId)
     {
         if (sOptions->visibleCursor == 3) // don't advance visible cursor until scrolled to the bottom
         {
-            if (++sOptions->menuCursor == MENUITEM_COUNT - 3)
+            if (++sOptions->menuCursor == MENUITEM_COUNT - 2)
                 sOptions->visibleCursor++;
             else
                 ScrollMenu(0);
         }
         else
         {
-            if (++sOptions->menuCursor >= MENUITEM_COUNT) // Scroll all the way to the tom.
+            if (++sOptions->menuCursor >= MENUITEM_COUNT) // Scroll all the way to the top.
             {
                 sOptions->visibleCursor = 3;
                 sOptions->menuCursor = MENUITEM_COUNT - 4;
@@ -507,6 +506,7 @@ static void tx_DC_Task_OptionMenuFadeOut(u8 taskId)
 
 static void tx_DC_HighlightOptionMenuItem(int cursor)
 {
+    cursor -= 2;
     SetGpuReg(REG_OFFSET_WIN0H, WIN_RANGE(Y_DIFF, 224));
     SetGpuReg(REG_OFFSET_WIN0V, WIN_RANGE(cursor * Y_DIFF + 40, cursor * Y_DIFF + 56));
 }
@@ -630,9 +630,9 @@ static int GetMiddleX(const u8 *txt1, const u8 *txt2, const u8 *txt3)
 
 static void tx_DC_DrawTextOption(void)
 {
-    FillWindowPixelBuffer(WIN_TEXT_OPTION, PIXEL_FILL(1));
-    AddTextPrinterParameterized(WIN_TEXT_OPTION, 1, gText_Option, 8, 1, 0, NULL);
-    CopyWindowToVram(WIN_TEXT_OPTION, 3);
+    FillWindowPixelBuffer(WIN_DESCRIPTION, PIXEL_FILL(1));
+    AddTextPrinterParameterized(WIN_DESCRIPTION, 1, gText_Option, 8, 1, 0, NULL);
+    CopyWindowToVram(WIN_DESCRIPTION, 3);
 }
 
 static void tx_DC_DrawOptionMenuTexts(void)
@@ -914,25 +914,37 @@ static void ButtonMode_DrawChoices(int selection, int y, u8 textSpeed)
 */
 
 
-static void sub_80BB154(void)
+#define TILE_TOP_CORNER_L 418 //0x1A2
+#define TILE_TOP_EDGE     419 //0x1A3
+#define TILE_TOP_CORNER_R 420 //0x1A4
+#define TILE_LEFT_EDGE    421 //0x1A5
+#define TILE_RIGHT_EDGE   423 //0x1A7
+#define TILE_BOT_CORNER_L 424 //0x1A8
+#define TILE_BOT_EDGE     425 //0x1A9
+#define TILE_BOT_CORNER_R 426 //0x1AA
+
+static void DrawBgWindowFrames(void)
 {
-    //                   bg, tileNum, x,    y,    width, height,  pal
-    FillBgTilemapBufferRect(1, 0x1A2, 1,    0,      1,      1,      7);
-    FillBgTilemapBufferRect(1, 0x1A3, 2,    0,      0x1B,   1,      7);
-    FillBgTilemapBufferRect(1, 0x1A4, 28,   0,      1,      1,      7);
-    FillBgTilemapBufferRect(1, 0x1A5, 1,    1,      1,      2,      7);
-    FillBgTilemapBufferRect(1, 0x1A7, 28,   1,      1,      2,      7);
-    FillBgTilemapBufferRect(1, 0x1A8, 1,    3,      1,      1,      7);
-    FillBgTilemapBufferRect(1, 0x1A9, 2,    3,      0x1B,   1,      7);
-    FillBgTilemapBufferRect(1, 0x1AA, 28,   3,      1,      1,      7);
-    FillBgTilemapBufferRect(1, 0x1A2, 1,    4,      1,      1,      7);
-    FillBgTilemapBufferRect(1, 0x1A3, 2,    4,      0x1A,   1,      7);
-    FillBgTilemapBufferRect(1, 0x1A4, 28,   4,      1,      1,      7);
-    FillBgTilemapBufferRect(1, 0x1A5, 1,    5,      1,      0x12,   7);
-    FillBgTilemapBufferRect(1, 0x1A7, 28,   5,      1,      0x12,   7);
-    FillBgTilemapBufferRect(1, 0x1A8, 1,    19,     1,      1,      7);
-    FillBgTilemapBufferRect(1, 0x1A9, 2,    19,     0x1A,   1,      7);
-    FillBgTilemapBufferRect(1, 0x1AA, 28,   19,     1,      1,      7);
+    //                     bg, tile,              x, y, width, height, palNum
+    // Draw options list window frame
+    FillBgTilemapBufferRect(1, TILE_TOP_CORNER_L,  1,  0,  1,  1,  7);
+    FillBgTilemapBufferRect(1, TILE_TOP_EDGE,      2,  0, 26,  1,  7);
+    FillBgTilemapBufferRect(1, TILE_TOP_CORNER_R, 28,  0,  1,  1,  7);
+    FillBgTilemapBufferRect(1, TILE_LEFT_EDGE,     1,  1,  1, 18,  7);
+    FillBgTilemapBufferRect(1, TILE_RIGHT_EDGE,   28,  1,  1, 18,  7);
+    FillBgTilemapBufferRect(1, TILE_BOT_CORNER_L,  1, 13,  1,  1,  7);
+    FillBgTilemapBufferRect(1, TILE_BOT_EDGE,      2, 13, 26,  1,  7);
+    FillBgTilemapBufferRect(1, TILE_BOT_CORNER_R, 28, 13,  1,  1,  7);
+
+    // Draw title window frame
+    FillBgTilemapBufferRect(1, TILE_TOP_CORNER_L,  1, 14,  1,  1,  7);
+    FillBgTilemapBufferRect(1, TILE_TOP_EDGE,      2, 14, 27,  1,  7);
+    FillBgTilemapBufferRect(1, TILE_TOP_CORNER_R, 28, 14,  1,  1,  7);
+    FillBgTilemapBufferRect(1, TILE_LEFT_EDGE,     1, 15,  1,  2,  7);
+    FillBgTilemapBufferRect(1, TILE_RIGHT_EDGE,   28, 15,  1,  2,  7);
+    FillBgTilemapBufferRect(1, TILE_BOT_CORNER_L,  1, 19,  1,  1,  7);
+    FillBgTilemapBufferRect(1, TILE_BOT_EDGE,      2, 19, 27,  1,  7);
+    FillBgTilemapBufferRect(1, TILE_BOT_CORNER_R, 28, 19,  1,  1,  7);
 
     CopyBgTilemapBufferToVram(1);
 }
