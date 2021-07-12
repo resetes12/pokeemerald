@@ -48,10 +48,10 @@
 
 #include "tx_difficulty_challenges.h"
 
-#include "printf.h"
-#include "mgba.h"
-#include "data.h"                 // for gSpeciesNames, which maps species number to species name.
-#include "../gflib/string_util.h" // for ConvertToAscii()
+// #include "printf.h"
+// #include "mgba.h"
+// #include "data.h"                 // for gSpeciesNames, which maps species number to species name.
+// #include "../gflib/string_util.h" // for ConvertToAscii()
 
 extern const u8 EventScript_ResetAllMapFlags[];
 

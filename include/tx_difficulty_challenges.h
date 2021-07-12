@@ -32,4 +32,6 @@
 #define TX_CHALLENGE_TYPE_OFF 31
 #define TX_CHALLENGE_TYPE TX_CHALLENGE_TYPE_OFF //TX_CHALLENGE_TYPE_OFF for off
 
+void CB2_InitDifficultyChallengesOptionMenu(void);
+
 #endif // GUARD_DIFFICULTY_H

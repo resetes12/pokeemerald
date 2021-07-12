@@ -38,6 +38,7 @@
 #include "title_screen.h"
 #include "window.h"
 #include "mystery_gift.h"
+#include "tx_difficulty_challenges.h"
 
 /*
  * Main menu state machine
@@ -1071,7 +1072,7 @@ static void Task_HandleMainMenuAPressed(u8 taskId)
                 break;
             case ACTION_OPTION:
                 gMain.savedCallback = CB2_ReinitMainMenu;
-                SetMainCallback2(CB2_InitOptionMenu);
+                SetMainCallback2(CB2_InitDifficultyChallengesOptionMenu);
                 DestroyTask(taskId);
                 break;
             case ACTION_MYSTERY_GIFT:
