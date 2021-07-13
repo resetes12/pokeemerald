@@ -33,5 +33,8 @@
 #define TX_CHALLENGE_TYPE TX_CHALLENGE_TYPE_OFF //TX_CHALLENGE_TYPE_OFF for off
 
 void CB2_InitDifficultyChallengesOptionMenu(void);
+void tx_DC_SaveData(void);
+
+extern struct tx_DC_OptionMenu *sOptions;
 
 #endif // GUARD_DIFFICULTY_H

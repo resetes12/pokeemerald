@@ -135,6 +135,7 @@ static void ClearFrontierRecord(void)
 
 static void WarpToTruck(void)
 {
+    tx_DC_SaveData();
     SetWarpDestination(MAP_GROUP(INSIDE_OF_TRUCK), MAP_NUM(INSIDE_OF_TRUCK), -1, -1, -1);
     WarpIntoMap();
 }

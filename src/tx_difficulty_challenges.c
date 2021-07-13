@@ -115,7 +115,7 @@ struct
 };
 
 // EWRAM vars
-static EWRAM_DATA struct tx_DC_OptionMenu *sOptions = NULL;
+EWRAM_DATA struct tx_DC_OptionMenu *sOptions = NULL;
 
 // const rom data
 static const u16 sOptionMenuText_Pal[] = INCBIN_U16("graphics/misc/option_menu_text.gbapal");
@@ -542,6 +542,12 @@ static void tx_DC_Task_OptionMenuProcessInput(u8 taskId)
 
 static void tx_DC_Task_OptionMenuSave(u8 taskId)
 {
+    BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 0x10, RGB_BLACK);
+    gTasks[taskId].func = tx_DC_Task_OptionMenuFadeOut;
+}
+
+void tx_DC_SaveData(void)
+{
     gSaveBlock1Ptr->txRandChaos                = sOptions->sel[MENUITEM_RAND_CHAOS];
     gSaveBlock1Ptr->txRandEncounter            = sOptions->sel[MENUITEM_RAND_ENCOUNTER];
     gSaveBlock1Ptr->txRandType                 = sOptions->sel[MENUITEM_RAND_TYPE];
@@ -599,9 +605,7 @@ static void tx_DC_Task_OptionMenuSave(u8 taskId)
     gSaveBlock1Ptr->txRandPartyLimit           = 6 - sOptions->sel[MENUITEM_DIFF_PARTY_LIMIT];
     gSaveBlock1Ptr->txRandPkmnCenter           = sOptions->sel[MENUITEM_DIFF_POKECENTER];
 
-
-    BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 0x10, RGB_BLACK);
-    gTasks[taskId].func = tx_DC_Task_OptionMenuFadeOut;
+    FREE_AND_SET_NULL(sOptions);
 }
 
 static void tx_DC_Task_OptionMenuFadeOut(u8 taskId)
@@ -610,7 +614,7 @@ static void tx_DC_Task_OptionMenuFadeOut(u8 taskId)
     {
         DestroyTask(taskId);
         FreeAllWindowBuffers();
-        FREE_AND_SET_NULL(sOptions);
+        // FREE_AND_SET_NULL(sOptions);
         SetMainCallback2(gMain.savedCallback);
     }
 }
