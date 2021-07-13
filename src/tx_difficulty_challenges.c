@@ -15,6 +15,7 @@
 #include "text_window.h"
 #include "international_string_util.h"
 #include "strings.h"
+#include "string_util.h"
 #include "gba/m4a_internal.h"
 #include "constants/rgb.h"
 #include "battle_main.h"
@@ -75,6 +76,8 @@ static int tx_DC_SixOptions_ProcessInput(int selection);
 static void FourOptions_DrawChoices(const u8 *const *const strings, int selection, int y, u8 textSpeed);
 
 static void DrawChoices_Rand_OnOff(int selection, int y, u8 textSpeed);
+static void DrawChoices_Rand_OffChaos(int selection, int y, u8 textSpeed);
+static void DrawChoices_Rand_NormalRandom(int selection, int y, u8 textSpeed);
 static void DrawChoices_Diff_EvoLimit(int selection, int y, u8 textSpeed);
 static void DrawChoices_Diff_PartyLimit(int selection, int y, u8 textSpeed);
 static void DrawChoices_Diff_Nuzlocke(int selection, int y, u8 textSpeed);
@@ -92,15 +95,15 @@ struct
     int (*processInput)(int selection);
 } static const sItemFunctions[MENUITEM_COUNT] =
 {
-    [MENUITEM_RAND_CHAOS]               = {DrawChoices_Rand_OnOff, tx_DC_TwoOptions_ProcessInput},
-    [MENUITEM_RAND_ENCOUNTER]           = {DrawChoices_Rand_OnOff, tx_DC_TwoOptions_ProcessInput},
-    [MENUITEM_RAND_TYPE]                = {DrawChoices_Rand_OnOff, tx_DC_TwoOptions_ProcessInput},
-    [MENUITEM_RAND_TYPE_EFFEC]          = {DrawChoices_Rand_OnOff, tx_DC_TwoOptions_ProcessInput},
-    [MENUITEM_RAND_ABILITIES]           = {DrawChoices_Rand_OnOff, tx_DC_TwoOptions_ProcessInput},
-    [MENUITEM_RAND_MOVES]               = {DrawChoices_Rand_OnOff, tx_DC_TwoOptions_ProcessInput},
-    [MENUITEM_RAND_TRAINER]             = {DrawChoices_Rand_OnOff, tx_DC_TwoOptions_ProcessInput},
-    [MENUITEM_RAND_EVOLUTIONS]          = {DrawChoices_Rand_OnOff, tx_DC_TwoOptions_ProcessInput},
-    [MENUITEM_RAND_EVOLUTIONS_METHODE]  = {DrawChoices_Rand_OnOff, tx_DC_TwoOptions_ProcessInput},
+    [MENUITEM_RAND_CHAOS]               = {DrawChoices_Rand_OffChaos, tx_DC_TwoOptions_ProcessInput},
+    [MENUITEM_RAND_ENCOUNTER]           = {DrawChoices_Rand_NormalRandom, tx_DC_TwoOptions_ProcessInput},
+    [MENUITEM_RAND_TYPE]                = {DrawChoices_Rand_NormalRandom, tx_DC_TwoOptions_ProcessInput},
+    [MENUITEM_RAND_TYPE_EFFEC]          = {DrawChoices_Rand_NormalRandom, tx_DC_TwoOptions_ProcessInput},
+    [MENUITEM_RAND_ABILITIES]           = {DrawChoices_Rand_NormalRandom, tx_DC_TwoOptions_ProcessInput},
+    [MENUITEM_RAND_MOVES]               = {DrawChoices_Rand_NormalRandom, tx_DC_TwoOptions_ProcessInput},
+    [MENUITEM_RAND_TRAINER]             = {DrawChoices_Rand_NormalRandom, tx_DC_TwoOptions_ProcessInput},
+    [MENUITEM_RAND_EVOLUTIONS]          = {DrawChoices_Rand_NormalRandom, tx_DC_TwoOptions_ProcessInput},
+    [MENUITEM_RAND_EVOLUTIONS_METHODE]  = {DrawChoices_Rand_NormalRandom, tx_DC_TwoOptions_ProcessInput},
     [MENUITEM_DIFF_EVO_LIMIT]           = {DrawChoices_Diff_EvoLimit, tx_DC_ThreeOptions_ProcessInput},
     [MENUITEM_DIFF_PARTY_LIMIT]         = {DrawChoices_Diff_PartyLimit, tx_DC_SixOptions_ProcessInput},
     [MENUITEM_DIFF_NUZLOCKE]            = {DrawChoices_Diff_Nuzlocke, tx_DC_ThreeOptions_ProcessInput},
@@ -126,11 +129,11 @@ static const u8 gText_Abilities[] =         _("ABILTIES");
 static const u8 gText_Moves[] =             _("MOVES");
 static const u8 gText_Trainer[] =           _("TRAINER");
 static const u8 gText_Evolutions[] =        _("EVOLUTIONS");
-static const u8 gText_EvolutionMethodes[] = _("METHODES");
+static const u8 gText_EvolutionMethodes[] = _("EVO METHODES");
 static const u8 gText_EvoLimit[] =          _("EVO LIMIT");
 static const u8 gText_PartyLimit[] =        _("PARTY LIMIT");
 static const u8 gText_Nuzlocke[] =          _("NUZLOCKE");
-static const u8 gText_Items[] =             _("ITEMS");
+static const u8 gText_Items[] =             _("ITEM LIMIT");
 static const u8 gText_Pokecenter[] =        _("POKECENTER");
 static const u8 gText_TypeChall[] =         _("TYPE LIMIT");
 
@@ -156,7 +159,7 @@ static const u8 *const sOptionMenuItemNames[MENUITEM_COUNT] =
     [MENUITEM_CANCEL]                   = gText_Save,
 };
 
-static const u8 gText_Description_00[] = _("Enable Chaos mode");
+static const u8 gText_Description_00[] = _("Enable {COLOR RED}{SHADOW LIGHT_RED}Chaos mode");
 static const u8 gText_Description_01[] = _("Randomize wild encounters");
 static const u8 gText_Description_02[] = _("Randomize mon types");
 static const u8 gText_Description_03[] = _("Randomize type effectivness");
@@ -169,7 +172,7 @@ static const u8 gText_Description_09[] = _("Limit evolutions");
 static const u8 gText_Description_10[] = _("Limit your parties size");
 static const u8 gText_Description_11[] = _("Enable nuzlocke mode");
 static const u8 gText_Description_12[] = _("Impose item limits");
-static const u8 gText_Description_13[] = _("Disable Pokecenter use");
+static const u8 gText_Description_13[] = _("Pokecenter use");
 static const u8 gText_Description_14[] = _("Enable only one allowed mon type");
 static const u8 gText_Description_15[] = _("Save your changes and proceed");
 static const u8 *const sOptionMenuItemDescriptions[MENUITEM_COUNT] =
@@ -344,8 +347,15 @@ void CB2_InitDifficultyChallengesOptionMenu(void)
         sOptions->sel[MENUITEM_RAND_EVOLUTIONS]          = gSaveBlock1Ptr->txRandEvolutions;
         sOptions->sel[MENUITEM_RAND_EVOLUTIONS_METHODE]  = gSaveBlock1Ptr->txRandEvolutionMethodes;
         sOptions->sel[MENUITEM_DIFF_EVO_LIMIT]           = gSaveBlock1Ptr->txRandEvoLimit;
-        sOptions->sel[MENUITEM_DIFF_PARTY_LIMIT]         = 0;//gSaveBlock2Ptr->;
-        sOptions->sel[MENUITEM_DIFF_NUZLOCKE]            = gSaveBlock1Ptr->txRandNuzlocke;
+        sOptions->sel[MENUITEM_DIFF_PARTY_LIMIT]         = 6 - gSaveBlock1Ptr->txRandPartyLimit;
+
+        if (gSaveBlock1Ptr->txRandNuzlocke && gSaveBlock1Ptr->txRandNuzlockeHardcore)
+            sOptions->sel[MENUITEM_DIFF_NUZLOCKE] = 2;
+        else if (gSaveBlock1Ptr->txRandNuzlocke)
+            sOptions->sel[MENUITEM_DIFF_NUZLOCKE] = 1;
+        else
+            sOptions->sel[MENUITEM_DIFF_NUZLOCKE] = 0;
+        
         if (gSaveBlock1Ptr->txRandNoItemPlayer && gSaveBlock1Ptr->txRandNoItemTrainer)
             sOptions->sel[MENUITEM_DIFF_ITEM] = 3;
         else if (gSaveBlock1Ptr->txRandNoItemPlayer)
@@ -354,7 +364,8 @@ void CB2_InitDifficultyChallengesOptionMenu(void)
             sOptions->sel[MENUITEM_DIFF_ITEM] = 2;
         else
             sOptions->sel[MENUITEM_DIFF_ITEM] = 0;
-        sOptions->sel[MENUITEM_DIFF_POKECENTER]          = 0;//gSaveBlock1Ptr->txRandPkmnCenter;
+        
+        sOptions->sel[MENUITEM_DIFF_POKECENTER]          = gSaveBlock1Ptr->txRandPkmnCenter;
         sOptions->sel[MENUITEM_DIFF_TYPE_CHALLENGE]      = gSaveBlock1Ptr->txRandTypeChallenge;
 
 
@@ -510,23 +521,61 @@ static void tx_DC_Task_OptionMenuProcessInput(u8 taskId)
 
 static void tx_DC_Task_OptionMenuSave(u8 taskId)
 {
-    // gSaveBlock1Ptr->txRandChaos                = sOptions->sel[MENUITEM_RAND_CHAOS];
-    // gSaveBlock1Ptr->txRandEncounter            = sOptions->sel[];
-    // gSaveBlock1Ptr->txRandType                 = sOptions->sel[];
-    // gSaveBlock1Ptr->txRandTypeEffectiveness    = sOptions->sel[];
-    // gSaveBlock1Ptr->txRandAbilities            = sOptions->sel[];
-    // gSaveBlock1Ptr->txRandMoves                = sOptions->sel[];
-    // gSaveBlock1Ptr->txRandTrainer              = sOptions->sel[];
-    // gSaveBlock1Ptr->txRandEvolutions           = sOptions->sel[];
-    // gSaveBlock1Ptr->txRandEvolutionMethodes    = sOptions->sel[];
-    // gSaveBlock1Ptr->txRandEvoLimit             = sOptions->sel[];
-    // gSaveBlock1Ptr->txRandNuzlocke             = sOptions->sel[];
-    // gSaveBlock1Ptr->txRandNuzlockeHardcore     = sOptions->sel[];
-    // gSaveBlock1Ptr->txRandNoItemPlayer         = sOptions->sel[];
-    // gSaveBlock1Ptr->txRandNoItemTrainer        = sOptions->sel[];
-    // gSaveBlock1Ptr->txRandTypeChallenge        = sOptions->sel[];
-    // gSaveBlock1Ptr->txRandPartyLimit           = sOptions->sel[];
-    // gSaveBlock1Ptr->txRandPkmnCenter           = sOptions->sel[];
+    gSaveBlock1Ptr->txRandChaos                = sOptions->sel[MENUITEM_RAND_CHAOS];
+    gSaveBlock1Ptr->txRandEncounter            = sOptions->sel[MENUITEM_RAND_ENCOUNTER];
+    gSaveBlock1Ptr->txRandType                 = sOptions->sel[MENUITEM_RAND_TYPE];
+    gSaveBlock1Ptr->txRandTypeEffectiveness    = sOptions->sel[MENUITEM_RAND_TYPE_EFFEC];
+    gSaveBlock1Ptr->txRandAbilities            = sOptions->sel[MENUITEM_RAND_ABILITIES];
+    gSaveBlock1Ptr->txRandMoves                = sOptions->sel[MENUITEM_RAND_MOVES];
+    gSaveBlock1Ptr->txRandTrainer              = sOptions->sel[MENUITEM_RAND_TRAINER];
+    gSaveBlock1Ptr->txRandEvolutions           = sOptions->sel[MENUITEM_RAND_EVOLUTIONS];
+    gSaveBlock1Ptr->txRandEvolutionMethodes    = sOptions->sel[MENUITEM_RAND_EVOLUTIONS_METHODE];
+    gSaveBlock1Ptr->txRandEvoLimit             = sOptions->sel[MENUITEM_DIFF_EVO_LIMIT];
+
+    switch (sOptions->sel[MENUITEM_DIFF_NUZLOCKE])
+    {
+    case 0:
+        gSaveBlock1Ptr->txRandNuzlocke          = FALSE;
+        gSaveBlock1Ptr->txRandNuzlockeHardcore  = FALSE;
+        break;
+    case 1:
+        gSaveBlock1Ptr->txRandNuzlocke          = TRUE;
+        gSaveBlock1Ptr->txRandNuzlockeHardcore  = FALSE;
+        break;
+    case 2:
+        gSaveBlock1Ptr->txRandNuzlocke          = TRUE;
+        gSaveBlock1Ptr->txRandNuzlockeHardcore  = TRUE;
+        break;
+    }
+
+    switch (sOptions->sel[MENUITEM_DIFF_ITEM])
+    {
+    case 0:
+        gSaveBlock1Ptr->txRandNoItemPlayer  = FALSE;
+        gSaveBlock1Ptr->txRandNoItemTrainer = FALSE;
+        break;
+    case 1:
+        gSaveBlock1Ptr->txRandNoItemPlayer  = TRUE;
+        gSaveBlock1Ptr->txRandNoItemTrainer = FALSE;
+        break;
+    case 2:
+        gSaveBlock1Ptr->txRandNoItemPlayer  = FALSE;
+        gSaveBlock1Ptr->txRandNoItemTrainer = TRUE;
+        break;
+    case 3:
+        gSaveBlock1Ptr->txRandNoItemPlayer  = TRUE;
+        gSaveBlock1Ptr->txRandNoItemTrainer = TRUE;
+        break;
+    }
+
+    if (sOptions->sel[MENUITEM_DIFF_TYPE_CHALLENGE] >= NUMBER_OF_MON_TYPES-1)
+        gSaveBlock1Ptr->txRandTypeChallenge = TX_CHALLENGE_TYPE_OFF;
+    else
+        gSaveBlock1Ptr->txRandTypeChallenge = sOptions->sel[MENUITEM_DIFF_TYPE_CHALLENGE];
+    
+    gSaveBlock1Ptr->txRandPartyLimit           = 6 - sOptions->sel[MENUITEM_DIFF_PARTY_LIMIT];
+    gSaveBlock1Ptr->txRandPkmnCenter           = sOptions->sel[MENUITEM_DIFF_POKECENTER];
+
 
     BeginNormalPaletteFade(0xFFFFFFFF, 0, 0, 0x10, RGB_BLACK);
     gTasks[taskId].func = tx_DC_Task_OptionMenuFadeOut;
@@ -596,65 +645,6 @@ static int tx_DC_TwoOptions_ProcessInput(int selection)
 
 
 
-
-
-
-
-/*
-static int BattleStyle_ProcessInput(int selection)
-{
-    if (JOY_NEW(DPAD_LEFT | DPAD_RIGHT))
-        selection ^= 1;
-
-    return selection;
-}
-
-static int Sound_ProcessInput(int selection)
-{
-    int previous = selection;
-
-    selection = tx_DC_ThreeOptions_ProcessInput(selection);
-    if (selection == 0 || selection == 1)
-    {
-        gDisableMusic = FALSE;
-        SetPokemonCryStereo(selection);
-        if (previous == 2)
-            PlayNewMapMusic(GetCurrentMapMusic());
-    }
-    else
-    {
-        PlayBGM(0);
-        gDisableMusic = TRUE;
-    }
-
-    return selection;
-}
-
-static int FrameType_ProcessInput(int selection)
-{
-    if (JOY_NEW(DPAD_RIGHT))
-    {
-        if (selection < WINDOW_FRAMES_COUNT - 1)
-            selection++;
-        else
-            selection = 0;
-
-        LoadBgTiles(1, GetWindowFrameTilesPal(selection)->tiles, 0x120, 0x1A2);
-        LoadPalette(GetWindowFrameTilesPal(selection)->pal, 0x70, 0x20);
-    }
-    if (JOY_NEW(DPAD_LEFT))
-    {
-        if (selection != 0)
-            selection--;
-        else
-            selection = WINDOW_FRAMES_COUNT - 1;
-
-        LoadBgTiles(1, GetWindowFrameTilesPal(selection)->tiles, 0x120, 0x1A2);
-        LoadPalette(GetWindowFrameTilesPal(selection)->pal, 0x70, 0x20);
-    }
-    return selection;
-}
-*/
 static int GetMiddleX(const u8 *txt1, const u8 *txt2, const u8 *txt3)
 {
     int xMid;
@@ -737,7 +727,6 @@ static void FourOptions_DrawChoices(const u8 *const *const strings, int selectio
 static const u8 gText_Off[] = _("{COLOR DARK_GREY}{SHADOW LIGHT_GREY}OFF");
 static const u8 gText_On[]  = _("{COLOR DARK_GREY}{SHADOW LIGHT_GREY}ON");
 static const u8 gText_None[]  = _("{COLOR DARK_GREY}{SHADOW LIGHT_GREY}NONE");
-// static const u8 gText_Rand_Chaos = _("{COLOR RED}{SHADOW LIGHT_RED}CHAOS");
 static void DrawChoices_Rand_OnOff(int selection, int y, u8 textSpeed)
 {
     u8 styles[2] = {0};
@@ -745,6 +734,27 @@ static void DrawChoices_Rand_OnOff(int selection, int y, u8 textSpeed)
     styles[selection] = 1;
     DrawOptionMenuChoice(gText_Off, 104, y, styles[0], textSpeed);
     DrawOptionMenuChoice(gText_On, GetStringRightAlignXOffset(1, gText_On, 198), y, styles[1], textSpeed);
+}
+
+static const u8 gText_Rand_Chaos[] = _("{COLOR DARK_GREY}{SHADOW LIGHT_GREY}CHAOS");
+static void DrawChoices_Rand_OffChaos(int selection, int y, u8 textSpeed)
+{
+    u8 styles[2] = {0};
+
+    styles[selection] = 1;
+    DrawOptionMenuChoice(gText_Off, 104, y, styles[0], textSpeed);
+    DrawOptionMenuChoice(gText_Rand_Chaos, GetStringRightAlignXOffset(1, gText_Rand_Chaos, 198), y, styles[1], textSpeed);
+}
+
+static const u8 gText_Normal[]  = _("{COLOR DARK_GREY}{SHADOW LIGHT_GREY}NORMAL");
+static const u8 gText_Random[]  = _("{COLOR DARK_GREY}{SHADOW LIGHT_GREY}RANDOM");
+static void DrawChoices_Rand_NormalRandom(int selection, int y, u8 textSpeed)
+{
+    u8 styles[2] = {0};
+
+    styles[selection] = 1;
+    DrawOptionMenuChoice(gText_Normal, 104, y, styles[0], textSpeed);
+    DrawOptionMenuChoice(gText_Random, GetStringRightAlignXOffset(1, gText_Random, 198), y, styles[1], textSpeed);
 }
 
 
@@ -812,147 +822,14 @@ static void DrawChoices_Diff_TypeChallenge(int selection, int y, u8 textSpeed)
     u8 n = selection;
 
     if (n >= NUMBER_OF_MON_TYPES-1)
-        DrawOptionMenuChoice(gText_Off, 104, y, 0, textSpeed);
+        StringCopyPadded(gStringVar1, gText_Off, 0, 15);
     else if (n > 8)
-        DrawOptionMenuChoice(gTypeNames[n+1], 104, y, 0, textSpeed);
+        StringCopyPadded(gStringVar1, gTypeNames[n+1], 0, 10);
     else
-        DrawOptionMenuChoice(gTypeNames[n+0], 104, y, 0, textSpeed);
+        StringCopyPadded(gStringVar1, gTypeNames[n], 0, 10);
 
-    // DrawOptionMenuChoice(text, 104, y, 0, textSpeed);
-    // DrawOptionMenuChoice(text, 128, y, 1, textSpeed);
+    DrawOptionMenuChoice(gStringVar1, 104, y, 0, textSpeed);
 }
-// const u8 gTypeNames[NUMBER_OF_MON_TYPES][TYPE_NAME_LENGTH + 1] =
-// {
-//     _("NORMAL"),
-//     _("FIGHT"),
-//     _("FLYING"),
-//     _("POISON"),
-//     _("GROUND"),
-//     _("ROCK"),
-//     _("BUG"),
-//     _("GHOST"),
-//     _("STEEL"),
-//     _("???"),
-//     _("FIRE"),
-//     _("WATER"),
-//     _("GRASS"),
-//     _("ELECTR"),
-//     _("PSYCHC"),
-//     _("ICE"),
-//     _("DRAGON"),
-//     _("DARK"),
-// };
-
-
-
-
-
-
-
-
-
-
-/*
-static void HpBar_DrawChoices(int selection, int y, u8 textSpeed)
-{
-    if (selection < 10)
-    {
-        u8 textPlus[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}+1{0x77}{0x77}{0x77}{0x77}{0x77}"); // 0x77 is to clear INSTANT text
-        textPlus[7] = CHAR_0 + selection;
-        DrawOptionMenuChoice(textPlus, 104, y, 1, textSpeed);
-    }
-    else
-    {
-        DrawOptionMenuChoice(sText_Instant, 104, y, 1, textSpeed);
-    }
-}
-
-static void BattleScene_DrawChoices(int selection, int y, u8 textSpeed)
-{
-    u8 styles[2] = {0};
-
-    styles[selection] = 1;
-    DrawOptionMenuChoice(gText_BattleSceneOn, 104, y, styles[0], textSpeed);
-    DrawOptionMenuChoice(gText_BattleSceneOff, GetStringRightAlignXOffset(1, gText_BattleSceneOff, 198), y, styles[1], textSpeed);
-}
-
-static void BattleStyle_DrawChoices(int selection, int y, u8 textSpeed)
-{
-    u8 styles[2] = {0, 0};
-
-    styles[selection] = 1;
-    DrawOptionMenuChoice(gText_BattleStyleShift, 104, y, styles[0], textSpeed);
-    DrawOptionMenuChoice(gText_BattleStyleSet, GetStringRightAlignXOffset(1, gText_BattleStyleSet, 198), y, styles[1], textSpeed);
-}
-
-static void UnitSystem_DrawChoices(int selection, int y, u8 textSpeed)
-{
-    u8 styles[2] = {0, 0};
-
-    styles[selection] = 1;
-    DrawOptionMenuChoice(gText_UnitSystemMetric, 104, y, styles[0], textSpeed);
-    DrawOptionMenuChoice(gText_UnitSystemImperial, GetStringRightAlignXOffset(1, sText_Instant, 198), y, styles[1], textSpeed);
-}
-
-static void TextSpeed_DrawChoices(int selection, int y, u8 textSpeed)
-{
-    FourOptions_DrawChoices(sTextSpeedStrings, selection, y, textSpeed);
-}
-
-static void Sound_DrawChoices(int selection, int y, u8 textSpeed)
-{
-    u8 styles[3] = {0, 0, 0};
-    int xMid = GetMiddleX(gText_SoundMono, gText_SoundStereo, gText_BattleSceneOff);
-
-    styles[selection] = 1;
-    DrawOptionMenuChoice(gText_SoundMono, 104, y, styles[0], textSpeed);
-    DrawOptionMenuChoice(gText_SoundStereo, xMid, y, styles[1], textSpeed);
-    DrawOptionMenuChoice(gText_BattleSceneOff, GetStringRightAlignXOffset(1, gText_BattleSceneOff, 198), y, styles[2], textSpeed);
-}
-
-static void FrameType_DrawChoices(int selection, int y, u8 textSpeed)
-{
-    u8 text[16];
-    u32 n = selection + 1;
-    u32 i;
-
-    for (i = 0; gText_FrameTypeNumber[i] != EOS && i <= 5; i++)
-        text[i] = gText_FrameTypeNumber[i];
-
-    // Convert a number to decimal string
-    if (n / 10 != 0)
-    {
-        text[i] = n / 10 + CHAR_0;
-        i++;
-        text[i] = n % 10 + CHAR_0;
-        i++;
-    }
-    else
-    {
-        text[i] = n % 10 + CHAR_0;
-        i++;
-        text[i] = 0x77;
-        i++;
-    }
-
-    text[i] = EOS;
-
-    DrawOptionMenuChoice(gText_FrameType, 104, y, 0, textSpeed);
-    DrawOptionMenuChoice(text, 128, y, 1, textSpeed);
-}
-
-static void ButtonMode_DrawChoices(int selection, int y, u8 textSpeed)
-{
-    u8 styles[3] = {0};
-    int xMid = GetMiddleX(gText_ButtonTypeNormal, gText_ButtonTypeLR, gText_ButtonTypeLEqualsA);
-
-    styles[selection] = 1;
-    DrawOptionMenuChoice(gText_ButtonTypeNormal, 104, y, styles[0], textSpeed);
-    DrawOptionMenuChoice(gText_ButtonTypeLR, xMid, y, styles[1], textSpeed);
-    DrawOptionMenuChoice(gText_ButtonTypeLEqualsA, GetStringRightAlignXOffset(1, gText_ButtonTypeLEqualsA, 198), y, styles[2], textSpeed);
-}
-*/
-
 
 #define TILE_TOP_CORNER_L 418 //0x1A2
 #define TILE_TOP_EDGE     419 //0x1A3

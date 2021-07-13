@@ -8478,7 +8478,7 @@ void RandomizeSpeciesListEWRAM(u16 seed)
     gSaveBlock1Ptr->txRandMoves                =   TX_RANDOM_MOVES;
     gSaveBlock1Ptr->txRandTrainer              =   TX_RANDOM_TRAINER;
     gSaveBlock1Ptr->txRandEvolutions           =   TX_RANDOM_EVOLUTION;
-    gSaveBlock1Ptr->txRandEvolutionMethodes   =   TX_RANDOM_EVOLUTION_METHODE;
+    gSaveBlock1Ptr->txRandEvolutionMethodes    =   TX_RANDOM_EVOLUTION_METHODE;
     gSaveBlock1Ptr->txRandEvoLimit             =   TX_CHALLANGE_EVO_LIMIT;
     gSaveBlock1Ptr->txRandNuzlocke             =   TX_CHALLENGE_NUZLOCKE;
     gSaveBlock1Ptr->txRandNuzlockeHardcore     =   TX_CHALLENGE_NUZLOCKE_HARDCORE;
@@ -8644,16 +8644,7 @@ void NuzlockeDeleteFaintedPartyPokemon(void) // @Kurausukun
 
 u8 GetPokemonCenterChallenge()
 {
-    if (!gSaveBlock1Ptr->txRandPkmnCenter)
-        return 1;
-    else if (gSaveBlock1Ptr->txRandPkmnCenter == 1)
-    {
-
-    }
-    else if (gSaveBlock1Ptr->txRandPkmnCenter == 2)
-    {
-        return 0;
-    }
+    return !gSaveBlock1Ptr->txRandPkmnCenter;
 }
 
 
