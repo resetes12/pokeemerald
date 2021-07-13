@@ -473,10 +473,10 @@ static void tx_DC_Task_OptionMenuProcessInput(u8 taskId)
         if (sOptions->menuCursor == MENUITEM_CANCEL)
             gTasks[taskId].func = tx_DC_Task_OptionMenuSave;
     }
-    else if (JOY_NEW(B_BUTTON))
-    {
-        gTasks[taskId].func = tx_DC_Task_OptionMenuSave;
-    }
+    // else if (JOY_NEW(B_BUTTON))
+    // {
+    //     gTasks[taskId].func = tx_DC_Task_OptionMenuSave;
+    // }
     else if (JOY_NEW(DPAD_UP))
     {
         if (sOptions->visibleCursor == 3) // don't advance visible cursor until scrolled to the bottom
