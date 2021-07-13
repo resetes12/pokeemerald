@@ -66,6 +66,7 @@ static void tx_DC_Task_OptionMenuSave(u8 taskId);
 static void tx_DC_Task_OptionMenuFadeOut(u8 taskId);
 static void tx_DC_HighlightOptionMenuItem(int cursor);
 static void tx_DC_DrawDescriptions(void);
+static void tx_DC_DrawDescriptionsFirstTime(void);
 static void tx_DC_DrawOptionMenuTexts(void);
 static void DrawBgWindowFrames(void);
 static int tx_DC_FourOptions_ProcessInput(int selection);
@@ -318,7 +319,7 @@ void CB2_InitDifficultyChallengesOptionMenu(void)
         break;
     case 6:
         PutWindowTilemap(WIN_DESCRIPTION);
-        tx_DC_DrawDescriptions();
+        tx_DC_DrawDescriptionsFirstTime();
         gMain.state++;
         break;
     case 7:
@@ -664,6 +665,12 @@ static void tx_DC_DrawDescriptions(void)
     AddTextPrinterParameterized(WIN_DESCRIPTION, 1, sOptionMenuItemDescriptions[n], 8, 1, 0, NULL);
     CopyWindowToVram(WIN_DESCRIPTION, 3);
 }
+static void tx_DC_DrawDescriptionsFirstTime(void)
+{
+    FillWindowPixelBuffer(WIN_DESCRIPTION, PIXEL_FILL(1));
+    AddTextPrinterParameterized(WIN_DESCRIPTION, 1, sOptionMenuItemDescriptions[0], 8, 1, 0, NULL);
+    CopyWindowToVram(WIN_DESCRIPTION, 3);
+}
 
 static void tx_DC_DrawOptionMenuTexts(void)
 {
@@ -831,14 +838,14 @@ static void DrawChoices_Diff_TypeChallenge(int selection, int y, u8 textSpeed)
     DrawOptionMenuChoice(gStringVar1, 104, y, 0, textSpeed);
 }
 
-#define TILE_TOP_CORNER_L 418 //0x1A2
-#define TILE_TOP_EDGE     419 //0x1A3
-#define TILE_TOP_CORNER_R 420 //0x1A4
-#define TILE_LEFT_EDGE    421 //0x1A5
-#define TILE_RIGHT_EDGE   423 //0x1A7
-#define TILE_BOT_CORNER_L 424 //0x1A8
-#define TILE_BOT_EDGE     425 //0x1A9
-#define TILE_BOT_CORNER_R 426 //0x1AA
+#define TILE_TOP_CORNER_L 0x1A2 // 418
+#define TILE_TOP_EDGE     0x1A3 // 419
+#define TILE_TOP_CORNER_R 0x1A4 // 420
+#define TILE_LEFT_EDGE    0x1A5 // 421
+#define TILE_RIGHT_EDGE   0x1A7 // 423
+#define TILE_BOT_CORNER_L 0x1A8 // 424
+#define TILE_BOT_EDGE     0x1A9 // 425
+#define TILE_BOT_CORNER_R 0x1AA // 426
 
 static void DrawBgWindowFrames(void)
 {
