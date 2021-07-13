@@ -229,6 +229,7 @@ static void Task_NewGameBirchSpeech_WaitForWhatsYourNameToPrint(u8);
 static void Task_NewGameBirchSpeech_WaitPressBeforeNameChoice(u8);
 static void Task_NewGameBirchSpeech_StartNamingScreen(u8);
 static void CB2_NewGameBirchSpeech_ReturnFromNamingScreen(void);
+static void CB2_NewGameBirchSpeech_ReturnFromDifficultyChallengeOptions(void);
 static void NewGameBirchSpeech_SetDefaultPlayerName(u8);
 static void Task_NewGameBirchSpeech_CreateNameYesNo(u8);
 static void Task_NewGameBirchSpeech_ProcessNameYesNoMenu(u8);
@@ -1060,9 +1061,12 @@ static void Task_HandleMainMenuAPressed(u8 taskId)
         {
             case ACTION_NEW_GAME:
             default:
-                gPlttBufferUnfaded[0] = RGB_BLACK;
-                gPlttBufferFaded[0] = RGB_BLACK;
-                gTasks[taskId].func = Task_NewGameBirchSpeech_Init;
+                // gPlttBufferUnfaded[0] = RGB_BLACK;
+                // gPlttBufferFaded[0] = RGB_BLACK;
+                // gTasks[taskId].func = Task_NewGameBirchSpeech_Init;
+                gMain.savedCallback = CB2_NewGameBirchSpeech_ReturnFromDifficultyChallengeOptions;
+                SetMainCallback2(CB2_InitDifficultyChallengesOptionMenu);
+                DestroyTask(taskId);
                 break;
             case ACTION_CONTINUE:
                 gPlttBufferUnfaded[0] = RGB_BLACK;
@@ -1072,7 +1076,7 @@ static void Task_HandleMainMenuAPressed(u8 taskId)
                 break;
             case ACTION_OPTION:
                 gMain.savedCallback = CB2_ReinitMainMenu;
-                SetMainCallback2(CB2_InitDifficultyChallengesOptionMenu);
+                SetMainCallback2(CB2_InitOptionMenu);
                 DestroyTask(taskId);
                 break;
             case ACTION_MYSTERY_GIFT:
@@ -1264,6 +1268,42 @@ static void HighlightSelectedMainMenuItem(u8 menuType, u8 selectedMenuItem, s16 
 #define tLotadSpriteId data[9]
 #define tBrendanSpriteId data[10]
 #define tMaySpriteId data[11]
+
+static void CB2_NewGameBirchSpeech_ReturnFromDifficultyChallengeOptions(void)
+{
+    u8 taskId;
+    u8 spriteId;
+    u16 savedIme;
+    ResetBgsAndClearDma3BusyFlags(0);
+    SetGpuReg(REG_OFFSET_DISPCNT, 0);
+    SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
+    InitBgsFromTemplates(0, sMainMenuBgTemplates, 2);
+    InitBgFromTemplate(&sBirchBgTemplate);
+    SetVBlankCallback(NULL);
+    SetGpuReg(REG_OFFSET_BG2CNT, 0);
+    SetGpuReg(REG_OFFSET_BG1CNT, 0);
+    SetGpuReg(REG_OFFSET_BG0CNT, 0);
+    SetGpuReg(REG_OFFSET_BG2HOFS, 0);
+    SetGpuReg(REG_OFFSET_BG2VOFS, 0);
+    SetGpuReg(REG_OFFSET_BG1HOFS, 0);
+    SetGpuReg(REG_OFFSET_BG1VOFS, 0);
+    SetGpuReg(REG_OFFSET_BG0HOFS, 0);
+    SetGpuReg(REG_OFFSET_BG0VOFS, 0);
+    DmaFill16(3, 0, VRAM, VRAM_SIZE);
+    DmaFill32(3, 0, OAM, OAM_SIZE);
+    DmaFill16(3, 0, PLTT, PLTT_SIZE);
+    ResetPaletteFade();
+    LZ77UnCompVram(sBirchSpeechShadowGfx, (u8*)VRAM);
+    LZ77UnCompVram(sBirchSpeechBgMap, (u8*)(BG_SCREEN_ADDR(7)));
+    LoadPalette(sBirchSpeechBgPals, 0, 64);
+    LoadPalette(&sBirchSpeechBgGradientPal[1], 1, 16);
+    ResetTasks();
+    taskId = CreateTask(Task_NewGameBirchSpeech_Init, 0);
+    gTasks[taskId].tTimer = 5;
+    gTasks[taskId].tBG1HOFS = -60;
+    SetVBlankCallback(VBlankCB_MainMenu);
+    SetMainCallback2(CB2_MainMenu);
+}
 
 static void Task_NewGameBirchSpeech_Init(u8 taskId)
 {
