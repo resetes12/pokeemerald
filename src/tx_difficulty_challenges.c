@@ -20,6 +20,7 @@
 #include "constants/rgb.h"
 #include "battle_main.h"
 #include "tx_difficulty_challenges.h"
+#include "pokemon.h"
 
 #define Y_DIFF 16 // Difference in pixels between items.
 
@@ -606,6 +607,8 @@ void tx_DC_SaveData(void)
     gSaveBlock1Ptr->txRandPkmnCenter           = sOptions->sel[MENUITEM_DIFF_POKECENTER];
 
     FREE_AND_SET_NULL(sOptions);
+    RandomizeSpeciesListEWRAM(1);
+    RandomizeTypeEffectivenessListEWRAM();
 }
 
 static void tx_DC_Task_OptionMenuFadeOut(u8 taskId)
