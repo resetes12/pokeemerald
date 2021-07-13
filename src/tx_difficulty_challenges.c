@@ -336,6 +336,26 @@ void CB2_InitDifficultyChallengesOptionMenu(void)
     case 10:
         taskId = CreateTask(tx_DC_Task_OptionMenuFadeIn, 0);
 
+        //tx_difficulty_challenges
+        gSaveBlock1Ptr->txRandChaos                =   TX_RANDOM_CHAOS_MODE;
+        gSaveBlock1Ptr->txRandEncounter            =   TX_RANDOM_ENCOUNTER;
+        gSaveBlock1Ptr->txRandEncounterSimilar     =   TX_RANDOM_ENCOUNTER_SIMILAR;
+        gSaveBlock1Ptr->txRandType                 =   TX_RANDOM_TYPE;
+        gSaveBlock1Ptr->txRandTypeEffectiveness    =   TX_RANDOM_TYPE_EFFECTIVENESS;
+        gSaveBlock1Ptr->txRandAbilities            =   TX_RANDOM_ABILITIES;
+        gSaveBlock1Ptr->txRandMoves                =   TX_RANDOM_MOVES;
+        gSaveBlock1Ptr->txRandTrainer              =   TX_RANDOM_TRAINER;
+        gSaveBlock1Ptr->txRandEvolutions           =   TX_RANDOM_EVOLUTION;
+        gSaveBlock1Ptr->txRandEvolutionMethodes    =   TX_RANDOM_EVOLUTION_METHODE;
+        gSaveBlock1Ptr->txRandEvoLimit             =   TX_CHALLANGE_EVO_LIMIT;
+        gSaveBlock1Ptr->txRandNuzlocke             =   TX_CHALLENGE_NUZLOCKE;
+        gSaveBlock1Ptr->txRandNuzlockeHardcore     =   TX_CHALLENGE_NUZLOCKE_HARDCORE;
+        gSaveBlock1Ptr->txRandNoItemPlayer         =   TX_CHALLENGE_NO_ITEM_PLAYER;
+        gSaveBlock1Ptr->txRandNoItemTrainer        =   TX_CHALLENGE_NO_ITEM_TRAINER;
+        gSaveBlock1Ptr->txRandTypeChallenge        =   TX_CHALLENGE_TYPE;
+        gSaveBlock1Ptr->txRandPartyLimit           =   TX_CHALLANGE_PARTY_LIMIT;
+        gSaveBlock1Ptr->txRandPkmnCenter           =   TX_CHALLENGE_PKMN_CENTER;
+
         sOptions = AllocZeroed(sizeof(*sOptions));
 
         sOptions->sel[MENUITEM_RAND_CHAOS]               = gSaveBlock1Ptr->txRandChaos;
@@ -571,6 +591,8 @@ static void tx_DC_Task_OptionMenuSave(u8 taskId)
 
     if (sOptions->sel[MENUITEM_DIFF_TYPE_CHALLENGE] >= NUMBER_OF_MON_TYPES-1)
         gSaveBlock1Ptr->txRandTypeChallenge = TX_CHALLENGE_TYPE_OFF;
+    else if (sOptions->sel[MENUITEM_DIFF_TYPE_CHALLENGE] >= TYPE_MYSTERY)
+        gSaveBlock1Ptr->txRandTypeChallenge = sOptions->sel[MENUITEM_DIFF_TYPE_CHALLENGE] + 1;
     else
         gSaveBlock1Ptr->txRandTypeChallenge = sOptions->sel[MENUITEM_DIFF_TYPE_CHALLENGE];
     
@@ -830,7 +852,7 @@ static void DrawChoices_Diff_TypeChallenge(int selection, int y, u8 textSpeed)
 
     if (n >= NUMBER_OF_MON_TYPES-1)
         StringCopyPadded(gStringVar1, gText_Off, 0, 15);
-    else if (n > 8)
+    else if (n >= TYPE_MYSTERY)
         StringCopyPadded(gStringVar1, gTypeNames[n+1], 0, 10);
     else
         StringCopyPadded(gStringVar1, gTypeNames[n], 0, 10);
