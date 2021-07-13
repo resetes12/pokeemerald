@@ -378,7 +378,7 @@ u16 GetStarterPokemon(u16 chosenStarterId)
         // mgba_printf(MGBA_LOG_DEBUG, "typeChallenge = %d", typeChallenge);
         for (i=1; i<400; i++)
         {
-            mon = PickRandomizedSpeciesFromEWRAM(i, chosenStarterId);
+            mon = PickRandomizedSpeciesFromEWRAM(mon, chosenStarterId+1);
             if (GetTypeBySpecies(mon, 1) == typeChallenge || GetTypeBySpecies(mon, 2) == typeChallenge)
                 break;
         }
