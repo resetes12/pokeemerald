@@ -1101,12 +1101,24 @@ void TimeMixPalettes(u32 palettes, u16 *src, u16 *dst, struct BlendSettings *ble
   tint1 = blend1->isTint;
   coeff1 = tint1 ? 8*2 : blend1->coeff*2;
 
-  r0 = (color0 << 27) >> 27;
-  g0 = (color0 << 22) >> 27;
-  b0 = (color0 << 17) >> 27;
-  r1 = (color1 << 27) >> 27;
-  g1 = (color1 << 22) >> 27;
-  b1 = (color1 << 17) >> 27;
+  if (tint0) {
+    r0 = (color0 << 24) >> 24;
+    g0 = (color0 << 16) >> 24;
+    b0 = (color0 << 8) >> 24;
+  } else {
+    r0 = (color0 << 27) >> 27;
+    g0 = (color0 << 22) >> 27;
+    b0 = (color0 << 17) >> 27;
+  }
+  if (tint1) {
+    r1 = (color1 << 24) >> 24;
+    g1 = (color1 << 16) >> 24;
+    b1 = (color1 << 8) >> 24;
+  } else {
+    r1 = (color1 << 27) >> 27;
+    g1 = (color1 << 22) >> 27;
+    b1 = (color1 << 17) >> 27;
+  }
   defR = (defaultColor << 27) >> 27;
   defG = (defaultColor << 22) >> 27;
   defB = (defaultColor << 17) >> 27;
@@ -1155,9 +1167,9 @@ void TimeMixPalettes(u32 palettes, u16 *src, u16 *dst, struct BlendSettings *ble
             g2 = (g + (((g0 - g) * coeff0) >> 5));
             b2 = (b + (((b0 - b) * coeff0) >> 5));
           } else { // tint-based
-            r2 = (u16)(((r0 << 3) * r)) >> 8;
-            g2 = (u16)(((g0 << 3) * g)) >> 8;
-            b2 = (u16)(((b0 << 3) * b)) >> 8;
+            r2 = (u16)((r0 * r)) >> 8;
+            g2 = (u16)((g0 * g)) >> 8;
+            b2 = (u16)((b0 * b)) >> 8;
             if (r2 > 31)
                 r2 = 31;
             if (g2 > 31)
@@ -1170,9 +1182,9 @@ void TimeMixPalettes(u32 palettes, u16 *src, u16 *dst, struct BlendSettings *ble
             g3 = (g + (((g1 - g) * coeff1) >> 5));
             b3 = (b + (((b1 - b) * coeff1) >> 5));
           } else { // tint-based
-            r3 = (u16)(((r1 << 3) * r)) >> 8;
-            g3 = (u16)(((g1 << 3) * g)) >> 8;
-            b3 = (u16)(((b1 << 3) * b)) >> 8;
+            r3 = (u16)((r1 * r)) >> 8;
+            g3 = (u16)((g1 * g)) >> 8;
+            b3 = (u16)((b1 * b)) >> 8;
             if (r3 > 31)
                 r3 = 31;
             if (g3 > 31)

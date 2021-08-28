@@ -27,9 +27,9 @@ enum
 };
 
 struct BlendSettings {
-  u16 blendColor:15;
-  u16 isTint:1;
-  u8 coeff:5;
+  u32 blendColor:24;
+  u32 isTint:1;
+  u32 coeff:5;
 };
 
 struct PaletteFadeControl
