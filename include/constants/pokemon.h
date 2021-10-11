@@ -286,7 +286,7 @@
 #define EVO_BEAUTY           0x000f // Pokémon levels up with beauty ≥ specified value
 
 #define EVOS_PER_MON 5
-#define EVOS_PER_LINE 6 //tx_difficulty_challenges
+#define EVOS_PER_LINE 9 //tx_difficulty_challenges
 
 #define NUM_MALE_LINK_FACILITY_CLASSES   8
 #define NUM_FEMALE_LINK_FACILITY_CLASSES 8
