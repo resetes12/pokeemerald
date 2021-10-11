@@ -4310,13 +4310,17 @@ static const u16 gRandomSpeciesEvo0[RANDOM_SPECIES_EVO_0_COUNT] =
     SPECIES_LICKITUNG       ,    //= EVO_TYPE_0,
     SPECIES_KOFFING         ,    //= EVO_TYPE_0,
     SPECIES_RHYHORN         ,    //= EVO_TYPE_0,
+    #ifndef POKEMON_EXPANSION
     SPECIES_CHANSEY         ,    //= EVO_TYPE_0,
+    #endif
     SPECIES_TANGELA         ,    //= EVO_TYPE_0,
     SPECIES_KANGASKHAN      ,    //= EVO_TYPE_0,
     SPECIES_HORSEA          ,    //= EVO_TYPE_0,
     SPECIES_GOLDEEN         ,    //= EVO_TYPE_0,
     SPECIES_STARYU          ,    //= EVO_TYPE_0,
+    #ifndef POKEMON_EXPANSION
     SPECIES_MR_MIME         ,    //= EVO_TYPE_0,
+    #endif
     SPECIES_SCYTHER         ,    //= EVO_TYPE_0,
     SPECIES_PINSIR          ,    //= EVO_TYPE_0,
     SPECIES_TAUROS          ,    //= EVO_TYPE_0,
@@ -4328,7 +4332,9 @@ static const u16 gRandomSpeciesEvo0[RANDOM_SPECIES_EVO_0_COUNT] =
     SPECIES_OMANYTE         ,    //= EVO_TYPE_0,
     SPECIES_KABUTO          ,    //= EVO_TYPE_0,
     SPECIES_AERODACTYL      ,    //= EVO_TYPE_0,
+    #ifndef POKEMON_EXPANSION
     SPECIES_SNORLAX         ,    //= EVO_TYPE_0,
+    #endif
     SPECIES_DRATINI         ,    //= EVO_TYPE_0,
     SPECIES_CHIKORITA       ,    //= EVO_TYPE_0,
     SPECIES_CYNDAQUIL       ,    //= EVO_TYPE_0,
@@ -4344,7 +4350,9 @@ static const u16 gRandomSpeciesEvo0[RANDOM_SPECIES_EVO_0_COUNT] =
     SPECIES_TOGEPI          ,    //= EVO_TYPE_0,
     SPECIES_NATU            ,    //= EVO_TYPE_0,
     SPECIES_MAREEP          ,    //= EVO_TYPE_0,
+    #ifndef POKEMON_EXPANSION
     SPECIES_SUDOWOODO       ,    //= EVO_TYPE_0,
+    #endif
     SPECIES_HOPPIP          ,    //= EVO_TYPE_0,
     SPECIES_AIPOM           ,    //= EVO_TYPE_0,
     SPECIES_SUNKERN         ,    //= EVO_TYPE_0,
@@ -4367,6 +4375,9 @@ static const u16 gRandomSpeciesEvo0[RANDOM_SPECIES_EVO_0_COUNT] =
     SPECIES_SWINUB          ,    //= EVO_TYPE_0,
     SPECIES_CORSOLA         ,    //= EVO_TYPE_0,
     SPECIES_REMORAID        ,    //= EVO_TYPE_0,
+    #ifndef POKEMON_EXPANSION
+    SPECIES_MANTINE         ,    //= EVO_TYPE_0,
+    #endif
     SPECIES_DELIBIRD        ,    //= EVO_TYPE_0,
     SPECIES_SKARMORY        ,    //= EVO_TYPE_0,
     SPECIES_HOUNDOUR        ,    //= EVO_TYPE_0,
@@ -4424,7 +4435,9 @@ static const u16 gRandomSpeciesEvo0[RANDOM_SPECIES_EVO_0_COUNT] =
     SPECIES_SWABLU          ,    //= EVO_TYPE_0,
     SPECIES_WYNAUT          ,    //= EVO_TYPE_0,
     SPECIES_DUSKULL         ,    //= EVO_TYPE_0,
+    #ifndef POKEMON_EXPANSION
     SPECIES_ROSELIA         ,    //= EVO_TYPE_0,
+    #endif
     SPECIES_SLAKOTH         ,    //= EVO_TYPE_0,
     SPECIES_GULPIN          ,    //= EVO_TYPE_0,
     SPECIES_TROPIUS         ,    //= EVO_TYPE_0,
@@ -4441,6 +4454,9 @@ static const u16 gRandomSpeciesEvo0[RANDOM_SPECIES_EVO_0_COUNT] =
     SPECIES_RALTS           ,    //= EVO_TYPE_0,
     SPECIES_BAGON           ,    //= EVO_TYPE_0,
     SPECIES_BELDUM          ,    //= EVO_TYPE_0,
+    #ifndef POKEMON_EXPANSION
+    SPECIES_CHIMECHO        ,    //= EVO_TYPE_0,
+    #endif
 };
 #define RANDOM_SPECIES_EVO_1_COUNT 137
 static const u16 gRandomSpeciesEvo1[RANDOM_SPECIES_EVO_1_COUNT] =
@@ -4492,9 +4508,15 @@ static const u16 gRandomSpeciesEvo1[RANDOM_SPECIES_EVO_1_COUNT] =
     SPECIES_HITMONCHAN      , //= EVO_TYPE_1,
     SPECIES_WEEZING         , //= EVO_TYPE_1,
     SPECIES_RHYDON          , //= EVO_TYPE_1,
+    #ifdef POKEMON_EXPANSION
+    SPECIES_CHANSEY         , //= EVO_TYPE_1,
+    #endif
     SPECIES_SEADRA          , //= EVO_TYPE_1,
     SPECIES_SEAKING         , //= EVO_TYPE_1,
     SPECIES_STARMIE         , //= EVO_TYPE_1,
+    #ifdef POKEMON_EXPANSION
+    SPECIES_MR_MIME         , //= EVO_TYPE_1,
+    #endif
     SPECIES_JYNX            , //= EVO_TYPE_1,
     SPECIES_ELECTABUZZ      , //= EVO_TYPE_1,
     SPECIES_MAGMAR          , //= EVO_TYPE_1,
@@ -4530,7 +4552,9 @@ static const u16 gRandomSpeciesEvo1[RANDOM_SPECIES_EVO_1_COUNT] =
     SPECIES_MAGCARGO        , //= EVO_TYPE_1,
     SPECIES_PILOSWINE       , //= EVO_TYPE_1,
     SPECIES_OCTILLERY       , //= EVO_TYPE_1,
+    #ifdef POKEMON_EXPANSION
     SPECIES_MANTINE         , //= EVO_TYPE_1,
+    #endif
     SPECIES_HOUNDOOM        , //= EVO_TYPE_1,
     SPECIES_DONPHAN         , //= EVO_TYPE_1,
     SPECIES_PORYGON2        , //= EVO_TYPE_1,
@@ -4568,6 +4592,9 @@ static const u16 gRandomSpeciesEvo1[RANDOM_SPECIES_EVO_1_COUNT] =
     SPECIES_MEDICHAM        , //= EVO_TYPE_1,
     SPECIES_ALTARIA         , //= EVO_TYPE_1,
     SPECIES_DUSCLOPS        , //= EVO_TYPE_1,
+    #ifdef POKEMON_EXPANSION
+    SPECIES_ROSELIA         , //= EVO_TYPE_1,
+    #endif
     SPECIES_VIGOROTH        , //= EVO_TYPE_1,
     SPECIES_SWALOT          , //= EVO_TYPE_1,
     SPECIES_LOUDRED         , //= EVO_TYPE_1,
@@ -4582,6 +4609,9 @@ static const u16 gRandomSpeciesEvo1[RANDOM_SPECIES_EVO_1_COUNT] =
     SPECIES_KIRLIA          , //= EVO_TYPE_1,
     SPECIES_SHELGON         , //= EVO_TYPE_1,
     SPECIES_METANG          , //= EVO_TYPE_1,
+    #ifdef POKEMON_EXPANSION
+    SPECIES_CHIMECHO        , //= EVO_TYPE_1,
+    #endif
 };
 #define RANDOM_SPECIES_EVO_2_COUNT 49
 static const u16 gRandomSpeciesEvo2[RANDOM_SPECIES_EVO_2_COUNT] =
