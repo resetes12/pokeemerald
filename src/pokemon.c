@@ -7256,7 +7256,7 @@ u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 type, u16 evolutionItem)
 
     if (gSaveBlock1Ptr->txRandEvolutionMethodes) //tx_difficulty_challenges
     {
-        species = GetEvolutionTargetSpeciesRandom(species, gSaveBlock1Ptr->txRandEvolutions, !gSaveBlock1Ptr->txRandChaos);
+        species = GetEvolutionTargetSpeciesRandom(species, gSaveBlock1Ptr->txRandEvolutionMethodes, !gSaveBlock1Ptr->txRandChaos);
         if (species == SPECIES_NONE)
             return SPECIES_NONE;
     }
