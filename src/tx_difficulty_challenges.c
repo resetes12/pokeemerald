@@ -29,6 +29,8 @@ enum
 {
     MENUITEM_RAND_CHAOS,
     MENUITEM_RAND_ENCOUNTER,
+    MENUITEM_RAND_ENCOUNTER_SIMILAR,
+    MENUITEM_RAND_ENCOUNTER_LEGENDARY,
     MENUITEM_RAND_TYPE,
     MENUITEM_RAND_TYPE_EFFEC,
     MENUITEM_RAND_ABILITIES,
@@ -77,7 +79,7 @@ static int tx_DC_ElevenOptions_ProcessInput(int selection);
 static int tx_DC_SixOptions_ProcessInput(int selection);
 static void FourOptions_DrawChoices(const u8 *const *const strings, int selection, int y, u8 textSpeed);
 
-static void DrawChoices_Rand_OnOff(int selection, int y, u8 textSpeed);
+static void DrawChoices_Rand_OffOn(int selection, int y, u8 textSpeed);
 static void DrawChoices_Rand_OffChaos(int selection, int y, u8 textSpeed);
 static void DrawChoices_Rand_NormalRandom(int selection, int y, u8 textSpeed);
 static void DrawChoices_Diff_EvoLimit(int selection, int y, u8 textSpeed);
@@ -99,6 +101,8 @@ struct
 {
     [MENUITEM_RAND_CHAOS]               = {DrawChoices_Rand_OffChaos, tx_DC_TwoOptions_ProcessInput},
     [MENUITEM_RAND_ENCOUNTER]           = {DrawChoices_Rand_NormalRandom, tx_DC_TwoOptions_ProcessInput},
+    [MENUITEM_RAND_ENCOUNTER_SIMILAR]   = {DrawChoices_Rand_OffOn, tx_DC_TwoOptions_ProcessInput},
+    [MENUITEM_RAND_ENCOUNTER_LEGENDARY] = {DrawChoices_Rand_OffOn, tx_DC_TwoOptions_ProcessInput},
     [MENUITEM_RAND_TYPE]                = {DrawChoices_Rand_NormalRandom, tx_DC_TwoOptions_ProcessInput},
     [MENUITEM_RAND_TYPE_EFFEC]          = {DrawChoices_Rand_NormalRandom, tx_DC_TwoOptions_ProcessInput},
     [MENUITEM_RAND_ABILITIES]           = {DrawChoices_Rand_NormalRandom, tx_DC_TwoOptions_ProcessInput},
@@ -125,6 +129,8 @@ static const u8 sEqualSignGfx[] = INCBIN_U8("graphics/misc/option_menu_equals_si
 
 static const u8 gText_Chaos[] =             _("CHAOS MODE");
 static const u8 gText_Encounter[] =         _("ENCOUNTER");
+static const u8 gText_Encounter_Similar[] = _("SIMILAR");
+static const u8 gText_Encounter_Legendary[]=_("LEGENDARIES");
 static const u8 gText_Type[] =              _("TYPE");
 static const u8 gText_TypeEff[] =           _("EFFECTIVNESS");
 static const u8 gText_Abilities[] =         _("ABILTIES");
@@ -145,6 +151,8 @@ static const u8 *const sOptionMenuItemNames[MENUITEM_COUNT] =
 {
     [MENUITEM_RAND_CHAOS]               = gText_Chaos,          
     [MENUITEM_RAND_ENCOUNTER]           = gText_Encounter,      
+    [MENUITEM_RAND_ENCOUNTER_SIMILAR]   = gText_Encounter_Similar,
+    [MENUITEM_RAND_ENCOUNTER_LEGENDARY] = gText_Encounter_Legendary,
     [MENUITEM_RAND_TYPE]                = gText_Type,           
     [MENUITEM_RAND_TYPE_EFFEC]          = gText_TypeEff,        
     [MENUITEM_RAND_ABILITIES]           = gText_Abilities,      
@@ -163,6 +171,8 @@ static const u8 *const sOptionMenuItemNames[MENUITEM_COUNT] =
 
 static const u8 gText_Description_00[] = _("Enable {COLOR RED}{SHADOW LIGHT_RED}Chaos mode");
 static const u8 gText_Description_01[] = _("Randomize wild encounters");
+static const u8 gText_Description_Encounter_Similar[]       = _("Ensure encounters are similar\ne.g. a baby mon gets another baby mon");
+static const u8 gText_Description_Encounter_Legendary[]     = _("Include legendary mons");
 static const u8 gText_Description_02[] = _("Randomize mon types");
 static const u8 gText_Description_03[] = _("Randomize type effectivness");
 static const u8 gText_Description_04[] = _("Randomize abilities");
@@ -181,6 +191,8 @@ static const u8 *const sOptionMenuItemDescriptions[MENUITEM_COUNT] =
 {
     [MENUITEM_RAND_CHAOS]               = gText_Description_00,
     [MENUITEM_RAND_ENCOUNTER]           = gText_Description_01,
+    [MENUITEM_RAND_ENCOUNTER_SIMILAR]   = gText_Description_Encounter_Similar,
+    [MENUITEM_RAND_ENCOUNTER_LEGENDARY] = gText_Description_Encounter_Legendary,
     [MENUITEM_RAND_TYPE]                = gText_Description_02,
     [MENUITEM_RAND_TYPE_EFFEC]          = gText_Description_03,
     [MENUITEM_RAND_ABILITIES]           = gText_Description_04,
@@ -341,6 +353,7 @@ void CB2_InitDifficultyChallengesOptionMenu(void)
         gSaveBlock1Ptr->txRandChaos                =   TX_RANDOM_CHAOS_MODE;
         gSaveBlock1Ptr->txRandEncounter            =   TX_RANDOM_ENCOUNTER;
         gSaveBlock1Ptr->txRandEncounterSimilar     =   TX_RANDOM_ENCOUNTER_SIMILAR;
+        gSaveBlock1Ptr->txRandEncounterLegendary   =   TX_RANDOM_ENCOUNTER_LEGENDARY;
         gSaveBlock1Ptr->txRandType                 =   TX_RANDOM_TYPE;
         gSaveBlock1Ptr->txRandTypeEffectiveness    =   TX_RANDOM_TYPE_EFFECTIVENESS;
         gSaveBlock1Ptr->txRandAbilities            =   TX_RANDOM_ABILITIES;
@@ -361,6 +374,8 @@ void CB2_InitDifficultyChallengesOptionMenu(void)
 
         sOptions->sel[MENUITEM_RAND_CHAOS]               = gSaveBlock1Ptr->txRandChaos;
         sOptions->sel[MENUITEM_RAND_ENCOUNTER]           = gSaveBlock1Ptr->txRandEncounter;
+        sOptions->sel[MENUITEM_RAND_ENCOUNTER_SIMILAR]   = gSaveBlock1Ptr->txRandEncounterSimilar;
+        sOptions->sel[MENUITEM_RAND_ENCOUNTER_LEGENDARY] = gSaveBlock1Ptr->txRandEncounterLegendary;
         sOptions->sel[MENUITEM_RAND_TYPE]                = gSaveBlock1Ptr->txRandType;
         sOptions->sel[MENUITEM_RAND_TYPE_EFFEC]          = gSaveBlock1Ptr->txRandTypeEffectiveness;
         sOptions->sel[MENUITEM_RAND_ABILITIES]           = gSaveBlock1Ptr->txRandAbilities;
@@ -551,6 +566,8 @@ void tx_DC_SaveData(void)
 {
     gSaveBlock1Ptr->txRandChaos                = sOptions->sel[MENUITEM_RAND_CHAOS];
     gSaveBlock1Ptr->txRandEncounter            = sOptions->sel[MENUITEM_RAND_ENCOUNTER];
+    gSaveBlock1Ptr->txRandEncounterSimilar     = sOptions->sel[MENUITEM_RAND_ENCOUNTER_SIMILAR];
+    gSaveBlock1Ptr->txRandEncounterLegendary   = sOptions->sel[MENUITEM_RAND_ENCOUNTER_LEGENDARY];
     gSaveBlock1Ptr->txRandType                 = sOptions->sel[MENUITEM_RAND_TYPE];
     gSaveBlock1Ptr->txRandTypeEffectiveness    = sOptions->sel[MENUITEM_RAND_TYPE_EFFEC];
     gSaveBlock1Ptr->txRandAbilities            = sOptions->sel[MENUITEM_RAND_ABILITIES];
@@ -763,7 +780,7 @@ static void FourOptions_DrawChoices(const u8 *const *const strings, int selectio
 static const u8 gText_Off[] = _("{COLOR DARK_GREY}{SHADOW LIGHT_GREY}OFF");
 static const u8 gText_On[]  = _("{COLOR DARK_GREY}{SHADOW LIGHT_GREY}ON");
 static const u8 gText_None[]  = _("{COLOR DARK_GREY}{SHADOW LIGHT_GREY}NONE");
-static void DrawChoices_Rand_OnOff(int selection, int y, u8 textSpeed)
+static void DrawChoices_Rand_OffOn(int selection, int y, u8 textSpeed)
 {
     u8 styles[2] = {0};
 

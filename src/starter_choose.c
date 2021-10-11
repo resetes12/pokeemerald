@@ -397,8 +397,6 @@ u16 GetStarterPokemon(u16 chosenStarterId)
         
     // mgba_printf(MGBA_LOG_DEBUG, "species[%d] = %s", mon, ConvertToAscii(gSpeciesNames[mon]));
     return mon;
-
-    return sStarterMon[chosenStarterId];
 }
 
 static void VblankCB_StarterChoose(void)

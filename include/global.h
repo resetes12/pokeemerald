@@ -989,23 +989,24 @@ struct SaveBlock1
         u8 txRandChaos:1;
         u8 txRandEncounter:1;
         u8 txRandEncounterSimilar:1;
+        u8 txRandEncounterLegendary:1;
         u8 txRandType:1;
         u8 txRandTypeEffectiveness:1;
         u8 txRandAbilities:1;
         u8 txRandMoves:1;
-        u8 txRandTrainer:1;
         //
+        u8 txRandTrainer:1;
         u8 txRandEvolutions:1;
         u8 txRandEvolutionMethodes:1;
         u8 txRandEvoLimit:2;
         u8 txRandNuzlocke:1;
         u8 txRandNuzlockeHardcore:1;
         u8 txRandNoItemPlayer:1;
-        u8 txRandNoItemTrainer:1;
         //
         u8 txRandTypeChallenge:5;
         u8 txRandPartyLimit:3;
         //
+        u8 txRandNoItemTrainer:1;
         u8 txRandPkmnCenter:2;
     // sizeof: 0x3D94  // sizeof: 0x3D88
 };
