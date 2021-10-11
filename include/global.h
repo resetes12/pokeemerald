@@ -1012,6 +1012,7 @@ struct SaveBlock1
 };
 
 //gSaveBlock1Ptr->txRandTypeChallenge
+#define TX_DIFFICULTY_CHALLENGES_USED
 
 extern struct SaveBlock1* gSaveBlock1Ptr;
 
