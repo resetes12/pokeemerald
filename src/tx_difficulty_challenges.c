@@ -625,7 +625,7 @@ void tx_DC_SaveData(void)
 
     FREE_AND_SET_NULL(sOptions);
     RandomizeSpeciesListEWRAM(1);
-    RandomizeTypeEffectivenessListEWRAM();
+    RandomizeTypeEffectivenessListEWRAM(1);
 }
 
 static void tx_DC_Task_OptionMenuFadeOut(u8 taskId)
