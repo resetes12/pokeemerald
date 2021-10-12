@@ -47,7 +47,6 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 #include "constants/species.h"
-
 #include "tx_difficulty_challenges.h"
 
 // Screen titles (upper left)

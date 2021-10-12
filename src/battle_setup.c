@@ -47,10 +47,9 @@
 #include "constants/species.h"
 #include "constants/trainers.h"
 #include "constants/trainer_hill.h"
-
 #include "tx_difficulty_challenges.h"
-#include "pokedex.h"
-#include "constants/region_map_sections.h"
+#include "pokedex.h" //tx_difficulty_challenges
+#include "constants/region_map_sections.h" //tx_difficulty_challenges
 
 enum
 {

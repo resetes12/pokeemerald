@@ -24,13 +24,14 @@
 #include "constants/songs.h"
 #include "constants/species.h"
 #include "constants/rgb.h"
-
 #include "tx_difficulty_challenges.h"
 
-// #include "printf.h"
-// #include "mgba.h"
-// #include "data.h"                 // for gSpeciesNames, which maps species number to species name.
-// #include "../gflib/string_util.h" // for ConvertToAscii()
+#ifdef GBA_PRINTF
+    #include "printf.h"
+    #include "mgba.h"
+    #include "data.h"                 // for gSpeciesNames, which maps species number to species name.
+    #include "../gflib/string_util.h" // for ConvertToAscii()
+#endif
 
 #define STARTER_MON_COUNT   3
 
@@ -374,28 +375,34 @@ u16 GetStarterPokemon(u16 chosenStarterId)
     //tx_difficulty_challenges
     if (typeChallenge != TX_CHALLENGE_TYPE_OFF)
     {
-        // mgba_printf(MGBA_LOG_DEBUG, "TX_CHALLENGE_TYPE_OFF = %d", TX_CHALLENGE_TYPE_OFF);
-        // mgba_printf(MGBA_LOG_DEBUG, "typeChallenge = %d", typeChallenge);
+        #ifdef GBA_PRINTF
+            mgba_printf(MGBA_LOG_DEBUG, "TX_CHALLENGE_TYPE_OFF = %d", TX_CHALLENGE_TYPE_OFF);
+            mgba_printf(MGBA_LOG_DEBUG, "typeChallenge = %d", typeChallenge);
+        #endif
+
         for (i=1; i<400; i++)
         {
             mon = PickRandomizedSpeciesFromEWRAM(mon, chosenStarterId+1);
             if (GetTypeBySpecies(mon, 1) == typeChallenge || GetTypeBySpecies(mon, 2) == typeChallenge)
                 break;
         }
-        // mgba_printf(MGBA_LOG_DEBUG, "i = %d", i + i*chosenStarterId);
+        #ifdef GBA_PRINTF
+            mgba_printf(MGBA_LOG_DEBUG, "i = %d", i + i*chosenStarterId);
+        #endif
     }
     else if (gSaveBlock1Ptr->txRandChaos && gSaveBlock1Ptr->txRandEncounter)
     {
-        // mgba_printf(MGBA_LOG_DEBUG, "txRandChaos");
         mon = PickRandomizedSpeciesFromEWRAM(sStarterMon[chosenStarterId], 3);
     }
     else if (gSaveBlock1Ptr->txRandEncounter)
     {
-        // mgba_printf(MGBA_LOG_DEBUG, "gSaveBlock1Ptr->txRandEncounter");
         mon = PickRandomEvo0Species(sStarterMon[chosenStarterId]);
     }
-        
-    // mgba_printf(MGBA_LOG_DEBUG, "species[%d] = %s", mon, ConvertToAscii(gSpeciesNames[mon]));
+    
+    #ifdef GBA_PRINTF
+        mgba_printf(MGBA_LOG_DEBUG, "species[%d] = %s", mon, ConvertToAscii(gSpeciesNames[mon]));
+    #endif
+
     return mon;
 }
 

@@ -45,7 +45,6 @@
 #include "berry_powder.h"
 #include "mevent.h"
 #include "union_room_chat.h"
-
 #include "tx_difficulty_challenges.h"
 
 // #include "printf.h"

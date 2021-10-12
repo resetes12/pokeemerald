@@ -23,7 +23,6 @@
 #include "constants/maps.h"
 #include "constants/species.h"
 #include "constants/weather.h"
-
 #include "tx_difficulty_challenges.h"
 
 extern const u8 EventScript_RepelWoreOff[];

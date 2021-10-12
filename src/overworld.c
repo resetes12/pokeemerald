@@ -68,9 +68,8 @@
 #include "constants/species.h"
 #include "constants/trainer_hill.h"
 #include "constants/weather.h"
-
 #include "tx_difficulty_challenges.h"
-#include "pokemon_storage_system.h"
+#include "pokemon_storage_system.h" //tx_difficulty_challenges
 
 #define PLAYER_TRADING_STATE_IDLE 0x80
 #define PLAYER_TRADING_STATE_BUSY 0x81

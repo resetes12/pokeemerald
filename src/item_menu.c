@@ -51,7 +51,6 @@
 #include "apprentice.h"
 #include "battle_pike.h"
 #include "constants/rgb.h"
-
 #include "tx_difficulty_challenges.h"
 
 enum

@@ -20,7 +20,7 @@
 #include "constants/rgb.h"
 #include "battle_main.h"
 #include "tx_difficulty_challenges.h"
-#include "pokemon.h"
+#include "pokemon.h" //tx_difficulty_challenges
 
 #define Y_DIFF 16 // Difference in pixels between items.
 

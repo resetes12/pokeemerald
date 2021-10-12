@@ -292,13 +292,6 @@ const u8 *const gPocketNamesStringsTable[] =
     gText_KeyItemsPocket
 };
 
-//tx_difficulty_challenges
-const u8 gText_NuzlockeCantThrowPokeBallRoute[]             = _("You have already used your encounter\nfor this area!{PAUSE_UNTIL_PRESS}");
-const u8 gText_NuzlockeCantThrowPokeBallSpeciesClause[]     = _("You have already caught a POKéMON\nin this evolution line!{PAUSE_UNTIL_PRESS}");
-const u8 gText_NuzlockeCantThrowPokeBallAlreadyCaught[]     = _("You have already caught this POKéMON!{PAUSE_UNTIL_PRESS}");
-const u8 gText_TypeChallengeCantThrowPokeBall[]             = _("Type Challenge active, capture blocked!{PAUSE_UNTIL_PRESS}");
-const u8 gText_BattleRules_NoItems_Player[]                 = _("Competitive rules!\nNo items in battle!{PAUSE_UNTIL_PRESS}");
-
 const u8 gText_NumberVar1Clear7Var2[] = _("{NO}{STR_VAR_1}{CLEAR 0x07}{STR_VAR_2}");
 const u8 gText_ClearTo11Var1Clear5Var2[] = _("{CLEAR_TO 0x11}{STR_VAR_1}{CLEAR 0x05}{STR_VAR_2}");
 const u8 gText_SizeSlash[] = _("SIZE /");
@@ -1824,3 +1817,10 @@ const u8 gText_Answer[] = _("ANSWER");
 const u8 gText_PokeBalls[] = _("POKé BALLS");
 const u8 gText_Berry[] = _("BERRY");
 const u8 gText_Berries[] = _("BERRIES");
+
+//tx_difficulty_challenges
+const u8 gText_NuzlockeCantThrowPokeBallRoute[]             = _("You have already used your encounter\nfor this area!{PAUSE_UNTIL_PRESS}");
+const u8 gText_NuzlockeCantThrowPokeBallSpeciesClause[]     = _("You have already caught a POKéMON\nin this evolution line!{PAUSE_UNTIL_PRESS}");
+const u8 gText_NuzlockeCantThrowPokeBallAlreadyCaught[]     = _("You have already caught this POKéMON!{PAUSE_UNTIL_PRESS}");
+const u8 gText_TypeChallengeCantThrowPokeBall[]             = _("Type Challenge active, capture blocked!{PAUSE_UNTIL_PRESS}");
+const u8 gText_BattleRules_NoItems_Player[]                 = _("Competitive rules!\nNo items in battle!{PAUSE_UNTIL_PRESS}");

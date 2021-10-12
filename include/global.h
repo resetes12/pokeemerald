@@ -1011,8 +1011,6 @@ struct SaveBlock1
     // sizeof: 0x3D94  // sizeof: 0x3D88
 };
 
-//gSaveBlock1Ptr->txRandTypeChallenge
-#define TX_DIFFICULTY_CHALLENGES_USED
 
 extern struct SaveBlock1* gSaveBlock1Ptr;
 
@@ -1032,5 +1030,7 @@ struct TradeRoomPlayer
     struct MapPosition pos;
     u16 field_C;
 };
+
+#define TX_DIFFICULTY_CHALLENGES_USED
 
 #endif // GUARD_GLOBAL_H

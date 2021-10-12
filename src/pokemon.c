@@ -46,14 +46,15 @@
 #include "constants/songs.h"
 #include "constants/species.h"
 #include "constants/trainers.h"
-
 #include "tx_difficulty_challenges.h"
-#include "constants/party_menu.h"
+#include "constants/party_menu.h" //tx_difficulty_challenges
 
-// #include "printf.h"
-// #include "mgba.h"
-// #include "data.h"                 // for gSpeciesNames, which maps species number to species name.
-// #include "../gflib/string_util.h" // for ConvertToAscii()
+#ifdef GBA_PRINTF //tx_difficulty_challenges
+    #include "printf.h"
+    #include "mgba.h"
+    #include "data.h"                 // for gSpeciesNames, which maps species number to species name.
+    #include "../gflib/string_util.h" // for ConvertToAscii()
+#endif
 
 struct SpeciesItem
 {
@@ -2157,7 +2158,6 @@ static const struct SpriteTemplate gUnknown_08329F28 =
 #define EVO_TYPE_2 2
 #define EVO_TYPE_SELF 3
 #define EVO_TYPE_LEGENDARY 4
-#define RANDOM_SPECIES_COUNT ARRAY_COUNT(sRandomSpecies)
 static const u8 gSpeciesMapping[NUM_SPECIES+1] =
 {
     [SPECIES_NONE]              = EVO_TYPE_SELF,
@@ -2601,7 +2601,9 @@ static const u8 gSpeciesMapping[NUM_SPECIES+1] =
     [SPECIES_LATIOS]            = EVO_TYPE_LEGENDARY,
     [SPECIES_JIRACHI]           = EVO_TYPE_LEGENDARY,
     [SPECIES_DEOXYS]            = EVO_TYPE_LEGENDARY,
-    #ifdef POKEMON_EXPANSION
+    #ifndef POKEMON_EXPANSION
+    [SPECIES_CHIMECHO]          = EVO_TYPE_0,
+    #else POKEMON_EXPANSION
     [SPECIES_CHIMECHO]          = EVO_TYPE_1,
     [SPECIES_TURTWIG]           = EVO_TYPE_0,
     [SPECIES_GROTLE]            = EVO_TYPE_1,
@@ -3423,11 +3425,10 @@ static const u8 gSpeciesMapping[NUM_SPECIES+1] =
     [SPECIES_ZARUDE_DADA]       = EVO_TYPE_LEGENDARY,
     [SPECIES_CALYREX_ICE_RIDER] = EVO_TYPE_LEGENDARY,
     [SPECIES_CALYREX_SHADOW_RIDER] = EVO_TYPE_LEGENDARY,
-    #else
-    [SPECIES_CHIMECHO]        = EVO_TYPE_0,
     #endif
     [SPECIES_EGG]             = EVO_TYPE_SELF,
 };
+#define RANDOM_SPECIES_COUNT ARRAY_COUNT(sRandomSpecies)
 static const u16 sRandomSpecies[] =
 {
     //SPECIES_NONE                    ,
@@ -12583,23 +12584,35 @@ void RandomizeSpeciesListEWRAM(u16 seed)
     {
         memcpy(stemp, sRandomSpecies, sizeof(sRandomSpecies));
         ShuffleListU16(stemp, NELEMS(sRandomSpecies), seed);
-        // mgba_printf(MGBA_LOG_DEBUG, "NELEMS = %d", NELEMS(sRandomSpecies) );
+
         for (i=0; i<RANDOM_SPECIES_COUNT; i++)
         {
             sSpeciesList[sRandomSpecies[i]] = stemp[i];
-            // mgba_printf(MGBA_LOG_DEBUG, "sSpeciesList[%d] = %d", sRandomSpecies[i], stemp[i] );
+            #ifdef GBA_PRINTF
+                mgba_printf(MGBA_LOG_DEBUG, "i = %d: sSpeciesList[%d] = %d", i, sRandomSpecies[i], stemp[i] );
+            #endif
         }
+        #ifdef GBA_PRINTF
+            mgba_printf(MGBA_LOG_DEBUG, "NELEMS = %d", NELEMS(sRandomSpecies) );
+            mgba_printf(MGBA_LOG_DEBUG, "**** sSpeciesList[] generated ****");
+        #endif
     }
     else //include legendary mons
     {
         memcpy(stemp, sRandomSpeciesLegendary, sizeof(sRandomSpeciesLegendary));
         ShuffleListU16(stemp, NELEMS(sRandomSpeciesLegendary), seed);
-        // mgba_printf(MGBA_LOG_DEBUG, "NELEMS = %d", NELEMS(sRandomSpeciesLegendary) );
-        for (i=0; i<RANDOM_SPECIES_COUNT; i++)
+
+        for (i=0; i<RANDOM_SPECIES_COUNT_LEGENDARY; i++)
         {
             sSpeciesList[sRandomSpeciesLegendary[i]] = stemp[i];
-            // mgba_printf(MGBA_LOG_DEBUG, "sSpeciesList[%d] = %d", sRandomSpeciesLegendary[i], stemp[i] );
+            #ifdef GBA_PRINTF
+                mgba_printf(MGBA_LOG_DEBUG, "i = %d: sRandomSpeciesLegendary[%d] = %d", i, sRandomSpeciesLegendary[i], stemp[i] );
+            #endif
         }
+        #ifdef GBA_PRINTF
+            mgba_printf(MGBA_LOG_DEBUG, "NELEMS = %d", NELEMS(sRandomSpeciesLegendary) );
+            mgba_printf(MGBA_LOG_DEBUG, "**** sRandomSpeciesLegendary[] generated ****");
+        #endif
     }
 }
 
@@ -12607,35 +12620,42 @@ u16 PickRandomizedSpeciesFromEWRAM(u16 species, u16 depth)
 {
     u8 i;
 
-    // switch (depth)
-    // {
-    // case TX_RANDOM_OFFSET_TRAINER  :
-    //     mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_TRAINER: species = %d", species );
-    //     break;
-    // case TX_RANDOM_OFFSET_TYPE     :
-    //     mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_TYPE: species = %d", species );
-    //     break;
-    // case TX_RANDOM_OFFSET_ABILITY  :
-    //     mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_ABILITY: species = %d", species );
-    //     break;
-    // case TX_RANDOM_OFFSET_MOVES    :
-    //     mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_MOVES: species = %d", species );
-    //     break;
-    // case TX_RANDOM_OFFSET_ENCOUNTER:
-    //     mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_ENCOUNTER: species = %d", species );
-    //     break;
-    // case TX_RANDOM_OFFSET_EVOLUTION:
-    //     mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_EVOLUTION: species = %d", species );
-    //     break;
-    // }
+    #ifdef GBA_PRINTF
+        switch (depth)
+        {
+        case TX_RANDOM_OFFSET_TRAINER  :
+            mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_TRAINER: species = %d = %s", species, ConvertToAscii(gSpeciesNames[species]) );
+            break;
+        case TX_RANDOM_OFFSET_TYPE     :
+            mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_TYPE: species = %d = %s", species, ConvertToAscii(gSpeciesNames[species]) );
+            break;
+        case TX_RANDOM_OFFSET_ABILITY  :
+            mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_ABILITY: species = %d = %s", species, ConvertToAscii(gSpeciesNames[species]) );
+            break;
+        case TX_RANDOM_OFFSET_MOVES    :
+            mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_MOVES: species = %d = %s", species, ConvertToAscii(gSpeciesNames[species]) );
+            break;
+        case TX_RANDOM_OFFSET_ENCOUNTER:
+            mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_ENCOUNTER: species = %d = %s", species, ConvertToAscii(gSpeciesNames[species]) );
+            break;
+        case TX_RANDOM_OFFSET_EVOLUTION:
+            mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_EVOLUTION: species = %d = %s", species, ConvertToAscii(gSpeciesNames[species]) );
+            break;
+        }
+    #endif
 
     for (i = 0; i < depth; i++)
     {
         species = sSpeciesList[species];
-        // mgba_printf(MGBA_LOG_DEBUG, "depth[%d], species = %d", i, species );
+        #ifdef GBA_PRINTF
+            mgba_printf(MGBA_LOG_DEBUG, "depth[%d], species = %d", i, species );
+        #endif
     }
-    // mgba_printf(MGBA_LOG_DEBUG, "depth[%d], species = %d", i, sSpeciesList[species] );
-    // mgba_printf(MGBA_LOG_DEBUG, "");
+    #ifdef GBA_PRINTF
+        mgba_printf(MGBA_LOG_DEBUG, "depth[%d], species = %d = %s", i, sSpeciesList[species], ConvertToAscii(gSpeciesNames[sSpeciesList[species]]));
+        mgba_printf(MGBA_LOG_DEBUG, "");
+    #endif
+
     return sSpeciesList[species];
 }
 
