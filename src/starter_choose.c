@@ -27,10 +27,10 @@
 #include "tx_difficulty_challenges.h"
 
 #ifdef GBA_PRINTF
-    #include "printf.h"
-    #include "mgba.h"
-    #include "data.h"                 // for gSpeciesNames, which maps species number to species name.
-    #include "../gflib/string_util.h" // for ConvertToAscii()
+    //#include "printf.h"
+    //#include "mgba.h"
+    //#include "data.h"                 // for gSpeciesNames, which maps species number to species name.
+    //#include "../gflib/string_util.h" // for ConvertToAscii()
 #endif
 
 #define STARTER_MON_COUNT   3

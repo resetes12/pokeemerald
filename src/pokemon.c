@@ -50,10 +50,10 @@
 #include "constants/party_menu.h" //tx_difficulty_challenges
 
 #ifdef GBA_PRINTF //tx_difficulty_challenges
-    #include "printf.h"
-    #include "mgba.h"
-    #include "data.h"                 // for gSpeciesNames, which maps species number to species name.
-    #include "../gflib/string_util.h" // for ConvertToAscii()
+    //#include "printf.h"
+    //#include "mgba.h"
+    //#include "data.h"                 // for gSpeciesNames, which maps species number to species name.
+    //#include "../gflib/string_util.h" // for ConvertToAscii()
 #endif
 
 struct SpeciesItem
@@ -2602,7 +2602,7 @@ static const u8 gSpeciesMapping[NUM_SPECIES+1] =
     [SPECIES_DEOXYS]            = EVO_TYPE_LEGENDARY,
     #ifndef POKEMON_EXPANSION
     [SPECIES_CHIMECHO]          = EVO_TYPE_0,
-    #else POKEMON_EXPANSION
+    #else
     [SPECIES_CHIMECHO]          = EVO_TYPE_1,
     [SPECIES_TURTWIG]           = EVO_TYPE_0,
     [SPECIES_GROTLE]            = EVO_TYPE_1,
