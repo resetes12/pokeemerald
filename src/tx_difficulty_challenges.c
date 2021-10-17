@@ -624,7 +624,10 @@ void tx_DC_SaveData(void)
     gSaveBlock1Ptr->txRandPkmnCenter           = sOptions->sel[MENUITEM_DIFF_POKECENTER];
 
     FREE_AND_SET_NULL(sOptions);
-    RandomizeSpeciesListEWRAM(1);
+    if (gSaveBlock1Ptr->txRandEncounterLegendary)
+        RandomizeSpeciesListEWRAMLegendary(1);
+    else
+        RandomizeSpeciesListEWRAMNormal(1);
     RandomizeTypeEffectivenessListEWRAM(1);
 }
 

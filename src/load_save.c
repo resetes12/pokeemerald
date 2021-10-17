@@ -205,7 +205,10 @@ void SaveSerializedGame(void)
 
 void LoadSerializedGame(void)
 {
-    RandomizeSpeciesListEWRAM(1);
+    if (gSaveBlock1Ptr->txRandEncounterLegendary)
+        RandomizeSpeciesListEWRAMLegendary(1);
+    else
+        RandomizeSpeciesListEWRAMNormal(1);
     RandomizeTypeEffectivenessListEWRAM(1);
     LoadPlayerParty();
     LoadObjectEvents();

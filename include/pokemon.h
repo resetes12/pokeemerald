@@ -421,6 +421,8 @@ u8 *sub_806F4F8(u8 id, u8 arg1);
 
 //tx_difficulty_challenges
 void RandomizeSpeciesListEWRAM(u16 seed);
+void RandomizeSpeciesListEWRAMNormal(u16 seed);
+void RandomizeSpeciesListEWRAMLegendary(u16 seed);
 void RandomizeTypeEffectivenessListEWRAM(u16 seed);
 u16 PickRandomizedSpeciesFromEWRAM(u16 species, u16 depth);
 u16 PickRandomEvo0Species(u16 species);

@@ -12561,7 +12561,7 @@ u8 *sub_806F4F8(u8 id, u8 arg1)
 }
 
 //******************* tx_difficulty_challenges
-void RandomizeSpeciesListEWRAM(u16 seed)
+void RandomizeSpeciesListEWRAM(u16 seed) //broken (somehow the if statement breaks the game)
 {
     u16 i;
 
@@ -12599,6 +12599,44 @@ void RandomizeSpeciesListEWRAM(u16 seed)
             mgba_printf(MGBA_LOG_DEBUG, "**** sRandomSpeciesLegendary[%d] generated ****", NELEMS(sRandomSpeciesLegendary) );
         #endif
     }
+}
+void RandomizeSpeciesListEWRAMNormal(u16 seed)
+{
+    u16 i;
+    u16 stemp[RANDOM_SPECIES_COUNT];
+
+    memcpy(stemp, sRandomSpecies, sizeof(sRandomSpecies));
+    ShuffleListU16(stemp, NELEMS(sRandomSpecies), seed);
+
+    for (i=0; i<RANDOM_SPECIES_COUNT; i++)
+    {
+        sSpeciesList[sRandomSpecies[i]] = stemp[i];
+        #ifdef GBA_PRINTF
+            mgba_printf(MGBA_LOG_DEBUG, "i = %d: sSpeciesList[%d] = %d", i, sRandomSpecies[i], stemp[i] );
+        #endif
+    }
+    #ifdef GBA_PRINTF
+        mgba_printf(MGBA_LOG_DEBUG, "**** sSpeciesList[%d] generated ****", NELEMS(sRandomSpecies) );
+    #endif
+}
+void RandomizeSpeciesListEWRAMLegendary(u16 seed)
+{
+    u16 i;
+    u16 stemp[RANDOM_SPECIES_COUNT_LEGENDARY];
+
+    memcpy(stemp, sRandomSpeciesLegendary, sizeof(sRandomSpeciesLegendary));
+    ShuffleListU16(stemp, NELEMS(sRandomSpeciesLegendary), seed);
+
+    for (i=0; i<RANDOM_SPECIES_COUNT_LEGENDARY; i++)
+    {
+        sSpeciesList[sRandomSpeciesLegendary[i]] = stemp[i];
+        #ifdef GBA_PRINTF
+            mgba_printf(MGBA_LOG_DEBUG, "i = %d: sRandomSpeciesLegendary[%d] = %d", i, sRandomSpeciesLegendary[i], stemp[i] );
+        #endif
+    }
+    #ifdef GBA_PRINTF
+        mgba_printf(MGBA_LOG_DEBUG, "**** sRandomSpeciesLegendary[%d] generated ****", NELEMS(sRandomSpeciesLegendary) );
+    #endif
 }
 
 u16 PickRandomizedSpeciesFromEWRAM(u16 species, u16 depth)
