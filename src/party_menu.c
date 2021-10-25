@@ -1195,7 +1195,7 @@ void Task_HandleChooseMonInput(u8 taskId)
             HandleChooseMonCancel(taskId, slotPtr);
             break;
         case 3: // Quick Swap
-            if (gPartyMenu.action != PARTY_ACTION_SWITCH)
+            if (gPartyMenu.action != PARTY_ACTION_SWITCH && *slotPtr != PARTY_SIZE + 1)
                 gTasks[taskId].func = CursorCb_Switch;
             break;
         case 8: // Start button
