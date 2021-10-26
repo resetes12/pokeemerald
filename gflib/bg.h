@@ -1,16 +1,6 @@
 #ifndef GUARD_BG_H
 #define GUARD_BG_H
 
-struct BGCntrlBitfield // for the I/O registers
-{
-    volatile u16 priority:2;
-    volatile u16 charBaseBlock:2;
-    volatile u16 field_0_2:4;
-    volatile u16 field_1_0:5;
-    volatile u16 areaOverflowMode:1;
-    volatile u16 screenSize:2;
-};
-
 enum
 {
 	BG_ATTR_CHARBASEINDEX = 1,
@@ -23,6 +13,18 @@ enum
 	BG_ATTR_METRIC,
 	BG_ATTR_TYPE,
 	BG_ATTR_BASETILE,
+};
+
+enum {
+	BG_TYPE_NORMAL,
+	BG_TYPE_AFFINE,
+	BG_TYPE_NONE = 0xFFFF
+};
+
+enum {
+	BG_COORD_SET,
+	BG_COORD_ADD,
+	BG_COORD_SUB,
 };
 
 struct BgTemplate
@@ -43,7 +45,7 @@ void Unused_ResetBgControlStruct(u8 bg);
 u8 LoadBgVram(u8 bg, const void *src, u16 size, u16 destOffset, u8 mode);
 void SetTextModeAndHideBgs(void);
 bool8 IsInvalidBg(u8 bg);
-int DummiedOutFireRedLeafGreenTileAllocFunc(int a1, int a2, int a3, int a4);
+int BgTileAllocOp(int bg, int offset, int count, int mode);
 void ResetBgsAndClearDma3BusyFlags(u32 leftoverFireRedLeafGreenVariable);
 void InitBgsFromTemplates(u8 bgMode, const struct BgTemplate *templates, u8 numTemplates);
 void InitBgFromTemplate(const struct BgTemplate *template);
@@ -78,7 +80,6 @@ u16 GetBgMetricTextMode(u8 bg, u8 whichMetric);
 u32 GetBgMetricAffineMode(u8 bg, u8 whichMetric);
 u32 GetTileMapIndexFromCoords(s32 x, s32 y, s32 screenSize, u32 screenWidth, u32 screenHeight);
 void CopyTileMapEntry(const u16 *src, u16 *dest, s32 palette1, s32 tileOffset, s32 palette2);
-u32 GetBgType(u8 bg);
 bool32 IsInvalidBg32(u8 bg);
 bool32 IsTileMapOutsideWram(u8 bg);
 

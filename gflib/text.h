@@ -18,7 +18,7 @@
 #define CHAR_O_ACUTE           0x0E
 #define CHAR_O_CIRCUMFLEX      0x0F
 #define CHAR_OE                0x10
-#define CHAR_U_GRAVE           0x11    
+#define CHAR_U_GRAVE           0x11
 #define CHAR_U_ACUTE           0x12
 #define CHAR_U_CIRCUMFLEX      0x13
 #define CHAR_N_TILDE           0x14
@@ -52,7 +52,7 @@
 #define CHAR_LV                0x34
 #define CHAR_EQUALS            0x35
 #define CHAR_SEMICOLON         0x36
-//
+#define CHAR_BARD_WORD_DELIMIT 0x37 // Empty space to separate words in Bard's song
 #define CHAR_INV_QUESTION_MARK 0x51
 #define CHAR_INV_EXCL_MARK     0x52
 #define CHAR_PK                0x53
@@ -71,7 +71,7 @@
 //
 #define CHAR_i_ACUTE           0x6F
 //
-#define CHAR_GENDERLESS        0x77 // Empty space for lack of gender icon
+#define CHAR_SPACER            0x77 // Empty space
 //
 #define CHAR_UP_ARROW          0x79
 #define CHAR_DOWN_ARROW        0x7A
@@ -258,12 +258,16 @@
 #define PLACEHOLDER_ID_VERSION       0x7
 #define PLACEHOLDER_ID_AQUA          0x8
 #define PLACEHOLDER_ID_MAGMA         0x9
-#define PLACEHOLDER_ID_ARCHIE        0xA 
+#define PLACEHOLDER_ID_ARCHIE        0xA
 #define PLACEHOLDER_ID_MAXIE         0xB
 #define PLACEHOLDER_ID_KYOGRE        0xC
 #define PLACEHOLDER_ID_GROUDON       0xD
 
 // battle placeholders are located in battle_message.h
+
+// Hiragana from 0x1-0x50, Katakana from 0x51-0xA0.
+// This excludes Japanese punctuation, which end at 0xB0
+#define JAPANESE_CHAR_END 0xA0
 
 #define NUM_TEXT_PRINTERS 32
 

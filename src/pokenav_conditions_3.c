@@ -102,7 +102,7 @@ static const struct BgTemplate sConditionSearchResultBgTemplates[] =
     }
 };
 
-static const LoopedTask sSearchResultLoopTaskFuncs[] = 
+static const LoopedTask sSearchResultLoopTaskFuncs[] =
 {
     [CONDITION_SEARCH_FUNC_NONE]       = NULL,
     [CONDITION_SEARCH_FUNC_MOVE_UP]    = LoopedTask_MoveSearchListCursorUp,
@@ -113,7 +113,7 @@ static const LoopedTask sSearchResultLoopTaskFuncs[] =
     [CONDITION_SEARCH_FUNC_SELECT_MON] = LoopedTask_SelectSearchResult
 };
 
-static const struct WindowTemplate sSearchResultListMenuWindowTemplate = 
+static const struct WindowTemplate sSearchResultListMenuWindowTemplate =
 {
     .bg = 1,
     .tilemapLeft = 1,
@@ -664,7 +664,7 @@ static void PrintSearchResultListMenuItems(struct PokenavSub8 *searchList)
 static void InitConditionSearchListMenuTemplate(void)
 {
     struct PokenavListTemplate template;
-    
+
     template.list.monList = GetSearchResultsMonDataList();
     template.count = GetSearchResultsMonListCount();
     template.unk8 = 4;
@@ -705,7 +705,7 @@ static void PrintSearchMonListItem(struct PokenavMonList * item, u8 * dest)
     }
 
     StringGetEnd10(gStringVar3);
-    dest = sub_81DB494(dest, 1, gStringVar3, 60);
+    dest = GetStringClearToWidth(dest, 1, gStringVar3, 60);
     switch (gender)
     {
     default:
@@ -723,5 +723,5 @@ static void PrintSearchMonListItem(struct PokenavMonList * item, u8 * dest)
     *s++ = CHAR_EXTRA_SYMBOL;
     *s++ = CHAR_LV_2;
     ConvertIntToDecimalStringN(s, level, STR_CONV_MODE_LEFT_ALIGN, 3);
-    sub_81DB494(dest, 1, gStringVar1, 40);
+    GetStringClearToWidth(dest, 1, gStringVar1, 40);
 }
