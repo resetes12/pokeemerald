@@ -55,7 +55,6 @@
 #include "constants/items.h"
 #include "constants/heal_locations.h"
 #include "constants/map_types.h"
-#include "constants/maps.h"
 #include "constants/mystery_gift.h"
 #include "constants/script_menu.h"
 #include "constants/slot_machine.h"
@@ -960,13 +959,9 @@ u8 GetBattleOutcome(void)
 void CableCarWarp(void)
 {
     if (gSpecialVar_0x8004 != 0)
-    {
-        SetWarpDestination(MAP_GROUP(ROUTE112_CABLE_CAR_STATION), MAP_NUM(ROUTE112_CABLE_CAR_STATION), -1, 6, 4);
-    }
+        SetWarpDestination(MAP_GROUP(ROUTE112_CABLE_CAR_STATION), MAP_NUM(ROUTE112_CABLE_CAR_STATION), WARP_ID_NONE, 6, 4);
     else
-    {
-        SetWarpDestination(MAP_GROUP(MT_CHIMNEY_CABLE_CAR_STATION), MAP_NUM(MT_CHIMNEY_CABLE_CAR_STATION), -1, 6, 4);
-    }
+        SetWarpDestination(MAP_GROUP(MT_CHIMNEY_CABLE_CAR_STATION), MAP_NUM(MT_CHIMNEY_CABLE_CAR_STATION), WARP_ID_NONE, 6, 4);
 }
 
 void SetHiddenItemFlag(void)
@@ -1335,15 +1330,40 @@ void BufferEReaderTrainerName(void)
 
 u16 GetSlotMachineId(void)
 {
-    static const u8 sSlotMachineRandomSeeds[] = {12, 2, 4, 5, 1, 8, 7, 11, 3, 10, 9, 6};
-    static const u8 sSlotMachineIds[] = {0, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 5};
-    static const u8 sSlotMachineServiceDayIds[] = {3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5};
+    static const u8 sSlotMachineRandomSeeds[SLOT_MACHINE_COUNT] = {12, 2, 4, 5, 1, 8, 7, 11, 3, 10, 9, 6};
+    static const u8 sSlotMachineIds[SLOT_MACHINE_COUNT] = {
+        SLOT_MACHINE_UNLUCKIEST,
+        SLOT_MACHINE_UNLUCKIER,
+        SLOT_MACHINE_UNLUCKIER,
+        SLOT_MACHINE_UNLUCKY,
+        SLOT_MACHINE_UNLUCKY,
+        SLOT_MACHINE_UNLUCKY,
+        SLOT_MACHINE_LUCKY,
+        SLOT_MACHINE_LUCKY,
+        SLOT_MACHINE_LUCKY,
+        SLOT_MACHINE_LUCKIER,
+        SLOT_MACHINE_LUCKIER,
+        SLOT_MACHINE_LUCKIEST
+    };
+    static const u8 sSlotMachineServiceDayIds[SLOT_MACHINE_COUNT] = {
+        SLOT_MACHINE_LUCKY,
+        SLOT_MACHINE_LUCKY,
+        SLOT_MACHINE_LUCKY,
+        SLOT_MACHINE_LUCKY,
+        SLOT_MACHINE_LUCKY,
+        SLOT_MACHINE_LUCKY,
+        SLOT_MACHINE_LUCKIER,
+        SLOT_MACHINE_LUCKIER,
+        SLOT_MACHINE_LUCKIER,
+        SLOT_MACHINE_LUCKIER,
+        SLOT_MACHINE_LUCKIEST,
+        SLOT_MACHINE_LUCKIEST
+    };
 
     u32 rnd = gSaveBlock1Ptr->dewfordTrends[0].trendiness + gSaveBlock1Ptr->dewfordTrends[0].rand + sSlotMachineRandomSeeds[gSpecialVar_0x8004];
-    if (GetPriceReduction(POKENEWS_GAME_CORNER))
-    {
+    if (IsPokeNewsActive(POKENEWS_GAME_CORNER))
         return sSlotMachineServiceDayIds[rnd % SLOT_MACHINE_COUNT];
-    }
+
     return sSlotMachineIds[rnd % SLOT_MACHINE_COUNT];
 }
 
@@ -1550,17 +1570,13 @@ bool8 FoundBlackGlasses(void)
 void SetRoute119Weather(void)
 {
     if (IsMapTypeOutdoors(GetLastUsedWarpMapType()) != TRUE)
-    {
-        SetSav1Weather(WEATHER_ROUTE119_CYCLE);
-    }
+        SetSavedWeather(WEATHER_ROUTE119_CYCLE);
 }
 
 void SetRoute123Weather(void)
 {
     if (IsMapTypeOutdoors(GetLastUsedWarpMapType()) != TRUE)
-    {
-        SetSav1Weather(WEATHER_ROUTE123_CYCLE);
-    }
+        SetSavedWeather(WEATHER_ROUTE123_CYCLE);
 }
 
 u8 GetLeadMonIndex(void)
@@ -1910,14 +1926,14 @@ void ShowDeptStoreElevatorFloorSelect(void)
     sTutorMoveAndElevatorWindowId = AddWindow(&gElevatorFloor_WindowTemplate);
     SetStandardWindowBorderStyle(sTutorMoveAndElevatorWindowId, 0);
 
-    xPos = GetStringCenterAlignXOffset(1, gText_ElevatorNowOn, 64);
-    AddTextPrinterParameterized(sTutorMoveAndElevatorWindowId, 1, gText_ElevatorNowOn, xPos, 1, TEXT_SPEED_FF, NULL);
+    xPos = GetStringCenterAlignXOffset(FONT_NORMAL, gText_ElevatorNowOn, 64);
+    AddTextPrinterParameterized(sTutorMoveAndElevatorWindowId, FONT_NORMAL, gText_ElevatorNowOn, xPos, 1, TEXT_SKIP_DRAW, NULL);
 
-    xPos = GetStringCenterAlignXOffset(1, gDeptStoreFloorNames[gSpecialVar_0x8005], 64);
-    AddTextPrinterParameterized(sTutorMoveAndElevatorWindowId, 1, gDeptStoreFloorNames[gSpecialVar_0x8005], xPos, 17, TEXT_SPEED_FF, NULL);
+    xPos = GetStringCenterAlignXOffset(FONT_NORMAL, gDeptStoreFloorNames[gSpecialVar_0x8005], 64);
+    AddTextPrinterParameterized(sTutorMoveAndElevatorWindowId, FONT_NORMAL, gDeptStoreFloorNames[gSpecialVar_0x8005], xPos, 17, TEXT_SKIP_DRAW, NULL);
 
     PutWindowTilemap(sTutorMoveAndElevatorWindowId);
-    CopyWindowToVram(sTutorMoveAndElevatorWindowId, 3);
+    CopyWindowToVram(sTutorMoveAndElevatorWindowId, COPYWIN_FULL);
 }
 
 void CloseDeptStoreElevatorWindow(void)
@@ -2071,61 +2087,61 @@ void ShowFrontierManiacMessage(void)
 {
     static const u8 *const sFrontierManiacMessages[][FRONTIER_MANIAC_MESSAGE_COUNT] =
     {
-        [FRONTIER_MANIAC_BATTLE_TOWER_SINGLES] =
+        [FRONTIER_MANIAC_TOWER_SINGLES] =
         {
             BattleFrontier_Lounge2_Text_SalonMaidenIsThere,
             BattleFrontier_Lounge2_Text_SalonMaidenSilverMons,
             BattleFrontier_Lounge2_Text_SalonMaidenGoldMons
         },
-        [FRONTIER_MANIAC_BATTLE_TOWER_DOUBLES] =
+        [FRONTIER_MANIAC_TOWER_DOUBLES] =
         {
             BattleFrontier_Lounge2_Text_DoubleBattleAdvice1,
             BattleFrontier_Lounge2_Text_DoubleBattleAdvice2,
             BattleFrontier_Lounge2_Text_DoubleBattleAdvice3
         },
-        [FRONTIER_MANIAC_BATTLE_TOWER_MULTIS] =
+        [FRONTIER_MANIAC_TOWER_MULTIS] =
         {
             BattleFrontier_Lounge2_Text_MultiBattleAdvice,
             BattleFrontier_Lounge2_Text_MultiBattleAdvice,
             BattleFrontier_Lounge2_Text_MultiBattleAdvice
         },
-        [FRONTIER_MANIAC_BATTLE_TOWER_LINK] =
+        [FRONTIER_MANIAC_TOWER_LINK] =
         {
             BattleFrontier_Lounge2_Text_LinkMultiBattleAdvice,
             BattleFrontier_Lounge2_Text_LinkMultiBattleAdvice,
             BattleFrontier_Lounge2_Text_LinkMultiBattleAdvice
         },
-        [FRONTIER_MANIAC_BATTLE_DOME] =
+        [FRONTIER_MANIAC_DOME] =
         {
             BattleFrontier_Lounge2_Text_DomeAceIsThere,
             BattleFrontier_Lounge2_Text_DomeAceSilverMons,
             BattleFrontier_Lounge2_Text_DomeAceGoldMons
         },
-        [FRONTIER_MANIAC_BATTLE_FACTORY] =
+        [FRONTIER_MANIAC_FACTORY] =
         {
             BattleFrontier_Lounge2_Text_FactoryHeadIsThere,
             BattleFrontier_Lounge2_Text_FactoryHeadSilverMons,
             BattleFrontier_Lounge2_Text_FactoryHeadGoldMons
         },
-        [FRONTIER_MANIAC_BATTLE_PALACE] =
+        [FRONTIER_MANIAC_PALACE] =
         {
             BattleFrontier_Lounge2_Text_PalaceMavenIsThere,
             BattleFrontier_Lounge2_Text_PalaceMavenSilverMons,
             BattleFrontier_Lounge2_Text_PalaceMavenGoldMons
         },
-        [FRONTIER_MANIAC_BATTLE_ARENA] =
+        [FRONTIER_MANIAC_ARENA] =
         {
             BattleFrontier_Lounge2_Text_ArenaTycoonIsThere,
             BattleFrontier_Lounge2_Text_ArenaTycoonSilverMons,
             BattleFrontier_Lounge2_Text_ArenaTycoonGoldMons
         },
-        [FRONTIER_MANIAC_BATTLE_PIKE] =
+        [FRONTIER_MANIAC_PIKE] =
         {
             BattleFrontier_Lounge2_Text_PikeQueenIsThere,
             BattleFrontier_Lounge2_Text_PikeQueenSilverMons,
             BattleFrontier_Lounge2_Text_PikeQueenGoldMons
         },
-        [FRONTIER_MANIAC_BATTLE_PYRAMID] =
+        [FRONTIER_MANIAC_PYRAMID] =
         {
             BattleFrontier_Lounge2_Text_PyramidKingIsThere,
             BattleFrontier_Lounge2_Text_PyramidKingSilverMons,
@@ -2135,16 +2151,16 @@ void ShowFrontierManiacMessage(void)
 
     static const u8 sFrontierManiacStreakThresholds[][FRONTIER_MANIAC_MESSAGE_COUNT - 1] =
     {
-        [FRONTIER_MANIAC_BATTLE_TOWER_SINGLES] = { 21, 56 },
-        [FRONTIER_MANIAC_BATTLE_TOWER_DOUBLES] = { 21, 35 },
-        [FRONTIER_MANIAC_BATTLE_TOWER_MULTIS]  = { 255, 255 },
-        [FRONTIER_MANIAC_BATTLE_TOWER_LINK]    = { 255, 255 },
-        [FRONTIER_MANIAC_BATTLE_DOME]          = { 2, 4 },
-        [FRONTIER_MANIAC_BATTLE_FACTORY]       = { 7, 21 },
-        [FRONTIER_MANIAC_BATTLE_PALACE]        = { 7, 21 },
-        [FRONTIER_MANIAC_BATTLE_ARENA]         = { 14, 28 },
-        [FRONTIER_MANIAC_BATTLE_PIKE]          = { 13, 112 }, //BUG: 112 (0x70) is probably a mistake; the Pike Queen is battled twice well before that
-        [FRONTIER_MANIAC_BATTLE_PYRAMID]       = { 7, 56 }
+        [FRONTIER_MANIAC_TOWER_SINGLES] = { 21, 56 },
+        [FRONTIER_MANIAC_TOWER_DOUBLES] = { 21, 35 },
+        [FRONTIER_MANIAC_TOWER_MULTIS]  = { 255, 255 },
+        [FRONTIER_MANIAC_TOWER_LINK]    = { 255, 255 },
+        [FRONTIER_MANIAC_DOME]          = { 2, 4 },
+        [FRONTIER_MANIAC_FACTORY]       = { 7, 21 },
+        [FRONTIER_MANIAC_PALACE]        = { 7, 21 },
+        [FRONTIER_MANIAC_ARENA]         = { 14, 28 },
+        [FRONTIER_MANIAC_PIKE]          = { 13, 112 }, //BUG: 112 (0x70) is probably a mistake; the Pike Queen is battled twice well before that
+        [FRONTIER_MANIAC_PYRAMID]       = { 7, 56 }
     };
 
     u8 i;
@@ -2153,10 +2169,10 @@ void ShowFrontierManiacMessage(void)
 
     switch (facility)
     {
-        case FRONTIER_MANIAC_BATTLE_TOWER_SINGLES:
-        case FRONTIER_MANIAC_BATTLE_TOWER_DOUBLES:
-        case FRONTIER_MANIAC_BATTLE_TOWER_MULTIS:
-        case FRONTIER_MANIAC_BATTLE_TOWER_LINK:
+        case FRONTIER_MANIAC_TOWER_SINGLES:
+        case FRONTIER_MANIAC_TOWER_DOUBLES:
+        case FRONTIER_MANIAC_TOWER_MULTIS:
+        case FRONTIER_MANIAC_TOWER_LINK:
             if (gSaveBlock2Ptr->frontier.towerWinStreaks[facility][FRONTIER_LVL_50]
                 >= gSaveBlock2Ptr->frontier.towerWinStreaks[facility][FRONTIER_LVL_OPEN])
             {
@@ -2167,7 +2183,7 @@ void ShowFrontierManiacMessage(void)
                 winStreak = gSaveBlock2Ptr->frontier.towerWinStreaks[facility][FRONTIER_LVL_OPEN];
             }
             break;
-        case FRONTIER_MANIAC_BATTLE_DOME:
+        case FRONTIER_MANIAC_DOME:
             if (gSaveBlock2Ptr->frontier.domeWinStreaks[FRONTIER_MODE_SINGLES][FRONTIER_LVL_50]
                 >= gSaveBlock2Ptr->frontier.domeWinStreaks[FRONTIER_MODE_SINGLES][FRONTIER_LVL_OPEN])
             {
@@ -2178,7 +2194,7 @@ void ShowFrontierManiacMessage(void)
                 winStreak = gSaveBlock2Ptr->frontier.domeWinStreaks[FRONTIER_MODE_SINGLES][FRONTIER_LVL_OPEN];
             }
             break;
-        case FRONTIER_MANIAC_BATTLE_FACTORY:
+        case FRONTIER_MANIAC_FACTORY:
             if (gSaveBlock2Ptr->frontier.factoryWinStreaks[FRONTIER_MODE_SINGLES][FRONTIER_LVL_50]
                 >= gSaveBlock2Ptr->frontier.factoryWinStreaks[FRONTIER_MODE_SINGLES][FRONTIER_LVL_OPEN])
             {
@@ -2189,7 +2205,7 @@ void ShowFrontierManiacMessage(void)
                 winStreak = gSaveBlock2Ptr->frontier.factoryWinStreaks[FRONTIER_MODE_SINGLES][FRONTIER_LVL_OPEN];
             }
             break;
-        case FRONTIER_MANIAC_BATTLE_PALACE:
+        case FRONTIER_MANIAC_PALACE:
             if (gSaveBlock2Ptr->frontier.palaceWinStreaks[FRONTIER_MODE_SINGLES][FRONTIER_LVL_50]
                 >= gSaveBlock2Ptr->frontier.palaceWinStreaks[FRONTIER_MODE_SINGLES][FRONTIER_LVL_OPEN])
             {
@@ -2200,7 +2216,7 @@ void ShowFrontierManiacMessage(void)
                 winStreak = gSaveBlock2Ptr->frontier.palaceWinStreaks[FRONTIER_MODE_SINGLES][FRONTIER_LVL_OPEN];
             }
             break;
-        case FRONTIER_MANIAC_BATTLE_ARENA:
+        case FRONTIER_MANIAC_ARENA:
             if (gSaveBlock2Ptr->frontier.arenaWinStreaks[FRONTIER_LVL_50]
                 >= gSaveBlock2Ptr->frontier.arenaWinStreaks[FRONTIER_LVL_OPEN])
             {
@@ -2211,7 +2227,7 @@ void ShowFrontierManiacMessage(void)
                 winStreak = gSaveBlock2Ptr->frontier.arenaWinStreaks[FRONTIER_LVL_OPEN];
             }
             break;
-        case FRONTIER_MANIAC_BATTLE_PIKE:
+        case FRONTIER_MANIAC_PIKE:
             if (gSaveBlock2Ptr->frontier.pikeWinStreaks[FRONTIER_LVL_50]
                 >= gSaveBlock2Ptr->frontier.pikeWinStreaks[FRONTIER_LVL_OPEN])
             {
@@ -2222,7 +2238,7 @@ void ShowFrontierManiacMessage(void)
                 winStreak = gSaveBlock2Ptr->frontier.pikeWinStreaks[FRONTIER_LVL_OPEN];
             }
             break;
-        case FRONTIER_MANIAC_BATTLE_PYRAMID:
+        case FRONTIER_MANIAC_PYRAMID:
             if (gSaveBlock2Ptr->frontier.pyramidWinStreaks[FRONTIER_LVL_50]
                 >= gSaveBlock2Ptr->frontier.pyramidWinStreaks[FRONTIER_LVL_OPEN])
             {
@@ -2653,7 +2669,7 @@ static void InitScrollableMultichoice(void)
     gScrollableMultichoice_ListMenuTemplate.lettersSpacing = 0;
     gScrollableMultichoice_ListMenuTemplate.itemVerticalPadding = 0;
     gScrollableMultichoice_ListMenuTemplate.scrollMultiple = 0;
-    gScrollableMultichoice_ListMenuTemplate.fontId = 1;
+    gScrollableMultichoice_ListMenuTemplate.fontId = FONT_NORMAL;
     gScrollableMultichoice_ListMenuTemplate.cursorKind = 0;
 }
 
@@ -2723,7 +2739,7 @@ static void CloseScrollableMultichoice(u8 taskId)
     Free(sScrollableMultichoice_ListMenuItem);
     ClearStdWindowAndFrameToTransparent(task->tWindowId, 1);
     FillWindowPixelBuffer(task->tWindowId, PIXEL_FILL(0));
-    CopyWindowToVram(task->tWindowId, 2);
+    CopyWindowToVram(task->tWindowId, COPYWIN_GFX);
     RemoveWindow(task->tWindowId);
     DestroyTask(taskId);
     EnableBothScriptContexts();
@@ -2957,8 +2973,8 @@ void UpdateBattlePointsWindow(void)
     u8 string[32];
     u32 x;
     StringCopy(ConvertIntToDecimalStringN(string, gSaveBlock2Ptr->frontier.battlePoints, STR_CONV_MODE_RIGHT_ALIGN, 4), gText_BP);
-    x = GetStringRightAlignXOffset(1, string, 48);
-    AddTextPrinterParameterized(sBattlePointsWindowId, 1, string, x, 1, 0, NULL);
+    x = GetStringRightAlignXOffset(FONT_NORMAL, string, 48);
+    AddTextPrinterParameterized(sBattlePointsWindowId, FONT_NORMAL, string, x, 1, 0, NULL);
 }
 
 void ShowBattlePointsWindow(void)
@@ -2976,7 +2992,7 @@ void ShowBattlePointsWindow(void)
     sBattlePointsWindowId = AddWindow(&sBattlePoints_WindowTemplate);
     SetStandardWindowBorderStyle(sBattlePointsWindowId, 0);
     UpdateBattlePointsWindow();
-    CopyWindowToVram(sBattlePointsWindowId, 2);
+    CopyWindowToVram(sBattlePointsWindowId, COPYWIN_GFX);
 }
 
 void CloseBattlePointsWindow(void)
@@ -2988,25 +3004,17 @@ void CloseBattlePointsWindow(void)
 void TakeFrontierBattlePoints(void)
 {
     if (gSaveBlock2Ptr->frontier.battlePoints < gSpecialVar_0x8004)
-    {
         gSaveBlock2Ptr->frontier.battlePoints = 0;
-    }
     else
-    {
         gSaveBlock2Ptr->frontier.battlePoints -= gSpecialVar_0x8004;
-    }
 }
 
 void GiveFrontierBattlePoints(void)
 {
     if (gSaveBlock2Ptr->frontier.battlePoints + gSpecialVar_0x8004 > MAX_BATTLE_FRONTIER_POINTS)
-    {
         gSaveBlock2Ptr->frontier.battlePoints = MAX_BATTLE_FRONTIER_POINTS;
-    }
     else
-    {
         gSaveBlock2Ptr->frontier.battlePoints = gSaveBlock2Ptr->frontier.battlePoints + gSpecialVar_0x8004;
-    }
 }
 
 u16 GetFrontierBattlePoints(void)
@@ -3028,7 +3036,7 @@ void ShowFrontierExchangeCornerItemIconWindow(void)
 
     sFrontierExchangeCorner_ItemIconWindowId = AddWindow(&sFrontierExchangeCorner_ItemIconWindowTemplate);
     SetStandardWindowBorderStyle(sFrontierExchangeCorner_ItemIconWindowId, 0);
-    CopyWindowToVram(sFrontierExchangeCorner_ItemIconWindowId, 2);
+    CopyWindowToVram(sFrontierExchangeCorner_ItemIconWindowId, COPYWIN_GFX);
 }
 
 void CloseFrontierExchangeCornerItemIconWindow(void)
@@ -3036,6 +3044,8 @@ void CloseFrontierExchangeCornerItemIconWindow(void)
     ClearStdWindowAndFrameToTransparent(sFrontierExchangeCorner_ItemIconWindowId, TRUE);
     RemoveWindow(sFrontierExchangeCorner_ItemIconWindowId);
 }
+
+#define TAG_ITEM_ICON 5500
 
 static void FillFrontierExchangeCornerWindowAndItemIcon(u16 menu, u16 selection)
 {
@@ -3047,37 +3057,37 @@ static void FillFrontierExchangeCornerWindowAndItemIcon(u16 menu, u16 selection)
         switch (menu)
         {
             case SCROLL_MULTI_BF_EXCHANGE_CORNER_DECOR_VENDOR_1:
-                AddTextPrinterParameterized2(0, 1, sFrontierExchangeCorner_Decor1Descriptions[selection], 0, NULL, 2, 1, 3);
+                AddTextPrinterParameterized2(0, FONT_NORMAL, sFrontierExchangeCorner_Decor1Descriptions[selection], 0, NULL, 2, 1, 3);
                 if (sFrontierExchangeCorner_Decor1[selection] == 0xFFFF)
                 {
                     ShowFrontierExchangeCornerItemIcon(sFrontierExchangeCorner_Decor1[selection]);
                 }
                 else
                 {
-                    FreeSpriteTilesByTag(5500);
-                    FreeSpritePaletteByTag(5500);
-                    sScrollableMultichoice_ItemSpriteId = AddDecorationIconObject(sFrontierExchangeCorner_Decor1[selection], 33, 88, 0, 5500, 5500);
+                    FreeSpriteTilesByTag(TAG_ITEM_ICON);
+                    FreeSpritePaletteByTag(TAG_ITEM_ICON);
+                    sScrollableMultichoice_ItemSpriteId = AddDecorationIconObject(sFrontierExchangeCorner_Decor1[selection], 33, 88, 0, TAG_ITEM_ICON, TAG_ITEM_ICON);
                 }
                 break;
             case SCROLL_MULTI_BF_EXCHANGE_CORNER_DECOR_VENDOR_2:
-                AddTextPrinterParameterized2(0, 1, sFrontierExchangeCorner_Decor2Descriptions[selection], 0, NULL, 2, 1, 3);
+                AddTextPrinterParameterized2(0, FONT_NORMAL, sFrontierExchangeCorner_Decor2Descriptions[selection], 0, NULL, 2, 1, 3);
                 if (sFrontierExchangeCorner_Decor2[selection] == 0xFFFF)
                 {
                     ShowFrontierExchangeCornerItemIcon(sFrontierExchangeCorner_Decor2[selection]);
                 }
                 else
                 {
-                    FreeSpriteTilesByTag(5500);
-                    FreeSpritePaletteByTag(5500);
-                    sScrollableMultichoice_ItemSpriteId = AddDecorationIconObject(sFrontierExchangeCorner_Decor2[selection], 33, 88, 0, 5500, 5500);
+                    FreeSpriteTilesByTag(TAG_ITEM_ICON);
+                    FreeSpritePaletteByTag(TAG_ITEM_ICON);
+                    sScrollableMultichoice_ItemSpriteId = AddDecorationIconObject(sFrontierExchangeCorner_Decor2[selection], 33, 88, 0, TAG_ITEM_ICON, TAG_ITEM_ICON);
                 }
                 break;
             case SCROLL_MULTI_BF_EXCHANGE_CORNER_VITAMIN_VENDOR:
-                AddTextPrinterParameterized2(0, 1, sFrontierExchangeCorner_VitaminsDescriptions[selection], 0, NULL, 2, 1, 3);
+                AddTextPrinterParameterized2(0, FONT_NORMAL, sFrontierExchangeCorner_VitaminsDescriptions[selection], 0, NULL, 2, 1, 3);
                 ShowFrontierExchangeCornerItemIcon(sFrontierExchangeCorner_Vitamins[selection]);
                 break;
             case SCROLL_MULTI_BF_EXCHANGE_CORNER_HOLD_ITEM_VENDOR:
-                AddTextPrinterParameterized2(0, 1, sFrontierExchangeCorner_HoldItemsDescriptions[selection], 0, NULL, 2, 1, 3);
+                AddTextPrinterParameterized2(0, FONT_NORMAL, sFrontierExchangeCorner_HoldItemsDescriptions[selection], 0, NULL, 2, 1, 3);
                 ShowFrontierExchangeCornerItemIcon(sFrontierExchangeCorner_HoldItems[selection]);
                 break;
         }
@@ -3086,9 +3096,9 @@ static void FillFrontierExchangeCornerWindowAndItemIcon(u16 menu, u16 selection)
 
 static void ShowFrontierExchangeCornerItemIcon(u16 item)
 {
-    FreeSpriteTilesByTag(5500);
-    FreeSpritePaletteByTag(5500);
-    sScrollableMultichoice_ItemSpriteId = AddItemIconSprite(5500, 5500, item);
+    FreeSpriteTilesByTag(TAG_ITEM_ICON);
+    FreeSpritePaletteByTag(TAG_ITEM_ICON);
+    sScrollableMultichoice_ItemSpriteId = AddItemIconSprite(TAG_ITEM_ICON, TAG_ITEM_ICON, item);
 
     if (sScrollableMultichoice_ItemSpriteId != MAX_SPRITES)
     {
@@ -3216,11 +3226,11 @@ static void ShowBattleFrontierTutorMoveDescription(u8 menu, u16 selection)
         FillWindowPixelRect(sTutorMoveAndElevatorWindowId, PIXEL_FILL(1), 0, 0, 96, 48);
         if (menu == SCROLL_MULTI_BF_MOVE_TUTOR_2)
         {
-            AddTextPrinterParameterized(sTutorMoveAndElevatorWindowId, 1, sBattleFrontier_TutorMoveDescriptions2[selection], 0, 1, 0, NULL);
+            AddTextPrinterParameterized(sTutorMoveAndElevatorWindowId, FONT_NORMAL, sBattleFrontier_TutorMoveDescriptions2[selection], 0, 1, 0, NULL);
         }
         else
         {
-            AddTextPrinterParameterized(sTutorMoveAndElevatorWindowId, 1, sBattleFrontier_TutorMoveDescriptions1[selection], 0, 1, 0, NULL);
+            AddTextPrinterParameterized(sTutorMoveAndElevatorWindowId, FONT_NORMAL, sBattleFrontier_TutorMoveDescriptions1[selection], 0, 1, 0, NULL);
         }
     }
 }
@@ -3244,11 +3254,11 @@ void ScrollableMultichoice_RedrawPersistentMenu(void)
         SetStandardWindowBorderStyle(task->tWindowId, 0);
 
         for (i = 0; i < MAX_SCROLL_MULTI_ON_SCREEN; i++)
-            AddTextPrinterParameterized5(task->tWindowId, 1, sScrollableMultichoiceOptions[gSpecialVar_0x8004][scrollOffset + i], 10, i * 16, TEXT_SPEED_FF, NULL, 0, 0);
+            AddTextPrinterParameterized5(task->tWindowId, FONT_NORMAL, sScrollableMultichoiceOptions[gSpecialVar_0x8004][scrollOffset + i], 10, i * 16, TEXT_SKIP_DRAW, NULL, 0, 0);
 
-        AddTextPrinterParameterized(task->tWindowId, 1, gText_SelectorArrow, 0, selectedRow * 16, TEXT_SPEED_FF, NULL);
+        AddTextPrinterParameterized(task->tWindowId, FONT_NORMAL, gText_SelectorArrow, 0, selectedRow * 16, TEXT_SKIP_DRAW, NULL);
         PutWindowTilemap(task->tWindowId);
-        CopyWindowToVram(task->tWindowId, 3);
+        CopyWindowToVram(task->tWindowId, COPYWIN_FULL);
     }
 }
 
@@ -3303,7 +3313,7 @@ void ScrollableMultichoice_ClosePersistentMenu(void)
         ClearStdWindowAndFrameToTransparent(task->tWindowId, TRUE);
         FillWindowPixelBuffer(task->tWindowId, PIXEL_FILL(0));
         ClearWindowTilemap(task->tWindowId);
-        CopyWindowToVram(task->tWindowId, 2);
+        CopyWindowToVram(task->tWindowId, COPYWIN_GFX);
         RemoveWindow(task->tWindowId);
         DestroyTask(taskId);
     }
@@ -3424,7 +3434,7 @@ static void ChangeDeoxysRockLevel(u8 rockLevel)
         gFieldEffectArguments[5] = 5;
 
     FieldEffectStart(FLDEFF_MOVE_DEOXYS_ROCK);
-    Overworld_SetObjEventTemplateCoords(1, sDeoxysRockCoords[rockLevel][0], sDeoxysRockCoords[rockLevel][1]);
+    SetObjEventTemplateCoords(LOCALID_BIRTH_ISLAND_EXTERIOR_ROCK, sDeoxysRockCoords[rockLevel][0], sDeoxysRockCoords[rockLevel][1]);
 }
 
 static void WaitForDeoxysRockMovement(u8 taskId)

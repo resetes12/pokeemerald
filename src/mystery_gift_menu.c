@@ -235,7 +235,7 @@ static const struct ListMenuTemplate sListMenuTemplate_ThreeOptions = {
     .lettersSpacing = 0,
     .itemVerticalPadding = 0,
     .scrollMultiple = 0,
-    .fontId = 1,
+    .fontId = FONT_NORMAL,
     .cursorKind = 0
 };
 
@@ -280,7 +280,7 @@ static const struct ListMenuTemplate sListMenu_ReceiveSendToss = {
     .lettersSpacing = 0,
     .itemVerticalPadding = 0,
     .scrollMultiple = 0,
-    .fontId = 1,
+    .fontId = FONT_NORMAL,
     .cursorKind = 0
 };
 
@@ -301,7 +301,7 @@ static const struct ListMenuTemplate sListMenu_ReceiveToss = {
     .lettersSpacing = 0,
     .itemVerticalPadding = 0,
     .scrollMultiple = 0,
-    .fontId = 1,
+    .fontId = FONT_NORMAL,
     .cursorKind = 0
 };
 
@@ -322,7 +322,7 @@ static const struct ListMenuTemplate sListMenu_ReceiveSend = {
     .lettersSpacing = 0,
     .itemVerticalPadding = 0,
     .scrollMultiple = 0,
-    .fontId = 1,
+    .fontId = FONT_NORMAL,
     .cursorKind = 0
 };
 
@@ -343,11 +343,11 @@ static const struct ListMenuTemplate sListMenu_Receive = {
     .lettersSpacing = 0,
     .itemVerticalPadding = 0,
     .scrollMultiple = 0,
-    .fontId = 1,
+    .fontId = FONT_NORMAL,
     .cursorKind = 0
 };
 
-static const u8 *const Unref_082F0710[] = {
+static const u8 *const sUnusedMenuTexts[] = {
     gText_VarietyOfEventsImportedWireless,
     gText_WonderCardsInPossession,
     gText_ReadNewsThatArrived,
@@ -387,14 +387,14 @@ static bool32 HandleMysteryGiftOrEReaderSetup(s32 isEReader)
         ResetBgsAndClearDma3BusyFlags(0);
 
         InitBgsFromTemplates(0, sBGTemplates, ARRAY_COUNT(sBGTemplates));
-        ChangeBgX(0, 0, 0);
-        ChangeBgY(0, 0, 0);
-        ChangeBgX(1, 0, 0);
-        ChangeBgY(1, 0, 0);
-        ChangeBgX(2, 0, 0);
-        ChangeBgY(2, 0, 0);
-        ChangeBgX(3, 0, 0);
-        ChangeBgY(3, 0, 0);
+        ChangeBgX(0, 0, BG_COORD_SET);
+        ChangeBgY(0, 0, BG_COORD_SET);
+        ChangeBgX(1, 0, BG_COORD_SET);
+        ChangeBgY(1, 0, BG_COORD_SET);
+        ChangeBgX(2, 0, BG_COORD_SET);
+        ChangeBgY(2, 0, BG_COORD_SET);
+        ChangeBgX(3, 0, BG_COORD_SET);
+        ChangeBgY(3, 0, BG_COORD_SET);
 
         SetBgTilemapBuffer(3, Alloc(BG_SCREEN_SIZE));
         SetBgTilemapBuffer(2, Alloc(BG_SCREEN_SIZE));
@@ -490,9 +490,9 @@ void PrintMysteryGiftOrEReaderTopMenu(bool8 isEReader, bool32 useCancel)
         options = gJPText_DecideStop;
     }
 
-    AddTextPrinterParameterized4(0, 1, 4, 1, 0, 0, sTextColors_TopMenu, TEXT_SPEED_FF, header);
-    AddTextPrinterParameterized4(0, 0, GetStringRightAlignXOffset(0, options, 0xDE), 1, 0, 0, sTextColors_TopMenu, TEXT_SPEED_FF, options);
-    CopyWindowToVram(0, 2);
+    AddTextPrinterParameterized4(0, FONT_NORMAL, 4, 1, 0, 0, sTextColors_TopMenu, TEXT_SKIP_DRAW, header);
+    AddTextPrinterParameterized4(0, FONT_SMALL, GetStringRightAlignXOffset(FONT_SMALL, options, 0xDE), 1, 0, 0, sTextColors_TopMenu, TEXT_SKIP_DRAW, options);
+    CopyWindowToVram(0, COPYWIN_GFX);
     PutWindowTilemap(0);
 }
 
@@ -537,17 +537,17 @@ void AddTextPrinterToWindow1(const u8 *str)
 {
     StringExpandPlaceholders(gStringVar4, str);
     FillWindowPixelBuffer(1, 0x11);
-    AddTextPrinterParameterized4(1, 1, 0, 1, 0, 0, sMG_Ereader_TextColor_2, 0, gStringVar4);
+    AddTextPrinterParameterized4(1, FONT_NORMAL, 0, 1, 0, 0, sMG_Ereader_TextColor_2, 0, gStringVar4);
     DrawTextBorderOuter(1, 0x001, 0xF);
     PutWindowTilemap(1);
-    CopyWindowToVram(1, 3);
+    CopyWindowToVram(1, COPYWIN_FULL);
 }
 
 static void ClearTextWindow(void)
 {
     rbox_fill_rectangle(1);
     ClearWindowTilemap(1);
-    CopyWindowToVram(1, 1);
+    CopyWindowToVram(1, COPYWIN_MAP);
 }
 
 #define DOWN_ARROW_X 208
@@ -649,7 +649,7 @@ static u32 MysteryGift_HandleThreeOptionMenu(u8 * unused0, u16 * unused1, u8 whi
     if (response != LIST_NOTHING_CHOSEN)
     {
         ClearWindowTilemap(2);
-        CopyWindowToVram(2, 1);
+        CopyWindowToVram(2, COPYWIN_MAP);
     }
     return response;
 }
@@ -669,9 +669,9 @@ s8 DoMysteryGiftYesNo(u8 * textState, u16 * windowId, bool8 yesNoBoxPlacement, c
         else
             *windowId = AddWindow(&sWindowTemplate_YesNoMsg);
         FillWindowPixelBuffer(*windowId, 0x11);
-        AddTextPrinterParameterized4(*windowId, 1, 0, 1, 0, 0, sMG_Ereader_TextColor_2, 0, gStringVar4);
+        AddTextPrinterParameterized4(*windowId, FONT_NORMAL, 0, 1, 0, 0, sMG_Ereader_TextColor_2, 0, gStringVar4);
         DrawTextBorderOuter(*windowId, 0x001, 0x0F);
-        CopyWindowToVram(*windowId, 2);
+        CopyWindowToVram(*windowId, COPYWIN_GFX);
         PutWindowTilemap(*windowId);
         (*textState)++;
         break;
@@ -693,7 +693,7 @@ s8 DoMysteryGiftYesNo(u8 * textState, u16 * windowId, bool8 yesNoBoxPlacement, c
             *textState = 0;
             rbox_fill_rectangle(*windowId);
             ClearWindowTilemap(*windowId);
-            CopyWindowToVram(*windowId, 1);
+            CopyWindowToVram(*windowId, COPYWIN_MAP);
             RemoveWindow(*windowId);
             return input;
         }
@@ -702,7 +702,7 @@ s8 DoMysteryGiftYesNo(u8 * textState, u16 * windowId, bool8 yesNoBoxPlacement, c
         *textState = 0;
         rbox_fill_rectangle(*windowId);
         ClearWindowTilemap(*windowId);
-        CopyWindowToVram(*windowId, 1);
+        CopyWindowToVram(*windowId, COPYWIN_MAP);
         RemoveWindow(*windowId);
         return MENU_B_PRESSED;
     }
@@ -726,9 +726,9 @@ static s32 HandleGiftSelectMenu(u8 * textState, u16 * windowId, bool32 cannotTos
             StringExpandPlaceholders(gStringVar4, gText_WhatToDoWithNews);
         *windowId = AddWindow(&sWindowTemplate_GiftSelect);
         FillWindowPixelBuffer(*windowId, 0x11);
-        AddTextPrinterParameterized4(*windowId, 1, 0, 1, 0, 0, sMG_Ereader_TextColor_2, 0, gStringVar4);
+        AddTextPrinterParameterized4(*windowId, FONT_NORMAL, 0, 1, 0, 0, sMG_Ereader_TextColor_2, 0, gStringVar4);
         DrawTextBorderOuter(*windowId, 0x001, 0x0F);
-        CopyWindowToVram(*windowId, 2);
+        CopyWindowToVram(*windowId, COPYWIN_GFX);
         PutWindowTilemap(*windowId);
         (*textState)++;
         break;
@@ -753,7 +753,7 @@ static s32 HandleGiftSelectMenu(u8 * textState, u16 * windowId, bool32 cannotTos
             *textState = 0;
             rbox_fill_rectangle(*windowId);
             ClearWindowTilemap(*windowId);
-            CopyWindowToVram(*windowId, 1);
+            CopyWindowToVram(*windowId, COPYWIN_MAP);
             RemoveWindow(*windowId);
             return input;
         }
@@ -762,7 +762,7 @@ static s32 HandleGiftSelectMenu(u8 * textState, u16 * windowId, bool32 cannotTos
         *textState = 0;
         rbox_fill_rectangle(*windowId);
         ClearWindowTilemap(*windowId);
-        CopyWindowToVram(*windowId, 1);
+        CopyWindowToVram(*windowId, COPYWIN_MAP);
         RemoveWindow(*windowId);
         return LIST_CANCEL;
     }

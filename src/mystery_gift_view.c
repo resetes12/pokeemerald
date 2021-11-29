@@ -424,25 +424,25 @@ static void DrawCardWindow(u8 whichWindow)
     {
         // Print card title/subtitle
         s32 x;
-        AddTextPrinterParameterized3(windowId, 3, 0, 1, sCard_TextColorTable[sWonderCardData->gfx->titleTextPal], 0, sWonderCardData->titleText);
-        x = 160 - GetStringWidth(3, sWonderCardData->subtitleText, GetFontAttribute(3, FONTATTR_LETTER_SPACING));
+        AddTextPrinterParameterized3(windowId, FONT_SHORT_COPY_1, 0, 1, sCard_TextColorTable[sWonderCardData->gfx->titleTextPal], 0, sWonderCardData->titleText);
+        x = 160 - GetStringWidth(FONT_SHORT_COPY_1, sWonderCardData->subtitleText, GetFontAttribute(FONT_SHORT_COPY_1, FONTATTR_LETTER_SPACING));
         if (x < 0)
             x = 0;
-        AddTextPrinterParameterized3(windowId, 3, x, 17, sCard_TextColorTable[sWonderCardData->gfx->titleTextPal], 0, sWonderCardData->subtitleText);
+        AddTextPrinterParameterized3(windowId, FONT_SHORT_COPY_1, x, 17, sCard_TextColorTable[sWonderCardData->gfx->titleTextPal], 0, sWonderCardData->subtitleText);
 
         // Print id number
         if (sWonderCardData->card.idNumber != 0)
-            AddTextPrinterParameterized3(windowId, 1, 166, 17, sCard_TextColorTable[sWonderCardData->gfx->titleTextPal], 0, sWonderCardData->idNumberText);
+            AddTextPrinterParameterized3(windowId, FONT_NORMAL, 166, 17, sCard_TextColorTable[sWonderCardData->gfx->titleTextPal], 0, sWonderCardData->idNumberText);
         break;
     }
     case CARD_WIN_BODY:
         // Print body text
         for (; i < WONDER_CARD_BODY_TEXT_LINES; i++)
-            AddTextPrinterParameterized3(windowId, 3, 0, 16 * i + 2, sCard_TextColorTable[sWonderCardData->gfx->bodyTextPal], 0, sWonderCardData->bodyText[i]);
+            AddTextPrinterParameterized3(windowId, FONT_SHORT_COPY_1, 0, 16 * i + 2, sCard_TextColorTable[sWonderCardData->gfx->bodyTextPal], 0, sWonderCardData->bodyText[i]);
         break;
     case CARD_WIN_FOOTER:
         // Print footer line 1
-        AddTextPrinterParameterized3(windowId, 3, 0,
+        AddTextPrinterParameterized3(windowId, FONT_SHORT_COPY_1, 0,
                                      sCard_FooterTextOffsets[sWonderCardData->card.type],
                                      sCard_TextColorTable[sWonderCardData->gfx->footerTextPal],
                                      0, sWonderCardData->footerLine1Text);
@@ -452,7 +452,7 @@ static void DrawCardWindow(u8 whichWindow)
         {
             // Print gift text
             // Odd that CARD_TYPE_STAMP is not ignored, it has empty text for this
-            AddTextPrinterParameterized3(windowId, 3, 0,
+            AddTextPrinterParameterized3(windowId, FONT_SHORT_COPY_1, 0,
                                          16 + sCard_FooterTextOffsets[sWonderCardData->card.type],
                                          sCard_TextColorTable[sWonderCardData->gfx->footerTextPal],
                                          0, sWonderCardData->giftText);
@@ -461,25 +461,25 @@ static void DrawCardWindow(u8 whichWindow)
         {
             s32 x = 0;
             s32 y = sCard_FooterTextOffsets[sWonderCardData->card.type] + 16;
-            s32 spacing = GetFontAttribute(3, FONTATTR_LETTER_SPACING);
+            s32 spacing = GetFontAttribute(FONT_SHORT_COPY_1, FONTATTR_LETTER_SPACING);
             for (; i < sWonderCardData->statFooterWidth; i++)
             {
                 // Print stat text
-                AddTextPrinterParameterized3(windowId, 3, x, y, sCard_TextColorTable[sWonderCardData->gfx->footerTextPal], 0, sWonderCardData->statTextData[i].statText);
+                AddTextPrinterParameterized3(windowId, FONT_SHORT_COPY_1, x, y, sCard_TextColorTable[sWonderCardData->gfx->footerTextPal], 0, sWonderCardData->statTextData[i].statText);
                 if (sWonderCardData->statTextData[i].statNumberText[0] != EOS)
                 {
                     // Print stat number
-                    x += GetStringWidth(3, sWonderCardData->statTextData[i].statText, spacing);
-                    AddTextPrinterParameterized3(windowId, 3, x, y,
+                    x += GetStringWidth(FONT_SHORT_COPY_1, sWonderCardData->statTextData[i].statText, spacing);
+                    AddTextPrinterParameterized3(windowId, FONT_SHORT_COPY_1, x, y,
                                                  sCard_TextColorTable[sWonderCardData->gfx->footerTextPal],
                                                  0, sWonderCardData->statTextData[i].statNumberText);
-                    x += GetStringWidth(3, sWonderCardData->statTextData[i].statNumberText, spacing) + sWonderCardData->statTextData[i].width;
+                    x += GetStringWidth(FONT_SHORT_COPY_1, sWonderCardData->statTextData[i].statNumberText, spacing) + sWonderCardData->statTextData[i].width;
                 }
             }
         }
         break;
     }
-    CopyWindowToVram(windowId, 3);
+    CopyWindowToVram(windowId, COPYWIN_FULL);
 }
 
 static void CreateCardSprites(void)
@@ -678,10 +678,10 @@ s32 WonderNews_Enter(void)
     case 1:
         if (UpdatePaletteFade())
             return 0;
-        ChangeBgY(0, 0, 0);
-        ChangeBgY(1, 0, 0);
-        ChangeBgY(2, 0, 0);
-        ChangeBgY(3, 0, 0);
+        ChangeBgY(0, 0, BG_COORD_SET);
+        ChangeBgY(1, 0, BG_COORD_SET);
+        ChangeBgY(2, 0, BG_COORD_SET);
+        ChangeBgY(3, 0, BG_COORD_SET);
         SetGpuReg(REG_OFFSET_WIN0H, WIN_RANGE(0, DISPLAY_WIDTH));
         SetGpuReg(REG_OFFSET_WIN0V, WIN_RANGE(26, 152));
         SetGpuReg(REG_OFFSET_WININ, WININ_WIN0_BG_ALL | WININ_WIN0_OBJ);
@@ -753,7 +753,7 @@ s32 WonderNews_Exit(bool32 useCancel)
     case 1:
         if (UpdatePaletteFade())
             return 0;
-        ChangeBgY(2, 0, 0);
+        ChangeBgY(2, 0, BG_COORD_SET);
         SetGpuReg(REG_OFFSET_WIN0H, 0);
         SetGpuReg(REG_OFFSET_WIN0V, 0);
         SetGpuReg(REG_OFFSET_WININ, 0);
@@ -777,8 +777,8 @@ s32 WonderNews_Exit(bool32 useCancel)
         RemoveWindow(sWonderNewsData->windowIds[NEWS_WIN_TITLE]);
         break;
     case 4:
-        ChangeBgY(2, 0, 0);
-        ChangeBgY(3, 0, 0);
+        ChangeBgY(2, 0, BG_COORD_SET);
+        ChangeBgY(3, 0, BG_COORD_SET);
         if (sWonderNewsData->arrowTaskId != TASK_NONE)
         {
             RemoveScrollIndicatorArrowPair(sWonderNewsData->arrowTaskId);
@@ -893,20 +893,20 @@ static void DrawNewsWindows(void)
     FillWindowPixelBuffer(sWonderNewsData->windowIds[NEWS_WIN_BODY], 0);
 
     // Print title text
-    x = (224 - GetStringWidth(3, sWonderNewsData->titleText, GetFontAttribute(3, FONTATTR_LETTER_SPACING))) / 2;
+    x = (224 - GetStringWidth(FONT_SHORT_COPY_1, sWonderNewsData->titleText, GetFontAttribute(FONT_SHORT_COPY_1, FONTATTR_LETTER_SPACING))) / 2;
     if (x < 0)
         x = 0;
-    AddTextPrinterParameterized3(sWonderNewsData->windowIds[NEWS_WIN_TITLE], 3, x, 6, sNews_TextColorTable[sWonderNewsData->gfx->titleTextPal], 0, sWonderNewsData->titleText);
+    AddTextPrinterParameterized3(sWonderNewsData->windowIds[NEWS_WIN_TITLE], FONT_SHORT_COPY_1, x, 6, sNews_TextColorTable[sWonderNewsData->gfx->titleTextPal], 0, sWonderNewsData->titleText);
     
     // Print body text
     for (; i < WONDER_NEWS_BODY_TEXT_LINES; i++)
-        AddTextPrinterParameterized3(sWonderNewsData->windowIds[NEWS_WIN_BODY], 3, 0,
+        AddTextPrinterParameterized3(sWonderNewsData->windowIds[NEWS_WIN_BODY], FONT_SHORT_COPY_1, 0,
                                      16 * i + 2,
                                      sNews_TextColorTable[sWonderNewsData->gfx->bodyTextPal],
                                      0, sWonderNewsData->bodyText[i]);
 
-    CopyWindowToVram(sWonderNewsData->windowIds[NEWS_WIN_TITLE], 3);
-    CopyWindowToVram(sWonderNewsData->windowIds[NEWS_WIN_BODY], 3);
+    CopyWindowToVram(sWonderNewsData->windowIds[NEWS_WIN_TITLE], COPYWIN_FULL);
+    CopyWindowToVram(sWonderNewsData->windowIds[NEWS_WIN_BODY], COPYWIN_FULL);
 }
 
 static void UpdateNewsScroll(void)

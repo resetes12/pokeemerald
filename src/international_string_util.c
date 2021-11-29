@@ -40,7 +40,7 @@ int GetMaxWidthInMenuTable(const struct MenuAction *actions, int numActions)
 
     for (maxWidth = 0, i = 0; i < numActions; i++)
     {
-        int stringWidth = GetStringWidth(1, actions[i].text, 0);
+        int stringWidth = GetStringWidth(FONT_NORMAL, actions[i].text, 0);
         if (stringWidth > maxWidth)
             maxWidth = stringWidth;
     }
@@ -54,7 +54,7 @@ int GetMaxWidthInSubsetOfMenuTable(const struct MenuAction *actions, const u8* a
 
     for (maxWidth = 0, i = 0; i < numActions; i++)
     {
-        int stringWidth = GetStringWidth(1, actions[actionIds[i]].text, 0);
+        int stringWidth = GetStringWidth(FONT_NORMAL, actions[actionIds[i]].text, 0);
         if (stringWidth > maxWidth)
             maxWidth = stringWidth;
     }
@@ -214,10 +214,11 @@ int GetNicknameLanguage(u8 *str)
         return GAME_LANGUAGE;
 }
 
-void sub_81DB620(int windowId, int columnStart, int rowStart, int numFillTiles, int numRows)
+// Used by Pokénav's Match Call to erase the previous trainer's flavor text when switching between their info pages.
+void FillWindowTilesByRow(int windowId, int columnStart, int rowStart, int numFillTiles, int numRows)
 {
     u8 *windowTileData;
-    int fillSize, windowRowSize, rowsToFill;
+    int fillSize, windowRowSize, i;
     struct Window *window = &gWindows[windowId];
 
     fillSize = numFillTiles * TILE_SIZE_4BPP;
@@ -225,12 +226,10 @@ void sub_81DB620(int windowId, int columnStart, int rowStart, int numFillTiles, 
     windowTileData = window->tileData + (rowStart * windowRowSize) + (columnStart * TILE_SIZE_4BPP);
     if (numRows > 0)
     {
-        rowsToFill = numRows;
-        while (rowsToFill)
+        for (i = numRows; i != 0; i--)
         {
             CpuFastFill8(0x11, windowTileData, fillSize);
             windowTileData += windowRowSize;
-            rowsToFill--;
         }
     }
 }

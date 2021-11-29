@@ -26,6 +26,7 @@
 #include "malloc.h"
 #include "overworld.h"
 #include "event_scripts.h"
+#include "graphics.h"
 #include "constants/battle_frontier.h"
 #include "constants/battle_pyramid.h"
 #include "constants/event_objects.h"
@@ -33,15 +34,11 @@
 #include "constants/frontier_util.h"
 #include "constants/items.h"
 #include "constants/layouts.h"
-#include "constants/maps.h"
 #include "constants/metatile_labels.h"
 #include "constants/moves.h"
 #include "constants/trainers.h"
 
 extern const struct MapLayout *const gMapLayouts[];
-extern const u16 gUnknown_08D856C8[][16];
-
-
 
 struct PyramidWildMon
 {
@@ -1188,7 +1185,7 @@ static void Task_SetPyramidFloorPalette(u8 taskId)
 {
     if (gPaletteFade.active)
     {
-        CpuCopy16(gUnknown_08D856C8[gSaveBlock2Ptr->frontier.curChallengeBattleNum], &gPlttBufferUnfaded[96], 32);
+        CpuCopy16(gBattlePyramidFloor_Pal[gSaveBlock2Ptr->frontier.curChallengeBattleNum], &gPlttBufferUnfaded[96], 32);
         DestroyTask(taskId);
     }
 }

@@ -32,7 +32,6 @@
 #include "constants/event_objects.h"
 #include "constants/field_poison.h"
 #include "constants/map_types.h"
-#include "constants/maps.h"
 #include "constants/songs.h"
 #include "constants/trainer_hill.h"
 
@@ -452,7 +451,7 @@ static const u8 *GetInteractedMetatileScript(struct MapPosition *position, u8 me
             return SecretBase_EventScript_SandOrnament;
         if (MetatileBehavior_IsSecretBaseShieldOrToyTV(metatileBehavior) == TRUE)
             return SecretBase_EventScript_ShieldOrToyTV;
-        if (MetatileBehavior_IsMB_C6(metatileBehavior) == TRUE)
+        if (MetatileBehavior_IsSecretBaseDecorationBase(metatileBehavior) == TRUE)
         {
             CheckInteractedWithFriendsFurnitureBottom();
             return NULL;
@@ -722,7 +721,7 @@ static bool8 TryArrowWarp(struct MapPosition *position, u16 metatileBehavior, u8
 {
     s8 warpEventId = GetWarpEventAtMapPosition(&gMapHeader, position);
 
-    if (IsArrowWarpMetatileBehavior(metatileBehavior, direction) == TRUE && warpEventId != -1)
+    if (IsArrowWarpMetatileBehavior(metatileBehavior, direction) == TRUE && warpEventId != WARP_ID_NONE)
     {
         StoreInitialPlayerAvatarState();
         SetupWarp(&gMapHeader, warpEventId, position);
@@ -736,7 +735,7 @@ static bool8 TryStartWarpEventScript(struct MapPosition *position, u16 metatileB
 {
     s8 warpEventId = GetWarpEventAtMapPosition(&gMapHeader, position);
 
-    if (warpEventId != -1 && IsWarpMetatileBehavior(metatileBehavior) == TRUE)
+    if (warpEventId != WARP_ID_NONE && IsWarpMetatileBehavior(metatileBehavior) == TRUE)
     {
         StoreInitialPlayerAvatarState();
         SetupWarp(&gMapHeader, warpEventId, position);
@@ -760,9 +759,8 @@ static bool8 TryStartWarpEventScript(struct MapPosition *position, u16 metatileB
             DoTeleportTileWarp();
             return TRUE;
         }
-        if (MetatileBehavior_IsBridgeOverOcean(metatileBehavior) == TRUE)
+        if (MetatileBehavior_IsUnionRoomWarp(metatileBehavior) == TRUE)
         {
-            // Maybe unused? This MB is used by log bridges, but there's never a warp event on them.
             DoSpinExitWarp();
             return TRUE;
         }
@@ -793,7 +791,7 @@ static bool8 IsWarpMetatileBehavior(u16 metatileBehavior)
      && MetatileBehavior_IsAquaHideoutWarp(metatileBehavior) != TRUE
      && MetatileBehavior_IsMtPyreHole(metatileBehavior) != TRUE
      && MetatileBehavior_IsMossdeepGymWarp(metatileBehavior) != TRUE
-     && MetatileBehavior_IsBridgeOverOcean(metatileBehavior) != TRUE)
+     && MetatileBehavior_IsUnionRoomWarp(metatileBehavior) != TRUE)
         return FALSE;
     return TRUE;
 }
@@ -879,7 +877,7 @@ static bool8 TryDoorWarp(struct MapPosition *position, u16 metatileBehavior, u8 
         if (MetatileBehavior_IsWarpDoor(metatileBehavior) == TRUE)
         {
             warpEventId = GetWarpEventAtMapPosition(&gMapHeader, position);
-            if (warpEventId != -1 && IsWarpMetatileBehavior(metatileBehavior) == TRUE)
+            if (warpEventId != WARP_ID_NONE && IsWarpMetatileBehavior(metatileBehavior) == TRUE)
             {
                 StoreInitialPlayerAvatarState();
                 SetupWarp(&gMapHeader, warpEventId, position);
@@ -905,7 +903,7 @@ static s8 GetWarpEventAtPosition(struct MapHeader *mapHeader, u16 x, u16 y, u8 e
                 return i;
         }
     }
-    return -1;
+    return WARP_ID_NONE;
 }
 
 static u8 *TryRunCoordEventScript(struct CoordEvent *coordEvent)

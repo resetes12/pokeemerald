@@ -785,7 +785,7 @@ bool8 BattleLoadAllHealthBoxesGfx(u8 state)
 
 void LoadBattleBarGfx(u8 arg0)
 {
-    LZDecompressWram(gUnknown_08C093F0, gMonSpritesGfxPtr->barFontGfx);
+    LZDecompressWram(gBattleInterfaceGfx_BattleBar, gMonSpritesGfxPtr->barFontGfx);
 }
 
 bool8 BattleInitAllSprites(u8 *state1, u8 *battlerId)
@@ -1147,13 +1147,19 @@ void LoadAndCreateEnemyShadowSprites(void)
     LoadCompressedSpriteSheet(&gSpriteSheet_EnemyShadow);
 
     battlerId = GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT);
-    gBattleSpritesDataPtr->healthBoxesData[battlerId].shadowSpriteId = CreateSprite(&gSpriteTemplate_EnemyShadow, GetBattlerSpriteCoord(battlerId, 0), GetBattlerSpriteCoord(battlerId, 1) + 29, 0xC8);
+    gBattleSpritesDataPtr->healthBoxesData[battlerId].shadowSpriteId = CreateSprite(&gSpriteTemplate_EnemyShadow,
+                                                                                    GetBattlerSpriteCoord(battlerId, BATTLER_COORD_X),
+                                                                                    GetBattlerSpriteCoord(battlerId, BATTLER_COORD_Y) + 29,
+                                                                                    0xC8);
     gSprites[gBattleSpritesDataPtr->healthBoxesData[battlerId].shadowSpriteId].data[0] = battlerId;
 
     if (IsDoubleBattle())
     {
         battlerId = GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT);
-        gBattleSpritesDataPtr->healthBoxesData[battlerId].shadowSpriteId = CreateSprite(&gSpriteTemplate_EnemyShadow, GetBattlerSpriteCoord(battlerId, 0), GetBattlerSpriteCoord(battlerId, 1) + 29, 0xC8);
+        gBattleSpritesDataPtr->healthBoxesData[battlerId].shadowSpriteId = CreateSprite(&gSpriteTemplate_EnemyShadow,
+                                                                                        GetBattlerSpriteCoord(battlerId, BATTLER_COORD_X),
+                                                                                        GetBattlerSpriteCoord(battlerId, BATTLER_COORD_Y) + 29,
+                                                                                        0xC8);
         gSprites[gBattleSpritesDataPtr->healthBoxesData[battlerId].shadowSpriteId].data[0] = battlerId;
     }
 }

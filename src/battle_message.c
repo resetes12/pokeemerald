@@ -8,6 +8,7 @@
 #include "data.h"
 #include "event_data.h"
 #include "frontier_util.h"
+#include "graphics.h"
 #include "international_string_util.h"
 #include "item.h"
 #include "link.h"
@@ -42,18 +43,13 @@ struct BattleWindowText
     u8 shadowColor;
 };
 
-extern const u16 gUnknown_08D85620[];
-
-// this file's functions
 static void ChooseMoveUsedParticle(u8 *textPtr);
 static void ChooseTypeOfMoveUsedString(u8 *dst);
 static void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst);
 
-// EWRAM vars
 static EWRAM_DATA u8 sBattlerAbilities[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA struct BattleMsgData *gBattleMsgDataPtr = NULL;
 
-// const rom data
 // todo: make some of those names less vague: attacker/target vs pkmn, etc.
 
 static const u8 sText_Trainer1LoseText[] = _("{B_TRAINER1_LOSE_TEXT}");
@@ -1482,7 +1478,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
 {
     [B_WIN_MSG] = {
         .fillValue = PIXEL_FILL(0xF),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1494,7 +1490,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [B_WIN_ACTION_PROMPT] = {
         .fillValue = PIXEL_FILL(0xF),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = 1,
         .y = 1,
         .letterSpacing = 0,
@@ -1506,7 +1502,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [B_WIN_ACTION_MENU] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1518,7 +1514,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [B_WIN_MOVE_NAME_1] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 7,
+        .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1530,7 +1526,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [B_WIN_MOVE_NAME_2] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 7,
+        .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1542,7 +1538,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [B_WIN_MOVE_NAME_3] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 7,
+        .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1554,7 +1550,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [B_WIN_MOVE_NAME_4] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 7,
+        .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1566,7 +1562,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [B_WIN_PP] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 7,
+        .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1578,7 +1574,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [B_WIN_DUMMY] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1590,7 +1586,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [B_WIN_PP_REMAINING] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = 2,
         .y = 1,
         .letterSpacing = 0,
@@ -1602,7 +1598,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [B_WIN_MOVE_TYPE] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 7,
+        .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1614,7 +1610,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [B_WIN_SWITCH_PROMPT] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 7,
+        .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1626,7 +1622,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [B_WIN_YESNO] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1638,7 +1634,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [B_WIN_LEVEL_UP_BOX] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1650,7 +1646,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [B_WIN_LEVEL_UP_BANNER] = {
         .fillValue = PIXEL_FILL(0),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = 32,
         .y = 1,
         .letterSpacing = 0,
@@ -1662,7 +1658,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [B_WIN_VS_PLAYER] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = -1,
         .y = 1,
         .letterSpacing = 0,
@@ -1674,7 +1670,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [B_WIN_VS_OPPONENT] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = -1,
         .y = 1,
         .letterSpacing = 0,
@@ -1686,7 +1682,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [B_WIN_VS_MULTI_PLAYER_1] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = -1,
         .y = 1,
         .letterSpacing = 0,
@@ -1698,7 +1694,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [B_WIN_VS_MULTI_PLAYER_2] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = -1,
         .y = 1,
         .letterSpacing = 0,
@@ -1710,7 +1706,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [B_WIN_VS_MULTI_PLAYER_3] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = -1,
         .y = 1,
         .letterSpacing = 0,
@@ -1722,7 +1718,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [B_WIN_VS_MULTI_PLAYER_4] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = -1,
         .y = 1,
         .letterSpacing = 0,
@@ -1734,7 +1730,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [B_WIN_VS_OUTCOME_DRAW] = {
         .fillValue = PIXEL_FILL(0),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = -1,
         .y = 1,
         .letterSpacing = 0,
@@ -1746,7 +1742,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [B_WIN_VS_OUTCOME_LEFT] = {
         .fillValue = PIXEL_FILL(0),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = -1,
         .y = 1,
         .letterSpacing = 0,
@@ -1758,7 +1754,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Normal[] =
     },
     [B_WIN_VS_OUTCOME_RIGHT] = {
         .fillValue = PIXEL_FILL(0x0),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = -1,
         .y = 1,
         .letterSpacing = 0,
@@ -1774,7 +1770,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
 {
     [B_WIN_MSG] = {
         .fillValue = PIXEL_FILL(0xF),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1786,7 +1782,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
     },
     [B_WIN_ACTION_PROMPT] = {
         .fillValue = PIXEL_FILL(0xF),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = 1,
         .y = 1,
         .letterSpacing = 0,
@@ -1798,7 +1794,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
     },
     [B_WIN_ACTION_MENU] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1810,7 +1806,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
     },
     [B_WIN_MOVE_NAME_1] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 7,
+        .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1822,7 +1818,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
     },
     [B_WIN_MOVE_NAME_2] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 7,
+        .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1834,7 +1830,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
     },
     [B_WIN_MOVE_NAME_3] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 7,
+        .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1846,7 +1842,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
     },
     [B_WIN_MOVE_NAME_4] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 7,
+        .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1858,7 +1854,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
     },
     [B_WIN_PP] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 7,
+        .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1870,7 +1866,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
     },
     [B_WIN_DUMMY] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1882,7 +1878,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
     },
     [B_WIN_PP_REMAINING] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = 2,
         .y = 1,
         .letterSpacing = 0,
@@ -1894,7 +1890,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
     },
     [B_WIN_MOVE_TYPE] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 7,
+        .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1906,7 +1902,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
     },
     [B_WIN_SWITCH_PROMPT] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 7,
+        .fontId = FONT_NARROW,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1918,7 +1914,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
     },
     [B_WIN_YESNO] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1930,7 +1926,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
     },
     [B_WIN_LEVEL_UP_BOX] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -1942,7 +1938,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
     },
     [B_WIN_LEVEL_UP_BANNER] = {
         .fillValue = PIXEL_FILL(0),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = 32,
         .y = 1,
         .letterSpacing = 0,
@@ -1954,7 +1950,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
     },
     [ARENA_WIN_PLAYER_NAME] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = -1,
         .y = 1,
         .letterSpacing = 0,
@@ -1966,7 +1962,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
     },
     [ARENA_WIN_VS] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = -1,
         .y = 1,
         .letterSpacing = 0,
@@ -1978,7 +1974,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
     },
     [ARENA_WIN_OPPONENT_NAME] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = -1,
         .y = 1,
         .letterSpacing = 0,
@@ -1990,7 +1986,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
     },
     [ARENA_WIN_MIND] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = -1,
         .y = 1,
         .letterSpacing = 0,
@@ -2002,7 +1998,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
     },
     [ARENA_WIN_SKILL] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = -1,
         .y = 1,
         .letterSpacing = 0,
@@ -2014,7 +2010,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
     },
     [ARENA_WIN_BODY] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = -1,
         .y = 1,
         .letterSpacing = 0,
@@ -2026,7 +2022,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
     },
     [ARENA_WIN_JUDGEMENT_TITLE] = {
         .fillValue = PIXEL_FILL(0xE),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = -1,
         .y = 1,
         .letterSpacing = 0,
@@ -2038,7 +2034,7 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
     },
     [ARENA_WIN_JUDGEMENT_TEXT] = {
         .fillValue = PIXEL_FILL(0x1),
-        .fontId = 1,
+        .fontId = FONT_NORMAL,
         .x = 0,
         .y = 1,
         .letterSpacing = 0,
@@ -2058,7 +2054,6 @@ static const struct BattleWindowText *const sBattleTextOnWindowsInfo[] =
 
 static const u8 sRecordedBattleTextSpeeds[] = {8, 4, 1, 0};
 
-// code
 void BufferStringBattle(u16 stringID)
 {
     s32 i;
@@ -2405,7 +2400,7 @@ static const u8* TryGetStatusString(u8 *src)
     {                                                                   \
         GetMonData(&gPlayerParty[monIndex], MON_DATA_NICKNAME, text);   \
     }                                                                   \
-    StringGetEnd10(text);                                               \
+    StringGet_Nickname(text);                                           \
     toCpy = text;
 
 u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst)
@@ -2471,49 +2466,49 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst)
             case B_TXT_PLAYER_MON1_NAME: // first player poke name
                 GetMonData(&gPlayerParty[gBattlerPartyIndexes[GetBattlerAtPosition(B_POSITION_PLAYER_LEFT)]],
                            MON_DATA_NICKNAME, text);
-                StringGetEnd10(text);
+                StringGet_Nickname(text);
                 toCpy = text;
                 break;
             case B_TXT_OPPONENT_MON1_NAME: // first enemy poke name
                 GetMonData(&gEnemyParty[gBattlerPartyIndexes[GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT)]],
                            MON_DATA_NICKNAME, text);
-                StringGetEnd10(text);
+                StringGet_Nickname(text);
                 toCpy = text;
                 break;
             case B_TXT_PLAYER_MON2_NAME: // second player poke name
                 GetMonData(&gPlayerParty[gBattlerPartyIndexes[GetBattlerAtPosition(B_POSITION_PLAYER_RIGHT)]],
                            MON_DATA_NICKNAME, text);
-                StringGetEnd10(text);
+                StringGet_Nickname(text);
                 toCpy = text;
                 break;
             case B_TXT_OPPONENT_MON2_NAME: // second enemy poke name
                 GetMonData(&gEnemyParty[gBattlerPartyIndexes[GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT)]],
                            MON_DATA_NICKNAME, text);
-                StringGetEnd10(text);
+                StringGet_Nickname(text);
                 toCpy = text;
                 break;
             case B_TXT_LINK_PLAYER_MON1_NAME: // link first player poke name
                 GetMonData(&gPlayerParty[gBattlerPartyIndexes[gLinkPlayers[multiplayerId].id]],
                            MON_DATA_NICKNAME, text);
-                StringGetEnd10(text);
+                StringGet_Nickname(text);
                 toCpy = text;
                 break;
             case B_TXT_LINK_OPPONENT_MON1_NAME: // link first opponent poke name
                 GetMonData(&gEnemyParty[gBattlerPartyIndexes[gLinkPlayers[multiplayerId].id ^ 1]],
                            MON_DATA_NICKNAME, text);
-                StringGetEnd10(text);
+                StringGet_Nickname(text);
                 toCpy = text;
                 break;
             case B_TXT_LINK_PLAYER_MON2_NAME: // link second player poke name
                 GetMonData(&gPlayerParty[gBattlerPartyIndexes[gLinkPlayers[multiplayerId].id ^ 2]],
                            MON_DATA_NICKNAME, text);
-                StringGetEnd10(text);
+                StringGet_Nickname(text);
                 toCpy = text;
                 break;
             case B_TXT_LINK_OPPONENT_MON2_NAME: // link second opponent poke name
                 GetMonData(&gEnemyParty[gBattlerPartyIndexes[gLinkPlayers[multiplayerId].id ^ 3]],
                            MON_DATA_NICKNAME, text);
-                StringGetEnd10(text);
+                StringGet_Nickname(text);
                 toCpy = text;
                 break;
             case B_TXT_ATK_NAME_WITH_PREFIX_MON1: // attacker name with prefix, only battlerId 0/1
@@ -2526,7 +2521,7 @@ u32 BattleStringExpandPlaceholders(const u8 *src, u8 *dst)
                 else
                     GetMonData(&gEnemyParty[gBattlerPartyIndexes[GetBattlerAtPosition(GET_BATTLER_SIDE(gBattlerAttacker)) + 2]], MON_DATA_NICKNAME, text);
 
-                StringGetEnd10(text);
+                StringGet_Nickname(text);
                 toCpy = text;
                 break;
             case B_TXT_ATK_NAME_WITH_PREFIX: // attacker name with prefix
@@ -2908,7 +2903,7 @@ static void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
 
                 GetMonData(&gEnemyParty[src[srcID + 2]], MON_DATA_NICKNAME, text);
             }
-            StringGetEnd10(text);
+            StringGet_Nickname(text);
             StringAppend(dst, text);
             srcID += 3;
             break;
@@ -2925,7 +2920,7 @@ static void ExpandBattleTextBuffPlaceholders(const u8 *src, u8 *dst)
                 GetMonData(&gPlayerParty[src[srcID + 2]], MON_DATA_NICKNAME, dst);
             else
                 GetMonData(&gEnemyParty[src[srcID + 2]], MON_DATA_NICKNAME, dst);
-            StringGetEnd10(dst);
+            StringGet_Nickname(dst);
             srcID += 3;
             break;
         case B_BUFF_NEGATIVE_FLAVOR: // flavor table
@@ -3118,14 +3113,14 @@ void BattlePutTextOnWindow(const u8 *text, u8 windowId)
     if (copyToVram)
     {
         PutWindowTilemap(windowId);
-        CopyWindowToVram(windowId, 3);
+        CopyWindowToVram(windowId, COPYWIN_FULL);
     }
 }
 
 void SetPpNumbersPaletteInMoveSelection(void)
 {
     struct ChooseMoveStruct *chooseMoveStruct = (struct ChooseMoveStruct*)(&gBattleBufferA[gActiveBattler][4]);
-    const u16 *palPtr = gUnknown_08D85620;
+    const u16 *palPtr = gPPTextPalette;
     u8 var = GetCurrentPpToMaxPpState(chooseMoveStruct->currentPp[gMoveSelectionCursor[gActiveBattler]],
                          chooseMoveStruct->maxPp[gMoveSelectionCursor[gActiveBattler]]);
 

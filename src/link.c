@@ -292,10 +292,9 @@ static void LinkTestScreen(void)
     gLinkType = LINKTYPE_TRADE;
     OpenLink();
     SeedRng(gMain.vblankCounter2);
-    for (i = 0; i < MAX_LINK_PLAYERS; i++)
-    {
+    for (i = 0; i < TRAINER_ID_LENGTH; i++)
         gSaveBlock2Ptr->playerTrainerId[i] = Random() % 256;
-    }
+
     InitLinkTestBG(0, 2, 4, 0, 0);
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_MODE_0 | DISPCNT_OBJ_1D_MAP | DISPCNT_BG0_ON | DISPCNT_BG2_ON | DISPCNT_OBJ_ON);
     CreateTask(Task_DestroySelf, 0);
@@ -1622,7 +1621,7 @@ void CB2_LinkError(void)
         SetGpuReg(REG_OFFSET_BG1HOFS, 0);
         SetGpuReg(REG_OFFSET_BG1VOFS, 0);
         ClearGpuRegBits(REG_OFFSET_DISPCNT, DISPCNT_WIN0_ON | DISPCNT_WIN1_ON | DISPCNT_OBJWIN_ON);
-        LoadPalette(gUnknown_0860F074, 0xf0, 0x20);
+        LoadPalette(gStandardMenuPalette, 0xf0, 0x20);
         gSoftResetDisabled = FALSE;
         CreateTask(Task_DestroySelf, 0);
         StopMapMusic();
@@ -1644,12 +1643,12 @@ static void ErrorMsg_MoveCloserToPartner(void)
     LoadPalette(sWirelessLinkDisplayPal, 0, 0x20);
     FillWindowPixelBuffer(0, PIXEL_FILL(0));
     FillWindowPixelBuffer(2, PIXEL_FILL(0));
-    AddTextPrinterParameterized3(0, 3, 2, 6, sTextColors, 0, gText_CommErrorEllipsis);
-    AddTextPrinterParameterized3(2, 3, 2, 1, sTextColors, 0, gText_MoveCloserToLinkPartner);
+    AddTextPrinterParameterized3(0, FONT_SHORT_COPY_1, 2, 6, sTextColors, 0, gText_CommErrorEllipsis);
+    AddTextPrinterParameterized3(2, FONT_SHORT_COPY_1, 2, 1, sTextColors, 0, gText_MoveCloserToLinkPartner);
     PutWindowTilemap(0);
     PutWindowTilemap(2);
-    CopyWindowToVram(0, 0);
-    CopyWindowToVram(2, 3);
+    CopyWindowToVram(0, COPYWIN_NONE); // Does nothing
+    CopyWindowToVram(2, COPYWIN_FULL);
 }
 
 static void ErrorMsg_CheckConnections(void)
@@ -1657,11 +1656,11 @@ static void ErrorMsg_CheckConnections(void)
     LoadBgTiles(0, sCommErrorBg_Gfx, 0x20, 0);
     FillWindowPixelBuffer(1, PIXEL_FILL(0));
     FillWindowPixelBuffer(2, PIXEL_FILL(0));
-    AddTextPrinterParameterized3(1, 3, 2, 0, sTextColors, 0, gText_CommErrorCheckConnections);
+    AddTextPrinterParameterized3(1, FONT_SHORT_COPY_1, 2, 0, sTextColors, 0, gText_CommErrorCheckConnections);
     PutWindowTilemap(1);
     PutWindowTilemap(2);
-    CopyWindowToVram(1, 0);
-    CopyWindowToVram(2, 3);
+    CopyWindowToVram(1, COPYWIN_NONE); // Does nothing
+    CopyWindowToVram(2, COPYWIN_FULL);
 }
 
 static void CB2_PrintErrorMessage(void)
@@ -1692,9 +1691,9 @@ static void CB2_PrintErrorMessage(void)
             break;
         case 130:
             if (gWirelessCommType == 2)
-                AddTextPrinterParameterized3(0, 3, 2, 20, sTextColors, 0, gText_ABtnTitleScreen);
+                AddTextPrinterParameterized3(0, FONT_SHORT_COPY_1, 2, 20, sTextColors, 0, gText_ABtnTitleScreen);
             else if (gWirelessCommType == 1)
-                AddTextPrinterParameterized3(0, 3, 2, 20, sTextColors, 0, gText_ABtnRegistrationCounter);
+                AddTextPrinterParameterized3(0, FONT_SHORT_COPY_1, 2, 20, sTextColors, 0, gText_ABtnRegistrationCounter);
             break;
     }
     if (gMain.state == 160)
@@ -1832,9 +1831,9 @@ u32 GetLinkRecvQueueLength(void)
     return gLink.recvQueue.count;
 }
 
-bool32 IsLinkRecvQueueLengthAtLeast3(void)
+bool32 IsLinkRecvQueueAtOverworldMax(void)
 {
-    if (GetLinkRecvQueueLength() > 2)
+    if (GetLinkRecvQueueLength() >= OVERWORLD_RECV_QUEUE_MAX)
         return TRUE;
 
     return FALSE;
@@ -2192,30 +2191,26 @@ static bool8 DoHandshake(void)
     {
         REG_SIOMLT_SEND = SLAVE_HANDSHAKE;
     }
-    *(u64 *)gLink.tempRecvBuffer = REG_SIOMLT_RECV;
+    *(u64 *)gLink.handshakeBuffer = REG_SIOMLT_RECV;
     REG_SIOMLT_RECV = 0;
     gLink.handshakeAsMaster = FALSE;
-    for (i = 0; i < 4; i++)
+    for (i = 0; i < MAX_LINK_PLAYERS; i++)
     {
-        if ((gLink.tempRecvBuffer[i] & ~0x3) == SLAVE_HANDSHAKE || gLink.tempRecvBuffer[i] == MASTER_HANDSHAKE)
+        if ((gLink.handshakeBuffer[i] & ~0x3) == SLAVE_HANDSHAKE || gLink.handshakeBuffer[i] == MASTER_HANDSHAKE)
         {
             playerCount++;
-            if (minRecv > gLink.tempRecvBuffer[i] && gLink.tempRecvBuffer[i] != 0)
-            {
-                minRecv = gLink.tempRecvBuffer[i];
-            }
+            if (minRecv > gLink.handshakeBuffer[i] && gLink.handshakeBuffer[i] != 0)
+                minRecv = gLink.handshakeBuffer[i];
         }
         else
         {
-            if (gLink.tempRecvBuffer[i] != 0xFFFF)
-            {
+            if (gLink.handshakeBuffer[i] != 0xFFFF)
                 playerCount = 0;
-            }
             break;
         }
     }
     gLink.playerCount = playerCount;
-    if (gLink.playerCount > 1 && gLink.playerCount == sHandshakePlayerCount && gLink.tempRecvBuffer[0] == MASTER_HANDSHAKE)
+    if (gLink.playerCount > 1 && gLink.playerCount == sHandshakePlayerCount && gLink.handshakeBuffer[0] == MASTER_HANDSHAKE)
     {
         return TRUE;
     }
