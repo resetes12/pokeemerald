@@ -780,9 +780,9 @@ static void FourOptions_DrawChoices(const u8 *const *const strings, int selectio
 // static const u8 gText_ = _("");
 // static const u8 gText_ = _("{COLOR }{SHADOW }");
 
-static const u8 gText_Off[] = _("{COLOR DARK_GREY}{SHADOW LIGHT_GREY}OFF");
-static const u8 gText_On[]  = _("{COLOR DARK_GREY}{SHADOW LIGHT_GREY}ON");
-static const u8 gText_None[]  = _("{COLOR DARK_GREY}{SHADOW LIGHT_GREY}NONE");
+static const u8 gText_Off[] = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}OFF");
+static const u8 gText_On[]  = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}ON");
+static const u8 gText_None[]  = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}NONE");
 static void DrawChoices_Rand_OffOn(int selection, int y, u8 textSpeed)
 {
     u8 styles[2] = {0};
@@ -792,7 +792,7 @@ static void DrawChoices_Rand_OffOn(int selection, int y, u8 textSpeed)
     DrawOptionMenuChoice(gText_On, GetStringRightAlignXOffset(1, gText_On, 198), y, styles[1], textSpeed);
 }
 
-static const u8 gText_Rand_Chaos[] = _("{COLOR DARK_GREY}{SHADOW LIGHT_GREY}CHAOS");
+static const u8 gText_Rand_Chaos[] = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}CHAOS");
 static void DrawChoices_Rand_OffChaos(int selection, int y, u8 textSpeed)
 {
     u8 styles[2] = {0};
@@ -802,8 +802,8 @@ static void DrawChoices_Rand_OffChaos(int selection, int y, u8 textSpeed)
     DrawOptionMenuChoice(gText_Rand_Chaos, GetStringRightAlignXOffset(1, gText_Rand_Chaos, 198), y, styles[1], textSpeed);
 }
 
-static const u8 gText_Normal[]  = _("{COLOR DARK_GREY}{SHADOW LIGHT_GREY}NORMAL");
-static const u8 gText_Random[]  = _("{COLOR DARK_GREY}{SHADOW LIGHT_GREY}RANDOM");
+static const u8 gText_Normal[]  = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}NORMAL");
+static const u8 gText_Random[]  = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}RANDOM");
 static void DrawChoices_Rand_NormalRandom(int selection, int y, u8 textSpeed)
 {
     u8 styles[2] = {0};
@@ -815,7 +815,7 @@ static void DrawChoices_Rand_NormalRandom(int selection, int y, u8 textSpeed)
 
 
 
-static const u8 gText_Diff_EvoLimit_First[] = _("{COLOR DARK_GREY}{SHADOW LIGHT_GREY}FIRST");
+static const u8 gText_Diff_EvoLimit_First[] = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}FIRST");
 static void DrawChoices_Diff_EvoLimit(int selection, int y, u8 textSpeed)
 {
     u8 styles[3] = {0};
@@ -840,7 +840,7 @@ static void DrawChoices_Diff_PartyLimit(int selection, int y, u8 textSpeed)
     }
 }
 
-static const u8 gText_Diff_Nuzlocke_Hardcore[] = _("{COLOR DARK_GREY}{SHADOW LIGHT_GREY}HARD");
+static const u8 gText_Diff_Nuzlocke_Hardcore[] = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}HARD");
 static void DrawChoices_Diff_Nuzlocke(int selection, int y, u8 textSpeed)
 {
     u8 styles[3] = {0};
@@ -852,12 +852,12 @@ static void DrawChoices_Diff_Nuzlocke(int selection, int y, u8 textSpeed)
     DrawOptionMenuChoice(gText_Diff_Nuzlocke_Hardcore, GetStringRightAlignXOffset(1, gText_Diff_Nuzlocke_Hardcore, 198), y, styles[2], textSpeed);
 }
 
-// static const u8 gText_Diff_Items_Player[]   = _("{COLOR DARK_GREY}{SHADOW LIGHT_GREY}PLAYER");
-// static const u8 gText_Diff_Items_Trainer[]  = _("{COLOR DARK_GREY}{SHADOW LIGHT_GREY}TRAINER");
-// static const u8 gText_Diff_Items_Both[]     = _("{COLOR DARK_GREY}{SHADOW LIGHT_GREY}BOTH");
-static const u8 gText_Diff_Items_Player[]   = _("{COLOR DARK_GREY}{SHADOW LIGHT_GREY}PL");
-static const u8 gText_Diff_Items_Trainer[]  = _("{COLOR DARK_GREY}{SHADOW LIGHT_GREY}TR");
-static const u8 gText_Diff_Items_Both[]     = _("{COLOR DARK_GREY}{SHADOW LIGHT_GREY}BOTH");
+// static const u8 gText_Diff_Items_Player[]   = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}PLAYER");
+// static const u8 gText_Diff_Items_Trainer[]  = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}TRAINER");
+// static const u8 gText_Diff_Items_Both[]     = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}BOTH");
+static const u8 gText_Diff_Items_Player[]   = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}PL");
+static const u8 gText_Diff_Items_Trainer[]  = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}TR");
+static const u8 gText_Diff_Items_Both[]     = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}BOTH");
 static const u8 *const sTextItemsStrings[]  = {gText_Off, gText_Diff_Items_Player, gText_Diff_Items_Trainer, gText_Diff_Items_Both};
 static void DrawChoices_Diff_Items(int selection, int y, u8 textSpeed)
 {
