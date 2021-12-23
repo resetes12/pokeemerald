@@ -63,7 +63,6 @@ extern bool8 (*gFieldCallback2)(void);
 extern u8 gLocalLinkPlayerId;
 extern u8 gFieldLinkPlayerCount;
 
-extern u8 gTimeOfDay;
 extern struct TimeBlendSettings currentTimeBlend;
 
 // Exported ROM declarations
