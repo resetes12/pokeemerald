@@ -273,26 +273,7 @@ static void Task_SlidingPuzzle_Glow(u8 taskId)
         break;
     default:
         if (IsFanfareTaskInactive())
-        {
-            tState = 0;
             gTasks[taskId].func = Task_SlidingPuzzle_Solved;
-        }
-        break;
-    }
-}
-
-static void Task_SlidingPuzzle_Solved(u8 taskId)
-{
-    u16 color;
-    s16* data = gTasks[taskId].data;
-    switch (tState)
-    {
-    case 0:
-        if (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))
-            tState++;
-        break;
-    default:
-        ExitSlidingPuzzle(taskId);
         break;
     }
 }
@@ -300,6 +281,12 @@ static void Task_SlidingPuzzle_Solved(u8 taskId)
 #undef tState
 #undef tTimer
 #undef tGlow
+
+static void Task_SlidingPuzzle_Solved(u8 taskId)
+{
+    if (JOY_NEW(A_BUTTON) || JOY_NEW(B_BUTTON))
+        ExitSlidingPuzzle(taskId);
+}
 
 static void Task_SlidingPuzzle_Exit(u8 taskId)
 {
