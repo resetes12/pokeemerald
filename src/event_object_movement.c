@@ -1864,7 +1864,6 @@ bool8 ScrFunc_emote(struct ScriptContext *ctx) {
 }
 
 struct SpecialEmote { // Used for storing conditional emotes
-  const u8 * script;
   u16 index;
   u8 emotion;
 };
@@ -1873,7 +1872,7 @@ struct SpecialEmote { // Used for storing conditional emotes
 bool8 ScrFunc_getfolloweraction(struct ScriptContext *ctx) // Essentially a big switch for follower messages
 {
   u16 species;
-  u32 behavior;
+  s32 multi;
   s16 health_percent;
   u8 friendship;
   struct SpecialEmote cond_emotes[16] = {0};
@@ -1889,16 +1888,9 @@ bool8 ScrFunc_getfolloweraction(struct ScriptContext *ctx) // Essentially a big 
   // If map is not flyable, set the script to jump past the fly check TODO: Should followers ask to fly?
   if (TRUE || !Overworld_MapTypeAllowsTeleportAndFly(gMapHeader.mapType))
     ScriptJump(ctx, EventScript_FollowerEnd);
-  behavior = MapGridGetMetatileBehaviorAt(objEvent->currentCoords.x, objEvent->currentCoords.y);
+  multi = MapGridGetMetatileBehaviorAt(objEvent->currentCoords.x, objEvent->currentCoords.y);
   species = GetMonData(mon, MON_DATA_SPECIES);
   friendship = GetMonData(mon, MON_DATA_FRIENDSHIP);
-  // // 1. Puddle splash or wet feet
-  // if (MetatileBehavior_IsPuddle(behavior) || MetatileBehavior_IsShallowFlowingWater(behavior)) {
-  //   if (SpeciesHasType(species, TYPE_FIRE))
-  //     message_choices[n_choices++] = EventScript_FollowerUnhappyToBeWet;
-  //   else if (SpeciesToGraphicsInfo(species, 0)->tracks) // if follower is grounded
-  //     message_choices[n_choices++] = EventScript_FollowerSplashesAbout;
-  // }
   // Happy weights
   emotion_weight[FOLLOWER_EMOTION_HAPPY] = 10;
   if (friendship > 170)
@@ -1933,10 +1925,11 @@ bool8 ScrFunc_getfolloweraction(struct ScriptContext *ctx) // Essentially a big 
     cond_emotes[n_choices++] = (struct SpecialEmote) {.emotion=FOLLOWER_EMOTION_HAPPY, .index=31};
   else if (GetCurrentWeather() == WEATHER_RAIN || GetCurrentWeather() == WEATHER_RAIN_THUNDERSTORM) {
     if (SpeciesHasType(species, TYPE_FIRE)) {
-      emotion_weight[FOLLOWER_EMOTION_SAD] = 30;
-      cond_emotes[n_choices++] = (struct SpecialEmote) {.emotion=FOLLOWER_EMOTION_SAD, .index=3};
-      cond_emotes[n_choices++] = (struct SpecialEmote) {.emotion=FOLLOWER_EMOTION_UPSET, .index=3};
-    }
+        emotion_weight[FOLLOWER_EMOTION_SAD] = 30;
+        cond_emotes[n_choices++] = (struct SpecialEmote) {.emotion=FOLLOWER_EMOTION_SAD, .index=3};
+        cond_emotes[n_choices++] = (struct SpecialEmote) {.emotion=FOLLOWER_EMOTION_UPSET, .index=3};
+    } else
+        cond_emotes[n_choices++] = (struct SpecialEmote) {.emotion = FOLLOWER_EMOTION_MUSIC, .index=14};
     cond_emotes[n_choices++] = (struct SpecialEmote) {.emotion=FOLLOWER_EMOTION_SURPRISE, .index=20};
   }
   // Health & status-related
@@ -1955,26 +1948,20 @@ bool8 ScrFunc_getfolloweraction(struct ScriptContext *ctx) // Essentially a big 
   if (mon->status & 0x8) // STATUS1_POISON
     emotion = FOLLOWER_EMOTION_POISONED;
   ObjectEventEmote(objEvent, emotion);
+  multi = Random() % followerBasicMessages[emotion].length;
   if (Random() & 1) { // With 50% chance, select special message using reservoir sampling
     u8 i, j = 1;
     struct SpecialEmote *choice = 0;
     for (i = 0; i < n_choices; i++) {
-      if (cond_emotes[i].emotion == emotion) {
-        if (Random() < 0x10000 / (j++)) // Replace item with 1/j chance
-          choice = &cond_emotes[i];
-      }
+      if (cond_emotes[i].emotion == emotion && (Random() < 0x10000 / (j++)))  // Replace item with 1/j chance
+        choice = &cond_emotes[i];
     }
-    if (choice) { // Only continue if a script was actually chosen
-      ctx->data[0] = (u32) followerBasicMessages[emotion].messages[choice->index];
-      if (choice->script)
-        ScriptCall(ctx, choice->script);
-      else
-        ScriptCall(ctx, followerBasicMessages[emotion].script);
-      return FALSE;
-    }
+    if (choice)
+        multi = choice->index;
   }
-  ctx->data[0] = (u32) followerBasicMessages[emotion].messages[Random() % followerBasicMessages[emotion].length];
-  ScriptCall(ctx, followerBasicMessages[emotion].script);
+  ctx->data[0] = (u32) followerBasicMessages[emotion].messages[multi].text; // Load message text
+  ScriptCall(ctx, followerBasicMessages[emotion].messages[multi].script ?
+      followerBasicMessages[emotion].messages[multi].script : followerBasicMessages[emotion].script);
   return FALSE;
 }
 
@@ -4839,8 +4826,14 @@ bool8 MovementType_FollowPlayer_Active(struct ObjectEvent *objectEvent, struct S
 
 bool8 MovementType_FollowPlayer_Moving(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
-    if (ObjectEventExecSingleMovementAction(objectEvent, sprite))
-    {
+    #ifdef MB_SIDEWAYS_STAIRS_RIGHT_SIDE
+    // Copied from ObjectEventExecSingleMovementAction
+    if (gMovementActionFuncs[objectEvent->movementActionId][sprite->sActionFuncId](objectEvent, sprite)) {
+        objectEvent->movementActionId = MOVEMENT_ACTION_NONE;
+        sprite->sActionFuncId = 0;
+    #else
+    if (ObjectEventExecSingleMovementAction(objectEvent, sprite)) {
+    #endif
         objectEvent->singleMovementActive = 0;
         if (sprite->data[1]) { // restore nonzero state
           sprite->data[1] = 1;
@@ -4870,6 +4863,9 @@ bool8 FollowablePlayerMovement_Step(struct ObjectEvent *objectEvent, struct Spri
     s16 y;
     s16 targetX;
     s16 targetY;
+    #ifdef MB_SIDEWAYS_STAIRS_RIGHT_SIDE
+    u8 playerAction = gObjectEvents[gPlayerAvatar.objectEventId].movementActionId;
+    #endif
 
     targetX = gObjectEvents[gPlayerAvatar.objectEventId].previousCoords.x;
     targetY = gObjectEvents[gPlayerAvatar.objectEventId].previousCoords.y;
@@ -4896,12 +4892,27 @@ bool8 FollowablePlayerMovement_Step(struct ObjectEvent *objectEvent, struct Spri
 
     // Follow player
     direction = GetDirectionToFace(x, y, targetX, targetY);
-    ObjectEventMoveDestCoords(objectEvent, direction, &x, &y);
-    if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_DASH)) { // Set follow speed accordingly
-      ObjectEventSetSingleMovement(objectEvent, sprite, GetWalkFastMovementAction(direction));
+    #ifdef MB_SIDEWAYS_STAIRS_RIGHT_SIDE // https://github.com/ghoulslash/pokeemerald/tree/sideways_stairs
+    MoveCoords(direction, &x, &y);
+    GetCollisionAtCoords(objectEvent, x, y, direction); // Sets directionOverwrite for stairs
+    if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_DASH)) { // Set follow speed according to player's speed
+        if (playerAction >= MOVEMENT_ACTION_RUN_DOWN_SLOW && playerAction <= MOVEMENT_ACTION_RUN_RIGHT_SLOW)
+            objectEvent->movementActionId = GetWalkNormalMovementAction(direction);
+        else
+            objectEvent->movementActionId = GetWalkFastMovementAction(direction);
     } else {
-      ObjectEventSetSingleMovement(objectEvent, sprite, GetWalkNormalMovementAction(direction));
+        if (playerAction >= MOVEMENT_ACTION_WALK_SLOW_DOWN && playerAction <= MOVEMENT_ACTION_WALK_SLOW_RIGHT)
+            ObjectEventSetSingleMovement(objectEvent, sprite, GetWalkSlowMovementAction(direction));
+        else
+            objectEvent->movementActionId = GetWalkNormalMovementAction(direction);
     }
+    sprite->sActionFuncId = 0;
+    #else
+    if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_DASH)) // Set follow speed according to player's speed
+        ObjectEventSetSingleMovement(objectEvent, sprite, GetWalkFastMovementAction(direction));
+    else
+        ObjectEventSetSingleMovement(objectEvent, sprite, GetWalkNormalMovementAction(direction));
+    #endif
     objectEvent->singleMovementActive = 1;
     sprite->data[1] = 2;
     return TRUE;
@@ -5395,6 +5406,9 @@ static bool8 DoesObjectCollideWithObjectAt(struct ObjectEvent *objectEvent, s16 
 {
     u8 i;
     struct ObjectEvent *curObject;
+
+    if (objectEvent->localId == OBJ_EVENT_ID_FOLLOWER)
+        return FALSE; // follower cannot collide with other objects, but they can collide with it
 
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {
