@@ -69,8 +69,6 @@ extern struct TimeBlendSettings currentTimeBlend;
 // Exported ROM declarations
 extern const struct UCoords32 gDirectionToVectors[];
 
-extern const struct BlendSettings gTimeOfDayBlend[];
-
 void DoWhiteOut(void);
 void Overworld_ResetStateAfterFly(void);
 void Overworld_ResetStateAfterTeleport(void);
