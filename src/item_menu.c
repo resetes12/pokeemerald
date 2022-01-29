@@ -351,7 +351,8 @@ static const TaskFunc sContextMenuFuncs[] = {
     [ITEMMENULOCATION_QUIZ_LADY] =              Task_ItemContext_Normal,
     [ITEMMENULOCATION_APPRENTICE] =             Task_ItemContext_Normal,
     [ITEMMENULOCATION_WALLY] =                  NULL,
-    [ITEMMENULOCATION_PCBOX] =                  Task_ItemContext_GiveToPC
+    [ITEMMENULOCATION_PCBOX] =                  Task_ItemContext_GiveToPC,
+    [ITEMMENULOCATION_CHOOSE_ITEM] =            Task_FadeAndCloseBagMenu
 };
 
 static const struct YesNoFuncTable sYesNoTossFunctions = {ConfirmToss, CancelToss};
@@ -628,8 +629,9 @@ void GoToBagMenu(u8 location, u8 pocket, void ( *exitCallback)())
             gBagPosition.exitCallback = exitCallback;
         if (pocket < POCKETS_COUNT)
             gBagPosition.pocket = pocket;
-        if (gBagPosition.location == ITEMMENULOCATION_BERRY_TREE ||
-            gBagPosition.location == ITEMMENULOCATION_BERRY_BLENDER_CRUSH)
+        if (gBagPosition.location == ITEMMENULOCATION_CHOOSE_ITEM
+         || gBagPosition.location == ITEMMENULOCATION_BERRY_TREE
+         || gBagPosition.location == ITEMMENULOCATION_BERRY_BLENDER_CRUSH)
             gBagMenu->pocketSwitchDisabled = TRUE;
         gBagMenu->newScreenCallback = NULL;
         gBagMenu->toSwapPos = NOT_SWAPPING;
@@ -1584,6 +1586,7 @@ static void OpenContextMenu(u8 taskId)
             gBagMenu->contextMenuNumItems = ARRAY_COUNT(sContextMenuItems_Cancel);
         }
         break;
+    case ITEMMENULOCATION_CHOOSE_ITEM:
     case ITEMMENULOCATION_PARTY:
     case ITEMMENULOCATION_SHOP:
     case ITEMMENULOCATION_BERRY_TREE:
