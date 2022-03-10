@@ -12636,7 +12636,7 @@ void RandomizeSpeciesListEWRAM(u16 seed) //broken (somehow the if statement brea
 
     if (!gSaveBlock1Ptr->txRandEncounterLegendary)
     {
-        u16 stemp[RANDOM_SPECIES_COUNT];
+        u16 *stemp = Alloc(sizeof(u16) * RANDOM_SPECIES_COUNT);
         memcpy(stemp, sRandomSpecies, sizeof(sRandomSpecies));
         ShuffleListU16(stemp, NELEMS(sRandomSpecies), seed);
 
@@ -12650,10 +12650,12 @@ void RandomizeSpeciesListEWRAM(u16 seed) //broken (somehow the if statement brea
         #ifdef GBA_PRINTF
             mgba_printf(MGBA_LOG_DEBUG, "**** sSpeciesList[%d] generated ****", NELEMS(sRandomSpecies) );
         #endif
+
+        free(stemp);
     }
     else //include legendary mons
     {
-        u16 stemp[RANDOM_SPECIES_COUNT_LEGENDARY];
+        u16 *stemp = Alloc(sizeof(u16) * RANDOM_SPECIES_COUNT_LEGENDARY);
         memcpy(stemp, sRandomSpeciesLegendary, sizeof(sRandomSpeciesLegendary));
         ShuffleListU16(stemp, NELEMS(sRandomSpeciesLegendary), seed);
 
@@ -12667,12 +12669,14 @@ void RandomizeSpeciesListEWRAM(u16 seed) //broken (somehow the if statement brea
         #ifdef GBA_PRINTF
             mgba_printf(MGBA_LOG_DEBUG, "**** sRandomSpeciesLegendary[%d] generated ****", NELEMS(sRandomSpeciesLegendary) );
         #endif
+
+        free(stemp);
     }
 }
 void RandomizeSpeciesListEWRAMNormal(u16 seed)
 {
     u16 i;
-    u16 stemp[RANDOM_SPECIES_COUNT];
+    u16 *stemp = Alloc(sizeof(u16) * RANDOM_SPECIES_COUNT);
 
     memcpy(stemp, sRandomSpecies, sizeof(sRandomSpecies));
     ShuffleListU16(stemp, NELEMS(sRandomSpecies), seed);
@@ -12687,11 +12691,13 @@ void RandomizeSpeciesListEWRAMNormal(u16 seed)
     #ifdef GBA_PRINTF
         mgba_printf(MGBA_LOG_DEBUG, "**** sSpeciesList[%d] generated ****", NELEMS(sRandomSpecies) );
     #endif
+
+    free(stemp);
 }
 void RandomizeSpeciesListEWRAMLegendary(u16 seed)
 {
     u16 i;
-    u16 stemp[RANDOM_SPECIES_COUNT_LEGENDARY];
+    u16 *stemp = Alloc(sizeof(u16) * RANDOM_SPECIES_COUNT_LEGENDARY);
 
     memcpy(stemp, sRandomSpeciesLegendary, sizeof(sRandomSpeciesLegendary));
     ShuffleListU16(stemp, NELEMS(sRandomSpeciesLegendary), seed);
@@ -12706,6 +12712,8 @@ void RandomizeSpeciesListEWRAMLegendary(u16 seed)
     #ifdef GBA_PRINTF
         mgba_printf(MGBA_LOG_DEBUG, "**** sRandomSpeciesLegendary[%d] generated ****", NELEMS(sRandomSpeciesLegendary) );
     #endif
+
+    free(stemp);
 }
 
 u16 PickRandomizedSpeciesFromEWRAM(u16 species, u16 depth)
