@@ -2985,7 +2985,7 @@ static const u8 gSpeciesMapping[NUM_SPECIES+1] =
     [SPECIES_ORANGURU]          = EVO_TYPE_0,
     [SPECIES_PASSIMIAN]         = EVO_TYPE_0,
     [SPECIES_WIMPOD]            = EVO_TYPE_0,
-    [SPECIES_GOLISOPOD]         = EVO_TYPE_0,
+    [SPECIES_GOLISOPOD]         = EVO_TYPE_1,
     [SPECIES_SANDYGAST]         = EVO_TYPE_0,
     [SPECIES_PALOSSAND]         = EVO_TYPE_1,
     [SPECIES_PYUKUMUKU]         = EVO_TYPE_0,
@@ -6261,7 +6261,6 @@ static const u16 gRandomSpeciesEvo0[] =
     SPECIES_ORANGURU          , //= EVO_TYPE_0,
     SPECIES_PASSIMIAN         , //= EVO_TYPE_0,
     SPECIES_WIMPOD            , //= EVO_TYPE_0,
-    SPECIES_GOLISOPOD         , //= EVO_TYPE_0,
     SPECIES_SANDYGAST         , //= EVO_TYPE_0,
     SPECIES_PYUKUMUKU         , //= EVO_TYPE_0,
     SPECIES_MINIOR            , //= EVO_TYPE_0,
@@ -6686,6 +6685,7 @@ static const u16 gRandomSpeciesEvo1[] =
     SPECIES_SALAZZLE          , //= EVO_TYPE_1,
     SPECIES_BEWEAR            , //= EVO_TYPE_1,
     SPECIES_STEENEE           , //= EVO_TYPE_1,
+    SPECIES_GOLISOPOD         , //= EVO_TYPE_1,
     SPECIES_PALOSSAND         , //= EVO_TYPE_1,
     SPECIES_HAKAMO_O          , //= EVO_TYPE_1,
     SPECIES_THWACKEY          , //= EVO_TYPE_1,
@@ -12701,6 +12701,7 @@ u16 PickRandomizedSpeciesFromEWRAM(u16 species, u16 depth)
             mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_MOVES: species = %d = %s", species, ConvertToAscii(gSpeciesNames[species]) );
             break;
         case TX_RANDOM_OFFSET_ENCOUNTER:
+            mgba_printf(MGBA_LOG_DEBUG, "gSaveBlock1Ptr->txRandEncounterSimilar == FALSE");
             mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_ENCOUNTER: species = %d = %s", species, ConvertToAscii(gSpeciesNames[species]) );
             break;
         case TX_RANDOM_OFFSET_EVOLUTION:
@@ -12771,7 +12772,7 @@ u16 GetSpeciesRandomSeeded(u16 species, u8 depth, u8 random, u8 seeded)
     }
 
     //if random, seeded and similar && Encounter || Evolution
-    if (gSaveBlock1Ptr->txRandEncounterSimilar && (depth == TX_RANDOM_OFFSET_ENCOUNTER || depth == TX_RANDOM_OFFSET_EVOLUTION))
+    if (gSaveBlock1Ptr->txRandEncounterSimilar && depth == TX_RANDOM_OFFSET_ENCOUNTER)
     {
         u16 result;
         switch (slot)
@@ -12789,15 +12790,7 @@ u16 GetSpeciesRandomSeeded(u16 species, u8 depth, u8 random, u8 seeded)
 
         #ifdef GBA_PRINTF
         mgba_printf(MGBA_LOG_DEBUG, "gSaveBlock1Ptr->txRandEncounterSimilar == TRUE");
-        switch (depth)
-        {
-        case TX_RANDOM_OFFSET_ENCOUNTER:
-            mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_ENCOUNTER: species = %d = %s; EVO_TYPE = %d", species, ConvertToAscii(gSpeciesNames[species]), slot);
-            break;
-        case TX_RANDOM_OFFSET_EVOLUTION:
-            mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_EVOLUTION: species = %d = %s; EVO_TYPE = %d", species, ConvertToAscii(gSpeciesNames[species]), slot);
-            break;
-        }
+        mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_ENCOUNTER: species = %d = %s; EVO_TYPE = %d", species, ConvertToAscii(gSpeciesNames[species]), slot);
         slot_new = gSpeciesMapping[result];
         mgba_printf(MGBA_LOG_DEBUG, "new species = %d = %s; EVO_TYPE = %d", result, ConvertToAscii(gSpeciesNames[result]), slot_new);
         mgba_printf(MGBA_LOG_DEBUG, "");
