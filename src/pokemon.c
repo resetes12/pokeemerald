@@ -12713,7 +12713,7 @@ u16 PickRandomizedSpeciesFromEWRAM(u16 species, u16 depth)
     {
         species = sSpeciesList[species];
         #ifdef GBA_PRINTF
-            mgba_printf(MGBA_LOG_DEBUG, "depth[%d], species = %d", i, species );
+            //mgba_printf(MGBA_LOG_DEBUG, "depth[%d], species = %d", i, species );
         #endif
     }
     #ifdef GBA_PRINTF
@@ -12758,6 +12758,7 @@ u8 GetTypeBySpecies(u16 species, u8 type)
 u16 GetSpeciesRandomSeeded(u16 species, u8 depth, u8 random, u8 seeded)
 {
     u8 slot = gSpeciesMapping[species];
+    u8 slot_new;
     if (!random || slot == EVO_TYPE_SELF || (slot == EVO_TYPE_LEGENDARY && !gSaveBlock1Ptr->txRandEncounterLegendary))
         return species;
 
@@ -12769,23 +12770,43 @@ u16 GetSpeciesRandomSeeded(u16 species, u8 depth, u8 random, u8 seeded)
             return sRandomSpecies[(Random() % RANDOM_SPECIES_COUNT) + 1];
     }
 
-    if (!gSaveBlock1Ptr->txRandEncounterSimilar)
-        return PickRandomizedSpeciesFromEWRAM(species, depth);  //return sRandomSpecies[(RandomSeeded(species+offset, seeded) % RANDOM_SPECIES_COUNT) + 1];
-
-    //if random, seeded and similar
-    switch (slot)
+    //if random, seeded and similar && Encounter || Evolution
+    if (gSaveBlock1Ptr->txRandEncounterSimilar && (depth == TX_RANDOM_OFFSET_ENCOUNTER || depth == TX_RANDOM_OFFSET_EVOLUTION))
     {
-    case  EVO_TYPE_0:
-        return gRandomSpeciesEvo0[RandomSeeded(species+depth*3, seeded) % RANDOM_SPECIES_EVO_0_COUNT];
-        break;
-    case  EVO_TYPE_1:
-        return gRandomSpeciesEvo1[RandomSeeded(species+depth*3, seeded) % RANDOM_SPECIES_EVO_1_COUNT];
-        break;
-    case  EVO_TYPE_2:
-        return gRandomSpeciesEvo2[RandomSeeded(species+depth*3, seeded) % RANDOM_SPECIES_EVO_2_COUNT];
-        break;
+        u16 result;
+        switch (slot)
+        {
+        case  EVO_TYPE_0:
+            result = gRandomSpeciesEvo0[RandomSeeded(species+depth*3, seeded) % RANDOM_SPECIES_EVO_0_COUNT];
+            break;
+        case  EVO_TYPE_1:
+            result = gRandomSpeciesEvo1[RandomSeeded(species+depth*3, seeded) % RANDOM_SPECIES_EVO_1_COUNT];
+            break;
+        case  EVO_TYPE_2:
+            result = gRandomSpeciesEvo2[RandomSeeded(species+depth*3, seeded) % RANDOM_SPECIES_EVO_2_COUNT];
+            break;
+        }
+
+        #ifdef GBA_PRINTF
+        mgba_printf(MGBA_LOG_DEBUG, "gSaveBlock1Ptr->txRandEncounterSimilar == TRUE");
+        switch (depth)
+        {
+        case TX_RANDOM_OFFSET_ENCOUNTER:
+            mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_ENCOUNTER: species = %d = %s; EVO_TYPE = %d", species, ConvertToAscii(gSpeciesNames[species]), slot);
+            break;
+        case TX_RANDOM_OFFSET_EVOLUTION:
+            mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_EVOLUTION: species = %d = %s; EVO_TYPE = %d", species, ConvertToAscii(gSpeciesNames[species]), slot);
+            break;
+        }
+        slot_new = gSpeciesMapping[result];
+        mgba_printf(MGBA_LOG_DEBUG, "new species = %d = %s; EVO_TYPE = %d", result, ConvertToAscii(gSpeciesNames[result]), slot_new);
+        mgba_printf(MGBA_LOG_DEBUG, "");
+        #endif
+
+        return result;
     }
 
+    return PickRandomizedSpeciesFromEWRAM(species, depth);
 }
 
 u16 GetEvolutionTargetSpeciesRandom(u16 species, u8 random, u8 seeded)
