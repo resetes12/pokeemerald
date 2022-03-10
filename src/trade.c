@@ -2465,7 +2465,7 @@ int GetUnionRoomTradeMessageId(struct RfuGameCompatibilityData player, struct Rf
     }
     else
     {
-        if (GetTypeBySpecies(playerSpecies2, 1) != requestedType && GetTypeBySpecies(playerSpecies2, 2) != requestedType) //tx_difficulty_challenges //if (gBaseStats[playerSpecies2].type1 != requestedType && gBaseStats[playerSpecies2].type2 != requestedType)
+        if (GetTypeBySpecies(playerSpecies2, 1) != requestedType && GetTypeBySpecies(playerSpecies2, 2) != requestedType) //tx_difficulty_challenges
             return UR_TRADE_MSG_NOT_MON_PARTNER_WANTS;
     }
 

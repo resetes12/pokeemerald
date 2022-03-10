@@ -3790,10 +3790,10 @@ static void SetMonTypeIcons(void)
     }
     else
     {
-        SetTypeSpritePosAndPal(GetTypeBySpecies(summary->species, 1), 120, 48, SPRITE_ARR_ID_TYPE); //tx_difficulty_challenges //SetTypeSpritePosAndPal(gBaseStats[summary->species].type1, 120, 48, SPRITE_ARR_ID_TYPE);
-        if (GetTypeBySpecies(summary->species, 1) != GetTypeBySpecies(summary->species, 2)) //if (gBaseStats[summary->species].type1 != gBaseStats[summary->species].type2)
+        SetTypeSpritePosAndPal(GetTypeBySpecies(summary->species, 1), 120, 48, SPRITE_ARR_ID_TYPE); //tx_difficulty_challenges
+        if (GetTypeBySpecies(summary->species, 1) != GetTypeBySpecies(summary->species, 2)) //tx_difficulty_challenges
         {
-            SetTypeSpritePosAndPal(GetTypeBySpecies(summary->species, 2), 160, 48, SPRITE_ARR_ID_TYPE + 1); //SetTypeSpritePosAndPal(gBaseStats[summary->species].type2, 160, 48, SPRITE_ARR_ID_TYPE + 1);
+            SetTypeSpritePosAndPal(GetTypeBySpecies(summary->species, 2), 160, 48, SPRITE_ARR_ID_TYPE + 1); //tx_difficulty_challenges
             SetSpriteInvisibility(SPRITE_ARR_ID_TYPE + 1, FALSE);
         }
         else
