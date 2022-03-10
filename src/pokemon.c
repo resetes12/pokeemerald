@@ -12663,7 +12663,8 @@ void RandomizeSpeciesListEWRAMLegendary(u16 seed)
     u16 i;
     u16 *stemp = Alloc(sizeof(sRandomSpeciesLegendary));
 
-    memcpy(stemp, sRandomSpeciesLegendary, sizeof(sRandomSpeciesLegendary));
+    //memcpy(stemp, sRandomSpeciesLegendary, sizeof(sRandomSpeciesLegendary));
+    DmaCopy16(3, sRandomSpeciesLegendary, stemp, sizeof(sRandomSpeciesLegendary));
     ShuffleListU16(stemp, RANDOM_SPECIES_COUNT_LEGENDARY, seed);
 
     for (i=0; i<RANDOM_SPECIES_COUNT_LEGENDARY; i++)
