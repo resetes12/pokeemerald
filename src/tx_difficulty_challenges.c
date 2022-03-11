@@ -368,13 +368,13 @@ void CB2_InitDifficultyChallengesOptionMenu(void)
         gSaveBlock1Ptr->txRandTrainer              =   TX_RANDOM_TRAINER;
         gSaveBlock1Ptr->txRandEvolutions           =   TX_RANDOM_EVOLUTION;
         gSaveBlock1Ptr->txRandEvolutionMethodes    =   TX_RANDOM_EVOLUTION_METHODE;
-        gSaveBlock1Ptr->txRandEvoLimit             =   TX_CHALLANGE_EVO_LIMIT;
+        gSaveBlock1Ptr->txRandEvoLimit             =   TX_CHALLENGE_EVO_LIMIT;
         gSaveBlock1Ptr->txRandNuzlocke             =   TX_CHALLENGE_NUZLOCKE;
         gSaveBlock1Ptr->txRandNuzlockeHardcore     =   TX_CHALLENGE_NUZLOCKE_HARDCORE;
         gSaveBlock1Ptr->txRandNoItemPlayer         =   TX_CHALLENGE_NO_ITEM_PLAYER;
         gSaveBlock1Ptr->txRandNoItemTrainer        =   TX_CHALLENGE_NO_ITEM_TRAINER;
         gSaveBlock1Ptr->txRandTypeChallenge        =   TX_CHALLENGE_TYPE;
-        gSaveBlock1Ptr->txRandPartyLimit           =   TX_CHALLANGE_PARTY_LIMIT;
+        gSaveBlock1Ptr->txRandPartyLimit           =   TX_CHALLENGE_PARTY_LIMIT;
         gSaveBlock1Ptr->txRandPkmnCenter           =   TX_CHALLENGE_PKMN_CENTER;
 
         sOptions = AllocZeroed(sizeof(*sOptions));

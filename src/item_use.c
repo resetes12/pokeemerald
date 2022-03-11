@@ -948,7 +948,7 @@ void ItemUseInBattle_PokeBall(u8 taskId)
         DisplayCannotUseItemMessage(taskId, FALSE, gText_NuzlockeCantThrowPokeBallRoute);
     else if (gSaveBlock1Ptr->txRandNuzlocke && NuzlockeIsSpeciesClauseActive == 2) //already have THIS_mon
         DisplayCannotUseItemMessage(taskId, FALSE, gText_NuzlockeCantThrowPokeBallAlreadyCaught);
-    else if (gSaveBlock1Ptr->txRandTypeChallenge && TypeChallengeCaptureBlocked) //pkmn not of the TYPE CHALLANGE type
+    else if (gSaveBlock1Ptr->txRandTypeChallenge && TypeChallengeCaptureBlocked) //pkmn not of the TYPE CHALLENGE type
         DisplayCannotUseItemMessage(taskId, FALSE, gText_TypeChallengeCantThrowPokeBall);
     else if (gSaveBlock1Ptr->txRandNuzlocke && NuzlockeIsSpeciesClauseActive)
         DisplayCannotUseItemMessage(taskId, FALSE, gText_NuzlockeCantThrowPokeBallSpeciesClause);

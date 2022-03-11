@@ -12890,7 +12890,7 @@ u16 PickRandomizedSpeciesFromEWRAM(u16 species, u16 depth) //internal use only!
         #endif
     }
     #ifdef GBA_PRINTF
-        if (gSaveBlock1Ptr->txRandEncounterMapBased && (depth == TX_RANDOM_OFFSET_TRAINER || depth == TX_RANDOM_OFFSET_ENCOUNTER || depth == TX_RANDOM_OFFSET_MOVES))
+        if (gSaveBlock1Ptr->txRandEncounterMapBased && (start_depth == TX_RANDOM_OFFSET_TRAINER || start_depth == TX_RANDOM_OFFSET_ENCOUNTER || start_depth == TX_RANDOM_OFFSET_MOVES))
             mgba_printf(MGBA_LOG_DEBUG, "MapBased depth: start=%d/new=%d", start_depth, depth);
         mgba_printf(MGBA_LOG_DEBUG, "depth[%d], species = %d = %s", i, sSpeciesList[species], ConvertToAscii(gSpeciesNames[sSpeciesList[species]]));
         mgba_printf(MGBA_LOG_DEBUG, "");
