@@ -30,6 +30,7 @@ enum
     MENUITEM_RAND_CHAOS,
     MENUITEM_RAND_ENCOUNTER,
     MENUITEM_RAND_ENCOUNTER_SIMILAR,
+    MENUITEM_RAND_ENCOUNTER_MAP_BASED,
     MENUITEM_RAND_ENCOUNTER_LEGENDARY,
     MENUITEM_RAND_TYPE,
     MENUITEM_RAND_TYPE_EFFEC,
@@ -102,6 +103,7 @@ struct
     [MENUITEM_RAND_CHAOS]               = {DrawChoices_Rand_OffChaos, tx_DC_TwoOptions_ProcessInput},
     [MENUITEM_RAND_ENCOUNTER]           = {DrawChoices_Rand_NormalRandom, tx_DC_TwoOptions_ProcessInput},
     [MENUITEM_RAND_ENCOUNTER_SIMILAR]   = {DrawChoices_Rand_OffOn, tx_DC_TwoOptions_ProcessInput},
+    [MENUITEM_RAND_ENCOUNTER_MAP_BASED] = {DrawChoices_Rand_OffOn, tx_DC_TwoOptions_ProcessInput},
     [MENUITEM_RAND_ENCOUNTER_LEGENDARY] = {DrawChoices_Rand_OffOn, tx_DC_TwoOptions_ProcessInput},
     [MENUITEM_RAND_TYPE]                = {DrawChoices_Rand_NormalRandom, tx_DC_TwoOptions_ProcessInput},
     [MENUITEM_RAND_TYPE_EFFEC]          = {DrawChoices_Rand_NormalRandom, tx_DC_TwoOptions_ProcessInput},
@@ -130,6 +132,7 @@ static const u8 sEqualSignGfx[] = INCBIN_U8("graphics/misc/option_menu_equals_si
 static const u8 gText_Chaos[] =             _("CHAOS MODE");
 static const u8 gText_Encounter[] =         _("ENCOUNTER");
 static const u8 gText_Encounter_Similar[] = _("SIMILAR");
+static const u8 gText_Encounter_MapBased[] =_("MAP BASED");
 static const u8 gText_Encounter_Legendary[]=_("LEGENDARIES");
 static const u8 gText_Type[] =              _("TYPE");
 static const u8 gText_TypeEff[] =           _("EFFECTIVENESS");
@@ -152,6 +155,7 @@ static const u8 *const sOptionMenuItemNames[MENUITEM_COUNT] =
     [MENUITEM_RAND_CHAOS]               = gText_Chaos,          
     [MENUITEM_RAND_ENCOUNTER]           = gText_Encounter,      
     [MENUITEM_RAND_ENCOUNTER_SIMILAR]   = gText_Encounter_Similar,
+    [MENUITEM_RAND_ENCOUNTER_MAP_BASED] = gText_Encounter_MapBased,
     [MENUITEM_RAND_ENCOUNTER_LEGENDARY] = gText_Encounter_Legendary,
     [MENUITEM_RAND_TYPE]                = gText_Type,           
     [MENUITEM_RAND_TYPE_EFFEC]          = gText_TypeEff,        
@@ -169,44 +173,46 @@ static const u8 *const sOptionMenuItemNames[MENUITEM_COUNT] =
     [MENUITEM_CANCEL]                   = gText_Save,
 };
 
-static const u8 gText_Description_00[] = _("Enable {COLOR RED}{SHADOW LIGHT_RED}Chaos mode");
-static const u8 gText_Description_01[] = _("Randomize wild encounters");
+static const u8 gText_Description_Chaos_Mode[]              = _("Enable {COLOR RED}{SHADOW LIGHT_RED}Chaos mode");
+static const u8 gText_Description_Encounter_Random[]        = _("Randomize wild encounters");
 static const u8 gText_Description_Encounter_Similar[]       = _("Ensure encounters are similar\ne.g. a baby mon gets another baby mon");
-static const u8 gText_Description_Encounter_Legendary[]     = _("Include legendary mons");
-static const u8 gText_Description_02[] = _("Randomize mon types");
-static const u8 gText_Description_03[] = _("Randomize type effectiveness");
-static const u8 gText_Description_04[] = _("Randomize abilities");
-static const u8 gText_Description_05[] = _("Randomize moves");
-static const u8 gText_Description_06[] = _("Randomize enemy trainer parties");
-static const u8 gText_Description_07[] = _("Randomize evolutions");
-static const u8 gText_Description_08[] = _("Randomize evolution methodes");
-static const u8 gText_Description_09[] = _("Limit evolutions");
-static const u8 gText_Description_10[] = _("Limit your parties size");
-static const u8 gText_Description_11[] = _("Enable nuzlocke mode");
-static const u8 gText_Description_12[] = _("Impose item limits");
-static const u8 gText_Description_13[] = _("Pokecenter use");
-static const u8 gText_Description_14[] = _("Enable only one allowed mon type");
-static const u8 gText_Description_15[] = _("Save your changes and proceed");
+static const u8 gText_Description_Encounter_MapBased[]      = _("Additionally varies encounters\nbased on the map.");
+static const u8 gText_Description_Encounter_Legendary[]     = _("Include legendary pokemon.");
+static const u8 gText_Description_Random_Types[]            = _("Randomize mon types");
+static const u8 gText_Description_Random_Effectiveness[]    = _("Randomize type effectiveness");
+static const u8 gText_Description_Random_Abilities[]        = _("Randomize abilities");
+static const u8 gText_Description_Random_Moves[]            = _("Randomize moves");
+static const u8 gText_Description_Random_Trainer[]          = _("Randomize enemy trainer parties");
+static const u8 gText_Description_Random_Evos[]             = _("Randomize evolutions");
+static const u8 gText_Description_Random_Evo_Methodes[]     = _("Randomize evolution methodes");
+static const u8 gText_Description_Difficulty_Evo_Limit[]    = _("Limit evolutions");
+static const u8 gText_Description_Difficulty_Party_Limit[]  = _("Limit your parties size");
+static const u8 gText_Description_Nuzzlocke[]               = _("Enable nuzlocke mode");
+static const u8 gText_Description_Difficulty_Item_Limits[]  = _("Impose item limits");
+static const u8 gText_Description_Difficulty_Pokecenter[]   = _("Pokecenter use");
+static const u8 gText_Description_Type_Challenge[]          = _("Enable only one allowed mon type");
+static const u8 gText_Description_Save[]                    = _("Save your changes and proceed");
 static const u8 *const sOptionMenuItemDescriptions[MENUITEM_COUNT] =
 {
-    [MENUITEM_RAND_CHAOS]               = gText_Description_00,
-    [MENUITEM_RAND_ENCOUNTER]           = gText_Description_01,
+    [MENUITEM_RAND_CHAOS]               = gText_Description_Chaos_Mode,
+    [MENUITEM_RAND_ENCOUNTER]           = gText_Description_Encounter_Random,
     [MENUITEM_RAND_ENCOUNTER_SIMILAR]   = gText_Description_Encounter_Similar,
+    [MENUITEM_RAND_ENCOUNTER_MAP_BASED] = gText_Description_Encounter_MapBased,
     [MENUITEM_RAND_ENCOUNTER_LEGENDARY] = gText_Description_Encounter_Legendary,
-    [MENUITEM_RAND_TYPE]                = gText_Description_02,
-    [MENUITEM_RAND_TYPE_EFFEC]          = gText_Description_03,
-    [MENUITEM_RAND_ABILITIES]           = gText_Description_04,
-    [MENUITEM_RAND_MOVES]               = gText_Description_05,
-    [MENUITEM_RAND_TRAINER]             = gText_Description_06,
-    [MENUITEM_RAND_EVOLUTIONS]          = gText_Description_07,
-    [MENUITEM_RAND_EVOLUTIONS_METHODE]  = gText_Description_08,
-    [MENUITEM_DIFF_EVO_LIMIT]           = gText_Description_09,
-    [MENUITEM_DIFF_PARTY_LIMIT]         = gText_Description_10,
-    [MENUITEM_DIFF_NUZLOCKE]            = gText_Description_11,
-    [MENUITEM_DIFF_ITEM]                = gText_Description_12,
-    [MENUITEM_DIFF_POKECENTER]          = gText_Description_13,
-    [MENUITEM_DIFF_TYPE_CHALLENGE]      = gText_Description_14,
-    [MENUITEM_CANCEL]                   = gText_Description_15,
+    [MENUITEM_RAND_TYPE]                = gText_Description_Random_Types,
+    [MENUITEM_RAND_TYPE_EFFEC]          = gText_Description_Random_Effectiveness,
+    [MENUITEM_RAND_ABILITIES]           = gText_Description_Random_Abilities,
+    [MENUITEM_RAND_MOVES]               = gText_Description_Random_Moves,
+    [MENUITEM_RAND_TRAINER]             = gText_Description_Random_Trainer,
+    [MENUITEM_RAND_EVOLUTIONS]          = gText_Description_Random_Evos,
+    [MENUITEM_RAND_EVOLUTIONS_METHODE]  = gText_Description_Random_Evo_Methodes,
+    [MENUITEM_DIFF_EVO_LIMIT]           = gText_Description_Difficulty_Evo_Limit,
+    [MENUITEM_DIFF_PARTY_LIMIT]         = gText_Description_Difficulty_Party_Limit,
+    [MENUITEM_DIFF_NUZLOCKE]            = gText_Description_Nuzzlocke,
+    [MENUITEM_DIFF_ITEM]                = gText_Description_Difficulty_Item_Limits,
+    [MENUITEM_DIFF_POKECENTER]          = gText_Description_Difficulty_Pokecenter,
+    [MENUITEM_DIFF_TYPE_CHALLENGE]      = gText_Description_Type_Challenge,
+    [MENUITEM_CANCEL]                   = gText_Description_Save,
 };
 
 static const struct WindowTemplate sDifficultyChallengesOptionMenuWinTemplates[] =
@@ -353,6 +359,7 @@ void CB2_InitDifficultyChallengesOptionMenu(void)
         gSaveBlock1Ptr->txRandChaos                =   TX_RANDOM_CHAOS_MODE;
         gSaveBlock1Ptr->txRandEncounter            =   TX_RANDOM_ENCOUNTER;
         gSaveBlock1Ptr->txRandEncounterSimilar     =   TX_RANDOM_ENCOUNTER_SIMILAR;
+        gSaveBlock1Ptr->txRandEncounterMapBased    =   TX_RANDOM_ENCOUNTER_MAP_BASED;
         gSaveBlock1Ptr->txRandEncounterLegendary   =   TX_RANDOM_ENCOUNTER_LEGENDARY;
         gSaveBlock1Ptr->txRandType                 =   TX_RANDOM_TYPE;
         gSaveBlock1Ptr->txRandTypeEffectiveness    =   TX_RANDOM_TYPE_EFFECTIVENESS;
@@ -375,6 +382,7 @@ void CB2_InitDifficultyChallengesOptionMenu(void)
         sOptions->sel[MENUITEM_RAND_CHAOS]               = gSaveBlock1Ptr->txRandChaos;
         sOptions->sel[MENUITEM_RAND_ENCOUNTER]           = gSaveBlock1Ptr->txRandEncounter;
         sOptions->sel[MENUITEM_RAND_ENCOUNTER_SIMILAR]   = gSaveBlock1Ptr->txRandEncounterSimilar;
+        sOptions->sel[MENUITEM_RAND_ENCOUNTER_MAP_BASED] = gSaveBlock1Ptr->txRandEncounterMapBased;
         sOptions->sel[MENUITEM_RAND_ENCOUNTER_LEGENDARY] = gSaveBlock1Ptr->txRandEncounterLegendary;
         sOptions->sel[MENUITEM_RAND_TYPE]                = gSaveBlock1Ptr->txRandType;
         sOptions->sel[MENUITEM_RAND_TYPE_EFFEC]          = gSaveBlock1Ptr->txRandTypeEffectiveness;
@@ -567,6 +575,7 @@ void tx_DC_SaveData(void)
     gSaveBlock1Ptr->txRandChaos                = sOptions->sel[MENUITEM_RAND_CHAOS];
     gSaveBlock1Ptr->txRandEncounter            = sOptions->sel[MENUITEM_RAND_ENCOUNTER];
     gSaveBlock1Ptr->txRandEncounterSimilar     = sOptions->sel[MENUITEM_RAND_ENCOUNTER_SIMILAR];
+    gSaveBlock1Ptr->txRandEncounterMapBased    = sOptions->sel[MENUITEM_RAND_ENCOUNTER_MAP_BASED];
     gSaveBlock1Ptr->txRandEncounterLegendary   = sOptions->sel[MENUITEM_RAND_ENCOUNTER_LEGENDARY];
     gSaveBlock1Ptr->txRandType                 = sOptions->sel[MENUITEM_RAND_TYPE];
     gSaveBlock1Ptr->txRandTypeEffectiveness    = sOptions->sel[MENUITEM_RAND_TYPE_EFFEC];

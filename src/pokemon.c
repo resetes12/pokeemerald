@@ -12710,6 +12710,9 @@ u16 PickRandomizedSpeciesFromEWRAM(u16 species, u16 depth)
         }
     #endif
 
+    if (depth == TX_RANDOM_OFFSET_TRAINER && gSaveBlock1Ptr->txRandEncounterMapBased)
+        species = species + NuzlockeGetCurrentRegionMapSectionId()*3;
+
     for (i = 0; i < depth; i++)
     {
         species = sSpeciesList[species];
@@ -12775,16 +12778,21 @@ u16 GetSpeciesRandomSeeded(u16 species, u8 depth, u8 random, u8 seeded)
     if (gSaveBlock1Ptr->txRandEncounterSimilar && depth == TX_RANDOM_OFFSET_ENCOUNTER)
     {
         u16 result;
+        u8 offset = 0;
+
+        if (gSaveBlock1Ptr->txRandEncounterMapBased)
+            offset = NuzlockeGetCurrentRegionMapSectionId();
+
         switch (slot)
         {
         case  EVO_TYPE_0:
-            result = gRandomSpeciesEvo0[RandomSeeded(species+depth*3, seeded) % RANDOM_SPECIES_EVO_0_COUNT];
+            result = gRandomSpeciesEvo0[RandomSeeded(species+(depth+offset)*3, seeded) % RANDOM_SPECIES_EVO_0_COUNT];
             break;
         case  EVO_TYPE_1:
-            result = gRandomSpeciesEvo1[RandomSeeded(species+depth*3, seeded) % RANDOM_SPECIES_EVO_1_COUNT];
+            result = gRandomSpeciesEvo1[RandomSeeded(species+(depth+offset)*3, seeded) % RANDOM_SPECIES_EVO_1_COUNT];
             break;
         case  EVO_TYPE_2:
-            result = gRandomSpeciesEvo2[RandomSeeded(species+depth*3, seeded) % RANDOM_SPECIES_EVO_2_COUNT];
+            result = gRandomSpeciesEvo2[RandomSeeded(species+(depth+offset)*3, seeded) % RANDOM_SPECIES_EVO_2_COUNT];
             break;
         }
 
