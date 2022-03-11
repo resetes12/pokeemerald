@@ -12970,6 +12970,8 @@ u16 GetSpeciesRandomSeeded(u16 species, u8 depth, u8 random, u8 seeded)
         #ifdef GBA_PRINTF
         mgba_printf(MGBA_LOG_DEBUG, "gSaveBlock1Ptr->txRandEncounterSimilar == TRUE");
         mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_ENCOUNTER: species = %d = %s; EVO_TYPE = %d", species, ConvertToAscii(gSpeciesNames[species]), slot);
+        mgba_printf(MGBA_LOG_DEBUG, "species+(depth+offset)*3 = %d + (%d + %d)*3 = %d", species, depth, offset, species+(depth+offset)*3);
+        mgba_printf(MGBA_LOG_DEBUG, "RandomSeeded(%d) =%d mod = %d", species+(depth+offset)*3, RandomSeeded(species+(depth+offset)*3, seeded), RandomSeeded(species+(depth+offset)*3, seeded) % RANDOM_SPECIES_EVO_0_COUNT);
         slot_new = gSpeciesMapping[result];
         mgba_printf(MGBA_LOG_DEBUG, "new species = %d = %s; EVO_TYPE = %d", result, ConvertToAscii(gSpeciesNames[result]), slot_new);
         mgba_printf(MGBA_LOG_DEBUG, "");
@@ -13089,3 +13091,29 @@ u8 GetTypeEffectivenessRandom(u8 type)
     return sTypeEffectivenessList[type];
 }
 
+// DEBUG
+void PrintTXSaveData(void)
+{
+    #ifdef GBA_PRINTF
+    mgba_printf(MGBA_LOG_DEBUG, "%d txRandChaos"             , gSaveBlock1Ptr->txRandChaos);
+    mgba_printf(MGBA_LOG_DEBUG, "%d txRandEncounter"         , gSaveBlock1Ptr->txRandEncounter);
+    mgba_printf(MGBA_LOG_DEBUG, "%d txRandEncounterSimilar"  , gSaveBlock1Ptr->txRandEncounterSimilar);
+    mgba_printf(MGBA_LOG_DEBUG, "%d txRandEncounterMapBased" , gSaveBlock1Ptr->txRandEncounterMapBased);
+    mgba_printf(MGBA_LOG_DEBUG, "%d txRandEncounterLegendary", gSaveBlock1Ptr->txRandEncounterLegendary);
+    mgba_printf(MGBA_LOG_DEBUG, "%d txRandType"              , gSaveBlock1Ptr->txRandType);
+    mgba_printf(MGBA_LOG_DEBUG, "%d txRandTypeEffectiveness" , gSaveBlock1Ptr->txRandTypeEffectiveness);
+    mgba_printf(MGBA_LOG_DEBUG, "%d txRandAbilities"         , gSaveBlock1Ptr->txRandAbilities);
+    mgba_printf(MGBA_LOG_DEBUG, "%d txRandMoves"             , gSaveBlock1Ptr->txRandMoves);
+    mgba_printf(MGBA_LOG_DEBUG, "%d txRandTrainer"           , gSaveBlock1Ptr->txRandTrainer);
+    mgba_printf(MGBA_LOG_DEBUG, "%d txRandEvolutions"        , gSaveBlock1Ptr->txRandEvolutions);
+    mgba_printf(MGBA_LOG_DEBUG, "%d txRandEvolutionMethodes" , gSaveBlock1Ptr->txRandEvolutionMethodes);
+    mgba_printf(MGBA_LOG_DEBUG, "%d txRandEvoLimit"          , gSaveBlock1Ptr->txRandEvoLimit);
+    mgba_printf(MGBA_LOG_DEBUG, "%d txRandNuzlocke"          , gSaveBlock1Ptr->txRandNuzlocke);
+    mgba_printf(MGBA_LOG_DEBUG, "%d txRandNuzlockeHardcore"  , gSaveBlock1Ptr->txRandNuzlockeHardcore);
+    mgba_printf(MGBA_LOG_DEBUG, "%d txRandNoItemPlayer"      , gSaveBlock1Ptr->txRandNoItemPlayer);
+    mgba_printf(MGBA_LOG_DEBUG, "%d txRandNoItemTrainer"     , gSaveBlock1Ptr->txRandNoItemTrainer);
+    mgba_printf(MGBA_LOG_DEBUG, "%d txRandTypeChallenge"     , gSaveBlock1Ptr->txRandTypeChallenge);
+    mgba_printf(MGBA_LOG_DEBUG, "%d txRandPartyLimit"        , gSaveBlock1Ptr->txRandPartyLimit);
+    mgba_printf(MGBA_LOG_DEBUG, "%d txRandPkmnCenter"        , gSaveBlock1Ptr->txRandPkmnCenter);
+    #endif
+}
