@@ -12849,6 +12849,7 @@ void RandomizeSpeciesListEWRAMLegendary(u16 seed)
 u16 PickRandomizedSpeciesFromEWRAM(u16 species, u16 depth) //internal use only!
 {
     u8 i;
+    u16 start_depth = depth;
 
     #ifdef GBA_PRINTF
         switch (depth)
@@ -12875,8 +12876,11 @@ u16 PickRandomizedSpeciesFromEWRAM(u16 species, u16 depth) //internal use only!
         }
     #endif
 
-    //if ((depth == TX_RANDOM_OFFSET_TRAINER || depth == TX_RANDOM_OFFSET_ENCOUNTER) && gSaveBlock1Ptr->txRandEncounterMapBased)
-    //    species = species + NuzlockeGetCurrentRegionMapSectionId()*3;
+    if ((depth == TX_RANDOM_OFFSET_TRAINER || depth == TX_RANDOM_OFFSET_ENCOUNTER) && gSaveBlock1Ptr->txRandEncounterMapBased)
+        depth += NuzlockeGetCurrentRegionMapSectionId() % 3;
+
+    if (depth == TX_RANDOM_OFFSET_MOVES && gSaveBlock1Ptr->txRandEncounterMapBased)
+        depth += species % 4;
 
     for (i = 0; i < depth; i++)
     {
@@ -12886,6 +12890,8 @@ u16 PickRandomizedSpeciesFromEWRAM(u16 species, u16 depth) //internal use only!
         #endif
     }
     #ifdef GBA_PRINTF
+        if (gSaveBlock1Ptr->txRandEncounterMapBased)
+            mgba_printf(MGBA_LOG_DEBUG, "MapBased==TRUE; start_depth = %d; new depth = %d", start_depth, depth);
         mgba_printf(MGBA_LOG_DEBUG, "depth[%d], species = %d = %s", i, sSpeciesList[species], ConvertToAscii(gSpeciesNames[sSpeciesList[species]]));
         mgba_printf(MGBA_LOG_DEBUG, "");
     #endif

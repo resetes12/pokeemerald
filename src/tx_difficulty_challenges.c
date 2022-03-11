@@ -173,7 +173,7 @@ static const u8 *const sOptionMenuItemNames[MENUITEM_COUNT] =
     [MENUITEM_CANCEL]                   = gText_Save,
 };
 
-static const u8 gText_Description_Chaos_Mode[]              = _("Enable {COLOR RED}{SHADOW LIGHT_RED}Chaos mode");
+static const u8 gText_Description_Chaos_Mode[]              = _("Enable {COLOR RED}{SHADOW LIGHT_RED}Chaos mode\nNOT recommended!");
 static const u8 gText_Description_Encounter_Random[]        = _("Randomize wild encounters");
 static const u8 gText_Description_Encounter_Similar[]       = _("Ensure encounters are similar\ne.g. a baby mon gets another baby mon");
 static const u8 gText_Description_Encounter_MapBased[]      = _("Additionally varies encounters\nbased on the map.");
