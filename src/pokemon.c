@@ -13742,24 +13742,24 @@ u16 GetSpeciesRandomSeeded(u16 species, u8 depth, u8 random, u8 seeded)
         switch (slot)
         {
         case EVO_TYPE_0:
-            result = gRandomSpeciesEvo0[RandomSeeded(species+(depth+offset)*3, seeded) % RANDOM_SPECIES_EVO_0_COUNT];
+            result = gRandomSpeciesEvo0[RandomSeeded((species+offset)*7, seeded) % RANDOM_SPECIES_EVO_0_COUNT];
             break;
         case EVO_TYPE_1:
-            result = gRandomSpeciesEvo1[RandomSeeded(species+(depth+offset)*3, seeded) % RANDOM_SPECIES_EVO_1_COUNT];
+            result = gRandomSpeciesEvo1[RandomSeeded((species+offset)*7, seeded) % RANDOM_SPECIES_EVO_1_COUNT];
             break;
         case EVO_TYPE_2:
-            result = gRandomSpeciesEvo2[RandomSeeded(species+(depth+offset)*3, seeded) % RANDOM_SPECIES_EVO_2_COUNT];
+            result = gRandomSpeciesEvo2[RandomSeeded((species+offset)*7, seeded) % RANDOM_SPECIES_EVO_2_COUNT];
             break;
         case EVO_TYPE_LEGENDARY:
-            result = gRandomSpeciesEvoLegendary[RandomSeeded(species+(depth+offset)*3, seeded) % RANDOM_SPECIES_EVO_LEGENDARY_COUNT];
+            result = gRandomSpeciesEvoLegendary[RandomSeeded((species+offset)*7, seeded) % RANDOM_SPECIES_EVO_LEGENDARY_COUNT];
             break;
         }
 
         #ifdef GBA_PRINTF
         mgba_printf(MGBA_LOG_DEBUG, "gSaveBlock1Ptr->txRandEncounterSimilar == TRUE");
         mgba_printf(MGBA_LOG_DEBUG, "TX_RANDOM_OFFSET_ENCOUNTER: species = %d = %s; EVO_TYPE = %d", species, ConvertToAscii(gSpeciesNames[species]), slot);
-        mgba_printf(MGBA_LOG_DEBUG, "species+(depth+offset)*3 = %d + (%d + %d)*3 = %d", species, depth, offset, species+(depth+offset)*3);
-        mgba_printf(MGBA_LOG_DEBUG, "RandomSeeded(%d) =%d mod = %d", species+(depth+offset)*3, RandomSeeded(species+(depth+offset)*3, seeded), RandomSeeded(species+(depth+offset)*3, seeded) % RANDOM_SPECIES_EVO_0_COUNT);
+        mgba_printf(MGBA_LOG_DEBUG, "(species+offset)*7 = (%d + %d)*7 = %d", species, offset, (species+offset)*7);
+        mgba_printf(MGBA_LOG_DEBUG, "RandomSeeded(%d) =%d mod = %d", (species+offset)*7, RandomSeeded((species+offset)*7, seeded), RandomSeeded((species+offset)*7, seeded) % RANDOM_SPECIES_EVO_0_COUNT);
         slot_new = gSpeciesMapping[result];
         mgba_printf(MGBA_LOG_DEBUG, "new species = %d = %s; EVO_TYPE = %d", result, ConvertToAscii(gSpeciesNames[result]), slot_new);
         mgba_printf(MGBA_LOG_DEBUG, "");
