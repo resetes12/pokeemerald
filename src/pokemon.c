@@ -7842,6 +7842,11 @@ static const u16 sRandomValidMoves[MOVES_COUNT-1] =
     MOVE_ICE_PUNCH,
     MOVE_THUNDER_PUNCH,
     MOVE_SCRATCH,
+    #ifndef BATTLE_ENGINE
+    MOVE_VICE_GRIP,
+    #else
+    MOVE_VISE_GRIP,
+    #endif
     MOVE_GUILLOTINE,
     MOVE_RAZOR_WIND,
     MOVE_SWORDS_DANCE,
@@ -7966,6 +7971,11 @@ static const u16 sRandomValidMoves[MOVES_COUNT-1] =
     MOVE_AMNESIA,
     MOVE_KINESIS,
     MOVE_SOFT_BOILED,
+    #ifndef BATTLE_ENGINE
+    MOVE_HI_JUMP_KICK,
+    #else
+    MOVE_HIGH_JUMP_KICK,
+    #endif
     MOVE_GLARE,
     MOVE_DREAM_EATER,
     MOVE_POISON_GAS,
@@ -7973,7 +7983,7 @@ static const u16 sRandomValidMoves[MOVES_COUNT-1] =
     MOVE_LEECH_LIFE,
     MOVE_LOVELY_KISS,
     MOVE_SKY_ATTACK,
-    MOVE_TRANSFORM,
+    //MOVE_TRANSFORM,
     MOVE_BUBBLE,
     MOVE_DIZZY_PUNCH,
     MOVE_SPORE,
@@ -8014,6 +8024,11 @@ static const u16 sRandomValidMoves[MOVES_COUNT-1] =
     MOVE_PROTECT,
     MOVE_MACH_PUNCH,
     MOVE_SCARY_FACE,
+    #ifndef BATTLE_ENGINE
+    MOVE_FAINT_ATTACK,
+    #else
+    MOVE_FEINT_ATTACK,
+    #endif
     MOVE_SWEET_KISS,
     MOVE_BELLY_DRUM,
     MOVE_SLUDGE_BOMB,
@@ -8093,6 +8108,11 @@ static const u16 sRandomValidMoves[MOVES_COUNT-1] =
     MOVE_MEMENTO,
     MOVE_FACADE,
     MOVE_FOCUS_PUNCH,
+    #ifndef BATTLE_ENGINE
+    MOVE_SMELLING_SALT,
+    #else
+    MOVE_SMELLING_SALTS,
+    #endif
     MOVE_FOLLOW_ME,
     MOVE_NATURE_POWER,
     MOVE_CHARGE,
@@ -8182,17 +8202,7 @@ static const u16 sRandomValidMoves[MOVES_COUNT-1] =
     MOVE_WATER_PULSE,
     MOVE_DOOM_DESIRE,
     MOVE_PSYCHO_BOOST,
-    #ifndef POKEMON_EXPANSION
-    MOVE_VICE_GRIP,
-    MOVE_HI_JUMP_KICK,
-    MOVE_SMELLING_SALT,
-    MOVE_FAINT_ATTACK,
-    #else
-    //different spelling
-    MOVE_VISE_GRIP,
-    MOVE_HIGH_JUMP_KICK,
-    MOVE_SMELLING_SALTS,
-    MOVE_FEINT_ATTACK,
+    #ifdef BATTLE_ENGINE
     // Gen 4 moves
     MOVE_ROOST,
     MOVE_GRAVITY,
@@ -13798,7 +13808,7 @@ u16 GetRandomMove(u16 move, u16 species)
 {
     u16 val = RandomSeeded((move + species)*17, !gSaveBlock1Ptr->txRandChaos) % RANDOM_MOVES_COUNT;
     #ifdef GBA_PRINTF
-        mgba_printf(MGBA_LOG_DEBUG, "Random: move %d, species %d, combined %d, val %d, final: %d", move, species, (move + species)*17, val, sRandomValidMoves[val])
+        mgba_printf(MGBA_LOG_DEBUG, "Random: move %d, species %d, combined %d, val %d, final: %d", move, species, (move + species)*17, val, sRandomValidMoves[val]);
     #endif
     return sRandomValidMoves[val];
 }
