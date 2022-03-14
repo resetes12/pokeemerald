@@ -453,6 +453,7 @@ u8 GetTypeBySpecies(u16 species, u8 type);
 u16 GetSpeciesRandomSeeded(u16 species, u8 offset, u8 random, u8 seeded);
 u16 GetEvolutionTargetSpeciesRandom(u16 species, u8 random, u8 seeded);
 u8 GetPartySize();
+u16 GetRandomMove(u16 input_move, u16 species);
 void NuzlockeDeletePartyMon(u8 position);
 void NuzlockeDeleteFaintedPartyPokemon(void) ;
 u8 GetPokemonCenterChallenge();

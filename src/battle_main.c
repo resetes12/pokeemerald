@@ -2032,7 +2032,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                 {
                     if (gSaveBlock1Ptr->txRandMoves) //tx_difficulty_challenges
                     {
-                        move = (RandomSeeded(partyData[i].moves[j], FALSE) % MOVES_COUNT) + 1;
+                        move = GetRandomMove(partyData[i].moves[j], partyData[i].species);
                         SetMonData(&party[i], MON_DATA_MOVE1 + j, &move);
                         SetMonData(&party[i], MON_DATA_PP1 + j, &gBattleMoves[move].pp);
                     }
@@ -2087,7 +2087,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                 {
                     if (gSaveBlock1Ptr->txRandMoves) //tx_difficulty_challenges
                     {
-                        move = (RandomSeeded(partyData[i].moves[j], FALSE) % MOVES_COUNT) + 1;
+                        move = GetRandomMove(partyData[i].moves[j], partyData[i].species);
                         SetMonData(&party[i], MON_DATA_MOVE1 + j, &move);
                         SetMonData(&party[i], MON_DATA_PP1 + j, &gBattleMoves[move].pp);
                     }
