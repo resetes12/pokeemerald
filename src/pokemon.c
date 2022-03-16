@@ -13831,6 +13831,8 @@ void NuzlockeDeleteFaintedPartyPokemon(void) // @Kurausukun
         {
             if (GetMonAilment(pokemon) == AILMENT_FNT)
             {
+                monItem = GetMonData(pokemon, MON_DATA_HELD_ITEM, NULL);
+                
                 if (monItem != ITEM_NONE)
                     AddBagItem(monItem, 1);
                 NuzlockeDeletePartyMon(i);
