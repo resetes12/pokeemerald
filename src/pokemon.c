@@ -7983,7 +7983,7 @@ static const u16 sRandomValidMoves[MOVES_COUNT-1] =
     MOVE_LEECH_LIFE,
     MOVE_LOVELY_KISS,
     MOVE_SKY_ATTACK,
-    //MOVE_TRANSFORM,
+    MOVE_TRANSFORM,
     MOVE_BUBBLE,
     MOVE_DIZZY_PUNCH,
     MOVE_SPORE,
@@ -8473,7 +8473,7 @@ static const u16 sRandomValidMoves[MOVES_COUNT-1] =
     MOVE_ORIGIN_PULSE,
     MOVE_PRECIPICE_BLADES,
     MOVE_DRAGON_ASCENT,
-    MOVE_HYPERSPACE_FURY,
+    //MOVE_HYPERSPACE_FURY,
     // Gen 7 moves
     MOVE_SHORE_UP,
     MOVE_FIRST_IMPRESSION,
@@ -13832,7 +13832,7 @@ void NuzlockeDeleteFaintedPartyPokemon(void) // @Kurausukun
             if (GetMonAilment(pokemon) == AILMENT_FNT)
             {
                 monItem = GetMonData(pokemon, MON_DATA_HELD_ITEM, NULL);
-                
+
                 if (monItem != ITEM_NONE)
                     AddBagItem(monItem, 1);
                 NuzlockeDeletePartyMon(i);
