@@ -44,7 +44,6 @@
 #include "util.h"
 #include "window.h"
 #include "constants/contest.h"
-#include "constants/easy_chat.h"
 #include "constants/items.h"
 #include "constants/moves.h"
 #include "constants/region_map_sections.h"
@@ -1395,7 +1394,7 @@ static void TradeMenuProcessInput(void)
             DrawTextBorderOuter(1, 1, 14);
             FillWindowPixelBuffer(1, PIXEL_FILL(1));
             PrintMenuTable(1, ARRAY_COUNT(sSelectTradeMonActions), sSelectTradeMonActions);
-            InitMenuInUpperLeftCornerNormal(1, 2, 0);
+            InitMenuInUpperLeftCornerNormal(1, ARRAY_COUNT(sSelectTradeMonActions), 0);
             PutWindowTilemap(1);
             CopyWindowToVram(1, COPYWIN_FULL);
             sTradeMenuData->tradeMenuFunc = TRADEMENUFUNC_SELECTED_MON;
