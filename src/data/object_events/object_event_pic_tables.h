@@ -1990,6 +1990,8 @@ static const struct SpriteFrameImage sPicTable_AnimatedBall[] = {
     overworld_frame(gObjectEventPic_AnimatedBall, 2, 4, 5),
 };
 
+extern const struct SpriteFrameImage gFieldEffectObjectPicTable_BallLight[];
+
 static const struct SpriteFrameImage sPicTable_Bulbasaur[] = {
     overworld_frame(gObjectEventPic_Bulbasaur, 4, 4, 0),
     overworld_frame(gObjectEventPic_Bulbasaur, 4, 4, 1),

@@ -1211,6 +1211,31 @@ void TimeMixPalettes(u32 palettes, u16 *src, u16 *dst, struct BlendSettings *ble
   } while (palettes);
 }
 
+// Apply weighted average to palettes, preserving high bits of dst throughout
+void AvgPaletteWeighted(u16 *src0, u16 *src1, u16 *dst, u16 weight0) {
+    u16 *srcEnd = src0 + 16;
+    u16 weight1 = 256 - weight0;
+    src0++;
+    src1++;
+    dst++; // leave dst transparency unchanged
+    while (src0 != srcEnd) {
+        u32 src0Color = *src0++;
+        s32 r0 = (src0Color << 27) >> 27;
+        s32 g0 = (src0Color << 22) >> 27;
+        s32 b0 = (src0Color << 17) >> 27;
+        u32 src1Color = *src1++;
+        s32 r1 = (src1Color << 27) >> 27;
+        s32 g1 = (src1Color << 22) >> 27;
+        s32 b1 = (src1Color << 17) >> 27;
+
+        // Average and bitwise-OR
+        r0 = (weight0*r0 + weight1*r1) >> 8;
+        g0 = (weight0*g0 + weight1*g1) >> 8;
+        b0 = (weight0*b0 + weight1*b1) >> 8;
+        *dst++ = (*dst & 0x8000) | RGB2(r0, g0, b0);  // preserve high bit of dst
+    }
+}
+
 void BlendPalettesUnfaded(u32 selectedPalettes, u8 coeff, u16 color)
 {
     void *src = gPlttBufferUnfaded;

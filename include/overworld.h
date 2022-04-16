@@ -48,6 +48,8 @@ struct __attribute__((packed)) TimeBlendSettings {
   u16 weight:9;
   u16 time1:3;
   u16 time0:3;
+  u16 unused:1;
+  u16 altWeight;
 };
 
 // Exported RAM declarations
@@ -63,6 +65,7 @@ extern bool8 (*gFieldCallback2)(void);
 extern u8 gLocalLinkPlayerId;
 extern u8 gFieldLinkPlayerCount;
 extern u8 gTimeOfDay;
+extern u16 gTimeUpdateCounter;
 
 extern struct TimeBlendSettings currentTimeBlend;
 
@@ -145,6 +148,7 @@ void CB1_Overworld(void);
 void CB2_OverworldBasic(void);
 u8 UpdateTimeOfDay(void);
 bool8 MapHasNaturalLight(u8 mapType);
+void UpdateAltBgPalettes(u16 palettes);
 void UpdatePalettesWithTime(u32);
 void CB2_Overworld(void);
 void SetMainCallback1(void (*cb)(void));

@@ -184,7 +184,6 @@ static u16 (*sPlayerKeyInterceptCallback)(u32);
 static bool8 sReceivingFromLink;
 static u8 sRfuKeepAliveTimer;
 
-static u16 sTimeUpdateCounter; // playTimeVBlanks will eventually overflow, so this is used to update TOD
 
 
 // IWRAM common
@@ -199,6 +198,7 @@ u8 gFieldLinkPlayerCount;
 
 u8 gTimeOfDay;
 struct TimeBlendSettings currentTimeBlend;
+u16 gTimeUpdateCounter; // playTimeVBlanks will eventually overflow, so this is used to update TOD
 
 // EWRAM vars
 EWRAM_DATA static u8 sObjectEventLoadFlag = 0;
@@ -822,8 +822,7 @@ void LoadMapFromCameraTransition(u8 mapGroup, u8 mapNum)
     CopySecondaryTilesetToVramUsingHeap(gMapHeader.mapLayout);
     LoadSecondaryTilesetPalette(gMapHeader.mapLayout);
 
-    for (paletteIndex = 6; paletteIndex < 13; paletteIndex++) // TODO: Optimize gamma shifts
-        ApplyWeatherGammaShiftToPal(paletteIndex);
+    ApplyWeatherGammaShiftToPals(6, 6); // palettes [6,12]
 
     InitSecondaryTilesetAnimation();
     UpdateLocationHistoryForRoamer();
@@ -1481,29 +1480,34 @@ u8 UpdateTimeOfDay(void) {
   minutes = gLocalTime.minutes;
   if (hours >= 22 || hours < 4) { // night
     currentTimeBlend.weight = 256;
+    currentTimeBlend.altWeight = 0;
     return gTimeOfDay = currentTimeBlend.time0 = currentTimeBlend.time1 = TIME_OF_DAY_NIGHT;
   } else if (hours >= 4 && hours < 7) { // night->twilight
     currentTimeBlend.time0 = TIME_OF_DAY_NIGHT;
     currentTimeBlend.time1 = TIME_OF_DAY_TWILIGHT;
     currentTimeBlend.weight = 256 - 256 * ((hours - 4) * 60 + minutes) / ((7-4)*60);
+    currentTimeBlend.altWeight = (256 - currentTimeBlend.weight) / 2;
     return gTimeOfDay = TIME_OF_DAY_DAY;
   } else if (hours >= 7 && hours < 10) { // twilight->day
     currentTimeBlend.time0 = TIME_OF_DAY_TWILIGHT;
     currentTimeBlend.time1 = TIME_OF_DAY_DAY;
     currentTimeBlend.weight = 256 - 256 * ((hours - 7) * 60 + minutes) / ((10-7)*60);
+    currentTimeBlend.altWeight = (256 - currentTimeBlend.weight) / 2 + 128;
     return gTimeOfDay = TIME_OF_DAY_DAY;
   } else if (hours >= 10 && hours < 18) { // day
-    currentTimeBlend.weight = 256;
+    currentTimeBlend.weight = currentTimeBlend.altWeight = 256;
     return gTimeOfDay = currentTimeBlend.time0 = currentTimeBlend.time1 = TIME_OF_DAY_DAY;
   } else if (hours >= 18 && hours < 20) { // day->twilight
     currentTimeBlend.time0 = TIME_OF_DAY_DAY;
     currentTimeBlend.time1 = TIME_OF_DAY_TWILIGHT;
     currentTimeBlend.weight = 256 - 256 * ((hours - 18) * 60 + minutes) / ((20-18)*60);
+    currentTimeBlend.altWeight = currentTimeBlend.weight / 2 + 128;
     return gTimeOfDay = TIME_OF_DAY_TWILIGHT;
   } else if (hours >= 20 && hours < 22) { // twilight->night
     currentTimeBlend.time0 = TIME_OF_DAY_TWILIGHT;
     currentTimeBlend.time1 = TIME_OF_DAY_NIGHT;
     currentTimeBlend.weight = 256 - 256 * ((hours - 20) * 60 + minutes) / ((22-20)*60);
+    currentTimeBlend.altWeight = currentTimeBlend.weight / 2;
     return gTimeOfDay = TIME_OF_DAY_NIGHT;
   } else { // This should never occur
     currentTimeBlend.weight = 256;
@@ -1516,16 +1520,41 @@ bool8 MapHasNaturalLight(u8 mapType) { // Whether a map type is naturally lit/ou
       || mapType == MAP_TYPE_OCEAN_ROUTE;
 }
 
+// Update & mix day / night bg palettes (into unfaded)
+void UpdateAltBgPalettes(u16 palettes) {
+    struct Tileset *primary = gMapHeader.mapLayout->primaryTileset;
+    struct Tileset *secondary = gMapHeader.mapLayout->secondaryTileset;
+    u32 i = 1;
+    if (!MapHasNaturalLight(gMapHeader.mapType))
+        return;
+    palettes &= ~((1 << NUM_PALS_IN_PRIMARY) - 1) | primary->swapPalettes;
+    palettes &= ((1 << NUM_PALS_IN_PRIMARY) - 1) | (secondary->swapPalettes << NUM_PALS_IN_PRIMARY);
+    palettes &= 0x1FFE; // don't blend palette 0, [13,15]
+    palettes >>= 1; // start at palette 1
+    if (!palettes)
+        return;
+    while (palettes) {
+        if (palettes & 1) {
+            if (i < NUM_PALS_IN_PRIMARY)
+                AvgPaletteWeighted(&((u16*)primary->palettes)[i*16], &((u16*)primary->palettes)[((i+9)%16)*16], gPlttBufferUnfaded + i * 16, currentTimeBlend.altWeight);
+            else
+                AvgPaletteWeighted(&((u16*)secondary->palettes)[i*16], &((u16*)secondary->palettes)[((i+9)%16)*16], gPlttBufferUnfaded + i * 16, currentTimeBlend.altWeight);
+        }
+        i++;
+        palettes >>= 1;
+    }
+}
+
 void UpdatePalettesWithTime(u32 palettes) {
   if (MapHasNaturalLight(gMapHeader.mapType)) {
-    u16 i;
-    u16 tempPaletteBuffer[16];
+    u32 i;
     u32 mask = 1 << 16;
-    for (i = 0; i < 16; i++, mask <<= 1) {
-      if (GetSpritePaletteTagByPaletteNum(i) >> 15) // Don't blend special sprite palette tags
-        palettes &= ~(mask);
-    }
-    palettes &= 0xFFFF1FFF; // Don't blend tile palettes [13,15]
+    if (palettes >= 0x10000)
+      for (i = 0; i < 16; i++, mask <<= 1)
+        if (GetSpritePaletteTagByPaletteNum(i) >> 15) // Don't blend special sprite palette tags
+          palettes &= ~(mask);
+
+    palettes &= 0xFFFF1FFF; // Don't blend UI BG palettes [13,15]
     if (!palettes)
       return;
     TimeMixPalettes(palettes,
@@ -1565,18 +1594,20 @@ static void OverworldBasic(void)
     UpdateTilesetAnimations();
     DoScheduledBgTilemapCopiesToVram();
     // Every minute if no palette fade is active, update TOD blending as needed
-    if (!(gPaletteFade.active || (++sTimeUpdateCounter % 3600))) {
+    if (!(gPaletteFade.active || (++gTimeUpdateCounter % 3600))) {
       struct TimeBlendSettings cachedBlend = {
         .time0 = currentTimeBlend.time0,
         .time1 = currentTimeBlend.time1,
         .weight = currentTimeBlend.weight,
       };
-      sTimeUpdateCounter = 0;
+      gTimeUpdateCounter = 0;
       UpdateTimeOfDay();
       if (cachedBlend.time0 != currentTimeBlend.time0
        || cachedBlend.time1 != currentTimeBlend.time1
-       || cachedBlend.weight != currentTimeBlend.weight)
-         UpdatePalettesWithTime(PALETTES_ALL);
+       || cachedBlend.weight != currentTimeBlend.weight) {
+           UpdateAltBgPalettes(PALETTES_BG);
+           UpdatePalettesWithTime(PALETTES_ALL);
+       }
     }
 }
 

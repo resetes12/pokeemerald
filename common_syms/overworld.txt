@@ -8,3 +8,4 @@ gLocalLinkPlayerId
 gFieldLinkPlayerCount
 gTimeOfDay
 currentTimeBlend
+gTimeUpdateCounter

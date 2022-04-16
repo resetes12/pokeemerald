@@ -30,7 +30,6 @@ EWRAM_DATA struct MapHeader gMapHeader = {0};
 EWRAM_DATA struct Camera gCamera = {0};
 EWRAM_DATA static struct ConnectionFlags gMapConnectionFlags = {0};
 EWRAM_DATA static u32 sFiller = 0; // without this, the next file won't align properly
-EWRAM_DATA struct Coords16 gLightMetatiles[32] = {0};
 
 struct BackupMapLayout gBackupMapLayout;
 
@@ -63,7 +62,6 @@ static bool8 IsCoordInIncomingConnectingMap(int coord, int srcMax, int destMax, 
 #define AreCoordsWithinMapGridBounds(x, y) (x >= 0 && x < gBackupMapLayout.width && y >= 0 && y < gBackupMapLayout.height)
 
 #define MapGridGetTileAt(x, y) (AreCoordsWithinMapGridBounds(x, y) ? gBackupMapLayout.map[x + gBackupMapLayout.width * y] : MapGridGetBorderTileAt(x, y))
-static void CacheLightMetatiles(void);
 
 struct MapHeader const *const GetMapHeaderFromConnection(struct MapConnection *connection)
 {
@@ -75,7 +73,6 @@ void InitMap(void)
     InitMapLayoutData(&gMapHeader);
     SetOccupiedSecretBaseEntranceMetatiles(gMapHeader.events);
     RunOnLoadMapScript();
-    CacheLightMetatiles();
 }
 
 void InitMapFromSavedGame(void)
@@ -85,7 +82,6 @@ void InitMapFromSavedGame(void)
     SetOccupiedSecretBaseEntranceMetatiles(gMapHeader.events);
     LoadSavedMapView();
     RunOnLoadMapScript();
-    CacheLightMetatiles();
     UpdateTVScreensOnMap(gBackupMapLayout.width, gBackupMapLayout.height);
 }
 
@@ -380,23 +376,6 @@ u32 MapGridGetMetatileBehaviorAt(int x, int y)
 {
     u16 metatile = MapGridGetMetatileIdAt(x, y);
     return GetBehaviorByMetatileId(metatile) & METATILE_BEHAVIOR_MASK;
-}
-
-// Caches light metatile coordinates
-static void CacheLightMetatiles(void) { // TODO: Better way to dynamically generate lights
-  u8 i = 0;
-  s16 x, y;
-  for (x = 0; x < gBackupMapLayout.width; x++) {
-    for (y = 0; y < gBackupMapLayout.height; y++) {
-      if (MapGridGetMetatileBehaviorAt(x, y) == 0x04) {
-        gLightMetatiles[i].x = x;
-        gLightMetatiles[i].y = y;
-        i++;
-      }
-    }
-  }
-  gLightMetatiles[i].x = -1;
-  gLightMetatiles[i].y = -1;
 }
 
 u8 MapGridGetMetatileLayerTypeAt(int x, int y)
