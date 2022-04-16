@@ -88,7 +88,7 @@ struct
     [MENUITEM_CHALLENGES_NUZLOCKE]            = {DrawChoices_Challenges_Nuzlocke, tx_challenges_ThreeOptions_ProcessInput},
     [MENUITEM_CHALLENGES_ITEM_PLAYER]         = {DrawChoices_Challenges_YesNo, tx_challenges_TwoOptions_ProcessInput},
     [MENUITEM_CHALLENGES_ITEM_TRAINER]        = {DrawChoices_Challenges_YesNo, tx_challenges_TwoOptions_ProcessInput},
-    [MENUITEM_CHALLENGES_POKECENTER]          = {DrawChoices_Challenges_Pokecenters, tx_challenges_TwoOptions_ProcessInput},
+    [MENUITEM_CHALLENGES_POKECENTER]          = {DrawChoices_Challenges_YesNo, tx_challenges_TwoOptions_ProcessInput},
     [MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]  = {DrawChoices_Challenges_OneTypeChallenge, tx_challenges_OneTypeChallengeOptions_ProcessInput},
     [MENUITEM_SAVE] = {NULL, NULL},
 };
@@ -125,11 +125,11 @@ static const u8 *const sChallengesOptionMenuItemNames[MENUITEM_COUNT] =
 
 static const u8 gText_Description_Challenges_Evo_Limit[]        = _("Limit evolutions.");
 static const u8 gText_Description_Challenges_Party_Limit[]      = _("Limit your parties size.");
-static const u8 gText_Description_Nuzlocke[]                    = _("Enable nuzlocke mode.");
+static const u8 gText_Description_Nuzlocke[]                    = _("Enable nuzlocke mode.\nHard: {COLOR RED}{SHADOW LIGHT_RED}Delete save on whiteout!");
 static const u8 gText_Description_Challenges_Items_Player[]     = _("The player can use items.");
 static const u8 gText_Description_Challenges_Items_Trainer[]    = _("Enemy trainer can use items.");
-static const u8 gText_Description_Challenges_Pokecenter[]       = _("Pokécenter use.");
-static const u8 gText_Description_Challenges_OneTypeChallenge[] = _("Allow only one POKéMON type.");
+static const u8 gText_Description_Challenges_Pokecenter[]       = _("Allow Pokécenter usage.");
+static const u8 gText_Description_Challenges_OneTypeChallenge[] = _("Allow only one POKéMON type the\nplayer can capture and use.");
 static const u8 gText_Description_Save[]                        = _("Save choices and continue...");
 
 static const u8 *const sOptionMenuItemDescriptions[MENUITEM_COUNT] =
@@ -290,7 +290,7 @@ void CB2_InitChallengesMenu(void)
         gSaveBlock1Ptr->tx_Challenges_NuzlockeHardcore     = TX_CHALLENGE_NUZLOCKE_HARDCORE;
         gSaveBlock1Ptr->tx_Challenges_NoItemPlayer         = TX_CHALLENGE_NO_ITEM_PLAYER;
         gSaveBlock1Ptr->tx_Challenges_NoItemTrainer        = TX_CHALLENGE_NO_ITEM_TRAINER;
-        gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge        = TX_CHALLENGE_TYPE;
+        gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge     = TX_CHALLENGE_TYPE;
         gSaveBlock1Ptr->tx_Challenges_PartyLimit           = TX_CHALLENGE_PARTY_LIMIT;
         gSaveBlock1Ptr->tx_Challenges_PkmnCenter           = TX_CHALLENGE_PKMN_CENTER;
 
