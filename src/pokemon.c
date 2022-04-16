@@ -13743,7 +13743,7 @@ u8 GetTypeBySpecies(u16 species, u8 type)
     u8 result;
 
     if (gSaveBlock1Ptr->tx_Random_Type)
-        species = GetSpeciesRandomSeeded(species, TX_RANDOM_OFFSET_TYPE, TRUE, TRUE);
+        species = GetSpeciesRandomSeeded(species + type*7, TX_RANDOM_OFFSET_TYPE, TRUE, TRUE);
 
     switch (type)
     {

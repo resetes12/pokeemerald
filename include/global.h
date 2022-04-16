@@ -1050,6 +1050,6 @@ struct MapPosition
     s8 elevation;
 };
 
-#define TX_DIFFICULTY_CHALLENGES_USED
+#define TX_RANDOMIZER_AND_CHALLENGES TRUE
 
 #endif // GUARD_GLOBAL_H
