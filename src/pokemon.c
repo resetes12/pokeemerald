@@ -13813,7 +13813,7 @@ u16 GetRandomMove(u16 move, u16 species)
     return sRandomValidMoves[val];
 }
 
-// Nuzzlocke
+// Nuzlocke
 void NuzlockeDeletePartyMon(u8 position)
 {
     PurgeMonOrBoxMon(TOTAL_BOXES_COUNT, position);

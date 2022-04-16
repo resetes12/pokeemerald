@@ -411,7 +411,7 @@ static void ScrollMenu(int direction)
 static void ScrollAll(int direction) // to bottom or top
 {
     int i, y, menuItem, pos;
-    int scrollCount = MENUITEM_COUNT - TX_MENU_ITEMS_PER_PAGE;
+    int scrollCount = MENUITEM_COUNT - 4;
     // Move items up/down
     ScrollWindow(WIN_OPTIONS, direction, Y_DIFF * scrollCount, PIXEL_FILL(0));
 
@@ -458,14 +458,14 @@ static void tx_randomizer_Task_OptionMenuProcessInput(u8 taskId)
     {
         if (sRandomizerOptions->sel[MENUITEM_RANDOM_ON_OFF] == FALSE)
         {
-            if (sRandomizerOptions->menuCursor == 0)
+            if (--sRandomizerOptions->menuCursor < 0)
             {
-                //sRandomizerOptions->visibleCursor = sRandomizerOptions->menuCursor = 3;
-                //ScrollAll(0);
-                //sRandomizerOptions->visibleCursor = 5;
-                //sRandomizerOptions->menuCursor = MENUITEM_COUNT;
+                sRandomizerOptions->visibleCursor = sRandomizerOptions->menuCursor = 3;
+                ScrollAll(0);
+                sRandomizerOptions->visibleCursor = 5;
+                sRandomizerOptions->menuCursor = MENUITEM_COUNT - 1;
             }
-            else //TODO not working somehow????????
+            else
             {
                 sRandomizerOptions->visibleCursor = 3;
                 sRandomizerOptions->menuCursor = MENUITEM_COUNT - 4;
@@ -482,13 +482,12 @@ static void tx_randomizer_Task_OptionMenuProcessInput(u8 taskId)
         }
         else
         {
-            if (sRandomizerOptions->menuCursor <= 0) // Scroll all the way to the bottom.
+            if (--sRandomizerOptions->menuCursor < 0) // Scroll all the way to the bottom.
             {
-                sRandomizerOptions->menuCursor = sRandomizerOptions->visibleCursor = 0;
-                //sRandomizerOptions->visibleCursor = sRandomizerOptions->menuCursor = 3;
-                //ScrollAll(0);
-                //sRandomizerOptions->visibleCursor = 5;
-                //sRandomizerOptions->menuCursor = MENUITEM_COUNT - 1;
+                sRandomizerOptions->visibleCursor = sRandomizerOptions->menuCursor = 3;
+                ScrollAll(0);
+                sRandomizerOptions->visibleCursor = 5;
+                sRandomizerOptions->menuCursor = MENUITEM_COUNT - 1;
             }
             else
             {

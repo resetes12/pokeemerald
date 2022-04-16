@@ -69,6 +69,7 @@ static int tx_challenges_ElevenOptions_ProcessInput(int selection);
 static int tx_challenges_SixOptions_ProcessInput(int selection);
 static void FourOptions_DrawChoices(const u8 *const *const strings, int selection, int y, u8 textSpeed);
 
+static void DrawChoices_Challenges_YesNo(int selection, int y, u8 textSpeed);
 static void DrawChoices_Challenges_EvoLimit(int selection, int y, u8 textSpeed);
 static void DrawChoices_Challenges_PartyLimit(int selection, int y, u8 textSpeed);
 static void DrawChoices_Challenges_Nuzlocke(int selection, int y, u8 textSpeed);
@@ -85,8 +86,8 @@ struct
     [MENUITEM_CHALLENGES_EVO_LIMIT]           = {DrawChoices_Challenges_EvoLimit, tx_challenges_ThreeOptions_ProcessInput},
     [MENUITEM_CHALLENGES_PARTY_LIMIT]         = {DrawChoices_Challenges_PartyLimit, tx_challenges_SixOptions_ProcessInput},
     [MENUITEM_CHALLENGES_NUZLOCKE]            = {DrawChoices_Challenges_Nuzlocke, tx_challenges_ThreeOptions_ProcessInput},
-    [MENUITEM_CHALLENGES_ITEM_PLAYER]         = {DrawChoices_Challenges_Items, tx_challenges_FourOptions_ProcessInput},
-    [MENUITEM_CHALLENGES_ITEM_TRAINER]        = {DrawChoices_Challenges_Items, tx_challenges_FourOptions_ProcessInput},
+    [MENUITEM_CHALLENGES_ITEM_PLAYER]         = {DrawChoices_Challenges_YesNo, tx_challenges_TwoOptions_ProcessInput},
+    [MENUITEM_CHALLENGES_ITEM_TRAINER]        = {DrawChoices_Challenges_YesNo, tx_challenges_TwoOptions_ProcessInput},
     [MENUITEM_CHALLENGES_POKECENTER]          = {DrawChoices_Challenges_Pokecenters, tx_challenges_TwoOptions_ProcessInput},
     [MENUITEM_CHALLENGES_TYPE_CHALLENGE]      = {DrawChoices_Challenges_TypeChallenge, tx_challenges_ElevenOptions_ProcessInput},
     [MENUITEM_SAVE] = {NULL, NULL},
@@ -124,9 +125,9 @@ static const u8 *const sChallengesOptionMenuItemNames[MENUITEM_COUNT] =
 
 static const u8 gText_Description_Challenges_Evo_Limit[]        = _("Limit evolutions.");
 static const u8 gText_Description_Challenges_Party_Limit[]      = _("Limit your parties size.");
-static const u8 gText_Description_Nuzzlocke[]                   = _("Enable nuzlocke mode.");
-static const u8 gText_Description_Challenges_Items_Player[]     = _("The Player can use items.");
-static const u8 gText_Description_Challenges_Items_Trainer[]    = _("Enemy Trainer can use items.");
+static const u8 gText_Description_Nuzlocke[]                    = _("Enable nuzlocke mode.");
+static const u8 gText_Description_Challenges_Items_Player[]     = _("The player can use items.");
+static const u8 gText_Description_Challenges_Items_Trainer[]    = _("Enemy trainer can use items.");
 static const u8 gText_Description_Challenges_Pokecenter[]       = _("Pokecenter use.");
 static const u8 gText_Description_Type_Challenge[]              = _("Enable only one allowed type.");
 static const u8 gText_Description_Save[]                        = _("Save choices and continue...");
@@ -135,7 +136,7 @@ static const u8 *const sOptionMenuItemDescriptions[MENUITEM_COUNT] =
 {
     [MENUITEM_CHALLENGES_EVO_LIMIT]      = gText_Description_Challenges_Evo_Limit,
     [MENUITEM_CHALLENGES_PARTY_LIMIT]    = gText_Description_Challenges_Party_Limit,
-    [MENUITEM_CHALLENGES_NUZLOCKE]       = gText_Description_Nuzzlocke,
+    [MENUITEM_CHALLENGES_NUZLOCKE]       = gText_Description_Nuzlocke,
     [MENUITEM_CHALLENGES_ITEM_PLAYER]    = gText_Description_Challenges_Items_Player,
     [MENUITEM_CHALLENGES_ITEM_TRAINER]   = gText_Description_Challenges_Items_Trainer,
     [MENUITEM_CHALLENGES_POKECENTER]     = gText_Description_Challenges_Pokecenter,
@@ -354,7 +355,7 @@ static void ScrollMenu(int direction)
 static void ScrollAll(int direction) // to bottom or top
 {
     int i, y, menuItem, pos;
-    int scrollCount = MENUITEM_COUNT - 6;
+    int scrollCount = MENUITEM_COUNT - 2;
     // Move items up/down
     ScrollWindow(WIN_OPTIONS, direction, Y_DIFF * scrollCount, PIXEL_FILL(0));
 
@@ -639,9 +640,20 @@ static void FourOptions_DrawChoices(const u8 *const *const strings, int selectio
     DrawOptionMenuChoice(strings[order[2]], GetStringRightAlignXOffset(1, strings[order[2]], 198), y, styles[order[2]], textSpeed);
 }
 
-static const u8 gText_Off[] = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}OFF");
-static const u8 gText_On[]  = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}ON");
-static const u8 gText_None[]  = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}NONE");
+static const u8 gText_Off[]  = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}OFF");
+static const u8 gText_On[]   = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}ON");
+static const u8 gText_None[] = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}NONE");
+
+static const u8 gText_Yes[] = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}YES");
+static const u8 gText_No[]  = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}NO");
+static void DrawChoices_Challenges_YesNo(int selection, int y, u8 textSpeed)
+{
+    u8 styles[2] = {0};
+
+    styles[selection] = 1;
+    DrawOptionMenuChoice(gText_Yes, 104, y, styles[0], textSpeed);
+    DrawOptionMenuChoice(gText_No, GetStringRightAlignXOffset(1, gText_No, 198), y, styles[1], textSpeed);
+}
 
 static const u8 gText_Challenges_EvoLimit_First[] = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}FIRST");
 static void DrawChoices_Challenges_EvoLimit(int selection, int y, u8 textSpeed)
