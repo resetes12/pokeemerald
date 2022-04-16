@@ -107,7 +107,7 @@ static const u8 gText_Nuzlocke[]            = _("NUZLOCKE");
 static const u8 gText_Items_Player[]        = _("PLAYER ITEMS");
 static const u8 gText_Items_Trainer[]       = _("TRAINER ITEMS");
 static const u8 gText_Pokecenter[]          = _("POKéCENTER");
-static const u8 gText_OneTypeChallenge[]    = _("TYPE LIMIT");
+static const u8 gText_OneTypeChallenge[]    = _("ONE TYPE ONLY");
 
 
 static const u8 gText_Save[] = _("SAVE");

@@ -72,6 +72,9 @@ static u16 GiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move);
 static bool8 ShouldSkipFriendshipChange(void);
 static u8 SendMonToPC(struct Pokemon* mon);
 
+static void RandomizeSpeciesListEWRAMNormal(u16 seed);
+static void RandomizeSpeciesListEWRAMLegendary(u16 seed);
+
 EWRAM_DATA static u8 sLearningMoveTableID = 0;
 EWRAM_DATA u8 gPlayerPartyCount = 0;
 EWRAM_DATA u8 gEnemyPartyCount = 0;
@@ -13583,19 +13586,20 @@ u8 *MonSpritesGfxManager_GetSpritePtr(u8 managerId, u8 spriteNum)
 }
 
 //******************* tx_randomizer_and_challenges
-void RandomizeSpeciesListEWRAM(u16 seed) //broken (somehow the if statement breaks the game)
+void RandomizeSpeciesListEWRAM(u16 seed)
 {
-    if (!gSaveBlock1Ptr->tx_Random_IncludeLegendaries)
-        RandomizeSpeciesListEWRAMNormal(seed);
-    else //include legendary mons
+    if (gSaveBlock1Ptr->tx_Random_IncludeLegendaries) //include legendary mons
         RandomizeSpeciesListEWRAMLegendary(seed);
+    else
+        RandomizeSpeciesListEWRAMNormal(seed);
 }
-void RandomizeSpeciesListEWRAMNormal(u16 seed)
+static void RandomizeSpeciesListEWRAMNormal(u16 seed)
 {
     u16 i;
     u16 *stemp = Alloc(sizeof(sRandomSpecies));
 
-    memcpy(stemp, sRandomSpecies, sizeof(sRandomSpecies));
+    //memcpy(stemp, sRandomSpecies, sizeof(sRandomSpecies));
+    DmaCopy16(3, sRandomSpecies, stemp, sizeof(sRandomSpecies));
     ShuffleListU16(stemp, RANDOM_SPECIES_COUNT, seed);
 
     for (i=0; i<RANDOM_SPECIES_COUNT; i++)
@@ -13611,7 +13615,7 @@ void RandomizeSpeciesListEWRAMNormal(u16 seed)
 
     free(stemp);
 }
-void RandomizeSpeciesListEWRAMLegendary(u16 seed)
+static void RandomizeSpeciesListEWRAMLegendary(u16 seed)
 {
     u16 i;
     u16 *stemp = Alloc(sizeof(sRandomSpeciesLegendary));

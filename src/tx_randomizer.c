@@ -599,10 +599,7 @@ void tx_randomizer_SaveData(void)
     }
 
     FREE_AND_SET_NULL(sRandomizerOptions);
-    if (gSaveBlock1Ptr->tx_Random_IncludeLegendaries)
-        RandomizeSpeciesListEWRAMLegendary(1);
-    else
-        RandomizeSpeciesListEWRAMNormal(1);
+    RandomizeSpeciesListEWRAM(1);
     RandomizeTypeEffectivenessListEWRAM(1);
 }
 
