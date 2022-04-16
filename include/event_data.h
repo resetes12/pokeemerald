@@ -27,7 +27,7 @@ u8 FlagSet(u16 id);
 u8 FlagClear(u16 id);
 bool8 FlagGet(u16 id);
 
-//tx_difficulty_challenges
+//tx_randomizer_and_challenges
 u8 NuzlockeFlagGet(u16 mapsec);
 u8 NuzlockeFlagSet(u16 mapsec);
 u8 NuzlockeFlagClear(u16 mapsec);

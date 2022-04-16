@@ -123,7 +123,7 @@ Movement_PkmnCenterNurse_Bow:
 	delay_4
 	step_end
 
-EventScript_PkmnCenterNurse_PkmnCenterChallenge_NoVisits:: @ tx_difficulty_challenges
+EventScript_PkmnCenterNurse_PkmnCenterChallenge_NoVisits:: @ tx_randomizer_and_challenges
     message gText_PkmnCenterChallenge_NoVisitsLeft
     waitmessage
     applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown

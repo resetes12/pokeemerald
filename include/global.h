@@ -1007,20 +1007,20 @@ struct SaveBlock1
     /*0x3D5A*/ u8 unused_3D5A[10];
     /*0x3D64*/ struct SaveTrainerHill trainerHill;
     /*0x3D70*/ struct WaldaPhrase waldaPhrase;
-    /*0x3D88*/ u8 NuzlockeEncounterFlags[9]; //tx_difficulty_challenges
-        u8 txRandChaos:1;
-        u8 txRandEncounter:1;
-        u8 txRandEncounterSimilar:1;
-        u8 txRandEncounterMapBased:1;
-        u8 txRandEncounterLegendary:1;
-        u8 txRandType:1;
-        u8 txRandTypeEffectiveness:1;
-        u8 txRandAbilities:1;
+    /*0x3D88*/ u8 NuzlockeEncounterFlags[9]; //tx_randomizer_and_challenges
+        u8 tx_Random_Chaos:1;
+        u8 tx_Random_WildPokemon:1;
+        u8 tx_Random_Similar:1;
+        u8 tx_Random_MapBased:1;
+        u8 tx_Random_IncludeLegendaries:1;
+        u8 tx_Random_Type:1;
+        u8 tx_Random_TypeEffectiveness:1;
+        u8 tx_Random_Abilities:1;
         //
-        u8 txRandMoves:1;
-        u8 txRandTrainer:1;
-        u8 txRandEvolutions:1;
-        u8 txRandEvolutionMethodes:1;
+        u8 tx_Random_Moves:1;
+        u8 tx_Random_Trainer:1;
+        u8 tx_Random_Evolutions:1;
+        u8 tx_Random_EvolutionMethodes:1;
         u8 txRandEvoLimit:2;
         u8 txRandNuzlocke:1;
         u8 txRandNuzlockeHardcore:1;

@@ -4187,7 +4187,7 @@ static s32 IsRequestedTypeOrEggInPlayerParty(u32 type, u32 species)
         for (i = 0; i < gPlayerPartyCount; i++)
         {
             species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES2);
-            if (GetTypeBySpecies(species, 1) == type || GetTypeBySpecies(species, 2)  == type) //tx_difficulty_challenges
+            if (GetTypeBySpecies(species, 1) == type || GetTypeBySpecies(species, 2)  == type) //tx_randomizer_and_challenges
                 return UR_TRADE_MATCH;
         }
         return UR_TRADE_NOTYPE;

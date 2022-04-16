@@ -7,7 +7,7 @@ extern u32 gRng2Value;
 //Returns a 16-bit pseudorandom number
 u16 Random(void);
 u16 Random2(void);
-u16 RandomSeeded(u16 value, u8 seeded); //tx_difficulty_challenges
+u16 RandomSeeded(u16 value, u8 seeded); //tx_randomizer_and_challenges
 void ShuffleListU8(u8 *list, u8 count, u8 seed);
 void ShuffleListU16(u16 *list, u16 count, u16 seed);
 

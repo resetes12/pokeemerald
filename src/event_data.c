@@ -33,7 +33,7 @@ EWRAM_DATA u16 gSpecialVar_Unused_0x8014 = 0;
 EWRAM_DATA static u8 gSpecialFlags[SPECIAL_FLAGS_SIZE] = {0};
 
 extern u16 *const gSpecialVars[];
-extern u8 NuzlockeLUT[]; //tx_difficulty_challenges
+extern u8 NuzlockeLUT[]; //tx_randomizer_and_challenges
 
 void InitEventData(void)
 {
@@ -238,7 +238,7 @@ bool8 FlagGet(u16 id)
     return TRUE;
 }
 
-//tx_difficulty_challenges
+//tx_randomizer_and_challenges
 u8 NuzlockeFlagSet(u16 mapsec) // @Kurausukun
 {
     u8 id = NuzlockeLUT[mapsec];

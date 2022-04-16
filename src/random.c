@@ -1,7 +1,7 @@
 #include "global.h"
 #include "random.h"
-#include "new_game.h" //tx_difficulty_challenges
-#include "tx_difficulty_challenges.h"
+#include "new_game.h" //tx_randomizer_and_challenges
+#include "tx_randomizer_and_challenges.h"
 
 EWRAM_DATA static u8 sUnknown = 0;
 EWRAM_DATA static u32 sRandCount = 0;
@@ -34,12 +34,12 @@ u16 Random2(void)
     return gRng2Value >> 16;
 }
 
-//tx_difficulty_challenges
+//tx_randomizer_and_challenges
 u16 RandomSeeded(u16 value, u8 seeded)
 {
     u16 otId, result;
 
-    if (gSaveBlock1Ptr->txRandChaos && !seeded)
+    if (gSaveBlock1Ptr->tx_Random_Chaos && !seeded)
     {
         result = Random();
     }

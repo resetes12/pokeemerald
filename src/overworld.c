@@ -66,8 +66,8 @@
 #include "constants/songs.h"
 #include "constants/trainer_hill.h"
 #include "constants/weather.h"
-#include "tx_difficulty_challenges.h"
-#include "pokemon_storage_system.h" //tx_difficulty_challenges
+#include "tx_randomizer_and_challenges.h"
+#include "pokemon_storage_system.h" //tx_randomizer_and_challenges
 
 struct CableClubPlayer
 {
@@ -362,14 +362,14 @@ static void (*const gMovementStatusHandler[])(struct LinkPlayerObjectEvent *, st
 // code
 void DoWhiteOut(void)
 {
-    if (gSaveBlock1Ptr->txRandNuzlocke) //tx_difficulty_challenges
+    if (gSaveBlock1Ptr->txRandNuzlocke) //tx_randomizer_and_challenges
     {
         if (GetFirstBoxPokemon() == IN_BOX_COUNT * TOTAL_BOXES_COUNT)
             DoSoftReset();
     }
     ScriptContext2_RunNewScript(EventScript_WhiteOut);
     SetMoney(&gSaveBlock1Ptr->money, GetMoney(&gSaveBlock1Ptr->money) / 2);
-    if (gSaveBlock1Ptr->txRandNuzlocke) //tx_difficulty_challenges
+    if (gSaveBlock1Ptr->txRandNuzlocke) //tx_randomizer_and_challenges
         MoveFirstBoxPokemon();
     HealPlayerParty();
     Overworld_ResetStateAfterWhiteOut();
@@ -1392,7 +1392,7 @@ u8 GetCurrentRegionMapSectionId(void)
     return Overworld_GetMapHeaderByGroupAndId(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum)->regionMapSectionId;
 }
 
-u8 NuzlockeGetCurrentRegionMapSectionId(void) //tx_difficulty_challenges @Kurausukun
+u8 NuzlockeGetCurrentRegionMapSectionId(void) //tx_randomizer_and_challenges @Kurausukun
 {
     switch(gSaveBlock1Ptr->location.mapNum)
     {
@@ -1578,7 +1578,7 @@ void CB2_WhiteOut(void)
     {
         FieldClearVBlankHBlankCallbacks();
         StopMapMusic();
-        if (gSaveBlock1Ptr->txRandNuzlockeHardcore) //tx_difficulty_challenges
+        if (gSaveBlock1Ptr->txRandNuzlockeHardcore) //tx_randomizer_and_challenges
         {
             ClearSaveData();
             DoSoftReset();

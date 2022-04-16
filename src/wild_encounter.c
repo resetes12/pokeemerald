@@ -21,9 +21,9 @@
 #include "constants/items.h"
 #include "constants/layouts.h"
 #include "constants/weather.h"
-#include "tx_difficulty_challenges.h"
+#include "tx_randomizer_and_challenges.h"
 
-#ifdef GBA_PRINTF //tx_difficulty_challenges
+#ifdef GBA_PRINTF //tx_randomizer_and_challenges
     //#include "printf.h"
     //#include "mgba.h"
     //#include "data.h"                 // for gSpeciesNames, which maps species number to species name.
@@ -386,8 +386,8 @@ static void CreateWildMon(u16 species, u8 level)
     ZeroEnemyPartyMons();
     checkCuteCharm = TRUE;
 
-    if (gSaveBlock1Ptr->txRandEncounter) //tx_difficulty_challenges
-        species = GetSpeciesRandomSeeded(species, TX_RANDOM_OFFSET_ENCOUNTER, TRUE, !gSaveBlock1Ptr->txRandChaos);
+    if (gSaveBlock1Ptr->tx_Random_WildPokemon) //tx_randomizer_and_challenges
+        species = GetSpeciesRandomSeeded(species, TX_RANDOM_OFFSET_ENCOUNTER, TRUE, !gSaveBlock1Ptr->tx_Random_Chaos);
 
     switch (gBaseStats[species].genderRatio)
     {

@@ -148,4 +148,5 @@
 	.include "src/faraway_island.o"
 	.include "src/trainer_hill.o"
 	.include "src/rayquaza_scene.o"
-	.include "src/tx_difficulty_challenges.o"
+	.include "src/tx_challenges.o"
+	.include "src/tx_randomizer.o"

@@ -23,7 +23,7 @@
 #include "window.h"
 #include "constants/songs.h"
 #include "constants/rgb.h"
-#include "tx_difficulty_challenges.h"
+#include "tx_randomizer_and_challenges.h"
 
 #ifdef GBA_PRINTF
     //#include "printf.h"
@@ -363,7 +363,7 @@ static const struct SpriteTemplate sSpriteTemplate_StarterCircle =
 // .text
 u16 GetStarterPokemon(u16 chosenStarterId)
 {
-    //tx_difficulty_challenges
+    //tx_randomizer_and_challenges
     u16 mon = sStarterMon[chosenStarterId];
     u8 typeChallenge = gSaveBlock1Ptr->txRandTypeChallenge;
     u16 i;
@@ -371,7 +371,7 @@ u16 GetStarterPokemon(u16 chosenStarterId)
     if (chosenStarterId > STARTER_MON_COUNT)
         chosenStarterId = 0;
 
-    //tx_difficulty_challenges
+    //tx_randomizer_and_challenges
     if (typeChallenge != TX_CHALLENGE_TYPE_OFF)
     {
         #ifdef GBA_PRINTF
@@ -389,11 +389,11 @@ u16 GetStarterPokemon(u16 chosenStarterId)
             mgba_printf(MGBA_LOG_DEBUG, "i = %d", i + i*chosenStarterId);
         #endif
     }
-    else if (gSaveBlock1Ptr->txRandChaos && gSaveBlock1Ptr->txRandEncounter)
+    else if (gSaveBlock1Ptr->tx_Random_Chaos && gSaveBlock1Ptr->tx_Random_WildPokemon)
     {
         mon = PickRandomizedSpeciesFromEWRAM(sStarterMon[chosenStarterId], 3);
     }
-    else if (gSaveBlock1Ptr->txRandEncounter)
+    else if (gSaveBlock1Ptr->tx_Random_WildPokemon)
     {
         mon = PickRandomEvo0Species(sStarterMon[chosenStarterId]);
     }

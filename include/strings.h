@@ -3021,7 +3021,7 @@ extern const u8 gText_PkmnForSwap[];
 extern const u8 gText_SamePkmnInPartyAlready[];
 extern const u8 gText_Cancel3[];
 
-//tx_difficulty_challenges
+//tx_randomizer_and_challenges
 extern const u8 gText_NuzlockeCantThrowPokeBallRoute[];
 extern const u8 gText_NuzlockeCantThrowPokeBallSpeciesClause[];
 extern const u8 gText_NuzlockeCantThrowPokeBallAlreadyCaught[];

@@ -654,7 +654,7 @@ static void PlaceMon(void);
 static void RefreshDisplayMon(void);
 static void SetMovingMonData(u8, u8);
 static void SetPlacedMonData(u8, u8);
-// static void PurgeMonOrBoxMon(u8, u8); //tx_difficulty_challenges
+// static void PurgeMonOrBoxMon(u8, u8); //tx_randomizer_and_challenges
 static void SetShiftedMonData(u8, u8);
 static bool8 TryStorePartyMonInBox(u8);
 static void ResetSelectionAfterDeposit(void);
@@ -1437,7 +1437,7 @@ u8 CountPartyNonEggMons(void)
 {
     u16 i, count;
 
-    for (i = 0, count = 0; i < GetPartySize(); i++) //tx_difficulty_challenges
+    for (i = 0, count = 0; i < GetPartySize(); i++) //tx_randomizer_and_challenges
     {
         if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) != SPECIES_NONE
             && !GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG))
@@ -1596,7 +1596,7 @@ static void Task_PCMainMenu(u8 taskId)
             DestroyTask(taskId);
             break;
         default:
-            if (task->tInput == OPTION_WITHDRAW && CountPartyMons() == GetPartySize()) //tx_difficulty_challenges
+            if (task->tInput == OPTION_WITHDRAW && CountPartyMons() == GetPartySize()) //tx_randomizer_and_challenges
             {
                 // Can't withdraw
                 FillWindowPixelBuffer(0, PIXEL_FILL(1));
@@ -5845,7 +5845,7 @@ static void GetCursorCoordsByPos(u8 cursorArea, u8 cursorPosition, u16 *x, u16 *
             *x = 104;
             *y = 52;
         }
-        else if (cursorPosition == GetPartySize()) //tx_difficulty_challenges
+        else if (cursorPosition == GetPartySize()) //tx_randomizer_and_challenges
         {
             *x = 152;
             *y = 132;
@@ -6389,7 +6389,7 @@ static void SetPlacedMonData(u8 boxId, u8 position)
     }
 }
 
-void PurgeMonOrBoxMon(u8 boxId, u8 position) //static //tx_difficulty_challenges
+void PurgeMonOrBoxMon(u8 boxId, u8 position) //static //tx_randomizer_and_challenges
 {
     if (boxId == TOTAL_BOXES_COUNT)
         ZeroMonData(&gPlayerParty[position]);
@@ -6840,7 +6840,7 @@ static void TryRefreshDisplayMon(void)
         switch (sCursorArea)
         {
         case CURSOR_AREA_IN_PARTY:
-            if (sCursorPosition < GetPartySize()) //tx_difficulty_challenges
+            if (sCursorPosition < GetPartySize()) //tx_randomizer_and_challenges
             {
                 SetDisplayMonData(&gPlayerParty[sCursorPosition], MODE_PARTY);
                 break;
@@ -7341,14 +7341,14 @@ static u8 HandleInput_InParty(void)
         if (JOY_REPEAT(DPAD_UP))
         {
             if (--cursorPosition < 0)
-                cursorPosition = GetPartySize(); //tx_difficulty_challenges;
+                cursorPosition = GetPartySize(); //tx_randomizer_and_challenges;
             if (cursorPosition != sCursorPosition)
                 retVal = INPUT_MOVE_CURSOR;
             break;
         }
         else if (JOY_REPEAT(DPAD_DOWN))
         {
-            if (++cursorPosition > GetPartySize()) //tx_difficulty_challenges
+            if (++cursorPosition > GetPartySize()) //tx_randomizer_and_challenges
                 cursorPosition = 0;
             if (cursorPosition != sCursorPosition)
                 retVal = INPUT_MOVE_CURSOR;
@@ -7379,7 +7379,7 @@ static u8 HandleInput_InParty(void)
 
         if (JOY_NEW(A_BUTTON))
         {
-            if (sCursorPosition == GetPartySize()) //tx_difficulty_challenges
+            if (sCursorPosition == GetPartySize()) //tx_randomizer_and_challenges
             {
                 if (sStorage->boxOption == OPTION_DEPOSIT)
                     return INPUT_CLOSE_BOX;
@@ -10078,7 +10078,7 @@ static void UnkUtil_DmaRun(struct UnkUtilData *data)
     }
 }
 
-//tx_difficulty_challenges
+//tx_randomizer_and_challenges
 // searches for first pokemon in PC starting at Box 1
 // returns index of that pokemon, or 420 (boxes count * in box count) for none found
 u16 GetFirstBoxPokemon(void) // @Kurausukun

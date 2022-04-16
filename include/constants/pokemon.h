@@ -328,7 +328,7 @@
 #define EVO_LEVEL_SHEDINJA   14 // Pokémon reaches the specified level (special value for Shedinja)
 #define EVO_BEAUTY           15 // Pokémon levels up with beauty ≥ specified value
 
-//tx_difficulty_challenges
+//tx_randomizer_and_challenges
 #ifndef POKEMON_EXPANSION 
 #define EVOS_PER_MON 5
 #define EVOS_PER_LINE 6

@@ -201,7 +201,7 @@ void CopyPartyAndObjectsToSave(void)
 
 void CopyPartyAndObjectsFromSave(void)
 {
-    if (gSaveBlock1Ptr->txRandEncounterLegendary)
+    if (gSaveBlock1Ptr->tx_Random_IncludeLegendaries)
         RandomizeSpeciesListEWRAMLegendary(1);
     else
         RandomizeSpeciesListEWRAMNormal(1);

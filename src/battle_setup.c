@@ -46,9 +46,9 @@
 #include "constants/trainers.h"
 #include "constants/trainer_hill.h"
 #include "constants/weather.h"
-#include "tx_difficulty_challenges.h"
-#include "pokedex.h" //tx_difficulty_challenges
-#include "constants/region_map_sections.h" //tx_difficulty_challenges
+#include "tx_randomizer_and_challenges.h"
+#include "pokedex.h" //tx_randomizer_and_challenges
+#include "constants/region_map_sections.h" //tx_randomizer_and_challenges
 
 enum {
     TRANSITION_TYPE_NORMAL,
@@ -470,12 +470,12 @@ static void CreateBattleStartTask(u8 transition, u16 song)
 
 void BattleSetup_StartWildBattle(void)
 {
-    u8 typeChallenge = gSaveBlock1Ptr->txRandTypeChallenge; //tx_difficulty_challenges
+    u8 typeChallenge = gSaveBlock1Ptr->txRandTypeChallenge; //tx_randomizer_and_challenges
 
     if (GetSafariZoneFlag())
         DoSafariBattle();
     else
-        // tx_difficulty_challenges
+        // tx_randomizer_and_challenges
         TypeChallengeCaptureBlocked = (typeChallenge != TX_CHALLENGE_TYPE_OFF && 
                     GetTypeBySpecies(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES), 1) != typeChallenge && 
                     GetTypeBySpecies(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES), 2) != typeChallenge);
@@ -1993,7 +1993,7 @@ u16 CountBattledRematchTeams(u16 trainerId)
     return i;
 }
 
-//tx_difficulty_challenges
+//tx_randomizer_and_challenges
 u8 NuzlockeIsCaptureBlockedBySpeciesClause(u16 species) // @Kurausukun
 {
     u8 i;
