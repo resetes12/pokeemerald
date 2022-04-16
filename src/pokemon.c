@@ -7802,8 +7802,8 @@ const u16 gEvolutionLines[NUM_SPECIES][EVOS_PER_LINE] =
     #endif
 };
 
-#define RANDOM_TYPE_COUNT ARRAY_COUNT(sTypeChallengeValidTypes)
-static const u8  sTypeChallengeValidTypes[NUMBER_OF_MON_TYPES-1] =
+#define RANDOM_TYPE_COUNT ARRAY_COUNT(sOneTypeChallengeValidTypes)
+static const u8  sOneTypeChallengeValidTypes[NUMBER_OF_MON_TYPES-1] =
 {
     TYPE_NORMAL   ,
     TYPE_FIGHTING ,
@@ -10852,7 +10852,7 @@ void CopyMon(void *dest, void *src, size_t size)
 u8 GiveMonToPlayer(struct Pokemon *mon)
 {
     s32 i;
-    u8 typeChallenge = gSaveBlock1Ptr->txRandTypeChallenge;
+    u8 typeChallenge = gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge;
 
     SetMonData(mon, MON_DATA_OT_NAME, gSaveBlock2Ptr->playerName);
     SetMonData(mon, MON_DATA_OT_GENDER, &gSaveBlock2Ptr->playerGender);
@@ -12649,7 +12649,7 @@ u32 CanMonLearnTMHM(struct Pokemon *mon, u8 tm)
 {
     u16 species = GetMonData(mon, MON_DATA_SPECIES2, 0);
     
-    if (gSaveBlock1Ptr->txRandNuzlocke && (tm >= ITEM_HM01 - ITEM_TM01_FOCUS_PUNCH) )
+    if (gSaveBlock1Ptr->tx_Challenges_Nuzlocke && (tm >= ITEM_HM01 - ITEM_TM01_FOCUS_PUNCH) )
         return TRUE;
     if (gSaveBlock1Ptr->tx_Random_Moves) //tx_randomizer_and_challenges
         species = GetSpeciesRandomSeeded(species, TX_RANDOM_OFFSET_MOVES + tm, TRUE, TRUE);
@@ -13789,7 +13789,7 @@ u16 GetEvolutionTargetSpeciesRandom(u16 species, u8 random, u8 seeded)
             return sRandomSpecies[(Random() % RANDOM_SPECIES_COUNT) + 1];
     }
 
-    if (slot == EVO_TYPE_1 && gSaveBlock1Ptr->txRandEvoLimit == 1)
+    if (slot == EVO_TYPE_1 && gSaveBlock1Ptr->tx_Challenges_EvoLimit == 1)
         return SPECIES_NONE;
 
     switch (slot)
@@ -13845,24 +13845,24 @@ void NuzlockeDeleteFaintedPartyPokemon(void) // @Kurausukun
 // Challenges
 u8 GetPartySize()
 {
-    return gSaveBlock1Ptr->txRandPartyLimit;
+    return gSaveBlock1Ptr->tx_Challenges_PartyLimit;
 }
 u8 GetPokemonCenterChallenge()
 {
-    return !gSaveBlock1Ptr->txRandPkmnCenter;
+    return !gSaveBlock1Ptr->tx_Challenges_PkmnCenter;
 }
-u8 PickRandomTypeChallengeType()
+u8 PickRandomOneTypeChallengeType()
 {
     u16 type = (RandomSeeded(1, TRUE) % (NUMBER_OF_MON_TYPES-1));
-    type = sTypeChallengeValidTypes[type];
+    type = sOneTypeChallengeValidTypes[type];
 }
 void RandomizeTypeEffectivenessListEWRAM(u16 seed)
 {
     u8 i;
     u8 stemp[RANDOM_TYPE_COUNT];
 
-    memcpy(stemp, sTypeChallengeValidTypes, sizeof(sTypeChallengeValidTypes));
-    ShuffleListU8(stemp, NELEMS(sTypeChallengeValidTypes), seed);
+    memcpy(stemp, sOneTypeChallengeValidTypes, sizeof(sOneTypeChallengeValidTypes));
+    ShuffleListU8(stemp, NELEMS(sOneTypeChallengeValidTypes), seed);
 
     sTypeEffectivenessList[TYPE_MYSTERY] = TYPE_MYSTERY;
     for (i=0; i<NUMBER_OF_MON_TYPES; i++)
@@ -13906,13 +13906,13 @@ void PrintTXSaveData(void)
     mgba_printf(MGBA_LOG_DEBUG, "%d tx_Random_Trainer"           , gSaveBlock1Ptr->tx_Random_Trainer);
     mgba_printf(MGBA_LOG_DEBUG, "%d tx_Random_Evolutions"        , gSaveBlock1Ptr->tx_Random_Evolutions);
     mgba_printf(MGBA_LOG_DEBUG, "%d tx_Random_EvolutionMethodes" , gSaveBlock1Ptr->tx_Random_EvolutionMethodes);
-    mgba_printf(MGBA_LOG_DEBUG, "%d txRandEvoLimit"          , gSaveBlock1Ptr->txRandEvoLimit);
-    mgba_printf(MGBA_LOG_DEBUG, "%d txRandNuzlocke"          , gSaveBlock1Ptr->txRandNuzlocke);
-    mgba_printf(MGBA_LOG_DEBUG, "%d txRandNuzlockeHardcore"  , gSaveBlock1Ptr->txRandNuzlockeHardcore);
-    mgba_printf(MGBA_LOG_DEBUG, "%d txRandNoItemPlayer"      , gSaveBlock1Ptr->txRandNoItemPlayer);
-    mgba_printf(MGBA_LOG_DEBUG, "%d txRandNoItemTrainer"     , gSaveBlock1Ptr->txRandNoItemTrainer);
-    mgba_printf(MGBA_LOG_DEBUG, "%d txRandTypeChallenge"     , gSaveBlock1Ptr->txRandTypeChallenge);
-    mgba_printf(MGBA_LOG_DEBUG, "%d txRandPartyLimit"        , gSaveBlock1Ptr->txRandPartyLimit);
-    mgba_printf(MGBA_LOG_DEBUG, "%d txRandPkmnCenter"        , gSaveBlock1Ptr->txRandPkmnCenter);
+    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_EvoLimit"          , gSaveBlock1Ptr->tx_Challenges_EvoLimit);
+    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_Nuzlocke"          , gSaveBlock1Ptr->tx_Challenges_Nuzlocke);
+    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_NuzlockeHardcore"  , gSaveBlock1Ptr->tx_Challenges_NuzlockeHardcore);
+    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_NoItemPlayer"      , gSaveBlock1Ptr->tx_Challenges_NoItemPlayer);
+    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_NoItemTrainer"     , gSaveBlock1Ptr->tx_Challenges_NoItemTrainer);
+    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_OneTypeChallenge"     , gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge);
+    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_PartyLimit"        , gSaveBlock1Ptr->tx_Challenges_PartyLimit);
+    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_PkmnCenter"        , gSaveBlock1Ptr->tx_Challenges_PkmnCenter);
     #endif
 }

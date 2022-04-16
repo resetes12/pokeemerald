@@ -1987,7 +1987,7 @@ static void ItemMenu_Cancel(u8 taskId)
 static void ItemMenu_UseInBattle(u8 taskId)
 {
     //tx_randomizer_and_challenges
-    if (gSaveBlock1Ptr->txRandNoItemPlayer && ItemId_GetBattleFunc(gSpecialVar_ItemId) != ItemUseInBattle_PokeBall)
+    if (gSaveBlock1Ptr->tx_Challenges_NoItemPlayer && ItemId_GetBattleFunc(gSpecialVar_ItemId) != ItemUseInBattle_PokeBall)
     {
         DisplayCannotUseItemMessage(taskId, FALSE, gText_BattleRules_NoItems_Player);
         return;

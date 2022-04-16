@@ -1021,16 +1021,16 @@ struct SaveBlock1
         u8 tx_Random_Trainer:1;
         u8 tx_Random_Evolutions:1;
         u8 tx_Random_EvolutionMethodes:1;
-        u8 txRandEvoLimit:2;
-        u8 txRandNuzlocke:1;
-        u8 txRandNuzlockeHardcore:1;
+        u8 tx_Challenges_EvoLimit:2;
+        u8 tx_Challenges_Nuzlocke:1;
+        u8 tx_Challenges_NuzlockeHardcore:1;
         //
-        u8 txRandTypeChallenge:5;
-        u8 txRandPartyLimit:3;
+        u8 tx_Challenges_OneTypeChallenge:5;
+        u8 tx_Challenges_PartyLimit:3;
         //
-        u8 txRandNoItemPlayer:1;
-        u8 txRandNoItemTrainer:1;
-        u8 txRandPkmnCenter:2;
+        u8 tx_Challenges_NoItemPlayer:1;
+        u8 tx_Challenges_NoItemTrainer:1;
+        u8 tx_Challenges_PkmnCenter:2;
     // sizeof: 0x3D94  // sizeof: 0x3D88
 };
 

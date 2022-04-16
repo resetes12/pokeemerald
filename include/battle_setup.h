@@ -21,7 +21,7 @@ extern u16 gPartnerTrainerId;
 //tx_randomizer_and_challenges
 extern u8 NuzlockeIsCaptureBlocked;
 extern u8 NuzlockeIsSpeciesClauseActive;
-extern u8 TypeChallengeCaptureBlocked;
+extern u8 OneTypeChallengeCaptureBlocked;
 
 void BattleSetup_StartWildBattle(void);
 void BattleSetup_StartBattlePikeWildBattle(void);

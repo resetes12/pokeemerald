@@ -33,7 +33,7 @@ enum
     MENUITEM_CHALLENGES_ITEM_PLAYER,
     MENUITEM_CHALLENGES_ITEM_TRAINER,
     MENUITEM_CHALLENGES_POKECENTER,
-    MENUITEM_CHALLENGES_TYPE_CHALLENGE,
+    MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE,
     MENUITEM_SAVE,
     MENUITEM_COUNT,
 };
@@ -65,7 +65,7 @@ static void DrawBgWindowFrames(void);
 static int tx_challenges_FourOptions_ProcessInput(int selection);
 static int tx_challenges_ThreeOptions_ProcessInput(int selection);
 static int tx_challenges_TwoOptions_ProcessInput(int selection);
-static int tx_challenges_ElevenOptions_ProcessInput(int selection);
+static int tx_challenges_OneTypeChallengeOptions_ProcessInput(int selection);
 static int tx_challenges_SixOptions_ProcessInput(int selection);
 static void FourOptions_DrawChoices(const u8 *const *const strings, int selection, int y, u8 textSpeed);
 
@@ -75,7 +75,7 @@ static void DrawChoices_Challenges_PartyLimit(int selection, int y, u8 textSpeed
 static void DrawChoices_Challenges_Nuzlocke(int selection, int y, u8 textSpeed);
 static void DrawChoices_Challenges_Items(int selection, int y, u8 textSpeed);
 static void DrawChoices_Challenges_Pokecenters(int selection, int y, u8 textSpeed);
-static void DrawChoices_Challenges_TypeChallenge(int selection, int y, u8 textSpeed);
+static void DrawChoices_Challenges_OneTypeChallenge(int selection, int y, u8 textSpeed);
 
 struct
 {
@@ -89,7 +89,7 @@ struct
     [MENUITEM_CHALLENGES_ITEM_PLAYER]         = {DrawChoices_Challenges_YesNo, tx_challenges_TwoOptions_ProcessInput},
     [MENUITEM_CHALLENGES_ITEM_TRAINER]        = {DrawChoices_Challenges_YesNo, tx_challenges_TwoOptions_ProcessInput},
     [MENUITEM_CHALLENGES_POKECENTER]          = {DrawChoices_Challenges_Pokecenters, tx_challenges_TwoOptions_ProcessInput},
-    [MENUITEM_CHALLENGES_TYPE_CHALLENGE]      = {DrawChoices_Challenges_TypeChallenge, tx_challenges_ElevenOptions_ProcessInput},
+    [MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]  = {DrawChoices_Challenges_OneTypeChallenge, tx_challenges_OneTypeChallengeOptions_ProcessInput},
     [MENUITEM_SAVE] = {NULL, NULL},
 };
 
@@ -101,13 +101,13 @@ static const u16 sOptionMenuText_Pal[] = INCBIN_U16("graphics/misc/option_menu_t
 // note: this is only used in the Japanese release
 static const u8 sEqualSignGfx[] = INCBIN_U8("graphics/misc/option_menu_equals_sign.4bpp");
 
-static const u8 gText_EvoLimit[] =      _("EVO LIMIT");
-static const u8 gText_PartyLimit[] =    _("PARTY LIMIT");
-static const u8 gText_Nuzlocke[] =      _("NUZLOCKE");
-static const u8 gText_Items_Player[] =  _("PLAYER ITEMS");
-static const u8 gText_Items_Trainer[] = _("TRAINER ITEMS");
-static const u8 gText_Pokecenter[] =    _("POKECENTER");
-static const u8 gText_TypeChall[] =     _("TYPE LIMIT");
+static const u8 gText_EvoLimit[]            = _("EVO LIMIT");
+static const u8 gText_PartyLimit[]          = _("PARTY LIMIT");
+static const u8 gText_Nuzlocke[]            = _("NUZLOCKE");
+static const u8 gText_Items_Player[]        = _("PLAYER ITEMS");
+static const u8 gText_Items_Trainer[]       = _("TRAINER ITEMS");
+static const u8 gText_Pokecenter[]          = _("POKéCENTER");
+static const u8 gText_OneTypeChallenge[]    = _("TYPE LIMIT");
 
 
 static const u8 gText_Save[] = _("SAVE");
@@ -119,7 +119,7 @@ static const u8 *const sChallengesOptionMenuItemNames[MENUITEM_COUNT] =
     [MENUITEM_CHALLENGES_ITEM_PLAYER]         = gText_Items_Player,
     [MENUITEM_CHALLENGES_ITEM_TRAINER]        = gText_Items_Trainer,
     [MENUITEM_CHALLENGES_POKECENTER]          = gText_Pokecenter,
-    [MENUITEM_CHALLENGES_TYPE_CHALLENGE]      = gText_TypeChall,
+    [MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]  = gText_OneTypeChallenge,
     [MENUITEM_SAVE]                           = gText_Save,
 };
 
@@ -128,20 +128,20 @@ static const u8 gText_Description_Challenges_Party_Limit[]      = _("Limit your 
 static const u8 gText_Description_Nuzlocke[]                    = _("Enable nuzlocke mode.");
 static const u8 gText_Description_Challenges_Items_Player[]     = _("The player can use items.");
 static const u8 gText_Description_Challenges_Items_Trainer[]    = _("Enemy trainer can use items.");
-static const u8 gText_Description_Challenges_Pokecenter[]       = _("Pokecenter use.");
-static const u8 gText_Description_Type_Challenge[]              = _("Enable only one allowed type.");
+static const u8 gText_Description_Challenges_Pokecenter[]       = _("Pokécenter use.");
+static const u8 gText_Description_Challenges_OneTypeChallenge[] = _("Allow only one POKéMON type.");
 static const u8 gText_Description_Save[]                        = _("Save choices and continue...");
 
 static const u8 *const sOptionMenuItemDescriptions[MENUITEM_COUNT] =
 {
-    [MENUITEM_CHALLENGES_EVO_LIMIT]      = gText_Description_Challenges_Evo_Limit,
-    [MENUITEM_CHALLENGES_PARTY_LIMIT]    = gText_Description_Challenges_Party_Limit,
-    [MENUITEM_CHALLENGES_NUZLOCKE]       = gText_Description_Nuzlocke,
-    [MENUITEM_CHALLENGES_ITEM_PLAYER]    = gText_Description_Challenges_Items_Player,
-    [MENUITEM_CHALLENGES_ITEM_TRAINER]   = gText_Description_Challenges_Items_Trainer,
-    [MENUITEM_CHALLENGES_POKECENTER]     = gText_Description_Challenges_Pokecenter,
-    [MENUITEM_CHALLENGES_TYPE_CHALLENGE] = gText_Description_Type_Challenge,
-    [MENUITEM_SAVE]                      = gText_Description_Save,
+    [MENUITEM_CHALLENGES_EVO_LIMIT]             = gText_Description_Challenges_Evo_Limit,
+    [MENUITEM_CHALLENGES_PARTY_LIMIT]           = gText_Description_Challenges_Party_Limit,
+    [MENUITEM_CHALLENGES_NUZLOCKE]              = gText_Description_Nuzlocke,
+    [MENUITEM_CHALLENGES_ITEM_PLAYER]           = gText_Description_Challenges_Items_Player,
+    [MENUITEM_CHALLENGES_ITEM_TRAINER]          = gText_Description_Challenges_Items_Trainer,
+    [MENUITEM_CHALLENGES_POKECENTER]            = gText_Description_Challenges_Pokecenter,
+    [MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]    = gText_Description_Challenges_OneTypeChallenge,
+    [MENUITEM_SAVE]                             = gText_Description_Save,
 };
 
 static const struct WindowTemplate sDifficultyChallengesOptionMenuWinTemplates[] =
@@ -285,31 +285,31 @@ void CB2_InitChallengesMenu(void)
         taskId = CreateTask(tx_challenges_Task_OptionMenuFadeIn, 0);
 
         //tx_randomizer_and_challenges
-        gSaveBlock1Ptr->txRandEvoLimit             = TX_CHALLENGE_EVO_LIMIT;
-        gSaveBlock1Ptr->txRandNuzlocke             = TX_CHALLENGE_NUZLOCKE;
-        gSaveBlock1Ptr->txRandNuzlockeHardcore     = TX_CHALLENGE_NUZLOCKE_HARDCORE;
-        gSaveBlock1Ptr->txRandNoItemPlayer         = TX_CHALLENGE_NO_ITEM_PLAYER;
-        gSaveBlock1Ptr->txRandNoItemTrainer        = TX_CHALLENGE_NO_ITEM_TRAINER;
-        gSaveBlock1Ptr->txRandTypeChallenge        = TX_CHALLENGE_TYPE;
-        gSaveBlock1Ptr->txRandPartyLimit           = TX_CHALLENGE_PARTY_LIMIT;
-        gSaveBlock1Ptr->txRandPkmnCenter           = TX_CHALLENGE_PKMN_CENTER;
+        gSaveBlock1Ptr->tx_Challenges_EvoLimit             = TX_CHALLENGE_EVO_LIMIT;
+        gSaveBlock1Ptr->tx_Challenges_Nuzlocke             = TX_CHALLENGE_NUZLOCKE;
+        gSaveBlock1Ptr->tx_Challenges_NuzlockeHardcore     = TX_CHALLENGE_NUZLOCKE_HARDCORE;
+        gSaveBlock1Ptr->tx_Challenges_NoItemPlayer         = TX_CHALLENGE_NO_ITEM_PLAYER;
+        gSaveBlock1Ptr->tx_Challenges_NoItemTrainer        = TX_CHALLENGE_NO_ITEM_TRAINER;
+        gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge        = TX_CHALLENGE_TYPE;
+        gSaveBlock1Ptr->tx_Challenges_PartyLimit           = TX_CHALLENGE_PARTY_LIMIT;
+        gSaveBlock1Ptr->tx_Challenges_PkmnCenter           = TX_CHALLENGE_PKMN_CENTER;
 
         sChallengesOptions = AllocZeroed(sizeof(*sChallengesOptions));
 
-        sChallengesOptions->sel[MENUITEM_CHALLENGES_EVO_LIMIT]   = gSaveBlock1Ptr->txRandEvoLimit;
-        sChallengesOptions->sel[MENUITEM_CHALLENGES_PARTY_LIMIT] = 6 - gSaveBlock1Ptr->txRandPartyLimit;
+        sChallengesOptions->sel[MENUITEM_CHALLENGES_EVO_LIMIT]   = gSaveBlock1Ptr->tx_Challenges_EvoLimit;
+        sChallengesOptions->sel[MENUITEM_CHALLENGES_PARTY_LIMIT] = 6 - gSaveBlock1Ptr->tx_Challenges_PartyLimit;
 
-        if (gSaveBlock1Ptr->txRandNuzlocke && gSaveBlock1Ptr->txRandNuzlockeHardcore)
+        if (gSaveBlock1Ptr->tx_Challenges_Nuzlocke && gSaveBlock1Ptr->tx_Challenges_NuzlockeHardcore)
             sChallengesOptions->sel[MENUITEM_CHALLENGES_NUZLOCKE] = 2;
-        else if (gSaveBlock1Ptr->txRandNuzlocke)
+        else if (gSaveBlock1Ptr->tx_Challenges_Nuzlocke)
             sChallengesOptions->sel[MENUITEM_CHALLENGES_NUZLOCKE] = 1;
         else
             sChallengesOptions->sel[MENUITEM_CHALLENGES_NUZLOCKE] = 0;
         
-        sChallengesOptions->sel[MENUITEM_CHALLENGES_ITEM_PLAYER]    = gSaveBlock1Ptr->txRandNoItemPlayer;
-        sChallengesOptions->sel[MENUITEM_CHALLENGES_ITEM_TRAINER]   = gSaveBlock1Ptr->txRandNoItemTrainer;        
-        sChallengesOptions->sel[MENUITEM_CHALLENGES_POKECENTER]     = gSaveBlock1Ptr->txRandPkmnCenter;
-        sChallengesOptions->sel[MENUITEM_CHALLENGES_TYPE_CHALLENGE] = gSaveBlock1Ptr->txRandTypeChallenge;
+        sChallengesOptions->sel[MENUITEM_CHALLENGES_ITEM_PLAYER]    = gSaveBlock1Ptr->tx_Challenges_NoItemPlayer;
+        sChallengesOptions->sel[MENUITEM_CHALLENGES_ITEM_TRAINER]   = gSaveBlock1Ptr->tx_Challenges_NoItemTrainer;        
+        sChallengesOptions->sel[MENUITEM_CHALLENGES_POKECENTER]     = gSaveBlock1Ptr->tx_Challenges_PkmnCenter;
+        sChallengesOptions->sel[MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE] = gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge;
 
 
         for (i = 0; i < 6; i++)
@@ -466,36 +466,36 @@ static void tx_challenges_Task_OptionMenuSave(u8 taskId)
 
 void tx_challenges_SaveData(void)
 {
-    gSaveBlock1Ptr->txRandEvoLimit             = sChallengesOptions->sel[MENUITEM_CHALLENGES_EVO_LIMIT];
+    gSaveBlock1Ptr->tx_Challenges_EvoLimit             = sChallengesOptions->sel[MENUITEM_CHALLENGES_EVO_LIMIT];
 
     switch (sChallengesOptions->sel[MENUITEM_CHALLENGES_NUZLOCKE])
     {
     case 0:
-        gSaveBlock1Ptr->txRandNuzlocke          = FALSE;
-        gSaveBlock1Ptr->txRandNuzlockeHardcore  = FALSE;
+        gSaveBlock1Ptr->tx_Challenges_Nuzlocke          = FALSE;
+        gSaveBlock1Ptr->tx_Challenges_NuzlockeHardcore  = FALSE;
         break;
     case 1:
-        gSaveBlock1Ptr->txRandNuzlocke          = TRUE;
-        gSaveBlock1Ptr->txRandNuzlockeHardcore  = FALSE;
+        gSaveBlock1Ptr->tx_Challenges_Nuzlocke          = TRUE;
+        gSaveBlock1Ptr->tx_Challenges_NuzlockeHardcore  = FALSE;
         break;
     case 2:
-        gSaveBlock1Ptr->txRandNuzlocke          = TRUE;
-        gSaveBlock1Ptr->txRandNuzlockeHardcore  = TRUE;
+        gSaveBlock1Ptr->tx_Challenges_Nuzlocke          = TRUE;
+        gSaveBlock1Ptr->tx_Challenges_NuzlockeHardcore  = TRUE;
         break;
     }
 
-    gSaveBlock1Ptr->txRandNoItemPlayer  = sChallengesOptions->sel[MENUITEM_CHALLENGES_ITEM_PLAYER];
-    gSaveBlock1Ptr->txRandNoItemTrainer = sChallengesOptions->sel[MENUITEM_CHALLENGES_ITEM_TRAINER];
+    gSaveBlock1Ptr->tx_Challenges_NoItemPlayer  = sChallengesOptions->sel[MENUITEM_CHALLENGES_ITEM_PLAYER];
+    gSaveBlock1Ptr->tx_Challenges_NoItemTrainer = sChallengesOptions->sel[MENUITEM_CHALLENGES_ITEM_TRAINER];
 
-    if (sChallengesOptions->sel[MENUITEM_CHALLENGES_TYPE_CHALLENGE] >= NUMBER_OF_MON_TYPES-1)
-        gSaveBlock1Ptr->txRandTypeChallenge = TX_CHALLENGE_TYPE_OFF;
-    else if (sChallengesOptions->sel[MENUITEM_CHALLENGES_TYPE_CHALLENGE] >= TYPE_MYSTERY)
-        gSaveBlock1Ptr->txRandTypeChallenge = sChallengesOptions->sel[MENUITEM_CHALLENGES_TYPE_CHALLENGE] + 1;
+    if (sChallengesOptions->sel[MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE] >= NUMBER_OF_MON_TYPES-1)
+        gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge = TX_CHALLENGE_TYPE_OFF;
+    else if (sChallengesOptions->sel[MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE] >= TYPE_MYSTERY)
+        gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge = sChallengesOptions->sel[MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE] + 1;
     else
-        gSaveBlock1Ptr->txRandTypeChallenge = sChallengesOptions->sel[MENUITEM_CHALLENGES_TYPE_CHALLENGE];
+        gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge = sChallengesOptions->sel[MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE];
     
-    gSaveBlock1Ptr->txRandPartyLimit           = 6 - sChallengesOptions->sel[MENUITEM_CHALLENGES_PARTY_LIMIT];
-    gSaveBlock1Ptr->txRandPkmnCenter           = sChallengesOptions->sel[MENUITEM_CHALLENGES_POKECENTER];
+    gSaveBlock1Ptr->tx_Challenges_PartyLimit           = 6 - sChallengesOptions->sel[MENUITEM_CHALLENGES_PARTY_LIMIT];
+    gSaveBlock1Ptr->tx_Challenges_PkmnCenter           = sChallengesOptions->sel[MENUITEM_CHALLENGES_POKECENTER];
 }
 
 static void tx_challenges_Task_OptionMenuFadeOut(u8 taskId)
@@ -542,7 +542,7 @@ static int tx_challenges_FourOptions_ProcessInput(int selection)
     return XOptions_ProcessInput(4, selection);
 }
 
-static int tx_challenges_ElevenOptions_ProcessInput(int selection)
+static int tx_challenges_OneTypeChallengeOptions_ProcessInput(int selection)
 {
     return XOptions_ProcessInput(NUMBER_OF_MON_TYPES, selection);
 }
@@ -710,7 +710,7 @@ static void DrawChoices_Challenges_Pokecenters(int selection, int y, u8 textSpee
     DrawOptionMenuChoice(gText_Off, GetStringRightAlignXOffset(1, gText_Off, 198), y, styles[1], textSpeed);
 }
 
-static void DrawChoices_Challenges_TypeChallenge(int selection, int y, u8 textSpeed)
+static void DrawChoices_Challenges_OneTypeChallenge(int selection, int y, u8 textSpeed)
 {
     u8 n = selection;
 

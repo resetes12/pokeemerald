@@ -114,7 +114,7 @@ EWRAM_DATA static u8 sNoOfPossibleTrainerRetScripts = 0;
 //tx_difficulty_options
 EWRAM_DATA u8 NuzlockeIsCaptureBlocked = FALSE;
 EWRAM_DATA u8 NuzlockeIsSpeciesClauseActive = FALSE;
-EWRAM_DATA u8 TypeChallengeCaptureBlocked = FALSE;
+EWRAM_DATA u8 OneTypeChallengeCaptureBlocked = FALSE;
 
 // The first transition is used if the enemy pokemon are lower level than our pokemon.
 // Otherwise, the second transition is used.
@@ -470,17 +470,17 @@ static void CreateBattleStartTask(u8 transition, u16 song)
 
 void BattleSetup_StartWildBattle(void)
 {
-    u8 typeChallenge = gSaveBlock1Ptr->txRandTypeChallenge; //tx_randomizer_and_challenges
+    u8 typeChallenge = gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge; //tx_randomizer_and_challenges
 
     if (GetSafariZoneFlag())
         DoSafariBattle();
     else
         // tx_randomizer_and_challenges
-        TypeChallengeCaptureBlocked = (typeChallenge != TX_CHALLENGE_TYPE_OFF && 
+        OneTypeChallengeCaptureBlocked = (typeChallenge != TX_CHALLENGE_TYPE_OFF && 
                     GetTypeBySpecies(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES), 1) != typeChallenge && 
                     GetTypeBySpecies(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES), 2) != typeChallenge);
 
-        if (gSaveBlock1Ptr->txRandNuzlocke)
+        if (gSaveBlock1Ptr->tx_Challenges_Nuzlocke)
         {
             NuzlockeIsSpeciesClauseActive = NuzlockeIsCaptureBlockedBySpeciesClause(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES));
 

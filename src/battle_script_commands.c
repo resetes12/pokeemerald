@@ -10087,14 +10087,14 @@ void BattleDestroyYesNoCursorAt(u8 cursorPosition)
 
 static void Cmd_trygivecaughtmonnick(void)
 {
-    u8 typeChallenge = gSaveBlock1Ptr->txRandTypeChallenge; //tx_randomizer_and_challenges
+    u8 typeChallenge = gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge; //tx_randomizer_and_challenges
 
     switch (gBattleCommunication[MULTIUSE_STATE])
     {
     case 0:
         HandleBattleWindow(24, 8, 29, 13, 0);
 
-        if (gSaveBlock1Ptr->txRandNuzlocke) //tx_randomizer_and_challenges
+        if (gSaveBlock1Ptr->tx_Challenges_Nuzlocke) //tx_randomizer_and_challenges
         {
             gBattleCommunication[MULTIUSE_STATE]++;
             BeginFastPaletteFade(3);
@@ -10108,7 +10108,7 @@ static void Cmd_trygivecaughtmonnick(void)
         }
         break;
     case 1:
-        if (gSaveBlock1Ptr->txRandNuzlocke) //tx_randomizer_and_challenges
+        if (gSaveBlock1Ptr->tx_Challenges_Nuzlocke) //tx_randomizer_and_challenges
             gBattleCommunication[MULTIUSE_STATE]++;
 
         if (JOY_NEW(DPAD_UP) && gBattleCommunication[CURSOR_POSITION] != 0)
