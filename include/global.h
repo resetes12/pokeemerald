@@ -1044,6 +1044,6 @@ struct MapPosition
     s8 height;
 };
 
-#define TX_DIFFICULTY_CHALLENGES_USED
+#define TX_RANDOMIZER_AND_CHALLENGES TRUE
 
 #endif // GUARD_GLOBAL_H
