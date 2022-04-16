@@ -99,9 +99,9 @@ struct
 EWRAM_DATA struct tx_randomizer_OptionsMenu *sRandomizerOptions = NULL;
 
 // const rom data
-static const u16 sOptionMenuText_Pal[] = INCBIN_U16("graphics/misc/option_menu_text.gbapal");
+static const u16 sOptionMenuText_Pal[] = INCBIN_U16("graphics/interface/option_menu_text.gbapal");
 // note: this is only used in the Japanese release
-static const u8 sEqualSignGfx[] = INCBIN_U8("graphics/misc/option_menu_equals_sign.4bpp");
+static const u8 sEqualSignGfx[] = INCBIN_U8("graphics/interface/option_menu_equals_sign.4bpp");
 
 static const u8 gText_Randomizer[] =                _("RANDOMIZER");
 static const u8 gText_WildPkmn[] =                  _("WILD POKEMON");
