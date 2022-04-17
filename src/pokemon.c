@@ -2165,13 +2165,14 @@ static const struct SpriteTemplate sSpriteTemplate_64x64 =
 #define EVO_TYPE_SELF 3
 #define EVO_TYPE_LEGENDARY 4
 
-const u8 gRandomizationTypes[5][25] =
+const u8 gRandomizationTypes[6][25] =
 {
     [TX_RANDOM_T_WILD_POKEMON]    = _("TX RANDOM WILD PKMN"),
     [TX_RANDOM_T_TRAINER]         = _("TX RANDOM TRAINER  "),
     [TX_RANDOM_T_MOVES]           = _("TX RANDOM MOVES    "),
     [TX_RANDOM_T_ABILITY]         = _("TX RANDOM ABILITY  "),
-    [TX_RANDOM_T_EVOLUTION]       = _("TX RANDOM EVOLUTION"),
+    [TX_RANDOM_T_EVO]             = _("TX RANDOM EVO      "),
+    [TX_RANDOM_T_EVO_METH]        = _("TX RANDOM EVO METH "),
 };
 const u8 gEvoStages[5][20] = 
 {
@@ -11981,11 +11982,10 @@ u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 mode, u16 evolutionItem)
     u8 holdEffect;
 
     //tx_randomizer_and_challenges
-    u8 slot = gSpeciesMapping[species];
-    if (slot == EVO_TYPE_1 && gSaveBlock1Ptr->tx_Challenges_EvoLimit == 1) //No Evos already previously checked
+    if (EvolutionBlockedByEvoLimit(species)) //No Evos already previously checked
         return SPECIES_NONE;
     if (gSaveBlock1Ptr->tx_Random_EvolutionMethods) 
-        species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_EVOLUTION);
+        species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_EVO_METH);
     if (species == SPECIES_NONE)
         return SPECIES_NONE;
     
@@ -12095,7 +12095,7 @@ u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 mode, u16 evolutionItem)
     }
 
     if (gSaveBlock1Ptr->tx_Random_Evolutions && targetSpecies != SPECIES_NONE) //tx_randomizer_and_challenges
-        targetSpecies = GetSpeciesRandomSeeded(targetSpecies, TX_RANDOM_T_EVOLUTION);
+        targetSpecies = GetSpeciesRandomSeeded(targetSpecies, TX_RANDOM_T_EVO);
 
     return targetSpecies;
 }
@@ -13887,7 +13887,10 @@ u16 GetSpeciesRandomSeeded(u16 species, u8 type)
     case TX_RANDOM_T_ABILITY:
         result_species = GetRandomSpecies(species, mapBased, type);
         break;
-    case TX_RANDOM_T_EVOLUTION:
+    case TX_RANDOM_T_EVO:
+        result_species = GetRandomSpecies(species, mapBased, type);
+        break;
+    case TX_RANDOM_T_EVO_METH:
         result_species = GetRandomSpecies(species, mapBased, type);
         break;
     }
@@ -13950,7 +13953,14 @@ u8 PickRandomOneTypeChallengeType()
     u16 type = (RandomSeeded(1, TRUE) % (NUMBER_OF_MON_TYPES-1));
     type = sOneTypeChallengeValidTypes[type];
 }
+u8 EvolutionBlockedByEvoLimit(u16 species)
+{
+    u8 slot = gSpeciesMapping[species];
+    if (slot == EVO_TYPE_1 && gSaveBlock1Ptr->tx_Challenges_EvoLimit == 1) //No Evos already previously checked
+        return TRUE;
 
+    return FALSE;
+}
 
 // DEBUG
 void PrintTXSaveData(void)

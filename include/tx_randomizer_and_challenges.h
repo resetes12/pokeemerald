@@ -34,7 +34,8 @@
 #define TX_RANDOM_T_TRAINER         1
 #define TX_RANDOM_T_MOVES           2
 #define TX_RANDOM_T_ABILITY         3
-#define TX_RANDOM_T_EVOLUTION       4
+#define TX_RANDOM_T_EVO             4
+#define TX_RANDOM_T_EVO_METH        5
 
 void CB2_InitRandomizerMenu(void);
 void CB2_InitChallengesMenu(void);

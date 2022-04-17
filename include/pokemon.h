@@ -455,6 +455,7 @@ u16 GetRandomMove(u16 input_move, u16 species);
 void NuzlockeDeletePartyMon(u8 position);
 void NuzlockeDeleteFaintedPartyPokemon(void) ;
 u8 GetPokemonCenterChallenge();
+u8 EvolutionBlockedByEvoLimit(u16 species);
 void PrintTXSaveData(void);
 
 #endif // GUARD_POKEMON_H
