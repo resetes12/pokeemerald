@@ -13811,8 +13811,31 @@ u16 GetRandomSpecies(u16 species, u8 mapBased, u8 type) //INTERNAL use only!
 {
     u8 slot, slot_new;
     u16 offset = 0;
+    u16 multiplier = 1;
     if (mapBased)
         offset = NuzlockeGetCurrentRegionMapSectionId();
+
+    switch(type)
+    {
+    case TX_RANDOM_T_WILD_POKEMON:
+        multiplier = 12289;
+        break;
+    case TX_RANDOM_T_TRAINER:
+        multiplier = 49157;
+        break;
+    case TX_RANDOM_T_MOVES:
+        multiplier = 12289;
+        break;
+    case TX_RANDOM_T_ABILITY:
+        multiplier = 12289;
+        break;
+    case TX_RANDOM_T_EVO:
+        multiplier = 12289;
+        break;
+    case TX_RANDOM_T_EVO_METH:
+        multiplier = 12289;
+        break;
+    }
 
     if (gSaveBlock1Ptr->tx_Random_Similar)
     {
@@ -13822,16 +13845,16 @@ u16 GetRandomSpecies(u16 species, u8 mapBased, u8 type) //INTERNAL use only!
         switch (slot)
         {
         case EVO_TYPE_0:
-            result_species = gRandomSpeciesEvo0[RandomSeededModulo(species+offset*12289, RANDOM_SPECIES_EVO_0_COUNT)];
+            result_species = gRandomSpeciesEvo0[RandomSeededModulo(species+offset*multiplier, RANDOM_SPECIES_EVO_0_COUNT)];
             break;
         case EVO_TYPE_1:
-            result_species = gRandomSpeciesEvo1[RandomSeededModulo(species+offset*12289, RANDOM_SPECIES_EVO_1_COUNT)];
+            result_species = gRandomSpeciesEvo1[RandomSeededModulo(species+offset*multiplier, RANDOM_SPECIES_EVO_1_COUNT)];
             break;
         case EVO_TYPE_2:
-            result_species = gRandomSpeciesEvo2[RandomSeededModulo(species+offset*12289, RANDOM_SPECIES_EVO_2_COUNT)];
+            result_species = gRandomSpeciesEvo2[RandomSeededModulo(species+offset*multiplier, RANDOM_SPECIES_EVO_2_COUNT)];
             break;
         case EVO_TYPE_LEGENDARY:
-            result_species = gRandomSpeciesEvoLegendary[RandomSeededModulo(species+offset*12289, RANDOM_SPECIES_EVO_LEGENDARY_COUNT)];
+            result_species = gRandomSpeciesEvoLegendary[RandomSeededModulo(species+offset*multiplier, RANDOM_SPECIES_EVO_LEGENDARY_COUNT)];
             break;
         }
 
@@ -13844,9 +13867,9 @@ u16 GetRandomSpecies(u16 species, u8 mapBased, u8 type) //INTERNAL use only!
     }
 
     if (gSaveBlock1Ptr->tx_Random_IncludeLegendaries)
-        return sRandomSpeciesLegendary[RandomSeededModulo(species+offset*12289, RANDOM_SPECIES_COUNT_LEGENDARY)];
+        return sRandomSpeciesLegendary[RandomSeededModulo(species+offset*multiplier, RANDOM_SPECIES_COUNT_LEGENDARY)];
 
-    return sRandomSpecies[RandomSeededModulo(species+offset*12289, RANDOM_SPECIES_COUNT)];
+    return sRandomSpecies[RandomSeededModulo(species+offset*multiplier, RANDOM_SPECIES_COUNT)];
 }
 u16 GetSpeciesRandomSeeded(u16 species, u8 type)
 {
