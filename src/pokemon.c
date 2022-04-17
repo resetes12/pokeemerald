@@ -2167,11 +2167,11 @@ static const struct SpriteTemplate sSpriteTemplate_64x64 =
 
 const u8 gRandomizationTypes[5][25] =
 {
-    [TX_RANDOM_T_WILD_POKEMON]    = _("TX RANDOM T WILD POKEMON"),
-    [TX_RANDOM_T_TRAINER]         = _("TX RANDOM T TRAINER"),
-    [TX_RANDOM_T_MOVES]           = _("TX RANDOM T MOVES"),
-    [TX_RANDOM_T_ABILITY]         = _("TX RANDOM T ABILITY"),
-    [TX_RANDOM_T_EVOLUTION]       = _("TX RANDOM T EVOLUTION"),
+    [TX_RANDOM_T_WILD_POKEMON]    = _("TX RANDOM WILD PKMN"),
+    [TX_RANDOM_T_TRAINER]         = _("TX RANDOM TRAINER  "),
+    [TX_RANDOM_T_MOVES]           = _("TX RANDOM MOVES    "),
+    [TX_RANDOM_T_ABILITY]         = _("TX RANDOM ABILITY  "),
+    [TX_RANDOM_T_EVOLUTION]       = _("TX RANDOM EVOLUTION"),
 };
 const u8 gEvoStages[5][20] = 
 {
@@ -13784,6 +13784,7 @@ u16 PickRandomStarter(u16 species)
 u8 GetTypeBySpecies(u16 species, u8 type)
 {
     u8 result;
+    u16 input_species = species;
 
     if (gSaveBlock1Ptr->tx_Random_Type)
         species = sRandomSpecies[RandomSeededModulo(species + type*193, RANDOM_SPECIES_COUNT)];
@@ -13798,36 +13799,48 @@ u8 GetTypeBySpecies(u16 species, u8 type)
         break;
     }
 
+    #ifdef GBA_PRINTF
+    if (gSaveBlock1Ptr->tx_Random_Type)
+        mgba_printf(MGBA_LOG_DEBUG, "TX RANDOM TYPE: species=%d=%s; new species=%d=%s, type=%d=%s", input_species , ConvertToAscii(gSpeciesNames[input_species]), species , ConvertToAscii(gSpeciesNames[species]), result, ConvertToAscii(gTypeNames[result]));
+    #endif
+
     return result;
 }
 
-u16 GetRandomSpecies(u16 species, u8 mapBased) //INTERNAL use only!
+u16 GetRandomSpecies(u16 species, u8 mapBased, u8 type) //INTERNAL use only!
 {
-    u8 slot;
+    u8 slot, slot_new;
     u16 offset = 0;
     if (mapBased)
         offset = NuzlockeGetCurrentRegionMapSectionId();
 
     if (gSaveBlock1Ptr->tx_Random_Similar)
     {
-        u16 result;
+        u16 result_species;
         slot = gSpeciesMapping[species];
 
         switch (slot)
         {
         case EVO_TYPE_0:
-            result = gRandomSpeciesEvo0[RandomSeededModulo(species+offset*12289, RANDOM_SPECIES_EVO_0_COUNT)];
+            result_species = gRandomSpeciesEvo0[RandomSeededModulo(species+offset*12289, RANDOM_SPECIES_EVO_0_COUNT)];
             break;
         case EVO_TYPE_1:
-            result = gRandomSpeciesEvo1[RandomSeededModulo(species+offset*12289, RANDOM_SPECIES_EVO_1_COUNT)];
+            result_species = gRandomSpeciesEvo1[RandomSeededModulo(species+offset*12289, RANDOM_SPECIES_EVO_1_COUNT)];
             break;
         case EVO_TYPE_2:
-            result = gRandomSpeciesEvo2[RandomSeededModulo(species+offset*12289, RANDOM_SPECIES_EVO_2_COUNT)];
+            result_species = gRandomSpeciesEvo2[RandomSeededModulo(species+offset*12289, RANDOM_SPECIES_EVO_2_COUNT)];
             break;
         case EVO_TYPE_LEGENDARY:
-            result = gRandomSpeciesEvoLegendary[RandomSeededModulo(species+offset*12289, RANDOM_SPECIES_EVO_LEGENDARY_COUNT)];
+            result_species = gRandomSpeciesEvoLegendary[RandomSeededModulo(species+offset*12289, RANDOM_SPECIES_EVO_LEGENDARY_COUNT)];
             break;
         }
+
+        #ifdef GBA_PRINTF
+        slot_new = gSpeciesMapping[result_species];
+        mgba_printf(MGBA_LOG_DEBUG, "%s: species=%d=%s; mapBased=%d; result_species=%d=%s; %s-->>%s", ConvertToAscii(gRandomizationTypes[type]), species, ConvertToAscii(gSpeciesNames[species]), mapBased, result_species, ConvertToAscii(gSpeciesNames[result_species]), ConvertToAscii(gEvoStages[slot]), ConvertToAscii(gEvoStages[slot_new]));
+        #endif
+
+        return result_species;
     }
 
     if (gSaveBlock1Ptr->tx_Random_IncludeLegendaries)
@@ -13837,7 +13850,7 @@ u16 GetRandomSpecies(u16 species, u8 mapBased) //INTERNAL use only!
 }
 u16 GetSpeciesRandomSeeded(u16 species, u8 type)
 {
-    u8 slot;
+    u8 slot, slot_new;
     u16 result_species = species;
     u8 mapBased = FALSE;
 
@@ -13859,32 +13872,25 @@ u16 GetSpeciesRandomSeeded(u16 species, u8 type)
         if (gSaveBlock1Ptr->tx_Random_OneForOne)
             result_species = PickRandomizedSpeciesFromEWRAM(species);
         else
-            result_species = GetRandomSpecies(species, mapBased);
+            result_species = GetRandomSpecies(species, mapBased, type);
         break;
     case TX_RANDOM_T_TRAINER:
         mapBased = gSaveBlock1Ptr->tx_Random_MapBased;
         if (gSaveBlock1Ptr->tx_Random_OneForOne)
             result_species = PickRandomizedSpeciesFromEWRAM(species);
         else
-            result_species = GetRandomSpecies(species, mapBased);
+            result_species = GetRandomSpecies(species, mapBased, type);
         break;
     case TX_RANDOM_T_MOVES:
         result_species = sRandomSpeciesLegendary[RandomSeededModulo(species, RANDOM_SPECIES_COUNT_LEGENDARY)];
         break;
     case TX_RANDOM_T_ABILITY:
-        result_species = GetRandomSpecies(species, mapBased);
+        result_species = GetRandomSpecies(species, mapBased, type);
         break;
     case TX_RANDOM_T_EVOLUTION:
-        result_species = GetRandomSpecies(species, mapBased);
+        result_species = GetRandomSpecies(species, mapBased, type);
         break;
     }
-
-    #ifdef GBA_PRINTF
-    u8 slot_new = gSpeciesMapping[result_species];
-    mgba_printf(MGBA_LOG_DEBUG, "gSaveBlock1Ptr->tx_Random_Similar == TRUE");
-    mgba_printf(MGBA_LOG_DEBUG, "%s: species=%d; mapBased=%d; result_species=%d; new EVO_TYPE=%s", ConvertToAscii(gRandomizationTypes[type]), species, mapBased, result_species, ConvertToAscii(gEvoStages[slot_new]));
-    mgba_printf(MGBA_LOG_DEBUG, "");
-    #endif
 
     return result_species;
 }
@@ -13892,12 +13898,13 @@ u16 GetSpeciesRandomSeeded(u16 species, u8 type)
 u16 GetRandomMove(u16 move, u16 species)
 {
     u16 val = RandomSeededModulo(move * species * 769, RANDOM_MOVES_COUNT);
+    u16 final = sRandomValidMoves[val];
     
     #ifdef GBA_PRINTF
-        mgba_printf(MGBA_LOG_DEBUG, "Random: move %d, species %d, combined %d, val %d, final: %d", move, species, move * species * 769, val, sRandomValidMoves[val]);
+        mgba_printf(MGBA_LOG_DEBUG, "TX RANDOM MOVE     : GetRandomMove: move=%d=%s, species=%d; combined=%d; val=%d; final=%d=%s", move,  ConvertToAscii(gMoveNames[move]), species, move * species * 769, val, final, ConvertToAscii(gMoveNames[final]));
     #endif
 
-    return sRandomValidMoves[val];
+    return final;
 }
 
 // Nuzlocke
