@@ -36,7 +36,7 @@ enum
     MENUITEM_RANDOM_MOVES,
     MENUITEM_RANDOM_ABILITIES,
     MENUITEM_RANDOM_EVOLUTIONS,
-    MENUITEM_RANDOM_EVOLUTIONS_METHODE,
+    MENUITEM_RANDOM_EVOLUTIONS_METHODS,
     MENUITEM_RANDOM_TYPE_EFFEC,
     MENUITEM_RANDOM_CHAOS,
     MENUITEM_SAVE,
@@ -89,7 +89,7 @@ struct
     [MENUITEM_RANDOM_MOVES]                   = {DrawChoices_Random_OffRandom, tx_randomizer_TwoOptions_ProcessInput},
     [MENUITEM_RANDOM_ABILITIES]               = {DrawChoices_Random_OffRandom, tx_randomizer_TwoOptions_ProcessInput},
     [MENUITEM_RANDOM_EVOLUTIONS]              = {DrawChoices_Random_OffRandom, tx_randomizer_TwoOptions_ProcessInput},
-    [MENUITEM_RANDOM_EVOLUTIONS_METHODE]      = {DrawChoices_Random_OffRandom, tx_randomizer_TwoOptions_ProcessInput},
+    [MENUITEM_RANDOM_EVOLUTIONS_METHODS]      = {DrawChoices_Random_OffRandom, tx_randomizer_TwoOptions_ProcessInput},
     [MENUITEM_RANDOM_TYPE_EFFEC]              = {DrawChoices_Random_OffRandom, tx_randomizer_TwoOptions_ProcessInput},
     [MENUITEM_RANDOM_CHAOS]                   = {DrawChoices_Random_OffChaos, tx_randomizer_TwoOptions_ProcessInput},
     [MENUITEM_SAVE] = {NULL, NULL},
@@ -112,7 +112,7 @@ static const u8 gText_Type[] =                      _("TYPE");
 static const u8 gText_Moves[] =                     _("MOVES");
 static const u8 gText_Abilities[] =                 _("ABILTIES");
 static const u8 gText_Evolutions[] =                _("EVOLUTIONS");
-static const u8 gText_EvolutionMethodes[] =         _("EVO METHODES");
+static const u8 gText_EvolutionMethods[] =          _("EVO METHODS");
 static const u8 gText_TypeEff[] =                   _("EFFECTIVENESS");
 static const u8 gText_Chaos[] =                     _("CHAOS MODE");
 static const u8 gText_Save[] =                      _("SAVE");
@@ -128,7 +128,7 @@ static const u8 *const sOptionMenuItemNames[MENUITEM_COUNT] =
     [MENUITEM_RANDOM_MOVES]                   = gText_Moves,
     [MENUITEM_RANDOM_ABILITIES]               = gText_Abilities,
     [MENUITEM_RANDOM_EVOLUTIONS]              = gText_Evolutions,
-    [MENUITEM_RANDOM_EVOLUTIONS_METHODE]      = gText_EvolutionMethodes,
+    [MENUITEM_RANDOM_EVOLUTIONS_METHODS]      = gText_EvolutionMethods,
     [MENUITEM_RANDOM_TYPE_EFFEC]              = gText_TypeEff,
     [MENUITEM_RANDOM_CHAOS]                   = gText_Chaos,
     [MENUITEM_SAVE]                           = gText_Save,
@@ -142,7 +142,7 @@ static const u8 gText_Gray_Type[] =                      _("{COLOR GREEN}{SHADOW
 static const u8 gText_Gray_Moves[] =                     _("{COLOR GREEN}{SHADOW LIGHT_GREEN}MOVES");
 static const u8 gText_Gray_Abilities[] =                 _("{COLOR GREEN}{SHADOW LIGHT_GREEN}ABILTIES");
 static const u8 gText_Gray_Evolutions[] =                _("{COLOR GREEN}{SHADOW LIGHT_GREEN}EVOLUTIONS");
-static const u8 gText_Gray_EvolutionMethodes[] =         _("{COLOR GREEN}{SHADOW LIGHT_GREEN}EVO METHODES");
+static const u8 gText_Gray_EvolutionMethods[] =          _("{COLOR GREEN}{SHADOW LIGHT_GREEN}EVO METHODS");
 static const u8 gText_Gray_TypeEff[] =                   _("{COLOR GREEN}{SHADOW LIGHT_GREEN}EFFECTIVENESS");
 static const u8 gText_Gray_Chaos[] =                     _("{COLOR GREEN}{SHADOW LIGHT_GREEN}CHAOS MODE");
 
@@ -157,7 +157,7 @@ static const u8 *const sOptionMenuItemNamesGray[MENUITEM_COUNT] =
     [MENUITEM_RANDOM_MOVES]                   = gText_Gray_Moves,
     [MENUITEM_RANDOM_ABILITIES]               = gText_Gray_Abilities,
     [MENUITEM_RANDOM_EVOLUTIONS]              = gText_Gray_Evolutions,
-    [MENUITEM_RANDOM_EVOLUTIONS_METHODE]      = gText_Gray_EvolutionMethodes,
+    [MENUITEM_RANDOM_EVOLUTIONS_METHODS]      = gText_Gray_EvolutionMethods,
     [MENUITEM_RANDOM_TYPE_EFFEC]              = gText_Gray_TypeEff,
     [MENUITEM_RANDOM_CHAOS]                   = gText_Gray_Chaos,
     [MENUITEM_SAVE]                           = gText_Save,
@@ -172,7 +172,7 @@ static const u8 gText_Description_Random_Types[]            = _("Randomize all P
 static const u8 gText_Description_Random_Moves[]            = _("Randomize all Pokémon moves.");
 static const u8 gText_Description_Random_Abilities[]        = _("Randomize all Pokémon abilities.");
 static const u8 gText_Description_Random_Evos[]             = _("Randomize all Pokémon evolutions.");
-static const u8 gText_Description_Random_Evo_Methodes[]     = _("Randomize all Pokémon evolution\nmethodes.");
+static const u8 gText_Description_Random_Evo_Methods[]      = _("Randomize all Pokémon evolution\nmethods.");
 static const u8 gText_Description_Random_Effectiveness[]    = _("Randomize type effectiveness.");
 static const u8 gText_Description_Chaos_Mode[]              = _("Enable {COLOR RED}{SHADOW LIGHT_RED}Chaos mode\nNOT recommended!");
 static const u8 gText_Description_Save[]                    = _("Save choices and continue...");
@@ -188,7 +188,7 @@ static const u8 *const sOptionMenuItemDescriptions[MENUITEM_COUNT] =
     [MENUITEM_RANDOM_MOVES]                   = gText_Description_Random_Moves,
     [MENUITEM_RANDOM_ABILITIES]               = gText_Description_Random_Abilities,
     [MENUITEM_RANDOM_EVOLUTIONS]              = gText_Description_Random_Evos,
-    [MENUITEM_RANDOM_EVOLUTIONS_METHODE]      = gText_Description_Random_Evo_Methodes,
+    [MENUITEM_RANDOM_EVOLUTIONS_METHODS]      = gText_Description_Random_Evo_Methods,
     [MENUITEM_RANDOM_TYPE_EFFEC]              = gText_Description_Random_Effectiveness,
     [MENUITEM_RANDOM_CHAOS]                   = gText_Description_Chaos_Mode,
     [MENUITEM_SAVE]                           = gText_Description_Save,
@@ -344,9 +344,10 @@ void CB2_InitRandomizerMenu(void)
         gSaveBlock1Ptr->tx_Random_Moves                 = TX_RANDOM_MOVES;
         gSaveBlock1Ptr->tx_Random_Abilities             = TX_RANDOM_ABILITIES;
         gSaveBlock1Ptr->tx_Random_Evolutions            = TX_RANDOM_EVOLUTION;
-        gSaveBlock1Ptr->tx_Random_EvolutionMethodes     = TX_RANDOM_EVOLUTION_METHODE;
+        gSaveBlock1Ptr->tx_Random_EvolutionMethods      = TX_RANDOM_EVOLUTION_METHODE;
         gSaveBlock1Ptr->tx_Random_TypeEffectiveness     = TX_RANDOM_TYPE_EFFECTIVENESS;
         gSaveBlock1Ptr->tx_Random_Chaos                 = TX_RANDOM_CHAOS_MODE;
+        gSaveBlock1Ptr->tx_Random_OneForOne             = TX_RANDOM_ONE_FOR_ONE;
 
         sRandomizerOptions = AllocZeroed(sizeof(*sRandomizerOptions));
         sRandomizerOptions->sel[MENUITEM_RANDOM_ON_OFF] = FALSE;
@@ -358,7 +359,7 @@ void CB2_InitRandomizerMenu(void)
         sRandomizerOptions->sel[MENUITEM_RANDOM_MOVES]                    = gSaveBlock1Ptr->tx_Random_Moves;
         sRandomizerOptions->sel[MENUITEM_RANDOM_ABILITIES]                = gSaveBlock1Ptr->tx_Random_Abilities;
         sRandomizerOptions->sel[MENUITEM_RANDOM_EVOLUTIONS]               = gSaveBlock1Ptr->tx_Random_Evolutions;
-        sRandomizerOptions->sel[MENUITEM_RANDOM_EVOLUTIONS_METHODE]       = gSaveBlock1Ptr->tx_Random_EvolutionMethodes;
+        sRandomizerOptions->sel[MENUITEM_RANDOM_EVOLUTIONS_METHODS]       = gSaveBlock1Ptr->tx_Random_EvolutionMethods;
         sRandomizerOptions->sel[MENUITEM_RANDOM_TYPE_EFFEC]               = gSaveBlock1Ptr->tx_Random_TypeEffectiveness;
         sRandomizerOptions->sel[MENUITEM_RANDOM_CHAOS]                    = gSaveBlock1Ptr->tx_Random_Chaos;
 
@@ -578,7 +579,7 @@ void tx_randomizer_SaveData(void)
         gSaveBlock1Ptr->tx_Random_Moves              = sRandomizerOptions->sel[MENUITEM_RANDOM_MOVES];
         gSaveBlock1Ptr->tx_Random_Abilities          = sRandomizerOptions->sel[MENUITEM_RANDOM_ABILITIES];
         gSaveBlock1Ptr->tx_Random_Evolutions         = sRandomizerOptions->sel[MENUITEM_RANDOM_EVOLUTIONS];
-        gSaveBlock1Ptr->tx_Random_EvolutionMethodes  = sRandomizerOptions->sel[MENUITEM_RANDOM_EVOLUTIONS_METHODE];
+        gSaveBlock1Ptr->tx_Random_EvolutionMethods   = sRandomizerOptions->sel[MENUITEM_RANDOM_EVOLUTIONS_METHODS];
         gSaveBlock1Ptr->tx_Random_TypeEffectiveness  = sRandomizerOptions->sel[MENUITEM_RANDOM_TYPE_EFFEC];
         gSaveBlock1Ptr->tx_Random_Chaos              = sRandomizerOptions->sel[MENUITEM_RANDOM_CHAOS];
     }
@@ -593,14 +594,18 @@ void tx_randomizer_SaveData(void)
         gSaveBlock1Ptr->tx_Random_Moves              = FALSE;
         gSaveBlock1Ptr->tx_Random_Abilities          = FALSE;
         gSaveBlock1Ptr->tx_Random_Evolutions         = FALSE;
-        gSaveBlock1Ptr->tx_Random_EvolutionMethodes  = FALSE;
+        gSaveBlock1Ptr->tx_Random_EvolutionMethods   = FALSE;
         gSaveBlock1Ptr->tx_Random_TypeEffectiveness  = FALSE;
         gSaveBlock1Ptr->tx_Random_Chaos              = FALSE;
     }
 
     FREE_AND_SET_NULL(sRandomizerOptions);
-    RandomizeSpeciesListEWRAM(1);
-    RandomizeTypeEffectivenessListEWRAM(1);
+    
+    if (gSaveBlock1Ptr->tx_Random_OneForOne)
+        RandomizeSpeciesListEWRAM(1);
+    
+    if (gSaveBlock1Ptr->tx_Random_TypeEffectiveness)
+        RandomizeTypeEffectivenessListEWRAM(1);
 }
 
 static void tx_randomizer_Task_OptionMenuFadeOut(u8 taskId)

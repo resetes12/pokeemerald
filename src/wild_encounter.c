@@ -384,15 +384,16 @@ static void CreateWildMon(u16 species, u8 level)
 {
     bool32 checkCuteCharm;
 
-    #ifdef GBA_PRINTF
-        mgba_printf(MGBA_LOG_DEBUG, "******** CreateWildMon ********");
-    #endif
-
     ZeroEnemyPartyMons();
     checkCuteCharm = TRUE;
 
     if (gSaveBlock1Ptr->tx_Random_WildPokemon) //tx_randomizer_and_challenges
-        species = GetSpeciesRandomSeeded(species, TX_RANDOM_OFFSET_ENCOUNTER, TRUE, !gSaveBlock1Ptr->tx_Random_Chaos);
+    {
+        #ifdef GBA_PRINTF
+        mgba_printf(MGBA_LOG_DEBUG, "******** CreateWildMon ********");
+        #endif
+        species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_WILD_POKEMON);
+    }
 
     switch (gBaseStats[species].genderRatio)
     {

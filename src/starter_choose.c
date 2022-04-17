@@ -374,32 +374,23 @@ u16 GetStarterPokemon(u16 chosenStarterId)
     //tx_randomizer_and_challenges
     if (typeChallenge != TX_CHALLENGE_TYPE_OFF)
     {
-        #ifdef GBA_PRINTF
-            mgba_printf(MGBA_LOG_DEBUG, "TX_CHALLENGE_TYPE_OFF = %d", TX_CHALLENGE_TYPE_OFF);
-            mgba_printf(MGBA_LOG_DEBUG, "typeChallenge = %d", typeChallenge);
-        #endif
-
-        for (i=1; i<400; i++)
+        for (i=0; i<400; i++)
         {
-            mon = PickRandomizedSpeciesFromEWRAM(mon, chosenStarterId+1);
+            mon = PickRandomStarter(mon);
             if (GetTypeBySpecies(mon, 1) == typeChallenge || GetTypeBySpecies(mon, 2) == typeChallenge)
                 break;
         }
         #ifdef GBA_PRINTF
-            mgba_printf(MGBA_LOG_DEBUG, "i = %d", i + i*chosenStarterId);
+            mgba_printf(MGBA_LOG_DEBUG, "typeChallenge = %d = %s; iteratrions=%d", typeChallenge, ConvertToAscii(gTypeNames[typeChallenge]), i);
         #endif
-    }
-    else if (gSaveBlock1Ptr->tx_Random_Chaos && gSaveBlock1Ptr->tx_Random_WildPokemon)
-    {
-        mon = PickRandomizedSpeciesFromEWRAM(sStarterMon[chosenStarterId], 3);
     }
     else if (gSaveBlock1Ptr->tx_Random_WildPokemon)
     {
-        mon = PickRandomEvo0Species(sStarterMon[chosenStarterId]);
+        mon = PickRandomStarter(sStarterMon[chosenStarterId]);
     }
     
     #ifdef GBA_PRINTF
-        mgba_printf(MGBA_LOG_DEBUG, "species[%d] = %s", mon, ConvertToAscii(gSpeciesNames[mon]));
+        mgba_printf(MGBA_LOG_DEBUG, "new species[%d] = %s", mon, ConvertToAscii(gSpeciesNames[mon]));
     #endif
 
     return mon;

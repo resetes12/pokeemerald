@@ -1026,7 +1026,7 @@ struct SaveBlock1
         u8 tx_Random_Moves:1;
         u8 tx_Random_Trainer:1;
         u8 tx_Random_Evolutions:1;
-        u8 tx_Random_EvolutionMethodes:1;
+        u8 tx_Random_EvolutionMethods:1;
         u8 tx_Challenges_EvoLimit:2;
         u8 tx_Challenges_Nuzlocke:1;
         u8 tx_Challenges_NuzlockeHardcore:1;
@@ -1037,6 +1037,7 @@ struct SaveBlock1
         u8 tx_Challenges_NoItemPlayer:1;
         u8 tx_Challenges_NoItemTrainer:1;
         u8 tx_Challenges_PkmnCenter:2;
+        u8 tx_Random_OneForOne:1;
     // sizeof: 0x3D94  // sizeof: 0x3D88
 };
 

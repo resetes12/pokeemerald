@@ -15,6 +15,7 @@
 #define TX_RANDOM_EVOLUTION_METHODE     FALSE
 #define TX_RANDOM_TYPE_EFFECTIVENESS    FALSE
 #define TX_RANDOM_CHAOS_MODE            FALSE
+#define TX_RANDOM_ONE_FOR_ONE           FALSE //not yet implemented in menu
 
 
 #define TX_CHALLENGE_EVO_LIMIT 0 //0 off, 1 first, 2 none
@@ -28,13 +29,12 @@
 #define TX_CHALLENGE_TYPE_OFF 31
 #define TX_CHALLENGE_TYPE TX_CHALLENGE_TYPE_OFF //TX_CHALLENGE_TYPE_OFF for off
 
-// randomization offsets
-#define TX_RANDOM_OFFSET_TRAINER     4
-#define TX_RANDOM_OFFSET_TYPE        2
-#define TX_RANDOM_OFFSET_ABILITY     5
-#define TX_RANDOM_OFFSET_MOVES       1
-#define TX_RANDOM_OFFSET_ENCOUNTER   0
-#define TX_RANDOM_OFFSET_EVOLUTION   7
+// randomization types
+#define TX_RANDOM_T_WILD_POKEMON    0
+#define TX_RANDOM_T_TRAINER         1
+#define TX_RANDOM_T_MOVES           2
+#define TX_RANDOM_T_ABILITY         3
+#define TX_RANDOM_T_EVOLUTION       4
 
 void CB2_InitRandomizerMenu(void);
 void CB2_InitChallengesMenu(void);

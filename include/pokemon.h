@@ -447,11 +447,9 @@ u8 *MonSpritesGfxManager_GetSpritePtr(u8 managerId, u8 spriteNum);
 //tx_randomizer_and_challenges
 void RandomizeSpeciesListEWRAM(u16 seed);
 void RandomizeTypeEffectivenessListEWRAM(u16 seed);
-u16 PickRandomizedSpeciesFromEWRAM(u16 species, u16 depth);
-u16 PickRandomEvo0Species(u16 species);
+u16 PickRandomStarter(u16 species);
 u8 GetTypeBySpecies(u16 species, u8 type);
-u16 GetSpeciesRandomSeeded(u16 species, u8 offset, u8 random, u8 seeded);
-u16 GetEvolutionTargetSpeciesRandom(u16 species, u8 random, u8 seeded);
+u16 GetSpeciesRandomSeeded(u16 species, u8 offset);
 u8 GetPartySize();
 u16 GetRandomMove(u16 input_move, u16 species);
 void NuzlockeDeletePartyMon(u8 position);
