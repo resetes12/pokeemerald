@@ -123,14 +123,14 @@ static const u8 *const sChallengesOptionMenuItemNames[MENUITEM_COUNT] =
     [MENUITEM_SAVE]                           = gText_Save,
 };
 
-static const u8 gText_Description_Challenges_Evo_Limit[]        = _("Limit evolutions.");
-static const u8 gText_Description_Challenges_Party_Limit[]      = _("Limit your parties size.");
-static const u8 gText_Description_Nuzlocke[]                    = _("Enable nuzlocke mode.\nHard: {COLOR RED}{SHADOW LIGHT_RED}Delete save on whiteout!");
-static const u8 gText_Description_Challenges_Items_Player[]     = _("The player can use items.");
-static const u8 gText_Description_Challenges_Items_Trainer[]    = _("Enemy trainer can use items.");
-static const u8 gText_Description_Challenges_Pokecenter[]       = _("Allow Pokécenter usage.");
-static const u8 gText_Description_Challenges_OneTypeChallenge[] = _("Allow only one POKéMON type the\nplayer can capture and use.");
-static const u8 gText_Description_Save[]                        = _("Save choices and continue...");
+static const u8 gText_Description_Challenges_Evo_Limit[]        = _("{COLOR 6}{SHADOW 7}Limit evolutions.");
+static const u8 gText_Description_Challenges_Party_Limit[]      = _("{COLOR 6}{SHADOW 7}Limit your parties size.");
+static const u8 gText_Description_Nuzlocke[]                    = _("{COLOR 6}{SHADOW 7}Enable nuzlocke mode.\nHard: {COLOR RED}{SHADOW LIGHT_RED}Delete save on whiteout!");
+static const u8 gText_Description_Challenges_Items_Player[]     = _("{COLOR 6}{SHADOW 7}The player can use items.");
+static const u8 gText_Description_Challenges_Items_Trainer[]    = _("{COLOR 6}{SHADOW 7}Enemy trainer can use items.");
+static const u8 gText_Description_Challenges_Pokecenter[]       = _("{COLOR 6}{SHADOW 7}Allow Pokécenter usage.");
+static const u8 gText_Description_Challenges_OneTypeChallenge[] = _("{COLOR 6}{SHADOW 7}Allow only one POKéMON type the\nplayer can capture and use.");
+static const u8 gText_Description_Save[]                        = _("{COLOR 6}{SHADOW 7}Save choices and continue...");
 
 static const u8 *const sOptionMenuItemDescriptions[MENUITEM_COUNT] =
 {

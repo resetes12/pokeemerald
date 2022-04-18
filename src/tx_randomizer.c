@@ -163,19 +163,19 @@ static const u8 *const sOptionMenuItemNamesGray[MENUITEM_COUNT] =
     [MENUITEM_SAVE]                           = gText_Save,
 };
 
-static const u8 gText_Description_Randomizer[]              = _("Play the game randomized.\nSettings below:");
-static const u8 gText_Description_WildPokemon[]             = _("Randomize wild encounter.");
-static const u8 gText_Description_Random_Trainer[]          = _("Randomize enemy trainer parties.");
-static const u8 gText_Description_SimiliarEvolutionLevel[]  = _("Ensure randomized mon are of the same\nevolution stage as the base species.");
-static const u8 gText_Description_IncludeLegendaries[]      = _("Include legendary Pokémon.");
-static const u8 gText_Description_Random_Types[]            = _("Randomize all Pokémon types.");
-static const u8 gText_Description_Random_Moves[]            = _("Randomize all Pokémon moves.");
-static const u8 gText_Description_Random_Abilities[]        = _("Randomize all Pokémon abilities.");
-static const u8 gText_Description_Random_Evos[]             = _("Randomize all Pokémon evolutions.");
-static const u8 gText_Description_Random_Evo_Methods[]      = _("Randomize all Pokémon evolution\nmethods.");
-static const u8 gText_Description_Random_Effectiveness[]    = _("Randomize type effectiveness.");
-static const u8 gText_Description_Chaos_Mode[]              = _("Enable {COLOR RED}{SHADOW LIGHT_RED}Chaos mode\nNOT recommended!");
-static const u8 gText_Description_Save[]                    = _("Save choices and continue...");
+static const u8 gText_Description_Randomizer[]              = _("{COLOR 6}{SHADOW 7}Play the game randomized.\nSettings below:");
+static const u8 gText_Description_WildPokemon[]             = _("{COLOR 6}{SHADOW 7}Randomize wild encounter.");
+static const u8 gText_Description_Random_Trainer[]          = _("{COLOR 6}{SHADOW 7}Randomize enemy trainer parties.");
+static const u8 gText_Description_SimiliarEvolutionLevel[]  = _("{COLOR 6}{SHADOW 7}Randomized Pokémon are the same\nevolution stage as the base species.");
+static const u8 gText_Description_IncludeLegendaries[]      = _("{COLOR 6}{SHADOW 7}Include legendary Pokémon.");
+static const u8 gText_Description_Random_Types[]            = _("{COLOR 6}{SHADOW 7}Randomize all Pokémon types.");
+static const u8 gText_Description_Random_Moves[]            = _("{COLOR 6}{SHADOW 7}Randomize all Pokémon moves.");
+static const u8 gText_Description_Random_Abilities[]        = _("{COLOR 6}{SHADOW 7}Randomize all Pokémon abilities.");
+static const u8 gText_Description_Random_Evos[]             = _("{COLOR 6}{SHADOW 7}Randomize all Pokémon evolutions.");
+static const u8 gText_Description_Random_Evo_Methods[]      = _("{COLOR 6}{SHADOW 7}Randomize all Pokémon evolution\nmethods.");
+static const u8 gText_Description_Random_Effectiveness[]    = _("{COLOR 6}{SHADOW 7}Randomize type effectiveness.");
+static const u8 gText_Description_Chaos_Mode[]              = _("{COLOR 6}{SHADOW 7}Enable {COLOR RED}{SHADOW LIGHT_RED}Chaos mode\nNOT recommended!");
+static const u8 gText_Description_Save[]                    = _("{COLOR 6}{SHADOW 7}Save choices and continue...");
 
 static const u8 *const sOptionMenuItemDescriptions[MENUITEM_COUNT] =
 {
