@@ -457,5 +457,6 @@ void NuzlockeDeleteFaintedPartyPokemon(void) ;
 u8 GetPokemonCenterChallenge();
 u8 EvolutionBlockedByEvoLimit(u16 species);
 void PrintTXSaveData(void);
+void TestRandomizerValues(u8 type);
 
 #endif // GUARD_POKEMON_H
