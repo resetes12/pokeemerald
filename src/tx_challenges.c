@@ -192,6 +192,21 @@ static const struct BgTemplate sOptionMenuBgTemplates[] =
 static const u16 sOptionMenuBg_Pal[] = {RGB(17, 18, 31)};
 
 // code
+bool8 IsChallengesActivated(void)
+{
+    if (gSaveBlock1Ptr->tx_Challenges_EvoLimit
+        || gSaveBlock1Ptr->tx_Challenges_Nuzlocke
+        || gSaveBlock1Ptr->tx_Challenges_NuzlockeHardcore
+        || gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge
+        || gSaveBlock1Ptr->tx_Challenges_PartyLimit < 6
+        || gSaveBlock1Ptr->tx_Challenges_NoItemPlayer
+        || gSaveBlock1Ptr->tx_Challenges_NoItemTrainer
+        || gSaveBlock1Ptr->tx_Challenges_PkmnCenter)
+        return TRUE;
+
+    return FALSE;
+}
+
 static void MainCB2(void)
 {
     RunTasks();

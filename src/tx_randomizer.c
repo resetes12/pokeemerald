@@ -27,7 +27,7 @@
 // Menu items page 1
 enum
 {
-    MENUITEM_RANDOM_ON_OFF,
+    MENUITEM_RANDOM_OFF_ON,
     MENUITEM_RANDOM_WILD_PKMN,
     MENUITEM_RANDOM_TRAINER,
     MENUITEM_RANDOM_SIMILAR_EVOLUTION_LEVEL,
@@ -80,7 +80,7 @@ struct
     int (*processInput)(int selection);
 } static const sItemFunctions[MENUITEM_COUNT] =
 {
-    [MENUITEM_RANDOM_ON_OFF]                  = {DrawChoices_Random_OffOn, tx_randomizer_TwoOptions_ProcessInput},
+    [MENUITEM_RANDOM_OFF_ON]                  = {DrawChoices_Random_OffOn, tx_randomizer_TwoOptions_ProcessInput},
     [MENUITEM_RANDOM_WILD_PKMN]               = {DrawChoices_Random_OffRandom, tx_randomizer_TwoOptions_ProcessInput},
     [MENUITEM_RANDOM_TRAINER]                 = {DrawChoices_Random_OffRandom, tx_randomizer_TwoOptions_ProcessInput},
     [MENUITEM_RANDOM_SIMILAR_EVOLUTION_LEVEL] = {DrawChoices_Random_OffOn, tx_randomizer_TwoOptions_ProcessInput},
@@ -119,7 +119,7 @@ static const u8 gText_Save[] =                      _("SAVE");
 
 static const u8 *const sOptionMenuItemNames[MENUITEM_COUNT] =
 {
-    [MENUITEM_RANDOM_ON_OFF]                  = gText_Randomizer,
+    [MENUITEM_RANDOM_OFF_ON]                  = gText_Randomizer,
     [MENUITEM_RANDOM_WILD_PKMN]               = gText_WildPkmn,
     [MENUITEM_RANDOM_TRAINER]                 = gText_Trainer,
     [MENUITEM_RANDOM_SIMILAR_EVOLUTION_LEVEL] = gText_SimiliarEvolutionLevel,
@@ -148,7 +148,7 @@ static const u8 gText_Gray_Chaos[] =                     _("{COLOR GREEN}{SHADOW
 
 static const u8 *const sOptionMenuItemNamesGray[MENUITEM_COUNT] =
 {
-    [MENUITEM_RANDOM_ON_OFF]                  = gText_Randomizer,
+    [MENUITEM_RANDOM_OFF_ON]                  = gText_Randomizer,
     [MENUITEM_RANDOM_WILD_PKMN]               = gText_Gray_WildPkmn,
     [MENUITEM_RANDOM_TRAINER]                 = gText_Gray_Trainer,
     [MENUITEM_RANDOM_SIMILAR_EVOLUTION_LEVEL] = gText_Gray_SimiliarEvolutionLevel,
@@ -179,7 +179,7 @@ static const u8 gText_Description_Save[]                    = _("{COLOR 6}{SHADO
 
 static const u8 *const sOptionMenuItemDescriptions[MENUITEM_COUNT] =
 {
-    [MENUITEM_RANDOM_ON_OFF]                  = gText_Description_Randomizer,
+    [MENUITEM_RANDOM_OFF_ON]                  = gText_Description_Randomizer,
     [MENUITEM_RANDOM_WILD_PKMN]               = gText_Description_WildPokemon,
     [MENUITEM_RANDOM_TRAINER]                 = gText_Description_Random_Trainer,
     [MENUITEM_RANDOM_SIMILAR_EVOLUTION_LEVEL] = gText_Description_SimiliarEvolutionLevel,
@@ -242,6 +242,26 @@ static const struct BgTemplate sOptionMenuBgTemplates[] =
 static const u16 sOptionMenuBg_Pal[] = {RGB(17, 18, 31)};
 
 // code
+bool8 IsRandomizerActivated(void)
+{
+    if (gSaveBlock1Ptr->tx_Random_Chaos
+        || gSaveBlock1Ptr->tx_Random_WildPokemon
+        || gSaveBlock1Ptr->tx_Random_Similar
+        || gSaveBlock1Ptr->tx_Random_MapBased
+        || gSaveBlock1Ptr->tx_Random_IncludeLegendaries
+        || gSaveBlock1Ptr->tx_Random_Type
+        || gSaveBlock1Ptr->tx_Random_TypeEffectiveness
+        || gSaveBlock1Ptr->tx_Random_Abilities
+        || gSaveBlock1Ptr->tx_Random_Moves
+        || gSaveBlock1Ptr->tx_Random_Trainer
+        || gSaveBlock1Ptr->tx_Random_Evolutions
+        || gSaveBlock1Ptr->tx_Random_EvolutionMethods
+        || gSaveBlock1Ptr->tx_Random_OneForOne)
+        return TRUE;
+
+    return FALSE;
+}
+
 static void MainCB2(void)
 {
     RunTasks();
@@ -350,7 +370,7 @@ void CB2_InitRandomizerMenu(void)
         gSaveBlock1Ptr->tx_Random_OneForOne             = TX_RANDOM_ONE_FOR_ONE;
 
         sRandomizerOptions = AllocZeroed(sizeof(*sRandomizerOptions));
-        sRandomizerOptions->sel[MENUITEM_RANDOM_ON_OFF] = FALSE;
+        sRandomizerOptions->sel[MENUITEM_RANDOM_OFF_ON] = FALSE;
         sRandomizerOptions->sel[MENUITEM_RANDOM_WILD_PKMN]                = gSaveBlock1Ptr->tx_Random_WildPokemon;
         sRandomizerOptions->sel[MENUITEM_RANDOM_TRAINER]                  = gSaveBlock1Ptr->tx_Random_Trainer;
         sRandomizerOptions->sel[MENUITEM_RANDOM_SIMILAR_EVOLUTION_LEVEL]  = gSaveBlock1Ptr->tx_Random_Similar;
@@ -402,7 +422,7 @@ static void ScrollMenu(int direction)
     // Print
     DrawChoices(menuItem, pos * Y_DIFF, 0xFF);
     
-    if (sRandomizerOptions->sel[MENUITEM_RANDOM_ON_OFF] == FALSE)
+    if (sRandomizerOptions->sel[MENUITEM_RANDOM_OFF_ON] == FALSE)
         AddTextPrinterParameterized(WIN_OPTIONS, 1, sOptionMenuItemNamesGray[menuItem], 8, (pos * Y_DIFF) + 1, 0xFF, NULL);
     else
         AddTextPrinterParameterized(WIN_OPTIONS, 1, sOptionMenuItemNames[menuItem], 8, (pos * Y_DIFF) + 1, 0xFF, NULL);
@@ -439,7 +459,7 @@ static void ScrollAll(int direction) // to bottom or top
             menuItem = i, pos = i;
         DrawChoices(menuItem, pos * Y_DIFF, 0xFF);
         
-        if (sRandomizerOptions->sel[MENUITEM_RANDOM_ON_OFF] == FALSE)
+        if (sRandomizerOptions->sel[MENUITEM_RANDOM_OFF_ON] == FALSE)
             AddTextPrinterParameterized(WIN_OPTIONS, 1, sOptionMenuItemNamesGray[menuItem], 8, (pos * Y_DIFF) + 1, 0xFF, NULL);
         else
             AddTextPrinterParameterized(WIN_OPTIONS, 1, sOptionMenuItemNames[menuItem], 8, (pos * Y_DIFF) + 1, 0xFF, NULL);
@@ -457,7 +477,7 @@ static void tx_randomizer_Task_OptionMenuProcessInput(u8 taskId)
     }
     else if (JOY_NEW(DPAD_UP))
     {
-        if (sRandomizerOptions->sel[MENUITEM_RANDOM_ON_OFF] == FALSE)
+        if (sRandomizerOptions->sel[MENUITEM_RANDOM_OFF_ON] == FALSE)
         {
             if (--sRandomizerOptions->menuCursor < 0)
             {
@@ -500,7 +520,7 @@ static void tx_randomizer_Task_OptionMenuProcessInput(u8 taskId)
     }
     else if (JOY_NEW(DPAD_DOWN))
     {
-        if (sRandomizerOptions->sel[MENUITEM_RANDOM_ON_OFF] == FALSE)
+        if (sRandomizerOptions->sel[MENUITEM_RANDOM_OFF_ON] == FALSE)
         {
             if (sRandomizerOptions->menuCursor == 0)
             {
@@ -568,7 +588,7 @@ static void tx_randomizer_Task_OptionMenuSave(u8 taskId)
 
 void tx_randomizer_SaveData(void)
 {
-    if (sRandomizerOptions->sel[MENUITEM_RANDOM_ON_OFF] == TRUE)
+    if (sRandomizerOptions->sel[MENUITEM_RANDOM_OFF_ON] == TRUE)
     {
         gSaveBlock1Ptr->tx_Random_WildPokemon        = sRandomizerOptions->sel[MENUITEM_RANDOM_WILD_PKMN];
         gSaveBlock1Ptr->tx_Random_Trainer            = sRandomizerOptions->sel[MENUITEM_RANDOM_TRAINER];
@@ -683,7 +703,7 @@ static void tx_randomizer_DrawOptionMenuTexts(void)
     FillWindowPixelBuffer(WIN_OPTIONS, PIXEL_FILL(1));
     for (i = 0; i < TX_MENU_ITEMS_PER_PAGE; i++)
     {
-        if (sRandomizerOptions->sel[MENUITEM_RANDOM_ON_OFF] == FALSE)
+        if (sRandomizerOptions->sel[MENUITEM_RANDOM_OFF_ON] == FALSE)
             AddTextPrinterParameterized(WIN_OPTIONS, 1, sOptionMenuItemNamesGray[i], 8, (i * Y_DIFF) + 1, 0, NULL);
         else
             AddTextPrinterParameterized(WIN_OPTIONS, 1, sOptionMenuItemNames[i], 8, (i * Y_DIFF) + 1, 0, NULL);
@@ -699,7 +719,7 @@ static void tx_randomizer_DrawOptionMenuTextsLeft(void)
     FillWindowPixelRect(WIN_OPTIONS, PIXEL_FILL(1), 0, 0, 100, 100);
     for (i = 0; i < TX_MENU_ITEMS_PER_PAGE; i++)
     {
-        if (sRandomizerOptions->sel[MENUITEM_RANDOM_ON_OFF] == FALSE)
+        if (sRandomizerOptions->sel[MENUITEM_RANDOM_OFF_ON] == FALSE)
             AddTextPrinterParameterized(WIN_OPTIONS, 1, sOptionMenuItemNamesGray[i], 8, (i * Y_DIFF) + 1, 0, NULL);
         else
             AddTextPrinterParameterized(WIN_OPTIONS, 1, sOptionMenuItemNames[i], 8, (i * Y_DIFF) + 1, 0, NULL);

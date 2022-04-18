@@ -42,6 +42,9 @@ void CB2_InitChallengesMenu(void);
 void tx_randomizer_SaveData(void);
 void tx_challenges_SaveData(void);
 
+bool8 IsRandomizerActivated(void);
+bool8 IsChallengesActivated(void);
+
 // constants
 #define TX_MENU_ITEMS_PER_PAGE 6
 
