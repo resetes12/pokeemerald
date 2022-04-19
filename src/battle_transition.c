@@ -1390,6 +1390,7 @@ static void InitPatternWeaveTransition(struct Task *task)
     sTransitionData->WIN0V = DISPLAY_HEIGHT;
     sTransitionData->BLDCNT = BLDCNT_TGT1_BG0 | BLDCNT_EFFECT_BLEND | BLDCNT_TGT2_ALL;
     sTransitionData->BLDALPHA = BLDALPHA_BLEND(task->tBlendTarget2, task->tBlendTarget1);
+    UpdateShadowColor(0x3DEF); // force shadows to gray
 
     for (i = 0; i < DISPLAY_HEIGHT; i++)
         gScanlineEffectRegBuffers[1][i] = DISPLAY_WIDTH;
@@ -2434,7 +2435,7 @@ static bool8 Mugshot_WaitStartPlayerSlide(struct Task *task)
 {
     sTransitionData->BG0HOFS_Lower -= 8;
     sTransitionData->BG0HOFS_Upper += 8;
-    
+
     // Start player's slide in once the opponent is finished
     if (IsTrainerPicSlideDone(task->tOpponentSpriteId))
     {
@@ -2770,7 +2771,7 @@ static bool8 Slice_Main(struct Task *task)
     {
         u16 *storeLoc1 = &gScanlineEffectRegBuffers[0][i];
         u16 *storeLoc2 = &gScanlineEffectRegBuffers[0][i + DISPLAY_HEIGHT];
-        
+
         // Alternate rows
         if (i % 2)
         {
@@ -3251,7 +3252,7 @@ static bool8 RectangularSpiral_Main(struct Task *task)
                 // The line moved to a new position, draw the tile.
                 done = FALSE;
                 position = sRectangularSpiralLines[j].position;
-                
+
                 // Invert position for the two lines that start at the bottom.
                 if ((j % 2) == 1)
                     position = 637 - position;
@@ -3281,7 +3282,7 @@ static bool8 RectangularSpiral_End(struct Task *task)
 static bool16 UpdateRectangularSpiralLine(const s16 * const *moveDataTable, struct RectangularSpiralLine *line)
 {
     const s16 *moveData = moveDataTable[line->state];
-    
+
     // Has spiral finished?
     // Note that most move data arrays endsin SPIRAL_END but it is
     // only ever reached on the final array of spiraling outward.
@@ -3294,9 +3295,9 @@ static bool16 UpdateRectangularSpiralLine(const s16 * const *moveDataTable, stru
     sDebug_RectangularSpiralData = moveData[2];
     sDebug_RectangularSpiralData = moveData[3];
 
-    // Note that for the two lines originating at the bottom the 
+    // Note that for the two lines originating at the bottom the
     // position is inverted, so the directions are flipped.
-    // i.e. position += 1 is right for the top lines and left 
+    // i.e. position += 1 is right for the top lines and left
     // for their inverted partners on the bottom.
     switch (moveData[0])
     {
@@ -3961,6 +3962,8 @@ static void VBlankCB_AngledWipes(void)
 #define tFadeFromGrayIncrement data[5]
 #define tDelayTimer            data[6]
 #define tBlend                 data[7]
+#define tBldCntSaved           data[8]
+#define tShadowColor           data[9]
 
 static void CreateIntroTask(s16 fadeToGrayDelay, s16 fadeFromGrayDelay, s16 numFades, s16 fadeToGrayIncrement, s16 fadeFromGrayIncrement)
 {
@@ -3988,17 +3991,29 @@ void Task_BattleTransition_Intro(u8 taskId)
 
 static bool8 TransitionIntro_FadeToGray(struct Task *task)
 {
+    u8 paletteNum = IndexOfSpritePaletteTag(TAG_WEATHER_START);
+    u16 index = (paletteNum+16)*16+9; // SHADOW_COLOR_INDEX
     if (task->tDelayTimer == 0 || --task->tDelayTimer == 0)
     {
+
         task->tDelayTimer = task->tFadeToGrayDelay;
         task->tBlend += task->tFadeToGrayIncrement;
         if (task->tBlend > 16)
             task->tBlend = 16;
+        if (paletteNum < 16)
+            task->tShadowColor = gPlttBufferFaded[index];
         BlendPalettes(PALETTES_ALL, task->tBlend, RGB(11, 11, 11));
+        if (paletteNum < 16)
+            gPlttBufferFaded[index] = task->tShadowColor;
     }
     if (task->tBlend >= 16)
     {
         // Fade to gray complete, start fade back
+        // Save BLDCNT and turn off targets temporarily
+        task->tBldCntSaved = GetGpuReg(REG_OFFSET_BLDCNT);
+        SetGpuReg(REG_OFFSET_BLDCNT, task->tBldCntSaved & ~BLDCNT_TGT2_BG_ALL);
+        if (paletteNum < 16)
+            gPlttBufferFaded[index] = RGB(11, 11, 11);
         task->tState++;
         task->tDelayTimer = task->tFadeFromGrayDelay;
     }
@@ -4009,11 +4024,18 @@ static bool8 TransitionIntro_FadeFromGray(struct Task *task)
 {
     if (task->tDelayTimer == 0 || --task->tDelayTimer == 0)
     {
+        u8 paletteNum = IndexOfSpritePaletteTag(TAG_WEATHER_START);
         task->tDelayTimer = task->tFadeFromGrayDelay;
         task->tBlend -= task->tFadeFromGrayIncrement;
         if (task->tBlend < 0)
             task->tBlend = 0;
         BlendPalettes(PALETTES_ALL, task->tBlend, RGB(11, 11, 11));
+        // Restore BLDCNT
+        SetGpuReg(REG_OFFSET_BLDCNT, task->tBldCntSaved);
+        if (paletteNum < 16) {
+            u16 index = (paletteNum+16)*16+9; // SHADOW_COLOR_INDEX
+            gPlttBufferFaded[index] = task->tShadowColor;
+        }
     }
     if (task->tBlend == 0)
     {
@@ -4170,13 +4192,13 @@ static void InitBlackWipe(s16 *data, s16 startX, s16 startY, s16 endX, s16 endY,
 static bool8 UpdateBlackWipe(s16 *data, bool8 xExact, bool8 yExact)
 {
     u8 numFinished;
-    
+
     if (tWipeXDist > tWipeYDist)
     {
         // X has further to move, move it first
         tWipeCurrX += tWipeXMove;
 
-        // If it has been far enough since Y's 
+        // If it has been far enough since Y's
         // last move then move it too
         tWipeTemp += tWipeYDist;
         if (tWipeTemp > tWipeXDist)
@@ -4190,7 +4212,7 @@ static bool8 UpdateBlackWipe(s16 *data, bool8 xExact, bool8 yExact)
         // Y has further to move, move it first
         tWipeCurrY += tWipeYMove;
 
-        // If it has been far enough since X's 
+        // If it has been far enough since X's
         // last move then move it too
         tWipeTemp += tWipeXDist;
         if (tWipeTemp > tWipeYDist)
@@ -4201,9 +4223,9 @@ static bool8 UpdateBlackWipe(s16 *data, bool8 xExact, bool8 yExact)
     }
 
     numFinished = 0;
-    
+
     // Has X coord reached end?
-    if ((tWipeXMove > 0 && tWipeCurrX >= tWipeEndX) 
+    if ((tWipeXMove > 0 && tWipeCurrX >= tWipeEndX)
      || (tWipeXMove < 0 && tWipeCurrX <= tWipeEndX))
     {
         numFinished++;
@@ -4212,7 +4234,7 @@ static bool8 UpdateBlackWipe(s16 *data, bool8 xExact, bool8 yExact)
     }
 
     // Has Y coord reached end?
-    if ((tWipeYMove > 0 && tWipeCurrY >= tWipeEndY) 
+    if ((tWipeYMove > 0 && tWipeCurrY >= tWipeEndY)
      || (tWipeYMove < 0 && tWipeCurrY <= tWipeEndY))
     {
         numFinished++;
@@ -4306,6 +4328,7 @@ static bool8 FrontierLogoWave_Init(struct Task *task)
     LZ77UnCompVram(sFrontierLogo_Tileset, tileset);
     LoadPalette(sFrontierLogo_Palette, 0xF0, sizeof(sFrontierLogo_Palette));
     sTransitionData->cameraY = 0;
+    UpdateShadowColor(0x3DEF); // force shadows to gray
 
     task->tState++;
     return FALSE;
