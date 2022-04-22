@@ -737,19 +737,19 @@ static void DrawOptionMenuChoice(const u8 *text, u8 x, u8 y, u8 style, u8 textSp
     for (i = 0; *text != EOS && i <= 14; i++)
         dst[i] = *(text++);
 
-    if (style != 0)
+    if (style != 0) //choosen option text color
     {
-        dst[2] = 4;
-        dst[5] = 5;
+        dst[2] = 4; //color
+        dst[5] = 5; //shawow
     }
 
     dst[i] = EOS;
     AddTextPrinterParameterized(WIN_OPTIONS, 1, dst, x, y + 1, textSpeed, NULL);
 }
 
-static const u8 gText_Off[]  = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}OFF");
-static const u8 gText_On[]   = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}ON");
-static const u8 gText_None[] = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}NONE");
+static const u8 gText_Off[]  = _("{COLOR 6}{SHADOW 7}OFF");
+static const u8 gText_On[]   = _("{COLOR 6}{SHADOW 7}ON");
+static const u8 gText_None[] = _("{COLOR 6}{SHADOW 7}NONE");
 static void DrawChoices_Random_OffOn(int selection, int y, u8 textSpeed)
 {
     u8 styles[2] = {0};
@@ -759,7 +759,7 @@ static void DrawChoices_Random_OffOn(int selection, int y, u8 textSpeed)
     DrawOptionMenuChoice(gText_On, GetStringRightAlignXOffset(1, gText_On, 198), y, styles[1], textSpeed);
 }
 
-static const u8 gText_Random_Chaos[] = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}CHAOS");
+static const u8 gText_Random_Chaos[] = _("{COLOR 6}{SHADOW 7}CHAOS");
 static void DrawChoices_Random_OffChaos(int selection, int y, u8 textSpeed)
 {
     u8 styles[2] = {0};
@@ -769,7 +769,7 @@ static void DrawChoices_Random_OffChaos(int selection, int y, u8 textSpeed)
     DrawOptionMenuChoice(gText_Random_Chaos, GetStringRightAlignXOffset(1, gText_Random_Chaos, 198), y, styles[1], textSpeed);
 }
 
-static const u8 gText_Random[]  = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}RANDOM");
+static const u8 gText_Random[]  = _("{COLOR 6}{SHADOW 7}RANDOM");
 static void DrawChoices_Random_OffRandom(int selection, int y, u8 textSpeed)
 {
     u8 styles[2] = {0};

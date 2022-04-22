@@ -74,7 +74,6 @@ static void DrawChoices_Challenges_YesNo(int selection, int y, u8 textSpeed);
 static void DrawChoices_Challenges_EvoLimit(int selection, int y, u8 textSpeed);
 static void DrawChoices_Challenges_PartyLimit(int selection, int y, u8 textSpeed);
 static void DrawChoices_Challenges_Nuzlocke(int selection, int y, u8 textSpeed);
-static void DrawChoices_Challenges_Items(int selection, int y, u8 textSpeed);
 static void DrawChoices_Challenges_Pokecenters(int selection, int y, u8 textSpeed);
 static void DrawChoices_Challenges_OneTypeChallenge(int selection, int y, u8 textSpeed);
 static void DrawChoices_Challenges_BaseStatEqualizer(int selection, int y, u8 textSpeed);
@@ -631,10 +630,10 @@ static void DrawOptionMenuChoice(const u8 *text, u8 x, u8 y, u8 style, u8 textSp
     for (i = 0; *text != EOS && i <= 14; i++)
         dst[i] = *(text++);
 
-    if (style != 0)
+    if (style != 0) //choosen option text color
     {
-        dst[2] = 4;
-        dst[5] = 5;
+        dst[2] = 4; //color
+        dst[5] = 5; //shadow
     }
 
     dst[i] = EOS;
@@ -665,12 +664,12 @@ static void FourOptions_DrawChoices(const u8 *const *const strings, int selectio
     DrawOptionMenuChoice(strings[order[2]], GetStringRightAlignXOffset(1, strings[order[2]], 198), y, styles[order[2]], textSpeed);
 }
 
-static const u8 gText_Off[]  = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}OFF");
-static const u8 gText_On[]   = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}ON");
-static const u8 gText_None[] = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}NONE");
+static const u8 gText_Off[]  = _("{COLOR 6}{SHADOW 7}OFF");
+static const u8 gText_On[]   = _("{COLOR 6}{SHADOW 7}ON");
+static const u8 gText_None[] = _("{COLOR 6}{SHADOW 7}NONE");
 
-static const u8 gText_Yes[] = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}YES");
-static const u8 gText_No[]  = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}NO");
+static const u8 gText_Yes[] = _("{COLOR 6}{SHADOW 7}YES");
+static const u8 gText_No[]  = _("{COLOR 6}{SHADOW 7}NO");
 static void DrawChoices_Challenges_YesNo(int selection, int y, u8 textSpeed)
 {
     u8 styles[2] = {0};
@@ -680,8 +679,8 @@ static void DrawChoices_Challenges_YesNo(int selection, int y, u8 textSpeed)
     DrawOptionMenuChoice(gText_No, GetStringRightAlignXOffset(1, gText_No, 198), y, styles[1], textSpeed);
 }
 
-static const u8 gText_Challenges_EvoLimit_First[]   = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}FIRST");
-static const u8 gText_Challenges_EvoLimit_All[]     = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}ALL");
+static const u8 gText_Challenges_EvoLimit_First[]   = _("{COLOR 6}{SHADOW 7}FIRST");
+static const u8 gText_Challenges_EvoLimit_All[]     = _("{COLOR 6}{SHADOW 7}ALL");
 static void DrawChoices_Challenges_EvoLimit(int selection, int y, u8 textSpeed)
 {
     u8 styles[3] = {0};
@@ -706,7 +705,7 @@ static void DrawChoices_Challenges_PartyLimit(int selection, int y, u8 textSpeed
     }
 }
 
-static const u8 gText_Challenges_Nuzlocke_Hardcore[] = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}HARD");
+static const u8 gText_Challenges_Nuzlocke_Hardcore[] = _("{COLOR 6}{SHADOW 7}HARD");
 static void DrawChoices_Challenges_Nuzlocke(int selection, int y, u8 textSpeed)
 {
     u8 styles[3] = {0};
@@ -716,15 +715,6 @@ static void DrawChoices_Challenges_Nuzlocke(int selection, int y, u8 textSpeed)
     DrawOptionMenuChoice(gText_Off, 104, y, styles[0], textSpeed);
     DrawOptionMenuChoice(gText_On, xMid, y, styles[1], textSpeed);
     DrawOptionMenuChoice(gText_Challenges_Nuzlocke_Hardcore, GetStringRightAlignXOffset(1, gText_Challenges_Nuzlocke_Hardcore, 198), y, styles[2], textSpeed);
-}
-
-static const u8 gText_Challenges_Items_Player[]   = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}PL");
-static const u8 gText_Challenges_Items_Trainer[]  = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}TR");
-static const u8 gText_Challenges_Items_Both[]     = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}BOTH");
-static const u8 *const sTextItemsStrings[]  = {gText_Off, gText_Challenges_Items_Player, gText_Challenges_Items_Trainer, gText_Challenges_Items_Both};
-static void DrawChoices_Challenges_Items(int selection, int y, u8 textSpeed)
-{
-    FourOptions_DrawChoices(sTextItemsStrings, selection, y, textSpeed);
 }
 
 static void DrawChoices_Challenges_Pokecenters(int selection, int y, u8 textSpeed)
@@ -750,9 +740,9 @@ static void DrawChoices_Challenges_OneTypeChallenge(int selection, int y, u8 tex
     DrawOptionMenuChoice(gStringVar1, 104, y, 0, textSpeed);
 }
 
-static const u8 gText_Challenges_BaseStatEqualizer_100[]   = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}100");
-static const u8 gText_Challenges_BaseStatEqualizer_255[]   = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}255");
-static const u8 gText_Challenges_BaseStatEqualizer_500[]   = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}500");
+static const u8 gText_Challenges_BaseStatEqualizer_100[]   = _("{COLOR 6}{SHADOW 7}100");
+static const u8 gText_Challenges_BaseStatEqualizer_255[]   = _("{COLOR 6}{SHADOW 7}255");
+static const u8 gText_Challenges_BaseStatEqualizer_500[]   = _("{COLOR 6}{SHADOW 7}500");
 static const u8 *const gText_Challenges_BaseStatEqualizer_Strings[] = {gText_Off, gText_Challenges_BaseStatEqualizer_100, gText_Challenges_BaseStatEqualizer_255, gText_Challenges_BaseStatEqualizer_500};
 static void DrawChoices_Challenges_BaseStatEqualizer(int selection, int y, u8 textSpeed)
 {
