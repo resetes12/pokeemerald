@@ -197,8 +197,8 @@ bool8 IsChallengesActivated(void)
     if (gSaveBlock1Ptr->tx_Challenges_EvoLimit
         || gSaveBlock1Ptr->tx_Challenges_Nuzlocke
         || gSaveBlock1Ptr->tx_Challenges_NuzlockeHardcore
-        || gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge
-        || gSaveBlock1Ptr->tx_Challenges_PartyLimit < 6
+        || gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge != TX_CHALLENGE_TYPE_OFF
+        || gSaveBlock1Ptr->tx_Challenges_PartyLimit
         || gSaveBlock1Ptr->tx_Challenges_NoItemPlayer
         || gSaveBlock1Ptr->tx_Challenges_NoItemTrainer
         || gSaveBlock1Ptr->tx_Challenges_PkmnCenter)
@@ -312,7 +312,7 @@ void CB2_InitChallengesMenu(void)
         sChallengesOptions = AllocZeroed(sizeof(*sChallengesOptions));
 
         sChallengesOptions->sel[MENUITEM_CHALLENGES_EVO_LIMIT]   = gSaveBlock1Ptr->tx_Challenges_EvoLimit;
-        sChallengesOptions->sel[MENUITEM_CHALLENGES_PARTY_LIMIT] = 6 - gSaveBlock1Ptr->tx_Challenges_PartyLimit;
+        sChallengesOptions->sel[MENUITEM_CHALLENGES_PARTY_LIMIT] = gSaveBlock1Ptr->tx_Challenges_PartyLimit;
 
         if (gSaveBlock1Ptr->tx_Challenges_Nuzlocke && gSaveBlock1Ptr->tx_Challenges_NuzlockeHardcore)
             sChallengesOptions->sel[MENUITEM_CHALLENGES_NUZLOCKE] = 2;
@@ -372,7 +372,7 @@ static void ScrollAll(int direction) // to bottom or top
     int i, y, menuItem, pos;
     int scrollCount = MENUITEM_COUNT - 2;
     // Move items up/down
-    ScrollWindow(WIN_OPTIONS, direction, Y_DIFF * scrollCount, PIXEL_FILL(0));
+    ScrollWindow(WIN_OPTIONS, direction, Y_DIFF * scrollCount, PIXEL_FILL(1));
 
     // Clear moved items
     // if (direction == 0)
@@ -509,7 +509,7 @@ void tx_challenges_SaveData(void)
     else
         gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge = sChallengesOptions->sel[MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE];
     
-    gSaveBlock1Ptr->tx_Challenges_PartyLimit           = 6 - sChallengesOptions->sel[MENUITEM_CHALLENGES_PARTY_LIMIT];
+    gSaveBlock1Ptr->tx_Challenges_PartyLimit           = sChallengesOptions->sel[MENUITEM_CHALLENGES_PARTY_LIMIT];
     gSaveBlock1Ptr->tx_Challenges_PkmnCenter           = sChallengesOptions->sel[MENUITEM_CHALLENGES_POKECENTER];
 }
 
@@ -670,15 +670,15 @@ static void DrawChoices_Challenges_YesNo(int selection, int y, u8 textSpeed)
     DrawOptionMenuChoice(gText_No, GetStringRightAlignXOffset(1, gText_No, 198), y, styles[1], textSpeed);
 }
 
-static const u8 gText_Challenges_EvoLimit_First[] = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}FIRST");
+static const u8 gText_Challenges_EvoLimit_Once[] = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}ONCE");
 static void DrawChoices_Challenges_EvoLimit(int selection, int y, u8 textSpeed)
 {
     u8 styles[3] = {0};
-    int xMid = GetMiddleX(gText_Off, gText_Challenges_EvoLimit_First, gText_None);
+    int xMid = GetMiddleX(gText_Off, gText_Challenges_EvoLimit_Once, gText_None);
 
     styles[selection] = 1;
     DrawOptionMenuChoice(gText_Off, 104, y, styles[0], textSpeed);
-    DrawOptionMenuChoice(gText_Challenges_EvoLimit_First, xMid, y, styles[1], textSpeed);
+    DrawOptionMenuChoice(gText_Challenges_EvoLimit_Once, xMid, y, styles[1], textSpeed);
     DrawOptionMenuChoice(gText_None, GetStringRightAlignXOffset(1, gText_None, 198), y, styles[2], textSpeed);
 }
 
@@ -689,7 +689,7 @@ static void DrawChoices_Challenges_PartyLimit(int selection, int y, u8 textSpeed
         DrawOptionMenuChoice(gText_Off, 104, y, 1, textSpeed);
     else
     {
-        u8 textPlus[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}+1{0x77}{0x77}{0x77}{0x77}{0x77}"); // 0x77 is to clear INSTANT text
+        u8 textPlus[] = _("{COLOR GREEN}{SHADOW LIGHT_GREEN}{0x77}{0x77}{0x77}{0x77}{0x77}"); // 0x77 is to clear INSTANT text
         textPlus[7] = CHAR_0 + n;
         DrawOptionMenuChoice(textPlus, 104, y, 1, textSpeed);
     }

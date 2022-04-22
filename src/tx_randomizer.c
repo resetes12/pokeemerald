@@ -434,7 +434,7 @@ static void ScrollAll(int direction) // to bottom or top
     int i, y, menuItem, pos;
     int scrollCount = MENUITEM_COUNT - 4;
     // Move items up/down
-    ScrollWindow(WIN_OPTIONS, direction, Y_DIFF * scrollCount, PIXEL_FILL(0));
+    ScrollWindow(WIN_OPTIONS, direction, Y_DIFF * scrollCount, PIXEL_FILL(1));
 
     // Clear moved items
     // if (direction == 0)
