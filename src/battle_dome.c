@@ -2452,6 +2452,13 @@ static void InitDomeTrainers(void)
     stats[statIndex] = (u8) ModifyStatByNature(nature, stats[statIndex], statIndex);        \
 }
 
+#define CALC_STAT_EQUALIZED(base, statIndex, option)                                        \
+{                                                                                           \
+    u16 baseStat[] = {100, 255, 500};                                                       \
+    stats[statIndex] = (((2 * baseStat[option] + ivs + evs[statIndex] / 4) * level) / 100) + 5;\
+    stats[statIndex] = (u8) ModifyStatByNature(nature, stats[statIndex], statIndex);        \
+}
+
 static void CalcDomeMonStats(u16 species, int level, int ivs, u8 evBits, u8 nature, int *stats)
 {
     int i, count;
@@ -2481,14 +2488,42 @@ static void CalcDomeMonStats(u16 species, int level, int ivs, u8 evBits, u8 natu
     else
     {
         int n = 2 * gBaseStats[species].baseHP;
+        switch(gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer)
+        {
+        case 0:
+            break;
+        case 1: 
+            n = 2 * 100;
+            break;
+        case 2: 
+            n = 2 * 255;
+            break;
+        case 3: 
+            n = 2 * 500;
+            break;
+        default:
+            break;
+        }
         stats[STAT_HP] = (((n + ivs + evs[STAT_HP] / 4) * level) / 100) + level + 10;
     }
 
-    CALC_STAT(baseAttack, STAT_ATK);
-    CALC_STAT(baseDefense, STAT_DEF);
-    CALC_STAT(baseSpeed, STAT_SPEED);
-    CALC_STAT(baseSpAttack, STAT_SPATK);
-    CALC_STAT(baseSpDefense, STAT_SPDEF);
+    if (gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer)
+    {
+        u8 option = gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer - 1;
+        CALC_STAT_EQUALIZED(baseAttack, STAT_ATK, option);
+        CALC_STAT_EQUALIZED(baseDefense, STAT_DEF, option);
+        CALC_STAT_EQUALIZED(baseSpeed, STAT_SPEED, option);
+        CALC_STAT_EQUALIZED(baseSpAttack, STAT_SPATK, option);
+        CALC_STAT_EQUALIZED(baseSpDefense, STAT_SPDEF, option);
+    }
+    else
+    {
+        CALC_STAT(baseAttack, STAT_ATK);
+        CALC_STAT(baseDefense, STAT_DEF);
+        CALC_STAT(baseSpeed, STAT_SPEED);
+        CALC_STAT(baseSpAttack, STAT_SPATK);
+        CALC_STAT(baseSpDefense, STAT_SPDEF);
+    }
 }
 
 static void SwapDomeTrainers(int id1, int id2, u16 *statsArray)
@@ -5994,12 +6029,17 @@ static void DecideRoundWinners(u8 roundId)
                     }
                 }
                 species = gFacilityTrainerMons[DOME_MONS[tournamentId1][monId1]].species;
+                if (gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer)
+                    points1 += 60;
+                else
+                {
                 points1 += ( gBaseStats[species].baseHP
                            + gBaseStats[species].baseAttack
                            + gBaseStats[species].baseDefense
                            + gBaseStats[species].baseSpeed
                            + gBaseStats[species].baseSpAttack
                            + gBaseStats[species].baseSpDefense) / 10;
+                }
             }
             // Random part of the formula.
             points1 += (Random() & 0x1F);
@@ -6017,12 +6057,17 @@ static void DecideRoundWinners(u8 roundId)
                     }
                 }
                 species = gFacilityTrainerMons[DOME_MONS[tournamentId2][monId1]].species;
+                if (gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer)
+                    points2 += 60;
+                else
+                {
                 points2 += ( gBaseStats[species].baseHP
                            + gBaseStats[species].baseAttack
                            + gBaseStats[species].baseDefense
                            + gBaseStats[species].baseSpeed
                            + gBaseStats[species].baseSpAttack
                            + gBaseStats[species].baseSpDefense) / 10;
+                }
             }
             // Random part of the formula.
             points2 += (Random() & 0x1F);

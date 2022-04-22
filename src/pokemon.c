@@ -8785,7 +8785,7 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
         SetBoxMonData(boxMon, MON_DATA_SPDEF_IV, &iv);
     }
 
-    if (GetAbilityBySpecies(species, 1) != ABILITY_NONE) //tx_randomizer_and_challenges //if (gBaseStats[species].abilities[1])
+    if (GetAbilityBySpecies(species, 1) != ABILITY_NONE) //tx_randomizer_and_challenges
     {
         value = personality & 1;
         SetBoxMonData(boxMon, MON_DATA_ABILITY_NUM, &value);
@@ -9312,6 +9312,15 @@ static u16 CalculateBoxMonChecksum(struct BoxPokemon *boxMon)
     SetMonData(mon, field, &n);                                 \
 }
 
+#define CALC_STAT_EQUALIZED(base, iv, ev, statIndex, field, option)\
+{                                                               \
+    u16 baseStat[] = {100, 255, 500};                                         \
+    s32 n = (((2 * baseStat[option] + iv + ev / 4) * level) / 100) + 5; \
+    u8 nature = GetNature(mon);                                 \
+    n = ModifyStatByNature(nature, n, statIndex);               \
+    SetMonData(mon, field, &n);                                 \
+}
+
 void CalculateMonStats(struct Pokemon *mon)
 {
     s32 oldMaxHP = GetMonData(mon, MON_DATA_MAX_HP, NULL);
@@ -9341,6 +9350,22 @@ void CalculateMonStats(struct Pokemon *mon)
     else
     {
         s32 n = 2 * gBaseStats[species].baseHP + hpIV;
+        switch(gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer)
+        {
+        case 0:
+            break;
+        case 1: 
+            n = 2 * 100 + hpIV;
+            break;
+        case 2: 
+            n = 2 * 255 + hpIV;
+            break;
+        case 3: 
+            n = 2 * 500 + hpIV;
+            break;
+        default:
+            break;
+        }
         newMaxHP = (((n + hpEV / 4) * level) / 100) + level + 10;
     }
 
@@ -9350,11 +9375,23 @@ void CalculateMonStats(struct Pokemon *mon)
 
     SetMonData(mon, MON_DATA_MAX_HP, &newMaxHP);
 
-    CALC_STAT(baseAttack, attackIV, attackEV, STAT_ATK, MON_DATA_ATK)
-    CALC_STAT(baseDefense, defenseIV, defenseEV, STAT_DEF, MON_DATA_DEF)
-    CALC_STAT(baseSpeed, speedIV, speedEV, STAT_SPEED, MON_DATA_SPEED)
-    CALC_STAT(baseSpAttack, spAttackIV, spAttackEV, STAT_SPATK, MON_DATA_SPATK)
-    CALC_STAT(baseSpDefense, spDefenseIV, spDefenseEV, STAT_SPDEF, MON_DATA_SPDEF)
+    if (gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer)
+    {
+        u8 option = gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer - 1;
+        CALC_STAT_EQUALIZED(baseAttack, attackIV, attackEV, STAT_ATK, MON_DATA_ATK, option)
+        CALC_STAT_EQUALIZED(baseDefense, defenseIV, defenseEV, STAT_DEF, MON_DATA_DEF, option)
+        CALC_STAT_EQUALIZED(baseSpeed, speedIV, speedEV, STAT_SPEED, MON_DATA_SPEED, option)
+        CALC_STAT_EQUALIZED(baseSpAttack, spAttackIV, spAttackEV, STAT_SPATK, MON_DATA_SPATK, option)
+        CALC_STAT_EQUALIZED(baseSpDefense, spDefenseIV, spDefenseEV, STAT_SPDEF, MON_DATA_SPDEF, option)
+    }
+    else
+    {
+        CALC_STAT(baseAttack, attackIV, attackEV, STAT_ATK, MON_DATA_ATK)
+        CALC_STAT(baseDefense, defenseIV, defenseEV, STAT_DEF, MON_DATA_DEF)
+        CALC_STAT(baseSpeed, speedIV, speedEV, STAT_SPEED, MON_DATA_SPEED)
+        CALC_STAT(baseSpAttack, spAttackIV, spAttackEV, STAT_SPATK, MON_DATA_SPATK)
+        CALC_STAT(baseSpDefense, spDefenseIV, spDefenseEV, STAT_SPDEF, MON_DATA_SPDEF)
+    }
 
     if (species == SPECIES_SHEDINJA)
     {

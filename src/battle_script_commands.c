@@ -8871,10 +8871,22 @@ static void Cmd_trydobeatup(void)
 
             gBattlescriptCurrInstr += 9;
 
-            gBattleMoveDamage = gBaseStats[GetMonData(&party[gBattleCommunication[0]], MON_DATA_SPECIES)].baseAttack;
+            if (gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer)
+            {
+                u16 baseStat[] = {10, 100, 255, 500};
+                gBattleMoveDamage = baseStat[gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer];
+            }
+            else
+                gBattleMoveDamage = gBaseStats[GetMonData(&party[gBattleCommunication[0]], MON_DATA_SPECIES)].baseAttack;
             gBattleMoveDamage *= gBattleMoves[gCurrentMove].power;
             gBattleMoveDamage *= (GetMonData(&party[gBattleCommunication[0]], MON_DATA_LEVEL) * 2 / 5 + 2);
-            gBattleMoveDamage /= gBaseStats[gBattleMons[gBattlerTarget].species].baseDefense;
+            if (gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer)
+            {
+                u16 baseStat[] = {10, 100, 255, 500};
+                gBattleMoveDamage = baseStat[gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer];
+            }
+            else
+                gBattleMoveDamage /= gBaseStats[gBattleMons[gBattlerTarget].species].baseDefense;
             gBattleMoveDamage = (gBattleMoveDamage / 50) + 2;
             if (gProtectStructs[gBattlerAttacker].helpingHand)
                 gBattleMoveDamage = gBattleMoveDamage * 15 / 10;
