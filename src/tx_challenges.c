@@ -213,7 +213,7 @@ bool8 IsChallengesActivated(void)
     return FALSE;
 }
 
-bool8 IsNuzlockActivated(void)
+bool8 IsNuzlockeActivated(void)
 {
     return gSaveBlock1Ptr->tx_Challenges_Nuzlocke;
 }

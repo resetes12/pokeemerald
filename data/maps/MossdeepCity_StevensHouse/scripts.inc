@@ -94,8 +94,8 @@ MossdeepCity_StevensHouse_EventScript_GiveBeldum::
 
 MossdeepCity_StevensHouse_EventScript_SendBeldumParty::
 	call MossdeepCity_StevensHouse_EventScript_ReceivedBeldumFanfare
-	specialvar VAR_RESULT, IsNuzlockActivated
-	goto_if_eq VAR_RESULT, TRUE, MossdeepCity_StevensHouse_EventScript_SendBeldumParty_Nuzlock
+	specialvar VAR_RESULT, IsNuzlockeActivated
+	goto_if_eq VAR_RESULT, TRUE, MossdeepCity_StevensHouse_EventScript_SendBeldumParty_Nuzlocke
 	msgbox gText_NicknameThisPokemon, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, MossdeepCity_StevensHouse_EventScript_ReceivedBeldum
 	call Common_EventScript_GetGiftMonPartySlot
@@ -103,7 +103,7 @@ MossdeepCity_StevensHouse_EventScript_SendBeldumParty::
 	goto MossdeepCity_StevensHouse_EventScript_ReceivedBeldum
 	end
 
-MossdeepCity_StevensHouse_EventScript_SendBeldumParty_Nuzlock::
+MossdeepCity_StevensHouse_EventScript_SendBeldumParty_Nuzlocke::
 	call Common_EventScript_GetGiftMonPartySlot
 	call Common_EventScript_NameReceivedPartyMon
 	goto MossdeepCity_StevensHouse_EventScript_ReceivedBeldum
@@ -111,15 +111,15 @@ MossdeepCity_StevensHouse_EventScript_SendBeldumParty_Nuzlock::
 
 MossdeepCity_StevensHouse_EventScript_SendBeldumPC::
 	call MossdeepCity_StevensHouse_EventScript_ReceivedBeldumFanfare
-	specialvar VAR_RESULT, IsNuzlockActivated
-	goto_if_eq VAR_RESULT, TRUE, MossdeepCity_StevensHouse_EventScript_SendBeldumPC_Nuzlock
+	specialvar VAR_RESULT, IsNuzlockeActivated
+	goto_if_eq VAR_RESULT, TRUE, MossdeepCity_StevensHouse_EventScript_SendBeldumPC_Nuzlocke
 	msgbox gText_NicknameThisPokemon, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, MossdeepCity_StevensHouse_EventScript_BeldumTransferredToPC
 	call Common_EventScript_NameReceivedBoxMon
 	goto MossdeepCity_StevensHouse_EventScript_BeldumTransferredToPC
 	end
 
-MossdeepCity_StevensHouse_EventScript_SendBeldumPC_Nuzlock::
+MossdeepCity_StevensHouse_EventScript_SendBeldumPC_Nuzlocke::
 	call Common_EventScript_NameReceivedBoxMon
 	goto MossdeepCity_StevensHouse_EventScript_BeldumTransferredToPC
 	end

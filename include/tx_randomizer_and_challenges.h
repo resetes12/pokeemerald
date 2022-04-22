@@ -45,7 +45,7 @@ void tx_challenges_SaveData(void);
 
 bool8 IsRandomizerActivated(void);
 bool8 IsChallengesActivated(void);
-bool8 IsNuzlockActivated(void);
+bool8 IsNuzlockeActivated(void);
 
 // constants
 #define TX_MENU_ITEMS_PER_PAGE 6
