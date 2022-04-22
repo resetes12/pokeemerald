@@ -213,6 +213,11 @@ bool8 IsChallengesActivated(void)
     return FALSE;
 }
 
+bool8 IsNuzlockActivated(void)
+{
+    return gSaveBlock1Ptr->tx_Challenges_Nuzlocke;
+}
+
 static void MainCB2(void)
 {
     RunTasks();

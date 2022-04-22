@@ -118,12 +118,22 @@ LittlerootTown_ProfessorBirchsLab_EventScript_GiveStarterEvent::
 	waitmessage
 	playfanfare MUS_OBTAIN_ITEM
 	waitfanfare
+	specialvar VAR_RESULT, IsNuzlockActivated
+	goto_if_eq VAR_RESULT, TRUE, LittlerootTown_ProfessorBirchsLab_EventScript_NicknameStarter_Nuzlock
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_WhyNotGiveNicknameToMon, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, YES, LittlerootTown_ProfessorBirchsLab_EventScript_NicknameStarter
 	goto_if_eq VAR_RESULT, NO, LittlerootTown_ProfessorBirchsLab_EventScript_GoSeeRival
 	end
 
 LittlerootTown_ProfessorBirchsLab_EventScript_NicknameStarter::
+	setvar VAR_0x8004, 0
+	call Common_EventScript_NameReceivedPartyMon
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_GoSeeRival
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_NicknameStarter_Nuzlock::
+	message LittlerootTown_ProfessorBirchsLab_Text_WhyNotGiveNicknameToMon_Nuzlock
+	waitmessage
 	setvar VAR_0x8004, 0
 	call Common_EventScript_NameReceivedPartyMon
 	goto LittlerootTown_ProfessorBirchsLab_EventScript_GoSeeRival
@@ -706,6 +716,10 @@ LittlerootTown_ProfessorBirchsLab_Text_LikeYouToHavePokemon:
 LittlerootTown_ProfessorBirchsLab_Text_WhyNotGiveNicknameToMon:
 	.string "PROF. BIRCH: While you're at it, why not\n"
 	.string "give a nickname to that {STR_VAR_1}?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_WhyNotGiveNicknameToMon_Nuzlock:
+	.string "PROF. BIRCH: While you're at it, why not\n"
+	.string "give a nickname to that {STR_VAR_1}?\p$"
 
 LittlerootTown_ProfessorBirchsLab_Text_MightBeGoodIdeaToGoSeeRival:
 	.string "PROF. BIRCH: If you work at POKéMON\n"
