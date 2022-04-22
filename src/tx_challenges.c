@@ -123,12 +123,12 @@ static const u8 *const sChallengesOptionMenuItemNames[MENUITEM_COUNT] =
     [MENUITEM_SAVE]                           = gText_Save,
 };
 
-static const u8 gText_Description_Challenges_Evo_Limit[]        = _("{COLOR 6}{SHADOW 7}Limit evolutions.");
-static const u8 gText_Description_Challenges_Party_Limit[]      = _("{COLOR 6}{SHADOW 7}Limit your parties size.");
-static const u8 gText_Description_Nuzlocke[]                    = _("{COLOR 6}{SHADOW 7}Enable nuzlocke mode.\nHard: {COLOR RED}{SHADOW LIGHT_RED}Delete save on whiteout!");
+static const u8 gText_Description_Challenges_Evo_Limit[]        = _("{COLOR 6}{SHADOW 7}Limit evolutions to first stage only\nor disallow all evolutions.");
+static const u8 gText_Description_Challenges_Party_Limit[]      = _("{COLOR 6}{SHADOW 7}Limit the amount of POKéMON in the\nplayers party.");
+static const u8 gText_Description_Nuzlocke[]                    = _("{COLOR 6}{SHADOW 7}Enable nuzlocke mode.\nHard Mode: {COLOR RED}{SHADOW LIGHT_RED}Delete save on whiteout!");
 static const u8 gText_Description_Challenges_Items_Player[]     = _("{COLOR 6}{SHADOW 7}The player can use items.");
 static const u8 gText_Description_Challenges_Items_Trainer[]    = _("{COLOR 6}{SHADOW 7}Enemy trainer can use items.");
-static const u8 gText_Description_Challenges_Pokecenter[]       = _("{COLOR 6}{SHADOW 7}Allow Pokécenter usage.");
+static const u8 gText_Description_Challenges_Pokecenter[]       = _("{COLOR 6}{SHADOW 7}The player can visit Pokécenters to\nheal their party.");
 static const u8 gText_Description_Challenges_OneTypeChallenge[] = _("{COLOR 6}{SHADOW 7}Allow only one POKéMON type the\nplayer can capture and use.");
 static const u8 gText_Description_Save[]                        = _("{COLOR 6}{SHADOW 7}Save choices and continue...");
 
@@ -670,16 +670,17 @@ static void DrawChoices_Challenges_YesNo(int selection, int y, u8 textSpeed)
     DrawOptionMenuChoice(gText_No, GetStringRightAlignXOffset(1, gText_No, 198), y, styles[1], textSpeed);
 }
 
-static const u8 gText_Challenges_EvoLimit_Once[] = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}ONCE");
+static const u8 gText_Challenges_EvoLimit_First[]   = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}FIRST");
+static const u8 gText_Challenges_EvoLimit_All[]     = _("{COLOR DARK_GRAY}{SHADOW LIGHT_GRAY}ALL");
 static void DrawChoices_Challenges_EvoLimit(int selection, int y, u8 textSpeed)
 {
     u8 styles[3] = {0};
-    int xMid = GetMiddleX(gText_Off, gText_Challenges_EvoLimit_Once, gText_None);
+    int xMid = GetMiddleX(gText_Off, gText_Challenges_EvoLimit_First, gText_None);
 
     styles[selection] = 1;
     DrawOptionMenuChoice(gText_Off, 104, y, styles[0], textSpeed);
-    DrawOptionMenuChoice(gText_Challenges_EvoLimit_Once, xMid, y, styles[1], textSpeed);
-    DrawOptionMenuChoice(gText_None, GetStringRightAlignXOffset(1, gText_None, 198), y, styles[2], textSpeed);
+    DrawOptionMenuChoice(gText_Challenges_EvoLimit_First, xMid, y, styles[1], textSpeed);
+    DrawOptionMenuChoice(gText_Challenges_EvoLimit_All, GetStringRightAlignXOffset(1, gText_Challenges_EvoLimit_All, 198), y, styles[2], textSpeed);
 }
 
 static void DrawChoices_Challenges_PartyLimit(int selection, int y, u8 textSpeed)
