@@ -3886,6 +3886,8 @@ u8 GetMoveTarget(u16 move, u8 setTarget)
 
 static bool32 IsMonEventLegal(u8 battlerId)
 {
+    if (gSaveBlock1Ptr->tx_Random_IncludeLegendaries)
+        return TRUE;
     if (GetBattlerSide(battlerId) == B_SIDE_OPPONENT)
         return TRUE;
     if (GetMonData(&gPlayerParty[gBattlerPartyIndexes[battlerId]], MON_DATA_SPECIES, NULL) != SPECIES_DEOXYS
@@ -3907,8 +3909,6 @@ u8 IsMonDisobedient(void)
 
     if (IsMonEventLegal(gBattlerAttacker)) // only false if illegal Mew or Deoxys
     {
-        if (gSaveBlock1Ptr->tx_Random_IncludeLegendaries)
-            return 0;
         if (gBattleTypeFlags & BATTLE_TYPE_INGAME_PARTNER && GetBattlerPosition(gBattlerAttacker) == 2)
             return 0;
         if (gBattleTypeFlags & BATTLE_TYPE_FRONTIER)
