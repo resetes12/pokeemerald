@@ -3907,6 +3907,8 @@ u8 IsMonDisobedient(void)
 
     if (IsMonEventLegal(gBattlerAttacker)) // only false if illegal Mew or Deoxys
     {
+        if (gSaveBlock1Ptr->tx_Random_IncludeLegendaries)
+            return 0;
         if (gBattleTypeFlags & BATTLE_TYPE_INGAME_PARTNER && GetBattlerPosition(gBattlerAttacker) == 2)
             return 0;
         if (gBattleTypeFlags & BATTLE_TYPE_FRONTIER)
