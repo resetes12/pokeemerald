@@ -9517,6 +9517,7 @@ void GiveBoxMonInitialMoveset(struct BoxPokemon *boxMon)
     u16 species = GetBoxMonData(boxMon, MON_DATA_SPECIES, NULL);
     s32 level = GetLevelFromBoxMonExp(boxMon);
     s32 i;
+    bool8 firstMoveGiven = FALSE;
 
     for (i = 0; gLevelUpLearnsets[species][i] != LEVEL_UP_END; i++)
     {
@@ -9531,10 +9532,26 @@ void GiveBoxMonInitialMoveset(struct BoxPokemon *boxMon)
         move = (gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_ID);
 
         if (gSaveBlock1Ptr->tx_Random_Moves) //tx_randomizer_and_challenges
+        {
             move = GetRandomMove(move, species);
+            if (!FlagGet(FLAG_ADVENTURE_STARTED) && !firstMoveGiven)
+            {
+                u8 j;
+                for (j=0; j<100; j++)
+                {
+                    if (gBattleMoves[move].power == 0)
+                        move = GetRandomMove(move, species);
+                    else
+                        break;
+                }
+            }
+        }
 
         if (GiveMoveToBoxMon(boxMon, move) == MON_HAS_MAX_MOVES)
             DeleteFirstMoveAndGiveMoveToBoxMon(boxMon, move);
+
+        if (!firstMoveGiven)
+            firstMoveGiven = TRUE;
     }
 }
 
