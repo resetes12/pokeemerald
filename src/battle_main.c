@@ -5180,7 +5180,7 @@ static void HandleEndTurn_FinishBattle(void)
                                         | BATTLE_TYPE_TOWER_LINK_MULTI
                                         | BATTLE_TYPE_RECORDED_LINK)))
             {
-                if ((!NuzlockeIsSpeciesClauseActive || !OneTypeChallengeCaptureBlocked) && (FlagGet(FLAG_ADVENTURE_STARTED)))
+                if (!NuzlockeIsSpeciesClauseActive && !OneTypeChallengeCaptureBlocked && FlagGet(FLAG_ADVENTURE_STARTED))
                     NuzlockeFlagSet(NuzlockeGetCurrentRegionMapSectionId());
             }
             NuzlockeIsCaptureBlocked = FALSE;
