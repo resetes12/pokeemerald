@@ -710,15 +710,16 @@ static void DrawChoices_Challenges_PartyLimit(int selection, int y, u8 textSpeed
     }
 }
 
+static const u8 gText_Challenges_Nuzlocke_Normal[] = _("{COLOR 6}{SHADOW 7}NORMAL");
 static const u8 gText_Challenges_Nuzlocke_Hardcore[] = _("{COLOR 6}{SHADOW 7}HARD");
 static void DrawChoices_Challenges_Nuzlocke(int selection, int y, u8 textSpeed)
 {
     u8 styles[3] = {0};
-    int xMid = GetMiddleX(gText_Off, gText_On, gText_Challenges_Nuzlocke_Hardcore);
+    int xMid = GetMiddleX(gText_Off, gText_Challenges_Nuzlocke_Normal, gText_Challenges_Nuzlocke_Hardcore);
 
     styles[selection] = 1;
     DrawOptionMenuChoice(gText_Off, 104, y, styles[0], textSpeed);
-    DrawOptionMenuChoice(gText_On, xMid, y, styles[1], textSpeed);
+    DrawOptionMenuChoice(gText_Challenges_Nuzlocke_Normal, xMid, y, styles[1], textSpeed);
     DrawOptionMenuChoice(gText_Challenges_Nuzlocke_Hardcore, GetStringRightAlignXOffset(1, gText_Challenges_Nuzlocke_Hardcore, 198), y, styles[2], textSpeed);
 }
 
