@@ -14004,10 +14004,6 @@ u8 GetPartySize()
 {
     return (6 - gSaveBlock1Ptr->tx_Challenges_PartyLimit);
 }
-u8 GetPokemonCenterChallenge()
-{
-    return !gSaveBlock1Ptr->tx_Challenges_PkmnCenter;
-}
 u8 PickRandomOneTypeChallengeType()
 {
     u16 type = (RandomSeeded(1, TRUE) % (NUMBER_OF_MON_TYPES-1));

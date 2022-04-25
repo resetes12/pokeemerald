@@ -342,6 +342,10 @@ PlayersHouse_1F_Text_YouShouldRestABit:
 	.string "You look a little tired.\p"
 	.string "I think you should rest a bit.$"
 
+PlayersHouse_1F_Text_YouShouldRestABit_PokecenterChallenge:
+	.string "MOM: Sorry honey, you are playing\n"
+	.string "with the POKéCENTER challenge!$"
+
 PlayersHouse_1F_Text_TakeCareHoney:
 	.string "MOM: Take care, honey!$"
 

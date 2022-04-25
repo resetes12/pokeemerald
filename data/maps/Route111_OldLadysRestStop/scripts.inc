@@ -15,6 +15,8 @@ Route111_OldLadysRestStop_EventScript_OldLady::
 	end
 
 Route111_OldLadysRestStop_EventScript_Rest::
+	specialvar VAR_RESULT, IsPokecenterChallengeActivated
+    goto_if_eq VAR_RESULT, TRUE, Route111_OldLadysRestStop_EventScript_Rest_PokecenterChallenge
 	msgbox Route111_OldLadysRestStop_Text_TakeYourTimeRestUp, MSGBOX_DEFAULT
 	closemessage
 	call Common_EventScript_OutOfCenterPartyHeal
@@ -23,10 +25,19 @@ Route111_OldLadysRestStop_EventScript_Rest::
 	goto_if_eq VAR_RESULT, NO, Route111_OldLadysRestStop_EventScript_DeclineRest
 	end
 
+Route111_OldLadysRestStop_EventScript_Rest_PokecenterChallenge::
+	msgbox Route111_OldLadysRestStop_Text_PokecenterChallenge, MSGBOX_DEFAULT
+	closemessage
+	end
+
 Route111_OldLadysRestStop_EventScript_DeclineRest::
 	msgbox Route111_OldLadysRestStop_Text_DontNeedToBeShy, MSGBOX_DEFAULT
 	release
 	end
+
+Route111_OldLadysRestStop_Text_PokecenterChallenge:
+	.string "Sorry, you are playing\n"
+	.string "with the POKéCENTER challenge!$"
 
 Route111_OldLadysRestStop_Text_RestUpHere:
 	.string "Oh, dear, dear.\n"

@@ -53,11 +53,18 @@ Route119_WeatherInstitute_1F_EventScript_InstituteWorker2::
 	end
 
 Route119_WeatherInstitute_1F_EventScript_Bed::
+	specialvar VAR_RESULT, IsPokecenterChallengeActivated
+	goto_if_eq VAR_RESULT, TRUE, Route119_WeatherInstitute_1F_EventScript_Bed_PokecenterChallenge
 	lockall
 	msgbox Route119_WeatherInstitute_1F_Text_TakeRestInBed, MSGBOX_DEFAULT
 	closemessage
 	call Common_EventScript_OutOfCenterPartyHeal
 	releaseall
+	end
+
+Route119_WeatherInstitute_1F_EventScript_Bed_PokecenterChallenge::
+	msgbox Route119_WeatherInstitute_1F_Text_TakeRestInBed_PokecenterChallenge, MSGBOX_DEFAULT
+	closemessage
 	end
 
 Route119_WeatherInstitute_1F_EventScript_Grunt1::
@@ -132,4 +139,8 @@ Route119_WeatherInstitute_1F_Text_WhatWereAquasUpTo:
 Route119_WeatherInstitute_1F_Text_TakeRestInBed:
 	.string "There's a bed…\n"
 	.string "Let's take a rest.$"
+
+Route119_WeatherInstitute_1F_Text_TakeRestInBed_PokecenterChallenge:
+	.string "Sorry, you are playing with\n"
+	.string "the POKéCENTER challenge!$"
 
