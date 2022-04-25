@@ -923,6 +923,8 @@ static bool8 TryProduceOrHatchEgg(struct DayCare *daycare)
             }
             else
             {
+                if (gSaveBlock1Ptr->tx_Challenges_Nuzlocke && NuzlockeFlagGet(NuzlockeGetCurrentRegionMapSectionId()))
+                    return FALSE;
                 gSpecialVar_0x8004 = i;
                 return TRUE;
             }

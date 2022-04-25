@@ -3229,6 +3229,8 @@ static void PrintEggState(void)
 
     if (sMonSummaryScreen->summary.sanity == TRUE)
         text = gText_EggWillTakeALongTime;
+    else if (sum->friendship == 0)
+        text = gText_EggReadyToHatch_Nuzlocke;
     else if (sum->friendship <= 5)
         text = gText_EggAboutToHatch;
     else if (sum->friendship <= 10)

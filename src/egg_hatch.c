@@ -471,6 +471,8 @@ static void VBlankCB_EggHatch(void)
 
 void EggHatch(void)
 {
+    if (gSaveBlock1Ptr->tx_Challenges_Nuzlocke)
+        NuzlockeFlagSet(NuzlockeGetCurrentRegionMapSectionId());
     ScriptContext2_Enable();
     CreateTask(Task_EggHatch, 10);
     FadeScreen(FADE_TO_BLACK, 0);
@@ -670,8 +672,11 @@ static void CB2_EggHatch(void)
     case 8:
         // Ready the nickname prompt
         GetMonNickname2(&gPlayerParty[sEggHatchData->eggPartyId], gStringVar1);
-        StringExpandPlaceholders(gStringVar4, gText_NicknameHatchPrompt);
-        EggHatchPrintMessage(sEggHatchData->windowId, gStringVar4, 0, 2, 1);
+        if (!gSaveBlock1Ptr->tx_Challenges_Nuzlocke) //tx_randomizer_and_challenges
+        {
+            StringExpandPlaceholders(gStringVar4, gText_NicknameHatchPrompt);
+            EggHatchPrintMessage(sEggHatchData->windowId, gStringVar4, 0, 2, 1);
+        }
         sEggHatchData->state++;
         break;
     case 9:
@@ -679,11 +684,20 @@ static void CB2_EggHatch(void)
         if (!IsTextPrinterActive(sEggHatchData->windowId))
         {
             LoadUserWindowBorderGfx(sEggHatchData->windowId, 0x140, 0xE0);
-            CreateYesNoMenu(&sYesNoWinTemplate, 0x140, 0xE, 0);
+            if (!gSaveBlock1Ptr->tx_Challenges_Nuzlocke) //tx_randomizer_and_challenges
+                CreateYesNoMenu(&sYesNoWinTemplate, 0x140, 0xE, 0);
             sEggHatchData->state++;
         }
         break;
     case 10:
+        if (gSaveBlock1Ptr->tx_Challenges_Nuzlocke) //tx_randomizer_and_challenges
+        {
+            GetMonNickname2(&gPlayerParty[sEggHatchData->eggPartyId], gStringVar3);
+            species = GetMonData(&gPlayerParty[sEggHatchData->eggPartyId], MON_DATA_SPECIES);
+            gender = GetMonGender(&gPlayerParty[sEggHatchData->eggPartyId]);
+            personality = GetMonData(&gPlayerParty[sEggHatchData->eggPartyId], MON_DATA_PERSONALITY, 0);
+            DoNamingScreen(NAMING_SCREEN_NICKNAME, gStringVar3, species, gender, personality, EggHatchSetMonNickname);
+        }
         // Handle the nickname prompt input
         switch (Menu_ProcessInputNoWrapClearOnChoose())
         {
