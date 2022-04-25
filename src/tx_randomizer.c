@@ -103,95 +103,95 @@ static const u16 sOptionMenuText_Pal[] = INCBIN_U16("graphics/interface/option_m
 // note: this is only used in the Japanese release
 static const u8 sEqualSignGfx[] = INCBIN_U8("graphics/interface/option_menu_equals_sign.4bpp");
 
-static const u8 gText_Randomizer[] =                _("RANDOMIZER");
-static const u8 gText_WildPkmn[] =                  _("WILD POKEMON");
-static const u8 gText_Trainer[] =                   _("TRAINER");
-static const u8 gText_SimiliarEvolutionLevel[] =    _("EVO STAGES");
-static const u8 gText_InlcudeLegendaries[]=         _("LEGENDARIES");
-static const u8 gText_Type[] =                      _("TYPE");
-static const u8 gText_Moves[] =                     _("MOVES");
-static const u8 gText_Abilities[] =                 _("ABILTIES");
-static const u8 gText_Evolutions[] =                _("EVOLUTIONS");
-static const u8 gText_EvolutionMethods[] =          _("EVO METHODS");
-static const u8 gText_TypeEff[] =                   _("EFFECTIVENESS");
-static const u8 gText_Chaos[] =                     _("CHAOS MODE");
-static const u8 gText_Save[] =                      _("SAVE");
+static const u8 sText_Randomizer[] =                _("RANDOMIZER");
+static const u8 sText_WildPkmn[] =                  _("WILD POKEMON");
+static const u8 sText_Trainer[] =                   _("TRAINER");
+static const u8 sText_SimiliarEvolutionLevel[] =    _("EVO STAGES");
+static const u8 sText_InlcudeLegendaries[]=         _("LEGENDARIES");
+static const u8 sText_Type[] =                      _("TYPE");
+static const u8 sText_Moves[] =                     _("MOVES");
+static const u8 sText_Abilities[] =                 _("ABILTIES");
+static const u8 sText_Evolutions[] =                _("EVOLUTIONS");
+static const u8 sText_EvolutionMethods[] =          _("EVO METHODS");
+static const u8 sText_TypeEff[] =                   _("EFFECTIVENESS");
+static const u8 sText_Chaos[] =                     _("CHAOS MODE");
+static const u8 sText_Save[] =                      _("SAVE");
 
 static const u8 *const sOptionMenuItemNames[MENUITEM_COUNT] =
 {
-    [MENUITEM_RANDOM_OFF_ON]                  = gText_Randomizer,
-    [MENUITEM_RANDOM_WILD_PKMN]               = gText_WildPkmn,
-    [MENUITEM_RANDOM_TRAINER]                 = gText_Trainer,
-    [MENUITEM_RANDOM_SIMILAR_EVOLUTION_LEVEL] = gText_SimiliarEvolutionLevel,
-    [MENUITEM_RANDOM_INCLUDE_LEGENDARIES]     = gText_InlcudeLegendaries,
-    [MENUITEM_RANDOM_TYPE]                    = gText_Type,
-    [MENUITEM_RANDOM_MOVES]                   = gText_Moves,
-    [MENUITEM_RANDOM_ABILITIES]               = gText_Abilities,
-    [MENUITEM_RANDOM_EVOLUTIONS]              = gText_Evolutions,
-    [MENUITEM_RANDOM_EVOLUTIONS_METHODS]      = gText_EvolutionMethods,
-    [MENUITEM_RANDOM_TYPE_EFFEC]              = gText_TypeEff,
-    [MENUITEM_RANDOM_CHAOS]                   = gText_Chaos,
-    [MENUITEM_SAVE]                           = gText_Save,
+    [MENUITEM_RANDOM_OFF_ON]                  = sText_Randomizer,
+    [MENUITEM_RANDOM_WILD_PKMN]               = sText_WildPkmn,
+    [MENUITEM_RANDOM_TRAINER]                 = sText_Trainer,
+    [MENUITEM_RANDOM_SIMILAR_EVOLUTION_LEVEL] = sText_SimiliarEvolutionLevel,
+    [MENUITEM_RANDOM_INCLUDE_LEGENDARIES]     = sText_InlcudeLegendaries,
+    [MENUITEM_RANDOM_TYPE]                    = sText_Type,
+    [MENUITEM_RANDOM_MOVES]                   = sText_Moves,
+    [MENUITEM_RANDOM_ABILITIES]               = sText_Abilities,
+    [MENUITEM_RANDOM_EVOLUTIONS]              = sText_Evolutions,
+    [MENUITEM_RANDOM_EVOLUTIONS_METHODS]      = sText_EvolutionMethods,
+    [MENUITEM_RANDOM_TYPE_EFFEC]              = sText_TypeEff,
+    [MENUITEM_RANDOM_CHAOS]                   = sText_Chaos,
+    [MENUITEM_SAVE]                           = sText_Save,
 };
 
-static const u8 gText_Gray_WildPkmn[] =                  _("{COLOR GREEN}{SHADOW LIGHT_GREEN}WILD POKEMON");
-static const u8 gText_Gray_Trainer[] =                   _("{COLOR GREEN}{SHADOW LIGHT_GREEN}TRAINER");
-static const u8 gText_Gray_SimiliarEvolutionLevel[] =    _("{COLOR GREEN}{SHADOW LIGHT_GREEN}EVO STAGES");
-static const u8 gText_Gray_InlcudeLegendaries[]=         _("{COLOR GREEN}{SHADOW LIGHT_GREEN}LEGENDARIES");
-static const u8 gText_Gray_Type[] =                      _("{COLOR GREEN}{SHADOW LIGHT_GREEN}TYPE");
-static const u8 gText_Gray_Moves[] =                     _("{COLOR GREEN}{SHADOW LIGHT_GREEN}MOVES");
-static const u8 gText_Gray_Abilities[] =                 _("{COLOR GREEN}{SHADOW LIGHT_GREEN}ABILTIES");
-static const u8 gText_Gray_Evolutions[] =                _("{COLOR GREEN}{SHADOW LIGHT_GREEN}EVOLUTIONS");
-static const u8 gText_Gray_EvolutionMethods[] =          _("{COLOR GREEN}{SHADOW LIGHT_GREEN}EVO METHODS");
-static const u8 gText_Gray_TypeEff[] =                   _("{COLOR GREEN}{SHADOW LIGHT_GREEN}EFFECTIVENESS");
-static const u8 gText_Gray_Chaos[] =                     _("{COLOR GREEN}{SHADOW LIGHT_GREEN}CHAOS MODE");
+static const u8 sText_Gray_WildPkmn[] =                  _("{COLOR GREEN}{SHADOW LIGHT_GREEN}WILD POKEMON");
+static const u8 sText_Gray_Trainer[] =                   _("{COLOR GREEN}{SHADOW LIGHT_GREEN}TRAINER");
+static const u8 sText_Gray_SimiliarEvolutionLevel[] =    _("{COLOR GREEN}{SHADOW LIGHT_GREEN}EVO STAGES");
+static const u8 sText_Gray_InlcudeLegendaries[]=         _("{COLOR GREEN}{SHADOW LIGHT_GREEN}LEGENDARIES");
+static const u8 sText_Gray_Type[] =                      _("{COLOR GREEN}{SHADOW LIGHT_GREEN}TYPE");
+static const u8 sText_Gray_Moves[] =                     _("{COLOR GREEN}{SHADOW LIGHT_GREEN}MOVES");
+static const u8 sText_Gray_Abilities[] =                 _("{COLOR GREEN}{SHADOW LIGHT_GREEN}ABILTIES");
+static const u8 sText_Gray_Evolutions[] =                _("{COLOR GREEN}{SHADOW LIGHT_GREEN}EVOLUTIONS");
+static const u8 sText_Gray_EvolutionMethods[] =          _("{COLOR GREEN}{SHADOW LIGHT_GREEN}EVO METHODS");
+static const u8 sText_Gray_TypeEff[] =                   _("{COLOR GREEN}{SHADOW LIGHT_GREEN}EFFECTIVENESS");
+static const u8 sText_Gray_Chaos[] =                     _("{COLOR GREEN}{SHADOW LIGHT_GREEN}CHAOS MODE");
 
 static const u8 *const sOptionMenuItemNamesGray[MENUITEM_COUNT] =
 {
-    [MENUITEM_RANDOM_OFF_ON]                  = gText_Randomizer,
-    [MENUITEM_RANDOM_WILD_PKMN]               = gText_Gray_WildPkmn,
-    [MENUITEM_RANDOM_TRAINER]                 = gText_Gray_Trainer,
-    [MENUITEM_RANDOM_SIMILAR_EVOLUTION_LEVEL] = gText_Gray_SimiliarEvolutionLevel,
-    [MENUITEM_RANDOM_INCLUDE_LEGENDARIES]     = gText_Gray_InlcudeLegendaries,
-    [MENUITEM_RANDOM_TYPE]                    = gText_Gray_Type,
-    [MENUITEM_RANDOM_MOVES]                   = gText_Gray_Moves,
-    [MENUITEM_RANDOM_ABILITIES]               = gText_Gray_Abilities,
-    [MENUITEM_RANDOM_EVOLUTIONS]              = gText_Gray_Evolutions,
-    [MENUITEM_RANDOM_EVOLUTIONS_METHODS]      = gText_Gray_EvolutionMethods,
-    [MENUITEM_RANDOM_TYPE_EFFEC]              = gText_Gray_TypeEff,
-    [MENUITEM_RANDOM_CHAOS]                   = gText_Gray_Chaos,
-    [MENUITEM_SAVE]                           = gText_Save,
+    [MENUITEM_RANDOM_OFF_ON]                  = sText_Randomizer,
+    [MENUITEM_RANDOM_WILD_PKMN]               = sText_Gray_WildPkmn,
+    [MENUITEM_RANDOM_TRAINER]                 = sText_Gray_Trainer,
+    [MENUITEM_RANDOM_SIMILAR_EVOLUTION_LEVEL] = sText_Gray_SimiliarEvolutionLevel,
+    [MENUITEM_RANDOM_INCLUDE_LEGENDARIES]     = sText_Gray_InlcudeLegendaries,
+    [MENUITEM_RANDOM_TYPE]                    = sText_Gray_Type,
+    [MENUITEM_RANDOM_MOVES]                   = sText_Gray_Moves,
+    [MENUITEM_RANDOM_ABILITIES]               = sText_Gray_Abilities,
+    [MENUITEM_RANDOM_EVOLUTIONS]              = sText_Gray_Evolutions,
+    [MENUITEM_RANDOM_EVOLUTIONS_METHODS]      = sText_Gray_EvolutionMethods,
+    [MENUITEM_RANDOM_TYPE_EFFEC]              = sText_Gray_TypeEff,
+    [MENUITEM_RANDOM_CHAOS]                   = sText_Gray_Chaos,
+    [MENUITEM_SAVE]                           = sText_Save,
 };
 
-static const u8 gText_Description_Randomizer[]              = _("{COLOR 6}{SHADOW 7}Play the game randomized.\nSettings below:");
-static const u8 gText_Description_WildPokemon[]             = _("{COLOR 6}{SHADOW 7}Randomize wild encounter.");
-static const u8 gText_Description_Random_Trainer[]          = _("{COLOR 6}{SHADOW 7}Randomize enemy trainer parties.");
-static const u8 gText_Description_SimiliarEvolutionLevel[]  = _("{COLOR 6}{SHADOW 7}Randomized Pokémon are the same\nevolution stage as the base species.");
-static const u8 gText_Description_IncludeLegendaries[]      = _("{COLOR 6}{SHADOW 7}Include legendary Pokémon.");
-static const u8 gText_Description_Random_Types[]            = _("{COLOR 6}{SHADOW 7}Randomize all Pokémon types.");
-static const u8 gText_Description_Random_Moves[]            = _("{COLOR 6}{SHADOW 7}Randomize all Pokémon moves.");
-static const u8 gText_Description_Random_Abilities[]        = _("{COLOR 6}{SHADOW 7}Randomize all Pokémon abilities.");
-static const u8 gText_Description_Random_Evos[]             = _("{COLOR 6}{SHADOW 7}Randomize all Pokémon evolutions.");
-static const u8 gText_Description_Random_Evo_Methods[]      = _("{COLOR 6}{SHADOW 7}Randomize all Pokémon evolution\nmethods.");
-static const u8 gText_Description_Random_Effectiveness[]    = _("{COLOR 6}{SHADOW 7}Randomize type effectiveness.");
-static const u8 gText_Description_Chaos_Mode[]              = _("{COLOR 6}{SHADOW 7}Enable {COLOR RED}{SHADOW LIGHT_RED}Chaos mode\nNOT recommended!");
-static const u8 gText_Description_Save[]                    = _("{COLOR 6}{SHADOW 7}Save choices and continue...");
+static const u8 sText_Description_Randomizer[]              = _("{COLOR 6}{SHADOW 7}Play the game randomized.\nSettings below:");
+static const u8 sText_Description_WildPokemon[]             = _("{COLOR 6}{SHADOW 7}Randomize wild encounter.");
+static const u8 sText_Description_Random_Trainer[]          = _("{COLOR 6}{SHADOW 7}Randomize enemy trainer parties.");
+static const u8 sText_Description_SimiliarEvolutionLevel[]  = _("{COLOR 6}{SHADOW 7}Randomized Pokémon are the same\nevolution stage as the base species.");
+static const u8 sText_Description_IncludeLegendaries[]      = _("{COLOR 6}{SHADOW 7}Include legendary Pokémon.");
+static const u8 sText_Description_Random_Types[]            = _("{COLOR 6}{SHADOW 7}Randomize all Pokémon types.");
+static const u8 sText_Description_Random_Moves[]            = _("{COLOR 6}{SHADOW 7}Randomize all Pokémon moves.");
+static const u8 sText_Description_Random_Abilities[]        = _("{COLOR 6}{SHADOW 7}Randomize all Pokémon abilities.");
+static const u8 sText_Description_Random_Evos[]             = _("{COLOR 6}{SHADOW 7}Randomize all Pokémon evolutions.");
+static const u8 sText_Description_Random_Evo_Methods[]      = _("{COLOR 6}{SHADOW 7}Randomize all Pokémon evolution\nmethods.");
+static const u8 sText_Description_Random_Effectiveness[]    = _("{COLOR 6}{SHADOW 7}Randomize type effectiveness.");
+static const u8 sText_Description_Chaos_Mode[]              = _("{COLOR 6}{SHADOW 7}Enable {COLOR RED}{SHADOW LIGHT_RED}Chaos mode\nNOT recommended!");
+static const u8 sText_Description_Save[]                    = _("{COLOR 6}{SHADOW 7}Save choices and continue...");
 
 static const u8 *const sOptionMenuItemDescriptions[MENUITEM_COUNT] =
 {
-    [MENUITEM_RANDOM_OFF_ON]                  = gText_Description_Randomizer,
-    [MENUITEM_RANDOM_WILD_PKMN]               = gText_Description_WildPokemon,
-    [MENUITEM_RANDOM_TRAINER]                 = gText_Description_Random_Trainer,
-    [MENUITEM_RANDOM_SIMILAR_EVOLUTION_LEVEL] = gText_Description_SimiliarEvolutionLevel,
-    [MENUITEM_RANDOM_INCLUDE_LEGENDARIES]     = gText_Description_IncludeLegendaries,
-    [MENUITEM_RANDOM_TYPE]                    = gText_Description_Random_Types,
-    [MENUITEM_RANDOM_MOVES]                   = gText_Description_Random_Moves,
-    [MENUITEM_RANDOM_ABILITIES]               = gText_Description_Random_Abilities,
-    [MENUITEM_RANDOM_EVOLUTIONS]              = gText_Description_Random_Evos,
-    [MENUITEM_RANDOM_EVOLUTIONS_METHODS]      = gText_Description_Random_Evo_Methods,
-    [MENUITEM_RANDOM_TYPE_EFFEC]              = gText_Description_Random_Effectiveness,
-    [MENUITEM_RANDOM_CHAOS]                   = gText_Description_Chaos_Mode,
-    [MENUITEM_SAVE]                           = gText_Description_Save,
+    [MENUITEM_RANDOM_OFF_ON]                  = sText_Description_Randomizer,
+    [MENUITEM_RANDOM_WILD_PKMN]               = sText_Description_WildPokemon,
+    [MENUITEM_RANDOM_TRAINER]                 = sText_Description_Random_Trainer,
+    [MENUITEM_RANDOM_SIMILAR_EVOLUTION_LEVEL] = sText_Description_SimiliarEvolutionLevel,
+    [MENUITEM_RANDOM_INCLUDE_LEGENDARIES]     = sText_Description_IncludeLegendaries,
+    [MENUITEM_RANDOM_TYPE]                    = sText_Description_Random_Types,
+    [MENUITEM_RANDOM_MOVES]                   = sText_Description_Random_Moves,
+    [MENUITEM_RANDOM_ABILITIES]               = sText_Description_Random_Abilities,
+    [MENUITEM_RANDOM_EVOLUTIONS]              = sText_Description_Random_Evos,
+    [MENUITEM_RANDOM_EVOLUTIONS_METHODS]      = sText_Description_Random_Evo_Methods,
+    [MENUITEM_RANDOM_TYPE_EFFEC]              = sText_Description_Random_Effectiveness,
+    [MENUITEM_RANDOM_CHAOS]                   = sText_Description_Chaos_Mode,
+    [MENUITEM_SAVE]                           = sText_Description_Save,
 };
 
 static const struct WindowTemplate sDifficultyChallengesOptionMenuWinTemplates[] =
@@ -747,36 +747,36 @@ static void DrawOptionMenuChoice(const u8 *text, u8 x, u8 y, u8 style, u8 textSp
     AddTextPrinterParameterized(WIN_OPTIONS, 1, dst, x, y + 1, textSpeed, NULL);
 }
 
-static const u8 gText_Off[]  = _("{COLOR 6}{SHADOW 7}OFF");
-static const u8 gText_On[]   = _("{COLOR 6}{SHADOW 7}ON");
-static const u8 gText_None[] = _("{COLOR 6}{SHADOW 7}NONE");
+static const u8 sText_Off[]  = _("{COLOR 6}{SHADOW 7}OFF");
+static const u8 sText_On[]   = _("{COLOR 6}{SHADOW 7}ON");
+static const u8 sText_None[] = _("{COLOR 6}{SHADOW 7}NONE");
 static void DrawChoices_Random_OffOn(int selection, int y, u8 textSpeed)
 {
     u8 styles[2] = {0};
 
     styles[selection] = 1;
-    DrawOptionMenuChoice(gText_Off, 104, y, styles[0], textSpeed);
-    DrawOptionMenuChoice(gText_On, GetStringRightAlignXOffset(1, gText_On, 198), y, styles[1], textSpeed);
+    DrawOptionMenuChoice(sText_Off, 104, y, styles[0], textSpeed);
+    DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], textSpeed);
 }
 
-static const u8 gText_Random_Chaos[] = _("{COLOR 6}{SHADOW 7}CHAOS");
+static const u8 sText_Random_Chaos[] = _("{COLOR 6}{SHADOW 7}CHAOS");
 static void DrawChoices_Random_OffChaos(int selection, int y, u8 textSpeed)
 {
     u8 styles[2] = {0};
 
     styles[selection] = 1;
-    DrawOptionMenuChoice(gText_Off, 104, y, styles[0], textSpeed);
-    DrawOptionMenuChoice(gText_Random_Chaos, GetStringRightAlignXOffset(1, gText_Random_Chaos, 198), y, styles[1], textSpeed);
+    DrawOptionMenuChoice(sText_Off, 104, y, styles[0], textSpeed);
+    DrawOptionMenuChoice(sText_Random_Chaos, GetStringRightAlignXOffset(1, sText_Random_Chaos, 198), y, styles[1], textSpeed);
 }
 
-static const u8 gText_Random[]  = _("{COLOR 6}{SHADOW 7}RANDOM");
+static const u8 sText_Random[]  = _("{COLOR 6}{SHADOW 7}RANDOM");
 static void DrawChoices_Random_OffRandom(int selection, int y, u8 textSpeed)
 {
     u8 styles[2] = {0};
 
     styles[selection] = 1;
-    DrawOptionMenuChoice(gText_Off, 104, y, styles[0], textSpeed);
-    DrawOptionMenuChoice(gText_Random, GetStringRightAlignXOffset(1, gText_Random, 198), y, styles[1], textSpeed);
+    DrawOptionMenuChoice(sText_Off, 104, y, styles[0], textSpeed);
+    DrawOptionMenuChoice(sText_Random, GetStringRightAlignXOffset(1, sText_Random, 198), y, styles[1], textSpeed);
 }
 
 #define TILE_TOP_CORNER_L 0x1A2 // 418
