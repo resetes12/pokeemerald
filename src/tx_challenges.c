@@ -132,29 +132,42 @@ static const u8 *const sChallengesOptionMenuItemNames[MENUITEM_COUNT] =
     [MENUITEM_SAVE]                           = gText_Save,
 };
 
-static const u8 gText_Description_Challenges_Evo_Limit[]        = _("{COLOR 6}{SHADOW 7}Limit evolutions to first stage only\nor disallow all evolutions.");
-static const u8 gText_Description_Challenges_Party_Limit[]      = _("{COLOR 6}{SHADOW 7}Limit the amount of POKéMON in the\nplayers party.");
-static const u8 gText_Description_Nuzlocke[]                    = _("{COLOR 6}{SHADOW 7}Enable nuzlocke mode.\nHard Mode: {COLOR RED}{SHADOW LIGHT_RED}Delete save on whiteout!");
-static const u8 gText_Description_Challenges_LevelCap[]         = _("{COLOR 6}{SHADOW 7}Level Cap");
-static const u8 gText_Description_Challenges_Items_Player[]     = _("{COLOR 6}{SHADOW 7}The player can use items.");
-static const u8 gText_Description_Challenges_Items_Trainer[]    = _("{COLOR 6}{SHADOW 7}Enemy trainer can use items.");
-static const u8 gText_Description_Challenges_Pokecenter[]       = _("{COLOR 6}{SHADOW 7}The player can visit Pokécenters to\nheal their party.");
-static const u8 gText_Description_Challenges_OneTypeChallenge[] = _("{COLOR 6}{SHADOW 7}Allow only one POKéMON type the\nplayer can capture and use.");
-static const u8 gText_Description_Challenges_BaseStatEqualizer[]= _("{COLOR 6}{SHADOW 7}All POKéMON have the same base stats.\nEqualizes stregths and weaknesses.");
-static const u8 gText_Description_Save[]                        = _("{COLOR 6}{SHADOW 7}Save choices and continue...");
+static const u8 gText_Empty[]                                    = _("{COLOR 6}{SHADOW 7}");
+static const u8 gText_Description_TXC_EvoLimit_Base[]            = _("{COLOR 6}{SHADOW 7}Limit evolutions to first stage only\nor disallow all evolutions.");
+static const u8 gText_Description_TXC_EvoLimit_First[]           = _("{COLOR 6}{SHADOW 7}First:");
+static const u8 gText_Description_TXC_EvoLimit_None[]            = _("{COLOR 6}{SHADOW 7}None:");
+static const u8 gText_Description_TXC_Party_Limit[]              = _("{COLOR 6}{SHADOW 7}Limit the amount of POKéMON in the\nplayers party.");
+static const u8 gText_Description_TXC_Nuzlocke_Base[]            = _("{COLOR 6}{SHADOW 7}Enable nuzlocke mode.\nHard Mode: {COLOR RED}{SHADOW LIGHT_RED}Delete save on whiteout!");
+static const u8 gText_Description_TXC_Nuzlocke_Normal[]          = _("{COLOR 6}{SHADOW 7}Normal:");
+static const u8 gText_Description_TXC_Nuzlocke_Hard[]            = _("{COLOR 6}{SHADOW 7}Hard:");
+static const u8 gText_Description_TXC_LevelCap_Base[]            = _("{COLOR 6}{SHADOW 7}Level Cap");
+static const u8 gText_Description_TXC_LevelCap_Normal[]          = _("{COLOR 6}{SHADOW 7}Normal:");
+static const u8 gText_Description_TXC_LevelCap_Hard[]            = _("{COLOR 6}{SHADOW 7}Hard:");
+static const u8 gText_Description_TXC_Items_Player_Yes[]         = _("{COLOR 6}{SHADOW 7}The player can use items.");
+static const u8 gText_Description_TXC_Items_Player_No[]          = _("{COLOR 6}{SHADOW 7}The player {COLOR RED}{SHADOW LIGHT_RED}CAN'T{COLOR 6}{SHADOW 7} use items.");
+static const u8 gText_Description_TXC_Items_Trainer_Yes[]        = _("{COLOR 6}{SHADOW 7}Enemy trainer can use items.");
+static const u8 gText_Description_TXC_Items_Trainer_No[]         = _("{COLOR 6}{SHADOW 7}Enemy trainer {COLOR RED}{SHADOW LIGHT_RED}CAN'T{COLOR 6}{SHADOW 7} use items.");
+static const u8 gText_Description_TXC_Pokecenter_Yes[]           = _("{COLOR 6}{SHADOW 7}The player can visit Pokécenters to\nheal their party.");
+static const u8 gText_Description_TXC_Pokecenter_No[]            = _("{COLOR 6}{SHADOW 7}The player {COLOR RED}{SHADOW LIGHT_RED}CAN'T{COLOR 6}{SHADOW 7} visit Pokécenters to\nheal their party.");
+static const u8 gText_Description_TXC_OneTypeChallenge[]         = _("{COLOR 6}{SHADOW 7}Allow only one POKéMON type the\nplayer can capture and use.");
+static const u8 gText_Description_TXC_BaseStatEqualizer_Base[]   = _("{COLOR 6}{SHADOW 7}All POKéMON have the same base stats.\nEqualizes stregths and weaknesses.");
+static const u8 gText_Description_TXC_BaseStatEqualizer_100[]    = _("{COLOR 6}{SHADOW 7}100:");
+static const u8 gText_Description_TXC_BaseStatEqualizer_255[]    = _("{COLOR 6}{SHADOW 7}255:");
+static const u8 gText_Description_TXC_BaseStatEqualizer_500[]    = _("{COLOR 6}{SHADOW 7}500:");
+static const u8 gText_Description_Save[]                         = _("{COLOR 6}{SHADOW 7}Save choices and continue...");
 
-static const u8 *const sOptionMenuItemDescriptions[MENUITEM_COUNT] =
+static const u8 *const sOptionMenuItemDescriptions[MENUITEM_COUNT][4] =
 {
-    [MENUITEM_CHALLENGES_EVO_LIMIT]             = gText_Description_Challenges_Evo_Limit,
-    [MENUITEM_CHALLENGES_PARTY_LIMIT]           = gText_Description_Challenges_Party_Limit,
-    [MENUITEM_CHALLENGES_NUZLOCKE]              = gText_Description_Nuzlocke,
-    [MENUITEM_CHALLENGES_LEVEL_CAP]             = gText_Description_Challenges_LevelCap,
-    [MENUITEM_CHALLENGES_ITEM_PLAYER]           = gText_Description_Challenges_Items_Player,
-    [MENUITEM_CHALLENGES_ITEM_TRAINER]          = gText_Description_Challenges_Items_Trainer,
-    [MENUITEM_CHALLENGES_POKECENTER]            = gText_Description_Challenges_Pokecenter,
-    [MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]    = gText_Description_Challenges_OneTypeChallenge,
-    [MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]   = gText_Description_Challenges_BaseStatEqualizer,
-    [MENUITEM_SAVE]                             = gText_Description_Save,
+    [MENUITEM_CHALLENGES_EVO_LIMIT]             = {gText_Description_TXC_EvoLimit_Base,             gText_Description_TXC_EvoLimit_First,           gText_Description_TXC_EvoLimit_None,        gText_Empty},
+    [MENUITEM_CHALLENGES_PARTY_LIMIT]           = {gText_Description_TXC_Party_Limit,               gText_Empty,                                    gText_Empty,                                gText_Empty},
+    [MENUITEM_CHALLENGES_NUZLOCKE]              = {gText_Description_TXC_Nuzlocke_Base,             gText_Description_TXC_Nuzlocke_Normal,          gText_Description_TXC_EvoLimit_None,        gText_Empty},
+    [MENUITEM_CHALLENGES_LEVEL_CAP]             = {gText_Description_TXC_LevelCap_Base,             gText_Description_TXC_LevelCap_Normal,          gText_Description_TXC_LevelCap_Hard,        gText_Empty},
+    [MENUITEM_CHALLENGES_ITEM_PLAYER]           = {gText_Description_TXC_Items_Player_Yes,          gText_Description_TXC_Items_Player_No,          gText_Empty,                                gText_Empty},
+    [MENUITEM_CHALLENGES_ITEM_TRAINER]          = {gText_Description_TXC_Items_Trainer_Yes,         gText_Description_TXC_Items_Trainer_No,         gText_Empty,                                gText_Empty},
+    [MENUITEM_CHALLENGES_POKECENTER]            = {gText_Description_TXC_Pokecenter_Yes,            gText_Description_TXC_Pokecenter_No,            gText_Empty,                                gText_Empty},
+    [MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]    = {gText_Description_TXC_OneTypeChallenge,          gText_Empty,                                    gText_Empty,                                gText_Empty},
+    [MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]   = {gText_Description_TXC_BaseStatEqualizer_Base,    gText_Description_TXC_BaseStatEqualizer_100, gText_Description_TXC_BaseStatEqualizer_255,   gText_Description_TXC_BaseStatEqualizer_500},
+    [MENUITEM_SAVE]                             = {gText_Description_Save,                          gText_Empty,                                    gText_Empty,                                gText_Empty},
 };
 
 static const struct WindowTemplate sDifficultyChallengesOptionMenuWinTemplates[] =
@@ -493,7 +506,10 @@ static void tx_challenges_Task_OptionMenuProcessInput(u8 taskId)
         int cursor = sChallengesOptions->menuCursor;
         u8 previousOption = sChallengesOptions->sel[cursor];
         if (sItemFunctions[cursor].processInput != NULL)
+        {
             sChallengesOptions->sel[cursor] = sItemFunctions[cursor].processInput(previousOption);
+            tx_challenges_DrawDescriptions();
+        }
 
         if (previousOption != sChallengesOptions->sel[cursor])
             DrawChoices(cursor, sChallengesOptions->visibleCursor * Y_DIFF, 0);
@@ -619,14 +635,18 @@ static int GetMiddleX(const u8 *txt1, const u8 *txt2, const u8 *txt3)
 static void tx_challenges_DrawDescriptions(void)
 {
     u8 n = sChallengesOptions->menuCursor;
+    u8 s = sChallengesOptions->sel[n];
     FillWindowPixelBuffer(WIN_DESCRIPTION, PIXEL_FILL(1));
-    AddTextPrinterParameterized(WIN_DESCRIPTION, 1, sOptionMenuItemDescriptions[n], 8, 1, 0, NULL);
+    if (n == MENUITEM_CHALLENGES_PARTY_LIMIT || n == MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE)
+        AddTextPrinterParameterized(WIN_DESCRIPTION, 1, sOptionMenuItemDescriptions[n][0], 8, 1, 0, NULL);
+    else
+        AddTextPrinterParameterized(WIN_DESCRIPTION, 1, sOptionMenuItemDescriptions[n][s], 8, 1, 0, NULL);
     CopyWindowToVram(WIN_DESCRIPTION, 3);
 }
 static void tx_challenges_DrawDescriptionsFirstTime(void)
 {
     FillWindowPixelBuffer(WIN_DESCRIPTION, PIXEL_FILL(1));
-    AddTextPrinterParameterized(WIN_DESCRIPTION, 1, sOptionMenuItemDescriptions[0], 8, 1, 0, NULL);
+    AddTextPrinterParameterized(WIN_DESCRIPTION, 1, sOptionMenuItemDescriptions[0][0], 8, 1, 0, NULL);
     CopyWindowToVram(WIN_DESCRIPTION, 3);
 }
 
@@ -763,6 +783,7 @@ static void DrawChoices_Challenges_Pokecenters(int selection, int y, u8 textSpee
 static void DrawChoices_Challenges_OneTypeChallenge(int selection, int y, u8 textSpeed)
 {
     u8 n = selection;
+    u8 styles[2] = {0};
 
     if (n >= NUMBER_OF_MON_TYPES-1)
         StringCopyPadded(gStringVar1, gText_Off, 0, 15);
@@ -771,7 +792,7 @@ static void DrawChoices_Challenges_OneTypeChallenge(int selection, int y, u8 tex
     else
         StringCopyPadded(gStringVar1, gTypeNames[n], 0, 10);
 
-    DrawOptionMenuChoice(gStringVar1, 104, y, 0, textSpeed);
+    DrawOptionMenuChoice(gStringVar1, 104, y, styles[1], textSpeed);
 }
 
 static const u8 gText_Challenges_BaseStatEqualizer_100[]   = _("{COLOR 6}{SHADOW 7}100");
