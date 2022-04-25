@@ -9437,7 +9437,7 @@ u8 GetLevelFromMonExp(struct Pokemon *mon)
     u32 exp = GetMonData(mon, MON_DATA_EXP, NULL);
     s32 level = 1;
 
-    while (level <= MAX_LEVEL && gExperienceTables[gBaseStats[species].growthRate][level] <= exp)
+    while (level <= GetCurrentPartyLevelCap() && gExperienceTables[gBaseStats[species].growthRate][level] <= exp)
         level++;
 
     return level - 1;
@@ -9449,7 +9449,7 @@ u8 GetLevelFromBoxMonExp(struct BoxPokemon *boxMon)
     u32 exp = GetBoxMonData(boxMon, MON_DATA_EXP, NULL);
     s32 level = 1;
 
-    while (level <= MAX_LEVEL && gExperienceTables[gBaseStats[species].growthRate][level] <= exp)
+    while (level <= GetCurrentPartyLevelCap() && gExperienceTables[gBaseStats[species].growthRate][level] <= exp)
         level++;
 
     return level - 1;
@@ -11440,7 +11440,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
 
             // Rare Candy
             if ((itemEffect[i] & ITEM3_LEVEL_UP)
-             && GetMonData(mon, MON_DATA_LEVEL, NULL) != MAX_LEVEL)
+             && GetMonData(mon, MON_DATA_LEVEL, NULL) != GetCurrentPartyLevelCap())
             {
                 dataUnsigned = gExperienceTables[gBaseStats[GetMonData(mon, MON_DATA_SPECIES, NULL)].growthRate][GetMonData(mon, MON_DATA_LEVEL, NULL) + 1];
                 SetMonData(mon, MON_DATA_EXP, &dataUnsigned);
@@ -12750,12 +12750,12 @@ bool8 TryIncrementMonLevel(struct Pokemon *mon)
     u16 species = GetMonData(mon, MON_DATA_SPECIES, 0);
     u8 nextLevel = GetMonData(mon, MON_DATA_LEVEL, 0) + 1;
     u32 expPoints = GetMonData(mon, MON_DATA_EXP, 0);
-    if (expPoints > gExperienceTables[gBaseStats[species].growthRate][MAX_LEVEL])
+    if (expPoints > gExperienceTables[gBaseStats[species].growthRate][GetCurrentPartyLevelCap()])
     {
-        expPoints = gExperienceTables[gBaseStats[species].growthRate][MAX_LEVEL];
+        expPoints = gExperienceTables[gBaseStats[species].growthRate][GetCurrentPartyLevelCap()];
         SetMonData(mon, MON_DATA_EXP, &expPoints);
     }
-    if (nextLevel > MAX_LEVEL || expPoints < gExperienceTables[gBaseStats[species].growthRate][nextLevel])
+    if (nextLevel > GetCurrentPartyLevelCap() || expPoints < gExperienceTables[gBaseStats[species].growthRate][nextLevel])
     {
         return FALSE;
     }
@@ -14017,11 +14017,11 @@ void NuzlockeDeleteFaintedPartyPokemon(void) // @Kurausukun
 }
 
 // Challenges
-u8 GetPartySize()
+u8 GetPartySize(void)
 {
     return (6 - gSaveBlock1Ptr->tx_Challenges_PartyLimit);
 }
-u8 PickRandomOneTypeChallengeType()
+u8 PickRandomOneTypeChallengeType(void)
 {
     u16 type = (RandomSeeded(1, TRUE) % (NUMBER_OF_MON_TYPES-1));
     type = sOneTypeChallengeValidTypes[type];
@@ -14033,6 +14033,67 @@ u8 EvolutionBlockedByEvoLimit(u16 species)
         return TRUE;
 
     return FALSE;
+}
+
+enum LevelCap {
+    LEVEL_CAP_NO_BADGES,
+    LEVEL_CAP_BADGE_1,
+    LEVEL_CAP_BADGE_2,
+    LEVEL_CAP_BADGE_3,
+    LEVEL_CAP_BADGE_4,
+    LEVEL_CAP_BADGE_5,
+    LEVEL_CAP_BADGE_6,
+    LEVEL_CAP_BADGE_7,
+    LEVEL_CAP_BADGE_8
+};
+const u8 gLevelCapTable_Normal[] = 
+{
+    [LEVEL_CAP_NO_BADGES] = 15,
+    [LEVEL_CAP_BADGE_1] = 19,
+    [LEVEL_CAP_BADGE_2] = 24,
+    [LEVEL_CAP_BADGE_3] = 29,
+    [LEVEL_CAP_BADGE_4] = 31,
+    [LEVEL_CAP_BADGE_5] = 33,
+    [LEVEL_CAP_BADGE_6] = 42,
+    [LEVEL_CAP_BADGE_7] = 46,
+    [LEVEL_CAP_BADGE_8] = 58,
+};
+const u8 gLevelCapTable_Hard[] = 
+{
+    [LEVEL_CAP_NO_BADGES] = 12,
+    [LEVEL_CAP_BADGE_1] = 16,
+    [LEVEL_CAP_BADGE_2] = 20,
+    [LEVEL_CAP_BADGE_3] = 24,
+    [LEVEL_CAP_BADGE_4] = 27,
+    [LEVEL_CAP_BADGE_5] = 29,
+    [LEVEL_CAP_BADGE_6] = 41,
+    [LEVEL_CAP_BADGE_7] = 41,
+    [LEVEL_CAP_BADGE_8] = 55,
+};
+#define TX_CHALLENGE_LEVEL_CAP_DEBUG 5
+u8 GetCurrentPartyLevelCap(void)
+{
+    u16 i, badgeCount;
+
+    if (TX_CHALLENGE_LEVEL_CAP_DEBUG != 0) //debug allways overwrites the rest
+        return TX_CHALLENGE_LEVEL_CAP_DEBUG;
+
+    if (FlagGet(FLAG_IS_CHAMPION)) //after beating the E4 remove the cap
+        return MAX_LEVEL;
+
+    for (i = FLAG_BADGE01_GET; i < FLAG_BADGE01_GET + NUM_BADGES; i++) //count badges
+    {
+        if (FlagGet(i))
+            badgeCount++;
+    }
+
+    if (gSaveBlock1Ptr->tx_Challenges_LevelCap == 1) //normal level cap
+        return gLevelCapTable_Normal[badgeCount];
+
+    if (gSaveBlock1Ptr->tx_Challenges_LevelCap == 2) //hard level cap
+        return gLevelCapTable_Hard[badgeCount];
+
+    return MAX_LEVEL;
 }
 
 // DEBUG
@@ -14061,6 +14122,7 @@ void PrintTXSaveData(void)
     mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_PkmnCenter"       , gSaveBlock1Ptr->tx_Challenges_PkmnCenter);
     mgba_printf(MGBA_LOG_DEBUG, "%d tx_Random_OneForOne"            , gSaveBlock1Ptr->tx_Random_OneForOne);
     mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_BaseStatEqualizer", gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer);
+    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_LevelCap"         , gSaveBlock1Ptr->tx_Challenges_LevelCap);
     #endif
 }
 
@@ -14071,7 +14133,7 @@ void TestRandomizerValues(u8 type)
     u8 real_j;
     u16 tmp;
     u16 array[10];
-    u8 save_values[22];
+    u8 save_values[23];
 
     //save saveblock values
     save_values[0]  = gSaveBlock1Ptr->tx_Random_Chaos;
@@ -14096,6 +14158,7 @@ void TestRandomizerValues(u8 type)
     save_values[19] = gSaveBlock1Ptr->tx_Challenges_PkmnCenter;
     save_values[20] = gSaveBlock1Ptr->tx_Random_OneForOne;
     save_values[21] = gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer;
+    save_values[22] = gSaveBlock1Ptr->tx_Challenges_LevelCap;
 
     gSaveBlock1Ptr->tx_Random_WildPokemon           = TRUE;
     gSaveBlock1Ptr->tx_Random_Similar               = FALSE;
@@ -14143,5 +14206,6 @@ void TestRandomizerValues(u8 type)
     gSaveBlock1Ptr->tx_Challenges_PkmnCenter        =   save_values[19];
     gSaveBlock1Ptr->tx_Random_OneForOne             =   save_values[20];
     gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer =   save_values[21];
+    gSaveBlock1Ptr->tx_Challenges_LevelCap          =   save_values[22];
     #endif
 }
