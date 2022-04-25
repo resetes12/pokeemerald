@@ -133,16 +133,16 @@ static const u8 *const sChallengesOptionMenuItemNames[MENUITEM_COUNT] =
 };
 
 static const u8 sText_Empty[]                                    = _("{COLOR 6}{SHADOW 7}");
-static const u8 sText_Description_TXC_EvoLimit_Base[]            = _("{COLOR 6}{SHADOW 7}Limit evolutions to first stage only\nor disallow all evolutions.");
-static const u8 sText_Description_TXC_EvoLimit_First[]           = _("{COLOR 6}{SHADOW 7}First:");
-static const u8 sText_Description_TXC_EvoLimit_None[]            = _("{COLOR 6}{SHADOW 7}None:");
+static const u8 sText_Description_TXC_EvoLimit_Base[]            = _("{COLOR 6}{SHADOW 7}Limit the evolutions of POKéMON.");
+static const u8 sText_Description_TXC_EvoLimit_First[]           = _("{COLOR 6}{SHADOW 7}First: POKéMON can only evolve into\ntheir first evolution.");
+static const u8 sText_Description_TXC_EvoLimit_All[]             = _("{COLOR 6}{SHADOW 7}All: POKéMON {COLOR RED}{SHADOW LIGHT_RED}CAN'T{COLOR 6}{SHADOW 7} evolve at all!");
 static const u8 sText_Description_TXC_Party_Limit[]              = _("{COLOR 6}{SHADOW 7}Limit the amount of POKéMON in the\nplayers party.");
-static const u8 sText_Description_TXC_Nuzlocke_Base[]            = _("{COLOR 6}{SHADOW 7}Enable nuzlocke mode.\nHard Mode: {COLOR RED}{SHADOW LIGHT_RED}Delete save on whiteout!");
-static const u8 sText_Description_TXC_Nuzlocke_Normal[]          = _("{COLOR 6}{SHADOW 7}Normal:");
-static const u8 sText_Description_TXC_Nuzlocke_Hard[]            = _("{COLOR 6}{SHADOW 7}Hard:");
-static const u8 sText_Description_TXC_LevelCap_Base[]            = _("{COLOR 6}{SHADOW 7}Level Cap");
-static const u8 sText_Description_TXC_LevelCap_Normal[]          = _("{COLOR 6}{SHADOW 7}Normal:");
-static const u8 sText_Description_TXC_LevelCap_Hard[]            = _("{COLOR 6}{SHADOW 7}Hard:");
+static const u8 sText_Description_TXC_Nuzlocke_Base[]            = _("{COLOR 6}{SHADOW 7}Enable nuzlocke mode. Only catch the\nfirst encounter per route.");
+static const u8 sText_Description_TXC_Nuzlocke_Normal[]          = _("{COLOR 6}{SHADOW 7}Normal: Fainted POKéMON get released\nafter battle. Species clause active.");
+static const u8 sText_Description_TXC_Nuzlocke_Hard[]            = _("{COLOR 6}{SHADOW 7}Hard: Same rules as NORMAL but also\n{COLOR RED}{SHADOW LIGHT_RED}deletes SAVE on whiteout!");
+static const u8 sText_Description_TXC_LevelCap_Base[]            = _("{COLOR 6}{SHADOW 7}Activates a level cap based on gym\nbadges. No XP beyond cap gained.");
+static const u8 sText_Description_TXC_LevelCap_Normal[]          = _("{COLOR 6}{SHADOW 7}Normal: Maximum level is based on the\nnext gym's highest POKéMON.");
+static const u8 sText_Description_TXC_LevelCap_Hard[]            = _("{COLOR 6}{SHADOW 7}Hard: Maximum level is based on the\nnext gym's {COLOR RED}{SHADOW LIGHT_RED}lowest{COLOR 6}{SHADOW 7} POKéMON.");
 static const u8 sText_Description_TXC_Items_Player_Yes[]         = _("{COLOR 6}{SHADOW 7}The player can use items.");
 static const u8 sText_Description_TXC_Items_Player_No[]          = _("{COLOR 6}{SHADOW 7}The player {COLOR RED}{SHADOW LIGHT_RED}CAN'T{COLOR 6}{SHADOW 7} use items.");
 static const u8 sText_Description_TXC_Items_Trainer_Yes[]        = _("{COLOR 6}{SHADOW 7}Enemy trainer can use items.");
@@ -158,9 +158,9 @@ static const u8 sText_Description_Save[]                         = _("{COLOR 6}{
 
 static const u8 *const sOptionMenuItemDescriptions[MENUITEM_COUNT][4] =
 {
-    [MENUITEM_CHALLENGES_EVO_LIMIT]             = {sText_Description_TXC_EvoLimit_Base,             sText_Description_TXC_EvoLimit_First,           sText_Description_TXC_EvoLimit_None,        sText_Empty},
+    [MENUITEM_CHALLENGES_EVO_LIMIT]             = {sText_Description_TXC_EvoLimit_Base,             sText_Description_TXC_EvoLimit_First,           sText_Description_TXC_EvoLimit_All,        sText_Empty},
     [MENUITEM_CHALLENGES_PARTY_LIMIT]           = {sText_Description_TXC_Party_Limit,               sText_Empty,                                    sText_Empty,                                sText_Empty},
-    [MENUITEM_CHALLENGES_NUZLOCKE]              = {sText_Description_TXC_Nuzlocke_Base,             sText_Description_TXC_Nuzlocke_Normal,          sText_Description_TXC_EvoLimit_None,        sText_Empty},
+    [MENUITEM_CHALLENGES_NUZLOCKE]              = {sText_Description_TXC_Nuzlocke_Base,             sText_Description_TXC_Nuzlocke_Normal,          sText_Description_TXC_Nuzlocke_Hard,        sText_Empty},
     [MENUITEM_CHALLENGES_LEVEL_CAP]             = {sText_Description_TXC_LevelCap_Base,             sText_Description_TXC_LevelCap_Normal,          sText_Description_TXC_LevelCap_Hard,        sText_Empty},
     [MENUITEM_CHALLENGES_ITEM_PLAYER]           = {sText_Description_TXC_Items_Player_Yes,          sText_Description_TXC_Items_Player_No,          sText_Empty,                                sText_Empty},
     [MENUITEM_CHALLENGES_ITEM_TRAINER]          = {sText_Description_TXC_Items_Trainer_Yes,         sText_Description_TXC_Items_Trainer_No,         sText_Empty,                                sText_Empty},
