@@ -9539,7 +9539,7 @@ void GiveBoxMonInitialMoveset(struct BoxPokemon *boxMon)
                 u8 j;
                 for (j=0; j<100; j++)
                 {
-                    if (gBattleMoves[move].power == 0)
+                    if (gBattleMoves[move].power <= 1)
                         move = GetRandomMove(move, species);
                     else
                         break;
