@@ -11440,7 +11440,7 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
 
             // Rare Candy
             if ((itemEffect[i] & ITEM3_LEVEL_UP)
-             && GetMonData(mon, MON_DATA_LEVEL, NULL) != GetCurrentPartyLevelCap())
+             && GetMonData(mon, MON_DATA_LEVEL, NULL) < GetCurrentPartyLevelCap())
             {
                 dataUnsigned = gExperienceTables[gBaseStats[GetMonData(mon, MON_DATA_SPECIES, NULL)].growthRate][GetMonData(mon, MON_DATA_LEVEL, NULL) + 1];
                 SetMonData(mon, MON_DATA_EXP, &dataUnsigned);
@@ -14070,7 +14070,7 @@ const u8 gLevelCapTable_Hard[] =
     [LEVEL_CAP_BADGE_7] = 41,
     [LEVEL_CAP_BADGE_8] = 55,
 };
-#define TX_CHALLENGE_LEVEL_CAP_DEBUG 5
+#define TX_CHALLENGE_LEVEL_CAP_DEBUG 0
 u8 GetCurrentPartyLevelCap(void)
 {
     u16 i, badgeCount;
