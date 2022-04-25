@@ -3223,7 +3223,6 @@ static void Cmd_getexp(void)
     s32 i; // also used as stringId
     u8 holdEffect;
     s32 sentIn;
-    s32 viaExpShare = 0;
     u16 *exp = &gBattleStruct->expValue;
 
     gBattlerFainted = GetBattlerForBattleScript(gBattlescriptCurrInstr[1]);
@@ -3277,7 +3276,6 @@ static void Cmd_getexp(void)
                 if (*exp == 0)
                     *exp = 1;
 
-                viaExpShare = gSaveBlock1Ptr->playerPartyCount;
                 gExpShareExp = calculatedExp / 2;
                 if (gExpShareExp == 0)
                     gExpShareExp = 1;
