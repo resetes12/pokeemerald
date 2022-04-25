@@ -80,18 +80,18 @@ struct
     int (*processInput)(int selection);
 } static const sItemFunctions[MENUITEM_COUNT] =
 {
-    [MENUITEM_RANDOM_OFF_ON]                  = {DrawChoices_Random_OffOn, tx_randomizer_TwoOptions_ProcessInput},
-    [MENUITEM_RANDOM_WILD_PKMN]               = {DrawChoices_Random_OffRandom, tx_randomizer_TwoOptions_ProcessInput},
-    [MENUITEM_RANDOM_TRAINER]                 = {DrawChoices_Random_OffRandom, tx_randomizer_TwoOptions_ProcessInput},
-    [MENUITEM_RANDOM_SIMILAR_EVOLUTION_LEVEL] = {DrawChoices_Random_OffOn, tx_randomizer_TwoOptions_ProcessInput},
-    [MENUITEM_RANDOM_INCLUDE_LEGENDARIES]     = {DrawChoices_Random_OffOn, tx_randomizer_TwoOptions_ProcessInput},
-    [MENUITEM_RANDOM_TYPE]                    = {DrawChoices_Random_OffRandom, tx_randomizer_TwoOptions_ProcessInput},
-    [MENUITEM_RANDOM_MOVES]                   = {DrawChoices_Random_OffRandom, tx_randomizer_TwoOptions_ProcessInput},
-    [MENUITEM_RANDOM_ABILITIES]               = {DrawChoices_Random_OffRandom, tx_randomizer_TwoOptions_ProcessInput},
-    [MENUITEM_RANDOM_EVOLUTIONS]              = {DrawChoices_Random_OffRandom, tx_randomizer_TwoOptions_ProcessInput},
-    [MENUITEM_RANDOM_EVOLUTIONS_METHODS]      = {DrawChoices_Random_OffRandom, tx_randomizer_TwoOptions_ProcessInput},
-    [MENUITEM_RANDOM_TYPE_EFFEC]              = {DrawChoices_Random_OffRandom, tx_randomizer_TwoOptions_ProcessInput},
-    [MENUITEM_RANDOM_CHAOS]                   = {DrawChoices_Random_OffChaos, tx_randomizer_TwoOptions_ProcessInput},
+    [MENUITEM_RANDOM_OFF_ON]                  = {DrawChoices_Random_OffOn,      tx_randomizer_TwoOptions_ProcessInput},
+    [MENUITEM_RANDOM_WILD_PKMN]               = {DrawChoices_Random_OffRandom,  tx_randomizer_TwoOptions_ProcessInput},
+    [MENUITEM_RANDOM_TRAINER]                 = {DrawChoices_Random_OffRandom,  tx_randomizer_TwoOptions_ProcessInput},
+    [MENUITEM_RANDOM_SIMILAR_EVOLUTION_LEVEL] = {DrawChoices_Random_OffOn,      tx_randomizer_TwoOptions_ProcessInput},
+    [MENUITEM_RANDOM_INCLUDE_LEGENDARIES]     = {DrawChoices_Random_OffOn,      tx_randomizer_TwoOptions_ProcessInput},
+    [MENUITEM_RANDOM_TYPE]                    = {DrawChoices_Random_OffRandom,  tx_randomizer_TwoOptions_ProcessInput},
+    [MENUITEM_RANDOM_MOVES]                   = {DrawChoices_Random_OffRandom,  tx_randomizer_TwoOptions_ProcessInput},
+    [MENUITEM_RANDOM_ABILITIES]               = {DrawChoices_Random_OffRandom,  tx_randomizer_TwoOptions_ProcessInput},
+    [MENUITEM_RANDOM_EVOLUTIONS]              = {DrawChoices_Random_OffRandom,  tx_randomizer_TwoOptions_ProcessInput},
+    [MENUITEM_RANDOM_EVOLUTIONS_METHODS]      = {DrawChoices_Random_OffRandom,  tx_randomizer_TwoOptions_ProcessInput},
+    [MENUITEM_RANDOM_TYPE_EFFEC]              = {DrawChoices_Random_OffRandom,  tx_randomizer_TwoOptions_ProcessInput},
+    [MENUITEM_RANDOM_CHAOS]                   = {DrawChoices_Random_OffChaos,   tx_randomizer_TwoOptions_ProcessInput},
     [MENUITEM_SAVE] = {NULL, NULL},
 };
 

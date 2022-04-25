@@ -86,15 +86,15 @@ struct
     int (*processInput)(int selection);
 } static const sItemFunctions[MENUITEM_COUNT] =
 {
-    [MENUITEM_CHALLENGES_EVO_LIMIT]           = {DrawChoices_Challenges_EvoLimit, tx_challenges_ThreeOptions_ProcessInput},
-    [MENUITEM_CHALLENGES_PARTY_LIMIT]         = {DrawChoices_Challenges_PartyLimit, tx_challenges_SixOptions_ProcessInput},
-    [MENUITEM_CHALLENGES_NUZLOCKE]            = {DrawChoices_Challenges_Nuzlocke, tx_challenges_ThreeOptions_ProcessInput},
-    [MENUITEM_CHALLENGES_LEVEL_CAP]           = {DrawChoices_Challenges_LevelCap, tx_challenges_ThreeOptions_ProcessInput},
-    [MENUITEM_CHALLENGES_ITEM_PLAYER]         = {DrawChoices_Challenges_YesNo, tx_challenges_TwoOptions_ProcessInput},
-    [MENUITEM_CHALLENGES_ITEM_TRAINER]        = {DrawChoices_Challenges_YesNo, tx_challenges_TwoOptions_ProcessInput},
-    [MENUITEM_CHALLENGES_POKECENTER]          = {DrawChoices_Challenges_YesNo, tx_challenges_TwoOptions_ProcessInput},
-    [MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]  = {DrawChoices_Challenges_OneTypeChallenge, tx_challenges_OneTypeChallengeOptions_ProcessInput},
-    [MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER] = {DrawChoices_Challenges_BaseStatEqualizer, tx_challenges_FourOptions_ProcessInput},
+    [MENUITEM_CHALLENGES_EVO_LIMIT]           = {DrawChoices_Challenges_EvoLimit,           tx_challenges_ThreeOptions_ProcessInput},
+    [MENUITEM_CHALLENGES_PARTY_LIMIT]         = {DrawChoices_Challenges_PartyLimit,         tx_challenges_SixOptions_ProcessInput},
+    [MENUITEM_CHALLENGES_NUZLOCKE]            = {DrawChoices_Challenges_Nuzlocke,           tx_challenges_ThreeOptions_ProcessInput},
+    [MENUITEM_CHALLENGES_LEVEL_CAP]           = {DrawChoices_Challenges_LevelCap,           tx_challenges_ThreeOptions_ProcessInput},
+    [MENUITEM_CHALLENGES_ITEM_PLAYER]         = {DrawChoices_Challenges_YesNo,              tx_challenges_TwoOptions_ProcessInput},
+    [MENUITEM_CHALLENGES_ITEM_TRAINER]        = {DrawChoices_Challenges_YesNo,              tx_challenges_TwoOptions_ProcessInput},
+    [MENUITEM_CHALLENGES_POKECENTER]          = {DrawChoices_Challenges_YesNo,              tx_challenges_TwoOptions_ProcessInput},
+    [MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]  = {DrawChoices_Challenges_OneTypeChallenge,   tx_challenges_OneTypeChallengeOptions_ProcessInput},
+    [MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER] = {DrawChoices_Challenges_BaseStatEqualizer,  tx_challenges_FourOptions_ProcessInput},
     [MENUITEM_SAVE] = {NULL, NULL},
 };
 
