@@ -14,6 +14,7 @@
 #define TX_RANDOM_EVOLUTION             FALSE
 #define TX_RANDOM_EVOLUTION_METHODE     FALSE
 #define TX_RANDOM_TYPE_EFFECTIVENESS    FALSE
+#define TX_RANDOM_ITEMS                 FALSE
 #define TX_RANDOM_CHAOS_MODE            FALSE
 #define TX_RANDOM_ONE_FOR_ONE           FALSE //not yet implemented in menu
 
@@ -49,6 +50,7 @@ bool8 IsRandomizerActivated(void);
 bool8 IsChallengesActivated(void);
 bool8 IsNuzlockeActivated(void);
 bool8 IsPokecenterChallengeActivated(void);
+bool8 IsRandomItemsActivated(void);
 
 // constants
 #define TX_MENU_ITEMS_PER_PAGE 6
