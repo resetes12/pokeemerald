@@ -278,7 +278,8 @@ bool8 IsRandomizerActivated(void)
         || gSaveBlock1Ptr->tx_Random_Trainer
         || gSaveBlock1Ptr->tx_Random_Evolutions
         || gSaveBlock1Ptr->tx_Random_EvolutionMethods
-        || gSaveBlock1Ptr->tx_Random_OneForOne)
+        || gSaveBlock1Ptr->tx_Random_OneForOne
+        || gSaveBlock1Ptr->tx_Random_Items)
         return TRUE;
 
     return FALSE;
