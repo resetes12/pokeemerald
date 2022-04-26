@@ -14073,7 +14073,7 @@ const u8 gLevelCapTable_Hard[] =
 #define TX_CHALLENGE_LEVEL_CAP_DEBUG 0
 u8 GetCurrentPartyLevelCap(void)
 {
-    u16 i, badgeCount;
+    u16 i, badgeCount = 0;
 
     if (TX_CHALLENGE_LEVEL_CAP_DEBUG != 0) //debug allways overwrites the rest
         return TX_CHALLENGE_LEVEL_CAP_DEBUG;
