@@ -3274,6 +3274,10 @@ static void Cmd_getexp(void)
             }
 
             calculatedExp = gBaseStats[gBattleMons[gBattlerFainted].species].expYield * gBattleMons[gBattlerFainted].level / 7;
+            if (gSaveBlock1Ptr->tx_Challenges_ExpMultiplier != 0)
+                calculatedExp *= 0.5 * gSaveBlock1Ptr->tx_Challenges_ExpMultiplier;
+            if (gSaveBlock1Ptr->tx_Challenges_ExpMultiplier == 3)
+                calculatedExp = 0;
 
             if (viaExpShare) // at least one mon is getting exp via exp share
             {
@@ -3290,6 +3294,12 @@ static void Cmd_getexp(void)
                 *exp = SAFE_DIV(calculatedExp, viaSentIn);
                 if (*exp == 0)
                     *exp = 1;
+                gExpShareExp = 0;
+            }
+
+            if (gSaveBlock1Ptr->tx_Challenges_ExpMultiplier == 3)
+            {
+                *exp = 0;
                 gExpShareExp = 0;
             }
 
