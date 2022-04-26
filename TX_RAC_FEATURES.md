@@ -4,11 +4,11 @@ This branch combines an ingame randomizer with additional optionial challenges. 
 
 ## Randomizer
 * Wild Pokémon
-  * Randomizes wild encounter
-  * Every species gets swapped with another species, based on the route
+  * Randomizes wild encounter based on the species and the route
+  * Every species gets swapped with another species
     * Example: a Zigzagoon on route 101 gets exchanged for a different Pokémon than on route 102
 * Trainer
-  * The Pokémon of Trainer parties get randomized based on the route
+  * The Pokémon of Trainer parties get randomized based on the species and the route
   * It uses a different calculation than the wild encounter
     * Example: a wild Zigzagoon gets exchanged for a different Pokémon than a Trainer's Zigzagoon on the same route
 * Evolution stages
