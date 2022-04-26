@@ -56,4 +56,6 @@ bool8 IsPokecenterChallengeActivated(void);
 extern struct tx_randomizer_OptionsMenu *sRandomizerOptions;
 extern struct tx_challenges_OptionsMenu *sChallengesOptions;
 
+#define TX_EXP_MULTIPLER_ONLY_ON_NUZLOCKE_AND_RANDOMIZER FALSE
+
 #endif // GUARD_DIFFICULTY_H
