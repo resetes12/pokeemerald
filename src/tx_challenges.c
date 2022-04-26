@@ -227,7 +227,9 @@ bool8 IsChallengesActivated(void)
         || gSaveBlock1Ptr->tx_Challenges_PartyLimit
         || gSaveBlock1Ptr->tx_Challenges_NoItemPlayer
         || gSaveBlock1Ptr->tx_Challenges_NoItemTrainer
-        || gSaveBlock1Ptr->tx_Challenges_PkmnCenter)
+        || gSaveBlock1Ptr->tx_Challenges_PkmnCenter
+        || gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer
+        || gSaveBlock1Ptr->tx_Challenges_LevelCap)
         return TRUE;
 
     return FALSE;
