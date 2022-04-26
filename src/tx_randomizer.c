@@ -163,33 +163,32 @@ static const u8 *const sOptionMenuItemNamesGray[MENUITEM_COUNT] =
     [MENUITEM_SAVE]                           = sText_Save,
 };
 
-static const u8 sText_Description_Randomizer_Off[]             = _("{COLOR 6}{SHADOW 7}Play the game randomized.\nSettings below:");
-static const u8 sText_Description_Randomizer_On[]              = _("{COLOR 6}{SHADOW 7}Play the game randomized.\nSettings below:");
-static const u8 sText_Description_WildPokemon_Off[]            = _("{COLOR 6}{SHADOW 7}Randomize wild encounter.");
-static const u8 sText_Description_WildPokemon_On[]             = _("{COLOR 6}{SHADOW 7}Randomize wild encounter.");
-static const u8 sText_Description_Random_Trainer_Off[]         = _("{COLOR 6}{SHADOW 7}Randomize enemy trainer parties.");
+static const u8 sText_Empty[]                                  = _("{COLOR 6}{SHADOW 7}");
+static const u8 sText_Description_Randomizer_Off[]             = _("{COLOR 6}{SHADOW 7}Game will not be randomized.");
+static const u8 sText_Description_Randomizer_On[]              = _("{COLOR 6}{SHADOW 7}Play the game randomized.\nSettings below!");
+static const u8 sText_Description_WildPokemon_Off[]            = _("{COLOR 6}{SHADOW 7}Same wild encounters as in the\nbase game.");
+static const u8 sText_Description_WildPokemon_On[]             = _("{COLOR 6}{SHADOW 7}Randomize wild POKéMON.");
+static const u8 sText_Description_Random_Trainer_Off[]         = _("{COLOR 6}{SHADOW 7}Trainer will have their expected\nparty.");
 static const u8 sText_Description_Random_Trainer_On[]          = _("{COLOR 6}{SHADOW 7}Randomize enemy trainer parties.");
-static const u8 sText_Description_SimiliarEvolutionLevel_Off[] = _("{COLOR 6}{SHADOW 7}Randomized Pokémon are the same\nevolution stage as the base species.");
-static const u8 sText_Description_SimiliarEvolutionLevel_On[]  = _("{COLOR 6}{SHADOW 7}Randomized Pokémon are the same\nevolution stage as the base species.");
-static const u8 sText_Description_IncludeLegendaries_Off[]     = _("{COLOR 6}{SHADOW 7}Include legendary Pokémon.");
-static const u8 sText_Description_IncludeLegendaries_On[]      = _("{COLOR 6}{SHADOW 7}Include legendary Pokémon.");
-static const u8 sText_Description_Random_Types_Off[]           = _("{COLOR 6}{SHADOW 7}Randomize all Pokémon types.");
-static const u8 sText_Description_Random_Types_On[]            = _("{COLOR 6}{SHADOW 7}Randomize all Pokémon types.");
-static const u8 sText_Description_Random_Moves_Off[]           = _("{COLOR 6}{SHADOW 7}Randomize all Pokémon moves.");
-static const u8 sText_Description_Random_Moves_On[]            = _("{COLOR 6}{SHADOW 7}Randomize all Pokémon moves.");
-static const u8 sText_Description_Random_Abilities_Off[]       = _("{COLOR 6}{SHADOW 7}Randomize all Pokémon abilities.");
-static const u8 sText_Description_Random_Abilities_On[]        = _("{COLOR 6}{SHADOW 7}Randomize all Pokémon abilities.");
-static const u8 sText_Description_Random_Evos_Off[]            = _("{COLOR 6}{SHADOW 7}Randomize all Pokémon evolutions.");
-static const u8 sText_Description_Random_Evos_On[]             = _("{COLOR 6}{SHADOW 7}Randomize all Pokémon evolutions.");
-static const u8 sText_Description_Random_Evo_Methods_Off[]     = _("{COLOR 6}{SHADOW 7}Randomize all Pokémon evolution\nmethods.");
-static const u8 sText_Description_Random_Evo_Methods_On[]      = _("{COLOR 6}{SHADOW 7}Randomize all Pokémon evolution\nmethods.");
-static const u8 sText_Description_Random_Effectiveness_Off[]   = _("{COLOR 6}{SHADOW 7}Randomize type effectiveness.");
+static const u8 sText_Description_SimiliarEvolutionLevel_Off[] = _("{COLOR 6}{SHADOW 7}Randomized POKéMON do {COLOR RED}{SHADOW LIGHT_RED}NOT{COLOR 6}{SHADOW 7} take\nevolution stage into account.");
+static const u8 sText_Description_SimiliarEvolutionLevel_On[]  = _("{COLOR 6}{SHADOW 7}Baby POKéMON get replaced with\nother baby POKéMON and so on...");
+static const u8 sText_Description_IncludeLegendaries_Off[]     = _("{COLOR 6}{SHADOW 7}Legendary POKéMON will not be\nincluded and randomized.");
+static const u8 sText_Description_IncludeLegendaries_On[]      = _("{COLOR 6}{SHADOW 7}Include legendary POKéMON in\nrandomization!");
+static const u8 sText_Description_Random_Types_Off[]           = _("{COLOR 6}{SHADOW 7}POKéMON types stay the same as in\nthe base game.");
+static const u8 sText_Description_Random_Types_On[]            = _("{COLOR 6}{SHADOW 7}Randomize all POKéMON types.");
+static const u8 sText_Description_Random_Moves_Off[]           = _("{COLOR 6}{SHADOW 7}POKéMON moves stay the same as in\nthe base game.");
+static const u8 sText_Description_Random_Moves_On[]            = _("{COLOR 6}{SHADOW 7}Randomize all POKéMON moves.");
+static const u8 sText_Description_Random_Abilities_Off[]       = _("{COLOR 6}{SHADOW 7}POKéMON abilities stay the same as in\nthe base game.");
+static const u8 sText_Description_Random_Abilities_On[]        = _("{COLOR 6}{SHADOW 7}Randomize all POKéMON abilities.");
+static const u8 sText_Description_Random_Evos_Off[]            = _("{COLOR 6}{SHADOW 7}POKéMON evolutions stay the same as\nin the base game.");
+static const u8 sText_Description_Random_Evos_On[]             = _("{COLOR 6}{SHADOW 7}Randomize all POKéMON evolutions.");
+static const u8 sText_Description_Random_Evo_Methods_Off[]     = _("{COLOR 6}{SHADOW 7}Evolution methods stay the same as\nin the base game.");
+static const u8 sText_Description_Random_Evo_Methods_On[]      = _("{COLOR 6}{SHADOW 7}Randomize evolution methods. Allows\nnew evolution chains!");
+static const u8 sText_Description_Random_Effectiveness_Off[]   = _("{COLOR 6}{SHADOW 7}Type effectiveness chart will remain\nthe same as in the base game.");
 static const u8 sText_Description_Random_Effectiveness_On[]    = _("{COLOR 6}{SHADOW 7}Randomize type effectiveness.");
-static const u8 sText_Description_Chaos_Mode_Off[]             = _("{COLOR 6}{SHADOW 7}Enable {COLOR RED}{SHADOW LIGHT_RED}Chaos mode\nNOT recommended!");
-static const u8 sText_Description_Chaos_Mode_On[]              = _("{COLOR 6}{SHADOW 7}Enable {COLOR RED}{SHADOW LIGHT_RED}Chaos mode\nNOT recommended!");
-static const u8 sText_Description_Save_Off[]                   = _("{COLOR 6}{SHADOW 7}Save choices and continue...");
-static const u8 sText_Description_Save_On[]                    = _("{COLOR 6}{SHADOW 7}Save choices and continue...");
-
+static const u8 sText_Description_Chaos_Mode_Off[]             = _("{COLOR 6}{SHADOW 7}Chaos mode disabled.");
+static const u8 sText_Description_Chaos_Mode_On[]              = _("{COLOR 6}{SHADOW 7}Every above choosen option will be\nvery chaotic. {COLOR RED}{SHADOW LIGHT_RED}NOT recommended!");
+static const u8 sText_Description_Save[]                       = _("{COLOR 6}{SHADOW 7}Save choices and continue...");
 
 static const u8 *const sOptionMenuItemDescriptions[MENUITEM_COUNT][2] =
 {
@@ -205,7 +204,7 @@ static const u8 *const sOptionMenuItemDescriptions[MENUITEM_COUNT][2] =
     [MENUITEM_RANDOM_EVOLUTIONS_METHODS]      = {sText_Description_Random_Evo_Methods_Off,       sText_Description_Random_Evo_Methods_On},
     [MENUITEM_RANDOM_TYPE_EFFEC]              = {sText_Description_Random_Effectiveness_Off,     sText_Description_Random_Effectiveness_On},
     [MENUITEM_RANDOM_CHAOS]                   = {sText_Description_Chaos_Mode_Off,               sText_Description_Chaos_Mode_On},
-    [MENUITEM_SAVE]                           = {sText_Description_Save_Off,                     sText_Description_Save_On},
+    [MENUITEM_SAVE]                           = {sText_Description_Save,                         sText_Empty},
 };
 
 static const struct WindowTemplate sDifficultyChallengesOptionMenuWinTemplates[] =
@@ -582,7 +581,10 @@ static void tx_randomizer_Task_OptionMenuProcessInput(u8 taskId)
         int cursor = sRandomizerOptions->menuCursor;
         u8 previousOption = sRandomizerOptions->sel[cursor];
         if (sItemFunctions[cursor].processInput != NULL)
+        {
             sRandomizerOptions->sel[cursor] = sItemFunctions[cursor].processInput(previousOption);
+            tx_randomizer_DrawDescriptions();
+        }
 
         if (previousOption != sRandomizerOptions->sel[cursor])
             DrawChoices(cursor, sRandomizerOptions->visibleCursor * Y_DIFF, 0);
