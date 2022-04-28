@@ -69,6 +69,11 @@
 #include "tx_randomizer_and_challenges.h"
 #include "pokemon_storage_system.h" //tx_randomizer_and_challenges
 
+//#ifdef GBA_PRINTF //tx_randomizer_and_challenges
+//    #include "printf.h"
+//    #include "mgba.h"
+//#endif
+
 struct CableClubPlayer
 {
     u8 playerId;
@@ -1394,23 +1399,32 @@ u8 GetCurrentRegionMapSectionId(void)
 
 u8 NuzlockeGetCurrentRegionMapSectionId(void) //tx_randomizer_and_challenges @Kurausukun
 {
-    switch(gSaveBlock1Ptr->location.mapNum)
+    u8 regionMapSectionId = GetCurrentRegionMapSectionId();
+
+    #ifdef GBA_PRINTF
+    mgba_printf(MGBA_LOG_DEBUG, "location.mapGroup=%d; location.mapNum=%d; location.regionMapSectionId=%d", gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, Overworld_GetMapHeaderByGroupAndId(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum)->regionMapSectionId);
+    #endif
+
+    if (regionMapSectionId == MAPSEC_SAFARI_ZONE)
     {
-    default:
-        return GetCurrentRegionMapSectionId();
-    case MAP_NUM(SAFARI_ZONE_SOUTH):
-        return MAPSEC_SAFARI_ZONE_AREA1;
-    case MAP_NUM(SAFARI_ZONE_SOUTHWEST):
-        return MAPSEC_SAFARI_ZONE_AREA2;
-    case MAP_NUM(SAFARI_ZONE_NORTHWEST):
-        return MAPSEC_SAFARI_ZONE_AREA3;
-    case MAP_NUM(SAFARI_ZONE_NORTH):
-        return MAPSEC_SAFARI_ZONE_AREA4;
-    case MAP_NUM(SAFARI_ZONE_SOUTHEAST):
-        return MAPSEC_SAFARI_ZONE_AREA5;
-    case MAP_NUM(SAFARI_ZONE_NORTHEAST):
-        return MAPSEC_SAFARI_ZONE_AREA6;
+        switch(gSaveBlock1Ptr->location.mapNum)
+        {
+        case MAP_NUM(SAFARI_ZONE_SOUTH):
+            return MAPSEC_SAFARI_ZONE_AREA1;
+        case MAP_NUM(SAFARI_ZONE_SOUTHWEST):
+            return MAPSEC_SAFARI_ZONE_AREA2;
+        case MAP_NUM(SAFARI_ZONE_NORTHWEST):
+            return MAPSEC_SAFARI_ZONE_AREA3;
+        case MAP_NUM(SAFARI_ZONE_NORTH):
+            return MAPSEC_SAFARI_ZONE_AREA4;
+        case MAP_NUM(SAFARI_ZONE_SOUTHEAST):
+            return MAPSEC_SAFARI_ZONE_AREA5;
+        case MAP_NUM(SAFARI_ZONE_NORTHEAST):
+            return MAPSEC_SAFARI_ZONE_AREA6;
+        }
     }
+
+    return regionMapSectionId;
 }
 
 u8 GetCurrentMapBattleScene(void)

@@ -2,6 +2,11 @@
 #include "event_data.h"
 #include "pokedex.h"
 
+//#ifdef GBA_PRINTF //tx_randomizer_and_challenges
+//    #include "printf.h"
+//    #include "mgba.h"
+//#endif
+
 #define NUM_SPECIAL_FLAGS (SPECIAL_FLAGS_END - SPECIAL_FLAGS_START + 1)
 #define NUM_TEMP_FLAGS    (TEMP_FLAGS_END - TEMP_FLAGS_START + 1)
 #define NUM_DAILY_FLAGS   (DAILY_FLAGS_END - DAILY_FLAGS_START + 1)
@@ -243,8 +248,16 @@ u8 NuzlockeFlagSet(u16 mapsec) // @Kurausukun
 {
     u8 id = NuzlockeLUT[mapsec];
     u8 * ptr = &gSaveBlock1Ptr->NuzlockeEncounterFlags[id / 8];
+    u8 i;
     if (ptr)
         * ptr |= 1 << (id & 7);
+
+    #ifdef GBA_PRINTF
+    mgba_printf(MGBA_LOG_DEBUG, "NuzlockeFlagSet Id=%d", id);
+    for (i=0; i<9; i++)
+        mgba_printf(MGBA_LOG_DEBUG, "gSaveBlock1Ptr->NuzlockeEncounterFlags[%d] = %d" , i, gSaveBlock1Ptr->NuzlockeEncounterFlags[i]);
+    #endif
+
     return 0;
 }
 u8 NuzlockeFlagClear(u16 mapsec) // @Kurausukun
@@ -259,6 +272,10 @@ u8 NuzlockeFlagGet(u16 mapsec) // @Kurausukun
 {
     u8 id = NuzlockeLUT[mapsec];
     u8 * ptr = &gSaveBlock1Ptr->NuzlockeEncounterFlags[id / 8];
+
+    #ifdef GBA_PRINTF
+    mgba_printf(MGBA_LOG_DEBUG, "NuzlockeFlagGet Id=%d", id);
+    #endif
 
     if (!ptr)
         return 0;
