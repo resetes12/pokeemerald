@@ -52,13 +52,16 @@ This branch combines an ingame randomizer with additional optionial challenges. 
   * Limits the amount of Pokémon the player can have in their party to 6/5/4/3/2/1
 * **Nuzlocke mode**
   * Enables Nuzlocke mode with the following rules:
-    * Only the first encounter per route can be caught
+    * Only the first encounter per route can be caught, shown with a small 1 icon where the caught Pokéball otherwise is
     * If a Pokémon faints in battle it gets automatically released
-      * Held items are returned to the player upon death
+      * Held items are returned to the player upon release
+      * **WHITEOUT**
+        * Normal: The first Pokémon in your storage gets added to your party. If your storage is empty, the game soft resets to the last save!
+        * Hard: Savegame gets **DELETED**
     * Every Pokémon has to be nicknamed, including starter, wild catches, gifted Pokémon, from eggs hatched Pokémon
     * Species clause is active, meaining you can not catch a Pokémon in the same evolution line twice
-      * Example: you cant catch a Zigzagoon on route 101 and a Zigzagoon on route 102, or any Linoone later
-      * But a first encounter with an already caught species does NOT use up the current route first encounter!!!
+      * Example: you can NOT catch a Zigzagoon on route 101 and a Zigzagoon on route 102, or any Linoone later
+      * But a "first" encounter with an already caught species does NOT use up the current route first encounter!!!
     * Shiny clause active, meaning ALL shiny Pokémon can be caught regardless of any other rules!
 * **Level cap**
   * Implements a level cap based on the gym badges collected
