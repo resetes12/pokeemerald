@@ -26,6 +26,7 @@
 #include "constants/battle_anim.h"
 #include "constants/songs.h"
 #include "constants/trainers.h"
+#include "tx_randomizer_and_challenges.h"
 
 static void PlayerPartnerHandleGetMonData(void);
 static void PlayerPartnerHandleGetRawMonData(void);

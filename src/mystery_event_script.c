@@ -15,6 +15,7 @@
 #include "util.h"
 #include "mystery_event_msg.h"
 #include "pokemon_storage_system.h"
+#include "tx_randomizer_and_challenges.h"
 
 extern ScrCmdFunc gMysteryEventScriptCmdTable[];
 extern ScrCmdFunc gMysteryEventScriptCmdTableEnd[];

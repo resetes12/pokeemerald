@@ -411,7 +411,7 @@ void BattleSetup_StartWildBattle(void)
 
             NuzlockeIsCaptureBlocked = NuzlockeFlagGet(NuzlockeGetCurrentRegionMapSectionId());
 
-            if (IsMonShiny(&gEnemyParty[0]))
+            if (IsMonShiny(&gEnemyParty[0]) && gSaveBlock1Ptr->tx_Nuzlocke_ShinyClause)
             {
                 NuzlockeIsCaptureBlocked = FALSE;
                 NuzlockeIsSpeciesClauseActive = FALSE;
@@ -1922,8 +1922,11 @@ u16 CountBattledRematchTeams(u16 trainerId)
 u8 NuzlockeIsCaptureBlockedBySpeciesClause(u16 species) // @Kurausukun
 {
     u8 i;
+    if (!gSaveBlock1Ptr->tx_Nuzlocke_SpeciesClause)
+        return FALSE;
+    
     if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_GET_CAUGHT)) //disable double catch
-        return 2;
+        return TRUE;
 
     for (i = 0; i < EVOS_PER_LINE; i++)
     {

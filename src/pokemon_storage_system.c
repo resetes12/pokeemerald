@@ -40,6 +40,7 @@
 #include "constants/moves.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "tx_randomizer_and_challenges.h"
 
 /*
     NOTE: This file is large. Some general groups of functions have

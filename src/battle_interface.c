@@ -27,6 +27,7 @@
 #include "constants/battle_anim.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "tx_randomizer_and_challenges.h"
 
 struct TestingBar
 {

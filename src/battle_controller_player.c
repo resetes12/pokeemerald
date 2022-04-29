@@ -35,6 +35,7 @@
 #include "constants/songs.h"
 #include "constants/trainers.h"
 #include "constants/rgb.h"
+#include "tx_randomizer_and_challenges.h"
 
 static void PlayerHandleGetMonData(void);
 static void PlayerHandleSetMonData(void);

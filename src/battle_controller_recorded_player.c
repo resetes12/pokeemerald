@@ -24,6 +24,7 @@
 #include "window.h"
 #include "constants/battle_anim.h"
 #include "constants/songs.h"
+#include "tx_randomizer_and_challenges.h"
 
 static void RecordedPlayerHandleGetMonData(void);
 static void RecordedPlayerHandleGetRawMonData(void);
