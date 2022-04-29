@@ -171,8 +171,8 @@ static void DrawChoices(u32 id, int y); //right side draw function
 static void HighlightOptionMenuItem(void);
 static void Task_OptionMenuFadeIn(u8 taskId);
 static void Task_OptionMenuProcessInput(u8 taskId);
-static void Task_OptionMenuSave(u8 taskId);
-static void Task_OptionMenuFadeOut(u8 taskId);
+static void Task_RandomizerChallengesMenuSave(u8 taskId);
+static void Task_RandomizerChallengesMenuFadeOut(u8 taskId);
 static void ScrollMenu(int direction);
 static void ScrollAll(int direction); // to bottom or top
 static int GetMiddleX(const u8 *txt1, const u8 *txt2, const u8 *txt3);
@@ -948,7 +948,7 @@ static void Task_OptionMenuProcessInput(u8 taskId)
         if (sOptions->menuCursor[sOptions->submenu] == MenuItemCancel())
         {
             if (sOptions->submenu == MENU_COUNT-1)
-                gTasks[taskId].func = Task_OptionMenuSave;
+                gTasks[taskId].func = Task_RandomizerChallengesMenuSave;
             else
             {
                 sOptions->submenu++;
@@ -1104,7 +1104,7 @@ static void Task_OptionMenuProcessInput(u8 taskId)
     }
 }
 
-static void Task_OptionMenuSave(u8 taskId)
+static void Task_RandomizerChallengesMenuSave(u8 taskId)
 {
     // MENU_RANDOMIZER
     if (sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON] == TRUE)
@@ -1173,10 +1173,10 @@ static void Task_OptionMenuSave(u8 taskId)
 
 
     BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);
-    gTasks[taskId].func = Task_OptionMenuFadeOut;
+    gTasks[taskId].func = Task_RandomizerChallengesMenuFadeOut;
 }
 
-static void Task_OptionMenuFadeOut(u8 taskId)
+static void Task_RandomizerChallengesMenuFadeOut(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
