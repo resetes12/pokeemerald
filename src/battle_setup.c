@@ -395,12 +395,12 @@ static void CreateBattleStartTask(u8 transition, u16 song)
 
 void BattleSetup_StartWildBattle(void)
 {
-    u8 typeChallenge = gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge; //tx_randomizer_and_challenges
-
     if (GetSafariZoneFlag())
         DoSafariBattle();
     else
+    {
         // tx_randomizer_and_challenges
+        u8 typeChallenge = gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge; //tx_randomizer_and_challenges
         OneTypeChallengeCaptureBlocked = (typeChallenge != TX_CHALLENGE_TYPE_OFF && 
                     GetTypeBySpecies(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES), 1) != typeChallenge && 
                     GetTypeBySpecies(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES), 2) != typeChallenge);
@@ -423,6 +423,7 @@ void BattleSetup_StartWildBattle(void)
             NuzlockeIsSpeciesClauseActive = FALSE;
         }
         DoStandardWildBattle();
+    }
 }
 
 void BattleSetup_StartBattlePikeWildBattle(void)
