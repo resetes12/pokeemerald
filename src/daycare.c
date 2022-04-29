@@ -22,6 +22,7 @@
 #include "constants/items.h"
 #include "constants/moves.h"
 #include "constants/region_map_sections.h"
+#include "tx_randomizer_and_challenges.h"
 
 extern const struct Evolution gEvolutionTable[][EVOS_PER_MON];
 

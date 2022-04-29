@@ -51,6 +51,10 @@ bool8 IsNuzlockeActivated(void);
 bool8 IsPokecenterChallengeActivated(void);
 bool8 IsRandomItemsActivated(void);
 
+u8 NuzlockeFlagGet(u16 mapsec);
+u8 NuzlockeFlagSet(u16 mapsec);
+u8 NuzlockeFlagClear(u16 mapsec);
+
 // constants
 #define TX_MENU_ITEMS_PER_PAGE 6
 
