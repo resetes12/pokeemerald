@@ -316,6 +316,11 @@ void PrintTXSaveData(void)
     mgba_printf(MGBA_LOG_DEBUG, "%d tx_Random_OneForOne"            , gSaveBlock1Ptr->tx_Random_OneForOne);
     mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_BaseStatEqualizer", gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer);
     mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_LevelCap"         , gSaveBlock1Ptr->tx_Challenges_LevelCap);
+    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_ExpMultiplier"    , gSaveBlock1Ptr->tx_Challenges_ExpMultiplier);
+    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Random_Items"                , gSaveBlock1Ptr->tx_Random_Items);
+    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Nuzlocke_SpeciesClause"      , gSaveBlock1Ptr->tx_Nuzlocke_SpeciesClause);
+    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Nuzlocke_ShinyClause"        , gSaveBlock1Ptr->tx_Nuzlocke_ShinyClause);
+    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Nuzlocke_Nicknaming"         , gSaveBlock1Ptr->tx_Nuzlocke_Nicknaming);
     #endif
 }
 
@@ -326,7 +331,7 @@ void TestRandomizerValues(u8 type)
     u8 real_j;
     u16 tmp;
     u16 array[10];
-    u8 save_values[23];
+    u8 save_values[30];
 
     //save saveblock values
     save_values[0]  = gSaveBlock1Ptr->tx_Random_Chaos;
@@ -352,6 +357,10 @@ void TestRandomizerValues(u8 type)
     save_values[20] = gSaveBlock1Ptr->tx_Random_OneForOne;
     save_values[21] = gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer;
     save_values[22] = gSaveBlock1Ptr->tx_Challenges_LevelCap;
+    save_values[23] = gSaveBlock1Ptr->tx_Random_Items;
+    save_values[24] = gSaveBlock1Ptr->tx_Nuzlocke_SpeciesClause;
+    save_values[25] = gSaveBlock1Ptr->tx_Nuzlocke_ShinyClause;
+    save_values[26] = gSaveBlock1Ptr->tx_Nuzlocke_Nicknaming;
 
     gSaveBlock1Ptr->tx_Random_WildPokemon           = TRUE;
     gSaveBlock1Ptr->tx_Random_Similar               = FALSE;
@@ -400,5 +409,9 @@ void TestRandomizerValues(u8 type)
     gSaveBlock1Ptr->tx_Random_OneForOne             =   save_values[20];
     gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer =   save_values[21];
     gSaveBlock1Ptr->tx_Challenges_LevelCap          =   save_values[22];
+    gSaveBlock1Ptr->tx_Random_Items                 =   save_values[23];
+    gSaveBlock1Ptr->tx_Nuzlocke_SpeciesClause       =   save_values[24];
+    gSaveBlock1Ptr->tx_Nuzlocke_ShinyClause         =   save_values[25];
+    gSaveBlock1Ptr->tx_Nuzlocke_Nicknaming          =   save_values[26];
     #endif
 }
