@@ -104,33 +104,39 @@ static const u8 sRoamerLocations[][6] =
 #define NUM_LOCATION_SETS (ARRAY_COUNT(sRoamerLocations) - 1)
 #define NUM_LOCATIONS_PER_SET (ARRAY_COUNT(sRoamerLocations[0]))
 
-void ClearRoamerData(void)
+void DeactivateAllRoamers(void)
 {
 	u32 i;
 	
 	for (i = 0; i < ROAMER_COUNT; i++)
-	{
 		SetRoamerInactive(i);
-	}
 }
 
-void ClearRoamerLocationData(void)
+void ClearRoamerLocationData(u8 index)
 {
-    u8 i, j;
+    u32 i;
+
+    for (i = 0; i < ARRAY_COUNT(sLocationHistory[index]); i++)
+    {
+        sLocationHistory[index][i][MAP_GRP] = 0;
+        sLocationHistory[index][i][MAP_NUM] = 0;
+    }
+
+    sRoamerLocation[index][MAP_GRP] = 0;
+    sRoamerLocation[index][MAP_NUM] = 0;
+}
+
+void ClearAllRoamerLocationData(void)
+{
+    u32 i;
+	
 	for (i = 0; i < ROAMER_COUNT; i++)
-	{
-		for (j = 0; j < ARRAY_COUNT(sLocationHistory); j++)
-		{
-			sLocationHistory[i][j][MAP_GRP] = 0;
-			sLocationHistory[i][j][MAP_NUM] = 0;
-		}
-		sRoamerLocation[i][MAP_GRP] = 0;
-		sRoamerLocation[i][MAP_NUM] = 0;
-	}
+		ClearRoamerLocationData(i);
 }
 
 static void CreateInitialRoamerMon(u8 index, u16 species, u8 level)
 {
+	ClearRoamerLocationData(index);
     CreateMon(&gEnemyParty[0], species, level, USE_RANDOM_IVS, FALSE, 0, OT_ID_PLAYER_ID, 0);
     ROAMER(index)->ivs = GetMonData(&gEnemyParty[0], MON_DATA_IVS);
     ROAMER(index)->personality = GetMonData(&gEnemyParty[0], MON_DATA_PERSONALITY);
@@ -148,19 +154,36 @@ static void CreateInitialRoamerMon(u8 index, u16 species, u8 level)
     sRoamerLocation[index][MAP_NUM] = sRoamerLocations[Random() % NUM_LOCATION_SETS][0];
 }
 
+bool8 TryAddRoamer(u16 species, u8 level)
+{
+	u32 i;
+	// Search for inactive roamers to replace
+	for (i = 0; i < ROAMER_COUNT; i++)
+	{
+		if (!ROAMER(i)->active)
+		{
+			// Create the roamer and stop searching
+			CreateInitialRoamerMon(i, species, level);
+			return TRUE;
+		}
+	}
+	// Maximum active roamers found: do nothing and let the calling function know
+	return FALSE;
+}
+
 // gSpecialVar_0x8004 here corresponds to the options in the multichoice MULTI_TV_LATI (0 for 'Red', 1 for 'Blue')
 void InitRoamer(void)
 {
 #if !MULTIPLE_ROAMERS_EXAMPLE
     // Vanilla Behaviour
 	if (gSpecialVar_0x8004 == 1)
-		CreateInitialRoamerMon(0, SPECIES_LATIOS, 40);
+		TryAddRoamer(SPECIES_LATIOS, 40);
 	else
-		CreateInitialRoamerMon(0, SPECIES_LATIAS, 40);
+		TryAddRoamer(SPECIES_LATIAS, 40);
 #else
 	// Example: both Lati@s roam at the same time
-	CreateInitialRoamerMon(0, SPECIES_LATIAS, 40);
-	CreateInitialRoamerMon(1, SPECIES_LATIOS, 40);
+	TryAddRoamer(SPECIES_LATIAS, 40);
+	TryAddRoamer(SPECIES_LATIOS, 40);
 	GetSetPokedexFlag(SpeciesToNationalPokedexNum(SPECIES_LATIAS), FLAG_SET_SEEN); //Sets Pokedex to seen
 	GetSetPokedexFlag(SpeciesToNationalPokedexNum(SPECIES_LATIOS), FLAG_SET_SEEN);
 #endif

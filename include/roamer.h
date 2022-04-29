@@ -5,9 +5,9 @@
 /* makes them seen on the Pokedex and sets the Pokedex flag on. */
 #define MULTIPLE_ROAMERS_EXAMPLE TRUE
 
-
-void ClearRoamerData(void);
-void ClearRoamerLocationData(void);
+void DeactivateAllRoamers(void);
+void ClearAllRoamerLocationData(void);
+void ClearRoamerLocationData(u8 index);
 void InitRoamer(void);
 void UpdateLocationHistoryForRoamer(void);
 void RoamerMoveToOtherLocationSet(u8 id);
@@ -18,6 +18,7 @@ u8 TryStartRoamerEncounter(void);
 void UpdateRoamerHPStatus(struct Pokemon *mon);
 void SetRoamerInactive(u8 index);
 void GetRoamerLocation(u8 index, u8 *mapGroup, u8 *mapNum);
+bool8 TryAddRoamer(u16 species, u8 level);
 
 extern u8 gEncounteredRoamerIndex;
 
