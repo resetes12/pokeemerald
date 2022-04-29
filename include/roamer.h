@@ -7,8 +7,6 @@
 #define MULTIPLE_ROAMERS_EXAMPLE TRUE
 
 void DeactivateAllRoamers(void);
-void ClearAllRoamerLocationData(void);
-void ClearRoamerLocationData(u8 index);
 void InitRoamer(void);
 void UpdateLocationHistoryForRoamer(void);
 void RoamerMoveToOtherLocationSet(u8 id);
@@ -21,6 +19,8 @@ void SetRoamerInactive(u8 index);
 void GetRoamerLocation(u8 index, u8 *mapGroup, u8 *mapNum);
 bool8 TryAddRoamer(u16 species, u8 level);
 bool8 TryAddTerrestrialRoamer(u16 species, u8 level);
+void MoveAllRoamersToOtherLocationSets(void);
+void MoveAllRoamers(void);
 
 extern u8 gEncounteredRoamerIndex;
 

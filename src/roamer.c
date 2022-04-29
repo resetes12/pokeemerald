@@ -136,7 +136,7 @@ void DeactivateAllRoamers(void)
 		SetRoamerInactive(i);
 }
 
-void ClearRoamerLocationData(u8 index)
+static void ClearRoamerLocationHistory(u8 index)
 {
     u32 i;
 
@@ -145,14 +145,11 @@ void ClearRoamerLocationData(u8 index)
         sLocationHistory[index][i][MAP_GRP] = 0;
         sLocationHistory[index][i][MAP_NUM] = 0;
     }
-
-    sRoamerLocation[index][MAP_GRP] = 0;
-    sRoamerLocation[index][MAP_NUM] = 0;
 }
 
 static void CreateInitialRoamerMon(u8 index, u16 species, u8 level, bool8 isTerrestrial)
 {
-	ClearRoamerLocationData(index);
+	ClearRoamerLocationHistory(index);
     CreateMon(&gEnemyParty[0], species, level, USE_RANDOM_IVS, FALSE, 0, OT_ID_PLAYER_ID, 0);
     ROAMER(index)->ivs = GetMonData(&gEnemyParty[0], MON_DATA_IVS);
     ROAMER(index)->personality = GetMonData(&gEnemyParty[0], MON_DATA_PERSONALITY);
@@ -234,15 +231,10 @@ void RoamerMoveToOtherLocationSet(u8 index)
 	}
 	// Choose a location set that starts with a map
 	// different from the roamer's current map
-	while (1)
-	{
+	do {
 		mapNum = locations[Random() % LocationSetCount][0];
-		if (sRoamerLocation[index][MAP_NUM] != mapNum)
-		{
-			sRoamerLocation[index][MAP_NUM] = mapNum;
-			return;
-		}
-	}
+	} while (sRoamerLocation[index][MAP_NUM] == mapNum);
+	sRoamerLocation[index][MAP_NUM] = mapNum;
 }
 
 void RoamerMove(u8 index)
@@ -277,16 +269,13 @@ void RoamerMove(u8 index)
 			if (sRoamerLocation[index][MAP_NUM] == locations[locSet][0])
 			{
 				u8 mapNum;
-				while (1)
-				{
-					// Choose a new map (excluding the first) within this set
-					// Also exclude a map if the roamer was there 2 moves ago
+				// Choose a new map (excluding the first) within this set
+				// Also exclude a map if the roamer was there 2 moves ago
+				do {
 					mapNum = locations[locSet][(Random() % (NUM_LOCATIONS_PER_SET - 1)) + 1];
-					if (!(sLocationHistory[index][2][MAP_GRP] == ROAMER_MAP_GROUP
-					   && sLocationHistory[index][2][MAP_NUM] == mapNum)
-					   && mapNum != MAP_NUM(UNDEFINED))
-						break;
-				}
+				} while ((sLocationHistory[index][2][MAP_GRP] == ROAMER_MAP_GROUP
+						&& sLocationHistory[index][2][MAP_NUM] == mapNum)
+						|| mapNum == MAP_NUM(UNDEFINED));
 				sRoamerLocation[index][MAP_NUM] = mapNum;
 				return;
 			}
@@ -360,44 +349,57 @@ void GetRoamerLocation(u8 index, u8 *mapGroup, u8 *mapNum)
     *mapNum = sRoamerLocation[index][MAP_NUM];
 }
 
-bool8 TryAddRoamer(u16 species, u8 level)
+static u8 GetFirstInactiveRoamerIndex()
 {
 	u32 i;
-	// Search for inactive roamers to replace
+	
 	for (i = 0; i < ROAMER_COUNT; i++)
 	{
 		if (!ROAMER(i)->active)
 		{
-			// Create the roamer and stop searching
-			CreateInitialRoamerMon(i, species, level, FALSE);
-			return TRUE;
+			return i;
 		}
 	}
-	// Maximum active roamers found: do nothing and let the calling function know
+	return ROAMER_COUNT;
+}
+
+bool8 TryAddRoamer(u16 species, u8 level)
+{
+	u8 index = GetFirstInactiveRoamerIndex();
+	
+	if (index < ROAMER_COUNT)
+	{
+		CreateInitialRoamerMon(index, species, level, TRUE);
+		return TRUE;
+	}
+	// Maximum active roamers: do nothing and let the calling function know
 	return FALSE;
 }
 
 bool8 TryAddTerrestrialRoamer(u16 species, u8 level)
 {
-	u32 i;
-	// Search for inactive roamers to replace
-	for (i = 0; i < ROAMER_COUNT; i++)
+	u8 index = GetFirstInactiveRoamerIndex();
+	
+	if (index < ROAMER_COUNT)
 	{
-		if (!ROAMER(i)->active)
-		{
-			// Create the roamer and stop searching
-			CreateInitialRoamerMon(i, species, level, TRUE);
-			return TRUE;
-		}
+		CreateInitialRoamerMon(index, species, level, TRUE);
+		return TRUE;
 	}
-	// Maximum active roamers found: do nothing and let the calling function know
 	return FALSE;
 }
 
-void ClearAllRoamerLocationData(void)
+void MoveAllRoamersToOtherLocationSets(void)
 {
     u32 i;
 	
 	for (i = 0; i < ROAMER_COUNT; i++)
-		ClearRoamerLocationData(i);
+		RoamerMoveToOtherLocationSet(i);
+}
+
+void MoveAllRoamers(void)
+{
+    u32 i;
+	
+	for (i = 0; i < ROAMER_COUNT; i++)
+		RoamerMove(i);
 }
