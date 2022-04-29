@@ -126,14 +126,6 @@ void ClearRoamerLocationData(u8 index)
     sRoamerLocation[index][MAP_NUM] = 0;
 }
 
-void ClearAllRoamerLocationData(void)
-{
-    u32 i;
-	
-	for (i = 0; i < ROAMER_COUNT; i++)
-		ClearRoamerLocationData(i);
-}
-
 static void CreateInitialRoamerMon(u8 index, u16 species, u8 level)
 {
 	ClearRoamerLocationData(index);
@@ -324,4 +316,12 @@ void GetRoamerLocation(u8 index, u8 *mapGroup, u8 *mapNum)
 {
     *mapGroup = sRoamerLocation[index][MAP_GRP];
     *mapNum = sRoamerLocation[index][MAP_NUM];
+}
+
+void ClearAllRoamerLocationData(void)
+{
+    u32 i;
+	
+	for (i = 0; i < ROAMER_COUNT; i++)
+		ClearRoamerLocationData(i);
 }
