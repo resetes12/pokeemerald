@@ -53,9 +53,9 @@ bool8 IsChallengesActivated(void)
     return FALSE;
 }
 
-bool8 IsNuzlockeActivated(void)
+bool8 IsNuzlockeNicknamingActivated(void)
 {
-    return gSaveBlock1Ptr->tx_Challenges_Nuzlocke;
+    return gSaveBlock1Ptr->tx_Nuzlocke_Nicknaming;
 }
 
 bool8 IsPokecenterChallengeActivated(void)

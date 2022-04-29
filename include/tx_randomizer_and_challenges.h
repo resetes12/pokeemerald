@@ -25,6 +25,7 @@
 #define TX_CHALLENGE_NUZLOCKE_HARDCORE 0 //CAREFULL!!!!!
 #define TX_NUZLOCKE_SPECIES_CLAUSE 1
 #define TX_NUZLOCKE_SHINY_CLAUSE 1
+#define TX_NUZLOCKE_NICKNAMING 1
 #define TX_CHALLENGE_LEVEL_CAP 0
 #define TX_CHALLENGE_EXP_MULTIPLIER 0
 #define TX_CHALLENGE_NO_ITEM_PLAYER 0
@@ -50,7 +51,7 @@ void tx_challenges_SaveData(void);
 
 bool8 IsRandomizerActivated(void);
 bool8 IsChallengesActivated(void);
-bool8 IsNuzlockeActivated(void);
+bool8 IsNuzlockeNicknamingActivated(void);
 bool8 IsPokecenterChallengeActivated(void);
 bool8 IsRandomItemsActivated(void);
 

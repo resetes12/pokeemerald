@@ -1044,6 +1044,7 @@ struct SaveBlock1
         u8 tx_Random_Items:1;
         u8 tx_Nuzlocke_SpeciesClause:1;
         u8 tx_Nuzlocke_ShinyClause:1;
+        u8 tx_Nuzlocke_Nicknaming:1;
     // sizeof: 0x3D94  // sizeof: 0x3D88
 };
 
