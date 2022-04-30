@@ -211,7 +211,7 @@ static void DrawChoices_Random_TypeEffect(int selection, int y);
 static void DrawChoices_Random_Items(int selection, int y);
 static void DrawChoices_Random_OffChaos(int selection, int y);
 
-static void DrawChoices_Nuzlocke_OffOn(int selection, int y, bool8 active);
+static void DrawChoices_Nuzlocke_OnOff(int selection, int y, bool8 active);
 static void DrawChoices_Challenges_Nuzlocke(int selection, int y);
 static void DrawChoices_Nuzlocke_SpeciesClause(int selection, int y);
 static void DrawChoices_Nuzlocke_ShinyClause(int selection, int y);
@@ -474,7 +474,7 @@ static const u8 sText_Description_WildPokemon_On[]             = _("Randomize wi
 static const u8 sText_Description_Random_Trainer_Off[]         = _("Trainer will have their expected\nparty.");
 static const u8 sText_Description_Random_Trainer_On[]          = _("Randomize enemy trainer parties.");
 static const u8 sText_Description_SimiliarEvolutionLevel_Off[] = _("Randomized POKéMON do {COLOR 7}{SHADOW 8}NOT take\nevolution stage into account.");
-static const u8 sText_Description_SimiliarEvolutionLevel_On[]  = _("Baby POKéMON get replaced with\nother baby POKéMON and so on...");
+static const u8 sText_Description_SimiliarEvolutionLevel_On[]  = _("Radomizes POKéMON within their\nevolution stage for better difficulty.");
 static const u8 sText_Description_IncludeLegendaries_Off[]     = _("Legendary POKéMON will not be\nincluded and randomized.");
 static const u8 sText_Description_IncludeLegendaries_On[]      = _("Include legendary POKéMON in\nrandomization!");
 static const u8 sText_Description_Random_Types_Off[]           = _("POKéMON types stay the same as in\nthe base game.");
@@ -499,7 +499,7 @@ static const u8 *const sOptionMenuItemDescriptionsRandomizer[MENUITEM_RANDOM_COU
     [MENUITEM_RANDOM_OFF_ON]                    = {sText_Description_Randomizer_Off,               sText_Description_Randomizer_On},
     [MENUITEM_RANDOM_WILD_PKMN]                 = {sText_Description_WildPokemon_Off,              sText_Description_WildPokemon_On},
     [MENUITEM_RANDOM_TRAINER]                   = {sText_Description_Random_Trainer_Off,           sText_Description_Random_Trainer_On},
-    [MENUITEM_RANDOM_SIMILAR_EVOLUTION_LEVEL]   = {sText_Description_SimiliarEvolutionLevel_Off,   sText_Description_SimiliarEvolutionLevel_On},
+    [MENUITEM_RANDOM_SIMILAR_EVOLUTION_LEVEL]   = {sText_Description_SimiliarEvolutionLevel_On,    sText_Description_SimiliarEvolutionLevel_Off},
     [MENUITEM_RANDOM_INCLUDE_LEGENDARIES]       = {sText_Description_IncludeLegendaries_Off,       sText_Description_IncludeLegendaries_On},
     [MENUITEM_RANDOM_TYPE]                      = {sText_Description_Random_Types_Off,             sText_Description_Random_Types_On},
     [MENUITEM_RANDOM_MOVES]                     = {sText_Description_Random_Moves_Off,             sText_Description_Random_Moves_On},
@@ -524,11 +524,11 @@ static const u8 sText_Description_TXC_Nuzlocke_Nicknaming_On[]      = _("Forces 
 static const u8 sText_Description_Nuzlocke_Next[]                   = _("Continue to difficulty options.");
 static const u8 *const sOptionMenuItemDescriptionsNuzlocke[MENUITEM_NUZLOCKE_COUNT][4] =
 {
-    [MENUITEM_NUZLOCKE_NUZLOCKE]            = {sText_Description_TXC_Nuzlocke_Base,             sText_Description_TXC_Nuzlocke_Normal,          sText_Description_TXC_Nuzlocke_Hard,        sText_Empty},
-    [MENUITEM_NUZLOCKE_SPECIES_CLAUSE]      = {sText_Description_TXC_Nuzlocke_SpeciesClause_Off,sText_Description_TXC_Nuzlocke_SpeciesClause_On,sText_Empty,                                sText_Empty},
-    [MENUITEM_NUZLOCKE_SHINY_CLAUSE]        = {sText_Description_TXC_Nuzlocke_ShinyClause_Off,  sText_Description_TXC_Nuzlocke_ShinyClause_On,  sText_Empty,                                sText_Empty},
-    [MENUITEM_NUZLOCKE_NICKNAMING]          = {sText_Description_TXC_Nuzlocke_Nicknaming_Off,   sText_Description_TXC_Nuzlocke_Nicknaming_On,   sText_Empty,                                sText_Empty},
-    [MENUITEM_NUZLOCKE_NEXT]                = {sText_Description_Nuzlocke_Next,                 sText_Empty,                                    sText_Empty,                                sText_Empty},
+    [MENUITEM_NUZLOCKE_NUZLOCKE]            = {sText_Description_TXC_Nuzlocke_Base,             sText_Description_TXC_Nuzlocke_Normal,              sText_Description_TXC_Nuzlocke_Hard,        sText_Empty},
+    [MENUITEM_NUZLOCKE_SPECIES_CLAUSE]      = {sText_Description_TXC_Nuzlocke_SpeciesClause_On, sText_Description_TXC_Nuzlocke_SpeciesClause_Off,   sText_Empty,                                sText_Empty},
+    [MENUITEM_NUZLOCKE_SHINY_CLAUSE]        = {sText_Description_TXC_Nuzlocke_ShinyClause_On,  sText_Description_TXC_Nuzlocke_ShinyClause_Off,      sText_Empty,                                sText_Empty},
+    [MENUITEM_NUZLOCKE_NICKNAMING]          = {sText_Description_TXC_Nuzlocke_Nicknaming_On,   sText_Description_TXC_Nuzlocke_Nicknaming_Off,       sText_Empty,                                sText_Empty},
+    [MENUITEM_NUZLOCKE_NEXT]                = {sText_Description_Nuzlocke_Next,                 sText_Empty,                                        sText_Empty,                                sText_Empty},
 };
 
 static const u8 sText_Description_TXC_Party_Limit[]              = _("Limit the amount of POKéMON in the\nplayers party.");
@@ -868,7 +868,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON]                     = FALSE;
         sOptions->sel_randomizer[MENUITEM_RANDOM_WILD_PKMN]                  = gSaveBlock1Ptr->tx_Random_WildPokemon;
         sOptions->sel_randomizer[MENUITEM_RANDOM_TRAINER]                    = gSaveBlock1Ptr->tx_Random_Trainer;
-        sOptions->sel_randomizer[MENUITEM_RANDOM_SIMILAR_EVOLUTION_LEVEL]    = gSaveBlock1Ptr->tx_Random_Similar;
+        sOptions->sel_randomizer[MENUITEM_RANDOM_SIMILAR_EVOLUTION_LEVEL]    = !gSaveBlock1Ptr->tx_Random_Similar;
         sOptions->sel_randomizer[MENUITEM_RANDOM_INCLUDE_LEGENDARIES]        = gSaveBlock1Ptr->tx_Random_IncludeLegendaries;
         sOptions->sel_randomizer[MENUITEM_RANDOM_TYPE]                       = gSaveBlock1Ptr->tx_Random_Type;
         sOptions->sel_randomizer[MENUITEM_RANDOM_MOVES]                      = gSaveBlock1Ptr->tx_Random_Moves;
@@ -886,9 +886,9 @@ void CB2_InitTxRandomizerChallengesMenu(void)
             sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NUZLOCKE] = 1;
         else
             sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NUZLOCKE] = 0;
-        sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_SPECIES_CLAUSE]    = gSaveBlock1Ptr->tx_Nuzlocke_SpeciesClause;
-        sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_SHINY_CLAUSE]      = gSaveBlock1Ptr->tx_Nuzlocke_ShinyClause;
-        sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NICKNAMING]        = gSaveBlock1Ptr->tx_Nuzlocke_Nicknaming;
+        sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_SPECIES_CLAUSE]    = !gSaveBlock1Ptr->tx_Nuzlocke_SpeciesClause;
+        sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_SHINY_CLAUSE]      = !gSaveBlock1Ptr->tx_Nuzlocke_ShinyClause;
+        sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NICKNAMING]        = !gSaveBlock1Ptr->tx_Nuzlocke_Nicknaming;
         
         // MENU_DIFFICULTY
         sOptions->sel_difficulty[MENUITEM_DIFFICULTY_PARTY_LIMIT]    = gSaveBlock1Ptr->tx_Challenges_PartyLimit;
@@ -1123,7 +1123,7 @@ static void Task_RandomizerChallengesMenuSave(u8 taskId)
     {
         gSaveBlock1Ptr->tx_Random_WildPokemon        = sOptions->sel_randomizer[MENUITEM_RANDOM_WILD_PKMN];
         gSaveBlock1Ptr->tx_Random_Trainer            = sOptions->sel_randomizer[MENUITEM_RANDOM_TRAINER];
-        gSaveBlock1Ptr->tx_Random_Similar            = sOptions->sel_randomizer[MENUITEM_RANDOM_SIMILAR_EVOLUTION_LEVEL];
+        gSaveBlock1Ptr->tx_Random_Similar            = !sOptions->sel_randomizer[MENUITEM_RANDOM_SIMILAR_EVOLUTION_LEVEL];
         gSaveBlock1Ptr->tx_Random_MapBased           = TX_RANDOM_MAP_BASED;
         gSaveBlock1Ptr->tx_Random_IncludeLegendaries = sOptions->sel_randomizer[MENUITEM_RANDOM_INCLUDE_LEGENDARIES];
         gSaveBlock1Ptr->tx_Random_Type               = sOptions->sel_randomizer[MENUITEM_RANDOM_TYPE];
@@ -1166,9 +1166,18 @@ static void Task_RandomizerChallengesMenuSave(u8 taskId)
         gSaveBlock1Ptr->tx_Challenges_NuzlockeHardcore  = TRUE;
         break;
     }
-    gSaveBlock1Ptr->tx_Nuzlocke_SpeciesClause   = sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_SPECIES_CLAUSE];
-    gSaveBlock1Ptr->tx_Nuzlocke_ShinyClause     = sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_SHINY_CLAUSE];
-    gSaveBlock1Ptr->tx_Nuzlocke_Nicknaming      = sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NICKNAMING];
+    if (gSaveBlock1Ptr->tx_Challenges_Nuzlocke)
+    {
+        gSaveBlock1Ptr->tx_Nuzlocke_SpeciesClause   = !sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_SPECIES_CLAUSE];
+        gSaveBlock1Ptr->tx_Nuzlocke_ShinyClause     = !sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_SHINY_CLAUSE];
+        gSaveBlock1Ptr->tx_Nuzlocke_Nicknaming      = !sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NICKNAMING];
+    }
+    else
+    {
+        gSaveBlock1Ptr->tx_Nuzlocke_SpeciesClause   = FALSE;
+        gSaveBlock1Ptr->tx_Nuzlocke_ShinyClause     = FALSE;
+        gSaveBlock1Ptr->tx_Nuzlocke_Nicknaming      = FALSE;
+    }
     // MENU_DIFFICULTY
     gSaveBlock1Ptr->tx_Challenges_PartyLimit    = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_PARTY_LIMIT];
     gSaveBlock1Ptr->tx_Challenges_LevelCap      = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_LEVEL_CAP];
@@ -1456,7 +1465,11 @@ static void DrawChoices_Random_Trainer(int selection, int y)
 static void DrawChoices_Random_EvoStages(int selection, int y)
 {
     bool8 active = CheckConditions(MENUITEM_RANDOM_SIMILAR_EVOLUTION_LEVEL);
-    DrawChoices_Random_OffOn(selection, y, active);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    DrawOptionMenuChoice(sText_On, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_Off, GetStringRightAlignXOffset(1, sText_Off, 198), y, styles[1], active);
 }
 static void DrawChoices_Random_Legendaries(int selection, int y)
 {
@@ -1511,13 +1524,13 @@ static void DrawChoices_Random_OffChaos(int selection, int y)
 }
 
 // MENU_NUZLOCKE
-static void DrawChoices_Nuzlocke_OffOn(int selection, int y, bool8 active)
+static void DrawChoices_Nuzlocke_OnOff(int selection, int y, bool8 active)
 {
     u8 styles[2] = {0};
     styles[selection] = 1;
 
-    DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
-    DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
+    DrawOptionMenuChoice(sText_On, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_Off, GetStringRightAlignXOffset(1, sText_Off, 198), y, styles[1], active);
 }
 static const u8 sText_Challenges_Nuzlocke_Normal[]      = _("NORMAL");
 static const u8 sText_Challenges_Nuzlocke_Hardcore[]    = _("HARD");
@@ -1534,26 +1547,26 @@ static void DrawChoices_Challenges_Nuzlocke(int selection, int y)
 
     if (selection == 0)
     {
-        sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_SPECIES_CLAUSE]    = TX_NUZLOCKE_SPECIES_CLAUSE;
-        sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_SHINY_CLAUSE]      = TX_NUZLOCKE_SHINY_CLAUSE; 
-        sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NICKNAMING]        = TX_NUZLOCKE_NICKNAMING; 
+        sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_SPECIES_CLAUSE]    = !TX_NUZLOCKE_SPECIES_CLAUSE;
+        sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_SHINY_CLAUSE]      = !TX_NUZLOCKE_SHINY_CLAUSE; 
+        sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NICKNAMING]        = !TX_NUZLOCKE_NICKNAMING; 
     }
 }
 
 static void DrawChoices_Nuzlocke_SpeciesClause(int selection, int y)
 {
     bool8 active = CheckConditions(MENUITEM_NUZLOCKE_SPECIES_CLAUSE);
-    DrawChoices_Nuzlocke_OffOn(selection, y, active);
+    DrawChoices_Nuzlocke_OnOff(selection, y, active);
 }
 static void DrawChoices_Nuzlocke_ShinyClause(int selection, int y)
 {
     bool8 active = CheckConditions(MENUITEM_NUZLOCKE_SHINY_CLAUSE);
-    DrawChoices_Nuzlocke_OffOn(selection, y, active);
+    DrawChoices_Nuzlocke_OnOff(selection, y, active);
 }
 static void DrawChoices_Nuzlocke_Nicknaming(int selection, int y)
 {
     bool8 active = CheckConditions(MENUITEM_NUZLOCKE_NICKNAMING);
-    DrawChoices_Nuzlocke_OffOn(selection, y, active);
+    DrawChoices_Nuzlocke_OnOff(selection, y, active);
 }
 
 // MENU_DIFFICULTY

@@ -5,7 +5,7 @@
 // default options set by the dev
 #define TX_RANDOM_WILD_POKEMON          FALSE
 #define TX_RANDOM_TRAINER               FALSE
-#define TX_RANDOM_SIMILAR               FALSE
+#define TX_RANDOM_SIMILAR               TRUE
 #define TX_RANDOM_MAP_BASED             TRUE
 #define TX_RANDOM_INCLUDE_LEGENDARIES   FALSE
 #define TX_RANDOM_TYPE                  FALSE
