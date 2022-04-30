@@ -36,18 +36,24 @@ bool8 IsRandomItemsActivated(void)
     return gSaveBlock1Ptr->tx_Random_Items;
 }
 
+bool8 IsDifficultyOptionsActivated(void)
+{
+    if (gSaveBlock1Ptr->tx_Challenges_PartyLimit
+        || gSaveBlock1Ptr->tx_Challenges_LevelCap
+        || gSaveBlock1Ptr->tx_Challenges_ExpMultiplier
+        || gSaveBlock1Ptr->tx_Challenges_NoItemPlayer
+        || gSaveBlock1Ptr->tx_Challenges_NoItemTrainer
+        || gSaveBlock1Ptr->tx_Challenges_PkmnCenter)
+        return TRUE;
+
+    return FALSE;
+}
+
 bool8 IsChallengesActivated(void)
 {
     if (gSaveBlock1Ptr->tx_Challenges_EvoLimit
-        || gSaveBlock1Ptr->tx_Challenges_Nuzlocke
-        || gSaveBlock1Ptr->tx_Challenges_NuzlockeHardcore
         || gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge != TX_CHALLENGE_TYPE_OFF
-        || gSaveBlock1Ptr->tx_Challenges_PartyLimit
-        || gSaveBlock1Ptr->tx_Challenges_NoItemPlayer
-        || gSaveBlock1Ptr->tx_Challenges_NoItemTrainer
-        || gSaveBlock1Ptr->tx_Challenges_PkmnCenter
-        || gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer
-        || gSaveBlock1Ptr->tx_Challenges_LevelCap)
+        || gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer)
         return TRUE;
 
     return FALSE;
