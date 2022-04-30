@@ -1686,7 +1686,7 @@ struct Pokemon * GetFirstLiveMon(void) { // Return address of first conscious pa
 struct ObjectEvent * GetFollowerObject(void) { // Return follower ObjectEvent or NULL
   u8 i;
   for (i=0; i < OBJECT_EVENTS_COUNT; i++) {
-    if (gObjectEvents[i].localId == OBJ_EVENT_ID_FOLLOWER)
+    if (gObjectEvents[i].localId == OBJ_EVENT_ID_FOLLOWER && gObjectEvents[i].active)
       return &gObjectEvents[i];
   }
   return NULL;
@@ -1776,7 +1776,8 @@ void UpdateFollowingPokemon(void) { // Update following pokemon if any
         .graphicsId = OBJ_EVENT_GFX_OW_MON,
         .x = gSaveBlock1Ptr->pos.x,
         .y = gSaveBlock1Ptr->pos.y,
-        .elevation = 3,
+        // If player active, copy player elevation
+        .elevation = gObjectEvents[gPlayerAvatar.objectEventId].active ? gObjectEvents[gPlayerAvatar.objectEventId].currentElevation : 3,
         .movementType = MOVEMENT_TYPE_FOLLOW_PLAYER,
       };
       objEvent = &gObjectEvents[SpawnSpecialObjectEvent(&template)];
