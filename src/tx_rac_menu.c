@@ -82,7 +82,8 @@ enum
     MENUITEM_CHALLENGES_EVO_LIMIT,
     MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE,
     MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER,
-    MENUITEM_CHALLENGES_DUMMY1,
+    MENUITEM_CHALLENGES_MIRROR,
+    MENUITEM_CHALLENGES_MIRROR_THIEF,
     MENUITEM_CHALLENGES_SAVE,
     MENUITEM_CHALLENGES_COUNT,
 };
@@ -234,7 +235,8 @@ static void DrawChoices_Challenges_Pokecenters(int selection, int y);
 static void DrawChoices_Challenges_EvoLimit(int selection, int y);
 static void DrawChoices_Challenges_OneTypeChallenge(int selection, int y);
 static void DrawChoices_Challenges_BaseStatEqualizer(int selection, int y);
-static void DrawChoices_Challenges_Dummy1(int selection, int y);
+static void DrawChoices_Challenges_Mirror(int selection, int y);
+static void DrawChoices_Challenges_Mirror_Thief(int selection, int y);
 
 static void PrintCurrentSelections(void);
 
@@ -321,7 +323,8 @@ struct // MENU_CHALLENGES
     [MENUITEM_CHALLENGES_EVO_LIMIT]             = {DrawChoices_Challenges_EvoLimit,             ProcessInput_Options_Three},
     [MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]    = {DrawChoices_Challenges_OneTypeChallenge,     ProcessInput_Options_OneTypeChallenge},
     [MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]   = {DrawChoices_Challenges_BaseStatEqualizer,    ProcessInput_Options_Four},
-    [MENUITEM_CHALLENGES_DUMMY1]                = {DrawChoices_Challenges_Dummy1,               ProcessInput_Options_Two},
+    [MENUITEM_CHALLENGES_MIRROR]                = {DrawChoices_Challenges_Mirror,               ProcessInput_Options_Two},
+    [MENUITEM_CHALLENGES_MIRROR_THIEF]          = {DrawChoices_Challenges_Mirror_Thief,         ProcessInput_Options_Two},
     [MENUITEM_CHALLENGES_SAVE] = {NULL, NULL},
 };
 
@@ -395,13 +398,16 @@ static const u8 *const sOptionMenuItemsNamesDifficulty[MENUITEM_DIFFICULTY_COUNT
 static const u8 sText_EvoLimit[]            = _("EVO LIMIT");
 static const u8 sText_OneTypeChallenge[]    = _("ONE TYPE ONLY");
 static const u8 sText_BaseStatEqualizer[]   = _("STAT EQUALIZER");
+static const u8 sText_Mirror[]              = _("MIRROR MODE");
+static const u8 sText_MirrorThief[]         = _("THIEF CLAUSE");
 static const u8 sText_Save[]                = _("SAVE");
 static const u8 *const sOptionMenuItemsNamesChallenges[MENUITEM_CHALLENGES_COUNT] =
 {
     [MENUITEM_CHALLENGES_EVO_LIMIT]             = sText_EvoLimit,
     [MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]    = sText_OneTypeChallenge,
     [MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]   = sText_BaseStatEqualizer,
-    [MENUITEM_CHALLENGES_DUMMY1]                = sText_Dummy,
+    [MENUITEM_CHALLENGES_MIRROR]                = sText_Mirror,
+    [MENUITEM_CHALLENGES_MIRROR_THIEF]          = sText_MirrorThief,
     [MENUITEM_CHALLENGES_SAVE]                  = sText_Save,
 };
 
@@ -465,7 +471,8 @@ static bool8 CheckConditions(int selection)
         case MENUITEM_CHALLENGES_EVO_LIMIT:            return TRUE;
         case MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE:   return TRUE;
         case MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER:  return TRUE;
-        case MENUITEM_CHALLENGES_DUMMY1:               return TRUE;
+        case MENUITEM_CHALLENGES_MIRROR:               return TRUE;
+        case MENUITEM_CHALLENGES_MIRROR_THIEF:         return sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR];
         case MENUITEM_CHALLENGES_SAVE:                 return TRUE;
         }
     }
@@ -573,14 +580,18 @@ static const u8 sText_Description_TXC_BaseStatEqualizer_Base[]      = _("All POK
 static const u8 sText_Description_TXC_BaseStatEqualizer_100[]       = _("POKéMON stats are calculated with\n100 of each base stat.");
 static const u8 sText_Description_TXC_BaseStatEqualizer_255[]       = _("POKéMON stats are calculated with\n255 of each base stat.");
 static const u8 sText_Description_TXC_BaseStatEqualizer_500[]       = _("POKéMON stats are calculated with\n500 of each base stat.");
-static const u8 sText_Description_TXC_Dummy1_Off[]                  = _("");
-static const u8 sText_Description_TXC_Dummy1_On[]                   = _("");
+static const u8 sText_Description_TXC_Mirror_Off[]                  = _("The player uses their own party.");
+static const u8 sText_Description_TXC_Mirror_Trainer[]              = _("In Trainer battles the player gets\na copy of the enemies party!");
+static const u8 sText_Description_TXC_Mirror_All[]                  = _("The player gets a copy of the\nenemies party in {COLOR 7}{COLOR 8}ALL battles!");
+static const u8 sText_Description_TXC_MirrorThief_Off[]             = _("The player gets their own party back\nafter battles.");
+static const u8 sText_Description_TXC_MirrorThief_On[]              = _("The player keeps the enemies party\nafter battle!");
 static const u8 *const sOptionMenuItemDescriptionsChallenges[MENUITEM_CHALLENGES_COUNT][4] =
 {
     [MENUITEM_CHALLENGES_EVO_LIMIT]             = {sText_Description_TXC_EvoLimit_Base,             sText_Description_TXC_EvoLimit_First,           sText_Description_TXC_EvoLimit_All,         sText_Empty},
     [MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]    = {sText_Description_TXC_OneTypeChallenge,          sText_Empty,                                    sText_Empty,                                sText_Empty},
     [MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]   = {sText_Description_TXC_BaseStatEqualizer_Base,    sText_Description_TXC_BaseStatEqualizer_100,    sText_Description_TXC_BaseStatEqualizer_255,sText_Description_TXC_BaseStatEqualizer_500},
-    [MENUITEM_CHALLENGES_DUMMY1]                = {sText_Description_TXC_Dummy1_Off,                sText_Description_TXC_Dummy1_On,                sText_Empty,                                sText_Empty},
+    [MENUITEM_CHALLENGES_MIRROR]                = {sText_Description_TXC_Mirror_Off,                sText_Description_TXC_Mirror_Trainer,           sText_Empty,                                sText_Empty},
+    [MENUITEM_CHALLENGES_MIRROR_THIEF]          = {sText_Description_TXC_MirrorThief_Off,           sText_Description_TXC_MirrorThief_On,           sText_Empty,                                sText_Empty},
     [MENUITEM_CHALLENGES_SAVE]                  = {sText_Description_Save,                          sText_Empty,                                    sText_Empty,                                sText_Empty},
 };
 
@@ -882,6 +893,8 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         gSaveBlock1Ptr->tx_Challenges_PkmnCenter            = TX_CHALLENGE_PKMN_CENTER;
         gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge      = TX_CHALLENGE_TYPE;
         gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer     = TX_CHALLENGE_BASE_STAT_EQUALIZER;
+        gSaveBlock1Ptr->tx_Challenges_Mirror                = TX_CHALLENGE_MIRROR;
+        gSaveBlock1Ptr->tx_Challenges_Mirror_Thief          = TX_CHALLENGE_MIRROR_THIEF;
 
         sOptions = AllocZeroed(sizeof(*sOptions));
         sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON]                     = FALSE;
@@ -920,6 +933,8 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         sOptions->sel_challenges[MENUITEM_CHALLENGES_EVO_LIMIT]              = gSaveBlock1Ptr->tx_Challenges_EvoLimit;
         sOptions->sel_challenges[MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]     = gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge;
         sOptions->sel_challenges[MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]    = gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer;
+        sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR]                 = gSaveBlock1Ptr->tx_Challenges_Mirror;
+        sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR_THIEF]           = gSaveBlock1Ptr->tx_Challenges_Mirror_Thief;
 
         sOptions->submenu = MENU_RANDOMIZER;
 
@@ -1230,6 +1245,8 @@ void SaveData_TxRandomizerAndChallenges(void)
     else
         gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge = sOptions->sel_challenges[MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE];
     gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer    = sOptions->sel_challenges[MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER];
+    gSaveBlock1Ptr->tx_Challenges_Mirror               = sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR]; 
+    gSaveBlock1Ptr->tx_Challenges_Mirror_Thief         = sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR_THIEF]; 
 
     PrintTXSaveData();
 
@@ -1706,9 +1723,22 @@ static void DrawChoices_Challenges_BaseStatEqualizer(int selection, int y)
     DrawChoices_Options_Four(sText_Challenges_BaseStatEqualizer_Strings, selection, y, active);
 }
 
-static void DrawChoices_Challenges_Dummy1(int selection, int y)
+static const u8 sText_Challenges_Mirror_All[]   = _("ALL");
+static void DrawChoices_Challenges_Mirror(int selection, int y)
 {
-    bool8 active = CheckConditions(MENUITEM_CHALLENGES_DUMMY1);
+    bool8 active = CheckConditions(MENUITEM_CHALLENGES_MIRROR);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
+
+    if (selection == 0)
+        sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR_THIEF] = 0;
+}
+static void DrawChoices_Challenges_Mirror_Thief(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_CHALLENGES_MIRROR_THIEF);
     u8 styles[2] = {0};
     styles[selection] = 1;
 
