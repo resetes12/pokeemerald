@@ -1791,19 +1791,16 @@ static const u16 sRandomValidItems[] =
 
 u16 RandomItem(void)
 {
-    u16 item = gSpecialVar_0x8000;
+    u16 itemId = gSpecialVar_0x8000;
     u8 mapId = NuzlockeGetCurrentRegionMapSectionId();
 
-    if (item <= ITEM_YELLOW_SCARF) //standard items
-        item = sRandomValidItems[RandomSeededModulo(item + mapId, RANDOM_ITEM_COUNT)];
-    else if (item <= ITEM_DEVON_SCOPE) //key items do NOT get randomized
-        item = item;
-    else if (item <= ITEM_TM50) //tm's only, no hm's
-        item = ITEM_TM01 + RandomSeededModulo(item, 50);
+    if (ItemId_GetPocket(itemId) != POCKET_TM_HM)
+        itemId = ITEM_TM01 + RandomSeededModulo(itemId, 50);
+    else if (ItemId_GetPocket(itemId) != POCKET_KEY_ITEMS)
+        itemId = sRandomValidItems[RandomSeededModulo(itemId + mapId, RANDOM_ITEM_COUNT)];
 
-    gSpecialVar_0x8000 = item;
-
-    return item;
+    gSpecialVar_0x8000 = itemId;
+    return itemId;
 }
 
 u16 RandomItemHidden(void) //same as normal hidden item, but differen special var
