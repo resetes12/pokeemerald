@@ -161,11 +161,6 @@ static void CreateInitialRoamerMon(u8 index, u16 species, u8 level, bool8 isTerr
     ROAMER(index)->level = level;
     ROAMER(index)->status = 0;
     ROAMER(index)->hp = GetMonData(&gEnemyParty[0], MON_DATA_MAX_HP);
-    ROAMER(index)->cool = GetMonData(&gEnemyParty[0], MON_DATA_COOL);
-    ROAMER(index)->beauty = GetMonData(&gEnemyParty[0], MON_DATA_BEAUTY);
-    ROAMER(index)->cute = GetMonData(&gEnemyParty[0], MON_DATA_CUTE);
-    ROAMER(index)->smart = GetMonData(&gEnemyParty[0], MON_DATA_SMART);
-    ROAMER(index)->tough = GetMonData(&gEnemyParty[0], MON_DATA_TOUGH);
     ROAMER(index)->active = TRUE;
     ROAMER(index)->isTerrestrial = isTerrestrial;
     ROAMER(index)->doesNotFlee = doesNotFlee;
@@ -320,24 +315,13 @@ bool8 IsRoamerAt(u8 index, u8 mapGroup, u8 mapNum)
 
 void CreateRoamerMonInstance(u8 index)
 {
-    u32 status;
+// The roamer's status field is u8, but SetMonData expects status to be u32
+    u32 status = ROAMER(index)->status;
     struct Pokemon *mon = &gEnemyParty[0];
     ZeroEnemyPartyMons();
     CreateMonWithIVsPersonality(mon, ROAMER(index)->species, ROAMER(index)->level, ROAMER(index)->ivs, ROAMER(index)->personality);
-// The roamer's status field is u8, but SetMonData expects status to be u32, so will set the roamer's status
-// using the status field and the following 3 bytes (cool, beauty, and cute).
-#ifdef BUGFIX
-    status = ROAMER(index)->status;
     SetMonData(mon, MON_DATA_STATUS, &status);
-#else
-    SetMonData(mon, MON_DATA_STATUS, &ROAMER(index)->status);
-#endif
     SetMonData(mon, MON_DATA_HP, &ROAMER(index)->hp);
-    SetMonData(mon, MON_DATA_COOL, &ROAMER(index)->cool);
-    SetMonData(mon, MON_DATA_BEAUTY, &ROAMER(index)->beauty);
-    SetMonData(mon, MON_DATA_CUTE, &ROAMER(index)->cute);
-    SetMonData(mon, MON_DATA_SMART, &ROAMER(index)->smart);
-    SetMonData(mon, MON_DATA_TOUGH, &ROAMER(index)->tough);
 }
 
 bool8 TryStartRoamerEncounter(bool8 isWaterEncounter)
