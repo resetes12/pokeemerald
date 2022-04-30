@@ -21,6 +21,11 @@
 #include "tx_randomizer_and_challenges.h"
 #include "pokemon.h"
 
+#ifdef GBA_PRINTF //tx_randomizer_and_challenges
+    //#include "printf.h"
+    //#include "mgba.h"
+#endif
+
 enum
 {
     MENU_RANDOMIZER,
@@ -188,6 +193,7 @@ static int ProcessInput_FrameType(int selection);
 static const u8 *const OptionTextDescription(void);
 static const u8 *const OptionTextRight(u8 menuItem);
 static u8 MenuItemCount(void);
+static u8 MenuItemCountFromIndex(u8 index);
 static u8 MenuItemCancel(void);
 static void DrawDescriptionText(void);
 static void DrawOptionMenuChoice(const u8 *text, u8 x, u8 y, u8 style, bool8 active);
@@ -229,6 +235,8 @@ static void DrawChoices_Challenges_EvoLimit(int selection, int y);
 static void DrawChoices_Challenges_OneTypeChallenge(int selection, int y);
 static void DrawChoices_Challenges_BaseStatEqualizer(int selection, int y);
 static void DrawChoices_Challenges_Dummy1(int selection, int y);
+
+static void PrintCurrentSelections(void);
 
 // EWRAM vars
 EWRAM_DATA static struct OptionMenu *sOptions = NULL;
@@ -387,7 +395,7 @@ static const u8 *const sOptionMenuItemsNamesDifficulty[MENUITEM_DIFFICULTY_COUNT
 static const u8 sText_EvoLimit[]            = _("EVO LIMIT");
 static const u8 sText_OneTypeChallenge[]    = _("ONE TYPE ONLY");
 static const u8 sText_BaseStatEqualizer[]   = _("STAT EQUALIZER");
-static const u8 sText_Save[] =                      _("SAVE");
+static const u8 sText_Save[]                = _("SAVE");
 static const u8 *const sOptionMenuItemsNamesChallenges[MENUITEM_CHALLENGES_COUNT] =
 {
     [MENUITEM_CHALLENGES_EVO_LIMIT]             = sText_EvoLimit,
@@ -608,6 +616,17 @@ static const u8 *const OptionTextDescription(void)
 static u8 MenuItemCount(void)
 {
     switch (sOptions->submenu)
+    {
+    case MENU_RANDOMIZER:   return MENUITEM_RANDOM_COUNT;
+    case MENU_NUZLOCKE:     return MENUITEM_NUZLOCKE_COUNT;
+    case MENU_DIFFICULTY:   return MENUITEM_DIFFICULTY_COUNT;
+    case MENU_CHALLENGES:   return MENUITEM_CHALLENGES_COUNT;
+    }
+}
+
+static u8 MenuItemCountFromIndex(u8 index)
+{
+    switch (index)
     {
     case MENU_RANDOMIZER:   return MENUITEM_RANDOM_COUNT;
     case MENU_NUZLOCKE:     return MENUITEM_NUZLOCKE_COUNT;
@@ -1118,6 +1137,23 @@ static void Task_OptionMenuProcessInput(u8 taskId)
 
 static void Task_RandomizerChallengesMenuSave(u8 taskId)
 {
+    BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);
+    gTasks[taskId].func = Task_RandomizerChallengesMenuFadeOut;
+}
+
+static void Task_RandomizerChallengesMenuFadeOut(u8 taskId)
+{
+    if (!gPaletteFade.active)
+    {
+        DestroyTask(taskId);
+        FreeAllWindowBuffers();
+        SetMainCallback2(gMain.savedCallback);
+    }
+}
+
+void SaveData_TxRandomizerAndChallenges(void)
+{
+    PrintCurrentSelections();
     // MENU_RANDOMIZER
     if (sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON] == TRUE)
     {
@@ -1195,20 +1231,9 @@ static void Task_RandomizerChallengesMenuSave(u8 taskId)
         gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge = sOptions->sel_challenges[MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE];
     gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer    = sOptions->sel_challenges[MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER];
 
+    PrintTXSaveData();
 
-    BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);
-    gTasks[taskId].func = Task_RandomizerChallengesMenuFadeOut;
-}
-
-static void Task_RandomizerChallengesMenuFadeOut(u8 taskId)
-{
-    if (!gPaletteFade.active)
-    {
-        DestroyTask(taskId);
-        FreeAllWindowBuffers();
-        FREE_AND_SET_NULL(sOptions);
-        SetMainCallback2(gMain.savedCallback);
-    }
+    FREE_AND_SET_NULL(sOptions);
 }
 
 static void ScrollMenu(int direction)
@@ -1726,4 +1751,28 @@ static void DrawBgWindowFrames(void)
     FillBgTilemapBufferRect(1, TILE_BOT_CORNER_R, 28, 19,  1,  1,  7);
 
     CopyBgTilemapBufferToVram(1);
+}
+
+
+// Debug
+static void PrintCurrentSelections(void)
+{
+    u8 i, j;
+    #ifdef GBA_PRINTF
+    for (i = 0; i < MENU_COUNT; i++)
+    {
+        mgba_printf(MGBA_LOG_DEBUG, "Menu = %d", i);
+        for (j = 0; j < MenuItemCountFromIndex(i); j++)
+        {
+            switch (i)
+            {
+            case MENU_RANDOMIZER:   mgba_printf(MGBA_LOG_DEBUG, "MENU_RANDOMIZER %d",   sOptions->sel_randomizer[j]); break;
+            case MENU_NUZLOCKE:     mgba_printf(MGBA_LOG_DEBUG, "MENU_NUZLOCKE %d",     sOptions->sel_nuzlocke[j]); break;
+            case MENU_DIFFICULTY:   mgba_printf(MGBA_LOG_DEBUG, "MENU_DIFFICULTY %d",   sOptions->sel_difficulty[j]); break;
+            case MENU_CHALLENGES:   mgba_printf(MGBA_LOG_DEBUG, "MENU_CHALLENGES %d",   sOptions->sel_challenges[j]); break;
+            }
+        }
+           
+    }
+    #endif
 }

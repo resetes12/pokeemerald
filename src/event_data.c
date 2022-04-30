@@ -2,10 +2,10 @@
 #include "event_data.h"
 #include "pokedex.h"
 
-//#ifdef GBA_PRINTF //tx_randomizer_and_challenges
-//    #include "printf.h"
-//    #include "mgba.h"
-//#endif
+#ifdef GBA_PRINTF //tx_randomizer_and_challenges
+    //#include "printf.h"
+    //#include "mgba.h"
+#endif
 
 #define NUM_SPECIAL_FLAGS (SPECIAL_FLAGS_END - SPECIAL_FLAGS_START + 1)
 #define NUM_TEMP_FLAGS    (TEMP_FLAGS_END - TEMP_FLAGS_START + 1)

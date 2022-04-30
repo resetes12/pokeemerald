@@ -69,10 +69,10 @@
 #include "tx_randomizer_and_challenges.h"
 #include "pokemon_storage_system.h" //tx_randomizer_and_challenges
 
-//#ifdef GBA_PRINTF //tx_randomizer_and_challenges
-//    #include "printf.h"
-//    #include "mgba.h"
-//#endif
+#ifdef GBA_PRINTF //tx_randomizer_and_challenges
+    //#include "printf.h"
+    //#include "mgba.h"
+#endif
 
 struct CableClubPlayer
 {

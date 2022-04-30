@@ -46,8 +46,7 @@
 #define TX_RANDOM_T_EVO_METH        5
 
 void CB2_InitTxRandomizerChallengesMenu(void);
-void tx_randomizer_SaveData(void);
-void tx_challenges_SaveData(void);
+void SaveData_TxRandomizerAndChallenges(void);
 
 bool8 IsRandomizerActivated(void);
 bool8 IsChallengesActivated(void);
