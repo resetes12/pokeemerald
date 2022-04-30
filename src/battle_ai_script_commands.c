@@ -14,6 +14,7 @@
 #include "constants/battle_ai.h"
 #include "constants/battle_move_effects.h"
 #include "constants/moves.h"
+#include "roamer.h"
 
 #define AI_ACTION_DONE          0x0001
 #define AI_ACTION_FLEE          0x0002
@@ -366,7 +367,7 @@ void BattleAI_SetupAIData(u8 defaultScoreMoves)
         AI_THINKING_STRUCT->aiFlags = GetAiScriptsInRecordedBattle();
     else if (gBattleTypeFlags & BATTLE_TYPE_SAFARI)
         AI_THINKING_STRUCT->aiFlags = AI_SCRIPT_SAFARI;
-    else if (gBattleTypeFlags & BATTLE_TYPE_ROAMER)
+    else if (gBattleTypeFlags & BATTLE_TYPE_ROAMER && DoesRoamerFlee())
         AI_THINKING_STRUCT->aiFlags = AI_SCRIPT_ROAMING;
     else if (gBattleTypeFlags & BATTLE_TYPE_FIRST_BATTLE)
         AI_THINKING_STRUCT->aiFlags = AI_SCRIPT_FIRST_BATTLE;

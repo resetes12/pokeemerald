@@ -147,7 +147,7 @@ static void ClearRoamerLocationHistory(u8 index)
     }
 }
 
-static void CreateInitialRoamerMon(u8 index, u16 species, u8 level, bool8 isTerrestrial)
+static void CreateInitialRoamerMon(u8 index, u16 species, u8 level, bool8 isTerrestrial, bool8 doesNotFlee)
 {
 	ClearRoamerLocationHistory(index);
     CreateMon(&gEnemyParty[0], species, level, USE_RANDOM_IVS, FALSE, 0, OT_ID_PLAYER_ID, 0);
@@ -162,8 +162,9 @@ static void CreateInitialRoamerMon(u8 index, u16 species, u8 level, bool8 isTerr
     ROAMER(index)->cute = GetMonData(&gEnemyParty[0], MON_DATA_CUTE);
     ROAMER(index)->smart = GetMonData(&gEnemyParty[0], MON_DATA_SMART);
     ROAMER(index)->tough = GetMonData(&gEnemyParty[0], MON_DATA_TOUGH);
-    ROAMER(index)->isTerrestrial = isTerrestrial;
     ROAMER(index)->active = TRUE;
+    ROAMER(index)->isTerrestrial = isTerrestrial;
+    ROAMER(index)->doesNotFlee = doesNotFlee;
     sRoamerLocation[index][MAP_GRP] = ROAMER_MAP_GROUP;
 	if (!isTerrestrial)
 		sRoamerLocation[index][MAP_NUM] = sRoamerLocations[Random() % NUM_LOCATION_SETS][0];
@@ -177,15 +178,15 @@ void InitRoamer(void)
 #if !MULTIPLE_ROAMERS_EXAMPLE
     // Vanilla Behaviour
 	if (gSpecialVar_0x8004 == 1)
-		TryAddRoamer(SPECIES_LATIOS, 40);
+		TryAddRoamer(SPECIES_LATIOS, 40, FLEES);
 	else
-		TryAddRoamer(SPECIES_LATIAS, 40);
+		TryAddRoamer(SPECIES_LATIAS, 40, FLEES);
 #else
 	// Example: both Lati@s roam at the same time
-	TryAddRoamer(SPECIES_LATIAS, 40);
-	TryAddRoamer(SPECIES_LATIOS, 40);
-	TryAddTerrestrialRoamer(SPECIES_PIKACHU, 8);
-	TryAddTerrestrialRoamer(SPECIES_PIKACHU, 15);
+	TryAddRoamer(SPECIES_LATIAS, 40, FLEES);
+	TryAddRoamer(SPECIES_LATIOS, 40, FLEES);
+	TryAddTerrestrialRoamer(SPECIES_PIKACHU, 8, FLEES);
+	TryAddTerrestrialRoamer(SPECIES_PIKACHU, 15, DOES_NOT_FLEE);
 	GetSetPokedexFlag(SpeciesToNationalPokedexNum(SPECIES_LATIAS), FLAG_SET_SEEN); //Sets Pokedex to seen
 	GetSetPokedexFlag(SpeciesToNationalPokedexNum(SPECIES_LATIOS), FLAG_SET_SEEN);
 	GetSetPokedexFlag(SpeciesToNationalPokedexNum(SPECIES_PIKACHU), FLAG_SET_SEEN);
@@ -363,26 +364,26 @@ static u8 GetFirstInactiveRoamerIndex()
 	return ROAMER_COUNT;
 }
 
-bool8 TryAddRoamer(u16 species, u8 level)
+bool8 TryAddRoamer(u16 species, u8 level, bool8 doesNotFlee)
 {
 	u8 index = GetFirstInactiveRoamerIndex();
 	
 	if (index < ROAMER_COUNT)
 	{
-		CreateInitialRoamerMon(index, species, level, TRUE);
+		CreateInitialRoamerMon(index, species, level, AMPHIBIOUS, doesNotFlee);
 		return TRUE;
 	}
 	// Maximum active roamers: do nothing and let the calling function know
 	return FALSE;
 }
 
-bool8 TryAddTerrestrialRoamer(u16 species, u8 level)
+bool8 TryAddTerrestrialRoamer(u16 species, u8 level, bool8 doesNotFlee)
 {
 	u8 index = GetFirstInactiveRoamerIndex();
 	
 	if (index < ROAMER_COUNT)
 	{
-		CreateInitialRoamerMon(index, species, level, TRUE);
+		CreateInitialRoamerMon(index, species, level, TERRESTRIAL, doesNotFlee);
 		return TRUE;
 	}
 	return FALSE;
@@ -402,4 +403,9 @@ void MoveAllRoamers(void)
 	
 	for (i = 0; i < ROAMER_COUNT; i++)
 		RoamerMove(i);
+}
+
+bool8 DoesRoamerFlee(void)
+{
+	return !ROAMER(gEncounteredRoamerIndex)->doesNotFlee;
 }
