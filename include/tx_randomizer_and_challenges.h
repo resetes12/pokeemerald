@@ -50,7 +50,8 @@ void SaveData_TxRandomizerAndChallenges(void);
 
 bool8 IsRandomizerActivated(void);
 bool8 IsChallengesActivated(void);
-bool8 IsNuzlockeNicknamingActivated(void);
+bool8 IsNuzlockeActive(void);
+bool8 IsNuzlockeNicknamingActive(void);
 bool8 IsPokecenterChallengeActivated(void);
 bool8 IsRandomItemsActivated(void);
 

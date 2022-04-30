@@ -405,7 +405,7 @@ void BattleSetup_StartWildBattle(void)
                     GetTypeBySpecies(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES), 1) != typeChallenge && 
                     GetTypeBySpecies(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES), 2) != typeChallenge);
 
-        if (gSaveBlock1Ptr->tx_Challenges_Nuzlocke)
+        if (IsNuzlockeActive())
         {
             NuzlockeIsSpeciesClauseActive = NuzlockeIsCaptureBlockedBySpeciesClause(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES));
 

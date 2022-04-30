@@ -97,7 +97,7 @@ Route119_WeatherInstitute_2F_EventScript_ReceiveCastform::
 
 Route119_WeatherInstitute_2F_EventScript_ReceiveCastformParty::
 	call Route119_WeatherInstitute_2F_EventScript_ReceivedCastformFanfare
-	specialvar VAR_RESULT, IsNuzlockeNicknamingActivated
+	specialvar VAR_RESULT, IsNuzlockeNicknamingActive
 	goto_if_eq VAR_RESULT, TRUE, Route119_WeatherInstitute_2F_EventScript_ReceiveCastformParty_Nuzlocke
 	msgbox gText_NicknameThisPokemon, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, Route119_WeatherInstitute_2F_EventScript_ExplainCastform
@@ -114,7 +114,7 @@ Route119_WeatherInstitute_2F_EventScript_ReceiveCastformParty_Nuzlocke::
 
 Route119_WeatherInstitute_2F_EventScript_ReceiveCastformPC::
 	call Route119_WeatherInstitute_2F_EventScript_ReceivedCastformFanfare
-	specialvar VAR_RESULT, IsNuzlockeNicknamingActivated
+	specialvar VAR_RESULT, IsNuzlockeNicknamingActive
 	goto_if_eq VAR_RESULT, TRUE, Route119_WeatherInstitute_2F_EventScript_ReceiveCastformPC_Nuzlocke
 	msgbox gText_NicknameThisPokemon, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, Route119_WeatherInstitute_2F_EventScript_SendCastformToPC

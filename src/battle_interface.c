@@ -1957,9 +1957,7 @@ static void TryAddPokeballIconToHealthbox(u8 healthboxSpriteId, bool8 noStatus)
         return;
     if (!GetSetPokedexFlag(SpeciesToNationalPokedexNum(GetMonData(&gEnemyParty[gBattlerPartyIndexes[battlerId]], MON_DATA_SPECIES)), FLAG_GET_CAUGHT))
     {
-        if (!gSaveBlock1Ptr->tx_Challenges_Nuzlocke)
-            return;
-        if (!FlagGet(FLAG_ADVENTURE_STARTED)) //Nuzlocke has not started
+        if (!IsNuzlockeActive())
             return;
         if (NuzlockeIsSpeciesClauseActive || OneTypeChallengeCaptureBlocked || NuzlockeIsCaptureBlocked)
             return;

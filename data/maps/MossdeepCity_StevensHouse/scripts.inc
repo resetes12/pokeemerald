@@ -94,7 +94,7 @@ MossdeepCity_StevensHouse_EventScript_GiveBeldum::
 
 MossdeepCity_StevensHouse_EventScript_SendBeldumParty::
 	call MossdeepCity_StevensHouse_EventScript_ReceivedBeldumFanfare
-	specialvar VAR_RESULT, IsNuzlockeNicknamingActivated
+	specialvar VAR_RESULT, IsNuzlockeNicknamingActive
 	goto_if_eq VAR_RESULT, TRUE, MossdeepCity_StevensHouse_EventScript_SendBeldumParty_Nuzlocke
 	msgbox gText_NicknameThisPokemon, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, MossdeepCity_StevensHouse_EventScript_ReceivedBeldum
@@ -111,7 +111,7 @@ MossdeepCity_StevensHouse_EventScript_SendBeldumParty_Nuzlocke::
 
 MossdeepCity_StevensHouse_EventScript_SendBeldumPC::
 	call MossdeepCity_StevensHouse_EventScript_ReceivedBeldumFanfare
-	specialvar VAR_RESULT, IsNuzlockeNicknamingActivated
+	specialvar VAR_RESULT, IsNuzlockeNicknamingActive
 	goto_if_eq VAR_RESULT, TRUE, MossdeepCity_StevensHouse_EventScript_SendBeldumPC_Nuzlocke
 	msgbox gText_NicknameThisPokemon, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, MossdeepCity_StevensHouse_EventScript_BeldumTransferredToPC

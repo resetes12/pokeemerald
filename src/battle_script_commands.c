@@ -3279,7 +3279,7 @@ static void Cmd_getexp(void)
             {
                 if (TX_EXP_MULTIPLER_ONLY_ON_NUZLOCKE_AND_RANDOMIZER) //special for Jaizu
                 {
-                    if (gSaveBlock1Ptr->tx_Challenges_Nuzlocke || IsRandomizerActivated())
+                    if (IsNuzlockeActive() || IsRandomizerActivated())
                     {
                         if (gSaveBlock1Ptr->tx_Challenges_ExpMultiplier == 3)
                             calculatedExp = 0;
@@ -3318,7 +3318,7 @@ static void Cmd_getexp(void)
             {
                 if (TX_EXP_MULTIPLER_ONLY_ON_NUZLOCKE_AND_RANDOMIZER) //special for Jaizu
                 {
-                    if (gSaveBlock1Ptr->tx_Challenges_Nuzlocke || IsRandomizerActivated())
+                    if (IsNuzlockeActive() || IsRandomizerActivated())
                     {
                         *exp = 0;
                         gExpShareExp = 0;
@@ -10144,7 +10144,7 @@ static void Cmd_trygivecaughtmonnick(void)
     case 0:
         HandleBattleWindow(24, 8, 29, 13, 0);
 
-        if (gSaveBlock1Ptr->tx_Challenges_Nuzlocke && gSaveBlock1Ptr->tx_Nuzlocke_Nicknaming) //tx_randomizer_and_challenges
+        if (IsNuzlockeNicknamingActive()) //tx_randomizer_and_challenges
         {
             gBattleCommunication[MULTIUSE_STATE]++;
             BeginFastPaletteFade(3);
@@ -10158,7 +10158,7 @@ static void Cmd_trygivecaughtmonnick(void)
         }
         break;
     case 1:
-        if (gSaveBlock1Ptr->tx_Challenges_Nuzlocke && gSaveBlock1Ptr->tx_Nuzlocke_Nicknaming) //tx_randomizer_and_challenges
+        if (IsNuzlockeNicknamingActive()) //tx_randomizer_and_challenges
             gBattleCommunication[MULTIUSE_STATE]++;
 
         if (JOY_NEW(DPAD_UP) && gBattleCommunication[CURSOR_POSITION] != 0)

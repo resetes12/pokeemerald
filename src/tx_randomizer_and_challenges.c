@@ -53,8 +53,25 @@ bool8 IsChallengesActivated(void)
     return FALSE;
 }
 
-bool8 IsNuzlockeNicknamingActivated(void)
+bool8 IsNuzlockeActive(void)
 {
+    if (!FlagGet(FLAG_SYS_POKEMON_GET))     //Nuzlocke has not started
+        return FALSE;
+    if (!FlagGet(FLAG_ADVENTURE_STARTED))   //Nuzlocke has not started
+        return FALSE;
+    if (FlagGet(FLAG_IS_CHAMPION))          //Player is champion and Nuzlocke stopped
+        return FALSE;
+
+    return gSaveBlock1Ptr->tx_Challenges_Nuzlocke;
+}
+
+bool8 IsNuzlockeNicknamingActive(void)
+{
+    if (!gSaveBlock1Ptr->tx_Challenges_Nuzlocke)
+        return FALSE;
+    if (FlagGet(FLAG_IS_CHAMPION))
+        return FALSE;
+
     return gSaveBlock1Ptr->tx_Nuzlocke_Nicknaming;
 }
 

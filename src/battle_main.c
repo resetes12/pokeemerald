@@ -5166,7 +5166,7 @@ static void HandleEndTurn_FinishBattle(void)
         }
 
         //ty_difficulty_challenges
-        if (gSaveBlock1Ptr->tx_Challenges_Nuzlocke && FlagGet(FLAG_SYS_POKEMON_GET))
+        if (IsNuzlockeActive())
         {
             NuzlockeDeleteFaintedPartyPokemon();
             if (!(gBattleTypeFlags & (BATTLE_TYPE_DOUBLE
@@ -5184,7 +5184,7 @@ static void HandleEndTurn_FinishBattle(void)
                                         | BATTLE_TYPE_TOWER_LINK_MULTI
                                         | BATTLE_TYPE_RECORDED_LINK)))
             {
-                if (!NuzlockeIsSpeciesClauseActive && !OneTypeChallengeCaptureBlocked && FlagGet(FLAG_ADVENTURE_STARTED))
+                if (!NuzlockeIsSpeciesClauseActive && !OneTypeChallengeCaptureBlocked)
                     NuzlockeFlagSet(NuzlockeGetCurrentRegionMapSectionId());
             }
             NuzlockeIsCaptureBlocked = FALSE;

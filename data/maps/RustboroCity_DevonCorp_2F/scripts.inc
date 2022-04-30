@@ -153,7 +153,7 @@ RustboroCity_DevonCorp_2F_EventScript_ReceiveLileep::
 
 RustboroCity_DevonCorp_2F_EventScript_ReceiveLileepParty::
 	call RustboroCity_DevonCorp_2F_EventScript_ReceivedLileepFanfare
-	specialvar VAR_RESULT, IsNuzlockeNicknamingActivated
+	specialvar VAR_RESULT, IsNuzlockeNicknamingActive
 	goto_if_eq VAR_RESULT, TRUE, RustboroCity_DevonCorp_2F_EventScript_ReceiveLileepParty_Nuzlocke
 	msgbox gText_NicknameThisPokemon, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, RustboroCity_DevonCorp_2F_EventScript_FinishReceivingLileep
@@ -170,7 +170,7 @@ RustboroCity_DevonCorp_2F_EventScript_ReceiveLileepParty_Nuzlocke::
 
 RustboroCity_DevonCorp_2F_EventScript_ReceiveLileepPC::
 	call RustboroCity_DevonCorp_2F_EventScript_ReceivedLileepFanfare
-	specialvar VAR_RESULT, IsNuzlockeNicknamingActivated
+	specialvar VAR_RESULT, IsNuzlockeNicknamingActive
 	goto_if_eq VAR_RESULT, TRUE, RustboroCity_DevonCorp_2F_EventScript_ReceiveLileepPC_Nuzlocke
 	msgbox gText_NicknameThisPokemon, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, RustboroCity_DevonCorp_2F_EventScript_TransferLileepToPC
