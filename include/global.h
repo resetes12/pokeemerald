@@ -577,7 +577,8 @@ struct Roamer
     /*0x13*/ bool8 active:1; // 1 bit for TRUE or FALSE 
 			 bool8 isTerrestrial:1;
 			 bool8 doesNotFlee:1;
-			 bool8 unused:5;
+			 bool8 isStalker:1;
+			 bool8 unused:4;
 }; /*size = 0x14*/
 
 struct RamScriptData

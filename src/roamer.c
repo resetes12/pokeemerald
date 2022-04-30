@@ -147,7 +147,7 @@ static void ClearRoamerLocationHistory(u8 index)
     }
 }
 
-static void CreateInitialRoamerMon(u8 index, u16 species, u8 level, bool8 isTerrestrial, bool8 doesNotFlee)
+static void CreateInitialRoamerMon(u8 index, u16 species, u8 level, bool8 isTerrestrial, bool8 doesNotFlee, bool8 isStalker)
 {
 	ClearRoamerLocationHistory(index);
     CreateMon(&gEnemyParty[0], species, level, USE_RANDOM_IVS, FALSE, 0, OT_ID_PLAYER_ID, 0);
@@ -165,6 +165,7 @@ static void CreateInitialRoamerMon(u8 index, u16 species, u8 level, bool8 isTerr
     ROAMER(index)->active = TRUE;
     ROAMER(index)->isTerrestrial = isTerrestrial;
     ROAMER(index)->doesNotFlee = doesNotFlee;
+    ROAMER(index)->isStalker = isStalker;
     sRoamerLocation[index][MAP_GRP] = ROAMER_MAP_GROUP;
 	if (!isTerrestrial)
 		sRoamerLocation[index][MAP_NUM] = sRoamerLocations[Random() % NUM_LOCATION_SETS][0];
@@ -182,14 +183,15 @@ void InitRoamer(void)
 	else
 		TryAddRoamer(SPECIES_LATIAS, 40, FLEES);
 #else
-	// Example: both Lati@s roam at the same time
 	TryAddRoamer(SPECIES_LATIAS, 40, FLEES);
 	TryAddRoamer(SPECIES_LATIOS, 40, FLEES);
 	TryAddTerrestrialRoamer(SPECIES_PIKACHU, 8, FLEES);
 	TryAddTerrestrialRoamer(SPECIES_PIKACHU, 15, DOES_NOT_FLEE);
+	TryAddStalker(SPECIES_AZURILL, 3, DOES_NOT_FLEE, AMPHIBIOUS);
 	GetSetPokedexFlag(SpeciesToNationalPokedexNum(SPECIES_LATIAS), FLAG_SET_SEEN); //Sets Pokedex to seen
 	GetSetPokedexFlag(SpeciesToNationalPokedexNum(SPECIES_LATIOS), FLAG_SET_SEEN);
 	GetSetPokedexFlag(SpeciesToNationalPokedexNum(SPECIES_PIKACHU), FLAG_SET_SEEN);
+	GetSetPokedexFlag(SpeciesToNationalPokedexNum(SPECIES_AZURILL), FLAG_SET_SEEN);
 #endif
 }
 
@@ -217,7 +219,24 @@ void RoamerMoveToOtherLocationSet(u8 index)
 	
 	if (!ROAMER(index)->active)
 		return;
-
+	if (ROAMER(index)->isStalker)
+	{
+		// If moving after fighting the player, stalkers leave the area
+		if (IsRoamerAt(index, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum))
+		{
+			sRoamerLocation[index][MAP_GRP] = MAP_GROUP(NONE);
+			sRoamerLocation[index][MAP_NUM] = MAP_NUM(NONE);
+			return;
+		}
+		else
+		{
+			//else they always move to the player's area
+			sRoamerLocation[index][MAP_GRP] = gSaveBlock1Ptr->location.mapGroup;
+			sRoamerLocation[index][MAP_NUM] = gSaveBlock1Ptr->location.mapNum;
+			return;
+		}
+	}
+	
 	sRoamerLocation[index][MAP_GRP] = ROAMER_MAP_GROUP;
 
 	if (!ROAMER(index)->isTerrestrial)
@@ -241,7 +260,7 @@ void RoamerMoveToOtherLocationSet(u8 index)
 void RoamerMove(u8 index)
 {
     u8 locSet = 0;
-	if ((Random() % 16) == 0)
+	if ((Random() % 16) == 0 || ROAMER(index)->isStalker)
 	{
 		RoamerMoveToOtherLocationSet(index);
 	}
@@ -370,7 +389,7 @@ bool8 TryAddRoamer(u16 species, u8 level, bool8 doesNotFlee)
 	
 	if (index < ROAMER_COUNT)
 	{
-		CreateInitialRoamerMon(index, species, level, AMPHIBIOUS, doesNotFlee);
+		CreateInitialRoamerMon(index, species, level, AMPHIBIOUS, doesNotFlee, NOT_STALKER);
 		return TRUE;
 	}
 	// Maximum active roamers: do nothing and let the calling function know
@@ -383,7 +402,19 @@ bool8 TryAddTerrestrialRoamer(u16 species, u8 level, bool8 doesNotFlee)
 	
 	if (index < ROAMER_COUNT)
 	{
-		CreateInitialRoamerMon(index, species, level, TERRESTRIAL, doesNotFlee);
+		CreateInitialRoamerMon(index, species, level, TERRESTRIAL, doesNotFlee, NOT_STALKER);
+		return TRUE;
+	}
+	return FALSE;
+}
+
+bool8 TryAddStalker(u16 species, u8 level, bool8 doesNotFlee, bool8 isTerrestrial)
+{
+	u8 index = GetFirstInactiveRoamerIndex();
+	
+	if (index < ROAMER_COUNT)
+	{
+		CreateInitialRoamerMon(index, species, level, isTerrestrial, doesNotFlee, STALKER);
 		return TRUE;
 	}
 	return FALSE;
