@@ -10,6 +10,10 @@
 #define ROAMER_MAP_GROUP 0
 // Set to TRUE to allow roaming to every Route
 #define ROAM_THE_ENTIRE_MAP FALSE
+// 1 in 4 chance for a roamer to replace other encounters
+#define ROAMER_ENCOUNTER_MODULO 4
+// 1 in 6 chance for a stalker to replace other encounters
+#define STALKER_ENCOUNTER_MODULO 6
 
 enum
 {
@@ -128,12 +132,12 @@ static const u8 sTerrestrialLocations[][6] =
 #define NUM_TERRESTRIAL_SETS (ARRAY_COUNT(sTerrestrialLocations) - 1)
 #define NUM_LOCATIONS_PER_SET (ARRAY_COUNT(sRoamerLocations[0]))
 
-void DeactivateAllRoamers(void)
+void StopAllRoamers(void)
 {
 	u32 i;
 	
 	for (i = 0; i < ROAMER_COUNT; i++)
-		SetRoamerInactive(i);
+		StopRoamer(i);
 }
 
 static void ClearRoamerLocationHistory(u8 index)
@@ -147,7 +151,7 @@ static void ClearRoamerLocationHistory(u8 index)
     }
 }
 
-static void CreateInitialRoamerMon(u8 index, u16 species, u8 level, bool8 isTerrestrial, bool8 doesNotFlee, bool8 isStalker)
+static void CreateInitialRoamerMon(u8 index, u16 species, u8 level, bool8 isTerrestrial, bool8 doesNotFlee, bool8 isStalker, u16 respawnMode)
 {
 	ClearRoamerLocationHistory(index);
     CreateMon(&gEnemyParty[0], species, level, USE_RANDOM_IVS, FALSE, 0, OT_ID_PLAYER_ID, 0);
@@ -166,6 +170,8 @@ static void CreateInitialRoamerMon(u8 index, u16 species, u8 level, bool8 isTerr
     ROAMER(index)->isTerrestrial = isTerrestrial;
     ROAMER(index)->doesNotFlee = doesNotFlee;
     ROAMER(index)->isStalker = isStalker;
+    ROAMER(index)->respawnMode = respawnMode;
+    ROAMER(index)->daysToRespawn = 0;
     sRoamerLocation[index][MAP_GRP] = ROAMER_MAP_GROUP;
 	if (!isTerrestrial)
 		sRoamerLocation[index][MAP_NUM] = sRoamerLocations[Random() % NUM_LOCATION_SETS][0];
@@ -183,11 +189,11 @@ void InitRoamer(void)
 	else
 		TryAddRoamer(SPECIES_LATIAS, 40, FLEES);
 #else
-	TryAddRoamer(SPECIES_LATIAS, 40, FLEES);
-	TryAddRoamer(SPECIES_LATIOS, 40, FLEES);
-	TryAddTerrestrialRoamer(SPECIES_PIKACHU, 8, FLEES);
-	TryAddTerrestrialRoamer(SPECIES_PIKACHU, 15, DOES_NOT_FLEE);
-	TryAddStalker(SPECIES_AZURILL, 3, DOES_NOT_FLEE, AMPHIBIOUS);
+	TryAddRoamer(SPECIES_LATIAS, 40, FLEES, WEEKLY_RESPAWN);
+	TryAddRoamer(SPECIES_LATIOS, 40, FLEES, WEEKLY_RESPAWN);
+	TryAddTerrestrialRoamer(SPECIES_PIKACHU, 8, FLEES, DAILY_RESPAWN);
+	TryAddTerrestrialRoamer(SPECIES_PIKACHU, 15, DOES_NOT_FLEE, NO_RESPAWN);
+	TryAddStalker(SPECIES_AZURILL, 3, DOES_NOT_FLEE, AMPHIBIOUS, INSTANT_RESPAWN);
 	GetSetPokedexFlag(SpeciesToNationalPokedexNum(SPECIES_LATIAS), FLAG_SET_SEEN); //Sets Pokedex to seen
 	GetSetPokedexFlag(SpeciesToNationalPokedexNum(SPECIES_LATIOS), FLAG_SET_SEEN);
 	GetSetPokedexFlag(SpeciesToNationalPokedexNum(SPECIES_PIKACHU), FLAG_SET_SEEN);
@@ -340,7 +346,9 @@ bool8 TryStartRoamerEncounter(bool8 isWaterEncounter)
 	for (i = 0; i < ROAMER_COUNT; i++)
     {
 		if (IsRoamerAt(i, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum)
-			&& (Random() % 4) == 0 && !(ROAMER(i)->isTerrestrial && isWaterEncounter))
+			&& !(ROAMER(i)->isTerrestrial && isWaterEncounter)
+			&& ((!ROAMER(i)->isStalker && (Random() % ROAMER_ENCOUNTER_MODULO) == 0)
+			|| (ROAMER(i)->isStalker && (Random() % STALKER_ENCOUNTER_MODULO) == 0)))
 		{
 			CreateRoamerMonInstance(i);
 			gEncounteredRoamerIndex = i;
@@ -352,15 +360,19 @@ bool8 TryStartRoamerEncounter(bool8 isWaterEncounter)
 
 void UpdateRoamerHPStatus(struct Pokemon *mon)
 {
-    ROAMER(gEncounteredRoamerIndex)->hp = GetMonData(mon, MON_DATA_HP);
-    ROAMER(gEncounteredRoamerIndex)->status = GetMonData(mon, MON_DATA_STATUS);
+	u16 currentHP = GetMonData(mon, MON_DATA_HP);
+	if (currentHP == 0 && CanRoamerRespawn(gEncounteredRoamerIndex))
+	{
+		ROAMER(gEncounteredRoamerIndex)->hp = GetMonData(mon, MON_DATA_MAX_HP);
+		ROAMER(gEncounteredRoamerIndex)->status = 0; //not sure if necessary
+	}
+	else
+	{
+		ROAMER(gEncounteredRoamerIndex)->hp = GetMonData(mon, MON_DATA_HP);
+		ROAMER(gEncounteredRoamerIndex)->status = GetMonData(mon, MON_DATA_STATUS);
+	}
 
     RoamerMoveToOtherLocationSet(gEncounteredRoamerIndex);
-}
-
-void SetRoamerInactive(u8 index)
-{
-    ROAMER(index)->active = FALSE;
 }
 
 void GetRoamerLocation(u8 index, u8 *mapGroup, u8 *mapNum)
@@ -375,7 +387,7 @@ static u8 GetFirstInactiveRoamerIndex()
 	
 	for (i = 0; i < ROAMER_COUNT; i++)
 	{
-		if (!ROAMER(i)->active)
+		if (!ROAMER(i)->active && !CanRoamerRespawn(i))
 		{
 			return i;
 		}
@@ -383,41 +395,48 @@ static u8 GetFirstInactiveRoamerIndex()
 	return ROAMER_COUNT;
 }
 
-bool8 TryAddRoamer(u16 species, u8 level, bool8 doesNotFlee)
+bool8 TryAddRoamer(u16 species, u8 level, bool8 doesNotFlee, u16 respawnMode)
 {
 	u8 index = GetFirstInactiveRoamerIndex();
 	
 	if (index < ROAMER_COUNT)
 	{
-		CreateInitialRoamerMon(index, species, level, AMPHIBIOUS, doesNotFlee, NOT_STALKER);
+		CreateInitialRoamerMon(index, species, level, AMPHIBIOUS, doesNotFlee, NOT_STALKER, respawnMode);
 		return TRUE;
 	}
 	// Maximum active roamers: do nothing and let the calling function know
 	return FALSE;
 }
 
-bool8 TryAddTerrestrialRoamer(u16 species, u8 level, bool8 doesNotFlee)
+bool8 TryAddTerrestrialRoamer(u16 species, u8 level, bool8 doesNotFlee, u16 respawnMode)
 {
 	u8 index = GetFirstInactiveRoamerIndex();
 	
 	if (index < ROAMER_COUNT)
 	{
-		CreateInitialRoamerMon(index, species, level, TERRESTRIAL, doesNotFlee, NOT_STALKER);
+		CreateInitialRoamerMon(index, species, level, TERRESTRIAL, doesNotFlee, NOT_STALKER, respawnMode);
 		return TRUE;
 	}
 	return FALSE;
 }
 
-bool8 TryAddStalker(u16 species, u8 level, bool8 doesNotFlee, bool8 isTerrestrial)
+bool8 TryAddStalker(u16 species, u8 level, bool8 doesNotFlee, bool8 isTerrestrial, u16 respawnMode)
 {
 	u8 index = GetFirstInactiveRoamerIndex();
 	
 	if (index < ROAMER_COUNT)
 	{
-		CreateInitialRoamerMon(index, species, level, isTerrestrial, doesNotFlee, STALKER);
+		CreateInitialRoamerMon(index, species, level, isTerrestrial, doesNotFlee, STALKER, respawnMode);
 		return TRUE;
 	}
 	return FALSE;
+}
+
+void StopRoamer(u8 index)
+{
+    ROAMER(index)->active = FALSE;
+    ROAMER(index)->respawnMode = NO_RESPAWN;
+    ROAMER(index)->daysToRespawn = 0;
 }
 
 void MoveAllRoamersToOtherLocationSets(void)
@@ -439,4 +458,38 @@ void MoveAllRoamers(void)
 bool8 DoesRoamerFlee(void)
 {
 	return !ROAMER(gEncounteredRoamerIndex)->doesNotFlee;
+}
+
+bool8 CanRoamerRespawn(u8 index)
+{
+	return ROAMER(index)->respawnMode != NO_RESPAWN;
+}
+
+void HandleRoamerRespawnTimer(void)
+{
+	if (ROAMER(gEncounteredRoamerIndex)->respawnMode == INSTANT_RESPAWN)
+		return;
+	ROAMER(gEncounteredRoamerIndex)->active = FALSE;
+	if (ROAMER(gEncounteredRoamerIndex)->respawnMode == DAILY_RESPAWN)
+		ROAMER(gEncounteredRoamerIndex)->daysToRespawn = 1;
+	else if (ROAMER(gEncounteredRoamerIndex)->respawnMode == WEEKLY_RESPAWN)
+		ROAMER(gEncounteredRoamerIndex)->daysToRespawn = 7;
+}
+
+void UpdateRoamerRespawns(u16 days)
+{
+    u32 i;
+	
+	for (i = 0; i < ROAMER_COUNT; i++)
+	{
+		if (ROAMER(i)->daysToRespawn > 0)
+		{
+			if (ROAMER(i)->daysToRespawn <= days)
+				ROAMER(i)->active = TRUE;
+			else
+				ROAMER(i)->daysToRespawn -= days;
+			break;
+		}
+			
+	}
 }
