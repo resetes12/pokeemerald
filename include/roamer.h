@@ -6,7 +6,7 @@
 /* A basic Latias roamer that respawns weekly
 /* A terrestrial Pikachu roamer that respawns daily
 /* A terrestrial Pikachu that does not flee from battle
-/* An Azurill stalker that does not flee from battle and respawns instantly
+/* A scaling Weedle stalker that does not flee from battle and respawns instantly
 /* All these species are also added to the Pokedex so you can track them*/
 #define MULTIPLE_ROAMERS_EXAMPLE TRUE
 /* Shows stalkers on the PokeDex. A bit pointless as
