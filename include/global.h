@@ -576,8 +576,12 @@ struct Roamer
 	/*0x0E*/ bool8 doesNotFlee:1;
 	/*0x0E*/ bool8 isStalker:1;
 	/*0x0E*/ bool8 unused:4;
-	/*0x0F*/ u8 padding;
-}; /*size = 0x10*/
+	/*0x0F*/ u8 locationMapGroup;
+	/*0x10*/ u8 locationMapNum;
+	/*0x11*/ u8 mapGroupHistory[3];
+	/*0x14*/ u8 mapNumHistory[3];
+	/*0x17*/ u8 padding;
+}; /*size = 0x18*/
 
 struct RamScriptData
 {

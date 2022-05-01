@@ -421,8 +421,6 @@ static void UpdateMiscOverworldStates(void)
     FlagClear(FLAG_SYS_SAFARI_MODE);
     ChooseAmbientCrySpecies();
     ResetCyclingRoadChallengeData();
-    UpdateLocationHistoryForRoamer();
-	MoveAllRoamersToOtherLocationSets();
 }
 
 void ResetGameStats(void)

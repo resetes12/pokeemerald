@@ -22,8 +22,6 @@ enum
 };
 
 #define ROAMER(index) (&gSaveBlock1Ptr->roamer[index])
-EWRAM_DATA static u8 sLocationHistory[ROAMER_COUNT][3][2] = {0};
-EWRAM_DATA static u8 sRoamerLocation[ROAMER_COUNT][2] = {0};
 EWRAM_DATA u8 gEncounteredRoamerIndex = 0;
 
 #define ___ MAP_NUM(UNDEFINED) // For empty spots in the location table
@@ -144,34 +142,34 @@ static void ClearRoamerLocationHistory(u8 index)
 {
     u32 i;
 
-    for (i = 0; i < ARRAY_COUNT(sLocationHistory[index]); i++)
+    for (i = 0; i < ARRAY_COUNT(ROAMER(index)->mapGroupHistory); i++)
     {
-        sLocationHistory[index][i][MAP_GRP] = 0;
-        sLocationHistory[index][i][MAP_NUM] = 0;
+        ROAMER(index)->mapGroupHistory[i] = 0x7F; // 0 is Petalburg city
+        ROAMER(index)->mapNumHistory[i] = 0x7F; // 0x7F is MAP_NONE
     }
 }
 
 static void CreateInitialRoamerMon(u8 index, u16 species, u8 level, bool8 isTerrestrial, bool8 doesNotFlee, bool8 isStalker, u16 respawnMode)
 {
-	ClearRoamerLocationHistory(index);
     CreateMon(&gEnemyParty[0], species, level, USE_RANDOM_IVS, FALSE, 0, OT_ID_PLAYER_ID, 0);
     ROAMER(index)->ivs = GetMonData(&gEnemyParty[0], MON_DATA_IVS);
     ROAMER(index)->personality = GetMonData(&gEnemyParty[0], MON_DATA_PERSONALITY);
     ROAMER(index)->species = species;
+    ROAMER(index)->respawnMode = respawnMode;
+    ROAMER(index)->daysToRespawn = 0;
+    ROAMER(index)->hp = GetMonData(&gEnemyParty[0], MON_DATA_MAX_HP);
     ROAMER(index)->level = level;
     ROAMER(index)->status = 0;
-    ROAMER(index)->hp = GetMonData(&gEnemyParty[0], MON_DATA_MAX_HP);
     ROAMER(index)->active = TRUE;
     ROAMER(index)->isTerrestrial = isTerrestrial;
     ROAMER(index)->doesNotFlee = doesNotFlee;
     ROAMER(index)->isStalker = isStalker;
-    ROAMER(index)->respawnMode = respawnMode;
-    ROAMER(index)->daysToRespawn = 0;
-    sRoamerLocation[index][MAP_GRP] = ROAMER_MAP_GROUP;
+    ROAMER(index)->locationMapGroup = ROAMER_MAP_GROUP;
 	if (!isTerrestrial)
-		sRoamerLocation[index][MAP_NUM] = sRoamerLocations[Random() % NUM_LOCATION_SETS][0];
+		ROAMER(index)->locationMapNum = sRoamerLocations[Random() % NUM_LOCATION_SETS][0];
 	else
-		sRoamerLocation[index][MAP_NUM] = sTerrestrialLocations[Random() % NUM_TERRESTRIAL_SETS][0];
+		ROAMER(index)->locationMapNum = sTerrestrialLocations[Random() % NUM_TERRESTRIAL_SETS][0];
+	ClearRoamerLocationHistory(index);
 }
 
 // gSpecialVar_0x8004 here corresponds to the options in the multichoice MULTI_TV_LATI (0 for 'Red', 1 for 'Blue')
@@ -185,12 +183,10 @@ void InitRoamer(void)
 		TryAddRoamer(SPECIES_LATIAS, 40, FLEES);
 #else
 	TryAddRoamer(SPECIES_LATIAS, 40, FLEES, WEEKLY_RESPAWN);
-	TryAddRoamer(SPECIES_LATIOS, 40, FLEES, WEEKLY_RESPAWN);
 	TryAddTerrestrialRoamer(SPECIES_PIKACHU, 8, FLEES, DAILY_RESPAWN);
 	TryAddTerrestrialRoamer(SPECIES_PIKACHU, 15, DOES_NOT_FLEE, NO_RESPAWN);
 	TryAddStalker(SPECIES_AZURILL, 3, DOES_NOT_FLEE, AMPHIBIOUS, INSTANT_RESPAWN);
 	GetSetPokedexFlag(SpeciesToNationalPokedexNum(SPECIES_LATIAS), FLAG_SET_SEEN); //Sets Pokedex to seen
-	GetSetPokedexFlag(SpeciesToNationalPokedexNum(SPECIES_LATIOS), FLAG_SET_SEEN);
 	GetSetPokedexFlag(SpeciesToNationalPokedexNum(SPECIES_PIKACHU), FLAG_SET_SEEN);
 	GetSetPokedexFlag(SpeciesToNationalPokedexNum(SPECIES_AZURILL), FLAG_SET_SEEN);
 #endif
@@ -201,14 +197,14 @@ void UpdateLocationHistoryForRoamer(void)
 	u32 i;
 	for (i = 0; i < ROAMER_COUNT; i++)
 	{
-		sLocationHistory[i][2][MAP_GRP] = sLocationHistory[i][1][MAP_GRP];
-		sLocationHistory[i][2][MAP_NUM] = sLocationHistory[i][1][MAP_NUM];
+		ROAMER(i)->mapGroupHistory[2] = ROAMER(i)->mapGroupHistory[1];
+		ROAMER(i)->mapNumHistory[2] = ROAMER(i)->mapNumHistory[1];
 
-		sLocationHistory[i][1][MAP_GRP] = sLocationHistory[i][0][MAP_GRP];
-		sLocationHistory[i][1][MAP_NUM] = sLocationHistory[i][0][MAP_NUM];
+		ROAMER(i)->mapGroupHistory[1] = ROAMER(i)->mapGroupHistory[0];
+		ROAMER(i)->mapNumHistory[1] = ROAMER(i)->mapNumHistory[0];
 
-		sLocationHistory[i][0][MAP_GRP] = gSaveBlock1Ptr->location.mapGroup;
-		sLocationHistory[i][0][MAP_NUM] = gSaveBlock1Ptr->location.mapNum;
+		ROAMER(i)->mapGroupHistory[0] = gSaveBlock1Ptr->location.mapGroup;
+		ROAMER(i)->mapNumHistory[0] = gSaveBlock1Ptr->location.mapNum;
 	}
 }
 
@@ -225,20 +221,20 @@ void RoamerMoveToOtherLocationSet(u8 index)
 		// If moving after fighting the player, stalkers leave the area
 		if (IsRoamerAt(index, gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum))
 		{
-			sRoamerLocation[index][MAP_GRP] = MAP_GROUP(NONE);
-			sRoamerLocation[index][MAP_NUM] = MAP_NUM(NONE);
+			ROAMER(index)->locationMapGroup = MAP_GROUP(NONE);
+			ROAMER(index)->locationMapNum = MAP_NUM(NONE);
 			return;
 		}
 		else
 		{
 			//else they always move to the player's area
-			sRoamerLocation[index][MAP_GRP] = gSaveBlock1Ptr->location.mapGroup;
-			sRoamerLocation[index][MAP_NUM] = gSaveBlock1Ptr->location.mapNum;
+			ROAMER(index)->locationMapGroup = gSaveBlock1Ptr->location.mapGroup;
+			ROAMER(index)->locationMapNum = gSaveBlock1Ptr->location.mapNum;
 			return;
 		}
 	}
 	
-	sRoamerLocation[index][MAP_GRP] = ROAMER_MAP_GROUP;
+	ROAMER(index)->locationMapGroup = ROAMER_MAP_GROUP;
 
 	if (!ROAMER(index)->isTerrestrial)
 	{
@@ -254,8 +250,8 @@ void RoamerMoveToOtherLocationSet(u8 index)
 	// different from the roamer's current map
 	do {
 		mapNum = locations[Random() % LocationSetCount][0];
-	} while (sRoamerLocation[index][MAP_NUM] == mapNum);
-	sRoamerLocation[index][MAP_NUM] = mapNum;
+	} while (ROAMER(index)->locationMapNum == mapNum);
+	ROAMER(index)->locationMapNum = mapNum;
 }
 
 void RoamerMove(u8 index)
@@ -287,17 +283,17 @@ void RoamerMove(u8 index)
 		while (locSet < LocationSetCount)
 		{
 			// Find the location set that starts with the roamer's current map
-			if (sRoamerLocation[index][MAP_NUM] == locations[locSet][0])
+			if (ROAMER(index)->locationMapNum == locations[locSet][0])
 			{
 				u8 mapNum;
 				// Choose a new map (excluding the first) within this set
 				// Also exclude a map if the roamer was there 2 moves ago
 				do {
 					mapNum = locations[locSet][(Random() % (NUM_LOCATIONS_PER_SET - 1)) + 1];
-				} while ((sLocationHistory[index][2][MAP_GRP] == ROAMER_MAP_GROUP
-						&& sLocationHistory[index][2][MAP_NUM] == mapNum)
+				} while ((ROAMER(index)->mapGroupHistory[2] == ROAMER_MAP_GROUP
+						&& ROAMER(index)->mapNumHistory[2] == mapNum)
 						|| mapNum == MAP_NUM(UNDEFINED));
-				sRoamerLocation[index][MAP_NUM] = mapNum;
+				ROAMER(index)->locationMapNum = mapNum;
 				return;
 			}
 			locSet++;
@@ -307,7 +303,7 @@ void RoamerMove(u8 index)
 
 bool8 IsRoamerAt(u8 index, u8 mapGroup, u8 mapNum)
 {
-    if (ROAMER(index)->active && mapGroup == sRoamerLocation[index][MAP_GRP] && mapNum == sRoamerLocation[index][MAP_NUM])
+    if (ROAMER(index)->active && mapGroup == ROAMER(index)->locationMapGroup && mapNum == ROAMER(index)->locationMapNum)
         return TRUE;
     else
         return FALSE;
@@ -361,8 +357,8 @@ void UpdateRoamerHPStatus(struct Pokemon *mon)
 
 void GetRoamerLocation(u8 index, u8 *mapGroup, u8 *mapNum)
 {
-    *mapGroup = sRoamerLocation[index][MAP_GRP];
-    *mapNum = sRoamerLocation[index][MAP_NUM];
+    *mapGroup = ROAMER(index)->locationMapGroup;
+    *mapNum = ROAMER(index)->locationMapNum;
 }
 
 static u8 GetFirstInactiveRoamerIndex()

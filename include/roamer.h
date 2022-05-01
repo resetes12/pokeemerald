@@ -3,7 +3,7 @@
 
 /* If set to TRUE, at the start of a new game or when InitRoamer() is called,
 /* the following roamers are created to showcase the branch's features:
-/* A normal Latias and a normal Latios roamer that respawn weekly
+/* A basic Latias roamer that respawns weekly
 /* A terrestrial Pikachu roamer that respawns daily
 /* A terrestrial Pikachu that does not flee from battle
 /* An Azurill stalker that does not flee from battle and respawns instantly
