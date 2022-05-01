@@ -9591,9 +9591,9 @@ static void Cmd_pickup(void)
             heldItem = GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM);
 
             if (GetMonData(&gPlayerParty[i], MON_DATA_ABILITY_NUM))
-                ability = gBaseStats[species].abilities[1];
+                ability = GetAbilityBySpecies(species, 1);
             else
-                ability = gBaseStats[species].abilities[0];
+                ability = GetAbilityBySpecies(species, 0);
 
             if (ability == ABILITY_PICKUP
                 && species != SPECIES_NONE
@@ -9614,9 +9614,9 @@ static void Cmd_pickup(void)
             heldItem = GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM);
 
             if (GetMonData(&gPlayerParty[i], MON_DATA_ABILITY_NUM))
-                ability = gBaseStats[species].abilities[1];
+                ability = GetAbilityBySpecies(species, 1);
             else
-                ability = gBaseStats[species].abilities[0];
+                ability = GetAbilityBySpecies(species, 0);
 
             if (ability == ABILITY_PICKUP
                 && species != SPECIES_NONE

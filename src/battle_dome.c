@@ -5223,9 +5223,9 @@ static u16 GetWinningMove(int winnerTournamentId, int loserTournamentId, u8 roun
 
                 targetSpecies = gFacilityTrainerMons[DOME_MONS[loserTournamentId][k]].species;
                 if (var & 1)
-                    targetAbility = gBaseStats[targetSpecies].abilities[1];
+                    targetAbility = GetAbilityBySpecies(targetSpecies, 1);
                 else
-                    targetAbility = gBaseStats[targetSpecies].abilities[0];
+                    targetAbility = GetAbilityBySpecies(targetSpecies, 0);
 
                 var = AI_TypeCalc(moveIds[i * MAX_MON_MOVES + j], targetSpecies, targetAbility);
                 if (var & MOVE_RESULT_NOT_VERY_EFFECTIVE && var & MOVE_RESULT_SUPER_EFFECTIVE)

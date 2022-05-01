@@ -399,7 +399,7 @@ static const u8 sText_EvoLimit[]            = _("EVO LIMIT");
 static const u8 sText_OneTypeChallenge[]    = _("ONE TYPE ONLY");
 static const u8 sText_BaseStatEqualizer[]   = _("STAT EQUALIZER");
 static const u8 sText_Mirror[]              = _("MIRROR MODE");
-static const u8 sText_MirrorThief[]         = _("THIEF CLAUSE");
+static const u8 sText_MirrorThief[]         = _("MIRROR THIEF");
 static const u8 sText_Save[]                = _("SAVE");
 static const u8 *const sOptionMenuItemsNamesChallenges[MENUITEM_CHALLENGES_COUNT] =
 {
