@@ -433,8 +433,10 @@ static bool8 CheckConditions(int selection)
             case MENUITEM_RANDOM_OFF_ON:                    return TRUE;
             case MENUITEM_RANDOM_WILD_PKMN:                 return sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON];
             case MENUITEM_RANDOM_TRAINER:                   return sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON];
-            case MENUITEM_RANDOM_SIMILAR_EVOLUTION_LEVEL:   return sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON] && !sOptions->sel_randomizer[MENUITEM_RANDOM_CHAOS];
-            case MENUITEM_RANDOM_INCLUDE_LEGENDARIES:       return sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON];
+            case MENUITEM_RANDOM_SIMILAR_EVOLUTION_LEVEL:   return sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON] 
+                                                                && (sOptions->sel_randomizer[MENUITEM_RANDOM_WILD_PKMN] || sOptions->sel_randomizer[MENUITEM_RANDOM_TRAINER])
+                                                                && !sOptions->sel_randomizer[MENUITEM_RANDOM_CHAOS];
+            case MENUITEM_RANDOM_INCLUDE_LEGENDARIES:       return sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON] && (sOptions->sel_randomizer[MENUITEM_RANDOM_WILD_PKMN] || sOptions->sel_randomizer[MENUITEM_RANDOM_TRAINER]);
             case MENUITEM_RANDOM_TYPE:                      return sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON];
             case MENUITEM_RANDOM_MOVES:                     return sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON];
             case MENUITEM_RANDOM_ABILITIES:                 return sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON];
@@ -442,7 +444,14 @@ static bool8 CheckConditions(int selection)
             case MENUITEM_RANDOM_EVOLUTIONS_METHODS:        return sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON];
             case MENUITEM_RANDOM_TYPE_EFFEC:                return sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON];
             case MENUITEM_RANDOM_ITEMS:                     return sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON];
-            case MENUITEM_RANDOM_CHAOS:                     return sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON];
+            case MENUITEM_RANDOM_CHAOS:                     return sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON] && (sOptions->sel_randomizer[MENUITEM_RANDOM_WILD_PKMN]
+                                                                || sOptions->sel_randomizer[MENUITEM_RANDOM_TRAINER]
+                                                                || sOptions->sel_randomizer[MENUITEM_RANDOM_TYPE]
+                                                                || sOptions->sel_randomizer[MENUITEM_RANDOM_MOVES]
+                                                                || sOptions->sel_randomizer[MENUITEM_RANDOM_ABILITIES]
+                                                                || sOptions->sel_randomizer[MENUITEM_RANDOM_EVOLUTIONS]
+                                                                || sOptions->sel_randomizer[MENUITEM_RANDOM_EVOLUTIONS_METHODS]
+                                                                || sOptions->sel_randomizer[MENUITEM_RANDOM_TYPE_EFFEC]);
             case MENUITEM_RANDOM_NEXT:                      return TRUE;
         }
     case MENU_NUZLOCKE:
