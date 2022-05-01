@@ -15,6 +15,8 @@
 #define STALKER_ENCOUNTER_MODULO 6
 // Scaling roamer level will be equal to your highest level pokemon's level plus this constant
 #define SCALING_LEVEL_MODIFIER -5
+// Self Explanatory
+#define SCALED_LEVEL_CAP 70
 // If TRUE, scaling roamers will evolve at appropriate levels
 #define SCALING_ROAMER_EVOLUTION TRUE
 //================= Config End =========================\\
@@ -328,7 +330,7 @@ void CreateRoamerMonInstance(u8 index)
 	{
 		u16 evoSpecies;
 		
-		ROAMER(index)->level = max(max(min(GetHighestLevelInPlayerParty() + SCALING_LEVEL_MODIFIER, MAX_LEVEL), MIN_LEVEL), ROAMER(index)->level);
+		ROAMER(index)->level = max(max(min(GetHighestLevelInPlayerParty() + SCALING_LEVEL_MODIFIER, SCALED_LEVEL_CAP), MIN_LEVEL), ROAMER(index)->level);
 		CreateMonWithIVsPersonality(mon, ROAMER(index)->species, ROAMER(index)->level, ROAMER(index)->ivs, ROAMER(index)->personality);
 		evoSpecies = GetEvolutionTargetSpecies(mon, EVO_MODE_NORMAL, 0);
 		while (evoSpecies != SPECIES_NONE)
