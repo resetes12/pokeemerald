@@ -2166,7 +2166,7 @@ static const struct SpriteTemplate sSpriteTemplate_64x64 =
 #define EVO_TYPE_SELF 3
 #define EVO_TYPE_LEGENDARY 4
 
-const u8 gRandomizationTypes[6][25] =
+const u8 gRandomizationTypes[7][25] =
 {
     [TX_RANDOM_T_WILD_POKEMON]    = _("TX RANDOM WILD PKMN"),
     [TX_RANDOM_T_TRAINER]         = _("TX RANDOM TRAINER  "),
@@ -2174,6 +2174,7 @@ const u8 gRandomizationTypes[6][25] =
     [TX_RANDOM_T_ABILITY]         = _("TX RANDOM ABILITY  "),
     [TX_RANDOM_T_EVO]             = _("TX RANDOM EVO      "),
     [TX_RANDOM_T_EVO_METH]        = _("TX RANDOM EVO METH "),
+    [TX_RANDOM_T_STATIC]          = _("TX RANDOM STATIC   "),
 };
 const u8 gEvoStages[5][20] = 
 {
@@ -13890,6 +13891,9 @@ u16 GetRandomSpecies(u16 species, u8 mapBased, u8 type) //INTERNAL use only!
     case TX_RANDOM_T_EVO_METH:
         multiplier = 12289;
         break;
+    case TX_RANDOM_T_STATIC:
+        multiplier = 49157;
+        break;
     }
 
     if (gSaveBlock1Ptr->tx_Random_Similar)
@@ -13969,6 +13973,9 @@ u16 GetSpeciesRandomSeeded(u16 species, u8 type)
         result_species = GetRandomSpecies(species, mapBased, type);
         break;
     case TX_RANDOM_T_EVO_METH:
+        result_species = GetRandomSpecies(species, mapBased, type);
+        break;
+    case TX_RANDOM_T_STATIC:
         result_species = GetRandomSpecies(species, mapBased, type);
         break;
     }

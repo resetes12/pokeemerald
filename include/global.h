@@ -1047,6 +1047,7 @@ struct SaveBlock1
         u8 tx_Nuzlocke_Nicknaming:1;
         u8 tx_Challenges_Mirror:1;
         u8 tx_Challenges_Mirror_Thief:1;
+        u8 tx_Random_Static:1;
 };
 
 

@@ -1789,15 +1789,30 @@ static const u16 sRandomValidItems[] =
 #endif
 };
 
-u16 RandomItem(void)
+u16 RandomItemId(u16 itemId)
 {
-    u16 itemId = gSpecialVar_0x8000;
     u8 mapId = NuzlockeGetCurrentRegionMapSectionId();
-
-    if (ItemId_GetPocket(itemId) != POCKET_TM_HM)
-        itemId = ITEM_TM01 + RandomSeededModulo(itemId, 50);
+    if (ItemId_GetPocket(itemId) == POCKET_TM_HM)
+    {
+        if (itemId != ITEM_HM01
+            && itemId != ITEM_HM02
+            && itemId != ITEM_HM03
+            && itemId != ITEM_HM04
+            && itemId != ITEM_HM05
+            && itemId != ITEM_HM06
+            && itemId != ITEM_HM07
+            && itemId != ITEM_HM08)
+            itemId = ITEM_TM01 + RandomSeededModulo(itemId, 50);
+    }
     else if (ItemId_GetPocket(itemId) != POCKET_KEY_ITEMS)
         itemId = sRandomValidItems[RandomSeededModulo(itemId + mapId, RANDOM_ITEM_COUNT)];
+    
+    return itemId;
+}
+
+u16 RandomItem(void)
+{
+    u16 itemId = RandomItemId(gSpecialVar_0x8000);
 
     gSpecialVar_0x8000 = itemId;
     return itemId;
@@ -1805,17 +1820,10 @@ u16 RandomItem(void)
 
 u16 RandomItemHidden(void) //same as normal hidden item, but differen special var
 {
-    u16 item = gSpecialVar_0x8005;
-    u8 mapId = NuzlockeGetCurrentRegionMapSectionId();
+    u16 itemId = RandomItemId(gSpecialVar_0x8005);
 
-    if (item <= ITEM_YELLOW_SCARF) //standard items
-        item = sRandomValidItems[RandomSeededModulo(item + mapId, RANDOM_ITEM_COUNT)];
-    else if (item <= ITEM_DEVON_SCOPE) //key items
-        item = item;
-    else if (item <= ITEM_TM50) //tm's only, no hm's
-        item = ITEM_TM01 + RandomSeededModulo(item, 50);
-
-    gSpecialVar_0x8005 = item;
-
-    return item;
+    gSpecialVar_0x8005 = itemId;
+    return itemId;
 }
+
+

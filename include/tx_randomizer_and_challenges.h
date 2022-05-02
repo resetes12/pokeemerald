@@ -5,6 +5,7 @@
 // default options set by the dev
 #define TX_RANDOM_WILD_POKEMON          FALSE
 #define TX_RANDOM_TRAINER               FALSE
+#define TX_RANDOM_STATIC                FALSE
 #define TX_RANDOM_SIMILAR               TRUE
 #define TX_RANDOM_MAP_BASED             TRUE
 #define TX_RANDOM_INCLUDE_LEGENDARIES   FALSE
@@ -46,6 +47,7 @@
 #define TX_RANDOM_T_ABILITY         3
 #define TX_RANDOM_T_EVO             4
 #define TX_RANDOM_T_EVO_METH        5
+#define TX_RANDOM_T_STATIC          6
 
 void CB2_InitTxRandomizerChallengesMenu(void);
 void SaveData_TxRandomizerAndChallenges(void);

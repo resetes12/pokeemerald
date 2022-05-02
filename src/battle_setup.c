@@ -399,29 +399,7 @@ void BattleSetup_StartWildBattle(void)
         DoSafariBattle();
     else
     {
-        // tx_randomizer_and_challenges
-        u8 typeChallenge = gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge; //tx_randomizer_and_challenges
-        OneTypeChallengeCaptureBlocked = (typeChallenge != TX_CHALLENGE_TYPE_OFF && 
-                    GetTypeBySpecies(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES), 1) != typeChallenge && 
-                    GetTypeBySpecies(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES), 2) != typeChallenge);
-
-        if (IsNuzlockeActive())
-        {
-            NuzlockeIsSpeciesClauseActive = NuzlockeIsCaptureBlockedBySpeciesClause(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES));
-
-            NuzlockeIsCaptureBlocked = NuzlockeFlagGet(NuzlockeGetCurrentRegionMapSectionId());
-
-            if (IsMonShiny(&gEnemyParty[0]) && gSaveBlock1Ptr->tx_Nuzlocke_ShinyClause)
-            {
-                NuzlockeIsCaptureBlocked = FALSE;
-                NuzlockeIsSpeciesClauseActive = FALSE;
-            }
-        }
-        else
-        {
-            NuzlockeIsCaptureBlocked = FALSE;
-            NuzlockeIsSpeciesClauseActive = FALSE;
-        }
+        SetNuzlockeChecks(); // tx_randomizer_and_challenges
         DoStandardWildBattle();
     }
 }
@@ -1935,4 +1913,30 @@ u8 NuzlockeIsCaptureBlockedBySpeciesClause(u16 species) // @Kurausukun
             return TRUE;
     }
     return FALSE;
+}
+
+void SetNuzlockeChecks(void)
+{
+    u8 typeChallenge = gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge; //tx_randomizer_and_challenges
+        OneTypeChallengeCaptureBlocked = (typeChallenge != TX_CHALLENGE_TYPE_OFF && 
+                    GetTypeBySpecies(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES), 1) != typeChallenge && 
+                    GetTypeBySpecies(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES), 2) != typeChallenge);
+
+    if (IsNuzlockeActive())
+    {
+        NuzlockeIsSpeciesClauseActive = NuzlockeIsCaptureBlockedBySpeciesClause(GetMonData(&gEnemyParty[0], MON_DATA_SPECIES));
+
+        NuzlockeIsCaptureBlocked = NuzlockeFlagGet(NuzlockeGetCurrentRegionMapSectionId());
+
+        if (IsMonShiny(&gEnemyParty[0]) && gSaveBlock1Ptr->tx_Nuzlocke_ShinyClause)
+        {
+            NuzlockeIsCaptureBlocked = FALSE;
+            NuzlockeIsSpeciesClauseActive = FALSE;
+        }
+    }
+    else
+    {
+        NuzlockeIsCaptureBlocked = FALSE;
+        NuzlockeIsSpeciesClauseActive = FALSE;
+    }
 }

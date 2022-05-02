@@ -69,6 +69,8 @@ bool8 IsTrainerReadyForRematch(void);
 void ShouldTryGetTrainerScript(void);
 u16 CountBattledRematchTeams(u16 trainerId);
 
-u8 NuzlockeIsCaptureBlockedBySpeciesClause(u16 species); //tx_randomizer_and_challenges
+//tx_randomizer_and_challenges
+u8 NuzlockeIsCaptureBlockedBySpeciesClause(u16 species);
+void SetNuzlockeChecks(void);
 
 #endif // GUARD_BATTLE_SETUP_H
