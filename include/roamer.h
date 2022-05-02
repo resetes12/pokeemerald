@@ -37,25 +37,25 @@ bool8 TryAddStalker(u16 species, u8 level, bool8 doesNotFlee, bool8 isTerrestria
 extern u8 gEncounteredRoamerIndex;
 
 enum {
-	AMPHIBIOUS,
-	TERRESTRIAL,
+    AMPHIBIOUS,
+    TERRESTRIAL,
 };
 
 enum {
-	FLEES,
-	DOES_NOT_FLEE,
+    FLEES,
+    DOES_NOT_FLEE,
 };
 
 enum {
-	NOT_STALKER,
-	STALKER,
+    NOT_STALKER,
+    STALKER,
 };
 
 enum {
-	NO_RESPAWN,
-	DAILY_RESPAWN,
-	WEEKLY_RESPAWN,
-	INSTANT_RESPAWN,
+    NO_RESPAWN,
+    DAILY_RESPAWN,
+    WEEKLY_RESPAWN,
+    INSTANT_RESPAWN,
 };
 
 #endif // GUARD_ROAMER_H

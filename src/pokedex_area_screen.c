@@ -249,79 +249,79 @@ static void FindMapsWithMon(u16 species)
     if (sPokedexAreaScreen->alteringCaveId >= NUM_ALTERING_CAVE_TABLES)
         sPokedexAreaScreen->alteringCaveId = 0;
 
-	sPokedexAreaScreen->numOverworldAreas = 0;
-	sPokedexAreaScreen->numSpecialAreas = 0;
+    sPokedexAreaScreen->numOverworldAreas = 0;
+    sPokedexAreaScreen->numSpecialAreas = 0;
 
 	// Check if this species should be hidden from the area map.
 	// This only applies to Wynaut, to hide the encounters on Mirage Island.
-	for (i = 0; i < ARRAY_COUNT(sSpeciesHiddenFromAreaScreen); i++)
+    for (i = 0; i < ARRAY_COUNT(sSpeciesHiddenFromAreaScreen); i++)
 	{
-		if (sSpeciesHiddenFromAreaScreen[i] == species)
-			return;
+	    if (sSpeciesHiddenFromAreaScreen[i] == species)
+		    return;
 	}
 
 	// Add Pokémon with special encounter circumstances (i.e. not listed
 	// in the regular wild encounter table) to the area map.
 	// This only applies to Feebas on Route 119, but it was clearly set
 	// up to allow handling others.
-	for (i = 0; sFeebasData[i][0] != NUM_SPECIES; i++)
+    for (i = 0; sFeebasData[i][0] != NUM_SPECIES; i++)
 	{
-		if (species == sFeebasData[i][0])
+	    if (species == sFeebasData[i][0])
 		{
-			switch (sFeebasData[i][1])
+		    switch (sFeebasData[i][1])
 			{
-			case MAP_GROUP_TOWNS_AND_ROUTES:
-				SetAreaHasMon(sFeebasData[i][1], sFeebasData[i][2]);
-				break;
-			case MAP_GROUP_DUNGEONS:
-			case MAP_GROUP_SPECIAL_AREA:
-				SetSpecialMapHasMon(sFeebasData[i][1], sFeebasData[i][2]);
-				break;
+		    case MAP_GROUP_TOWNS_AND_ROUTES:
+			    SetAreaHasMon(sFeebasData[i][1], sFeebasData[i][2]);
+			    break;
+		    case MAP_GROUP_DUNGEONS:
+		    case MAP_GROUP_SPECIAL_AREA:
+			    SetSpecialMapHasMon(sFeebasData[i][1], sFeebasData[i][2]);
+			    break;
 			}
 		}
 	}
 
 	// Add regular species to the area map
-	for (i = 0; gWildMonHeaders[i].mapGroup != MAP_GROUP(UNDEFINED); i++)
+    for (i = 0; gWildMonHeaders[i].mapGroup != MAP_GROUP(UNDEFINED); i++)
 	{
-		if (MapHasSpecies(&gWildMonHeaders[i], species))
+	    if (MapHasSpecies(&gWildMonHeaders[i], species))
 		{
-			switch (gWildMonHeaders[i].mapGroup)
+		    switch (gWildMonHeaders[i].mapGroup)
 			{
-			case MAP_GROUP_TOWNS_AND_ROUTES:
-				SetAreaHasMon(gWildMonHeaders[i].mapGroup, gWildMonHeaders[i].mapNum);
-				break;
-			case MAP_GROUP_DUNGEONS:
-			case MAP_GROUP_SPECIAL_AREA:
-				SetSpecialMapHasMon(gWildMonHeaders[i].mapGroup, gWildMonHeaders[i].mapNum);
-				break;
+		    case MAP_GROUP_TOWNS_AND_ROUTES:
+			    SetAreaHasMon(gWildMonHeaders[i].mapGroup, gWildMonHeaders[i].mapNum);
+			    break;
+		    case MAP_GROUP_DUNGEONS:
+		    case MAP_GROUP_SPECIAL_AREA:
+			    SetSpecialMapHasMon(gWildMonHeaders[i].mapGroup, gWildMonHeaders[i].mapNum);
+			    break;
 			}
 		}
 	}
 	
-	for (i = 0; i < ROAMER_COUNT; i++)
+    for (i = 0; i < ROAMER_COUNT; i++)
 	{
-		roamer = &gSaveBlock1Ptr->roamer[i];
+	    roamer = &gSaveBlock1Ptr->roamer[i];
 #if SHOW_STALKERS_ON_POKEDEX
-		if (species == roamer->species)
+	    if (species == roamer->species)
 #else
-		if (species == roamer->species && !roamer->isStalker)
+	    if (species == roamer->species && !roamer->isStalker)
 #endif
 		{
 			// This is a roamer's species, show where this roamer is currently
-			if (roamer->active)
+		    if (roamer->active)
 			{
-				u8 mapGroup, mapNum;
-				GetRoamerLocation(i, &mapGroup, &mapNum);
-				switch (mapGroup)
+			    u8 mapGroup, mapNum;
+			    GetRoamerLocation(i, &mapGroup, &mapNum);
+			    switch (mapGroup)
 				{
-				case MAP_GROUP_TOWNS_AND_ROUTES:
-					SetAreaHasMon(mapGroup, mapNum);
-					break;
-				case MAP_GROUP_DUNGEONS:
-				case MAP_GROUP_SPECIAL_AREA:
-					SetSpecialMapHasMon(mapGroup, mapNum);
-					break;
+			    case MAP_GROUP_TOWNS_AND_ROUTES:
+				    SetAreaHasMon(mapGroup, mapNum);
+				    break;
+			    case MAP_GROUP_DUNGEONS:
+			    case MAP_GROUP_SPECIAL_AREA:
+				    SetSpecialMapHasMon(mapGroup, mapNum);
+				    break;
 				}
 				//don't break; Supports multiple roamers of the same species or species that already appear as normal encounters
 			}

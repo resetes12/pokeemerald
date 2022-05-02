@@ -203,8 +203,8 @@ void NewGameInitData(void)
     ResetTrainerHillResults();
     ResetContestLinkResults();
 #if MULTIPLE_ROAMERS_EXAMPLE	
-	InitRoamer();
-	FlagSet(FLAG_SYS_POKEDEX_GET);
+    InitRoamer();
+    FlagSet(FLAG_SYS_POKEDEX_GET);
 #endif
 }
 

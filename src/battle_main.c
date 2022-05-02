@@ -5199,7 +5199,7 @@ static void ReturnFromBattleToOverworld(void)
     {
         if (gBattleOutcome == B_OUTCOME_CAUGHT || ((gBattleOutcome & B_OUTCOME_WON) && !CanRoamerRespawn(gEncounteredRoamerIndex)))
             StopRoamer(gEncounteredRoamerIndex);
-		else if (gBattleOutcome & B_OUTCOME_WON) // and roamer can respawn
+	    else if (gBattleOutcome & B_OUTCOME_WON) // and roamer can respawn
             HandleRoamerRespawnTimer();
 		
         UpdateRoamerHPStatus(&gEnemyParty[0]);

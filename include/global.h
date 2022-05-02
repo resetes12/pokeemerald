@@ -563,25 +563,25 @@ struct Pokeblock
 
 struct Roamer
 {
-	/*0x00*/ u32 ivs;
-	/*0x04*/ u32 personality;
-	/*0x08*/ u16 species:11; // up to 2047 different species
-	/*0x09*/ u16 respawnMode:2; // 4 respawn modes
-	/*0x09*/ u16 daysToRespawn:3; // up to 7 days
-	/*0x0A*/ u16 damage; //track damage instead of HP to handle scaling roamers
-	/*0x0C*/ u8 level;
-	/*0x0D*/ u8 status;
-	/*0x0E*/ bool8 active:1; // 1 bit for TRUE or FALSE 
-	/*0x0E*/ bool8 isTerrestrial:1;
-	/*0x0E*/ bool8 doesNotFlee:1;
-	/*0x0E*/ bool8 isStalker:1;
-	/*0x0E*/ bool8 levelScaling:1;
-	/*0x0E*/ bool8 unused:3;
-	/*0x0F*/ u8 locationMapGroup;
-	/*0x10*/ u8 locationMapNum;
-	/*0x11*/ u8 mapGroupHistory[3];
-	/*0x14*/ u8 mapNumHistory[3];
-	/*0x17*/ u8 padding;
+    /*0x00*/ u32 ivs;
+    /*0x04*/ u32 personality;
+    /*0x08*/ u16 species:11; // up to 2047 different species
+    /*0x09*/ u16 respawnMode:2; // 4 respawn modes
+    /*0x09*/ u16 daysToRespawn:3; // up to 7 days
+    /*0x0A*/ u16 damage; //track damage instead of HP to handle scaling roamers
+    /*0x0C*/ u8 level;
+    /*0x0D*/ u8 status;
+    /*0x0E*/ bool8 active:1; // 1 bit for TRUE or FALSE 
+    /*0x0E*/ bool8 isTerrestrial:1;
+    /*0x0E*/ bool8 doesNotFlee:1;
+    /*0x0E*/ bool8 isStalker:1;
+    /*0x0E*/ bool8 levelScaling:1;
+    /*0x0E*/ bool8 unused:3;
+    /*0x0F*/ u8 locationMapGroup;
+    /*0x10*/ u8 locationMapNum;
+    /*0x11*/ u8 mapGroupHistory[3];
+    /*0x14*/ u8 mapNumHistory[3];
+    /*0x17*/ u8 padding;
 }; /*size = 0x18*/
 
 struct RamScriptData
