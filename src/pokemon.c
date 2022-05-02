@@ -12773,8 +12773,6 @@ u32 CanMonLearnTMHM(struct Pokemon *mon, u8 tm)
     u16 species = GetMonData(mon, MON_DATA_SPECIES2, 0);
     
     //tx_randomizer_and_challenges
-    if (IsNuzlockeActive() && (tm >= ITEM_HM01 - ITEM_TM01_FOCUS_PUNCH) )
-        return TRUE;
     if (gSaveBlock1Ptr->tx_Random_Moves)
         species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_MOVES);
 
@@ -12797,8 +12795,6 @@ u32 CanMonLearnTMHM(struct Pokemon *mon, u8 tm)
 u32 CanSpeciesLearnTMHM(u16 species, u8 tm)
 {
     //tx_randomizer_and_challenges
-    if (IsNuzlockeActive() && (tm >= ITEM_HM01 - ITEM_TM01_FOCUS_PUNCH) )
-        return TRUE;
     if (gSaveBlock1Ptr->tx_Random_Moves)
         species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_MOVES);
 

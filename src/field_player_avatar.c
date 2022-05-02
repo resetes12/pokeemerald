@@ -8,6 +8,7 @@
 #include "field_effect_helpers.h"
 #include "field_player_avatar.h"
 #include "fieldmap.h"
+#include "item.h" //tx_randomizer_and_challenges
 #include "menu.h"
 #include "metatile_behavior.h"
 #include "overworld.h"
@@ -29,6 +30,7 @@
 #include "constants/moves.h"
 #include "constants/songs.h"
 #include "constants/trainer_types.h"
+#include "tx_randomizer_and_challenges.h"
 
 #define NUM_FORCED_MOVEMENTS 18
 #define NUM_ACRO_BIKE_COLLISIONS 5
@@ -1286,6 +1288,9 @@ bool8 PartyHasMonWithSurf(void)
             if (MonKnowsMove(&gPlayerParty[i], MOVE_SURF))
                 return TRUE;
         }
+
+        if (CheckBagHasItem(ITEM_HM03, 1) && HMsOverwriteOptionActive())
+            return TRUE;
     }
     return FALSE;
 }
