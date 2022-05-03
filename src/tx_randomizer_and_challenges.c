@@ -255,6 +255,17 @@ u8 GetPartySize(void)
     return (6 - gSaveBlock1Ptr->tx_Challenges_PartyLimit);
 }
 
+u8 GetCurrentBadgeCount(void)
+{
+    u16 i, badgeCount = 0;
+    for (i = FLAG_BADGE01_GET; i < FLAG_BADGE01_GET + NUM_BADGES; i++) //count badges
+    {
+        if (FlagGet(i))
+            badgeCount++;
+    }
+    return badgeCount;
+}
+
 enum LevelCap {
     LEVEL_CAP_NO_BADGES,
     LEVEL_CAP_BADGE_1,
@@ -266,34 +277,34 @@ enum LevelCap {
     LEVEL_CAP_BADGE_7,
     LEVEL_CAP_BADGE_8
 };
-const u8 gLevelCapTable_Normal[] = 
+static const u8 sLevelCapTable_Normal[] = 
 {
-    [LEVEL_CAP_NO_BADGES] = 15,
-    [LEVEL_CAP_BADGE_1] = 19,
-    [LEVEL_CAP_BADGE_2] = 24,
-    [LEVEL_CAP_BADGE_3] = 29,
-    [LEVEL_CAP_BADGE_4] = 31,
-    [LEVEL_CAP_BADGE_5] = 33,
-    [LEVEL_CAP_BADGE_6] = 42,
-    [LEVEL_CAP_BADGE_7] = 46,
-    [LEVEL_CAP_BADGE_8] = 58,
+    [LEVEL_CAP_NO_BADGES]   = 15,
+    [LEVEL_CAP_BADGE_1]     = 19,
+    [LEVEL_CAP_BADGE_2]     = 24,
+    [LEVEL_CAP_BADGE_3]     = 29,
+    [LEVEL_CAP_BADGE_4]     = 31,
+    [LEVEL_CAP_BADGE_5]     = 33,
+    [LEVEL_CAP_BADGE_6]     = 42,
+    [LEVEL_CAP_BADGE_7]     = 46,
+    [LEVEL_CAP_BADGE_8]     = 58,
 };
-const u8 gLevelCapTable_Hard[] = 
+static const u8 sLevelCapTable_Hard[] = 
 {
-    [LEVEL_CAP_NO_BADGES] = 12,
-    [LEVEL_CAP_BADGE_1] = 16,
-    [LEVEL_CAP_BADGE_2] = 20,
-    [LEVEL_CAP_BADGE_3] = 24,
-    [LEVEL_CAP_BADGE_4] = 27,
-    [LEVEL_CAP_BADGE_5] = 29,
-    [LEVEL_CAP_BADGE_6] = 41,
-    [LEVEL_CAP_BADGE_7] = 41,
-    [LEVEL_CAP_BADGE_8] = 55,
+    [LEVEL_CAP_NO_BADGES]   = 12,
+    [LEVEL_CAP_BADGE_1]     = 16,
+    [LEVEL_CAP_BADGE_2]     = 20,
+    [LEVEL_CAP_BADGE_3]     = 24,
+    [LEVEL_CAP_BADGE_4]     = 27,
+    [LEVEL_CAP_BADGE_5]     = 29,
+    [LEVEL_CAP_BADGE_6]     = 41,
+    [LEVEL_CAP_BADGE_7]     = 41,
+    [LEVEL_CAP_BADGE_8]     = 55,
 };
 #define TX_CHALLENGE_LEVEL_CAP_DEBUG 0
 u8 GetCurrentPartyLevelCap(void)
 {
-    u16 i, badgeCount = 0;
+    u8 badgeCount = GetCurrentBadgeCount();
 
     if (TX_CHALLENGE_LEVEL_CAP_DEBUG != 0) //debug allways overwrites the rest
         return TX_CHALLENGE_LEVEL_CAP_DEBUG;
@@ -301,21 +312,62 @@ u8 GetCurrentPartyLevelCap(void)
     if (FlagGet(FLAG_IS_CHAMPION)) //after beating the E4 remove the cap
         return MAX_LEVEL;
 
-    for (i = FLAG_BADGE01_GET; i < FLAG_BADGE01_GET + NUM_BADGES; i++) //count badges
-    {
-        if (FlagGet(i))
-            badgeCount++;
-    }
-
     if (gSaveBlock1Ptr->tx_Challenges_LevelCap == 1) //normal level cap
-        return gLevelCapTable_Normal[badgeCount];
+        return sLevelCapTable_Normal[badgeCount];
 
     if (gSaveBlock1Ptr->tx_Challenges_LevelCap == 2) //hard level cap
-        return gLevelCapTable_Hard[badgeCount];
+        return sLevelCapTable_Hard[badgeCount];
 
     return MAX_LEVEL;
 }
 
+// Scaling IVs and EVs
+static const u8 sIV_Table[] = 
+{
+    [LEVEL_CAP_NO_BADGES]   = 7,
+    [LEVEL_CAP_BADGE_1]     = 10,
+    [LEVEL_CAP_BADGE_2]     = 13,
+    [LEVEL_CAP_BADGE_3]     = 16,
+    [LEVEL_CAP_BADGE_4]     = 19,
+    [LEVEL_CAP_BADGE_5]     = 22,
+    [LEVEL_CAP_BADGE_6]     = 25,
+    [LEVEL_CAP_BADGE_7]     = 28,
+    [LEVEL_CAP_BADGE_8]     = 31,
+};
+static const u8 sEV_Table[] = 
+{
+    [LEVEL_CAP_NO_BADGES]   = 12,
+    [LEVEL_CAP_BADGE_1]     = 24,
+    [LEVEL_CAP_BADGE_2]     = 36,
+    [LEVEL_CAP_BADGE_3]     = 48,
+    [LEVEL_CAP_BADGE_4]     = 60,
+    [LEVEL_CAP_BADGE_5]     = 72,
+    [LEVEL_CAP_BADGE_6]     = 80,
+    [LEVEL_CAP_BADGE_7]     = 100,
+    [LEVEL_CAP_BADGE_8]     = 128,
+};
+u8 GetCurrentTrainerIVs(void)
+{
+    u8 badgeCount = GetCurrentBadgeCount();
+
+    switch (gSaveBlock1Ptr->tx_Challenges_TrainerScalingIVsEVs)
+    {
+    case 1:     return sIV_Table[badgeCount];
+    default:    return MAX_PER_STAT_IVS;
+    }
+}
+u8 GetCurrentTrainerEVs(void)
+{
+    u8 badgeCount = GetCurrentBadgeCount();
+
+    switch (gSaveBlock1Ptr->tx_Challenges_TrainerScalingIVsEVs)
+    {
+    case 1:     return sEV_Table[badgeCount];
+    case 2:     return 128;
+    case 3:     return 252;
+    default:    return 0;
+    }
+}
 
 // Challenges
 

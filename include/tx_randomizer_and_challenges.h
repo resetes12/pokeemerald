@@ -39,6 +39,8 @@
 #define TX_CHALLENGE_TYPE TX_CHALLENGE_TYPE_OFF //TX_CHALLENGE_TYPE_OFF for off
 #define TX_CHALLENGE_MIRROR 0
 #define TX_CHALLENGE_MIRROR_THIEF 0
+#define TX_CHALLENGE_NO_EVS 0
+#define TX_CHALLENGE_SCALING_IVS_EVS 0
 
 // randomization types
 #define TX_RANDOM_T_WILD_POKEMON    0
@@ -67,6 +69,8 @@ void NuzlockeDeletePartyMon(u8 position);
 void NuzlockeDeleteFaintedPartyPokemon(void);
 u8 GetPartySize(void);
 u8 GetCurrentPartyLevelCap(void);
+u8 GetCurrentTrainerIVs(void);
+u8 GetCurrentTrainerEVs(void);
 
 void PrintTXSaveData(void);
 void TestRandomizerValues(u8 type);

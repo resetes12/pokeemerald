@@ -12516,6 +12516,9 @@ void MonGainEVs(struct Pokemon *mon, u16 defeatedSpecies)
     u8 holdEffect;
     int i, multiplier;
 
+    if (gSaveBlock1Ptr->tx_Challenges_NoEVs && !FlagGet(FLAG_IS_CHAMPION))
+        return;
+
     for (i = 0; i < NUM_STATS; i++)
     {
         evs[i] = GetMonData(mon, MON_DATA_HP_EV + i, 0);

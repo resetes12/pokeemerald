@@ -1048,6 +1048,8 @@ struct SaveBlock1
         u8 tx_Challenges_Mirror:1;
         u8 tx_Challenges_Mirror_Thief:1;
         u8 tx_Random_Static:1;
+        u8 tx_Challenges_NoEVs:1;
+        u8 tx_Challenges_TrainerScalingIVsEVs:2;
 };
 
 
