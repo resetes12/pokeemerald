@@ -924,24 +924,28 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         gSaveBlock1Ptr->tx_Random_Items                     = TX_RANDOM_ITEMS;
         gSaveBlock1Ptr->tx_Random_Chaos                     = TX_RANDOM_CHAOS_MODE;
         gSaveBlock1Ptr->tx_Random_OneForOne                 = TX_RANDOM_ONE_FOR_ONE;
-        gSaveBlock1Ptr->tx_Challenges_EvoLimit              = TX_CHALLENGE_EVO_LIMIT;
-        gSaveBlock1Ptr->tx_Challenges_PartyLimit            = TX_CHALLENGE_PARTY_LIMIT;
-        gSaveBlock1Ptr->tx_Challenges_Nuzlocke              = TX_CHALLENGE_NUZLOCKE;
-        gSaveBlock1Ptr->tx_Challenges_NuzlockeHardcore      = TX_CHALLENGE_NUZLOCKE_HARDCORE;
+
+        gSaveBlock1Ptr->tx_Challenges_Nuzlocke              = TX_NUZLOCKE_NUZLOCKE;
+        gSaveBlock1Ptr->tx_Challenges_NuzlockeHardcore      = TX_NUZLOCKE_NUZLOCKE_HARDCORE;
         gSaveBlock1Ptr->tx_Nuzlocke_SpeciesClause           = TX_NUZLOCKE_SPECIES_CLAUSE;
         gSaveBlock1Ptr->tx_Nuzlocke_ShinyClause             = TX_NUZLOCKE_SHINY_CLAUSE;
         gSaveBlock1Ptr->tx_Nuzlocke_Nicknaming              = TX_NUZLOCKE_NICKNAMING;
-        gSaveBlock1Ptr->tx_Challenges_LevelCap              = TX_CHALLENGE_LEVEL_CAP;
-        gSaveBlock1Ptr->tx_Challenges_ExpMultiplier         = TX_CHALLENGE_EXP_MULTIPLIER;
-        gSaveBlock1Ptr->tx_Challenges_NoItemPlayer          = TX_CHALLENGE_NO_ITEM_PLAYER;
-        gSaveBlock1Ptr->tx_Challenges_NoItemTrainer         = TX_CHALLENGE_NO_ITEM_TRAINER;
-        gSaveBlock1Ptr->tx_Challenges_PkmnCenter            = TX_CHALLENGE_PKMN_CENTER;
+    
+        gSaveBlock1Ptr->tx_Challenges_PartyLimit            = TX_DIFFICULTY_PARTY_LIMIT;
+        gSaveBlock1Ptr->tx_Challenges_LevelCap              = TX_DIFFICULTY_LEVEL_CAP;
+        gSaveBlock1Ptr->tx_Challenges_ExpMultiplier         = TX_DIFFICULTY_EXP_MULTIPLIER;
+        gSaveBlock1Ptr->tx_Challenges_NoItemPlayer          = TX_DIFFICULTY_NO_ITEM_PLAYER;
+        gSaveBlock1Ptr->tx_Challenges_NoItemTrainer         = TX_DIFFICULTY_NO_ITEM_TRAINER;
+        gSaveBlock1Ptr->tx_Challenges_NoEVs                 = TX_DIFFICULTY_NO_EVS;
+        gSaveBlock1Ptr->tx_Challenges_TrainerScalingIVsEVs  = TX_DIFFICULTY_SCALING_IVS_EVS;
+        gSaveBlock1Ptr->tx_Challenges_PkmnCenter            = TX_DIFFICULTY_PKMN_CENTER;
+
+        gSaveBlock1Ptr->tx_Challenges_EvoLimit              = TX_CHALLENGE_EVO_LIMIT;
         gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge      = TX_CHALLENGE_TYPE;
         gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer     = TX_CHALLENGE_BASE_STAT_EQUALIZER;
         gSaveBlock1Ptr->tx_Challenges_Mirror                = TX_CHALLENGE_MIRROR;
         gSaveBlock1Ptr->tx_Challenges_Mirror_Thief          = TX_CHALLENGE_MIRROR_THIEF;
-        gSaveBlock1Ptr->tx_Challenges_NoEVs                 = TX_CHALLENGE_NO_EVS;
-        gSaveBlock1Ptr->tx_Challenges_TrainerScalingIVsEVs  = TX_CHALLENGE_SCALING_IVS_EVS;
+               
 
         sOptions = AllocZeroed(sizeof(*sOptions));
         sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON]                     = FALSE;
