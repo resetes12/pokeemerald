@@ -81,9 +81,7 @@ Your pokemon turned to face the other way, showing a defiant expression.
 Music (Special):
 Map feature:
 {STR_VAR_1} is pulling out the grass.
-{STR_VAR_1} is happy to see what's out doors!
 {STR_VAR_1} is listening intently to the sound of the waves.
-Your pokemon is staring spellbound at the night sky!
 Your pokemon seems to be enjoying sliding around!
 {STR_VAR_1} is steadily observing the flow of the river.
 {STR_VAR_1} is noticing the scent of the grass.
@@ -95,7 +93,6 @@ Misc:
 {STR_VAR_1} is playing around in the fallen leaves.
 {STR_VAR_1} is playing around with a leaf.
 {STR_VAR_1} is playing around, touching the leaves.
-Your pokemon is happily gazing at the beautiful, starry sky!
 {STR_VAR_1} is rolling around in the grass.
 {STR_VAR_1} seems to want to return to the lab (after you receive the Mystery egg).
 Your pokemon is staring at the various items.
@@ -106,10 +103,8 @@ Your pokemon is staring at the various items.
 {STR_VAR_1} swayed around, dancing in a strange manner.(Seems to occur more for Bellsprout)(sprout tower).
 {STR_VAR_1} swayed and danced around as it pleased (Seems to occur more for Bellsprout)(sprout tower).
 Your Pokemon is playing around and splashing in the water! (Water's edge).
-{STR_VAR_1} is looking up at the sky.
 {STR_VAR_1} is poking at garbage (Goldenrods underground path).
 Your pokemon is rolling a screw from a bicycle around.
-{STR_VAR_1} is looking up at the sky.
 {STR_VAR_1} is clawing the grass!
 {STR_VAR_1} is looking around restlessly at the Forest.
 {STR_VAR_1} is playfully nibbling at the ground.

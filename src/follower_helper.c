@@ -2,6 +2,7 @@
 #include "data.h"
 #include "event_scripts.h"
 #include "follower_helper.h"
+#include "overworld.h"
 #include "constants/battle.h"
 #include "constants/metatile_behaviors.h"
 #include "constants/pokemon.h"
@@ -65,9 +66,15 @@ static const u8 sCondMsg40[] = _("{STR_VAR_1} is gnawing at the ice.");
 static const u8 sCondMsg41[] = _("{STR_VAR_1} is touching the ice.");
 static const u8* const sIceTexts[] = {sCondMsg26, sCondMsg40, sCondMsg41, NULL};
 static const u8 sCondMsg42[] = _("{STR_VAR_1}'s burn looks painful!");
+static const u8 sCondMsg43[] = _("{STR_VAR_1} is happy to see what's\noutdoors!");
+static const u8 sCondMsg44[] = _("{STR_VAR_1} is looking up at the\nsky.");
+static const u8* const sDayTexts[] = {sCondMsg43, sCondMsg44, NULL};
+static const u8 sCondMsg45[] = _("Your POKéMON is staring spellbound\nat the night sky!");
+static const u8 sCondMsg46[] = _("Your POKéMON is happily gazing at\nthe beautiful, starry sky!");
+static const u8* const sNightTexts[] = {sCondMsg45, sCondMsg46, NULL};
 
 // Note that the size of this array must also be correct in event_object_movement
-const struct FollowerMsgInfoExtended gFollowerConditionalMessages[28] = {
+const struct FollowerMsgInfoExtended gFollowerConditionalMessages[30] = {
     {
     .text = (u8*)sCelebiTexts,
     .textSpread = 1,
@@ -265,5 +272,19 @@ const struct FollowerMsgInfoExtended gFollowerConditionalMessages[28] = {
     .st = {.status STATUS1_BURN},
     .stFlags 3, // STATUS
     .emotion = FOLLOWER_EMOTION_SAD,
+    },
+    {
+    .text = (u8*)sDayTexts,
+    .textSpread = 1,
+    .wt = {.timeOfDay = TIME_OF_DAY_DAY},
+    .wtFlags = 3, // time
+    .emotion = FOLLOWER_EMOTION_MUSIC,
+    },
+    {
+    .text = (u8*)sNightTexts,
+    .textSpread = 1,
+    .wt = {.timeOfDay = TIME_OF_DAY_NIGHT},
+    .wtFlags = 3, // time
+    .emotion = FOLLOWER_EMOTION_MUSIC,
     },
 };

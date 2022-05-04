@@ -1944,9 +1944,6 @@ bool8 ScrFunc_getfolloweraction(struct ScriptContext *ctx) // Essentially a big 
     emotion_weight[FOLLOWER_EMOTION_LOVE] = 30;
   }
   // Conditional messages follow
-  // Weather-related
-  if (GetCurrentWeather() == WEATHER_SUNNY_CLOUDS)
-    cond_emotes[n_choices++] = (struct SpecialEmote) {.emotion=FOLLOWER_EMOTION_HAPPY, .index=31};
   // Health & status-related
   multi = mon->hp * 100 / mon->maxHP;
   if (multi < 20) {
@@ -2027,7 +2024,7 @@ bool8 ScrFunc_getfolloweraction(struct ScriptContext *ctx) // Essentially a big 
   }
   // Match scripted conditional messages
   // With 50% chance, try to match scripted conditional messages
-  for (i = (Random() & 1) ? 28 : 0, j = 1; i < 28; i++) {
+  for (i = (Random() & 1) ? 30 : 0, j = 1; i < 30; i++) {
       const struct FollowerMsgInfoExtended *info = &gFollowerConditionalMessages[i];
       if (info->stFlags == 1 && species != info->st.species)
         continue;
@@ -2044,6 +2041,8 @@ bool8 ScrFunc_getfolloweraction(struct ScriptContext *ctx) // Essentially a big 
       if (info->wtFlags == 1 && !(GetCurrentWeather() == info->wt.weather.weather1 || GetCurrentWeather() == info->wt.weather.weather2))
         continue;
       if (info->wtFlags == 2 && GetCurrentMapMusic() != info->wt.song)
+        continue;
+      if (info->wtFlags == 3 && (!MapHasNaturalLight(gMapHeader.mapType) || gTimeOfDay != info->wt.timeOfDay || GetCurrentWeather() >= WEATHER_RAIN))
         continue;
       if (info->nearFlags == 1) {
         if ((multi2 = FindMetatileBehaviorWithinRange(objEvent->currentCoords.x, objEvent->currentCoords.y, info->near.mb.behavior, info->near.mb.distance)))
