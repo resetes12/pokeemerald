@@ -494,7 +494,10 @@ static void ApplyGammaShift(u8 startPalIndex, u8 numPalettes, s8 gammaIndex)
             {
                 u8 r, g, b;
 
-                if (sPaletteGammaTypes[curPalIndex] == GAMMA_ALT || curPalIndex - 16 == gWeatherPtr->altGammaSpritePalIndex)
+                // don't blend special sprite palette tags
+                if (sPaletteGammaTypes[curPalIndex] == GAMMA_ALT ||
+                    (curPalIndex >= 16 && (curPalIndex - 16 == gWeatherPtr->altGammaSpritePalIndex ||
+                        GetSpritePaletteTagByPaletteNum(curPalIndex - 16) >> 15)))
                     gammaTable = gWeatherPtr->altGammaShifts[gammaIndex];
                 else
                     gammaTable = gWeatherPtr->gammaShifts[gammaIndex];
