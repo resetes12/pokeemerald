@@ -350,7 +350,7 @@ u8 GetCurrentTrainerIVs(void)
 {
     u8 badgeCount = GetCurrentBadgeCount();
 
-    switch (gSaveBlock1Ptr->tx_Challenges_TrainerScalingIVsEVs)
+    switch (gSaveBlock1Ptr->tx_Challenges_TrainerScalingIVs)
     {
     case 1:     return sIV_Table[badgeCount];
     default:    return MAX_PER_STAT_IVS;
@@ -360,7 +360,7 @@ u8 GetCurrentTrainerEVs(void)
 {
     u8 badgeCount = GetCurrentBadgeCount();
 
-    switch (gSaveBlock1Ptr->tx_Challenges_TrainerScalingIVsEVs)
+    switch (gSaveBlock1Ptr->tx_Challenges_TrainerScalingEVs)
     {
     case 1:     return sEV_Table[badgeCount];
     case 2:     return 128;

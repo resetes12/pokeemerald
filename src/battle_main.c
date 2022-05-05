@@ -2129,23 +2129,26 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
         gBattleTypeFlags |= gTrainers[trainerNum].doubleBattle;
 
         //tx_randomizer_and_challenges
-        if (gSaveBlock1Ptr->tx_Challenges_TrainerScalingIVsEVs && !FlagGet(FLAG_IS_CHAMPION))
+        if (gSaveBlock1Ptr->tx_Challenges_TrainerScalingIVs && !FlagGet(FLAG_IS_CHAMPION))
         {
             u8 iv = GetCurrentTrainerIVs();
-            u8 ev = GetCurrentTrainerEVs();
 
             for (i = 0; i < monsCount; i++)
             {
-                #ifdef GBA_PRINTF
-                for (j=0; j<7; j++)
-                    mgba_printf(MGBA_LOG_DEBUG, "Stats=%d", GetMonData(&party[i], MON_DATA_HP + j));
-                #endif
-
                 for (j = 0; j < 6; j++)
                 {
                     SetMonData(&party[i], MON_DATA_HP_IV + j, &iv);
                 }
 
+                CalculateMonStats(&party[i]);
+            }
+        }
+        if (gSaveBlock1Ptr->tx_Challenges_TrainerScalingEVs && !FlagGet(FLAG_IS_CHAMPION))
+        {
+            u8 ev = GetCurrentTrainerEVs();
+
+            for (i = 0; i < monsCount; i++)
+            {
                 // set EVs for HP, speed and the higher of either attack and defense stat
                 SetMonData(&party[i], MON_DATA_HP_EV, &ev);
                 SetMonData(&party[i], MON_DATA_SPEED_EV, &ev);
@@ -2159,11 +2162,6 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                     SetMonData(&party[i], MON_DATA_SPDEF_EV, &ev);
 
                 CalculateMonStats(&party[i]);
-
-                #ifdef GBA_PRINTF
-                for (j=0; j<7; j++)
-                    mgba_printf(MGBA_LOG_DEBUG, "stats after=%d", GetMonData(&party[i], MON_DATA_HP + j));
-                #endif
             }
         }
 
