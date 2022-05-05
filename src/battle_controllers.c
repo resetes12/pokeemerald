@@ -578,6 +578,14 @@ static void InitLinkBtlControllers(void)
     }
 }
 
+bool32 IsValidForBattle(struct Pokemon *mon)
+{
+    u32 species = GetMonData(mon, MON_DATA_SPECIES2);
+    return (species != SPECIES_NONE && species != SPECIES_EGG
+             && GetMonData(mon, MON_DATA_HP) != 0
+             && GetMonData(mon, MON_DATA_IS_EGG) == 0);
+}
+
 static void SetBattlePartyIds(void)
 {
     s32 i, j;
@@ -617,11 +625,7 @@ static void SetBattlePartyIds(void)
                 {
                     if (GET_BATTLER_SIDE2(i) == B_SIDE_PLAYER)
                     {
-                        if (GetMonData(&gPlayerParty[j], MON_DATA_HP) != 0
-                         && GetMonData(&gPlayerParty[j], MON_DATA_SPECIES) != SPECIES_NONE  // Probably a typo by Game Freak. The rest use SPECIES2.
-                         && GetMonData(&gPlayerParty[j], MON_DATA_SPECIES2) != SPECIES_EGG
-                         && GetMonData(&gPlayerParty[j], MON_DATA_IS_EGG) == 0
-                         && gBattlerPartyIndexes[i - 2] != j)
+                        if (IsValidForBattle(&gPlayerParty[j]) && gBattlerPartyIndexes[i - 2] != j)
                         {
                             gBattlerPartyIndexes[i] = j;
                             break;
@@ -639,6 +643,11 @@ static void SetBattlePartyIds(void)
                             break;
                         }
                     }
+                    // No valid mons were found. Add the empty slot.
+                    if (gBattlerPartyIndexes[i - 2] == 0)
+                        gBattlerPartyIndexes[i] = 1;
+                    else
+                        gBattlerPartyIndexes[i] = 0;
                 }
             }
         }
