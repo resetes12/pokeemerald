@@ -382,7 +382,7 @@ u16 GetStarterPokemon(u16 chosenStarterId)
                 break;
         }
         #ifdef GBA_PRINTF
-            mgba_printf(MGBA_LOG_DEBUG, "typeChallenge = %d = %s; iteratrions=%d", typeChallenge, ConvertToAscii(gTypeNames[typeChallenge]), i);
+            mgba_printf(MGBA_LOG_DEBUG, "typeChallenge = %d; iteratrions=%d", typeChallenge, i);
         #endif
     }
     else if (gSaveBlock1Ptr->tx_Random_WildPokemon)

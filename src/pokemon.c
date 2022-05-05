@@ -13827,7 +13827,7 @@ u16 PickRandomStarter(u16 species)
     if (gSaveBlock1Ptr->tx_Random_Chaos)
         return sRandomSpeciesLegendary[RandomSeededModulo(species, RANDOM_SPECIES_COUNT_LEGENDARY)];
     
-    if (gSaveBlock1Ptr->tx_Random_Similar)
+    if (gSaveBlock1Ptr->tx_Random_Similar && !gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge)
         return gRandomSpeciesEvo0[RandomSeededModulo(species*24593, RANDOM_SPECIES_EVO_0_COUNT)];
 
     if (gSaveBlock1Ptr->tx_Random_IncludeLegendaries)
