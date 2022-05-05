@@ -84,7 +84,7 @@ void ShuffleListU8(u8 *list, u8 count, u8 seed)
         list[i] = arr;
     }
 }
-void ShuffleListU16(u16 *list, u16 count, u16 seed)
+void ShuffleListU16(u16 *list, u16 count, u32 seed)
 {
     u16 i;
 
