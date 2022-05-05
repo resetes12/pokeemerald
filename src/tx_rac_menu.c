@@ -450,7 +450,6 @@ static bool8 CheckConditions(int selection)
     case MENU_RANDOMIZER:
         switch(selection)
         {
-            case MENUITEM_RANDOM_OFF_ON:                    return TRUE;
             case MENUITEM_RANDOM_WILD_PKMN:                 return sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON];
             case MENUITEM_RANDOM_TRAINER:                   return sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON];
             case MENUITEM_RANDOM_STATIC:                    return sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON];
@@ -479,40 +478,26 @@ static bool8 CheckConditions(int selection)
                                                                 || sOptions->sel_randomizer[MENUITEM_RANDOM_EVOLUTIONS]
                                                                 || sOptions->sel_randomizer[MENUITEM_RANDOM_EVOLUTIONS_METHODS]
                                                                 || sOptions->sel_randomizer[MENUITEM_RANDOM_TYPE_EFFEC]);
-            case MENUITEM_RANDOM_NEXT:                      return TRUE;
+            default:                                        return TRUE;
         }
     case MENU_NUZLOCKE:
         switch(selection)
         {
-        case MENUITEM_NUZLOCKE_NUZLOCKE:        return TRUE;
         case MENUITEM_NUZLOCKE_SPECIES_CLAUSE:  return sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NUZLOCKE];
         case MENUITEM_NUZLOCKE_SHINY_CLAUSE:    return sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NUZLOCKE];
         case MENUITEM_NUZLOCKE_NICKNAMING:      return sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NUZLOCKE];
-        case MENUITEM_NUZLOCKE_NEXT:            return TRUE;
+        default:                                return TRUE;
         }
     case MENU_DIFFICULTY:
         switch(selection)
         {
-        case MENUITEM_DIFFICULTY_PARTY_LIMIT:       return TRUE;
-        case MENUITEM_DIFFICULTY_LEVEL_CAP:         return TRUE;
-        case MENUITEM_DIFFICULTY_EXP_MULTIPLIER:    return TRUE;
-        case MENUITEM_DIFFICULTY_ITEM_PLAYER:       return TRUE;
-        case MENUITEM_DIFFICULTY_ITEM_TRAINER:      return TRUE;
-        case MENUITEM_DIFFICULTY_NO_EVS:            return TRUE;
-        case MENUITEM_DIFFICULTY_SCALING_IVS:       return TRUE;
-        case MENUITEM_DIFFICULTY_SCALING_EVS:       return TRUE;
-        case MENUITEM_DIFFICULTY_POKECENTER:        return TRUE;
-        case MENUITEM_DIFFICULTY_NEXT:              return TRUE;
+        default:       return TRUE;;
         }
     case MENU_CHALLENGES:
         switch(selection)
         {
-        case MENUITEM_CHALLENGES_EVO_LIMIT:            return TRUE;
-        case MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE:   return TRUE;
-        case MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER:  return TRUE;
-        case MENUITEM_CHALLENGES_MIRROR:               return TRUE;
-        case MENUITEM_CHALLENGES_MIRROR_THIEF:         return sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR];
-        case MENUITEM_CHALLENGES_SAVE:                 return TRUE;
+        case MENUITEM_CHALLENGES_MIRROR_THIEF:  return sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR];
+        default:                                return TRUE;
         }
     }
 }
