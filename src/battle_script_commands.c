@@ -10217,7 +10217,7 @@ static void Cmd_trygivecaughtmonnick(void)
         }
         break;
     case 4:
-        if (CalculatePlayerPartyCount() == GetPartySize()) //tx_randomizer_and_challenges
+        if (CalculatePlayerPartyCount() == GetMaxPartySize()) //tx_randomizer_and_challenges
             gBattlescriptCurrInstr += 5;
         else if (typeChallenge != TX_CHALLENGE_TYPE_OFF && //tx_randomizer_and_challenges
                             GetTypeBySpecies(GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_SPECIES), 1) != typeChallenge && 

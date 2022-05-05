@@ -67,7 +67,7 @@ u8 NuzlockeFlagSet(u16 mapsec);
 u8 NuzlockeFlagClear(u16 mapsec);
 void NuzlockeDeletePartyMon(u8 position);
 void NuzlockeDeleteFaintedPartyPokemon(void);
-u8 GetPartySize(void);
+u8 GetMaxPartySize(void);
 u8 GetCurrentPartyLevelCap(void);
 u8 GetCurrentTrainerIVs(void);
 u8 GetCurrentTrainerEVs(void);

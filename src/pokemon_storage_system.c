@@ -1427,7 +1427,7 @@ u8 CountPartyNonEggMons(void)
 {
     u16 i, count;
 
-    for (i = 0, count = 0; i < GetPartySize(); i++) //tx_randomizer_and_challenges
+    for (i = 0, count = 0; i < GetMaxPartySize(); i++) //tx_randomizer_and_challenges
     {
         if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) != SPECIES_NONE
             && !GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG))
@@ -1586,7 +1586,7 @@ static void Task_PCMainMenu(u8 taskId)
             DestroyTask(taskId);
             break;
         default:
-            if (task->tInput == OPTION_WITHDRAW && CountPartyMons() == GetPartySize()) //tx_randomizer_and_challenges
+            if (task->tInput == OPTION_WITHDRAW && CountPartyMons() == GetMaxPartySize()) //tx_randomizer_and_challenges
             {
                 // Can't withdraw
                 FillWindowPixelBuffer(0, PIXEL_FILL(1));
@@ -2800,7 +2800,7 @@ static void Task_WithdrawMon(u8 taskId)
     switch (sStorage->state)
     {
     case 0:
-        if (CalculatePlayerPartyCount() == GetPartySize())
+        if (CalculatePlayerPartyCount() == GetMaxPartySize())
         {
             PrintMessage(MSG_PARTY_FULL);
             sStorage->state = 1;
@@ -5835,7 +5835,7 @@ static void GetCursorCoordsByPos(u8 cursorArea, u8 cursorPosition, u16 *x, u16 *
             *x = 104;
             *y = 52;
         }
-        else if (cursorPosition == GetPartySize()) //tx_randomizer_and_challenges
+        else if (cursorPosition == GetMaxPartySize()) //tx_randomizer_and_challenges
         {
             *x = 152;
             *y = 132;
@@ -6831,7 +6831,7 @@ static void TryRefreshDisplayMon(void)
         switch (sCursorArea)
         {
         case CURSOR_AREA_IN_PARTY:
-            if (sCursorPosition < GetPartySize()) //tx_randomizer_and_challenges
+            if (sCursorPosition < GetMaxPartySize()) //tx_randomizer_and_challenges
             {
                 SetDisplayMonData(&gPlayerParty[sCursorPosition], MODE_PARTY);
                 break;
@@ -7332,14 +7332,14 @@ static u8 HandleInput_InParty(void)
         if (JOY_REPEAT(DPAD_UP))
         {
             if (--cursorPosition < 0)
-                cursorPosition = GetPartySize(); //tx_randomizer_and_challenges;
+                cursorPosition = GetMaxPartySize(); //tx_randomizer_and_challenges;
             if (cursorPosition != sCursorPosition)
                 retVal = INPUT_MOVE_CURSOR;
             break;
         }
         else if (JOY_REPEAT(DPAD_DOWN))
         {
-            if (++cursorPosition > GetPartySize()) //tx_randomizer_and_challenges
+            if (++cursorPosition > GetMaxPartySize()) //tx_randomizer_and_challenges
                 cursorPosition = 0;
             if (cursorPosition != sCursorPosition)
                 retVal = INPUT_MOVE_CURSOR;
@@ -7370,7 +7370,7 @@ static u8 HandleInput_InParty(void)
 
         if (JOY_NEW(A_BUTTON))
         {
-            if (sCursorPosition == GetPartySize()) //tx_randomizer_and_challenges
+            if (sCursorPosition == GetMaxPartySize()) //tx_randomizer_and_challenges
             {
                 if (sStorage->boxOption == OPTION_DEPOSIT)
                     return INPUT_CLOSE_BOX;

@@ -10940,13 +10940,13 @@ u8 GiveMonToPlayer(struct Pokemon *mon)
     SetMonData(mon, MON_DATA_OT_GENDER, &gSaveBlock2Ptr->playerGender);
     SetMonData(mon, MON_DATA_OT_ID, gSaveBlock2Ptr->playerTrainerId);
 
-    for (i = 0; i < GetPartySize(); i++) //tx_randomizer_and_challenges
+    for (i = 0; i < GetMaxPartySize(); i++) //tx_randomizer_and_challenges
     {
         if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, NULL) == SPECIES_NONE)
             break;
     }
 
-    if (i >= GetPartySize()) //tx_randomizer_and_challenges
+    if (i >= GetMaxPartySize()) //tx_randomizer_and_challenges
         return SendMonToPC(mon);
 
     if (typeChallenge != TX_CHALLENGE_TYPE_OFF && 
@@ -10997,7 +10997,7 @@ u8 CalculatePlayerPartyCount(void)
 {
     gPlayerPartyCount = 0;
 
-    while (gPlayerPartyCount < GetPartySize() //tx_randomizer_and_challenges
+    while (gPlayerPartyCount < GetMaxPartySize() //tx_randomizer_and_challenges
         && GetMonData(&gPlayerParty[gPlayerPartyCount], MON_DATA_SPECIES, NULL) != SPECIES_NONE)
     {
         gPlayerPartyCount++;
@@ -11134,7 +11134,7 @@ bool8 IsPlayerPartyAndPokemonStorageFull(void)
 {
     s32 i;
 
-    for (i = 0; i < GetPartySize(); i++)
+    for (i = 0; i < GetMaxPartySize(); i++)
         if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, NULL) == SPECIES_NONE)
             return FALSE;
 

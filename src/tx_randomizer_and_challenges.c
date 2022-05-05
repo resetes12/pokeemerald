@@ -250,7 +250,7 @@ void NuzlockeDeleteFaintedPartyPokemon(void) // @Kurausukun
 }
 
 // Difficulty
-u8 GetPartySize(void)
+u8 GetMaxPartySize(void)
 {
     return (6 - gSaveBlock1Ptr->tx_Challenges_PartyLimit);
 }

@@ -27,7 +27,7 @@ EventScript_TryDoDoubleTrainerBattle::
 	call EventScript_RevealTrainer
 	specialvar VAR_RESULT, GetTrainerFlag
 	goto_if_ne VAR_RESULT, FALSE, EventScript_NoDoubleTrainerBattle
-	specialvar VAR_RESULT, GetPartySize
+	specialvar VAR_RESULT, GetMaxPartySize
 	goto_if_eq VAR_RESULT, 1, EventScript_TryDoDoubleTrainerBattle_PartyLimitOne
 	special HasEnoughMonsForDoubleBattle
 	goto_if_ne VAR_RESULT, PLAYER_HAS_TWO_USABLE_MONS, EventScript_NotEnoughMonsForDoubleBattle
@@ -77,7 +77,7 @@ EventScript_NoRematchTrainerBattle::
 EventScript_TryDoDoubleRematchBattle::
 	specialvar VAR_RESULT, IsTrainerReadyForRematch
 	goto_if_eq VAR_RESULT, FALSE, EventScript_NoDoubleRematchTrainerBattle
-	specialvar VAR_RESULT, GetPartySize
+	specialvar VAR_RESULT, GetMaxPartySize
 	goto_if_eq VAR_RESULT, 1, EventScript_TryDoDoubleRematchBattle_PartyLimitOne
 	special HasEnoughMonsForDoubleBattle
 	goto_if_ne VAR_RESULT, PLAYER_HAS_TWO_USABLE_MONS, EventScript_NotEnoughMonsForDoubleRematchBattle
