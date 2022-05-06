@@ -721,27 +721,33 @@ static const u8 sText_TopBar_Challenges[]       = _("CHALLENGES");
 static void DrawTopBarText(void)
 {
     const u8 color[3] = { TEXT_DYNAMIC_COLOR_6, TEXT_COLOR_WHITE, TEXT_COLOR_OPTIONS_GRAY_FG };
+    int width = 0;
+    int right = 240 - GetStringWidth(FONT_SMALL, sText_TopBar_Right, 0) - 5;
 
     FillWindowPixelBuffer(WIN_TOPBAR, PIXEL_FILL(15));
     switch (sOptions->submenu)
     {
         case MENU_RANDOMIZER:
-            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 98, 1, color, 0, sText_TopBar_Randomizer);
-            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 190, 1, color, 0, sText_TopBar_Right);
+            width = GetStringWidth(FONT_SMALL, sText_TopBar_Randomizer, 0) / 2;
+            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 120-width, 1, color, 0, sText_TopBar_Randomizer);
+            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, right, 1, color, 0, sText_TopBar_Right);
             break;
         case MENU_NUZLOCKE:
-            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 2, 1, color, 0, sText_TopBar_Left);
-            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 98, 1, color, 0, sText_TopBar_Nuzlocke);
-            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 190, 1, color, 0, sText_TopBar_Right);
+            width = GetStringWidth(FONT_SMALL, sText_TopBar_Nuzlocke, 0) / 2;
+            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 5, 1, color, 0, sText_TopBar_Left);
+            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 120-width, 1, color, 0, sText_TopBar_Nuzlocke);
+            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, right, 1, color, 0, sText_TopBar_Right);
             break;
         case MENU_DIFFICULTY:
-            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 2, 1, color, 0, sText_TopBar_Left);
-            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 98, 1, color, 0, sText_TopBar_Difficulty);
-            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 190, 1, color, 0, sText_TopBar_Right);
+            width = GetStringWidth(FONT_SMALL, sText_TopBar_Difficulty, 0) / 2;
+            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 5, 1, color, 0, sText_TopBar_Left);
+            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 120-width, 1, color, 0, sText_TopBar_Difficulty);
+            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, right, 1, color, 0, sText_TopBar_Right);
             break;
         case MENU_CHALLENGES:
-            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 2, 1, color, 0, sText_TopBar_Left);
-            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 98, 1, color, 0, sText_TopBar_Challenges);
+            width = GetStringWidth(FONT_SMALL, sText_TopBar_Challenges, 0) / 2;
+            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 5, 1, color, 0, sText_TopBar_Left);
+            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 120-width, 1, color, 0, sText_TopBar_Challenges);
             break;
     }
     PutWindowTilemap(WIN_TOPBAR);
@@ -1722,19 +1728,23 @@ static void DrawChoices_Challenges_ScalingEVs(int selection, int y)
     DrawChoices_Options_Four(sText_ScalingEVs_Strings, selection, y, active);
 }
 
-
+static const u8 sText_Challenges_PartyLimit_1[]  = _("1");
+static const u8 sText_Challenges_PartyLimit_2[]  = _("2");
+static const u8 sText_Challenges_PartyLimit_3[]  = _("3");
+static const u8 sText_Challenges_PartyLimit_4[]  = _("4");
+static const u8 sText_Challenges_PartyLimit_5[]  = _("5");
 static void DrawChoices_Challenges_PartyLimit(int selection, int y)
 {
     bool8 active = CheckConditions(MENUITEM_DIFFICULTY_PARTY_LIMIT);
-    u8 n = 6 - selection;
-    if (selection == 0)
-        DrawOptionMenuChoice(sText_Off, 104, y, 1, active);
-    else
-    {
-        u8 textPlus[] = _("{0x77}{0x77}{0x77}{0x77}{0x77}"); // 0x77 is to clear INSTANT text
-        textPlus[0] = CHAR_0 + n;
-        DrawOptionMenuChoice(textPlus, 104, y, 1, active);
-    }
+    u8 styles[6] = {0};
+    styles[selection] = 1;
+
+    DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_Challenges_PartyLimit_5, 130, y, styles[1], active);
+    DrawOptionMenuChoice(sText_Challenges_PartyLimit_4, 146, y, styles[2], active);
+    DrawOptionMenuChoice(sText_Challenges_PartyLimit_3, 161, y, styles[3], active);
+    DrawOptionMenuChoice(sText_Challenges_PartyLimit_2, 176, y, styles[4], active);
+    DrawOptionMenuChoice(sText_Challenges_PartyLimit_1, 192, y, styles[5], active);
 }
 
 static const u8 sText_Challenges_LevelCap_Normal[]  = _("NORMAL");
