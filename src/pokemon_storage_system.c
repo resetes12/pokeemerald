@@ -93,6 +93,7 @@ enum {
     MSG_ITEM_IS_HELD,
     MSG_CHANGED_TO_ITEM,
     MSG_CANT_STORE_MAIL,
+    MSG_NUZLOCKE,
 };
 
 // IDs for how to resolve variables in the above messages
@@ -1096,6 +1097,7 @@ static const struct StorageMessage sMessages[] =
     [MSG_ITEM_IS_HELD]         = {gText_ItemIsNowHeld,           MSG_VAR_ITEM_NAME},
     [MSG_CHANGED_TO_ITEM]      = {gText_ChangedToNewItem,        MSG_VAR_ITEM_NAME},
     [MSG_CANT_STORE_MAIL]      = {gText_MailCantBeStored,        MSG_VAR_NONE},
+    [MSG_NUZLOCKE]             = {gText_NuzlockeFainted,         MSG_VAR_NONE},
 };
 
 static const struct WindowTemplate sYesNoWindowTemplate =
@@ -2616,6 +2618,10 @@ static void Task_OnSelectedMon(u8 taskId)
             {
                 sStorage->state = 3;
             }
+            else if (GetCurrentBoxMonData(sCursorPosition, MON_DATA_UNUSED_RIBBONS)) //tx_randomizer_and_challenges
+            {
+                sStorage->state = 7;
+            }
             else
             {
                 PlaySE(SE_SELECT);
@@ -2734,6 +2740,11 @@ static void Task_OnSelectedMon(u8 taskId)
             SetPokeStorageTask(Task_PokeStorageMain);
         }
         break;
+    case 7: //tx_randomizer_and_challenges
+        PlaySE(SE_FAILURE);
+        PrintMessage(MSG_NUZLOCKE);
+        sStorage->state = 6;
+        break;
     }
 }
 
@@ -2803,6 +2814,11 @@ static void Task_WithdrawMon(u8 taskId)
         if (CalculatePlayerPartyCount() == GetMaxPartySize())
         {
             PrintMessage(MSG_PARTY_FULL);
+            sStorage->state = 1;
+        }
+        else if (GetCurrentBoxMonData(sCursorPosition, MON_DATA_UNUSED_RIBBONS)) //tx_randomizer_and_challenges
+        {
+            PrintMessage(MSG_NUZLOCKE);
             sStorage->state = 1;
         }
         else
@@ -10082,7 +10098,7 @@ u16 GetFirstBoxPokemon(void) // @Kurausukun
         for (j = 0; j < IN_BOX_COUNT; j++)
         {
             if (GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_SPECIES) != SPECIES_NONE &&
-            !GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_IS_EGG))
+            !GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_IS_EGG) && !GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_UNUSED_RIBBONS))
             {
                 return (i * IN_BOX_COUNT) + j;
             }
