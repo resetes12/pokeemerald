@@ -1051,6 +1051,7 @@ struct SaveBlock1
         u8 tx_Challenges_NoEVs:1;
         u8 tx_Challenges_TrainerScalingIVs:1;
         u8 tx_Challenges_TrainerScalingEVs:1;
+        u8 tx_Nuzlocke_Deletion:1;
 };
 
 
