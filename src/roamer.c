@@ -497,10 +497,13 @@ void UpdateRoamerRespawns(u16 days)
         if (ROAMER(i)->daysToRespawn > 0)
         {
             if (ROAMER(i)->daysToRespawn <= days)
+            {
                 ROAMER(i)->active = TRUE;
+                ROAMER(i)->daysToRespawn = 0;
+                RoamerMoveToOtherLocationSet(i);
+            }
             else
                 ROAMER(i)->daysToRespawn -= days;
-            break;
         }
             
     }
