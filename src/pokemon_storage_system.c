@@ -2618,7 +2618,7 @@ static void Task_OnSelectedMon(u8 taskId)
             {
                 sStorage->state = 3;
             }
-            else if (GetCurrentBoxMonData(sCursorPosition, MON_DATA_UNUSED_RIBBONS)) //tx_randomizer_and_challenges
+            else if (GetCurrentBoxMonData(sCursorPosition, MON_DATA_NUZLOCKE_RIBBON)) //tx_randomizer_and_challenges
             {
                 sStorage->state = 7;
             }
@@ -2816,7 +2816,7 @@ static void Task_WithdrawMon(u8 taskId)
             PrintMessage(MSG_PARTY_FULL);
             sStorage->state = 1;
         }
-        else if (GetCurrentBoxMonData(sCursorPosition, MON_DATA_UNUSED_RIBBONS)) //tx_randomizer_and_challenges
+        else if (GetCurrentBoxMonData(sCursorPosition, MON_DATA_NUZLOCKE_RIBBON)) //tx_randomizer_and_challenges
         {
             PrintMessage(MSG_NUZLOCKE);
             sStorage->state = 1;
@@ -10098,7 +10098,7 @@ u16 GetFirstBoxPokemon(void) // @Kurausukun
         for (j = 0; j < IN_BOX_COUNT; j++)
         {
             if (GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_SPECIES) != SPECIES_NONE &&
-            !GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_IS_EGG) && !GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_UNUSED_RIBBONS))
+            !GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_IS_EGG) && !GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_NUZLOCKE_RIBBON))
             {
                 return (i * IN_BOX_COUNT) + j;
             }

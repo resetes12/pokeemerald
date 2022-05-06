@@ -10516,6 +10516,9 @@ u32 GetBoxMonData(struct BoxPokemon *boxMon, s32 field, u8 *data)
     case MON_DATA_UNUSED_RIBBONS:
         retVal = substruct3->unusedRibbons;
         break;
+    case MON_DATA_NUZLOCKE_RIBBON:
+        retVal = substruct3->nuzlockeRibbon;
+        break;
     case MON_DATA_EVENT_LEGAL:
         retVal = substruct3->eventLegal;
         break;
@@ -10899,6 +10902,9 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
         break;
     case MON_DATA_UNUSED_RIBBONS:
         SET8(substruct3->unusedRibbons);
+        break;
+    case MON_DATA_NUZLOCKE_RIBBON:
+        SET8(substruct3->nuzlockeRibbon);
         break;
     case MON_DATA_EVENT_LEGAL:
         SET8(substruct3->eventLegal);
