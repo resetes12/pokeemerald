@@ -1300,8 +1300,10 @@ void SaveData_TxRandomizerAndChallenges(void)
     gSaveBlock1Ptr->tx_Challenges_PkmnCenter            = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_POKECENTER];
     // MENU_CHALLENGES
     gSaveBlock1Ptr->tx_Challenges_EvoLimit             = sOptions->sel_challenges[MENUITEM_CHALLENGES_EVO_LIMIT];
-    if (sOptions->sel_challenges[MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE] >= NUMBER_OF_MON_TYPES-1)
+    if (sOptions->sel_challenges[MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE] > NUMBER_OF_MON_TYPES-1)
         gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge = TX_CHALLENGE_TYPE_OFF;
+    else if (sOptions->sel_challenges[MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE] == NUMBER_OF_MON_TYPES-1)
+        gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge = GetRandomType();
     else if (sOptions->sel_challenges[MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE] >= TYPE_MYSTERY)
         gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge = sOptions->sel_challenges[MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE] + 1;
     else
@@ -1428,7 +1430,7 @@ static int ProcessInput_Options_Eleven(int selection)
 
 static int ProcessInput_Options_OneTypeChallenge(int selection)
 {
-    return XOptions_ProcessInput(NUMBER_OF_MON_TYPES, selection);
+    return XOptions_ProcessInput(NUMBER_OF_MON_TYPES+1, selection);
 }
 
 // Process Input functions ****SPECIFIC****
@@ -1803,8 +1805,10 @@ static void DrawChoices_Challenges_OneTypeChallenge(int selection, int y)
     bool8 active = CheckConditions(MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE);
     u8 n = selection;
 
-    if (n >= NUMBER_OF_MON_TYPES-1)
+    if (n > NUMBER_OF_MON_TYPES-1)
         StringCopyPadded(gStringVar1, sText_Off, 0, 15);
+    else if (n == NUMBER_OF_MON_TYPES-1)
+        StringCopyPadded(gStringVar1, sText_Random, 0, 15);
     else if (n >= TYPE_MYSTERY)
         StringCopyPadded(gStringVar1, gTypeNames[n+1], 0, 10);
     else
