@@ -2618,10 +2618,6 @@ static void Task_OnSelectedMon(u8 taskId)
             {
                 sStorage->state = 3;
             }
-            else if (GetCurrentBoxMonData(sCursorPosition, MON_DATA_NUZLOCKE_RIBBON)) //tx_randomizer_and_challenges
-            {
-                sStorage->state = 7;
-            }
             else
             {
                 PlaySE(SE_SELECT);
@@ -2630,14 +2626,25 @@ static void Task_OnSelectedMon(u8 taskId)
             }
             break;
         case MENU_PLACE:
-            PlaySE(SE_SELECT);
-            ClearBottomWindow();
-            SetPokeStorageTask(Task_PlaceMon);
+            if (sIsMonBeingMoved && sCursorArea == CURSOR_AREA_IN_PARTY && GetMonData(&sStorage->movingMon, MON_DATA_NUZLOCKE_RIBBON)) //tx_randomizer_and_challenges
+            {
+                sStorage->state = 7;
+            }
+            else
+            {
+                PlaySE(SE_SELECT);
+                ClearBottomWindow();
+                SetPokeStorageTask(Task_PlaceMon);
+            }
             break;
         case MENU_SHIFT:
             if (!CanShiftMon())
             {
                 sStorage->state = 3;
+            }
+            else if (sIsMonBeingMoved && sCursorArea == CURSOR_AREA_IN_PARTY && GetMonData(&sStorage->movingMon, MON_DATA_NUZLOCKE_RIBBON)) //tx_randomizer_and_challenges
+            {
+                sStorage->state = 7;
             }
             else
             {
