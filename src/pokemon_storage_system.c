@@ -511,6 +511,7 @@ struct PokemonStorageSystemData
     u8 displayMonSpeciesName[36];
     u8 displayMonGenderLvlText[36];
     u8 displayMonItemName[36];
+    bool8 displayMonNuzlockeRibbon;
     bool8 (*monPlaceChangeFunc)(void);
     u8 monPlaceChangeState;
     u8 shiftBoxId;
@@ -4004,6 +4005,11 @@ static void LoadDisplayMonGfx(u16 species, u32 pid)
         LZ77UnCompWram(sStorage->displayMonPalette, sStorage->displayMonPalBuffer);
         CpuCopy32(sStorage->tileBuffer, sStorage->displayMonTilePtr, MON_PIC_SIZE);
         LoadPalette(sStorage->displayMonPalBuffer, sStorage->displayMonPalOffset, 0x20);
+        if (sStorage->displayMonNuzlockeRibbon)
+        {
+            TintPalette_GrayScale2(&gPlttBufferUnfaded[sStorage->displayMonPalOffset], 0x20);
+            TintPalette_GrayScale2(&gPlttBufferFaded[sStorage->displayMonPalOffset], 0x20);
+        }
         sStorage->displayMonSprite->invisible = FALSE;
     }
     else
@@ -4047,7 +4053,7 @@ static void UpdateWaveformAnimation(void)
 {
     u16 i;
 
-    if (sStorage->displayMonSpecies != SPECIES_NONE)
+    if (sStorage->displayMonSpecies != SPECIES_NONE && !sStorage->displayMonNuzlockeRibbon)
     {
         // Start waveform animation and color "Pkmn Data"
         TilemapUtil_SetRect(TILEMAPID_PKMN_DATA, 0, 0, 8, 2);
@@ -6909,6 +6915,7 @@ static void SetDisplayMonData(void *pokemon, u8 mode)
             sStorage->displayMonPalette = GetMonFrontSpritePal(mon);
             gender = GetMonGender(mon);
             sStorage->displayMonItemId = GetMonData(mon, MON_DATA_HELD_ITEM);
+            sStorage->displayMonNuzlockeRibbon = GetMonData(mon, MON_DATA_NUZLOCKE_RIBBON);
         }
     }
     else if (mode == MODE_BOX)
@@ -6934,6 +6941,7 @@ static void SetDisplayMonData(void *pokemon, u8 mode)
             sStorage->displayMonPalette = GetMonSpritePalFromSpeciesAndPersonality(sStorage->displayMonSpecies, otId, sStorage->displayMonPersonality);
             gender = GetGenderFromSpeciesAndPersonality(sStorage->displayMonSpecies, sStorage->displayMonPersonality);
             sStorage->displayMonItemId = GetBoxMonData(boxMon, MON_DATA_HELD_ITEM);
+            sStorage->displayMonNuzlockeRibbon = GetMonData(boxMon, MON_DATA_NUZLOCKE_RIBBON);
         }
     }
     else
