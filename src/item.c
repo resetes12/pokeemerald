@@ -1234,7 +1234,7 @@ static const u16 sRandomValidItems[] =
     ITEM_SWIFT_FEATHER,
     // Ability Modifiers
     ITEM_ABILITY_CAPSULE,
-    //ITEM_ABILITY_PATCH,
+    ITEM_ABILITY_PATCH,
     // Mints
     //ITEM_LONELY_MINT,
     //ITEM_ADAMANT_MINT,
