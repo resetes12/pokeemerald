@@ -4011,10 +4011,9 @@ static void LoadDisplayMonGfx(u16 species, u32 pid)
         CpuCopy32(sStorage->tileBuffer, sStorage->displayMonTilePtr, MON_PIC_SIZE);
         LoadPalette(sStorage->displayMonPalBuffer, sStorage->displayMonPalOffset, 0x20);
         if (sStorage->displayMonNuzlockeRibbon)
-        {
-            TintPalette_GrayScale2(&gPlttBufferUnfaded[sStorage->displayMonPalOffset], 0x20);
-            TintPalette_GrayScale2(&gPlttBufferFaded[sStorage->displayMonPalOffset], 0x20);
-        }
+            sStorage->displayMonSprite->oam.objMode = ST_OAM_OBJ_BLEND;
+        else
+            sStorage->displayMonSprite->oam.objMode = ST_OAM_OBJ_NORMAL;
         sStorage->displayMonSprite->invisible = FALSE;
     }
     else
