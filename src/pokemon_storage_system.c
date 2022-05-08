@@ -2078,11 +2078,8 @@ static void InitStartingPosData(void)
 
 static void SetMonIconTransparency(void)
 {
-    if (sStorage->boxOption == OPTION_MOVE_ITEMS)
-    {
         SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_ALL);
         SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(7, 11));
-    }
     SetGpuReg(REG_OFFSET_DISPCNT, DISPCNT_OBJ_ON | DISPCNT_BG_ALL_ON | DISPCNT_OBJ_1D_MAP);
 }
 
@@ -2630,13 +2627,11 @@ static void Task_OnSelectedMon(u8 taskId)
             if (sIsMonBeingMoved && sCursorArea == CURSOR_AREA_IN_PARTY && GetMonData(&sStorage->movingMon, MON_DATA_NUZLOCKE_RIBBON)) //tx_randomizer_and_challenges
             {
                 sStorage->state = 7;
+                break;
             }
-            else
-            {
-                PlaySE(SE_SELECT);
-                ClearBottomWindow();
-                SetPokeStorageTask(Task_PlaceMon);
-            }
+            PlaySE(SE_SELECT);
+            ClearBottomWindow();
+            SetPokeStorageTask(Task_PlaceMon);
             break;
         case MENU_SHIFT:
             if (!CanShiftMon())
@@ -2707,6 +2702,11 @@ static void Task_OnSelectedMon(u8 taskId)
             SetPokeStorageTask(Task_TakeItemForMoving);
             break;
         case MENU_GIVE:
+            if (GetCurrentBoxMonData(sCursorPosition, MON_DATA_NUZLOCKE_RIBBON))
+            {
+                sStorage->state = 7;
+                break;
+            }
             PlaySE(SE_SELECT);
             SetPokeStorageTask(Task_GiveMovingItemToMon);
             break;
@@ -2718,6 +2718,11 @@ static void Task_OnSelectedMon(u8 taskId)
             SetPokeStorageTask(Task_SwitchSelectedItem);
             break;
         case MENU_GIVE_2:
+            if (GetCurrentBoxMonData(sCursorPosition, MON_DATA_NUZLOCKE_RIBBON))
+            {
+                sStorage->state = 7;
+                break;
+            }
             PlaySE(SE_SELECT);
             SetPokeStorageTask(Task_GiveItemFromBag);
             break;
@@ -4486,6 +4491,9 @@ static void InitBoxMonSprites(u8 boxId)
             {
                 personality = GetBoxMonDataAt(boxId, boxPosition, MON_DATA_PERSONALITY);
                 sStorage->boxMonsSprites[count] = CreateMonIconSprite(species, personality, 8 * (3 * j) + 100, 8 * (3 * i) + 44, 2, 19 - j);
+                // Locked nuzlocke mons should be transparent
+                if (GetBoxMonDataAt(boxId, boxPosition, MON_DATA_NUZLOCKE_RIBBON))
+                    sStorage->boxMonsSprites[count]->oam.objMode = ST_OAM_OBJ_BLEND;
             }
             else
             {
@@ -4519,6 +4527,9 @@ static void CreateBoxMonIconAtPos(u8 boxPosition)
 
         sStorage->boxMonsSprites[boxPosition] = CreateMonIconSprite(species, personality, x, y, 2, 19 - (boxPosition % IN_BOX_COLUMNS));
         if (sStorage->boxOption == OPTION_MOVE_ITEMS)
+            sStorage->boxMonsSprites[boxPosition]->oam.objMode = ST_OAM_OBJ_BLEND;
+        // Locked nuzlocke mons should be transparent
+        if (GetCurrentBoxMonData(boxPosition, MON_DATA_NUZLOCKE_RIBBON))
             sStorage->boxMonsSprites[boxPosition]->oam.objMode = ST_OAM_OBJ_BLEND;
     }
 }
@@ -4623,6 +4634,9 @@ static u8 CreateBoxMonIconsInColumn(u8 column, u16 distance, s16 speed)
                     sStorage->boxMonsSprites[boxPosition]->sSpeed = speed;
                     sStorage->boxMonsSprites[boxPosition]->sScrollInDestX = xDest;
                     sStorage->boxMonsSprites[boxPosition]->callback = SpriteCB_BoxMonIconScrollIn;
+                    // Locked nuzlocke mons should be transparent
+                    if (GetCurrentBoxMonData(boxPosition, MON_DATA_NUZLOCKE_RIBBON))
+                        sStorage->boxMonsSprites[boxPosition]->oam.objMode = ST_OAM_OBJ_BLEND;
                     iconsCreated++;
                 }
             }
