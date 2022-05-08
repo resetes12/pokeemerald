@@ -7869,10 +7869,10 @@ static const u16 sRandomValidMoves[MOVES_COUNT-1] =
     MOVE_ICE_PUNCH,
     MOVE_THUNDER_PUNCH,
     MOVE_SCRATCH,
-    #ifndef BATTLE_ENGINE
-    MOVE_VICE_GRIP,
-    #else
+    #if defined(BATTLE_ENGINE) || defined (POKEMON_EXPANSION)
     MOVE_VISE_GRIP,
+    #else
+    MOVE_VICE_GRIP,
     #endif
     MOVE_GUILLOTINE,
     MOVE_RAZOR_WIND,
@@ -7998,10 +7998,10 @@ static const u16 sRandomValidMoves[MOVES_COUNT-1] =
     MOVE_AMNESIA,
     MOVE_KINESIS,
     MOVE_SOFT_BOILED,
-    #ifndef BATTLE_ENGINE
-    MOVE_HI_JUMP_KICK,
-    #else
+    #if defined(BATTLE_ENGINE) || defined (POKEMON_EXPANSION)
     MOVE_HIGH_JUMP_KICK,
+    #else
+    MOVE_HI_JUMP_KICK,
     #endif
     MOVE_GLARE,
     MOVE_DREAM_EATER,
@@ -8051,10 +8051,10 @@ static const u16 sRandomValidMoves[MOVES_COUNT-1] =
     MOVE_PROTECT,
     MOVE_MACH_PUNCH,
     MOVE_SCARY_FACE,
-    #ifndef BATTLE_ENGINE
-    MOVE_FAINT_ATTACK,
-    #else
+    #if defined(BATTLE_ENGINE) || defined (POKEMON_EXPANSION)
     MOVE_FEINT_ATTACK,
+    #else
+    MOVE_FAINT_ATTACK,
     #endif
     MOVE_SWEET_KISS,
     MOVE_BELLY_DRUM,
@@ -8135,10 +8135,10 @@ static const u16 sRandomValidMoves[MOVES_COUNT-1] =
     MOVE_MEMENTO,
     MOVE_FACADE,
     MOVE_FOCUS_PUNCH,
-    #ifndef BATTLE_ENGINE
-    MOVE_SMELLING_SALT,
-    #else
+    #if defined(BATTLE_ENGINE) || defined (POKEMON_EXPANSION)
     MOVE_SMELLING_SALTS,
+    #else
+    MOVE_SMELLING_SALT,
     #endif
     MOVE_FOLLOW_ME,
     MOVE_NATURE_POWER,
