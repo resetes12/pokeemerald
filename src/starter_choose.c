@@ -382,7 +382,9 @@ u16 GetStarterPokemon(u16 chosenStarterId)
     }
     else if (gSaveBlock1Ptr->tx_Random_WildPokemon)
     {
-        mon = PickRandomStarter(sStarterMon[chosenStarterId]);
+        if (sStarterList[chosenStarterId] == 0)
+            sStarterList[chosenStarterId] = PickRandomStarter(sStarterList, chosenStarterId);
+        mon = sStarterList[chosenStarterId];
     }
     
     #ifdef GBA_PRINTF
