@@ -84,4 +84,6 @@ extern struct tx_challenges_OptionsMenu *sChallengesOptions;
 
 #define TX_EXP_MULTIPLER_ONLY_ON_NUZLOCKE_AND_RANDOMIZER FALSE
 
+#define TX_NUZLOCKE_CEMETERY_ICON_GRAY TRUE
+
 #endif // GUARD_DIFFICULTY_H
