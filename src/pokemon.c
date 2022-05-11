@@ -13848,7 +13848,7 @@ u16 PickRandomStarterForOneTypeChallenge(u16 *speciesList, u8 starterId)
         }
 
         if (i == RANDOM_SPECIES_EVO_0_COUNT)
-            species = speciesList[starterId-1];
+            species = speciesList[1];
 
         free(stemp);
     }
@@ -13866,7 +13866,7 @@ u16 PickRandomStarterForOneTypeChallenge(u16 *speciesList, u8 starterId)
         }
 
         if (i == RANDOM_SPECIES_COUNT_LEGENDARY)
-            species = speciesList[starterId-1];
+            species = speciesList[1];
 
         free(stemp);
     }
@@ -13884,7 +13884,7 @@ u16 PickRandomStarterForOneTypeChallenge(u16 *speciesList, u8 starterId)
         }
 
         if (i == RANDOM_SPECIES_COUNT)
-            species = speciesList[starterId-1];
+            species = speciesList[1];
 
         free(stemp);
     }
