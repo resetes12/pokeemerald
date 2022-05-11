@@ -154,7 +154,7 @@ EventScript_HiddenItemScript::
 	lockall
 	waitse
 	specialvar VAR_RESULT, IsRandomItemsActivated
-	call_if_eq VAR_RESULT, TRUE, Std_RandomItem
+	call_if_eq VAR_RESULT, TRUE, Std_RandomItemHidden
 	additem VAR_0x8005
 	copyvar VAR_0x8007, VAR_RESULT
 	bufferitemnameplural STR_VAR_2, VAR_0x8005, 1
