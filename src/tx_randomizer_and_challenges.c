@@ -471,7 +471,7 @@ void TestRandomizerValues(u8 type)
         for (j=0; j<NUM_SPECIES; j++)
         {
         //tmp = RandomSeededModulo(j, NUM_SPECIES);
-        tmp = GetSpeciesRandomSeeded(j, type);
+        tmp = GetSpeciesRandomSeeded(j, type, 0);
         
         real_j = j % 10;
         array[real_j] = tmp;

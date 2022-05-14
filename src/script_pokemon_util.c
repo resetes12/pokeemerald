@@ -143,7 +143,7 @@ void CreateScriptedWildMon(u16 species, u8 level, u16 item)
 
     //tx_randomizer_and_challenges
     if (gSaveBlock1Ptr->tx_Random_Static)
-        species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_STATIC);
+        species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_STATIC, 0);
     if (gSaveBlock1Ptr->tx_Random_Items)
         item = RandomItemId(item);
 

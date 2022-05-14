@@ -321,7 +321,7 @@ static void CreateHatchedMon(struct Pokemon *egg, struct Pokemon *temp)
     species = GetMonData(egg, MON_DATA_SPECIES);
 
     if (gSaveBlock1Ptr->tx_Random_WildPokemon || gSaveBlock1Ptr->tx_Random_Evolutions) //tx_randomizer_and_challenges
-        species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_WILD_POKEMON);
+        species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_WILD_POKEMON, 0);
 
     for (i = 0; i < MAX_MON_MOVES; i++)
         moves[i] = GetMonData(egg, MON_DATA_MOVE1 + i);

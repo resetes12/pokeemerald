@@ -392,7 +392,7 @@ static void CreateWildMon(u16 species, u8 level)
         #ifdef GBA_PRINTF
         mgba_printf(MGBA_LOG_DEBUG, "******** CreateWildMon ********");
         #endif
-        species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_WILD_POKEMON);
+        species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_WILD_POKEMON, 0);
     }
 
     switch (gBaseStats[species].genderRatio)

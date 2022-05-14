@@ -11067,7 +11067,7 @@ u8 GetAbilityBySpecies(u16 species, u8 abilityNum)
 {
     if (gSaveBlock1Ptr->tx_Random_Abilities) //tx_randomizer_and_challenges
     {
-        species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_ABILITY);
+        species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_ABILITY, 0);
         if (gBaseStats[species].abilities[1] == ABILITY_NONE)
             abilityNum = 0;
         else
@@ -12046,7 +12046,7 @@ u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 mode, u16 evolutionItem)
     if (EvolutionBlockedByEvoLimit(species)) //No Evos already previously checked
         return SPECIES_NONE;
     if (gSaveBlock1Ptr->tx_Random_EvolutionMethods) 
-        species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_EVO_METH);
+        species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_EVO_METH, 0);
     if (species == SPECIES_NONE)
         return SPECIES_NONE;
     
@@ -12156,7 +12156,7 @@ u16 GetEvolutionTargetSpecies(struct Pokemon *mon, u8 mode, u16 evolutionItem)
     }
 
     if (gSaveBlock1Ptr->tx_Random_Evolutions && targetSpecies != SPECIES_NONE) //tx_randomizer_and_challenges
-        targetSpecies = GetSpeciesRandomSeeded(targetSpecies, TX_RANDOM_T_EVO);
+        targetSpecies = GetSpeciesRandomSeeded(targetSpecies, TX_RANDOM_T_EVO, 0);
 
     return targetSpecies;
 }
@@ -12782,7 +12782,7 @@ u32 CanMonLearnTMHM(struct Pokemon *mon, u8 tm)
     
     //tx_randomizer_and_challenges
     if (gSaveBlock1Ptr->tx_Random_Moves)
-        species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_MOVES);
+        species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_MOVES, 0);
 
     if (species == SPECIES_EGG)
     {
@@ -12804,7 +12804,7 @@ u32 CanSpeciesLearnTMHM(u16 species, u8 tm)
 {
     //tx_randomizer_and_challenges
     if (gSaveBlock1Ptr->tx_Random_Moves)
-        species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_MOVES);
+        species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_MOVES, 0);
 
     if (species == SPECIES_EGG)
     {
@@ -12831,7 +12831,7 @@ u8 GetMoveRelearnerMoves(struct Pokemon *mon, u16 *moves)
     int i, j, k;
 
     if (gSaveBlock1Ptr->tx_Random_Moves) //tx_randomizer_and_challenges
-        species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_MOVES);
+        species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_MOVES, 0);
 
     for (i = 0; i < MAX_MON_MOVES; i++)
         learnedMoves[i] = GetMonData(mon, MON_DATA_MOVE1 + i, 0);
@@ -12892,7 +12892,7 @@ u8 GetNumberOfRelearnableMoves(struct Pokemon *mon)
     int i, j, k;
 
     if (gSaveBlock1Ptr->tx_Random_Moves) //tx_randomizer_and_challenges
-        species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_MOVES);
+        species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_MOVES, 0);
 
     if (species == SPECIES_EGG)
         return 0;
@@ -13954,7 +13954,7 @@ u8 GetTypeBySpecies(u16 species, u8 typeNum)
     return type;
 }
 
-u16 GetRandomSpecies(u16 species, u8 mapBased, u8 type) //INTERNAL use only!
+static u16 GetRandomSpecies(u16 species, u8 mapBased, u8 type, u16 additionalOffset) //INTERNAL use only!
 {
     u8 slot, slot_new;
     u16 offset = 0;
@@ -13995,16 +13995,16 @@ u16 GetRandomSpecies(u16 species, u8 mapBased, u8 type) //INTERNAL use only!
         switch (slot)
         {
         case EVO_TYPE_0:
-            result_species = sRandomSpeciesEvo0[RandomSeededModulo(species+offset*multiplier, RANDOM_SPECIES_EVO_0_COUNT)];
+            result_species = sRandomSpeciesEvo0[RandomSeededModulo(species+offset*multiplier+additionalOffset, RANDOM_SPECIES_EVO_0_COUNT)];
             break;
         case EVO_TYPE_1:
-            result_species = sRandomSpeciesEvo1[RandomSeededModulo(species+offset*multiplier, RANDOM_SPECIES_EVO_1_COUNT)];
+            result_species = sRandomSpeciesEvo1[RandomSeededModulo(species+offset*multiplier+additionalOffset, RANDOM_SPECIES_EVO_1_COUNT)];
             break;
         case EVO_TYPE_2:
-            result_species = sRandomSpeciesEvo2[RandomSeededModulo(species+offset*multiplier, RANDOM_SPECIES_EVO_2_COUNT)];
+            result_species = sRandomSpeciesEvo2[RandomSeededModulo(species+offset*multiplier+additionalOffset, RANDOM_SPECIES_EVO_2_COUNT)];
             break;
         case EVO_TYPE_LEGENDARY:
-            result_species = sRandomSpeciesEvoLegendary[RandomSeededModulo(species+offset*multiplier, RANDOM_SPECIES_EVO_LEGENDARY_COUNT)];
+            result_species = sRandomSpeciesEvoLegendary[RandomSeededModulo(species+offset*multiplier+additionalOffset, RANDOM_SPECIES_EVO_LEGENDARY_COUNT)];
             break;
         }
 
@@ -14017,11 +14017,11 @@ u16 GetRandomSpecies(u16 species, u8 mapBased, u8 type) //INTERNAL use only!
     }
 
     if (gSaveBlock1Ptr->tx_Random_IncludeLegendaries)
-        return sRandomSpeciesLegendary[RandomSeededModulo(species+offset*multiplier, RANDOM_SPECIES_COUNT_LEGENDARY)];
+        return sRandomSpeciesLegendary[RandomSeededModulo(species+offset*multiplier+additionalOffset, RANDOM_SPECIES_COUNT_LEGENDARY)];
 
-    return sRandomSpecies[RandomSeededModulo(species+offset*multiplier, RANDOM_SPECIES_COUNT)];
+    return sRandomSpecies[RandomSeededModulo(species+offset*multiplier+additionalOffset, RANDOM_SPECIES_COUNT)];
 }
-u16 GetSpeciesRandomSeeded(u16 species, u8 type)
+u16 GetSpeciesRandomSeeded(u16 species, u8 type, u16 additionalOffset)
 {
     u8 slot, slot_new;
     u16 result_species = species;
@@ -14045,29 +14045,29 @@ u16 GetSpeciesRandomSeeded(u16 species, u8 type)
         if (gSaveBlock1Ptr->tx_Random_OneForOne)
             result_species = PickRandomizedSpeciesFromEWRAM(species);
         else
-            result_species = GetRandomSpecies(species, mapBased, type);
+            result_species = GetRandomSpecies(species, mapBased, type, additionalOffset);
         break;
     case TX_RANDOM_T_TRAINER:
         mapBased = gSaveBlock1Ptr->tx_Random_MapBased;
         if (gSaveBlock1Ptr->tx_Random_OneForOne)
             result_species = PickRandomizedSpeciesFromEWRAM(species);
         else
-            result_species = GetRandomSpecies(species, mapBased, type);
+            result_species = GetRandomSpecies(species, mapBased, type, additionalOffset);
         break;
     case TX_RANDOM_T_MOVES:
         result_species = sRandomSpeciesLegendary[RandomSeededModulo(species, RANDOM_SPECIES_COUNT_LEGENDARY)];
         break;
     case TX_RANDOM_T_ABILITY:
-        result_species = GetRandomSpecies(species, mapBased, type);
+        result_species = GetRandomSpecies(species, mapBased, type, additionalOffset);
         break;
     case TX_RANDOM_T_EVO:
-        result_species = GetRandomSpecies(species, mapBased, type);
+        result_species = GetRandomSpecies(species, mapBased, type, additionalOffset);
         break;
     case TX_RANDOM_T_EVO_METH:
-        result_species = GetRandomSpecies(species, mapBased, type);
+        result_species = GetRandomSpecies(species, mapBased, type, additionalOffset);
         break;
     case TX_RANDOM_T_STATIC:
-        result_species = GetRandomSpecies(species, mapBased, type);
+        result_species = GetRandomSpecies(species, mapBased, type, additionalOffset);
         break;
     }
 
