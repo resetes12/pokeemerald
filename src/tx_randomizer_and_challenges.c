@@ -93,7 +93,7 @@ bool8 HMsOverwriteOptionActive(void)
     return (gSaveBlock1Ptr->tx_Challenges_Nuzlocke 
             || gSaveBlock1Ptr->tx_Challenges_Mirror 
             || gSaveBlock1Ptr->tx_Random_Moves
-            || gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge);
+            || gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge != TX_CHALLENGE_TYPE_OFF);
 }
 
 // Nuzlocke code
