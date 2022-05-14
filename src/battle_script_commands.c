@@ -8921,7 +8921,7 @@ static void Cmd_trydobeatup(void)
             if (gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer)
             {
                 u16 baseStat[] = {10, 100, 255, 500};
-                gBattleMoveDamage = baseStat[gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer];
+                gBattleMoveDamage /= baseStat[gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer];
             }
             else
                 gBattleMoveDamage /= gBaseStats[gBattleMons[gBattlerTarget].species].baseDefense;
