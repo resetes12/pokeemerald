@@ -3,6 +3,7 @@
 //tx_randomizer_and_challenges
 
 // default options set by the dev
+#define TX_RANDOM_STARTER               FALSE
 #define TX_RANDOM_WILD_POKEMON          FALSE
 #define TX_RANDOM_TRAINER               FALSE
 #define TX_RANDOM_STATIC                FALSE
