@@ -655,7 +655,67 @@ static const u8 *const sOptionMenuItemDescriptionsChallenges[MENUITEM_CHALLENGES
     [MENUITEM_CHALLENGES_SAVE]                  = {sText_Description_Save,                          sText_Empty,                                    sText_Empty,                                sText_Empty},
 };
 
+// Disabled descriptions
+static const u8 sText_Description_Disabled_Random_SimiliarEvolutionLevel[]  = _("Only usable with random starter,\nTrainer, wild or static POKéMON.");
+static const u8 sText_Description_Disabled_Random_IncludeLegendaries[]      = _("Only usable with random starter,\nTrainer, wild or static POKéMON.");
+static const u8 sText_Description_Disabled_Random_Chaos_Mode[]              = _("Only usable if other random options\nare activated.");
+static const u8 *const sOptionMenuItemDescriptionsDisabledRandomizer[MENUITEM_RANDOM_COUNT] =
+{
+    [MENUITEM_RANDOM_OFF_ON]                    = sText_Empty,
+    [MENUITEM_RANDOM_STARTER]                   = sText_Empty,
+    [MENUITEM_RANDOM_WILD_PKMN]                 = sText_Empty,
+    [MENUITEM_RANDOM_TRAINER]                   = sText_Empty,
+    [MENUITEM_RANDOM_STATIC]                    = sText_Empty,
+    [MENUITEM_RANDOM_SIMILAR_EVOLUTION_LEVEL]   = sText_Description_Disabled_Random_SimiliarEvolutionLevel,
+    [MENUITEM_RANDOM_INCLUDE_LEGENDARIES]       = sText_Description_Disabled_Random_IncludeLegendaries,
+    [MENUITEM_RANDOM_TYPE]                      = sText_Empty,
+    [MENUITEM_RANDOM_MOVES]                     = sText_Empty,
+    [MENUITEM_RANDOM_ABILITIES]                 = sText_Empty,
+    [MENUITEM_RANDOM_EVOLUTIONS]                = sText_Empty,
+    [MENUITEM_RANDOM_EVOLUTIONS_METHODS]        = sText_Empty,
+    [MENUITEM_RANDOM_TYPE_EFFEC]                = sText_Empty,
+    [MENUITEM_RANDOM_ITEMS]                     = sText_Empty,
+    [MENUITEM_RANDOM_CHAOS]                     = sText_Description_Disabled_Random_Chaos_Mode,
+    [MENUITEM_RANDOM_NEXT]                      = sText_Empty,
+};
 
+static const u8 sText_Description_Disabled_Nuzlocke_Nuzlocke[]   = _("Only usable with Nuzlocke!");
+static const u8 *const sOptionMenuItemDescriptionsDisabledNuzlocke[MENUITEM_NUZLOCKE_COUNT] =
+{
+    [MENUITEM_NUZLOCKE_NUZLOCKE]            = sText_Empty,
+    [MENUITEM_NUZLOCKE_SPECIES_CLAUSE]      = sText_Description_Disabled_Nuzlocke_Nuzlocke,
+    [MENUITEM_NUZLOCKE_SHINY_CLAUSE]        = sText_Description_Disabled_Nuzlocke_Nuzlocke,
+    [MENUITEM_NUZLOCKE_NICKNAMING]          = sText_Description_Disabled_Nuzlocke_Nuzlocke,
+    [MENUITEM_NUZLOCKE_DELETION]            = sText_Description_Disabled_Nuzlocke_Nuzlocke,
+    [MENUITEM_NUZLOCKE_NEXT]                = sText_Empty,
+};
+
+static const u8 *const sOptionMenuItemDescriptionsDisabledDifficulty[MENUITEM_DIFFICULTY_COUNT] =
+{
+    [MENUITEM_DIFFICULTY_PARTY_LIMIT]           = sText_Empty,
+    [MENUITEM_DIFFICULTY_LEVEL_CAP]             = sText_Empty,
+    [MENUITEM_DIFFICULTY_EXP_MULTIPLIER]        = sText_Empty,
+    [MENUITEM_DIFFICULTY_ITEM_PLAYER]           = sText_Empty,
+    [MENUITEM_DIFFICULTY_ITEM_TRAINER]          = sText_Empty,
+    [MENUITEM_DIFFICULTY_NO_EVS]                = sText_Empty,
+    [MENUITEM_DIFFICULTY_SCALING_IVS]           = sText_Empty,
+    [MENUITEM_DIFFICULTY_SCALING_EVS]           = sText_Empty,
+    [MENUITEM_DIFFICULTY_POKECENTER]            = sText_Empty,
+    [MENUITEM_DIFFICULTY_NEXT]                  = sText_Empty,
+};  
+
+static const u8 sText_Description_Disabled_Challenges_MirrorThief[]    = _("Only usable with Mirror Mode!");
+static const u8 *const sOptionMenuItemDescriptionsDisabledChallenges[MENUITEM_CHALLENGES_COUNT] =
+{
+    [MENUITEM_CHALLENGES_EVO_LIMIT]             = sText_Empty,
+    [MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]    = sText_Empty,
+    [MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]   = sText_Empty,
+    [MENUITEM_CHALLENGES_MIRROR]                = sText_Empty,
+    [MENUITEM_CHALLENGES_MIRROR_THIEF]          = sText_Description_Disabled_Challenges_MirrorThief,
+    [MENUITEM_CHALLENGES_SAVE]                  = sText_Empty,
+};
+
+// Functions to dynamically retrieve data
 static const u8 *const OptionTextDescription(void)
 {
     u8 menuItem = sOptions->menuCursor[sOptions->submenu];
@@ -664,18 +724,26 @@ static const u8 *const OptionTextDescription(void)
     switch (sOptions->submenu)
     {
     case MENU_RANDOMIZER:
+        if (!CheckConditions(menuItem) && sOptionMenuItemDescriptionsDisabledRandomizer[menuItem] != sText_Empty)
+            return sOptionMenuItemDescriptionsDisabledRandomizer[menuItem];
         selection = sOptions->sel_randomizer[menuItem];  
         return sOptionMenuItemDescriptionsRandomizer[menuItem][selection];
     case MENU_NUZLOCKE:
+        if (!CheckConditions(menuItem) && sOptionMenuItemDescriptionsDisabledNuzlocke[menuItem] != sText_Empty)
+            return sOptionMenuItemDescriptionsDisabledNuzlocke[menuItem];
         selection = sOptions->sel_nuzlocke[menuItem];
         return sOptionMenuItemDescriptionsNuzlocke[menuItem][selection];
     case MENU_DIFFICULTY:
+        if (!CheckConditions(menuItem) && sOptionMenuItemDescriptionsDisabledDifficulty[menuItem] != sText_Empty)
+            return sOptionMenuItemDescriptionsDisabledDifficulty[menuItem];
         selection = sOptions->sel_difficulty[menuItem];
         if (sOptions->menuCursor[MENU_DIFFICULTY] == MENUITEM_DIFFICULTY_PARTY_LIMIT)
             return sOptionMenuItemDescriptionsDifficulty[menuItem][0];
         else
             return sOptionMenuItemDescriptionsDifficulty[menuItem][selection];
     case MENU_CHALLENGES:
+        if (!CheckConditions(menuItem) && sOptionMenuItemDescriptionsDisabledChallenges[menuItem] != sText_Empty)
+            return sOptionMenuItemDescriptionsDisabledChallenges[menuItem];
         selection = sOptions->sel_challenges[menuItem];
         if (sOptions->menuCursor[MENU_CHALLENGES] == MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE)
             return sOptionMenuItemDescriptionsChallenges[menuItem][0];
