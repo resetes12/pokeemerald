@@ -250,7 +250,10 @@ void NuzlockeDeleteFaintedPartyPokemon(void) // @Kurausukun
                 monItem = GetMonData(pokemon, MON_DATA_HELD_ITEM, NULL);
 
                 if (monItem != ITEM_NONE)
+                {
                     AddBagItem(monItem, 1);
+                    SetMonData(pokemon, MON_DATA_HELD_ITEM, ITEM_NONE);
+                }
                 NuzlockeDeletePartyMon(i);
             }
         }
