@@ -2834,6 +2834,11 @@ static void Task_WithdrawMon(u8 taskId)
             PrintMessage(MSG_NUZLOCKE);
             sStorage->state = 1;
         }
+        else if (sIsMonBeingMoved && GetMonData(&sStorage->movingMon, MON_DATA_NUZLOCKE_RIBBON))
+        {
+            PrintMessage(MSG_NUZLOCKE);
+            sStorage->state = 1;
+        }
         else
         {
             SaveCursorPos();
