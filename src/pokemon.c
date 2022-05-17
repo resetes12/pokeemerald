@@ -9535,9 +9535,14 @@ void GiveBoxMonInitialMoveset(struct BoxPokemon *boxMon)
         if (gSaveBlock1Ptr->tx_Random_Moves) //tx_randomizer_and_challenges
         {
             move = GetRandomMove(move, species);
-            if (!FlagGet(FLAG_ADVENTURE_STARTED) && !firstMoveGiven)
+            if (!FlagGet(FLAG_SYS_POKEMON_GET) && !firstMoveGiven)
             {
                 u8 j;
+                
+                #ifdef GBA_PRINTF
+                mgba_printf(MGBA_LOG_DEBUG, "Generate 1 damaging move");
+                #endif
+
                 for (j=0; j<100; j++)
                 {
                     if (gBattleMoves[move].power <= 1)
@@ -12829,9 +12834,7 @@ u8 GetMoveRelearnerMoves(struct Pokemon *mon, u16 *moves)
     u16 species = GetMonData(mon, MON_DATA_SPECIES, 0);
     u8 level = GetMonData(mon, MON_DATA_LEVEL, 0);
     int i, j, k;
-
-    if (gSaveBlock1Ptr->tx_Random_Moves) //tx_randomizer_and_challenges
-        species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_MOVES, 0);
+    u16 move;
 
     for (i = 0; i < MAX_MON_MOVES; i++)
         learnedMoves[i] = GetMonData(mon, MON_DATA_MOVE1 + i, 0);
@@ -12856,7 +12859,13 @@ u8 GetMoveRelearnerMoves(struct Pokemon *mon, u16 *moves)
                     ;
 
                 if (k == numMoves)
-                    moves[numMoves++] = gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_ID;
+                {
+                    //tx_randomizer_and_challenges
+                    move = gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_ID;
+                    if (gSaveBlock1Ptr->tx_Random_Moves) //tx_randomizer_and_challenges
+                        move = GetRandomMove(move, species);
+                    moves[numMoves++] = move;
+                }
             }
         }
     }
