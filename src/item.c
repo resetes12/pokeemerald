@@ -1802,7 +1802,16 @@ u16 RandomItemId(u16 itemId)
             && itemId != ITEM_HM06
             && itemId != ITEM_HM07
             && itemId != ITEM_HM08)
+        {
+            u8 i;
             itemId = ITEM_TM01 + RandomSeededModulo(itemId, 50);
+            for (i = 0; i < 255; i++)
+            {
+                if (!CheckBagHasItem(itemId, 1))
+                    break;
+                itemId = ITEM_TM01 + RandomSeededModulo(itemId, 50);
+            }
+        }
     }
     else if (ItemId_GetPocket(itemId) != POCKET_KEY_ITEMS)
         itemId = sRandomValidItems[RandomSeededModulo(itemId + mapId, RANDOM_ITEM_COUNT)];
