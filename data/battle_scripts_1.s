@@ -4556,3 +4556,19 @@ BattleScript_PrintPlayerForfeitedLinkBattle::
 	endlinkbattle
 	waitmessage B_WAIT_TIME_LONG
 	end2
+
+BattleScript_Safari_OneTypeChallengeCaptureBlocked::
+	printselectionstring STRINGID_ONETYPECAPTUREBLOCKED
+	endselectionscript
+
+BattleScript_Safari_NuzlockeCaptureBlocked::
+	printselectionstring STRINGID_NUZLOCKECAPTUREBLOCKED
+	endselectionscript
+
+BattleScript_Safari_SpeciesClauseCaptureBlocked::
+	printselectionstring STRINGID_SPECIESCLAUSECAPTUREBLOCKED
+	endselectionscript
+
+BattleScript_Safari_SameSpeciesCaptureBlocked::
+	printselectionstring STRINGID_SAMESPECIESCAPTUREBLOCKED
+	endselectionscript

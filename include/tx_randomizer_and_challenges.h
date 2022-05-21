@@ -57,7 +57,8 @@ void CB2_InitTxRandomizerChallengesMenu(void);
 void SaveData_TxRandomizerAndChallenges(void);
 
 bool8 IsRandomizerActivated(void);
-bool8 IsChallengesActivated(void);
+bool8 IsOneTypeChallengeActive(void);
+bool8 AreAnyChallengesActive(void);
 bool8 IsNuzlockeActive(void);
 bool8 IsNuzlockeNicknamingActive(void);
 bool8 IsPokecenterChallengeActivated(void);

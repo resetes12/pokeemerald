@@ -374,7 +374,7 @@ u16 GetStarterPokemon(u16 chosenStarterId)
         chosenStarterId = 0;
 
     //tx_randomizer_and_challenges
-    if (gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge != TX_CHALLENGE_TYPE_OFF)
+    if (IsOneTypeChallengeActive())
     {
         if (sStarterList[chosenStarterId] == 0)
             sStarterList[chosenStarterId] = PickRandomStarterForOneTypeChallenge(sStarterList, chosenStarterId);

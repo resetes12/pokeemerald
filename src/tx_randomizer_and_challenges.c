@@ -49,13 +49,18 @@ bool8 IsDifficultyOptionsActivated(void)
     return FALSE;
 }
 
-bool8 IsChallengesActivated(void)
+bool8 IsOneTypeChallengeActive(void)
+{
+    return (gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge != TX_CHALLENGE_TYPE_OFF);
+}
+
+bool8 AreAnyChallengesActive(void)
 {
     if (gSaveBlock1Ptr->tx_Challenges_EvoLimit
-        || gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge != TX_CHALLENGE_TYPE_OFF
         || gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer
         || gSaveBlock1Ptr->tx_Challenges_Mirror
-        || gSaveBlock1Ptr->tx_Challenges_Mirror_Thief)
+        || gSaveBlock1Ptr->tx_Challenges_Mirror_Thief
+        || IsOneTypeChallengeActive())
         return TRUE;
 
     return FALSE;
@@ -93,7 +98,7 @@ bool8 HMsOverwriteOptionActive(void)
     return (gSaveBlock1Ptr->tx_Challenges_Nuzlocke 
             || gSaveBlock1Ptr->tx_Challenges_Mirror 
             || gSaveBlock1Ptr->tx_Random_Moves
-            || gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge != TX_CHALLENGE_TYPE_OFF);
+            || IsOneTypeChallengeActive());
 }
 
 // Nuzlocke code

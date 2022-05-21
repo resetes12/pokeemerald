@@ -4359,6 +4359,24 @@ static void HandleTurnActionSelectionState(void)
                         *(gBattleStruct->stateIdAfterSelScript + gActiveBattler) = STATE_BEFORE_ACTION_CHOSEN;
                         return;
                     }
+                    else if (IsNuzlockeActive() || IsOneTypeChallengeActive()) //tx_randomizer_and_challenges
+                    {
+                        if (NuzlockeIsCaptureBlocked)
+                            gSelectionBattleScripts[gActiveBattler] = BattleScript_Safari_NuzlockeCaptureBlocked;
+                        else if (NuzlockeIsSpeciesClauseActive == 2) //already have THIS_mon
+                            gSelectionBattleScripts[gActiveBattler] = BattleScript_Safari_SameSpeciesCaptureBlocked;
+                        else if (OneTypeChallengeCaptureBlocked) //pkmn not of the TYPE CHALLENGE type
+                            gSelectionBattleScripts[gActiveBattler] = BattleScript_Safari_OneTypeChallengeCaptureBlocked;
+                        else if (NuzlockeIsSpeciesClauseActive)
+                            gSelectionBattleScripts[gActiveBattler] = BattleScript_Safari_SpeciesClauseCaptureBlocked;
+                        else
+                            break;
+
+                        gBattleCommunication[gActiveBattler] = STATE_SELECTION_SCRIPT;
+                        *(gBattleStruct->selectionScriptFinished + gActiveBattler) = FALSE;
+                        *(gBattleStruct->stateIdAfterSelScript + gActiveBattler) = STATE_BEFORE_ACTION_CHOSEN;
+                        return;
+                    }
                     break;
                 case B_ACTION_SAFARI_POKEBLOCK:
                     BtlController_EmitChooseItem(BUFFER_A, gBattleStruct->battlerPartyOrders[gActiveBattler]);
