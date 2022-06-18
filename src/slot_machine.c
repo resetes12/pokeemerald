@@ -1756,14 +1756,10 @@ static bool8 SlotTask_FreeDataStructures(struct Task *task)
         FREE_AND_SET_NULL(sImageTable_DigitalDisplay_Number);
         FREE_AND_SET_NULL(sImageTable_DigitalDisplay_Pokeball);
         FREE_AND_SET_NULL(sImageTable_DigitalDisplay_DPad);
-        if (sImageTable_ReelTimePikachu != NULL)
-            FREE_AND_SET_NULL(sImageTable_ReelTimePikachu);
-        if (sImageTable_ReelTimeMachineAntennae != NULL)
-            FREE_AND_SET_NULL(sImageTable_ReelTimeMachineAntennae);
-        if (sImageTable_ReelTimeMachine != NULL)
-            FREE_AND_SET_NULL(sImageTable_ReelTimeMachine);
-        if (sImageTable_BrokenReelTimeMachine != NULL)
-            FREE_AND_SET_NULL(sImageTable_BrokenReelTimeMachine);
+        TRY_FREE_AND_SET_NULL(sImageTable_ReelTimePikachu);
+        TRY_FREE_AND_SET_NULL(sImageTable_ReelTimeMachineAntennae);
+        TRY_FREE_AND_SET_NULL(sImageTable_ReelTimeMachine);
+        TRY_FREE_AND_SET_NULL(sImageTable_BrokenReelTimeMachine);
         FREE_AND_SET_NULL(sMenuGfx);
         FREE_AND_SET_NULL(sSelectedPikaPowerTile);
         FREE_AND_SET_NULL(sReelOverlay_Tilemap);
@@ -3865,21 +3861,15 @@ static void ReelTime_EndFailure(struct Task *task)
 static void LoadReelTimeWindowTilemap(s16 a0, s16 a1)
 {
     s16 i;
-
     for (i = 4; i < 15; i++)
-    {
         LoadBgTilemap(1, &sReelTimeWindow_Tilemap[a1 + (i - 4) * 20], 2, 32 * i + a0);
-    }
 }
 
 static void ClearReelTimeWindowTilemap(s16 a0)
 {
     u8 i;
-
     for (i = 4; i < 15; i++)
-    {
         LoadBgTilemap(1, sEmptyTilemap, 2, 32 * i + a0);
-    }
 }
 
 #undef tState
@@ -4116,31 +4106,43 @@ static void CreateCreditPayoutNumberSprites(void)
         CreateCoinNumberSprite(x, 23, TRUE, i);
 }
 
-static void CreateCoinNumberSprite(s16 x, s16 y, bool8 isPayout, s16 a3)
+#define sIsPayout data[0]
+#define sDigitMin data[1]
+#define sDigitMax data[2]
+#define sCurNum   data[3] // Only used to determine whether the sprite has already been updated to show the correct digit
+
+static void CreateCoinNumberSprite(s16 x, s16 y, bool8 isPayout, s16 digitMult)
 {
     struct Sprite *sprite = &gSprites[CreateSprite(&sSpriteTemplate_CoinNumber, x, y, 13)];
     sprite->oam.priority = 2;
-    sprite->data[0] = isPayout;
-    sprite->data[1] = a3;
-    sprite->data[2] = a3 * 10;
-    sprite->data[3] = -1;
+    sprite->sIsPayout = isPayout;
+    sprite->sDigitMin = digitMult;
+    sprite->sDigitMax = digitMult * 10;
+    sprite->sCurNum = -1;
 }
 
 static void SpriteCB_CoinNumber(struct Sprite *sprite)
 {
     u16 tag = sSlotMachine->coins;
-    if (sprite->data[0])
+    if (sprite->sIsPayout)
         tag = sSlotMachine->payout;
-    if (sprite->data[3] != tag)
+    if (sprite->sCurNum != tag)
     {
-        sprite->data[3] = tag;
-        tag %= (u16)sprite->data[2];
-        tag /= (u16)sprite->data[1];
-        tag += 7;
+        // Convert total to current digit
+        sprite->sCurNum = tag;
+        tag %= (u16)sprite->sDigitMax;
+        tag /= (u16)sprite->sDigitMin;
+
+        tag += GFXTAG_NUM_0;
         sprite->sheetTileStart = GetSpriteTileStartByTag(tag);
         SetSpriteSheetFrameTileNum(sprite);
     }
 }
+
+#undef sIsPayout
+#undef sDigitMin
+#undef sDigitMax
+#undef sCurNum
 
 static void CreateReelBackgroundSprite(void)
 {
@@ -4178,8 +4180,7 @@ static void CreateReelTimePikachuSprite(void)
 static void DestroyReelTimePikachuSprite(void)
 {
     DestroySprite(&gSprites[sSlotMachine->reelTimePikachuSpriteId]);
-    if (sImageTable_ReelTimePikachu != NULL)
-        FREE_AND_SET_NULL(sImageTable_ReelTimePikachu);
+    TRY_FREE_AND_SET_NULL(sImageTable_ReelTimePikachu);
 }
 
 static void SpriteCB_ReelTimePikachu(struct Sprite *sprite)
@@ -4308,10 +4309,8 @@ static void DestroyReelTimeMachineSprites(void)
     for (i = 0; i < ARRAY_COUNT(sSlotMachine->reelTimeMachineSpriteIds); i++)
         DestroySprite(&gSprites[sSlotMachine->reelTimeMachineSpriteIds[i]]);
 
-    if (sImageTable_ReelTimeMachineAntennae != NULL)
-        FREE_AND_SET_NULL(sImageTable_ReelTimeMachineAntennae);
-    if (sImageTable_ReelTimeMachine != NULL)
-        FREE_AND_SET_NULL(sImageTable_ReelTimeMachine);
+    TRY_FREE_AND_SET_NULL(sImageTable_ReelTimeMachineAntennae);
+    TRY_FREE_AND_SET_NULL(sImageTable_ReelTimeMachine);
 
     for (i = 0; i < ARRAY_COUNT(sSlotMachine->reelTimeNumberSpriteIds); i++)
         DestroySprite(&gSprites[sSlotMachine->reelTimeNumberSpriteIds[i]]);
@@ -4328,8 +4327,7 @@ static void DestroyReelTimeShadowSprites(void)
 static void DestroyBrokenReelTimeMachineSprite(void)
 {
     DestroySprite(&gSprites[sSlotMachine->reelTimeBrokenMachineSpriteId]);
-    if (sImageTable_BrokenReelTimeMachine != NULL)
-        FREE_AND_SET_NULL(sImageTable_BrokenReelTimeMachine);
+    TRY_FREE_AND_SET_NULL(sImageTable_BrokenReelTimeMachine);
 }
 
 #define sDelayTimer data[0]
