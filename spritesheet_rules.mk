@@ -1,5 +1,6 @@
 OBJEVENTGFXDIR := graphics/object_events/pics
 FLDEFFGFXDIR := graphics/field_effects/pics
+SLIDINGPUZZLESDIR := graphics/sliding_puzzle/puzzles
 
 $(OBJEVENTGFXDIR)/people/brendan/walking.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 4
@@ -677,3 +678,16 @@ $(FLDEFFGFXDIR)/record_mix_lights.4bpp: %.4bpp: %.png
 
 graphics/door_anims/battle_tower_multi_corridor.4bpp: %.4bpp: %.png
 	$(GFX) $< $@ -mwidth 2 -mheight 4
+
+
+$(SLIDINGPUZZLESDIR)/kabuto/tiles.4bpp: %.4bpp: %.png
+	$(GFX) $< $@ -mwidth 4 -mheight 4
+
+$(SLIDINGPUZZLESDIR)/omanyte/tiles.4bpp: %.4bpp: %.png
+	$(GFX) $< $@ -mwidth 4 -mheight 4
+
+$(SLIDINGPUZZLESDIR)/aerodactyl/tiles.4bpp: %.4bpp: %.png
+	$(GFX) $< $@ -mwidth 4 -mheight 4
+
+$(SLIDINGPUZZLESDIR)/ho_oh/tiles.4bpp: %.4bpp: %.png
+	$(GFX) $< $@ -mwidth 4 -mheight 4
