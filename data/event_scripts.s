@@ -716,12 +716,14 @@ Common_EventScript_PlayGymBadgeFanfare::
 	return
 
 Common_EventScript_OutOfCenterPartyHeal::
-	fadescreen FADE_TO_BLACK
+	fadescreenswapbuffers FADE_TO_BLACK
 	playfanfare MUS_HEAL
 	waitfanfare
 	special HealPlayerParty
+  @ start fade then immediately load following pokemon, and wait for fade
+	fadescreenswapbuffers FADE_FROM_BLACK, 1
   callnative UpdateFollowingPokemon
-	fadescreen FADE_FROM_BLACK
+  callfunc ScrFunc_WaitPaletteNotActive
 	return
 
 EventScript_RegionMap::

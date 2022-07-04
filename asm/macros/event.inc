@@ -276,7 +276,7 @@
 	.2byte SPECIAL_\function
 	.endm
 
-	@ Blocks script execution until a command or C code manually unblocks it. Generally used with specific 
+	@ Blocks script execution until a command or C code manually unblocks it. Generally used with specific
 	@ commands and specials. Calling EnableBothScriptContexts for instance will allow execution to continue.
 	.macro waitstate
 	.byte 0x27
@@ -998,7 +998,7 @@
 	.endm
 
 	@ Gives the player an Egg of the specified species.
-	@ VAR_RESULT will be set to MON_GIVEN_TO_PARTY, MON_GIVEN_TO_PC, or MON_CANT_GIVE depending on the outcome. 
+	@ VAR_RESULT will be set to MON_GIVEN_TO_PARTY, MON_GIVEN_TO_PC, or MON_CANT_GIVE depending on the outcome.
 	.macro giveegg species:req
 	.byte 0x7a
 	.2byte \species
@@ -1416,7 +1416,7 @@
 	.2byte \out
 	.endm
 
-	@ Gives 'count' coins to the player, up to a total of MAX_COINS. 
+	@ Gives 'count' coins to the player, up to a total of MAX_COINS.
 	@ If the player already has MAX_COINS then VAR_RESULT is set to TRUE, otherwise it is set to FALSE.
 	.macro addcoins count:req
 	.byte 0xb4
@@ -1677,9 +1677,11 @@
 
 	@ Equivalent to fadescreen but copies gPlttBufferUnfaded to gPaletteDecompressionBuffer on the fade out
 	@ and the reverse on the fade in, in effect saving gPlttBufferUnfaded to restore it.
-	.macro fadescreenswapbuffers mode:req
+  @ If nowait set, does not wait for the fade to complete
+	.macro fadescreenswapbuffers mode:req, nowait=0
 	.byte 0xdc
 	.byte \mode
+  .byte \nowait
 	.endm
 
 	@ Buffers the specified trainer's class name to the given string var.
@@ -1893,7 +1895,7 @@
 
 	@ Gives 'amount' of the specified 'item' to the player and prints a message with fanfare.
 	@ If the player doesn't have space for all the items then as many are added as possible, the
-	@ message indicates there is no room, and VAR_RESULT is set to FALSE. 
+	@ message indicates there is no room, and VAR_RESULT is set to FALSE.
 	@ Otherwise VAR_RESULT is set to TRUE, and the message indicates they have received the item(s).
 	.macro giveitem item:req, amount=1
 	setorcopyvar VAR_0x8000, \item
