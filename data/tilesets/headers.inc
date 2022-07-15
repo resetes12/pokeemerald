@@ -1,6 +1,6 @@
 	.align 2
 gTileset_General::
-	.byte 0x41 @ is compressed, swapPalettes 4
+	.byte 0x21 @ is compressed, swapPalettes 4
 	.byte FALSE @ is secondary tileset
 	.2byte 0x10 @ lightPalettes 4
 	.4byte gTilesetTiles_General
@@ -11,7 +11,7 @@ gTileset_General::
 
 	.align 2
 gTileset_Petalburg::
-	.byte 0x21 @ is compressed, swapPalettes 9
+	.byte 0x11 @ is compressed, swapPalettes 9
 	.byte TRUE @ is secondary tileset
   .2byte 0x00B @ lightPalettes 6,7,9, custom 9
 	.4byte gTilesetTiles_Petalburg
@@ -44,9 +44,9 @@ gTileset_Dewford::
 
 	.align 2
 gTileset_Slateport::
-	.byte 5 @ is compressed, swapPalettes 6
+	.byte 3 @ is compressed, swapPalettes 6
 	.byte TRUE @ is secondary tileset
-  .2byte 0x1 @ lightPalettes 6
+  .2byte 0x41 @ lightPalettes 6,12
 	.4byte gTilesetTiles_Slateport
 	.4byte gTilesetPalettes_Slateport
 	.4byte gMetatiles_Slateport
@@ -77,7 +77,7 @@ gTileset_Lavaridge::
 
 	.align 2
 gTileset_Fallarbor::
-	.byte 9 @ is compressed, swapPalettes 7
+	.byte 5 @ is compressed, swapPalettes 7
 	.byte TRUE @ is secondary tileset
 	.2byte 2 @ lightPalettes 7
 	.4byte gTilesetTiles_Fallarbor
@@ -99,7 +99,7 @@ gTileset_Fortree::
 
 	.align 2
 gTileset_Lilycove::
-	.byte 5 @ is compressed, swapPalettes 6
+	.byte 3 @ is compressed, swapPalettes 6
 	.byte TRUE @ is secondary tileset
 	.2byte 0x01 @ lightPalettes 6
 	.4byte gTilesetTiles_Lilycove
@@ -111,7 +111,7 @@ gTileset_Lilycove::
 
 	.align 2
 gTileset_Mossdeep::
-	.byte 0x11 @ is compressed, swapPalettes 8
+	.byte 0x09 @ is compressed, swapPalettes 8
 	.byte TRUE @ is secondary tileset
 	.2byte 0x4 @ lightPalettes 8
 	.4byte gTilesetTiles_Mossdeep
@@ -134,7 +134,7 @@ gTileset_EverGrande::
 
 	.align 2
 gTileset_Pacifidlog::
-	.byte 0x21 @ is compressed, swapPalettes 9
+	.byte 0x11 @ is compressed, swapPalettes 9
 	.byte TRUE @ is secondary tileset
 	.2byte 8 @ lightPalettes 9
 	.4byte gTilesetTiles_Pacifidlog
@@ -145,7 +145,7 @@ gTileset_Pacifidlog::
 
 	.align 2
 gTileset_Sootopolis::
-	.byte 5 @ is compressed, swapPalettes 6
+	.byte 3 @ is compressed, swapPalettes 6
 	.byte TRUE @ is secondary tileset
 	.2byte 0x101 @ lightPalettes 6, customLights 6
 	.4byte gTilesetTiles_Sootopolis
