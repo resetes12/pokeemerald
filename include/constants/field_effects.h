@@ -129,10 +129,10 @@
 #define FLDEFF_PAL_TAG_UNKNOWN            0x1011
 
 // tile tags, for field effects that may have many copies on screen at once
-#define FLDEFF_TILE_TAG_SHADOW_SMALL        0x1300
-#define FLDEFF_TILE_TAG_SHADOW_MEDIUM       0x1301
-#define FLDEFF_TILE_TAG_SHADOW_LARGE        0x1302
-#define FLDEFF_TILE_TAG_SHADOW_EXTRA_LARGE  0x1303
+#define FLDEFF_TILE_TAG_SHADOW_SMALL        0x1400
+#define FLDEFF_TILE_TAG_SHADOW_MEDIUM       0x1401
+#define FLDEFF_TILE_TAG_SHADOW_LARGE        0x1402
+#define FLDEFF_TILE_TAG_SHADOW_EXTRA_LARGE  0x1403
 
 // Duplicates of event_object_movement tags
 #define FLDEFF_PAL_TAG_MAY 0x1110 // OBJ_EVENT_PAL_TAG_MAY
