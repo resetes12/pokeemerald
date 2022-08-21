@@ -547,15 +547,11 @@ static void ApplyGammaShift(u8 startPalIndex, u8 numPalettes, s8 gammaIndex)
     else
     {
         if (MapHasNaturalLight(gMapHeader.mapType)) { // Time-blend
-          // Create the palette mask
-          u32 palettes = PALETTES_ALL;
-          numPalettes += startPalIndex;
-          palettes = (palettes >> startPalIndex) << startPalIndex;
-          palettes = (palettes << (32-numPalettes)) >> (32-numPalettes);
-          UpdateAltBgPalettes(palettes & PALETTES_BG);
-          UpdatePalettesWithTime(palettes);
+            u32 palettes = ((1 << numPalettes) - 1) << startPalIndex;
+            UpdateAltBgPalettes(palettes & PALETTES_BG);
+            UpdatePalettesWithTime(palettes);
         } else { // copy
-          CpuFastCopy(gPlttBufferUnfaded + startPalIndex * 16, gPlttBufferFaded + startPalIndex * 16, numPalettes * 16 * sizeof(u16));
+            CpuFastCopy(gPlttBufferUnfaded + startPalIndex * 16, gPlttBufferFaded + startPalIndex * 16, numPalettes * 16 * sizeof(u16));
         }
     }
 }
