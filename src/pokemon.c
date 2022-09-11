@@ -13778,7 +13778,7 @@ static u16 PickRandomizedSpeciesFromEWRAM(u16 species) //INTERNAL use only!
 {
     u8 i;
     u8 depth = 2;
-    u8 start_depth = depth;
+    u8 startDepth = depth;
 
     #ifdef GBA_PRINTF
     mgba_printf(MGBA_LOG_DEBUG, "PickRandomizedSpeciesFromEWRAM(%d = %s)", species, ConvertToAscii(gSpeciesNames[species]) );
@@ -13794,7 +13794,7 @@ static u16 PickRandomizedSpeciesFromEWRAM(u16 species) //INTERNAL use only!
 
     #ifdef GBA_PRINTF
         if (gSaveBlock1Ptr->tx_Random_MapBased)
-            mgba_printf(MGBA_LOG_DEBUG, "MapBased: start_depth=%d; new_depth=%d", start_depth, depth);
+            mgba_printf(MGBA_LOG_DEBUG, "MapBased: startDepth=%d; new_depth=%d", startDepth, depth);
         mgba_printf(MGBA_LOG_DEBUG, "depth[%d], new species = %d = %s", i, species, ConvertToAscii(gSpeciesNames[species]));
         mgba_printf(MGBA_LOG_DEBUG, "");
     #endif
@@ -13965,7 +13965,7 @@ u8 GetTypeBySpecies(u16 species, u8 typeNum)
 
 static u16 GetRandomSpecies(u16 species, u8 mapBased, u8 type, u16 additionalOffset) //INTERNAL use only!
 {
-    u8 slot, slot_new;
+    u8 slot, slotNew;
     u16 mapOffset = 0; //12289, 49157
     if (mapBased)
         mapOffset = NuzlockeGetCurrentRegionMapSectionId();
@@ -13973,31 +13973,31 @@ static u16 GetRandomSpecies(u16 species, u8 mapBased, u8 type, u16 additionalOff
 
     if (gSaveBlock1Ptr->tx_Random_Similar)
     {
-        u16 result_species;
+        u16 speciesResult;
         slot = gSpeciesMapping[species];
 
         switch (slot)
         {
         case EVO_TYPE_0:
-            result_species = sRandomSpeciesEvo0[RandomSeededModulo(species + mapOffset + additionalOffset, RANDOM_SPECIES_EVO_0_COUNT)];
+            speciesResult = sRandomSpeciesEvo0[RandomSeededModulo(species + mapOffset + additionalOffset, RANDOM_SPECIES_EVO_0_COUNT)];
             break;
         case EVO_TYPE_1:
-            result_species = sRandomSpeciesEvo1[RandomSeededModulo(species + mapOffset + additionalOffset, RANDOM_SPECIES_EVO_1_COUNT)];
+            speciesResult = sRandomSpeciesEvo1[RandomSeededModulo(species + mapOffset + additionalOffset, RANDOM_SPECIES_EVO_1_COUNT)];
             break;
         case EVO_TYPE_2:
-            result_species = sRandomSpeciesEvo2[RandomSeededModulo(species + mapOffset + additionalOffset, RANDOM_SPECIES_EVO_2_COUNT)];
+            speciesResult = sRandomSpeciesEvo2[RandomSeededModulo(species + mapOffset + additionalOffset, RANDOM_SPECIES_EVO_2_COUNT)];
             break;
         case EVO_TYPE_LEGENDARY:
-            result_species = sRandomSpeciesEvoLegendary[RandomSeededModulo(species + mapOffset + additionalOffset, RANDOM_SPECIES_EVO_LEGENDARY_COUNT)];
+            speciesResult = sRandomSpeciesEvoLegendary[RandomSeededModulo(species + mapOffset + additionalOffset, RANDOM_SPECIES_EVO_LEGENDARY_COUNT)];
             break;
         }
 
         #ifdef GBA_PRINTF
-        slot_new = gSpeciesMapping[result_species];
-        mgba_printf(MGBA_LOG_DEBUG, "%s: species=%d=%s; mapBased=%d; result_species=%d=%s; %s-->>%s", ConvertToAscii(gRandomizationTypes[type]), species, ConvertToAscii(gSpeciesNames[species]), mapBased, result_species, ConvertToAscii(gSpeciesNames[result_species]), ConvertToAscii(gEvoStages[slot]), ConvertToAscii(gEvoStages[slot_new]));
+        slotNew = gSpeciesMapping[speciesResult];
+        mgba_printf(MGBA_LOG_DEBUG, "%s: species=%d=%s; mapBased=%d; speciesResult=%d=%s; %s-->>%s", ConvertToAscii(gRandomizationTypes[type]), species, ConvertToAscii(gSpeciesNames[species]), mapBased, speciesResult, ConvertToAscii(gSpeciesNames[speciesResult]), ConvertToAscii(gEvoStages[slot]), ConvertToAscii(gEvoStages[slotNew]));
         #endif
 
-        return result_species;
+        return speciesResult;
     }
 
     if (gSaveBlock1Ptr->tx_Random_IncludeLegendaries)
@@ -14007,8 +14007,8 @@ static u16 GetRandomSpecies(u16 species, u8 mapBased, u8 type, u16 additionalOff
 }
 u16 GetSpeciesRandomSeeded(u16 species, u8 type, u16 additionalOffset)
 {
-    u8 slot, slot_new;
-    u16 result_species = species;
+    u8 slot, slotNew;
+    u16 speciesResult = species;
     u8 mapBased = FALSE;
 
     //CHAOS
@@ -14027,35 +14027,35 @@ u16 GetSpeciesRandomSeeded(u16 species, u8 type, u16 additionalOffset)
     case TX_RANDOM_T_WILD_POKEMON:
         mapBased = gSaveBlock1Ptr->tx_Random_MapBased;
         if (gSaveBlock1Ptr->tx_Random_OneForOne)
-            result_species = PickRandomizedSpeciesFromEWRAM(species);
+            speciesResult = PickRandomizedSpeciesFromEWRAM(species);
         else
-            result_species = GetRandomSpecies(species, mapBased, type, additionalOffset);
+            speciesResult = GetRandomSpecies(species, mapBased, type, additionalOffset);
         break;
     case TX_RANDOM_T_TRAINER:
         mapBased = gSaveBlock1Ptr->tx_Random_MapBased;
         if (gSaveBlock1Ptr->tx_Random_OneForOne)
-            result_species = PickRandomizedSpeciesFromEWRAM(species);
+            speciesResult = PickRandomizedSpeciesFromEWRAM(species);
         else
-            result_species = GetRandomSpecies(species, mapBased, type, additionalOffset);
+            speciesResult = GetRandomSpecies(species, mapBased, type, additionalOffset);
         break;
     case TX_RANDOM_T_MOVES:
-        result_species = sRandomSpeciesLegendary[RandomSeededModulo(species, RANDOM_SPECIES_COUNT_LEGENDARY)];
+        speciesResult = sRandomSpeciesLegendary[RandomSeededModulo(species, RANDOM_SPECIES_COUNT_LEGENDARY)];
         break;
     case TX_RANDOM_T_ABILITY:
-        result_species = GetRandomSpecies(species, mapBased, type, additionalOffset);
+        speciesResult = GetRandomSpecies(species, mapBased, type, additionalOffset);
         break;
     case TX_RANDOM_T_EVO:
-        result_species = GetRandomSpecies(species, mapBased, type, additionalOffset);
+        speciesResult = GetRandomSpecies(species, mapBased, type, additionalOffset);
         break;
     case TX_RANDOM_T_EVO_METH:
-        result_species = GetRandomSpecies(species, mapBased, type, additionalOffset);
+        speciesResult = GetRandomSpecies(species, mapBased, type, additionalOffset);
         break;
     case TX_RANDOM_T_STATIC:
-        result_species = GetRandomSpecies(species, mapBased, type, additionalOffset);
+        speciesResult = GetRandomSpecies(species, mapBased, type, additionalOffset);
         break;
     }
 
-    return result_species;
+    return speciesResult;
 }
 
 u16 GetRandomMove(u16 move, u16 species)
