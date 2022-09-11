@@ -66,7 +66,7 @@ u16 RandomSeededModulo(u32 value, u16 modulo)
 
     do
     {
-        result = ISO_RANDOMIZE1(otId * value + result);
+        result = ISO_RANDOMIZE1(otId + value + result);
     }
     while ((result >= RAND_MAX) && (++i != I_MAX));
 

@@ -13953,7 +13953,7 @@ u8 GetTypeBySpecies(u16 species, u8 typeNum)
     if (!gSaveBlock1Ptr->tx_Random_Type)
         return type;
 
-    type = sOneTypeChallengeValidTypes[RandomSeededModulo(type*12289 + typeNum*species*24593, NUMBER_OF_MON_TYPES-1)];
+    type = sOneTypeChallengeValidTypes[RandomSeededModulo(type + typeNum + species, NUMBER_OF_MON_TYPES-1)];
 
     #ifdef GBA_PRINTF
     if (gSaveBlock1Ptr->tx_Random_Type)
@@ -13966,35 +13966,10 @@ u8 GetTypeBySpecies(u16 species, u8 typeNum)
 static u16 GetRandomSpecies(u16 species, u8 mapBased, u8 type, u16 additionalOffset) //INTERNAL use only!
 {
     u8 slot, slot_new;
-    u16 offset = 0;
-    u16 multiplier = 1;
+    u16 mapOffset = 0; //12289, 49157
     if (mapBased)
-        offset = NuzlockeGetCurrentRegionMapSectionId();
+        mapOffset = NuzlockeGetCurrentRegionMapSectionId();
 
-    switch(type)
-    {
-    case TX_RANDOM_T_WILD_POKEMON:
-        multiplier = 12289;
-        break;
-    case TX_RANDOM_T_TRAINER:
-        multiplier = 49157;
-        break;
-    case TX_RANDOM_T_MOVES:
-        multiplier = 12289;
-        break;
-    case TX_RANDOM_T_ABILITY:
-        multiplier = 12289;
-        break;
-    case TX_RANDOM_T_EVO:
-        multiplier = 12289;
-        break;
-    case TX_RANDOM_T_EVO_METH:
-        multiplier = 12289;
-        break;
-    case TX_RANDOM_T_STATIC:
-        multiplier = 49157;
-        break;
-    }
 
     if (gSaveBlock1Ptr->tx_Random_Similar)
     {
@@ -14004,16 +13979,16 @@ static u16 GetRandomSpecies(u16 species, u8 mapBased, u8 type, u16 additionalOff
         switch (slot)
         {
         case EVO_TYPE_0:
-            result_species = sRandomSpeciesEvo0[RandomSeededModulo(species+offset*multiplier+additionalOffset, RANDOM_SPECIES_EVO_0_COUNT)];
+            result_species = sRandomSpeciesEvo0[RandomSeededModulo(species + mapOffset + additionalOffset, RANDOM_SPECIES_EVO_0_COUNT)];
             break;
         case EVO_TYPE_1:
-            result_species = sRandomSpeciesEvo1[RandomSeededModulo(species+offset*multiplier+additionalOffset, RANDOM_SPECIES_EVO_1_COUNT)];
+            result_species = sRandomSpeciesEvo1[RandomSeededModulo(species + mapOffset + additionalOffset, RANDOM_SPECIES_EVO_1_COUNT)];
             break;
         case EVO_TYPE_2:
-            result_species = sRandomSpeciesEvo2[RandomSeededModulo(species+offset*multiplier+additionalOffset, RANDOM_SPECIES_EVO_2_COUNT)];
+            result_species = sRandomSpeciesEvo2[RandomSeededModulo(species + mapOffset + additionalOffset, RANDOM_SPECIES_EVO_2_COUNT)];
             break;
         case EVO_TYPE_LEGENDARY:
-            result_species = sRandomSpeciesEvoLegendary[RandomSeededModulo(species+offset*multiplier+additionalOffset, RANDOM_SPECIES_EVO_LEGENDARY_COUNT)];
+            result_species = sRandomSpeciesEvoLegendary[RandomSeededModulo(species + mapOffset + additionalOffset, RANDOM_SPECIES_EVO_LEGENDARY_COUNT)];
             break;
         }
 
@@ -14026,9 +14001,9 @@ static u16 GetRandomSpecies(u16 species, u8 mapBased, u8 type, u16 additionalOff
     }
 
     if (gSaveBlock1Ptr->tx_Random_IncludeLegendaries)
-        return sRandomSpeciesLegendary[RandomSeededModulo(species+offset*multiplier+additionalOffset, RANDOM_SPECIES_COUNT_LEGENDARY)];
+        return sRandomSpeciesLegendary[RandomSeededModulo(species + mapOffset + additionalOffset, RANDOM_SPECIES_COUNT_LEGENDARY)];
 
-    return sRandomSpecies[RandomSeededModulo(species+offset*multiplier+additionalOffset, RANDOM_SPECIES_COUNT)];
+    return sRandomSpecies[RandomSeededModulo(species + mapOffset + additionalOffset, RANDOM_SPECIES_COUNT)];
 }
 u16 GetSpeciesRandomSeeded(u16 species, u8 type, u16 additionalOffset)
 {
@@ -14085,11 +14060,11 @@ u16 GetSpeciesRandomSeeded(u16 species, u8 type, u16 additionalOffset)
 
 u16 GetRandomMove(u16 move, u16 species)
 {
-    u16 val = RandomSeededModulo(move * species * 769, RANDOM_MOVES_COUNT);
+    u16 val = RandomSeededModulo(move + species, RANDOM_MOVES_COUNT);
     u16 final = sRandomValidMoves[val];
     
     #ifdef GBA_PRINTF
-        mgba_printf(MGBA_LOG_DEBUG, "TX RANDOM MOVE     : GetRandomMove: move=%d=%s, species=%d; combined=%d; val=%d; final=%d=%s", move,  ConvertToAscii(gMoveNames[move]), species, move * species * 769, val, final, ConvertToAscii(gMoveNames[final]));
+        mgba_printf(MGBA_LOG_DEBUG, "TX RANDOM MOVE     : GetRandomMove: move=%d=%s, species=%d; combined=%d; val=%d; final=%d=%s", move,  ConvertToAscii(gMoveNames[move]), species, move + species, val, final, ConvertToAscii(gMoveNames[final]));
     #endif
 
     return final;
