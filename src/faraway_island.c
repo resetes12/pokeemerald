@@ -7,14 +7,13 @@
 #include "sprite.h"
 #include "constants/event_objects.h"
 #include "constants/field_effects.h"
-#include "constants/maps.h"
 #include "constants/metatile_behaviors.h"
 
 static u8 GetValidMewMoveDirection(u8);
-static bool8 ShouldMewMoveNorth(struct ObjectEvent*, u8);
-static bool8 ShouldMewMoveSouth(struct ObjectEvent*, u8);
-static bool8 ShouldMewMoveEast(struct ObjectEvent*, u8);
-static bool8 ShouldMewMoveWest(struct ObjectEvent*, u8);
+static bool8 ShouldMewMoveNorth(struct ObjectEvent *, u8);
+static bool8 ShouldMewMoveSouth(struct ObjectEvent *, u8);
+static bool8 ShouldMewMoveEast(struct ObjectEvent *, u8);
+static bool8 ShouldMewMoveWest(struct ObjectEvent *, u8);
 static u8 GetRandomMewDirectionCandidate(u8);
 static bool8 CanMewMoveToCoords(s16, s16);
 

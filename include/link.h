@@ -5,6 +5,7 @@
 #define MAX_RFU_PLAYERS 5
 #define CMD_LENGTH 8
 #define QUEUE_CAPACITY 50
+#define OVERWORLD_RECV_QUEUE_MAX 3
 #define BLOCK_BUFFER_SIZE 0x100
 
 #define LINK_SLAVE 0
@@ -124,8 +125,9 @@ struct LinkStatus
     u32 errors:7;
 };
 
-#define MASTER_HANDSHAKE 0x8FFF
-#define SLAVE_HANDSHAKE  0xB9A0
+#define MASTER_HANDSHAKE  0x8FFF
+#define SLAVE_HANDSHAKE   0xB9A0
+#define EREADER_HANDSHAKE 0xCCD0
 
 #define SIO_MULTI_CNT ((struct SioMultiCnt *)REG_ADDR_SIOCNT)
 
@@ -208,7 +210,7 @@ struct Link
     /* 0x001 */ u8 state;
     /* 0x002 */ u8 localId; // local multi-player ID
     /* 0x003 */ u8 playerCount;
-    /* 0x004 */ u16 tempRecvBuffer[4];
+    /* 0x004 */ u16 handshakeBuffer[MAX_LINK_PLAYERS];
     /* 0x00c */ bool8 receivedNothing;
     /* 0x00d */ s8 serialIntrCounter;
     /* 0x00e */ bool8 handshakeAsMaster;
@@ -282,7 +284,7 @@ void SerialCB(void);
 bool32 InUnionRoom(void);
 void LoadWirelessStatusIndicatorSpriteGfx(void);
 bool8 IsLinkTaskFinished(void);
-void CreateWirelessStatusIndicatorSprite(u8, u8);
+void CreateWirelessStatusIndicatorSprite(u8 x, u8 y);
 void SetLinkStandbyCallback(void);
 void SetWirelessCommType1(void);
 void CheckShouldAdvanceLinkState(void);
@@ -298,9 +300,9 @@ void LocalLinkPlayerToBlock(void);
 void LinkPlayerFromBlock(u32 who);
 bool32 Link_AnyPartnersPlayingFRLG_JP(void);
 void ResetLinkPlayerCount(void);
-void SaveLinkPlayers(u8 a0);
+void SaveLinkPlayers(u8 playerCount);
 void SetWirelessCommType0(void);
-bool32 IsLinkRecvQueueLengthAtLeast3(void);
+bool32 IsLinkRecvQueueAtOverworldMax(void);
 
 extern u16 gLinkPartnersHeldKeys[6];
 extern u32 gLinkDebugSeed;

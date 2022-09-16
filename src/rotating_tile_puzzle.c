@@ -27,33 +27,33 @@ struct RotatingTilePuzzle
 
 static const u8 sMovement_ShiftRight[] =
 {
-    MOVEMENT_ACTION_STORE_AND_LOCK_ANIM,
+    MOVEMENT_ACTION_LOCK_ANIM,
     MOVEMENT_ACTION_WALK_NORMAL_RIGHT,
-    MOVEMENT_ACTION_FREE_AND_UNLOCK_ANIM,
+    MOVEMENT_ACTION_UNLOCK_ANIM,
     MOVEMENT_ACTION_STEP_END
 };
 
 static const u8 sMovement_ShiftDown[] =
 {
-    MOVEMENT_ACTION_STORE_AND_LOCK_ANIM,
+    MOVEMENT_ACTION_LOCK_ANIM,
     MOVEMENT_ACTION_WALK_NORMAL_DOWN,
-    MOVEMENT_ACTION_FREE_AND_UNLOCK_ANIM,
+    MOVEMENT_ACTION_UNLOCK_ANIM,
     MOVEMENT_ACTION_STEP_END
 };
 
 static const u8 sMovement_ShiftLeft[] =
 {
-    MOVEMENT_ACTION_STORE_AND_LOCK_ANIM,
+    MOVEMENT_ACTION_LOCK_ANIM,
     MOVEMENT_ACTION_WALK_NORMAL_LEFT,
-    MOVEMENT_ACTION_FREE_AND_UNLOCK_ANIM,
+    MOVEMENT_ACTION_UNLOCK_ANIM,
     MOVEMENT_ACTION_STEP_END
 };
 
 static const u8 sMovement_ShiftUp[] =
 {
-    MOVEMENT_ACTION_STORE_AND_LOCK_ANIM,
+    MOVEMENT_ACTION_LOCK_ANIM,
     MOVEMENT_ACTION_WALK_NORMAL_UP,
-    MOVEMENT_ACTION_FREE_AND_UNLOCK_ANIM,
+    MOVEMENT_ACTION_UNLOCK_ANIM,
     MOVEMENT_ACTION_STEP_END
 };
 
@@ -81,14 +81,11 @@ static const u8 sMovement_FaceUp[] =
     MOVEMENT_ACTION_STEP_END
 };
 
-// This file's functions.
-static void SaveRotatingTileObject(u8 eventTemplateId, u8 arg1);
-static void TurnUnsavedRotatingTileObject(u8 eventTemplateId, u8 arg1);
+static void SaveRotatingTileObject(u8, u8);
+static void TurnUnsavedRotatingTileObject(u8, u8);
 
-// EWRAM vars
 EWRAM_DATA static struct RotatingTilePuzzle *sRotatingTilePuzzle = NULL;
 
-// code
 void InitRotatingTilePuzzle(bool8 isTrickHouse)
 {
     if (sRotatingTilePuzzle == NULL)
@@ -101,8 +98,7 @@ void FreeRotatingTilePuzzle(void)
 {
     u8 id;
 
-    if (sRotatingTilePuzzle != NULL)
-        FREE_AND_SET_NULL(sRotatingTilePuzzle);
+    TRY_FREE_AND_SET_NULL(sRotatingTilePuzzle);
 
     id = GetObjectEventIdByLocalIdAndMap(OBJ_EVENT_ID_PLAYER, 0, 0);
     ObjectEventClearHeldMovementIfFinished(&gObjectEvents[id]);
@@ -134,14 +130,14 @@ u16 MoveRotatingTileObjects(u8 puzzleNumber)
             continue;
 
         // Object is on a metatile after the puzzle tile section (never occurs, in both cases the puzzle tiles are last)
-        if ((u8)((metatile - puzzleTileStart) / 8) >= 5)
+        if ((u8)((metatile - puzzleTileStart) / METATILE_ROW_WIDTH) >= 5)
             continue;
 
         // Object is on a metatile in puzzle tile section, but not one of the currently rotating color
-        if ((u8)((metatile - puzzleTileStart) / 8) != puzzleNumber)
+        if ((u8)((metatile - puzzleTileStart) / METATILE_ROW_WIDTH) != puzzleNumber)
             continue;
 
-        puzzleTileNum = (u8)((metatile - puzzleTileStart) % 8);
+        puzzleTileNum = (u8)((metatile - puzzleTileStart) % METATILE_ROW_WIDTH);
 
         // First 4 puzzle tiles are the colored arrows
         if (puzzleTileNum < 4)
@@ -221,7 +217,7 @@ void TurnRotatingTileObjects(void)
         // prevPuzzleTileNum will similarly be a number [0-3] representing the arrow tile the object just moved from
         // All the puzzles are oriented counter-clockwise and can only move 1 step at a time, so the difference between the current tile and the previous tile will always either be -1 or 3 (0-1, 1-2, 2-3, 3-0)
         // Which means tileDifference will always either be -1 or 3 after the below subtraction, and rotation will always be ROTATE_COUNTERCLOCKWISE after the following conditionals
-        tileDifference = (u8)((metatile - puzzleTileStart) % 8);
+        tileDifference = (u8)((metatile - puzzleTileStart) % METATILE_ROW_WIDTH);
         tileDifference -= (sRotatingTilePuzzle->objects[i].prevPuzzleTileNum);
 
         // Always true, see above
@@ -331,7 +327,7 @@ static void TurnUnsavedRotatingTileObject(u8 eventTemplateId, u8 puzzleTileNum)
     else
         puzzleTileStart = METATILE_TrickHousePuzzle_Arrow_YellowOnWhite_Right;
 
-    tileDifference = (u8)((metatile - puzzleTileStart) % 8);
+    tileDifference = (u8)((metatile - puzzleTileStart) % METATILE_ROW_WIDTH);
     tileDifference -= puzzleTileNum;
 
     if (tileDifference < 0 || tileDifference == 3)

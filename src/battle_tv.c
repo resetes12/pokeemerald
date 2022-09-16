@@ -237,7 +237,7 @@ static const u16 sPoints_MoveEffect[NUM_BATTLE_MOVE_EFFECTS] =
     [EFFECT_FUTURE_SIGHT] = 1,
     [EFFECT_GUST] = 1,
     [EFFECT_FLINCH_MINIMIZE_HIT] = 1,
-    [EFFECT_SOLARBEAM] = 1,
+    [EFFECT_SOLAR_BEAM] = 1,
     [EFFECT_THUNDER] = 1,
     [EFFECT_TELEPORT] = 1,
     [EFFECT_BEAT_UP] = 2,
@@ -570,7 +570,7 @@ void BattleTv_SetDataBasedOnString(u16 stringId)
 
     moveSlot = GetBattlerMoveSlotId(gBattlerAttacker, gBattleMsgDataPtr->currentMove);
 
-    if (moveSlot >= MAX_MON_MOVES && IsNotSpecialBattleString(stringId) && stringId > BATTLESTRINGS_ID_ADDER)
+    if (moveSlot >= MAX_MON_MOVES && IsNotSpecialBattleString(stringId) && stringId > BATTLESTRINGS_TABLE_START)
     {
         tvPtr->side[atkSide].faintCause = FNT_OTHER;
         return;

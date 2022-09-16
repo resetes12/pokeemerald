@@ -19,7 +19,7 @@ static const u32 sUnusedStructSizes[] =
     sizeof(struct SaveBlock1),
     sizeof(struct MapHeader),
  // 0x00000530, in RS
-    sizeof(struct MailStruct),  //or ObjectEvent / ObjectEventGraphicsInfo
+    sizeof(struct Mail),        //or ObjectEvent / ObjectEventGraphicsInfo
     sizeof(struct Pokemon),     //or TrainerCard
     0x00000528  // 0x000004D8, in RS
 };
@@ -174,10 +174,10 @@ static const struct SpriteTemplate sSpriteTemplate_MenuText =
     .callback = SpriteCallbackDummy,
 };
 
-static const u16 TradeScreenTextPalette[] = INCBIN_U16("graphics/trade/text.gbapal");
-static const struct SpritePalette gSpritePalette_TradeScreenText =
+static const u16 sTradeScreenTextPalette[] = INCBIN_U16("graphics/trade/text.gbapal");
+static const struct SpritePalette sSpritePalette_TradeScreenText =
 {
-    .data = TradeScreenTextPalette,
+    .data = sTradeScreenTextPalette,
     .tag = PALTAG_MENU_TEXT
 };
 

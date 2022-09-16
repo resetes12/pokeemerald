@@ -179,7 +179,7 @@ extern const u8 gText_EmptyString2[];
 extern const u8 gText_Confirm3[];
 extern const u8 gText_Cancel4[];
 extern const u8 gText_IsThisTheCorrectTime[];
-extern const u8 gText_PkmnFainted3[];
+extern const u8 gText_PkmnFainted_FldPsn[];
 extern const u8 gText_Coins[];
 extern const u8 gText_Silver[];
 extern const u8 gText_Gold[];
@@ -611,6 +611,10 @@ extern const u8 gText_PlayersBattleResults[];
 extern const u8 gText_WinLoseDraw[];
 extern const u8 gText_ColorTransparent[];
 extern const u8 gText_Slash[];
+extern const u8 gText_HealthboxNickname[];
+extern const u8 gText_HealthboxGender_None[];
+extern const u8 gText_HealthboxGender_Male[];
+extern const u8 gText_HealthboxGender_Female[];
 
 extern const u8 gText_99TimesPlus[];
 extern const u8 gText_1MinutePlus[];
@@ -2148,9 +2152,7 @@ extern const u8 gText_Switch2[];
 extern const u8 gText_Item[];
 extern const u8 gText_NotPkmnOtherTrainerWants[];
 extern const u8 gText_ThatIsntAnEgg[];
-extern const u8 gText_PkmnCantBeTradedNow[];
 extern const u8 gText_OtherTrainersPkmnCantBeTraded[];
-extern const u8 gText_EggCantBeTradedNow[];
 extern const u8 gText_OtherTrainerCantAcceptPkmn[];
 extern const u8 gText_CantTradeWithTrainer[];
 
@@ -2974,8 +2976,8 @@ extern const u8 gText_FindToughPokemon[];
 extern const u8 gText_ReturnToConditionMenu[];
 extern const u8 gText_NoRibbonWinners[];
 
-// Pokenav Ribbons
-extern const u8 gText_NumberF700[];
+// Pokenav
+extern const u8 gText_NumberIndex[];
 extern const u8 gText_RibbonsF700[];
 
 // use_pokeblock
@@ -3016,5 +3018,12 @@ extern const u8 gText_Summary2[];
 extern const u8 gText_PkmnForSwap[];
 extern const u8 gText_SamePkmnInPartyAlready[];
 extern const u8 gText_Cancel3[];
+
+// Naming Screen
+extern const u8 gText_MoveOkBack[];
+extern const u8 gText_YourName[];
+extern const u8 gText_BoxName[];
+extern const u8 gText_PkmnsNickname[];
+extern const u8 gText_TellHimTheWords[];
 
 #endif // GUARD_STRINGS_H
