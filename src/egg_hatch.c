@@ -70,14 +70,14 @@ extern const u8 gText_NicknameHatchPrompt[];
 static void Task_EggHatch(u8);
 static void CB2_LoadEggHatch(void);
 static void CB2_EggHatch(void);
-static void SpriteCB_Egg_Shake1(struct Sprite*);
-static void SpriteCB_Egg_Shake2(struct Sprite*);
-static void SpriteCB_Egg_Shake3(struct Sprite*);
-static void SpriteCB_Egg_WaitHatch(struct Sprite*);
-static void SpriteCB_Egg_Hatch(struct Sprite*);
-static void SpriteCB_Egg_Reveal(struct Sprite*);
-static void SpriteCB_EggShard(struct Sprite*);
-static void EggHatchPrintMessage(u8, u8*, u8, u8, u8);
+static void SpriteCB_Egg_Shake1(struct Sprite *);
+static void SpriteCB_Egg_Shake2(struct Sprite *);
+static void SpriteCB_Egg_Shake3(struct Sprite *);
+static void SpriteCB_Egg_WaitHatch(struct Sprite *);
+static void SpriteCB_Egg_Hatch(struct Sprite *);
+static void SpriteCB_Egg_Reveal(struct Sprite *);
+static void SpriteCB_EggShard(struct Sprite *);
+static void EggHatchPrintMessage(u8, u8 *, u8, u8, u8);
 static void CreateRandomEggShardSprite(void);
 static void CreateEggShardSprite(u8, u8, s16, s16, s16, u8);
 
@@ -92,7 +92,7 @@ static const struct OamData sOamData_Egg =
     .y = 0,
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = 0,
+    .mosaic = FALSE,
     .bpp = ST_OAM_4BPP,
     .shape = SPRITE_SHAPE(32x32),
     .x = 0,
@@ -179,7 +179,7 @@ static const struct OamData sOamData_EggShard =
     .y = 0,
     .affineMode = ST_OAM_AFFINE_OFF,
     .objMode = ST_OAM_OBJ_NORMAL,
-    .mosaic = 0,
+    .mosaic = FALSE,
     .bpp = ST_OAM_4BPP,
     .shape = SPRITE_SHAPE(8x8),
     .x = 0,
@@ -367,7 +367,7 @@ static void AddHatchedMonToParty(u8 id)
     u16 ball;
     u16 metLevel;
     u8 metLocation;
-    struct Pokemon* mon = &gPlayerParty[id];
+    struct Pokemon *mon = &gPlayerParty[id];
 
     CreateHatchedMon(mon, &gEnemyParty[0]);
     SetMonData(mon, MON_DATA_IS_EGG, &isEgg);
@@ -425,11 +425,11 @@ bool8 CheckDaycareMonReceivedMail(void)
     return _CheckDaycareMonReceivedMail(&gSaveBlock1Ptr->daycare, gSpecialVar_0x8004);
 }
 
-static u8 EggHatchCreateMonSprite(u8 useAlt, u8 state, u8 partyId, u16* speciesLoc)
+static u8 EggHatchCreateMonSprite(u8 useAlt, u8 state, u8 partyId, u16 *speciesLoc)
 {
     u8 position = 0;
     u8 spriteId = 0;
-    struct Pokemon* mon = NULL;
+    struct Pokemon *mon = NULL;
 
     if (useAlt == FALSE)
     {
@@ -478,7 +478,7 @@ void EggHatch(void)
 {
     if (IsNuzlockeActive())
         NuzlockeFlagSet(NuzlockeGetCurrentRegionMapSectionId());
-    ScriptContext2_Enable();
+    LockPlayerFieldControls();
     CreateTask(Task_EggHatch, 10);
     FadeScreen(FADE_TO_BLACK, 0);
 }
@@ -747,7 +747,7 @@ static void CB2_EggHatch(void)
 #define sSinIdx     data[1]
 #define sDelayTimer data[2]
 
-static void SpriteCB_Egg_Shake1(struct Sprite* sprite)
+static void SpriteCB_Egg_Shake1(struct Sprite *sprite)
 {
     if (++sprite->sTimer > 20)
     {
@@ -769,7 +769,7 @@ static void SpriteCB_Egg_Shake1(struct Sprite* sprite)
     }
 }
 
-static void SpriteCB_Egg_Shake2(struct Sprite* sprite)
+static void SpriteCB_Egg_Shake2(struct Sprite *sprite)
 {
     if (++sprite->sDelayTimer > 30)
     {
@@ -794,7 +794,7 @@ static void SpriteCB_Egg_Shake2(struct Sprite* sprite)
     }
 }
 
-static void SpriteCB_Egg_Shake3(struct Sprite* sprite)
+static void SpriteCB_Egg_Shake3(struct Sprite *sprite)
 {
     if (++sprite->sDelayTimer > 30)
     {
@@ -832,7 +832,7 @@ static void SpriteCB_Egg_Shake3(struct Sprite* sprite)
     }
 }
 
-static void SpriteCB_Egg_WaitHatch(struct Sprite* sprite)
+static void SpriteCB_Egg_WaitHatch(struct Sprite *sprite)
 {
     if (++sprite->sTimer > 50)
     {
@@ -841,7 +841,7 @@ static void SpriteCB_Egg_WaitHatch(struct Sprite* sprite)
     }
 }
 
-static void SpriteCB_Egg_Hatch(struct Sprite* sprite)
+static void SpriteCB_Egg_Hatch(struct Sprite *sprite)
 {
     s16 i;
 
@@ -868,7 +868,7 @@ static void SpriteCB_Egg_Hatch(struct Sprite* sprite)
     }
 }
 
-static void SpriteCB_Egg_Reveal(struct Sprite* sprite)
+static void SpriteCB_Egg_Reveal(struct Sprite *sprite)
 {
     if (sprite->sTimer == 0)
     {
@@ -896,7 +896,7 @@ static void SpriteCB_Egg_Reveal(struct Sprite* sprite)
 #define sDeltaX data[4]
 #define sDeltaY data[5]
 
-static void SpriteCB_EggShard(struct Sprite* sprite)
+static void SpriteCB_EggShard(struct Sprite *sprite)
 {
     sprite->sDeltaX += sprite->sVelocX;
     sprite->sDeltaY += sprite->sVelocY;
@@ -933,7 +933,7 @@ static void CreateEggShardSprite(u8 x, u8 y, s16 velocityX, s16 velocityY, s16 a
     StartSpriteAnim(&gSprites[spriteId], spriteAnimIndex);
 }
 
-static void EggHatchPrintMessage(u8 windowId, u8* string, u8 x, u8 y, u8 speed)
+static void EggHatchPrintMessage(u8 windowId, u8 *string, u8 x, u8 y, u8 speed)
 {
     FillWindowPixelBuffer(windowId, PIXEL_FILL(15));
     sEggHatchData->textColor[0] = 0;
