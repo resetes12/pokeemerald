@@ -1669,7 +1669,7 @@ static void FieldTask_ReturnToPcMenu(void)
         Task_PCMainMenu(taskId);
     } else {
         FlagClear(FLAG_SYS_PC_FROM_DEBUG_MENU);
-        EnableBothScriptContexts();
+        ScriptContext_Enable();
     }
     SetVBlankCallback(vblankCb);
     FadeInFromBlack();

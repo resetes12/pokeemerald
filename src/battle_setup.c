@@ -454,7 +454,7 @@ static void DoStandardWildBattle(void)
 
 void DoStandardWildBattle_Debug(void)
 {
-    ScriptContext2_Enable();
+    LockPlayerFieldControls();
     FreezeObjectEvents();
     StopPlayerAvatar();
     gMain.savedCallback = CB2_EndWildBattle;
@@ -1387,7 +1387,7 @@ void BattleSetup_StartTrainerBattle_Debug(void)
 
     CreateBattleStartTask_Debug(GetWildBattleTransition(), 0);
 
-    ScriptContext1_Stop();
+    ScriptContext_Stop();
 }
 
 static void CB2_EndTrainerBattle(void)
