@@ -72,9 +72,6 @@ static bool8 ShouldGetStatBadgeBoost(u16 flagId, u8 battlerId);
 static u16 GiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move);
 static bool8 ShouldSkipFriendshipChange(void);
 
-static void RandomizeSpeciesListEWRAMNormal(u16 seed);
-static void RandomizeSpeciesListEWRAMLegendary(u16 seed);
-
 EWRAM_DATA static u8 sLearningMoveTableID = 0;
 EWRAM_DATA u8 gPlayerPartyCount = 0;
 EWRAM_DATA u8 gEnemyPartyCount = 0;
@@ -83,10 +80,7 @@ EWRAM_DATA struct Pokemon gPlayerPartyBackup[PARTY_SIZE] = {0}; //tx_randomizer_
 EWRAM_DATA struct Pokemon gEnemyParty[PARTY_SIZE] = {0};
 EWRAM_DATA struct SpriteTemplate gMultiuseSpriteTemplate = {0};
 EWRAM_DATA static struct MonSpritesGfxManager *sMonSpritesGfxManagers[MON_SPR_GFX_MANAGERS_COUNT] = {NULL};
-
-//tx_randomizer_and_challenges
-EWRAM_DATA static u16 sSpeciesList[1] = {0}; //[NUM_SPECIES] = {0};
-EWRAM_DATA static u8 sTypeEffectivenessList[NUMBER_OF_MON_TYPES] = {0};
+EWRAM_DATA static u8 sTypeEffectivenessList[NUMBER_OF_MON_TYPES] = {0}; //tx_randomizer_and_challenges
 
 // const rom data
 #include "data/battle_moves.h"
@@ -13728,84 +13722,6 @@ u8 *MonSpritesGfxManager_GetSpritePtr(u8 managerId, u8 spriteNum)
 }
 
 //******************* tx_randomizer_and_challenges
-void RandomizeSpeciesListEWRAM(u16 seed)
-{
-    if (gSaveBlock1Ptr->tx_Random_IncludeLegendaries) //include legendary mons
-        RandomizeSpeciesListEWRAMLegendary(seed);
-    else
-        RandomizeSpeciesListEWRAMNormal(seed);
-}
-static void RandomizeSpeciesListEWRAMNormal(u16 seed)
-{
-    u16 i;
-    u16 *stemp = Alloc(sizeof(sRandomSpecies));
-
-    //memcpy(stemp, sRandomSpecies, sizeof(sRandomSpecies));
-    DmaCopy16(3, sRandomSpecies, stemp, sizeof(sRandomSpecies));
-    ShuffleListU16(stemp, RANDOM_SPECIES_COUNT, seed);
-
-    for (i=0; i<RANDOM_SPECIES_COUNT; i++)
-    {
-        sSpeciesList[sRandomSpecies[i]] = stemp[i];
-        #ifdef GBA_PRINTF
-            mgba_printf(MGBA_LOG_DEBUG, "i = %d: sSpeciesList[%d] = %d", i, sRandomSpecies[i], stemp[i] );
-        #endif
-    }
-    #ifdef GBA_PRINTF
-        mgba_printf(MGBA_LOG_DEBUG, "**** sSpeciesList[%d] generated ****", NELEMS(sRandomSpecies) );
-    #endif
-
-    Free(stemp);
-}
-static void RandomizeSpeciesListEWRAMLegendary(u16 seed)
-{
-    u16 i;
-    u16 *stemp = Alloc(sizeof(sRandomSpeciesLegendary));
-
-    //memcpy(stemp, sRandomSpeciesLegendary, sizeof(sRandomSpeciesLegendary));
-    DmaCopy16(3, sRandomSpeciesLegendary, stemp, sizeof(sRandomSpeciesLegendary));
-    ShuffleListU16(stemp, RANDOM_SPECIES_COUNT_LEGENDARY, seed);
-
-    for (i=0; i<RANDOM_SPECIES_COUNT_LEGENDARY; i++)
-    {
-        sSpeciesList[sRandomSpeciesLegendary[i]] = stemp[i];
-        #ifdef GBA_PRINTF
-            mgba_printf(MGBA_LOG_DEBUG, "i = %d: sRandomSpeciesLegendary[%d] = %d", i, sRandomSpeciesLegendary[i], stemp[i] );
-        #endif
-    }
-    #ifdef GBA_PRINTF
-        mgba_printf(MGBA_LOG_DEBUG, "**** sRandomSpeciesLegendary[%d] generated ****", NELEMS(sRandomSpeciesLegendary) );
-    #endif
-
-    Free(stemp);
-}
-static u16 PickRandomizedSpeciesFromEWRAM(u16 species) //INTERNAL use only!
-{
-    u8 i;
-    u8 depth = 2;
-    u8 startDepth = depth;
-
-    #ifdef GBA_PRINTF
-    mgba_printf(MGBA_LOG_DEBUG, "PickRandomizedSpeciesFromEWRAM(%d = %s)", species, ConvertToAscii(gSpeciesNames[species]) );
-    #endif
-
-    if (gSaveBlock1Ptr->tx_Random_MapBased)
-        depth += NuzlockeGetCurrentRegionMapSectionId() % 4;
-
-    for (i = 0; i < depth; i++)
-    {
-        species = sSpeciesList[species];
-    }
-
-    #ifdef GBA_PRINTF
-        if (gSaveBlock1Ptr->tx_Random_MapBased)
-            mgba_printf(MGBA_LOG_DEBUG, "MapBased: startDepth=%d; new_depth=%d", startDepth, depth);
-        mgba_printf(MGBA_LOG_DEBUG, "depth[%d], new species = %d = %s", i, species, ConvertToAscii(gSpeciesNames[species]));
-        mgba_printf(MGBA_LOG_DEBUG, "");
-    #endif
-
-    return species;
-}
 void RandomizeTypeEffectivenessListEWRAM(u16 seed)
 {
     u8 i;
@@ -14031,17 +13947,11 @@ u16 GetSpeciesRandomSeeded(u16 species, u8 type, u16 additionalOffset)
     {
     case TX_RANDOM_T_WILD_POKEMON:
         mapBased = gSaveBlock1Ptr->tx_Random_MapBased;
-        if (gSaveBlock1Ptr->tx_Random_OneForOne)
-            speciesResult = PickRandomizedSpeciesFromEWRAM(species);
-        else
-            speciesResult = GetRandomSpecies(species, mapBased, type, additionalOffset);
+        speciesResult = GetRandomSpecies(species, mapBased, type, additionalOffset);
         break;
     case TX_RANDOM_T_TRAINER:
         mapBased = gSaveBlock1Ptr->tx_Random_MapBased;
-        if (gSaveBlock1Ptr->tx_Random_OneForOne)
-            speciesResult = PickRandomizedSpeciesFromEWRAM(species);
-        else
-            speciesResult = GetRandomSpecies(species, mapBased, type, additionalOffset);
+        speciesResult = GetRandomSpecies(species, mapBased, type, additionalOffset);
         break;
     case TX_RANDOM_T_MOVES:
         speciesResult = sRandomSpeciesLegendary[RandomSeededModulo(species, RANDOM_SPECIES_COUNT_LEGENDARY)];
@@ -14088,10 +13998,4 @@ u8 EvolutionBlockedByEvoLimit(u16 species)
         return TRUE;
 
     return FALSE;
-}
-
-u8 PickRandomOneTypeChallengeType(void)
-{
-    u16 type = (RandomSeeded(1, TRUE) % (NUMBER_OF_MON_TYPES-1));
-    type = sOneTypeChallengeValidTypes[type];
 }

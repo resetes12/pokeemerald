@@ -202,12 +202,7 @@ void CopyPartyAndObjectsToSave(void)
 
 void CopyPartyAndObjectsFromSave(void)
 {
-    //tx_randomizer_and_challenges
-    if (gSaveBlock1Ptr->tx_Random_OneForOne)
-        RandomizeSpeciesListEWRAM(1);
-    if (gSaveBlock1Ptr->tx_Random_TypeEffectiveness)
-        RandomizeTypeEffectivenessListEWRAM(1);
-    PrintTXSaveData();
+    PrintTXSaveData(); //tx_randomizer_and_challenges
 
     LoadPlayerParty();
     LoadObjectEvents();
