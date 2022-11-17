@@ -21,11 +21,6 @@
 #include "tx_randomizer_and_challenges.h"
 #include "pokemon.h"
 
-#ifdef GBA_PRINTF //tx_randomizer_and_challenges
-    //#include "printf.h"
-    //#include "mgba.h"
-#endif
-
 enum
 {
     MENU_RANDOMIZER,
@@ -2004,18 +1999,18 @@ static void DrawBgWindowFrames(void)
 static void PrintCurrentSelections(void)
 {
     u8 i, j;
-    #ifdef GBA_PRINTF
+    #ifndef NDEBUG
     for (i = 0; i < MENU_COUNT; i++)
     {
-        mgba_printf(MGBA_LOG_DEBUG, "Menu = %d", i);
+        MgbaPrintf(MGBA_LOG_DEBUG, "Menu = %d", i);
         for (j = 0; j < MenuItemCountFromIndex(i); j++)
         {
             switch (i)
             {
-            case MENU_RANDOMIZER:   mgba_printf(MGBA_LOG_DEBUG, "MENU_RANDOMIZER %d",   sOptions->sel_randomizer[j]); break;
-            case MENU_NUZLOCKE:     mgba_printf(MGBA_LOG_DEBUG, "MENU_NUZLOCKE %d",     sOptions->sel_nuzlocke[j]); break;
-            case MENU_DIFFICULTY:   mgba_printf(MGBA_LOG_DEBUG, "MENU_DIFFICULTY %d",   sOptions->sel_difficulty[j]); break;
-            case MENU_CHALLENGES:   mgba_printf(MGBA_LOG_DEBUG, "MENU_CHALLENGES %d",   sOptions->sel_challenges[j]); break;
+            case MENU_RANDOMIZER:   MgbaPrintf(MGBA_LOG_DEBUG, "MENU_RANDOMIZER %d",   sOptions->sel_randomizer[j]); break;
+            case MENU_NUZLOCKE:     MgbaPrintf(MGBA_LOG_DEBUG, "MENU_NUZLOCKE %d",     sOptions->sel_nuzlocke[j]); break;
+            case MENU_DIFFICULTY:   MgbaPrintf(MGBA_LOG_DEBUG, "MENU_DIFFICULTY %d",   sOptions->sel_difficulty[j]); break;
+            case MENU_CHALLENGES:   MgbaPrintf(MGBA_LOG_DEBUG, "MENU_CHALLENGES %d",   sOptions->sel_challenges[j]); break;
             }
         }
            

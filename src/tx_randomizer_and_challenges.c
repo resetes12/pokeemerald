@@ -194,10 +194,10 @@ u8 NuzlockeFlagSet(u16 mapsec) // @Kurausukun
     if (ptr)
         * ptr |= 1 << (id & 7);
 
-    #ifdef GBA_PRINTF
-    mgba_printf(MGBA_LOG_DEBUG, "NuzlockeFlagSet Id=%d", id);
+    #ifndef NDEBUG
+    MgbaPrintf(MGBA_LOG_DEBUG, "NuzlockeFlagSet Id=%d", id);
     for (i=0; i<9; i++)
-        mgba_printf(MGBA_LOG_DEBUG, "gSaveBlock1Ptr->NuzlockeEncounterFlags[%d] = %d" , i, gSaveBlock1Ptr->NuzlockeEncounterFlags[i]);
+        MgbaPrintf(MGBA_LOG_DEBUG, "gSaveBlock1Ptr->NuzlockeEncounterFlags[%d] = %d" , i, gSaveBlock1Ptr->NuzlockeEncounterFlags[i]);
     #endif
 
     return 0;
@@ -215,8 +215,8 @@ u8 NuzlockeFlagGet(u16 mapsec) // @Kurausukun
     u8 id = NuzlockeLUT[mapsec];
     u8 * ptr = &gSaveBlock1Ptr->NuzlockeEncounterFlags[id / 8];
 
-    #ifdef GBA_PRINTF
-    mgba_printf(MGBA_LOG_DEBUG, "NuzlockeFlagGet Id=%d", id);
+    #ifndef NDEBUG
+    MgbaPrintf(MGBA_LOG_DEBUG, "NuzlockeFlagGet Id=%d", id);
     #endif
 
     if (!ptr)
@@ -392,47 +392,47 @@ u8 GetCurrentTrainerEVs(void)
 // DEBUG
 void PrintTXSaveData(void)
 {
-    #ifdef GBA_PRINTF
+    #ifndef NDEBUG
     
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Random_WildPokemon"          , gSaveBlock1Ptr->tx_Random_WildPokemon);
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Random_Trainer"              , gSaveBlock1Ptr->tx_Random_Trainer);
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Random_Similar"              , gSaveBlock1Ptr->tx_Random_Similar);
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Random_MapBased"             , gSaveBlock1Ptr->tx_Random_MapBased);
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Random_IncludeLegendaries"   , gSaveBlock1Ptr->tx_Random_IncludeLegendaries);
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Random_Type"                 , gSaveBlock1Ptr->tx_Random_Type);
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Random_Moves"                , gSaveBlock1Ptr->tx_Random_Moves);
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Random_Abilities"            , gSaveBlock1Ptr->tx_Random_Abilities);
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Random_Evolutions"           , gSaveBlock1Ptr->tx_Random_Evolutions);
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Random_EvolutionMethods"     , gSaveBlock1Ptr->tx_Random_EvolutionMethods);
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Random_TypeEffectiveness"    , gSaveBlock1Ptr->tx_Random_TypeEffectiveness);
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Random_Items"                , gSaveBlock1Ptr->tx_Random_Items);
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Random_Chaos"                , gSaveBlock1Ptr->tx_Random_Chaos);
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Random_OneForOne"            , gSaveBlock1Ptr->tx_Random_OneForOne);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Random_WildPokemon"          , gSaveBlock1Ptr->tx_Random_WildPokemon);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Random_Trainer"              , gSaveBlock1Ptr->tx_Random_Trainer);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Random_Similar"              , gSaveBlock1Ptr->tx_Random_Similar);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Random_MapBased"             , gSaveBlock1Ptr->tx_Random_MapBased);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Random_IncludeLegendaries"   , gSaveBlock1Ptr->tx_Random_IncludeLegendaries);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Random_Type"                 , gSaveBlock1Ptr->tx_Random_Type);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Random_Moves"                , gSaveBlock1Ptr->tx_Random_Moves);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Random_Abilities"            , gSaveBlock1Ptr->tx_Random_Abilities);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Random_Evolutions"           , gSaveBlock1Ptr->tx_Random_Evolutions);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Random_EvolutionMethods"     , gSaveBlock1Ptr->tx_Random_EvolutionMethods);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Random_TypeEffectiveness"    , gSaveBlock1Ptr->tx_Random_TypeEffectiveness);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Random_Items"                , gSaveBlock1Ptr->tx_Random_Items);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Random_Chaos"                , gSaveBlock1Ptr->tx_Random_Chaos);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Random_OneForOne"            , gSaveBlock1Ptr->tx_Random_OneForOne);
 
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_Nuzlocke"         , gSaveBlock1Ptr->tx_Challenges_Nuzlocke);
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_NuzlockeHardcore" , gSaveBlock1Ptr->tx_Challenges_NuzlockeHardcore);
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Nuzlocke_SpeciesClause"      , gSaveBlock1Ptr->tx_Nuzlocke_SpeciesClause);
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Nuzlocke_ShinyClause"        , gSaveBlock1Ptr->tx_Nuzlocke_ShinyClause);
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Nuzlocke_Nicknaming"         , gSaveBlock1Ptr->tx_Nuzlocke_Nicknaming);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Challenges_Nuzlocke"         , gSaveBlock1Ptr->tx_Challenges_Nuzlocke);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Challenges_NuzlockeHardcore" , gSaveBlock1Ptr->tx_Challenges_NuzlockeHardcore);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Nuzlocke_SpeciesClause"      , gSaveBlock1Ptr->tx_Nuzlocke_SpeciesClause);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Nuzlocke_ShinyClause"        , gSaveBlock1Ptr->tx_Nuzlocke_ShinyClause);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Nuzlocke_Nicknaming"         , gSaveBlock1Ptr->tx_Nuzlocke_Nicknaming);
 
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_PartyLimit"       , gSaveBlock1Ptr->tx_Challenges_PartyLimit);
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_LevelCap"         , gSaveBlock1Ptr->tx_Challenges_LevelCap);
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_ExpMultiplier"    , gSaveBlock1Ptr->tx_Challenges_ExpMultiplier);
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_NoItemPlayer"     , gSaveBlock1Ptr->tx_Challenges_NoItemPlayer);
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_NoItemTrainer"    , gSaveBlock1Ptr->tx_Challenges_NoItemTrainer);
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_PkmnCenter"       , gSaveBlock1Ptr->tx_Challenges_PkmnCenter);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Challenges_PartyLimit"       , gSaveBlock1Ptr->tx_Challenges_PartyLimit);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Challenges_LevelCap"         , gSaveBlock1Ptr->tx_Challenges_LevelCap);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Challenges_ExpMultiplier"    , gSaveBlock1Ptr->tx_Challenges_ExpMultiplier);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Challenges_NoItemPlayer"     , gSaveBlock1Ptr->tx_Challenges_NoItemPlayer);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Challenges_NoItemTrainer"    , gSaveBlock1Ptr->tx_Challenges_NoItemTrainer);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Challenges_PkmnCenter"       , gSaveBlock1Ptr->tx_Challenges_PkmnCenter);
 
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_EvoLimit"         , gSaveBlock1Ptr->tx_Challenges_EvoLimit);
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_OneTypeChallenge" , gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge);
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_BaseStatEqualizer", gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer);
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_Mirror"           , gSaveBlock1Ptr->tx_Challenges_Mirror);
-    mgba_printf(MGBA_LOG_DEBUG, "%d tx_Challenges_Mirror_Thief"     , gSaveBlock1Ptr->tx_Challenges_Mirror_Thief);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Challenges_EvoLimit"         , gSaveBlock1Ptr->tx_Challenges_EvoLimit);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Challenges_OneTypeChallenge" , gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Challenges_BaseStatEqualizer", gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Challenges_Mirror"           , gSaveBlock1Ptr->tx_Challenges_Mirror);
+    MgbaPrintf(MGBA_LOG_DEBUG, "%d tx_Challenges_Mirror_Thief"     , gSaveBlock1Ptr->tx_Challenges_Mirror_Thief);
     #endif
 }
 
 void TestRandomizerValues(u8 type)
 {
-    #ifdef GBA_PRINTF
+    #ifndef NDEBUG
     u16 i, j;
     u8 real_j;
     u16 tmp;
@@ -484,7 +484,7 @@ void TestRandomizerValues(u8 type)
         real_j = j % 10;
         array[real_j] = tmp;
         if (real_j == 9)
-            mgba_printf(MGBA_LOG_DEBUG, "%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,", array[0],array[1],array[2],array[3],array[4],array[5],array[6],array[7],array[8],array[9]);
+            MgbaPrintf(MGBA_LOG_DEBUG, "%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,", array[0],array[1],array[2],array[3],array[4],array[5],array[6],array[7],array[8],array[9]);
         }
     }
 

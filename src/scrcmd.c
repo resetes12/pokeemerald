@@ -51,11 +51,6 @@
 #include "constants/event_objects.h"
 #include "tx_randomizer_and_challenges.h"
 
-#ifdef GBA_PRINTF
-    //#include "printf.h"
-    //#include "mgba.h"
-#endif
-
 typedef u16 (*SpecialFunc)(void);
 typedef void (*NativeFunc)(void);
 
@@ -1740,8 +1735,8 @@ bool8 ScrCmd_checkpartymove(struct ScriptContext *ctx)
     if (gSpecialVar_Result == PARTY_SIZE && HMsOverwriteOptionActive())
     {
         u16 itemId = BattleMoveIdToItemId(moveId);
-        #ifdef GBA_PRINTF
-            mgba_printf(MGBA_LOG_DEBUG, "ScrCmd_checkpartymove itemId=%d", itemId);
+        #ifndef NDEBUG
+            MgbaPrintf(MGBA_LOG_DEBUG, "ScrCmd_checkpartymove itemId=%d", itemId);
         #endif
         if (itemId == 0)
             return FALSE;

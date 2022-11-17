@@ -69,11 +69,6 @@
 #include "tx_randomizer_and_challenges.h"
 #include "pokemon_storage_system.h" //tx_randomizer_and_challenges
 
-#ifdef GBA_PRINTF //tx_randomizer_and_challenges
-    //#include "printf.h"
-    //#include "mgba.h"
-#endif
-
 struct CableClubPlayer
 {
     u8 playerId;
@@ -1401,8 +1396,8 @@ u8 NuzlockeGetCurrentRegionMapSectionId(void) //tx_randomizer_and_challenges @Ku
 {
     u8 regionMapSectionId = GetCurrentRegionMapSectionId();
 
-    #ifdef GBA_PRINTF
-    mgba_printf(MGBA_LOG_DEBUG, "location.mapGroup=%d; location.mapNum=%d; location.regionMapSectionId=%d", gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, Overworld_GetMapHeaderByGroupAndId(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum)->regionMapSectionId);
+    #ifndef NDEBUG
+    MgbaPrintf(MGBA_LOG_DEBUG, "location.mapGroup=%d; location.mapNum=%d; location.regionMapSectionId=%d", gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, Overworld_GetMapHeaderByGroupAndId(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum)->regionMapSectionId);
     #endif
 
     if (regionMapSectionId == MAPSEC_SAFARI_ZONE)

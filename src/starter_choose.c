@@ -25,14 +25,6 @@
 #include "constants/rgb.h"
 #include "tx_randomizer_and_challenges.h"
 
-#ifdef GBA_PRINTF
-    //#include "printf.h"
-    //#include "mgba.h"
-    //#include "data.h"                 // for gSpeciesNames, which maps species number to species name.
-    //#include "../gflib/string_util.h" // for ConvertToAscii()
-    //#include "battle_main.h"          // for Type names
-#endif
-
 #define STARTER_MON_COUNT   3
 
 // Position of the sprite of the selected starter Pokemon
@@ -387,8 +379,8 @@ u16 GetStarterPokemon(u16 chosenStarterId)
         mon = sStarterList[chosenStarterId];
     }
     
-    #ifdef GBA_PRINTF
-        mgba_printf(MGBA_LOG_DEBUG, "new species[%d]", mon);
+    #ifndef NDEBUG
+        MgbaPrintf(MGBA_LOG_DEBUG, "new species[%d]", mon);
     #endif
 
     return mon;

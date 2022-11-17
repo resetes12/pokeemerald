@@ -50,11 +50,6 @@
 #include "pokedex.h" //tx_randomizer_and_challenges
 #include "constants/region_map_sections.h" //tx_randomizer_and_challenges
 
-#ifdef GBA_PRINTF //tx_randomizer_and_challenges
-    //#include "printf.h"
-    //#include "mgba.h"
-#endif
-
 enum {
     TRANSITION_TYPE_NORMAL,
     TRANSITION_TYPE_CAVE,
@@ -1941,10 +1936,10 @@ void SetNuzlockeChecks(void)
             NuzlockeIsSpeciesClauseActive = FALSE;
         }
 
-        #ifdef GBA_PRINTF
-        mgba_printf(MGBA_LOG_DEBUG, "NuzlockeIsCaptureBlocked=%d", NuzlockeIsCaptureBlocked);
-        mgba_printf(MGBA_LOG_DEBUG, "NuzlockeIsSpeciesClauseActive=%d", NuzlockeIsSpeciesClauseActive);
-        mgba_printf(MGBA_LOG_DEBUG, "OneTypeChallengeCaptureBlocked=%d", OneTypeChallengeCaptureBlocked);
+        #ifndef NDEBUG
+        MgbaPrintf(MGBA_LOG_DEBUG, "NuzlockeIsCaptureBlocked=%d", NuzlockeIsCaptureBlocked);
+        MgbaPrintf(MGBA_LOG_DEBUG, "NuzlockeIsSpeciesClauseActive=%d", NuzlockeIsSpeciesClauseActive);
+        MgbaPrintf(MGBA_LOG_DEBUG, "OneTypeChallengeCaptureBlocked=%d", OneTypeChallengeCaptureBlocked);
         #endif
     }
     else

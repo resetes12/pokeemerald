@@ -63,11 +63,6 @@
 #include "tx_randomizer_and_challenges.h"
 #include "overworld.h"
 
-#ifdef GBA_PRINTF
-    //#include "printf.h"
-    //#include "mgba.h"
-#endif
-
 extern const struct BgTemplate gBattleBgTemplates[];
 extern const struct WindowTemplate *const gBattleWindowTemplates[];
 
@@ -1975,8 +1970,8 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                                                                         | BATTLE_TYPE_EREADER_TRAINER
                                                                         | BATTLE_TYPE_TRAINER_HILL)))
     {
-        #ifdef GBA_PRINTF
-        mgba_printf(MGBA_LOG_DEBUG, "******** CreateTrainerParty ********");
+        #ifndef NDEBUG
+        MgbaPrintf(MGBA_LOG_DEBUG, "******** CreateTrainerParty ********");
         #endif
         
         if (firstTrainer == TRUE)
