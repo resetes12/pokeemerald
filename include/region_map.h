@@ -113,6 +113,7 @@ bool8 IsRegionMapZoomed(void);
 void TrySetPlayerIconBlink(void);
 void BlendRegionMap(u16 color, u32 coeff);
 void SetRegionMapDataForZoom(void);
+u8* GetMapName_HandleVersion(u8*, u16, u8);
 
 extern const struct RegionMapLocation gRegionMapEntries[];
 

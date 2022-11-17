@@ -14,6 +14,7 @@
 #include "data.h"
 #include "daycare.h"
 #include "debug.h"
+#include "debug_pokemon_creator.h"
 #include "event_data.h"
 #include "event_object_movement.h"
 #include "event_scripts.h"
@@ -70,6 +71,7 @@ enum { // Main
     DEBUG_MENU_ITEM_FLAGVAR,
     DEBUG_MENU_ITEM_BATTLE,
     DEBUG_MENU_ITEM_GIVE,
+    DEBUG_MENU_ITEM_POKEMON_CREATOR,
     DEBUG_MENU_ITEM_FILL,
     DEBUG_MENU_ITEM_SOUND,
     DEBUG_MENU_ITEM_ACCESS_PC,
@@ -171,6 +173,17 @@ enum { // Give
     DEBUG_GIVE_MENU_ITEM_MAX_BATTLE_POINTS,
     DEBUG_GIVE_MENU_ITEM_DAYCARE_EGG,
 };
+enum {
+    DEBUG_PKM_CREATOR_MENU_ITEM_PARTY_ADD,               // Add to party
+    DEBUG_PKM_CREATOR_MENU_ITEM_PARTY_EDIT,              // Edit party
+    DEBUG_PKM_CREATOR_MENU_ITEM_PC_EDIT,                 // Edit PC Box
+    DEBUG_PKM_CREATOR_MENU_ITEM_ENEMY_PARTY_EDIT,        // Edit enemy party (usable as a sandbox)
+    DEBUG_PKM_CREATOR_MENU_ITEM_ENEMY_PARTY_EDIT_DEBUG,  // Edit enemy party for debug battle
+    DEBUG_PKM_CREATOR_MENU_ITEM_DEBUG_EDIT,              // Edit party for debug battle
+    DEBUG_PKM_CREATOR_MENU_ITEM_ENEMY_PARTY_ADD,         // Add to enemy party (Unused)
+    DEBUG_PKM_CREATOR_MENU_ITEM_TESTING,                 // Testing mode (Dont alter parties)
+    DEBUG_PKM_CREATOR_MENU_ITEM_TESTING_COPY,            // Testing mode (use first mon as template)
+};
 enum { // Give Fill
     DEBUG_FILL_MENU_ITEM_PC_BOXES_FAST,
     DEBUG_FILL_MENU_ITEM_PC_BOXES_SLOW,
@@ -262,8 +275,7 @@ EWRAM_DATA u32 gDebugAIFlags = 0;
 // *******************************
 // Define functions
 static void Debug_ReShowMainMenu(void);
-static void Debug_ShowMenu(void (*HandleInput)(u8), struct ListMenuTemplate LMtemplate);
-static void Debug_ShowMenuDynamic(u8 taskId);
+static u8 Debug_ShowMenu(void (*HandleInput)(u8), struct ListMenuTemplate LMtemplate);
 static void Debug_DestroyMenu(u8 taskId);
 static void Debug_DestroyMenu_Full(u8 taskId);
 static void DebugAction_Cancel(u8 taskId);
@@ -287,6 +299,7 @@ static void DebugAction_OpenScriptsMenu(u8 taskId);
 static void DebugAction_OpenFlagsVarsMenu(u8 taskId);
 static void DebugAction_OpenBattleMenu(u8 taskId);
 static void DebugAction_OpenGiveMenu(u8 taskId);
+static void DebugAction_OpenPokemonCreator(u8 taskId);
 static void DebugAction_OpenFillMenu(u8 taskId);
 static void DebugAction_OpenSoundMenu(u8 taskId);
 static void DebugAction_AccessPC(u8 taskId);
@@ -296,6 +309,7 @@ static void DebugTask_HandleMenuInput_Scripts(u8 taskId);
 static void DebugTask_HandleMenuInput_FlagsVars(u8 taskId);
 static void DebugTask_HandleMenuInput_Battle(u8 taskId);
 static void DebugTask_HandleMenuInput_Give(u8 taskId);
+static void DebugTask_HandleMenuInput_PkmCreator(u8 taskId);
 static void DebugTask_HandleMenuInput_Fill(u8 taskId);
 static void DebugTask_HandleMenuInput_Sound(u8 taskId);
 
@@ -358,6 +372,16 @@ static void DebugAction_Give_MaxCoins(u8 taskId);
 static void DebugAction_Give_MaxBattlePoints(u8 taskId);
 static void DebugAction_Give_DayCareEgg(u8 taskId);
 
+static void DebugAction_PkmCreator_Party_Add(u8 taskid);
+static void DebugAction_PkmCreator_Party_Edit(u8 taskid);
+static void DebugAction_PkmCreator_PC_Edit(u8 taskid);
+static void DebugAction_PkmCreator_Enemy_Party_Edit(u8 taskId);
+static void DebugAction_PkmCreator_Enemy_Party_Edit_Debug(u8 taskId);
+static void DebugAction_PkmCreator_Debug_Edit(u8 taskid);
+static void DebugAction_PkmCreator_Enemy_Party_Add(u8 taskid);
+static void DebugAction_PkmCreator_Testing(u8 taskid);
+static void DebugAction_PkmCreator_Testing_Copy(u8 taskid); 
+
 static void DebugAction_Fill_PCBoxes_Fast(u8 taskId);
 static void DebugAction_Fill_PCBoxes_Slow(u8 taskId);
 static void DebugAction_Fill_PCItemStorage(u8 taskId);
@@ -410,8 +434,9 @@ static const u8 sDebugText_Continue[] =      _("Continue…{CLEAR_TO 110}{RIGHT_
 static const u8 sDebugText_Utilities[] =        _("Utilities…{CLEAR_TO 110}{RIGHT_ARROW}");
 static const u8 sDebugText_Scripts[] =          _("Scripts…{CLEAR_TO 110}{RIGHT_ARROW}");
 static const u8 sDebugText_FlagsVars[] =        _("Flags & Vars…{CLEAR_TO 110}{RIGHT_ARROW}");
-static const u8 sDebugText_Battle[] =           _("Battle Test{CLEAR_TO 110}{RIGHT_ARROW}");
+static const u8 sDebugText_Battle[] =           _("Battle Test…{CLEAR_TO 110}{RIGHT_ARROW}");
 static const u8 sDebugText_Give[] =             _("Give X…{CLEAR_TO 110}{RIGHT_ARROW}");
+static const u8 sDebugText_PkmCreator[] =       _("Pokémon Creator…{CLEAR_TO 110}{RIGHT_ARROW}");
 static const u8 sDebugText_Fill[] =             _("Fill PC/Pockets…{CLEAR_TO 110}{RIGHT_ARROW}");
 static const u8 sDebugText_Sound[] =            _("Sound…{CLEAR_TO 110}{RIGHT_ARROW}");
 static const u8 sDebugText_AccessPC[] =         _("Access PC…{CLEAR_TO 110}{RIGHT_ARROW}");
@@ -539,6 +564,16 @@ static const u8 sDebugText_Give_MaxMoney[] =            _("Max Money");
 static const u8 sDebugText_Give_MaxCoins[] =            _("Max Coins");
 static const u8 sDebugText_Give_BattlePoints[] =        _("Max Battle Points");
 static const u8 sDebugText_Give_DaycareEgg[] =          _("Daycare Egg");
+// Pokemon Creator
+static const u8 sDebugText_PkmCreator_Party_Add[] =                 _("Party add");
+static const u8 sDebugText_PkmCreator_Party_Edit[] =                _("Party edit");
+static const u8 sDebugText_PkmCreator_PC_Edit[] =                   _("PC edit");
+static const u8 sDebugText_PkmCreator_Enemy_Party_Edit[] =          _("Enemy edit");
+static const u8 sDebugText_PkmCreator_Enemy_Party_Edit_Debug[] =    _("Enemy edit debug");
+static const u8 sDebugText_PkmCreator_Debug_Edit[] =                _("Debug edit");
+static const u8 sDebugText_PkmCreator_Enemy_Party_Add[] =           _("Enemy add");
+static const u8 sDebugText_PkmCreator_Testing[] =                   _("Testing");
+static const u8 sDebugText_PkmCreator_Testing_Copy[] =              _("Testing (copy 1st mon)");
 // Fill Menu
 static const u8 sDebugText_Fill_Pc_Fast[] =        _("Fill PCBoxes Fast");
 static const u8 sDebugText_Fill_Pc_Slow[] =        _("Fill PCBoxes Slow (LAG!)");
@@ -591,15 +626,16 @@ static const s32 sPowersOfTen[] =
 // List Menu Items
 static const struct ListMenuItem sDebugMenu_Items_Main[] =
 {
-    [DEBUG_MENU_ITEM_UTILITIES]     = {sDebugText_Utilities,    DEBUG_MENU_ITEM_UTILITIES},
-    [DEBUG_MENU_ITEM_SCRIPTS]       = {sDebugText_Scripts,      DEBUG_MENU_ITEM_SCRIPTS},
-    [DEBUG_MENU_ITEM_FLAGVAR]       = {sDebugText_FlagsVars,    DEBUG_MENU_ITEM_FLAGVAR},
-    [DEBUG_MENU_ITEM_BATTLE]        = {sDebugText_Battle,       DEBUG_MENU_ITEM_BATTLE},
-    [DEBUG_MENU_ITEM_GIVE]          = {sDebugText_Give,         DEBUG_MENU_ITEM_GIVE},
-    [DEBUG_MENU_ITEM_FILL]          = {sDebugText_Fill,         DEBUG_MENU_ITEM_FILL},
-    [DEBUG_MENU_ITEM_SOUND]         = {sDebugText_Sound,        DEBUG_MENU_ITEM_SOUND},
-    [DEBUG_MENU_ITEM_ACCESS_PC]     = {sDebugText_AccessPC,     DEBUG_MENU_ITEM_ACCESS_PC},
-    [DEBUG_MENU_ITEM_CANCEL]        = {sDebugText_Cancel,       DEBUG_MENU_ITEM_CANCEL}
+    [DEBUG_MENU_ITEM_UTILITIES]       = {sDebugText_Utilities,  DEBUG_MENU_ITEM_UTILITIES},
+    [DEBUG_MENU_ITEM_SCRIPTS]         = {sDebugText_Scripts,    DEBUG_MENU_ITEM_SCRIPTS},
+    [DEBUG_MENU_ITEM_FLAGVAR]         = {sDebugText_FlagsVars,  DEBUG_MENU_ITEM_FLAGVAR},
+    [DEBUG_MENU_ITEM_BATTLE]          = {sDebugText_Battle,     DEBUG_MENU_ITEM_BATTLE},
+    [DEBUG_MENU_ITEM_GIVE]            = {sDebugText_Give,       DEBUG_MENU_ITEM_GIVE},
+    [DEBUG_MENU_ITEM_POKEMON_CREATOR] = {sDebugText_PkmCreator, DEBUG_MENU_ITEM_POKEMON_CREATOR},
+    [DEBUG_MENU_ITEM_FILL]            = {sDebugText_Fill,       DEBUG_MENU_ITEM_FILL},
+    [DEBUG_MENU_ITEM_SOUND]           = {sDebugText_Sound,      DEBUG_MENU_ITEM_SOUND},
+    [DEBUG_MENU_ITEM_ACCESS_PC]       = {sDebugText_AccessPC,   DEBUG_MENU_ITEM_ACCESS_PC},
+    [DEBUG_MENU_ITEM_CANCEL]          = {sDebugText_Cancel,     DEBUG_MENU_ITEM_CANCEL}
 };
 static const struct ListMenuItem sDebugMenu_Items_Utilities[] =
 {
@@ -704,6 +740,18 @@ static const struct ListMenuItem sDebugMenu_Items_Give[] =
     [DEBUG_GIVE_MENU_ITEM_MAX_BATTLE_POINTS] = {sDebugText_Give_BattlePoints,       DEBUG_GIVE_MENU_ITEM_MAX_BATTLE_POINTS},
     [DEBUG_GIVE_MENU_ITEM_DAYCARE_EGG]       = {sDebugText_Give_DaycareEgg,         DEBUG_GIVE_MENU_ITEM_DAYCARE_EGG},
 };
+static const struct ListMenuItem sDebugMenu_Items_PkmCreator[] =
+{
+    [DEBUG_PKM_CREATOR_MENU_ITEM_PARTY_ADD]              =  {sDebugText_PkmCreator_Party_Add,              DEBUG_PKM_CREATOR_MENU_ITEM_PARTY_ADD},
+    [DEBUG_PKM_CREATOR_MENU_ITEM_PARTY_EDIT]             =  {sDebugText_PkmCreator_Party_Edit,             DEBUG_PKM_CREATOR_MENU_ITEM_PARTY_EDIT},
+    [DEBUG_PKM_CREATOR_MENU_ITEM_PC_EDIT]                =  {sDebugText_PkmCreator_PC_Edit,                DEBUG_PKM_CREATOR_MENU_ITEM_PC_EDIT},
+    [DEBUG_PKM_CREATOR_MENU_ITEM_ENEMY_PARTY_EDIT]       =  {sDebugText_PkmCreator_Enemy_Party_Edit,       DEBUG_PKM_CREATOR_MENU_ITEM_ENEMY_PARTY_EDIT},
+    [DEBUG_PKM_CREATOR_MENU_ITEM_ENEMY_PARTY_EDIT_DEBUG] =  {sDebugText_PkmCreator_Enemy_Party_Edit_Debug, DEBUG_PKM_CREATOR_MENU_ITEM_ENEMY_PARTY_EDIT_DEBUG},
+    [DEBUG_PKM_CREATOR_MENU_ITEM_DEBUG_EDIT]             =  {sDebugText_PkmCreator_Debug_Edit,             DEBUG_PKM_CREATOR_MENU_ITEM_DEBUG_EDIT},
+    [DEBUG_PKM_CREATOR_MENU_ITEM_ENEMY_PARTY_ADD]        =  {sDebugText_PkmCreator_Enemy_Party_Add,        DEBUG_PKM_CREATOR_MENU_ITEM_ENEMY_PARTY_ADD},
+    [DEBUG_PKM_CREATOR_MENU_ITEM_TESTING]                =  {sDebugText_PkmCreator_Testing,                DEBUG_PKM_CREATOR_MENU_ITEM_TESTING},
+    [DEBUG_PKM_CREATOR_MENU_ITEM_TESTING_COPY]           =  {sDebugText_PkmCreator_Testing_Copy,           DEBUG_PKM_CREATOR_MENU_ITEM_TESTING_COPY},
+};
 static const struct ListMenuItem sDebugMenu_Items_Fill[] =
 {
     [DEBUG_FILL_MENU_ITEM_PC_BOXES_FAST]    = {sDebugText_Fill_Pc_Fast,         DEBUG_FILL_MENU_ITEM_PC_BOXES_FAST},
@@ -725,15 +773,16 @@ static const struct ListMenuItem sDebugMenu_Items_Sound[] =
 // Menu Actions
 static void (*const sDebugMenu_Actions_Main[])(u8) =
 {
-    [DEBUG_MENU_ITEM_UTILITIES]     = DebugAction_OpenUtilitiesMenu,
-    [DEBUG_MENU_ITEM_SCRIPTS]       = DebugAction_OpenScriptsMenu,
-    [DEBUG_MENU_ITEM_FLAGVAR]       = DebugAction_OpenFlagsVarsMenu,
-    [DEBUG_MENU_ITEM_BATTLE]        = DebugAction_OpenBattleMenu,
-    [DEBUG_MENU_ITEM_GIVE]          = DebugAction_OpenGiveMenu,
-    [DEBUG_MENU_ITEM_FILL]          = DebugAction_OpenFillMenu,
-    [DEBUG_MENU_ITEM_SOUND]         = DebugAction_OpenSoundMenu,
-    [DEBUG_MENU_ITEM_ACCESS_PC]     = DebugAction_AccessPC,
-    [DEBUG_MENU_ITEM_CANCEL]        = DebugAction_Cancel
+    [DEBUG_MENU_ITEM_UTILITIES]       = DebugAction_OpenUtilitiesMenu,
+    [DEBUG_MENU_ITEM_SCRIPTS]         = DebugAction_OpenScriptsMenu,
+    [DEBUG_MENU_ITEM_FLAGVAR]         = DebugAction_OpenFlagsVarsMenu,
+    [DEBUG_MENU_ITEM_BATTLE]          = DebugAction_OpenBattleMenu,
+    [DEBUG_MENU_ITEM_GIVE]            = DebugAction_OpenGiveMenu,
+    [DEBUG_MENU_ITEM_POKEMON_CREATOR] = DebugAction_OpenPokemonCreator,
+    [DEBUG_MENU_ITEM_FILL]            = DebugAction_OpenFillMenu,
+    [DEBUG_MENU_ITEM_SOUND]           = DebugAction_OpenSoundMenu,
+    [DEBUG_MENU_ITEM_ACCESS_PC]       = DebugAction_AccessPC,
+    [DEBUG_MENU_ITEM_CANCEL]          = DebugAction_Cancel
 };
 static void (*const sDebugMenu_Actions_Utilities[])(u8) =
 {
@@ -791,6 +840,18 @@ static void (*const sDebugMenu_Actions_Give[])(u8) =
     [DEBUG_GIVE_MENU_ITEM_MAX_COINS]         = DebugAction_Give_MaxCoins,
     [DEBUG_GIVE_MENU_ITEM_MAX_BATTLE_POINTS] = DebugAction_Give_MaxBattlePoints,
     [DEBUG_GIVE_MENU_ITEM_DAYCARE_EGG]       = DebugAction_Give_DayCareEgg,
+};
+static void (*const sDebugMenu_Actions_PkmCreator[])(u8) =
+{
+    [DEBUG_PKM_CREATOR_MENU_ITEM_PARTY_ADD]              = DebugAction_PkmCreator_Party_Add,
+    [DEBUG_PKM_CREATOR_MENU_ITEM_PARTY_EDIT]             = DebugAction_PkmCreator_Party_Edit,
+    [DEBUG_PKM_CREATOR_MENU_ITEM_PC_EDIT]                = DebugAction_PkmCreator_PC_Edit,
+    [DEBUG_PKM_CREATOR_MENU_ITEM_ENEMY_PARTY_EDIT]       = DebugAction_PkmCreator_Enemy_Party_Edit,
+    [DEBUG_PKM_CREATOR_MENU_ITEM_ENEMY_PARTY_EDIT_DEBUG] = DebugAction_PkmCreator_Enemy_Party_Edit_Debug,
+    [DEBUG_PKM_CREATOR_MENU_ITEM_DEBUG_EDIT]             = DebugAction_PkmCreator_Debug_Edit,
+    [DEBUG_PKM_CREATOR_MENU_ITEM_ENEMY_PARTY_ADD]        = DebugAction_PkmCreator_Enemy_Party_Add,
+    [DEBUG_PKM_CREATOR_MENU_ITEM_TESTING]                = DebugAction_PkmCreator_Testing,
+    [DEBUG_PKM_CREATOR_MENU_ITEM_TESTING_COPY]           = DebugAction_PkmCreator_Testing_Copy,
 };
 static void (*const sDebugMenu_Actions_Fill[])(u8) =
 {
@@ -914,6 +975,12 @@ static const struct ListMenuTemplate sDebugMenu_ListTemplate_Give =
     .moveCursorFunc = ListMenuDefaultCursorMoveFunc,
     .totalItems = ARRAY_COUNT(sDebugMenu_Items_Give),
 };
+static const struct ListMenuTemplate sDebugMenu_ListTemplate_PkmCreator =
+{
+    .items = sDebugMenu_Items_PkmCreator,
+    .moveCursorFunc = ListMenuDefaultCursorMoveFunc,
+    .totalItems = ARRAY_COUNT(sDebugMenu_Items_PkmCreator),
+};
 static const struct ListMenuTemplate sDebugMenu_ListTemplate_Fill =
 {
     .items = sDebugMenu_Items_Fill,
@@ -942,7 +1009,7 @@ static void Debug_ReShowMainMenu(void)
 {
     Debug_ShowMenu(DebugTask_HandleMenuInput_Main, sDebugMenu_ListTemplate_Main);
 }
-static void Debug_ShowMenu(void (*HandleInput)(u8), struct ListMenuTemplate LMtemplate)
+static u8 Debug_ShowMenu(void (*HandleInput)(u8), struct ListMenuTemplate LMtemplate)
 {
     struct ListMenuTemplate menuTemplate;
     u8 windowId;
@@ -980,10 +1047,17 @@ static void Debug_ShowMenu(void (*HandleInput)(u8), struct ListMenuTemplate LMte
     gTasks[inputTaskId].data[2] = 0;
 
     Debug_RefreshListMenu(inputTaskId);
-    //Debug_ShowMenuDynamic(inputTaskId);
 
     // draw everything
     CopyWindowToVram(windowId, 3);
+
+    // return taskId for use right after
+    return inputTaskId;
+}
+void Debug_ReShowBattleDebugMenu(void)
+{
+    u8 taskId = Debug_ShowMenu(DebugTask_HandleMenuInput_Battle, gMultiuseListMenuTemplate);
+    Debug_RedrawListMenu(taskId);
 }
 static void Debug_DestroyMenu(u8 taskId)
 {
@@ -1392,6 +1466,19 @@ static void DebugTask_HandleMenuInput_Battle(u8 taskId)
         case 3: // Enemy pokemon
             if (idx == 6)
                 Debug_InitializeBattle(taskId);
+            else
+            {
+                if (GetMonData(&gEnemyParty[idx], MON_DATA_SANITY_HAS_SPECIES))
+                {
+                    Debug_DestroyMenu(taskId);
+                    DebugPkmCreator_Init(10, idx);
+                }
+                else
+                {
+                    Debug_DestroyMenu(taskId);
+                    DebugPkmCreator_Init(9, 0xFF);
+                }
+            }
             break;
         }
     }
@@ -1424,7 +1511,6 @@ static void DebugTask_HandleMenuInput_Battle(u8 taskId)
         }
     }
 }
-
 static void Debug_InitializeBattle(u8 taskId)
 {
     u32 i;
@@ -1449,14 +1535,6 @@ static void Debug_InitializeBattle(u8 taskId)
     // Set terrain
     gBattleTerrain = sDebugBattleData->battleTerrain;
 
-    // Populate enemy party
-    for (i = 0; i < PARTY_SIZE; i++)
-    {
-        ZeroMonData(&gEnemyParty[i]);
-        if (GetMonData(&gPlayerParty[i], MON_DATA_SANITY_HAS_SPECIES))
-            gEnemyParty[i] = gPlayerParty[i];
-    }
-
     // Set AI flags
     for (i = 0; i < ARRAY_COUNT(sDebugBattleData->aiFlags); i++)
     {
@@ -1480,6 +1558,24 @@ static void DebugTask_HandleMenuInput_Give(u8 taskId)
     {
         PlaySE(SE_SELECT);
         if ((func = sDebugMenu_Actions_Give[input]) != NULL)
+            func(taskId);
+    }
+    else if (gMain.newKeys & B_BUTTON)
+    {
+        PlaySE(SE_SELECT);
+        Debug_DestroyMenu(taskId);
+        Debug_ReShowMainMenu();
+    }
+}
+static void DebugTask_HandleMenuInput_PkmCreator(u8 taskId)
+{
+    void (*func)(u8);
+    u32 input = ListMenu_ProcessInput(gTasks[taskId].data[0]);
+
+    if (gMain.newKeys & A_BUTTON)
+    {
+        PlaySE(SE_SELECT);
+        if ((func = sDebugMenu_Actions_PkmCreator[input]) != NULL)
             func(taskId);
     }
     else if (gMain.newKeys & B_BUTTON)
@@ -1544,18 +1640,25 @@ static void DebugAction_OpenFlagsVarsMenu(u8 taskId)
     sDebugMenuListData->listId = 0;
     Debug_ShowMenu(DebugTask_HandleMenuInput_FlagsVars, gMultiuseListMenuTemplate);
 }
-
 static void DebugAction_OpenBattleMenu(u8 taskId)
 {
+    // Clean enemy party
+    //u32 i;
+    //for (i = 0; i < PARTY_SIZE; i++)
+    //    ZeroMonData(&gEnemyParty[i]);
     Debug_DestroyMenu(taskId);
     sDebugMenuListData->listId = 1;
     Debug_ShowMenu(DebugTask_HandleMenuInput_Battle, sDebugMenu_ListTemplate_Battle_0);
 }
-
 static void DebugAction_OpenGiveMenu(u8 taskId)
 {
     Debug_DestroyMenu(taskId);
     Debug_ShowMenu(DebugTask_HandleMenuInput_Give, sDebugMenu_ListTemplate_Give);
+}
+static void DebugAction_OpenPokemonCreator(u8 taskId)
+{
+    Debug_DestroyMenu(taskId);
+    Debug_ShowMenu(DebugTask_HandleMenuInput_PkmCreator, sDebugMenu_ListTemplate_PkmCreator);
 }
 static void DebugAction_OpenFillMenu(u8 taskId)
 {
@@ -3484,6 +3587,63 @@ static void DebugAction_Give_MaxBattlePoints(u8 taskId)
 static void DebugAction_Give_DayCareEgg(u8 taskId)
 {
     TriggerPendingDaycareEgg();
+}
+
+// *******************************
+// Actions Pokemon Creator
+static void DebugAction_PkmCreator_Party_Add(u8 taskId)
+{
+    Debug_DestroyMenu_Full(taskId);
+    LockPlayerFieldControls();
+    DebugPkmCreator_Init(0, 0xFF);
+}
+static void DebugAction_PkmCreator_Party_Edit(u8 taskId)
+{
+    Debug_DestroyMenu_Full(taskId);
+    LockPlayerFieldControls();
+    DebugPkmCreator_Init(1, 0xFF);
+}
+static void DebugAction_PkmCreator_PC_Edit(u8 taskId)
+{
+    Debug_DestroyMenu_Full(taskId);
+    LockPlayerFieldControls();
+    DebugPkmCreator_Init(2, 0xFF);
+}
+static void DebugAction_PkmCreator_Enemy_Party_Edit(u8 taskId)
+{
+    Debug_DestroyMenu_Full(taskId);
+    LockPlayerFieldControls();
+    DebugPkmCreator_Init(3, 0xFF);
+}
+static void DebugAction_PkmCreator_Enemy_Party_Edit_Debug(u8 taskId)
+{
+    Debug_DestroyMenu_Full(taskId);
+    LockPlayerFieldControls();
+    DebugPkmCreator_Init(4, 0xFF);
+}
+static void DebugAction_PkmCreator_Debug_Edit(u8 taskId)
+{
+    Debug_DestroyMenu_Full(taskId);
+    LockPlayerFieldControls();
+    DebugPkmCreator_Init(5, 0xFF);
+}
+static void DebugAction_PkmCreator_Enemy_Party_Add(u8 taskId)
+{
+    Debug_DestroyMenu_Full(taskId);
+    LockPlayerFieldControls();
+    DebugPkmCreator_Init(6, 0xFF);
+}
+static void DebugAction_PkmCreator_Testing(u8 taskId)
+{
+    Debug_DestroyMenu_Full(taskId);
+    LockPlayerFieldControls();
+    DebugPkmCreator_Init(7, 0xFF);
+}
+static void DebugAction_PkmCreator_Testing_Copy(u8 taskId)
+{
+    Debug_DestroyMenu_Full(taskId);
+    LockPlayerFieldControls();
+    DebugPkmCreator_Init(8, 0xFF);
 }
 
 // *******************************
