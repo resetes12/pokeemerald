@@ -406,7 +406,7 @@ void MapGridSetMetatileEntryAt(int x, int y, u16 metatile)
 
 u16 GetMetatileAttributesById(u16 metatile)
 {
-    u16 *attributes;
+    const u16 *attributes;
     if (metatile < NUM_METATILES_IN_PRIMARY)
     {
         attributes = gMapHeader.mapLayout->primaryTileset->metatileAttributes;
@@ -884,7 +884,7 @@ void LoadTilesetPalette(struct Tileset const *tileset, u16 destOffset, u16 size,
             if (skipFaded)
                 CpuFastCopy(tileset->palettes, &gPlttBufferUnfaded[destOffset], size);
             else
-                LoadPaletteFast(((u16*)tileset->palettes), destOffset, size);
+                LoadPaletteFast(tileset->palettes, destOffset, size);
             gPlttBufferFaded[destOffset] = gPlttBufferUnfaded[destOffset] = RGB_BLACK; // why does it have to be black?
             ApplyGlobalTintToPaletteEntries(destOffset + 1, (size - 2) >> 1);
             low = 0;
@@ -893,15 +893,15 @@ void LoadTilesetPalette(struct Tileset const *tileset, u16 destOffset, u16 size,
         else if (tileset->isSecondary == TRUE)
         {
             if (skipFaded)
-                CpuFastCopy(((u16*)tileset->palettes) + (NUM_PALS_IN_PRIMARY * 16), &gPlttBufferUnfaded[destOffset], size);
+                CpuFastCopy(tileset->palettes[NUM_PALS_IN_PRIMARY], &gPlttBufferUnfaded[destOffset], size);
             else
-                LoadPaletteFast(((u16*)tileset->palettes) + (NUM_PALS_IN_PRIMARY * 16), destOffset, size);
+                LoadPaletteFast(tileset->palettes[NUM_PALS_IN_PRIMARY], destOffset, size);
             low = NUM_PALS_IN_PRIMARY;
             high = NUM_PALS_TOTAL;
         }
         else
         {
-            LoadCompressedPalette((u32 *)tileset->palettes, destOffset, size);
+            LoadCompressedPalette((const u32 *)tileset->palettes, destOffset, size);
             ApplyGlobalTintToPaletteEntries(destOffset, size >> 1);
         }
         if (tileset->isSecondary == FALSE || tileset->isSecondary == TRUE) {
