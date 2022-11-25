@@ -98,6 +98,8 @@ void LoadPalette(const void *src, u16 offset, u16 size)
 
 // Drop in replacement for LoadPalette, uses CpuFastCopy, size must be 0 % 32
 void LoadPaletteFast(const void *src, u16 offset, u16 size) {
+    if ((u32)src & 3) // In case palette is not 4 byte aligned
+        return LoadPalette(src, offset, size);
     CpuFastCopy(src, &gPlttBufferUnfaded[offset], size);
     // Copying from EWRAM->EWRAM is faster than ROM->EWRAM
     CpuFastCopy(&gPlttBufferUnfaded[offset], &gPlttBufferFaded[offset], size);
