@@ -1407,7 +1407,7 @@ static bool8 Aqua_Init(struct Task *task)
     GetBg0TilesDst(&tilemap, &tileset);
     CpuFill16(0, tilemap, BG_SCREEN_SIZE);
     LZ77UnCompVram(sTeamAqua_Tileset, tileset);
-    LoadPalette(sEvilTeam_Palette, 0xF0, sizeof(sEvilTeam_Palette));
+    LoadPalette(sEvilTeam_Palette, BG_PLTT_ID(15), sizeof(sEvilTeam_Palette));
 
     task->tState++;
     return FALSE;
@@ -1422,7 +1422,7 @@ static bool8 Magma_Init(struct Task *task)
     GetBg0TilesDst(&tilemap, &tileset);
     CpuFill16(0, tilemap, BG_SCREEN_SIZE);
     LZ77UnCompVram(sTeamMagma_Tileset, tileset);
-    LoadPalette(sEvilTeam_Palette, 0xF0, sizeof(sEvilTeam_Palette));
+    LoadPalette(sEvilTeam_Palette, BG_PLTT_ID(15), sizeof(sEvilTeam_Palette));
 
     task->tState++;
     return FALSE;
@@ -1450,7 +1450,7 @@ static bool8 BigPokeball_Init(struct Task *task)
     GetBg0TilesDst(&tilemap, &tileset);
     CpuFill16(0, tilemap, BG_SCREEN_SIZE);
     CpuCopy16(sBigPokeball_Tileset, tileset, sizeof(sBigPokeball_Tileset));
-    LoadPalette(sFieldEffectPal_Pokeball, 0xF0, sizeof(sFieldEffectPal_Pokeball));
+    LoadPalette(sFieldEffectPal_Pokeball, BG_PLTT_ID(15), sizeof(sFieldEffectPal_Pokeball));
 
     task->tState++;
     return FALSE;
@@ -1505,7 +1505,7 @@ static bool8 Regice_SetGfx(struct Task *task)
     u16 *tilemap, *tileset;
 
     GetBg0TilesDst(&tilemap, &tileset);
-    LoadPalette(sRegice_Palette, 0xF0, sizeof(sRegice_Palette));
+    LoadPalette(sRegice_Palette, BG_PLTT_ID(15), sizeof(sRegice_Palette));
     CpuCopy16(sRegice_Tilemap, tilemap, 0x500);
     SetSinWave(gScanlineEffectRegBuffers[0], 0, task->tSinIndex, 132, task->tAmplitude, DISPLAY_HEIGHT);
 
@@ -1518,7 +1518,7 @@ static bool8 Registeel_SetGfx(struct Task *task)
     u16 *tilemap, *tileset;
 
     GetBg0TilesDst(&tilemap, &tileset);
-    LoadPalette(sRegisteel_Palette, 0xF0, sizeof(sRegisteel_Palette));
+    LoadPalette(sRegisteel_Palette, BG_PLTT_ID(15), sizeof(sRegisteel_Palette));
     CpuCopy16(sRegisteel_Tilemap, tilemap, 0x500);
     SetSinWave(gScanlineEffectRegBuffers[0], 0, task->tSinIndex, 132, task->tAmplitude, DISPLAY_HEIGHT);
 
@@ -1531,7 +1531,7 @@ static bool8 Regirock_SetGfx(struct Task *task)
     u16 *tilemap, *tileset;
 
     GetBg0TilesDst(&tilemap, &tileset);
-    LoadPalette(sRegirock_Palette, 0xF0, sizeof(sRegirock_Palette));
+    LoadPalette(sRegirock_Palette, BG_PLTT_ID(15), sizeof(sRegirock_Palette));
     CpuCopy16(sRegirock_Tilemap, tilemap, 0x500);
     SetSinWave(gScanlineEffectRegBuffers[0], 0, task->tSinIndex, 132, task->tAmplitude, DISPLAY_HEIGHT);
 
@@ -1560,7 +1560,7 @@ static bool8 Kyogre_PaletteFlash(struct Task *task)
     {
         u16 offset = task->tTimer % 30;
         offset /= 3;
-        LoadPalette(&sKyogre1_Palette[offset * 16], 0xF0, 0x20);
+        LoadPalette(&sKyogre1_Palette[offset * 16], BG_PLTT_ID(15), PLTT_SIZE_4BPP);
     }
     if (++task->tTimer > 58)
     {
@@ -1576,7 +1576,7 @@ static bool8 Kyogre_PaletteBrighten(struct Task *task)
     if (task->tTimer % 5 == 0)
     {
         s16 offset = task->tTimer / 5;
-        LoadPalette(&sKyogre2_Palette[offset * 16], 0xF0, 0x20);
+        LoadPalette(&sKyogre2_Palette[offset * 16], BG_PLTT_ID(15), PLTT_SIZE_4BPP);
     }
     if (++task->tTimer > 68)
     {
@@ -1777,7 +1777,7 @@ static bool8 PokeballsTrail_Init(struct Task *task)
     GetBg0TilesDst(&tilemap, &tileset);
     CpuSet(sPokeballTrail_Tileset, tileset, 0x20);
     CpuFill32(0, tilemap, BG_SCREEN_SIZE);
-    LoadPalette(sFieldEffectPal_Pokeball, 0xF0, sizeof(sFieldEffectPal_Pokeball));
+    LoadPalette(sFieldEffectPal_Pokeball, BG_PLTT_ID(15), sizeof(sFieldEffectPal_Pokeball));
 
     task->tState++;
     return FALSE;
@@ -2329,8 +2329,8 @@ static bool8 Mugshot_SetGfx(struct Task *task)
     mugshotsMap = sMugshotsTilemap;
     GetBg0TilesDst(&tilemap, &tileset);
     CpuSet(sEliteFour_Tileset, tileset, 0xF0);
-    LoadPalette(sOpponentMugshotsPals[task->tMugshotId], 0xF0, 0x20);
-    LoadPalette(sPlayerMugshotsPals[gSaveBlock2Ptr->playerGender], 0xFA, 0xC);
+    LoadPalette(sOpponentMugshotsPals[task->tMugshotId], BG_PLTT_ID(15), PLTT_SIZE_4BPP);
+    LoadPalette(sPlayerMugshotsPals[gSaveBlock2Ptr->playerGender], BG_PLTT_ID(15) + 10, PLTT_SIZEOF(6));
 
     for (i = 0; i < 20; i++)
     {
@@ -3194,7 +3194,7 @@ static bool8 RectangularSpiral_Init(struct Task *task)
     CpuCopy16(sShrinkingBoxTileset, tileset, 0x20);
     CpuCopy16(&sShrinkingBoxTileset[0x70], &tileset[0x20], 0x20);
     CpuFill16(0xF0 << 8, tilemap, BG_SCREEN_SIZE);
-    LoadPalette(sFieldEffectPal_Pokeball, 0xF0, sizeof(sFieldEffectPal_Pokeball));
+    LoadPalette(sFieldEffectPal_Pokeball, BG_PLTT_ID(15), sizeof(sFieldEffectPal_Pokeball));
 
     task->data[3] = 1;
     task->tState++;
@@ -3390,7 +3390,7 @@ static bool8 Groudon_PaletteFlash(struct Task *task)
     if (task->tTimer % 3 == 0)
     {
         u16 offset = (task->tTimer % 30) / 3;
-        LoadPalette(&sGroudon1_Palette[offset * 16], 0xF0, 0x20);
+        LoadPalette(&sGroudon1_Palette[offset * 16], BG_PLTT_ID(15), PLTT_SIZE_4BPP);
     }
     if (++task->tTimer > 58)
     {
@@ -3406,7 +3406,7 @@ static bool8 Groudon_PaletteBrighten(struct Task *task)
     if (task->tTimer % 5 == 0)
     {
         s16 offset = task->tTimer / 5;
-        LoadPalette(&sGroudon2_Palette[offset * 16], 0xF0, 0x20);
+        LoadPalette(&sGroudon2_Palette[offset * 16], BG_PLTT_ID(15), PLTT_SIZE_4BPP);
     }
     if (++task->tTimer > 68)
     {
@@ -3449,7 +3449,7 @@ static bool8 Rayquaza_Init(struct Task *task)
 
     sTransitionData->counter = 0;
     task->tState++;
-    LoadPalette(&sRayquaza_Palette[0x50], 0xF0, 0x20);
+    LoadPalette(&sRayquaza_Palette[80], BG_PLTT_ID(15), PLTT_SIZE_4BPP);
 
     for (i = 0; i < DISPLAY_HEIGHT; i++)
     {
@@ -3477,7 +3477,7 @@ static bool8 Rayquaza_PaletteFlash(struct Task *task)
     {
         u16 value = task->tTimer / 4;
         const u16 *palPtr = &sRayquaza_Palette[(value + 5) * 16];
-        LoadPalette(palPtr, 0xF0, 0x20);
+        LoadPalette(palPtr, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
     }
     if (++task->tTimer > 40)
     {
@@ -3525,7 +3525,7 @@ static bool8 Rayquaza_TriRing(struct Task *task)
     {
         u16 value = task->tTimer / 3;
         const u16 *palPtr = &sRayquaza_Palette[(value + 0) * 16];
-        LoadPalette(palPtr, 0xF0, 0x20);
+        LoadPalette(palPtr, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
     }
     if (++task->tTimer >= 40)
     {
@@ -3776,7 +3776,7 @@ static bool8 GridSquares_Init(struct Task *task)
     GetBg0TilesDst(&tilemap, &tileset);
     CpuSet(sShrinkingBoxTileset, tileset, 16);
     CpuFill16(0xF0 << 8, tilemap, BG_SCREEN_SIZE);
-    LoadPalette(sFieldEffectPal_Pokeball, 0xF0, sizeof(sFieldEffectPal_Pokeball));
+    LoadPalette(sFieldEffectPal_Pokeball, BG_PLTT_ID(15), sizeof(sFieldEffectPal_Pokeball));
 
     task->tState++;
     return FALSE;
@@ -4264,7 +4264,7 @@ static bool8 FrontierLogoWiggle_Init(struct Task *task)
     GetBg0TilesDst(&tilemap, &tileset);
     CpuFill16(0, tilemap, BG_SCREEN_SIZE);
     LZ77UnCompVram(sFrontierLogo_Tileset, tileset);
-    LoadPalette(sFrontierLogo_Palette, 0xF0, sizeof(sFrontierLogo_Palette));
+    LoadPalette(sFrontierLogo_Palette, BG_PLTT_ID(15), sizeof(sFrontierLogo_Palette));
 
     task->tState++;
     return FALSE;
@@ -4326,7 +4326,7 @@ static bool8 FrontierLogoWave_Init(struct Task *task)
     GetBg0TilesDst(&tilemap, &tileset);
     CpuFill16(0, tilemap, BG_SCREEN_SIZE);
     LZ77UnCompVram(sFrontierLogo_Tileset, tileset);
-    LoadPalette(sFrontierLogo_Palette, 0xF0, sizeof(sFrontierLogo_Palette));
+    LoadPalette(sFrontierLogo_Palette, BG_PLTT_ID(15), sizeof(sFrontierLogo_Palette));
     sTransitionData->cameraY = 0;
     UpdateShadowColor(0x3DEF); // force shadows to gray
 
@@ -4477,7 +4477,7 @@ static bool8 FrontierSquares_Init(struct Task *task)
     FillBgTilemapBufferRect(0, 1, 0, 0, MARGIN_SIZE, 32, 15);
     FillBgTilemapBufferRect(0, 1, 30 - MARGIN_SIZE, 0, MARGIN_SIZE, 32, 15);
     CopyBgTilemapBufferToVram(0);
-    LoadPalette(sFrontierSquares_Palette, 0xF0, sizeof(sFrontierSquares_Palette));
+    LoadPalette(sFrontierSquares_Palette, BG_PLTT_ID(15), sizeof(sFrontierSquares_Palette));
 
     task->tPosX = MARGIN_SIZE;
     task->tPosY = 0;
@@ -4572,9 +4572,9 @@ static bool8 FrontierSquaresSpiral_Init(struct Task *task)
     FillBgTilemapBufferRect(0, 1, 0, 0, MARGIN_SIZE, 32, 15);
     FillBgTilemapBufferRect(0, 1, 30 - MARGIN_SIZE, 0, MARGIN_SIZE, 32, 15);
     CopyBgTilemapBufferToVram(0);
-    LoadPalette(sFrontierSquares_Palette, 0xE0, sizeof(sFrontierSquares_Palette));
-    LoadPalette(sFrontierSquares_Palette, 0xF0, sizeof(sFrontierSquares_Palette));
-    BlendPalette(0xE0, 16, 8, RGB_BLACK);
+    LoadPalette(sFrontierSquares_Palette, BG_PLTT_ID(14), sizeof(sFrontierSquares_Palette));
+    LoadPalette(sFrontierSquares_Palette, BG_PLTT_ID(15), sizeof(sFrontierSquares_Palette));
+    BlendPalette(BG_PLTT_ID(14), 16, 8, RGB_BLACK);
 
     task->tSquareNum = NUM_SQUARES - 1;
     task->tFadeFlag = 0;
@@ -4604,7 +4604,7 @@ static bool8 FrontierSquaresSpiral_Outward(struct Task *task)
 // set it to black so it's not revealed when the squares are removed.
 static bool8 FrontierSquaresSpiral_SetBlack(struct Task *task)
 {
-    BlendPalette(0xE0, 16, 3, RGB_BLACK);
+    BlendPalette(BG_PLTT_ID(14), 16, 3, RGB_BLACK);
     BlendPalettes(PALETTES_ALL & ~(1 << 15 | 1 << 14), 16, RGB_BLACK);
 
     task->tSquareNum = 0;
@@ -4687,7 +4687,7 @@ static bool8 FrontierSquaresScroll_Init(struct Task *task)
     LZ77UnCompVram(sFrontierSquares_FilledBg_Tileset, tileset);
     FillBgTilemapBufferRect_Palette0(0, 0, 0, 0, 32, 32);
     CopyBgTilemapBufferToVram(0);
-    LoadPalette(sFrontierSquares_Palette, 0xF0, sizeof(sFrontierSquares_Palette));
+    LoadPalette(sFrontierSquares_Palette, BG_PLTT_ID(15), sizeof(sFrontierSquares_Palette));
 
     gBattle_BG0_X = 0;
     gBattle_BG0_Y = 0;
