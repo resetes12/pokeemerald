@@ -89,5 +89,6 @@ void MoveDeleterForgetMove(void);
 void BufferMoveDeleterNicknameAndMove(void);
 void GetNumMovesSelectedMonHas(void);
 void MoveDeleterChooseMoveToForget(void);
+void ItemUseCB_PokeBall(u8 taskId, TaskFunc task);
 
 #endif // GUARD_PARTY_MENU_H
