@@ -1642,7 +1642,7 @@ u8 LoadSpritePaletteInSlot(const struct SpritePalette *palette, u8 paletteNum) {
 
 void DoLoadSpritePalette(const u16 *src, u16 paletteOffset)
 {
-    LoadPaletteFast(src, paletteOffset + 0x100, 32);
+    LoadPaletteFast(src, paletteOffset + OBJ_PLTT_OFFSET, PLTT_SIZE_4BPP);
 }
 
 u8 AllocSpritePalette(u16 tag)

@@ -1323,7 +1323,6 @@ static u8 InitObjectEventStateFromTemplate(const struct ObjectEventTemplate *tem
     y = template->y + MAP_OFFSET;
     objectEvent->active = TRUE;
     objectEvent->triggerGroundEffectsOnMove = TRUE;
-    objectEvent->expanded = TRUE;
     objectEvent->graphicsId = PackGraphicsId(template);
     if (objectEvent->graphicsId >= OBJ_EVENT_GFX_MON_BASE) {
         if (template->script && template->script[0] == 0x7d)
@@ -1914,7 +1913,7 @@ static bool8 IsFollowerVisible(void) { // Determine whether follower *should* be
 }
 
 static bool8 SpeciesHasType(u16 species, u8 type) {
-  return gSpeciesInfo[species].type1 == type || gSpeciesInfo[species].type2 == type;
+  return gSpeciesInfo[species].types[0] == type || gSpeciesInfo[species].types[1] == type;
 }
 
 // Returns a random index according to a list of weights
@@ -2729,9 +2728,10 @@ static u8 LoadSpritePaletteIfTagExists(const struct SpritePalette *spritePalette
 
 void PatchObjectPalette(u16 paletteTag, u8 paletteSlot)
 {
+    // paletteTag is assumed to exist in sObjectEventSpritePalettes
     u8 paletteIndex = FindObjectEventPaletteIndexByTag(paletteTag);
 
-    LoadPalette(sObjectEventSpritePalettes[paletteIndex].data, 16 * paletteSlot + 0x100, 0x20);
+    LoadPalette(sObjectEventSpritePalettes[paletteIndex].data, OBJ_PLTT_ID(paletteSlot), PLTT_SIZE_4BPP);
 }
 
 void PatchObjectPaletteRange(const u16 *paletteTags, u8 minSlot, u8 maxSlot)

@@ -44,7 +44,7 @@ struct Tileset
     /*0x03*/ u8 customLightColor; // Bitmask determining which light palettes have custom light colors (color 15)
     /*0x04*/ const u32 *tiles;
     /*0x08*/ const u16 (*palettes)[16];
-    /*0x0c*/ const u16 *metatiles;
+    /*0x0C*/ const u16 *metatiles;
     /*0x10*/ const u16 *metatileAttributes;
     /*0x14*/ TilesetCB callback;
 };
@@ -54,7 +54,7 @@ struct MapLayout
     /*0x00*/ s32 width;
     /*0x04*/ s32 height;
     /*0x08*/ u16 *border;
-    /*0x0c*/ u16 *map;
+    /*0x0C*/ u16 *map;
     /*0x10*/ struct Tileset *primaryTileset;
     /*0x14*/ struct Tileset *secondaryTileset;
 };
@@ -198,7 +198,6 @@ struct ObjectEvent
              u32 fixedPriority:1;
              u32 hideReflection:1;
              u32 shiny:1; // OW mon shininess
-             u32 expanded:1; // 0 for vanilla, 1 for expanded OWs
     /*0x04*/ u16 graphicsId; // 11 bits for species; high 5 bits for form
     /*0x06*/ u8 movementType;
     /*0x07*/ u8 trainerType;
