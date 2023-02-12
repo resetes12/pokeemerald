@@ -1761,8 +1761,8 @@ const struct Item gItems[] =
         .name = _("SITRUS BERRY"),
         .itemId = ITEM_SITRUS_BERRY,
         .price = 20,
-        .holdEffect = HOLD_EFFECT_RESTORE_HP,
-        .holdEffectParam = 30,
+        .holdEffect = HOLD_EFFECT_RESTORE_PCT_HP,
+        .holdEffectParam = 25,
         .description = sSitrusBerryDesc,
         .pocket = POCKET_BERRIES,
         .type = ITEM_USE_PARTY_MENU,
@@ -3300,7 +3300,7 @@ const struct Item gItems[] =
         .importance = 1,
         .pocket = POCKET_KEY_ITEMS,
         .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .fieldUseFunc = ItemUseOutOfBattle_SootSack,
     },
 
     [ITEM_BASEMENT_KEY] =
