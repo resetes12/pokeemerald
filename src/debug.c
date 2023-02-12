@@ -112,6 +112,7 @@ enum { // Flags and Vars
     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_LOCATIONS,
     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_BADGES_ALL,
     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_FRONTIER_PASS,
+    DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_BATTLE_DMG,
     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_COLISSION,
     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_ENCOUNTER,
     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_TRAINER_SEE,
@@ -331,6 +332,7 @@ static void DebugAction_FlagsVars_SwitchPokeNav(u8 taskId);
 static void DebugAction_FlagsVars_ToggleFlyFlags(u8 taskId);
 static void DebugAction_FlagsVars_ToggleBadgeFlags(u8 taskId);
 static void DebugAction_FlagsVars_ToggleFrontierPass(u8 taskId);
+static void DebugAction_FlagsVars_BattleDmgOnOff(u8 taskId);
 static void DebugAction_FlagsVars_CollisionOnOff(u8 taskId);
 static void DebugAction_FlagsVars_EncounterOnOff(u8 taskId);
 static void DebugAction_FlagsVars_TrainerSeeOnOff(u8 taskId);
@@ -461,6 +463,7 @@ static const u8 sDebugText_FlagsVars_RunningShoes[] =           _("Toggle {STR_V
 static const u8 sDebugText_FlagsVars_ToggleFlyFlags[] =         _("Toggle {STR_VAR_1}Fly Flags");
 static const u8 sDebugText_FlagsVars_ToggleAllBadges[] =        _("Toggle {STR_VAR_1}All badges");
 static const u8 sDebugText_FlagsVars_ToggleFrontierPass[] =     _("Toggle {STR_VAR_1}Frontier Pass");
+static const u8 sDebugText_FlagsVars_BattleDmg[] =              _("Toggle {STR_VAR_1}BattleDmg OFF");
 static const u8 sDebugText_FlagsVars_SwitchCollision[] =        _("Toggle {STR_VAR_1}Collision OFF");
 static const u8 sDebugText_FlagsVars_SwitchEncounter[] =        _("Toggle {STR_VAR_1}Encounter OFF");
 static const u8 sDebugText_FlagsVars_SwitchTrainerSee[] =       _("Toggle {STR_VAR_1}TrainerSee OFF");
@@ -641,6 +644,7 @@ static const struct ListMenuItem sDebugMenu_Items_FlagsVars[] =
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_LOCATIONS]     = {sDebugText_FlagsVars_ToggleFlyFlags,     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_LOCATIONS},
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_BADGES_ALL]    = {sDebugText_FlagsVars_ToggleAllBadges,    DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_BADGES_ALL},
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_FRONTIER_PASS] = {sDebugText_FlagsVars_ToggleFrontierPass, DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_FRONTIER_PASS},
+    [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_BATTLE_DMG]    = {sDebugText_FlagsVars_BattleDmg,          DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_BATTLE_DMG},
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_COLISSION]     = {sDebugText_FlagsVars_SwitchCollision,    DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_COLISSION},
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_ENCOUNTER]     = {sDebugText_FlagsVars_SwitchEncounter,    DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_ENCOUNTER},
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_TRAINER_SEE]   = {sDebugText_FlagsVars_SwitchTrainerSee,   DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_TRAINER_SEE},
@@ -775,6 +779,7 @@ static void (*const sDebugMenu_Actions_Flags[])(u8) =
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_LOCATIONS]     = DebugAction_FlagsVars_ToggleFlyFlags,
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_BADGES_ALL]    = DebugAction_FlagsVars_ToggleBadgeFlags,
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_FRONTIER_PASS] = DebugAction_FlagsVars_ToggleFrontierPass,
+    [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_BATTLE_DMG]    = DebugAction_FlagsVars_BattleDmgOnOff,
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_COLISSION]     = DebugAction_FlagsVars_CollisionOnOff,
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_ENCOUNTER]     = DebugAction_FlagsVars_EncounterOnOff,
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_TRAINER_SEE]   = DebugAction_FlagsVars_TrainerSeeOnOff,
@@ -1074,6 +1079,9 @@ static u8 Debug_CheckToggleFlags(u8 id)
             break;
         case DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_FRONTIER_PASS:
             result = FlagGet(FLAG_SYS_FRONTIER_PASS);
+            break;
+        case DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_BATTLE_DMG:
+            result = FlagGet(FLAG_SYS_NO_BATTLE_DMG);
             break;
         case DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_COLISSION:
             result = FlagGet(FLAG_SYS_NO_COLLISION);
@@ -2443,6 +2451,16 @@ static void DebugAction_FlagsVars_ToggleFrontierPass(u8 taskId)
         PlaySE(SE_PC_LOGIN);
     FlagToggle(FLAG_SYS_FRONTIER_PASS);
 }
+
+static void DebugAction_FlagsVars_BattleDmgOnOff(u8 taskId)
+{
+    if (FlagGet(FLAG_SYS_NO_BATTLE_DMG))
+        PlaySE(SE_PC_OFF);
+    else
+        PlaySE(SE_PC_LOGIN);
+    FlagToggle(FLAG_SYS_NO_BATTLE_DMG);
+}
+
 static void DebugAction_FlagsVars_CollisionOnOff(u8 taskId)
 {
     if (FlagGet(FLAG_SYS_NO_COLLISION))

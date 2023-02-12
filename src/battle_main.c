@@ -61,6 +61,7 @@
 #include "constants/songs.h"
 #include "constants/trainers.h"
 #include "cable_club.h"
+#include "wild_encounter.h"
 
 extern const struct BgTemplate gBattleBgTemplates[];
 extern const struct WindowTemplate *const gBattleWindowTemplates[];
@@ -121,6 +122,7 @@ static void HandleEndTurn_MonFled(void);
 static void HandleEndTurn_FinishBattle(void);
 static void SpriteCB_UnusedBattleInit(struct Sprite *sprite);
 static void SpriteCB_UnusedBattleInit_Main(struct Sprite *sprite);
+static void BattleIntroQuickRun(void);
 
 EWRAM_DATA u16 gBattle_BG0_X = 0;
 EWRAM_DATA u16 gBattle_BG0_Y = 0;
@@ -3610,8 +3612,19 @@ static void BattleIntroPrintWildMonAttacked(void)
 {
     if (gBattleControllerExecFlags == 0)
     {
-        gBattleMainFunc = BattleIntroPrintPlayerSendsOut;
+        gBattleMainFunc = BattleIntroQuickRun;
         PrepareStringBattle(STRINGID_INTROMSG, 0);
+    }
+}
+
+static void BattleIntroQuickRun(void)
+{
+    if (gBattleControllerExecFlags == 0)
+    {
+        if ((JOY_HELD(R_BUTTON))&&(JOY_HELD(L_BUTTON)))
+            gBattleMainFunc = HandleEndTurn_RanFromBattle;
+        else
+            gBattleMainFunc = BattleIntroPrintPlayerSendsOut;
     }
 }
 
@@ -5182,6 +5195,7 @@ static void FreeResetData_ReturnToOvOrDoEvolutions(void)
 {
     if (!gPaletteFade.active)
     {
+        gIsFishingEncounter = FALSE;
         ResetSpriteData();
         if (gLeveledUpInBattle == 0 || gBattleOutcome != B_OUTCOME_WON)
         {
