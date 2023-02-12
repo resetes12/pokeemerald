@@ -1100,6 +1100,8 @@ static u8 SetUpCopyrightScreen(void)
         UpdatePaletteFade();
         gMain.state++;
         GameCubeMultiBoot_Main(&gMultibootProgramStruct);
+        if ((JOY_NEW(A_BUTTON)) || (JOY_NEW(B_BUTTON)) || (JOY_NEW(START_BUTTON)))
+            gMain.state = 140;
         break;
     case 140:
         GameCubeMultiBoot_Main(&gMultibootProgramStruct);

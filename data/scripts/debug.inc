@@ -43,9 +43,79 @@ Debug_CheatStart::
 	end
 
 Debug_Script_1::
+	special ChoosePartyMon
+	waitstate
+	compare VAR_0x8004, PARTY_SIZE
+	goto_if_ge ButIRefuse
+	specialvar VAR_RESULT, ScriptGetPartyMonSpecies
+	compare VAR_RESULT, SPECIES_EGG
+	goto_if_eq Rejected
+	goto SetEVs_Proceed
+SetEVs_Proceed:
+	lockall
+	faceplayer
+	setvar VAR_0x8000, 252
+	setvar VAR_0x8001, 252
+	setvar VAR_0x8002, 252
+	setvar VAR_0x8003, 252
+	setvar VAR_0x8005, 252
+	setvar VAR_0x8006, 252
+	setvar VAR_0x8007, 31
+	setvar VAR_0x8008, 31
+	setvar VAR_0x8009, 31
+	setvar VAR_0x800A, 31
+	setvar VAR_0x800B, 31
+	setvar VAR_UNUSED_0x8014, 31
+	special SetHpEvs
+	special SetAtkEvs
+	special SetDefEvs
+	special SetSpdEvs
+	special SetSpAtkEvs
+	special SetSpDefEvs
+	special SetHpIvs
+	special SetAtkIvs
+	special SetDefIvs
+	special SetSpdIvs
+	special SetSpAtkIvs
+	special SetSpDefIvs
+	msgbox EVsSetSuccessfully 4
+	closemessage
+	releaseall
 	end
 
+ButIRefuse:
+	lockall
+	faceplayer
+	msgbox ComeBackAnytime 6
+	releaseall
+	end
+
+Rejected:
+	lockall
+	faceplayer
+	msgbox Reject 6
+	releaseall
+	end
+
+EVsSetSuccessfully:
+	.string "The EVs of your Pokémon's stats\n"
+	.string "have been successfully set to 252.\p"
+	.string "Come back anytime.$"
+
+Reject:
+	.string "Sorry, I can't modify the stats\n"
+	.string "of an EGG.$"
+
+ComeBackAnytime:
+	.string "Come back anytime.$"
+
+
 Debug_Script_2::
+	lockall
+	faceplayer
+	specialvar VAR_RESULT, ScriptGetPartyMonSpecies
+
+	releaseall
 	end
 
 Debug_Script_3::

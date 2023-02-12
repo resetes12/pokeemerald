@@ -6364,6 +6364,10 @@ void ClearBattleMonForms(void)
 
 u16 GetBattleBGM(void)
 {
+    if (FlagGet(FLAG_SYS_SET_BATTLE_BGM)){
+        FlagClear(FLAG_SYS_SET_BATTLE_BGM);
+        return VarGet(VAR_TEMP_F);
+    }
     if (gBattleTypeFlags & BATTLE_TYPE_KYOGRE_GROUDON)
         return MUS_VS_KYOGRE_GROUDON;
     else if (gBattleTypeFlags & BATTLE_TYPE_REGI)

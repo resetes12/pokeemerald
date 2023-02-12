@@ -4270,3 +4270,99 @@ u8 Script_TryGainNewFanFromCounter(void)
 {
     return TryGainNewFanFromCounter(gSpecialVar_0x8004);
 }
+
+// Sets the HP EVs of the Pokémon in gSpecialVar_0x8004 according to the current value of var 0x8000 
+void SetHpEvs(void)
+{
+    u8 HpEv = gSpecialVar_0x8000;
+    SetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_HP_EV, &HpEv);
+    CalculateMonStats(&gPlayerParty[gSpecialVar_0x8004]);
+}
+
+// Sets the Atk EVs of the Pokémon in gSpecialVar_0x8004 according to the current value of var 0x8001
+void SetAtkEvs(void)
+{
+    u8 AtkEv = gSpecialVar_0x8001;
+    SetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_ATK_EV, &AtkEv);
+    CalculateMonStats(&gPlayerParty[gSpecialVar_0x8004]);
+}
+
+// Sets the Def EVs of the Pokémon in gSpecialVar_0x8004 according to the current value of var 0x8002
+void SetDefEvs(void)
+{
+    u8 DefEv = gSpecialVar_0x8002;
+    SetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_DEF_EV, &DefEv);
+    CalculateMonStats(&gPlayerParty[gSpecialVar_0x8004]);
+}
+
+// Sets the Spd EVs of the Pokémon in gSpecialVar_0x8004 according to the current value of var 0x8003
+void SetSpdEvs(void)
+{
+    u8 SpdEv = gSpecialVar_0x8003;
+    SetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_SPEED_EV, &SpdEv);
+    CalculateMonStats(&gPlayerParty[gSpecialVar_0x8004]);
+}
+
+// Sets the SpAtk EVs of the Pokémon in gSpecialVar_0x8004 according to the current value of var 0x8005
+void SetSpAtkEvs(void)
+{
+    u8 SpAtkEv = gSpecialVar_0x8005;
+    SetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_SPATK_EV, &SpAtkEv);
+    CalculateMonStats(&gPlayerParty[gSpecialVar_0x8004]);
+}
+
+// Sets the SpDef EVs of the Pokémon in gSpecialVar_0x8004 according to the current value of var 0x8006
+void SetSpDefEvs(void)
+{
+    u8 SpDefEv = gSpecialVar_0x8006;
+    SetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_SPDEF_EV, &SpDefEv);
+    CalculateMonStats(&gPlayerParty[gSpecialVar_0x8004]);
+}
+
+// Sets the HP IVs of the Pokémon in gSpecialVar_0x8004 according to the current value of var 0x8000 
+void SetHpIvs(void)
+{
+    u8 hpIV = gSpecialVar_0x8007;
+    SetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_HP_IV, &hpIV);
+    CalculateMonStats(&gPlayerParty[gSpecialVar_0x8004]);
+}
+
+// Sets the Atk IVs of the Pokémon in gSpecialVar_0x8004 according to the current value of var 0x8001
+void SetAtkIvs(void)
+{
+    u8 attackIV = gSpecialVar_0x8008;
+    SetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_ATK_IV, &attackIV);
+    CalculateMonStats(&gPlayerParty[gSpecialVar_0x8004]);
+}
+
+// Sets the Def IVs of the Pokémon in gSpecialVar_0x8004 according to the current value of var 0x8002
+void SetDefIvs(void)
+{
+    u8 defenseIV  = gSpecialVar_0x8009;
+    SetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_DEF_IV, &defenseIV);
+    CalculateMonStats(&gPlayerParty[gSpecialVar_0x8004]);
+}
+
+// Sets the Spd IVs of the Pokémon in gSpecialVar_0x8004 according to the current value of var 0x8003
+void SetSpdIvs(void)
+{
+    u8 speedIV = gSpecialVar_0x800A;
+    SetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_SPEED_IV, &speedIV);
+    CalculateMonStats(&gPlayerParty[gSpecialVar_0x8004]);
+}
+
+// Sets the SpAtk IVs of the Pokémon in gSpecialVar_0x8004 according to the current value of var 0x8005
+void SetSpAtkIvs(void)
+{
+    u8 spAtkIV = gSpecialVar_0x800B;
+    SetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_SPATK_IV, &spAtkIV);
+    CalculateMonStats(&gPlayerParty[gSpecialVar_0x8004]);
+}
+
+// Sets the SpDef IVs of the Pokémon in gSpecialVar_0x8004 according to the current value of var 0x8006
+void SetSpDefIvs(void)
+{
+    u8 spDefIV = gSpecialVar_Unused_0x8014;
+    SetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_SPDEF_IV, &spDefIV);
+    CalculateMonStats(&gPlayerParty[gSpecialVar_0x8004]);
+}
