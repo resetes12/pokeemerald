@@ -296,6 +296,30 @@ const u8 gItemEffect_LeafStone[6] = {
     [4] = ITEM4_EVO_STONE,
 };
 
+const u8 gItemEffect_KingsRock[6] = {
+    [4] = ITEM4_EVO_STONE,
+};
+
+const u8 gItemEffect_DragonScale[6] = {
+    [4] = ITEM4_EVO_STONE,
+};
+
+const u8 gItemEffect_MetalCoat[6] = {
+    [4] = ITEM4_EVO_STONE,
+};
+
+const u8 gItemEffect_UpGrade[6] = {
+    [4] = ITEM4_EVO_STONE,
+};
+
+const u8 gItemEffect_DeepSeaScale[6] = {
+    [4] = ITEM4_EVO_STONE,
+};
+
+const u8 gItemEffect_DeepSeaTooth[6] = {
+    [4] = ITEM4_EVO_STONE,
+};
+
 const u8 gItemEffect_CheriBerry[6] = {
     [3] = ITEM3_PARALYSIS,
 };
@@ -453,5 +477,11 @@ const u8 *const gItemEffectTable[] =
     [ITEM_HONDEW_BERRY - ITEM_POTION]  = gItemEffect_HondewBerry,
     [ITEM_GREPA_BERRY - ITEM_POTION]   = gItemEffect_GrepaBerry,
     [ITEM_TAMATO_BERRY - ITEM_POTION]  = gItemEffect_TamatoBerry,
+    [ITEM_KINGS_ROCK - ITEM_POTION]      = gItemEffect_KingsRock,
+    [ITEM_DRAGON_SCALE - ITEM_POTION]    = gItemEffect_DragonScale,
+    [ITEM_METAL_COAT - ITEM_POTION]      = gItemEffect_MetalCoat,
+    [ITEM_UP_GRADE - ITEM_POTION]        = gItemEffect_UpGrade,
+    [ITEM_DEEP_SEA_SCALE - ITEM_POTION]  = gItemEffect_DeepSeaScale,
+    [ITEM_DEEP_SEA_TOOTH - ITEM_POTION]  = gItemEffect_DeepSeaTooth,
     [LAST_BERRY_INDEX - ITEM_POTION]   = NULL
 };
