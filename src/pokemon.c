@@ -48,6 +48,7 @@
 #include "constants/trainers.h"
 #include "constants/union_room.h"
 #include "wild_encounter.h"
+#include "constants/region_map_sections.h"
 
 struct SpeciesItem
 {
@@ -6416,7 +6417,10 @@ u16 GetBattleBGM(void)
         case TRAINER_CLASS_PYRAMID_KING:
             return MUS_VS_FRONTIER_BRAIN;
         default:
-            return MUS_VS_TRAINER;
+            if (gMapHeader.regionMapSectionId == MAPSEC_LITTLEROOT_TOWN) //BGM by map
+                return MUS_RG_VS_TRAINER;
+        else
+                return MUS_VS_TRAINER;
         }
     }
     else
