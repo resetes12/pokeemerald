@@ -999,3 +999,74 @@ LittlerootTown_ProfessorBirchsLab_Text_ScottAboardSSTidalCall:
 	.string "we meet. I'll be waiting!\p"
 	.string "… … … … … …\n"
 	.string "… … … … … Click!$"
+
+LittlerootTown_ProfessorBirchsLab_EventScript_Challenge::
+	message LittlerootTown_ProfessorBirchsLab_Text_Challenge
+	waitmessage
+	switch VAR_DIFFICULTY
+	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_DefaultNormal
+	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_DefaultHard
+	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_DefaultEasy
+
+LittlerootTown_ProfessorBirchsLab_EventScript_DefaultNormal:
+	multichoicedefault 21, 6, MULTI_TAG_DIFFICULTY, 1, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_ChallengeSelect
+
+LittlerootTown_ProfessorBirchsLab_EventScript_DefaultHard:
+	multichoicedefault 21, 6, MULTI_TAG_DIFFICULTY, 2, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_ChallengeSelect
+
+LittlerootTown_ProfessorBirchsLab_EventScript_DefaultEasy:
+	multichoicedefault 21, 6, MULTI_TAG_DIFFICULTY, 0, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_ChallengeSelect
+
+LittlerootTown_ProfessorBirchsLab_EventScript_ChallengeSelect:
+	switch VAR_RESULT
+	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedEasy
+	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedNormal
+	case 2, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedHard
+	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedCancel
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SelectedNormal:
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_SelectedNormal, MSGBOX_DEFAULT
+	setvar VAR_DIFFICULTY, 0
+	closemessage
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SelectedHard:
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_SelectedHard, MSGBOX_DEFAULT
+	setvar VAR_DIFFICULTY, 1
+	closemessage
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SelectedEasy:
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_SelectedEasy, MSGBOX_DEFAULT
+	setvar VAR_DIFFICULTY, 2
+	closemessage
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SelectedCancel:
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_SelectedCancel, MSGBOX_DEFAULT
+	closemessage
+	end
+
+LittlerootTown_ProfessorBirchsLab_Text_Challenge:
+	.string "What difficulty would\n"
+	.string "you like to play at?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_SelectedEasy:
+	.string "Easy difficulty\n"
+	.string "was chosen.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_SelectedNormal:
+	.string "Normal difficulty\n"
+	.string "was chosen.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_SelectedHard:
+	.string "Hard difficulty\n"
+	.string "was chosen.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_SelectedCancel:
+	.string "Difficulty is\n"
+	.string "unchanged.$"

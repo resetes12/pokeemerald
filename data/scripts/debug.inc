@@ -109,13 +109,7 @@ Reject:
 ComeBackAnytime:
 	.string "Come back anytime.$"
 
-
 Debug_Script_2::
-	lockall
-	faceplayer
-	specialvar VAR_RESULT, ScriptGetPartyMonSpecies
-
-	releaseall
 	end
 
 Debug_Script_3::

@@ -29,3 +29,11 @@ gText_NoRoomLeftForAnother::
 gText_TheDecorWasTransferredToThePC::
 	.string "The {STR_VAR_2} was transferred\n"
 	.string "to the PC.$"
+
+gText_PutItemInPC::
+	.string "{PLAYER} put away the {STR_VAR_2}\n"
+	.string "in the PC since bag is full.$"
+
+gText_TooBadBagAndPCAreFull::
+	.string "Too bad!\n"
+	.string "The BAG and PC are full…$"
