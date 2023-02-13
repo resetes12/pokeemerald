@@ -45,7 +45,7 @@
 #endif
 
 // Uncomment to fix some identified minor bugs
-//#define BUGFIX
+#define BUGFIX
 
 // Various undefined behavior bugs may or may not prevent compilation with
 // newer compilers. So always fix them when using a modern compiler.
