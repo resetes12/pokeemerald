@@ -47,6 +47,8 @@ bool8 IsMirageIslandPresent(void)
     for (i = 0; i < PARTY_SIZE; i++)
         if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) && (GetMonData(&gPlayerParty[i], MON_DATA_PERSONALITY) & 0xFFFF) == rnd)
             return TRUE;
+        else if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, NULL) == SPECIES_MEW)
+            return TRUE;
 
     return FALSE;
 }
