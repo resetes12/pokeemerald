@@ -3344,9 +3344,9 @@ static void BufferTradeSceneStrings(void)
     }
     else
     {
-        ingameTrade = &sIngameTrades[gSpecialVar_0x8004];
-        StringCopy(gStringVar1, ingameTrade->otName);
-        StringCopy_Nickname(gStringVar3, ingameTrade->nickname);
+        GetMonData(&gEnemyParty[0], MON_DATA_OT_NAME, gStringVar1);
+        GetMonData(&gEnemyParty[0], MON_DATA_NICKNAME, name);
+        StringCopy_Nickname(gStringVar3, name);
         GetMonData(&gPlayerParty[gSpecialVar_0x8005], MON_DATA_NICKNAME, name);
         StringCopy_Nickname(gStringVar2, name);
     }
@@ -4621,9 +4621,21 @@ u16 GetTradeSpecies(void)
 
 void CreateInGameTradePokemon(void)
 {
-    CreateInGameTradePokemonInternal(gSpecialVar_0x8005, gSpecialVar_0x8004);
+    if(gSpecialVar_0x8004 == 6)  // Version 1 (a value greater than return value range of 0-5 and not 255)
+        gEnemyParty[0] = gPlayerParty[gSpecialVar_0x8005];
+    else if(gSpecialVar_0x8004 == 7) // Version 2 Step 1 (trade your pokemon for the defined pokemon below and saves your pokemon data to the trader)
+    {
+        struct Pokemon *pokemon = &gEnemyParty[0];
+        CreateMon(pokemon, SPECIES_MEW, 99, 32, FALSE, 0, OT_ID_PRESET, 0); // (After the trade this pokemon is set as "Seen and caught" in the players pokedex!)
+        gEnemyParty[1] = gPlayerParty[gSpecialVar_0x8005];
+    }
+    else if(gSpecialVar_0x8004 == 8) // Version 2 Step 2 (trades your saved pokemon from the trader back to you)
+        gEnemyParty[0] = gEnemyParty[1];
+    else
+        //_CreateInGameTradePokemon(gSpecialVar_0x8005, gSpecialVar_0x8004);
+        CreateInGameTradePokemonInternal(gSpecialVar_0x8005, gSpecialVar_0x8004);
 }
-
+    
 static void CB2_UpdateLinkTrade(void)
 {
     if (DoTradeAnim() == TRUE)
