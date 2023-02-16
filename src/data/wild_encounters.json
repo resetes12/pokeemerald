@@ -10810,63 +10810,63 @@
             "mons": [
               {
                 "min_level": 10,
-                "max_level": 10,
-                "species": "SPECIES_ZUBAT"
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
               },
               {
                 "min_level": 12,
-                "max_level": 12,
-                "species": "SPECIES_ZUBAT"
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
               },
               {
                 "min_level": 8,
-                "max_level": 8,
-                "species": "SPECIES_ZUBAT"
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
               },
               {
                 "min_level": 14,
-                "max_level": 14,
-                "species": "SPECIES_ZUBAT"
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
               },
               {
                 "min_level": 10,
-                "max_level": 10,
-                "species": "SPECIES_ZUBAT"
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
               },
               {
                 "min_level": 12,
-                "max_level": 12,
-                "species": "SPECIES_ZUBAT"
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
               },
               {
                 "min_level": 16,
-                "max_level": 16,
-                "species": "SPECIES_ZUBAT"
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
               },
               {
                 "min_level": 6,
-                "max_level": 6,
-                "species": "SPECIES_ZUBAT"
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
               },
               {
                 "min_level": 8,
-                "max_level": 8,
-                "species": "SPECIES_ZUBAT"
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
               },
               {
                 "min_level": 14,
-                "max_level": 14,
-                "species": "SPECIES_ZUBAT"
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
               },
               {
                 "min_level": 8,
-                "max_level": 8,
-                "species": "SPECIES_ZUBAT"
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
               },
               {
                 "min_level": 14,
-                "max_level": 14,
-                "species": "SPECIES_ZUBAT"
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
               }
             ]
           }
@@ -11488,6 +11488,144 @@
                 "min_level": 40,
                 "max_level": 40,
                 "species": "SPECIES_GOLBAT"
+              }
+            ]
+          }
+        },
+        {
+          "map": "MAP_AQUA_HIDEOUT_UNUSED_RUBY_MAP1",
+          "base_label": "gAquaHideout_UnusedRubyMap10",
+          "land_mons": {
+            "encounter_rate": 7,
+            "mons": [
+              {
+                "min_level": 5,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 5,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 5,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 5,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 5,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 5,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 5,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 5,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 5,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 5,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 5,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 5,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              }
+            ]
+          }
+        },
+        {
+          "map": "MAP_AQUA_HIDEOUT_UNUSED_RUBY_MAP2",
+          "base_label": "gAquaHideout_UnusedRubyMap20",
+          "land_mons": {
+            "encounter_rate": 7,
+            "mons": [
+              {
+                "min_level": 10,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 10,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 10,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 10,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 10,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 5,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 5,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 5,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 5,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 5,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 5,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 5,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
               }
             ]
           }

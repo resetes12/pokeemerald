@@ -1,5 +1,48 @@
 MagmaHideout_3F_1R_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, MagmaHideout_3F_1R_OnTransition
 	.byte 0
+
+MagmaHideout_3F_1R_OnTransition:
+	call_if_unset FLAG_IS_CHAMPION, MagmaHideout_3F_1R_EventScript_NoShowEntei
+	call_if_set FLAG_IS_CHAMPION, MagmaHideout_3F_1R_EventScript_ShowEntei
+	end
+
+MagmaHideout_3F_1R_EventScript_NoShowEntei::
+	setflag FLAG_DEFEAT_ENTEI
+	end
+
+MagmaHideout_3F_1R_EventScript_ShowEntei::
+	clearflag FLAG_DEFEAT_ENTEI
+	end
+	
+MagmaHideout_3F_1R_EventScript_Entei::
+	lock
+	faceplayer
+	setwildbattle SPECIES_ENTEI, 70
+	waitse
+	playmoncry SPECIES_ENTEI, CRY_MODE_ENCOUNTER
+	delay 40
+	waitmoncry
+	setflag FLAG_SYS_CTRL_OBJ_DELETE
+	setflag FLAG_SYS_SET_BATTLE_BGM
+	setvar VAR_TEMP_F, MUS_RG_VS_LEGEND
+	dowildbattle
+	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_eq VAR_RESULT, B_OUTCOME_WON, MagmaHideout_3F_1R_EventScript_EnteiWon
+	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, MagmaHideout_3F_1R_EventScript_EnteiRan
+	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, MagmaHideout_3F_1R_EventScript_EnteiRan
+	release
+	end
+
+MagmaHideout_3F_1R_EventScript_EnteiWon::
+	setflag FLAG_DEFEAT_ENTEI
+	goto Common_EventScript_RemoveStaticPokemon
+	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	end
+
+MagmaHideout_3F_1R_EventScript_EnteiRan::
+	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	end
 
 MagmaHideout_3F_1R_EventScript_Grunt9::
 	trainerbattle_single TRAINER_GRUNT_MAGMA_HIDEOUT_9, MagmaHideout_3F_1R_Text_Grunt9Intro, MagmaHideout_3F_1R_Text_Grunt9Defeat

@@ -22,6 +22,16 @@ NewMauville_Inside_OnTransition:
 	call_if_unset FLAG_DEFEATED_VOLTORB_1_NEW_MAUVILLE, NewMauville_Inside_EventScript_ShowVoltorb1
 	call_if_unset FLAG_DEFEATED_VOLTORB_2_NEW_MAUVILLE, NewMauville_Inside_EventScript_ShowVoltorb2
 	call_if_unset FLAG_DEFEATED_VOLTORB_3_NEW_MAUVILLE, NewMauville_Inside_EventScript_ShowVoltorb3
+	call_if_unset FLAG_IS_CHAMPION, NewMauville_Inside_NoShowRaikou
+	call_if_set FLAG_IS_CHAMPION, NewMauville_Inside_ShowRaikou
+	end
+
+NewMauville_Inside_NoShowRaikou::
+	setflag FLAG_DEFEAT_RAIKOU
+	end
+
+NewMauville_Inside_ShowRaikou::
+	clearflag FLAG_DEFEAT_RAIKOU
 	end
 
 NewMauville_Inside_EventScript_ShowVoltorb1::
@@ -243,6 +253,35 @@ NewMauville_Inside_EventScript_Voltorb3::
 NewMauville_Inside_EventScript_DefeatedVoltorb3::
 	setflag FLAG_DEFEATED_VOLTORB_3_NEW_MAUVILLE
 	goto Common_EventScript_RemoveStaticPokemon
+	end
+
+NewMauville_Inside_Raikou::
+	lock
+	faceplayer
+	setwildbattle SPECIES_RAIKOU, 70
+	waitse
+	playmoncry SPECIES_RAIKOU, CRY_MODE_ENCOUNTER
+	delay 40
+	waitmoncry
+	setflag FLAG_SYS_CTRL_OBJ_DELETE
+	setflag FLAG_SYS_SET_BATTLE_BGM
+	setvar VAR_TEMP_F, MUS_RG_VS_LEGEND
+	dowildbattle
+	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_eq VAR_RESULT, B_OUTCOME_WON, NewMauville_Inside_Raikou_Won
+	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, NewMauville_Inside_Raikou_Ran
+	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, NewMauville_Inside_Raikou_Ran
+	release
+	end
+
+NewMauville_Inside_Raikou_Won::
+	setflag FLAG_DEFEAT_RAIKOU
+	goto Common_EventScript_RemoveStaticPokemon
+	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	end
+
+NewMauville_Inside_Raikou_Ran::
+	clearflag FLAG_SYS_CTRL_OBJ_DELETE
 	end
 
 NewMauville_Inside_Text_GeneratorRadiatingHeat:

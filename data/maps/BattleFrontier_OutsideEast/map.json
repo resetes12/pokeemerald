@@ -438,7 +438,7 @@
       "dest_warp_id": "0"
     },
     {
-      "x": 21,
+      "x": 22,
       "y": 45,
       "elevation": 0,
       "dest_map": "MAP_BATTLE_FRONTIER_LOUNGE9",
@@ -459,7 +459,9 @@
       "dest_warp_id": "0"
     }
   ],
-  "coord_events": [],
+  "coord_events": [
+
+  ],
   "bg_events": [
     {
       "type": "sign",

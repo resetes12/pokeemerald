@@ -2,7 +2,135 @@
 .set LOCALID_DEVON_EMPLOYEE, 4
 
 PetalburgWoods_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, PetalburgWoods_OnTransition
 	.byte 0
+
+PetalburgWoods_OnTransition::
+	call_if_unset FLAG_IS_CHAMPION, PetalburgWoods_NoCelebiEvent
+	call_if_set FLAG_IS_CHAMPION, PetalburgWoods_YesCelebiEvent
+	end
+
+PetalburgWoods_NoCelebiEvent::
+	checkflag FLAG_CELEBI_EVENT
+	call_if_unset FLAG_CELEBI_EVENT, PetalburgWoods_CelebiEvent_End
+	end
+
+PetalburgWoods_YesCelebiEvent::
+	checkflag FLAG_DEFEAT_CELEBI
+	call_if_set FLAG_DEFEAT_CELEBI, PetalburgWoods_CelebiEvent_End
+	call_if_unset FLAG_DEFEAT_CELEBI, PetalburgWoods_YesCelebiEvent2
+	end
+
+PetalburgWoods_YesCelebiEvent2::
+	setflag FLAG_CELEBI_EVENT
+	end
+
+PetalburgWoods_CelebiEvent::
+	lock
+	playse SE_SUDOWOODO_SHAKE
+	waitse
+	msgbox Text_PetalburgWoods_Celebi0, MSGBOX_SIGN
+	waitbuttonpress
+	checkflag FLAG_CELEBI_EVENT
+	call_if_unset FLAG_CELEBI_EVENT, PetalburgWoods_CelebiEvent_End
+	call_if_set FLAG_CELEBI_EVENT, PetalburgWoods_CelebiEventGo
+	end
+
+PetalburgWoods_CelebiEventGo::
+	msgbox Text_PetalburgWoods_Celebi1, MSGBOX_SIGN
+	special ChoosePartyMon
+	waitstate
+	goto_if_eq VAR_0x8004, PARTY_NOTHING_CHOSEN, PetalburgWoods_CelebiEvent_End
+	specialvar VAR_RESULT, ScriptGetPartyMonSpecies
+	goto_if_eq VAR_RESULT, SPECIES_RAIKOU, PetalburgWoods_CelebiEvent_Continue1
+	msgbox Text_PetalburgWoods_Celebi_Donthave, MSGBOX_SIGN
+	end
+
+PetalburgWoods_CelebiEvent_Continue1::
+	msgbox Text_PetalburgWoods_Celebi2, MSGBOX_SIGN
+	special ChoosePartyMon
+	waitstate
+	goto_if_eq VAR_0x8004, PARTY_NOTHING_CHOSEN, PetalburgWoods_CelebiEvent_End
+	specialvar VAR_RESULT, ScriptGetPartyMonSpecies
+	goto_if_eq VAR_RESULT, SPECIES_ENTEI, PetalburgWoods_CelebiEvent_Continue2
+	msgbox Text_PetalburgWoods_Celebi_Donthave, MSGBOX_SIGN
+	end
+
+PetalburgWoods_CelebiEvent_Continue2::
+	msgbox Text_PetalburgWoods_Celebi3, MSGBOX_SIGN
+	special ChoosePartyMon
+	waitstate
+	goto_if_eq VAR_0x8004, PARTY_NOTHING_CHOSEN, PetalburgWoods_CelebiEvent_End
+	specialvar VAR_RESULT, ScriptGetPartyMonSpecies
+	goto_if_eq VAR_RESULT, SPECIES_SUICUNE, PetalburgWoods_CelebiBattle
+	msgbox Text_PetalburgWoods_Celebi_Donthave, MSGBOX_SIGN
+	end
+
+PetalburgWoods_CelebiEvent_End::
+	releaseall
+	end
+
+PetalburgWoods_CelebiBattle::
+	@waitstate
+	faceplayer
+	applymovement OBJ_EVENT_ID_PLAYER, Movement_PetalburgWoods_Celebi1
+	waitmovement 0
+	msgbox Text_PetalburgWoods_Celebi4, MSGBOX_DEFAULT
+	setwildbattle SPECIES_CELEBI, 70
+	waitse
+	playmoncry SPECIES_CELEBI, CRY_MODE_ENCOUNTER
+	delay 40
+	waitmoncry
+	setflag FLAG_SYS_CTRL_OBJ_DELETE
+	setflag FLAG_SYS_SET_BATTLE_BGM
+	setvar VAR_TEMP_F, MUS_VS_MEW
+	dowildbattle
+	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_eq VAR_RESULT, B_OUTCOME_WON, PetalburgWoods_CelebiEvent_Won
+	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, PetalburgWoods_CelebiEvent_Ran
+	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, PetalburgWoods_CelebiEvent_Ran
+	releaseall
+	end
+
+PetalburgWoods_CelebiEvent_Won::
+	setflag FLAG_DEFEAT_CELEBI
+	goto Common_EventScript_RemoveStaticPokemon
+	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	end
+
+PetalburgWoods_CelebiEvent_Ran::
+	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	end
+
+Text_PetalburgWoods_Celebi0:
+	.string "The tree is rattling,\n"
+	.string "but you cannot see any POKéMON.$"
+
+Text_PetalburgWoods_Celebi1:
+	.string "Show me the THUNDER POKéMON.$"
+
+Text_PetalburgWoods_Celebi2:
+	.string "Show me the VOLCANO POKéMON.$"
+
+Text_PetalburgWoods_Celebi3:
+	.string "Show me the AURORA POKéMON.$"
+
+Text_PetalburgWoods_Celebi4:
+	.string "Something is approaching...$"
+
+Text_PetalburgWoods_Celebi_Donthave:
+	.string "You don't have it.$"
+
+Movement_PetalburgWoods_Celebi1:
+	emote_exclamation_mark
+	step_end
+
+PetalburgWoods_Celebi_Sign::
+	msgbox Text_PetalburgWoods_Celebi_Sign, MSGBOX_SIGN
+	end
+
+Text_PetalburgWoods_Celebi_Sign:
+	.string "PETALBURG WOODS SHRINE$"
 
 PetalburgWoods_EventScript_DevonResearcherLeft::
 	lockall
