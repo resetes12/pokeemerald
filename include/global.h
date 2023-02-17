@@ -143,6 +143,9 @@
 #define DIFFICULTY_HARD      1
 #define DIFFICULTY_EASY      2
 
+#define GAMEMODE_CLASSIC 0
+#define GAMEMODE_MODERN 1
+
 struct Coords8
 {
     s8 x;

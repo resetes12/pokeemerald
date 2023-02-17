@@ -1226,6 +1226,8 @@ const u8 gText_BattlePike[] = _("BATTLE PIKE");
 const u8 gText_BattlePyramid[] = _("BATTLE PYRAMID");
 const u8 gText_Easy[] = _("EASY");
 const u8 gText_Hard[] = _("HARD");
+const u8 gText_Modern[] = _("MODERN");
+const u8 gText_Classic[] = _("CLASSIC");
 
 ALIGNED(4) const u8 gText_FacilitySingle[] = _("{STR_VAR_1} SINGLE");
 ALIGNED(4) const u8 gText_FacilityDouble[] = _("{STR_VAR_1} DOUBLE");

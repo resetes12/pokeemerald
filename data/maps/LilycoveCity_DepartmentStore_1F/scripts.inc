@@ -140,6 +140,113 @@ LilycoveCity_DepartmentStore_1F_EventScript_FloorNamesSign::
 	msgbox LilycoveCity_DepartmentStore_1F_Text_FloorNamesSign, MSGBOX_SIGN
 	end
 
+LilycoveCity_DepartmentStore_1F_TraderWoman::
+	msgbox LilycoveCity_DepartmentStore_1F_TraderWoman_Text, MSGBOX_NPC
+	end
+
+LilycoveCity_DepartmentStore_1F_Machine::
+	playse SE_PC_ON
+	delay 40
+	checkmoney 10000, 0
+	compare VAR_RESULT, TRUE
+	goto_if_eq SCRIPT_SelfTrade_V1
+	compare VAR_RESULT, FALSE
+	goto_if_eq LilycoveCity_DepartmentStore_1F_Machine_NoMoney
+	end
+
+LilycoveCity_DepartmentStore_1F_Machine_NoMoney::
+	msgbox LilycoveCity_DepartmentStore_1F_Machine_NoMoney_Text, MSGBOX_NPC
+	end
+
+SCRIPT_SelfTrade_V1::
+	lock
+	faceplayer
+	removemoney 10000, 0
+	msgbox SCRIPT_SelfTrade_Text_IllTradeIfYouWant, MSGBOX_YESNO
+	compare VAR_RESULT, NO
+	goto_if_eq SCRIPT_SelfTrade_DeclineTrade
+	special ChoosePartyMon
+	waitstate
+	compare VAR_0x8004, 255
+	goto_if_eq SCRIPT_SelfTrade_DeclineTrade
+	copyvar VAR_0x8005, VAR_0x8004
+	setvar VAR_0x8004, 6
+	special CreateInGameTradePokemon
+	special DoInGameTradeScene
+	waitstate
+	msgbox SCRIPT_SelfTrade_Text_ComeBack, MSGBOX_DEFAULT
+	release
+	end
+
+SCRIPT_SelfTrade_V2::
+	lock
+	faceplayer
+	msgbox SCRIPT_SelfTrade_Text_IllTradeIfYouWant, MSGBOX_YESNO
+	compare VAR_RESULT, NO
+	goto_if_eq SCRIPT_SelfTrade_DeclineTrade
+	special ChoosePartyMon
+	waitstate
+	compare VAR_0x8004, 255
+	goto_if_eq SCRIPT_SelfTrade_DeclineTrade
+	copyvar VAR_0x8005, VAR_0x8004
+	setvar VAR_0x8004, 7
+	special CreateInGameTradePokemon
+	special DoInGameTradeScene
+	waitstate
+	setvar VAR_0x8004, 8
+	special CreateInGameTradePokemon
+	special DoInGameTradeScene
+	waitstate
+	msgbox SCRIPT_SelfTrade_Text_ComeBack, MSGBOX_DEFAULT
+	release
+	end
+
+SCRIPT_SelfTrade_DeclineTrade::
+	msgbox SCRIPT_SelfTrade_Text_YouDontWantToThatsOkay, MSGBOX_DEFAULT
+	release
+	end
+
+SCRIPT_SelfTrade_Text_IllTradeIfYouWant:
+	.string "A POKéMON, selected by\n"
+	.string "you, will be self-traded.\p"
+	.string "A single operation\n"
+	.string "will cost 10.000¥\p"
+	.string "Do you want to continue?$"
+
+SCRIPT_SelfTrade_Text_ComeBack:
+	.string "Thank you using\n"
+	.string "DEVON CORP. products.$"
+
+SCRIPT_SelfTrade_Text_YouDontWantToThatsOkay:
+	.string "Thank you for using\n"
+	.string "DEVON CORP. products.$"
+
+LilycoveCity_DepartmentStore_1F_Machine_NoMoney_Text:
+	.string "Sorry, you don't have enough money.\n"
+	.string "10.000¥ are required for one use.\p"
+	.string "Thank you for using\n"
+	.string "DEVON CORP. products.$"
+
+LilycoveCity_DepartmentStore_1F_TraderWoman_Text:
+	.string "Welcome to LILYCOVE DEPARTMENT STORE!\p"
+	.string "Do you want to know about the new\n"
+	.string "technology DEVON CORP. just developed?\p"
+	.string "It's an AUTO-TRADER! \p"
+	.string "With the help of a simple computer\n"
+	.string "program, you can send one POKéMON to\p"
+	.string "the DEVON CORP. server and get it\n"
+	.string "back in just a few seconds!\p"
+	.string "This triggers the EVOLUTION conditions\n"
+	.string "of certain species!\p"
+	.string "Sadly this technology is expensive.\n"
+	.string "You can buy a license for 1.000.000¥\p"
+	.string "Or you can use it by paying every\n"
+	.string "usage. It will cost you 10.000¥.\p"
+	.string "If you want to try it out, just use\n"
+	.string "the computer on your right!\p"
+	.string "Thank you for using DEVON\n"
+	.string "CORP. products!$"
+
 LilycoveCity_DepartmentStore_1F_Text_WelcomeToDeptStore:
 	.string "Welcome to LILYCOVE DEPARTMENT STORE.$"
 

@@ -269,6 +269,8 @@ extern const u8 gText_BattlePyramidFloor[];
 
 extern const u8 gText_Easy[];
 extern const u8 gText_Hard[];
+extern const u8 gText_Modern[];
+extern const u8 gText_Classic[];
 
 extern const u8 gText_MenuOptionPokedex[];
 extern const u8 gText_MenuOptionPokemon[];

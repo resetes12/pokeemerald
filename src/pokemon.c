@@ -3177,13 +3177,24 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     // Apply type-bonus hold item
     for (i = 0; i < ARRAY_COUNT(sHoldEffectToType); i++)
     {
-        if (attackerHoldEffect == sHoldEffectToType[i][0]
-            && type == sHoldEffectToType[i][1])
-        {
-            attack = (attack * (attackerHoldEffectParam + 100)) / 100;
-            spAttack = (spAttack * (attackerHoldEffectParam + 100)) / 100;
-            break;
-        }
+        if (VarGet(VAR_GAMEMODE) == GAMEMODE_CLASSIC)
+            if (attackerHoldEffect == sHoldEffectToType[i][0]
+                && type == sHoldEffectToType[i][1])
+            {
+                if (IS_TYPE_PHYSICAL(type))
+                    attack = (attack * (attackerHoldEffectParam + 100)) / 100;
+                else
+                    spAttack = (spAttack * (attackerHoldEffectParam + 100)) / 100;
+                break;
+            }
+        if (VarGet(VAR_GAMEMODE) == GAMEMODE_MODERN)
+            if (attackerHoldEffect == sHoldEffectToType[i][0]
+                && type == sHoldEffectToType[i][1])
+            {
+                attack = (attack * (attackerHoldEffectParam + 100)) / 100;
+                spAttack = (spAttack * (attackerHoldEffectParam + 100)) / 100;
+                break;
+            }
     }
 
     // Apply boosts from hold items
@@ -3205,8 +3216,12 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         attack *= 2;
 
     // Apply abilities / field sports
-    if (defender->ability == ABILITY_THICK_FAT && (type == TYPE_FIRE || type == TYPE_ICE))
-        gBattleMovePower /= 2;
+    if (VarGet(VAR_GAMEMODE) == GAMEMODE_MODERN)
+        if (defender->ability == ABILITY_THICK_FAT && (type == TYPE_FIRE || type == TYPE_ICE))
+            gBattleMovePower /= 2;
+    if (VarGet(VAR_GAMEMODE) ==GAMEMODE_CLASSIC)
+        if (defender->ability == ABILITY_THICK_FAT && (type == TYPE_FIRE || type == TYPE_ICE))
+            spAttack /= 2;
     if (attacker->ability == ABILITY_HUSTLE)
         attack = (150 * attack) / 100;
     if (attacker->ability == ABILITY_PLUS && ABILITY_ON_FIELD2(ABILITY_MINUS))
@@ -3233,147 +3248,284 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     // Self-destruct / Explosion cut defense in half
     if (gBattleMoves[gCurrentMove].effect == EFFECT_EXPLOSION)
         defense /= 2;
-
-    if (IS_MOVE_PHYSICAL(gCurrentMove))
-    {
-        if (gCritMultiplier == 2)
+    if (VarGet(VAR_GAMEMODE) == GAMEMODE_MODERN)
+        if (IS_MOVE_PHYSICAL(gCurrentMove))
         {
-            // Critical hit, if attacker has lost attack stat stages then ignore stat drop
-            if (attacker->statStages[STAT_ATK] > DEFAULT_STAT_STAGE)
+            if (gCritMultiplier == 2)
+            {
+                // Critical hit, if attacker has lost attack stat stages then ignore stat drop
+                if (attacker->statStages[STAT_ATK] > DEFAULT_STAT_STAGE)
+                    APPLY_STAT_MOD(damage, attacker, attack, STAT_ATK)
+                else
+                    damage = attack;
+            }
+            else
                 APPLY_STAT_MOD(damage, attacker, attack, STAT_ATK)
+
+            damage = damage * gBattleMovePower;
+            damage *= (2 * attacker->level / 5 + 2);
+
+            if (gCritMultiplier == 2)
+            {
+                // Critical hit, if defender has gained defense stat stages then ignore stat increase
+                if (defender->statStages[STAT_DEF] < DEFAULT_STAT_STAGE)
+                    APPLY_STAT_MOD(damageHelper, defender, defense, STAT_DEF)
+                else
+                    damageHelper = defense;
+            }
             else
-                damage = attack;
-        }
-        else
-            APPLY_STAT_MOD(damage, attacker, attack, STAT_ATK)
-
-        damage = damage * gBattleMovePower;
-        damage *= (2 * attacker->level / 5 + 2);
-
-        if (gCritMultiplier == 2)
-        {
-            // Critical hit, if defender has gained defense stat stages then ignore stat increase
-            if (defender->statStages[STAT_DEF] < DEFAULT_STAT_STAGE)
                 APPLY_STAT_MOD(damageHelper, defender, defense, STAT_DEF)
-            else
-                damageHelper = defense;
-        }
-        else
-            APPLY_STAT_MOD(damageHelper, defender, defense, STAT_DEF)
 
-        damage = damage / damageHelper;
-        damage /= 50;
+            damage = damage / damageHelper;
+            damage /= 50;
 
-        // Burn cuts attack in half
-        if ((attacker->status1 & STATUS1_BURN) && attacker->ability != ABILITY_GUTS)
-            damage /= 2;
-
-        // Apply Reflect
-        if ((sideStatus & SIDE_STATUS_REFLECT) && gCritMultiplier == 1)
-        {
-            if ((gBattleTypeFlags & BATTLE_TYPE_DOUBLE) && CountAliveMonsInBattle(BATTLE_ALIVE_DEF_SIDE) == 2)
-                damage = 2 * (damage / 3);
-            else
+            // Burn cuts attack in half
+            if ((attacker->status1 & STATUS1_BURN) && attacker->ability != ABILITY_GUTS)
                 damage /= 2;
+
+            // Apply Reflect
+            if ((sideStatus & SIDE_STATUS_REFLECT) && gCritMultiplier == 1)
+            {
+                if ((gBattleTypeFlags & BATTLE_TYPE_DOUBLE) && CountAliveMonsInBattle(BATTLE_ALIVE_DEF_SIDE) == 2)
+                    damage = 2 * (damage / 3);
+                else
+                    damage /= 2;
+            }
+
+            // Moves hitting both targets do half damage in double battles
+            if ((gBattleTypeFlags & BATTLE_TYPE_DOUBLE) && gBattleMoves[move].target == MOVE_TARGET_BOTH && CountAliveMonsInBattle(BATTLE_ALIVE_DEF_SIDE) == 2)
+                damage /= 2;
+
+            // Moves always do at least 1 damage.
+            if (damage == 0)
+                damage = 1;
         }
+    if (VarGet(VAR_GAMEMODE) == GAMEMODE_CLASSIC)
+        if (IS_TYPE_PHYSICAL(type))
+        {
+            if (gCritMultiplier == 2)
+            {
+                // Critical hit, if attacker has lost attack stat stages then ignore stat drop
+                if (attacker->statStages[STAT_ATK] > DEFAULT_STAT_STAGE)
+                    APPLY_STAT_MOD(damage, attacker, attack, STAT_ATK)
+                else
+                    damage = attack;
+            }
+            else
+                APPLY_STAT_MOD(damage, attacker, attack, STAT_ATK)
 
-        // Moves hitting both targets do half damage in double battles
-        if ((gBattleTypeFlags & BATTLE_TYPE_DOUBLE) && gBattleMoves[move].target == MOVE_TARGET_BOTH && CountAliveMonsInBattle(BATTLE_ALIVE_DEF_SIDE) == 2)
-            damage /= 2;
+            damage = damage * gBattleMovePower;
+            damage *= (2 * attacker->level / 5 + 2);
 
-        // Moves always do at least 1 damage.
-        if (damage == 0)
-            damage = 1;
-    }
+            if (gCritMultiplier == 2)
+            {
+                // Critical hit, if defender has gained defense stat stages then ignore stat increase
+                if (defender->statStages[STAT_DEF] < DEFAULT_STAT_STAGE)
+                    APPLY_STAT_MOD(damageHelper, defender, defense, STAT_DEF)
+                else
+                    damageHelper = defense;
+            }
+            else
+                APPLY_STAT_MOD(damageHelper, defender, defense, STAT_DEF)
 
+            damage = damage / damageHelper;
+            damage /= 50;
+
+            // Burn cuts attack in half
+            if ((attacker->status1 & STATUS1_BURN) && attacker->ability != ABILITY_GUTS)
+                damage /= 2;
+
+            // Apply Reflect
+            if ((sideStatus & SIDE_STATUS_REFLECT) && gCritMultiplier == 1)
+            {
+                if ((gBattleTypeFlags & BATTLE_TYPE_DOUBLE) && CountAliveMonsInBattle(BATTLE_ALIVE_DEF_SIDE) == 2)
+                    damage = 2 * (damage / 3);
+                else
+                    damage /= 2;
+            }
+
+            // Moves hitting both targets do half damage in double battles
+            if ((gBattleTypeFlags & BATTLE_TYPE_DOUBLE) && gBattleMoves[move].target == MOVE_TARGET_BOTH && CountAliveMonsInBattle(BATTLE_ALIVE_DEF_SIDE) == 2)
+                damage /= 2;
+
+            // Moves always do at least 1 damage.
+            if (damage == 0)
+                damage = 1;
+        }
+    
     if (type == TYPE_MYSTERY)
         damage = 0; // is ??? type. does 0 damage.
 
-    if (IS_MOVE_SPECIAL(gCurrentMove))
-    {
-        if (gCritMultiplier == 2)
+    if (VarGet(VAR_GAMEMODE) == GAMEMODE_MODERN)
+        if (IS_MOVE_SPECIAL(gCurrentMove))
         {
-            // Critical hit, if attacker has lost sp. attack stat stages then ignore stat drop
-            if (attacker->statStages[STAT_SPATK] > DEFAULT_STAT_STAGE)
+            if (gCritMultiplier == 2)
+            {
+                // Critical hit, if attacker has lost sp. attack stat stages then ignore stat drop
+                if (attacker->statStages[STAT_SPATK] > DEFAULT_STAT_STAGE)
+                    APPLY_STAT_MOD(damage, attacker, spAttack, STAT_SPATK)
+                else
+                    damage = spAttack;
+            }
+            else
                 APPLY_STAT_MOD(damage, attacker, spAttack, STAT_SPATK)
+
+            damage = damage * gBattleMovePower;
+            damage *= (2 * attacker->level / 5 + 2);
+
+            if (gCritMultiplier == 2)
+            {
+                // Critical hit, if defender has gained sp. defense stat stages then ignore stat increase
+                if (defender->statStages[STAT_SPDEF] < DEFAULT_STAT_STAGE)
+                    APPLY_STAT_MOD(damageHelper, defender, spDefense, STAT_SPDEF)
+                else
+                    damageHelper = spDefense;
+            }
             else
-                damage = spAttack;
-        }
-        else
-            APPLY_STAT_MOD(damage, attacker, spAttack, STAT_SPATK)
-
-        damage = damage * gBattleMovePower;
-        damage *= (2 * attacker->level / 5 + 2);
-
-        if (gCritMultiplier == 2)
-        {
-            // Critical hit, if defender has gained sp. defense stat stages then ignore stat increase
-            if (defender->statStages[STAT_SPDEF] < DEFAULT_STAT_STAGE)
                 APPLY_STAT_MOD(damageHelper, defender, spDefense, STAT_SPDEF)
-            else
-                damageHelper = spDefense;
-        }
-        else
-            APPLY_STAT_MOD(damageHelper, defender, spDefense, STAT_SPDEF)
 
-        damage = (damage / damageHelper);
-        damage /= 50;
+            damage = (damage / damageHelper);
+            damage /= 50;
 
-        // Apply Lightscreen
-        if ((sideStatus & SIDE_STATUS_LIGHTSCREEN) && gCritMultiplier == 1)
-        {
-            if ((gBattleTypeFlags & BATTLE_TYPE_DOUBLE) && CountAliveMonsInBattle(BATTLE_ALIVE_DEF_SIDE) == 2)
-                damage = 2 * (damage / 3);
-            else
+            // Apply Lightscreen
+            if ((sideStatus & SIDE_STATUS_LIGHTSCREEN) && gCritMultiplier == 1)
+            {
+                if ((gBattleTypeFlags & BATTLE_TYPE_DOUBLE) && CountAliveMonsInBattle(BATTLE_ALIVE_DEF_SIDE) == 2)
+                    damage = 2 * (damage / 3);
+                else
+                    damage /= 2;
+            }
+
+            // Moves hitting both targets do half damage in double battles
+            if ((gBattleTypeFlags & BATTLE_TYPE_DOUBLE) && gBattleMoves[move].target == MOVE_TARGET_BOTH && CountAliveMonsInBattle(BATTLE_ALIVE_DEF_SIDE) == 2)
                 damage /= 2;
         }
 
-        // Moves hitting both targets do half damage in double battles
-        if ((gBattleTypeFlags & BATTLE_TYPE_DOUBLE) && gBattleMoves[move].target == MOVE_TARGET_BOTH && CountAliveMonsInBattle(BATTLE_ALIVE_DEF_SIDE) == 2)
-            damage /= 2;
-    }
+    if (VarGet(VAR_GAMEMODE) == GAMEMODE_CLASSIC)
+        if (IS_TYPE_SPECIAL(type))
+        {
+            if (gCritMultiplier == 2)
+            {
+                // Critical hit, if attacker has lost sp. attack stat stages then ignore stat drop
+                if (attacker->statStages[STAT_SPATK] > DEFAULT_STAT_STAGE)
+                    APPLY_STAT_MOD(damage, attacker, spAttack, STAT_SPATK)
+                else
+                    damage = spAttack;
+            }
+            else
+                APPLY_STAT_MOD(damage, attacker, spAttack, STAT_SPATK)
+
+            damage = damage * gBattleMovePower;
+            damage *= (2 * attacker->level / 5 + 2);
+
+            if (gCritMultiplier == 2)
+            {
+                // Critical hit, if defender has gained sp. defense stat stages then ignore stat increase
+                if (defender->statStages[STAT_SPDEF] < DEFAULT_STAT_STAGE)
+                    APPLY_STAT_MOD(damageHelper, defender, spDefense, STAT_SPDEF)
+                else
+                    damageHelper = spDefense;
+            }
+            else
+                APPLY_STAT_MOD(damageHelper, defender, spDefense, STAT_SPDEF)
+
+            damage = (damage / damageHelper);
+            damage /= 50;
+
+            // Apply Lightscreen
+            if ((sideStatus & SIDE_STATUS_LIGHTSCREEN) && gCritMultiplier == 1)
+            {
+                if ((gBattleTypeFlags & BATTLE_TYPE_DOUBLE) && CountAliveMonsInBattle(BATTLE_ALIVE_DEF_SIDE) == 2)
+                    damage = 2 * (damage / 3);
+                else
+                    damage /= 2;
+            }
+
+            // Moves hitting both targets do half damage in double battles
+            if ((gBattleTypeFlags & BATTLE_TYPE_DOUBLE) && gBattleMoves[move].target == MOVE_TARGET_BOTH && CountAliveMonsInBattle(BATTLE_ALIVE_DEF_SIDE) == 2)
+                damage /= 2;
+            // Are effects of weather negated with cloud nine or air lock
+            if (WEATHER_HAS_EFFECT2)
+            {
+                // Rain weakens Fire, boosts Water
+                if (gBattleWeather & B_WEATHER_RAIN_TEMPORARY)
+                {
+                    switch (type)
+                    {
+                    case TYPE_FIRE:
+                        damage /= 2;
+                        break;
+                    case TYPE_WATER:
+                        damage = (15 * damage) / 10;
+                        break;
+                    }
+                }
+
+                // Any weather except sun weakens solar beam
+                if ((gBattleWeather & (B_WEATHER_RAIN | B_WEATHER_SANDSTORM | B_WEATHER_HAIL)) && gCurrentMove == MOVE_SOLAR_BEAM)
+                    damage /= 2;
+
+                // Sun boosts Fire, weakens Water
+                if (gBattleWeather & B_WEATHER_SUN)
+                {
+                    switch (type)
+                    {
+                    case TYPE_FIRE:
+                        damage = (15 * damage) / 10;
+                        break;
+                    case TYPE_WATER:
+                        damage /= 2;
+                        break;
+                    }
+                }
+            }
+            // Flash fire triggered
+            if ((gBattleResources->flags->flags[battlerIdAtk] & RESOURCE_FLAG_FLASH_FIRE) && type == TYPE_FIRE)
+                damage = (15 * damage) / 10;
+
+            return damage + 2;
+        }
 
     // Are effects of weather negated with cloud nine or air lock
-    if (WEATHER_HAS_EFFECT2)
-    {
-        // Rain weakens Fire, boosts Water
-        if (gBattleWeather & B_WEATHER_RAIN_TEMPORARY)
+    if (VarGet(VAR_GAMEMODE) == GAMEMODE_MODERN)
+        if (WEATHER_HAS_EFFECT2)
         {
-            switch (type)
+            // Rain weakens Fire, boosts Water
+            if (gBattleWeather & B_WEATHER_RAIN_TEMPORARY)
             {
-            case TYPE_FIRE:
+                switch (type)
+                {
+                case TYPE_FIRE:
+                    damage /= 2;
+                    break;
+                case TYPE_WATER:
+                    damage = (15 * damage) / 10;
+                    break;
+                }
+            }
+
+            // Any weather except sun weakens solar beam
+            if ((gBattleWeather & (B_WEATHER_RAIN | B_WEATHER_SANDSTORM | B_WEATHER_HAIL)) && gCurrentMove == MOVE_SOLAR_BEAM)
                 damage /= 2;
-                break;
-            case TYPE_WATER:
-                damage = (15 * damage) / 10;
-                break;
+
+            // Sun boosts Fire, weakens Water
+            if (gBattleWeather & B_WEATHER_SUN)
+            {
+                switch (type)
+                {
+                case TYPE_FIRE:
+                    damage = (15 * damage) / 10;
+                    break;
+                case TYPE_WATER:
+                    damage /= 2;
+                    break;
+                }
             }
         }
+        if ((gBattleResources->flags->flags[battlerIdAtk] & RESOURCE_FLAG_FLASH_FIRE) && type == TYPE_FIRE)
+            damage = (15 * damage) / 10;
 
-        // Any weather except sun weakens solar beam
-        if ((gBattleWeather & (B_WEATHER_RAIN | B_WEATHER_SANDSTORM | B_WEATHER_HAIL)) && gCurrentMove == MOVE_SOLAR_BEAM)
-            damage /= 2;
-
-        // Sun boosts Fire, weakens Water
-        if (gBattleWeather & B_WEATHER_SUN)
-        {
-            switch (type)
-            {
-            case TYPE_FIRE:
-                damage = (15 * damage) / 10;
-                break;
-            case TYPE_WATER:
-                damage /= 2;
-                break;
-            }
-        }
-    }
-
-    // Flash fire triggered
-    if ((gBattleResources->flags->flags[battlerIdAtk] & RESOURCE_FLAG_FLASH_FIRE) && type == TYPE_FIRE)
-        damage = (15 * damage) / 10;
-
-    return damage + 2;
+        return damage + 2;
 }
 
 u8 CountAliveMonsInBattle(u8 caseId)
@@ -6623,12 +6775,12 @@ void SetWildMonHeldItem(void)
         u16 rnd = Random() % 100;
         u16 species = GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, 0);
         u16 chanceNoItem = 45;
-        u16 chanceNotRare = 95;
+        u16 chanceNotRare = 70;
         if (!GetMonData(&gPlayerParty[0], MON_DATA_SANITY_IS_EGG, 0)
             && GetMonAbility(&gPlayerParty[0]) == ABILITY_COMPOUND_EYES)
         {
             chanceNoItem = 20;
-            chanceNotRare = 80;
+            chanceNotRare = 60;
         }
         if (gMapHeader.mapLayoutId == LAYOUT_ALTERING_CAVE)
         {

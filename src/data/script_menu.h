@@ -778,6 +778,12 @@ static const struct MenuAction MultichoiceList_TagChallenge[] =
     {gText_Hard},
 };
 
+static const struct MenuAction MultichoiceList_TagGamemode[] =
+{
+    {gText_Classic},
+    {gText_Modern},
+};
+
 static const struct MenuAction MultichoiceList_Exit[] =
 {
     {gText_Exit},
@@ -906,6 +912,7 @@ static const struct MultichoiceListStruct sMultichoiceLists[] =
     [MULTI_FALLARBOR_TENT_RULES]       = MULTICHOICE(MultichoiceList_FallarborTentRules),
     [MULTI_TAG_MATCH_TYPE]             = MULTICHOICE(MultichoiceList_TagMatchType),
     [MULTI_TAG_DIFFICULTY]             = MULTICHOICE(MultichoiceList_TagChallenge),
+    [MULTI_TAG_GAMEMODE  ]             = MULTICHOICE(MultichoiceList_TagGamemode),
 };
 
 const u8 *const gStdStrings[] =

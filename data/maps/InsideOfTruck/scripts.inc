@@ -83,18 +83,20 @@ InsideOfTruck_EventScript_ChallengeSelect:
 	case 0, InsideOfTruck_EventScript_SelectedEasy
 	case 1, InsideOfTruck_EventScript_SelectedNormal
 	case 2, InsideOfTruck_EventScript_SelectedHard
-	case MULTI_B_PRESSED, InsideOfTruck_EventScript_SelectedCancel
+	case MULTI_B_PRESSED, InsideOfTruck_EventScript_Challenge
 	end
 
 InsideOfTruck_EventScript_SelectedNormal:
 	msgbox InsideOfTruck_Text_SelectedNormal, MSGBOX_DEFAULT
 	setvar VAR_DIFFICULTY, 0
+	goto InsideOfTruck_EventScript_Gamemode
 	closemessage
 	end
 
 InsideOfTruck_EventScript_SelectedHard:
 	msgbox InsideOfTruck_Text_SelectedHard, MSGBOX_DEFAULT
 	setvar VAR_DIFFICULTY, 1
+	goto InsideOfTruck_EventScript_Gamemode
 	closemessage
 	end
 
@@ -102,29 +104,81 @@ InsideOfTruck_EventScript_SelectedEasy:
 	msgbox InsideOfTruck_Text_SelectedEasy, MSGBOX_DEFAULT
 	setvar VAR_DIFFICULTY, 2
 	closemessage
-	end
-
-InsideOfTruck_EventScript_SelectedCancel:
-	msgbox InsideOfTruck_Text_SelectedCancel, MSGBOX_DEFAULT
-	closemessage
+	goto InsideOfTruck_EventScript_Gamemode
 	end
 
 InsideOfTruck_Text_Challenge:
 	.string "What difficulty would\n"
-	.string "you like to play at?$"
+	.string "you like to play at? This\p"
+	.string "setting affects the level\n"
+	.string "scaling of POKéMON trainers.\p"
+	.string "NORMAL is just the default\n"
+	.string "experience, HARD scales up\p"
+	.string "to 5 levels upwards, and\n"
+	.string "EASY up to 5 levels\p"
+	.string "downwards.$"
 
 InsideOfTruck_Text_SelectedEasy:
-	.string "Easy difficulty\n"
+	.string "EASY difficulty\n"
 	.string "was chosen.$"
 
 InsideOfTruck_Text_SelectedNormal:
-	.string "Normal difficulty\n"
+	.string "NORMAL difficulty\n"
 	.string "was chosen.$"
 
 InsideOfTruck_Text_SelectedHard:
-	.string "Hard difficulty\n"
+	.string "HARD difficulty\n"
 	.string "was chosen.$"
 
-InsideOfTruck_Text_SelectedCancel:
-	.string "Difficulty is\n"
-	.string "unchanged.$"
+InsideOfTruck_EventScript_Gamemode::
+	message InsideOfTruck_Text_Gamemode
+	waitmessage
+	switch VAR_GAMEMODE
+	case 0, InsideOfTruck_EventScript_GamemodeModern
+	case 1, InsideOfTruck_EventScript_GamemodeClassic
+
+InsideOfTruck_EventScript_GamemodeClassic:
+	multichoicedefault 21, 6, MULTI_TAG_GAMEMODE, 1, FALSE
+	goto InsideOfTruck_EventScript_GamemodeSelect
+
+InsideOfTruck_EventScript_GamemodeModern:
+	multichoicedefault 21, 6, MULTI_TAG_GAMEMODE, 0, FALSE
+	goto InsideOfTruck_EventScript_GamemodeSelect
+
+InsideOfTruck_EventScript_GamemodeSelect:
+	switch VAR_RESULT
+	case 0, InsideOfTruck_EventScript_SelectedClassic
+	case 1, InsideOfTruck_EventScript_SelectedModern
+	case MULTI_B_PRESSED, InsideOfTruck_EventScript_Gamemode
+	end
+
+InsideOfTruck_EventScript_SelectedClassic:
+	msgbox InsideOfTruck_Text_SelectedClassic, MSGBOX_DEFAULT
+	setvar VAR_GAMEMODE, 0
+	closemessage
+	end
+
+InsideOfTruck_EventScript_SelectedModern:
+	msgbox InsideOfTruck_Text_SelectedModern, MSGBOX_DEFAULT
+	setvar VAR_GAMEMODE, 1
+	closemessage
+	end
+
+InsideOfTruck_Text_Gamemode:
+	.string "What GAMEMODE would\n"
+	.string "you like to use?\p"
+	.string "This setting affects the\n"
+	.string "PHYSICAL and SPECIAL move\p"
+	.string "split that happened in\n"
+	.string "Generation IV. CLASSIC is\p"
+	.string "just the default experience,\n"
+	.string "while MODERN activates the\p"
+	.string "split from Generation IV.$"
+
+InsideOfTruck_Text_SelectedModern:
+	.string "MODERN GAMEMODE\n"
+	.string "was chosen.$"
+
+InsideOfTruck_Text_SelectedClassic:
+	.string "CLASSIC GAMEMODE\n"
+	.string "was chosen.$"

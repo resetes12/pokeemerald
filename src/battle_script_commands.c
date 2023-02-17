@@ -1164,8 +1164,12 @@ static void Cmd_accuracycheck(void)
             calc = (calc * 130) / 100; // 1.3 compound eyes boost
         if (WEATHER_HAS_EFFECT && gBattleMons[gBattlerTarget].ability == ABILITY_SAND_VEIL && gBattleWeather & B_WEATHER_SANDSTORM)
             calc = (calc * 80) / 100; // 1.2 sand veil loss
-        if (gBattleMons[gBattlerAttacker].ability == ABILITY_HUSTLE && IS_MOVE_PHYSICAL(move))
-            calc = (calc * 80) / 100; // 1.2 hustle loss
+        if (VarGet(VAR_GAMEMODE) == GAMEMODE_CLASSIC)
+            if (gBattleMons[gBattlerAttacker].ability == ABILITY_HUSTLE && IS_TYPE_PHYSICAL(type))
+                calc = (calc * 80) / 100; // 1.2 hustle loss
+        if (VarGet(VAR_GAMEMODE) == GAMEMODE_MODERN)
+            if (gBattleMons[gBattlerAttacker].ability == ABILITY_HUSTLE && IS_MOVE_PHYSICAL(move))
+                calc = (calc * 80) / 100; // 1.2 hustle loss
 
         if (gBattleMons[gBattlerTarget].item == ITEM_ENIGMA_BERRY)
         {
@@ -1934,37 +1938,68 @@ static void Cmd_datahpupdate(void)
 
                 if (!gSpecialStatuses[gActiveBattler].dmg && !(gHitMarker & HITMARKER_PASSIVE_DAMAGE))
                     gSpecialStatuses[gActiveBattler].dmg = gHpDealt;
-
-                if (IS_MOVE_PHYSICAL(gCurrentMove) && !(gHitMarker & HITMARKER_PASSIVE_DAMAGE) && gCurrentMove != MOVE_PAIN_SPLIT)
-                {
-                    gProtectStructs[gActiveBattler].physicalDmg = gHpDealt;
-                    gSpecialStatuses[gActiveBattler].physicalDmg = gHpDealt;
-                    if (gBattlescriptCurrInstr[1] == BS_TARGET)
+                if (VarGet(VAR_GAMEMODE) == GAMEMODE_MODERN)
+                    if (IS_MOVE_PHYSICAL(gCurrentMove) && !(gHitMarker & HITMARKER_PASSIVE_DAMAGE) && gCurrentMove != MOVE_PAIN_SPLIT)
                     {
-                        gProtectStructs[gActiveBattler].physicalBattlerId = gBattlerAttacker;
-                        gSpecialStatuses[gActiveBattler].physicalBattlerId = gBattlerAttacker;
+                        gProtectStructs[gActiveBattler].physicalDmg = gHpDealt;
+                        gSpecialStatuses[gActiveBattler].physicalDmg = gHpDealt;
+                        if (gBattlescriptCurrInstr[1] == BS_TARGET)
+                        {
+                            gProtectStructs[gActiveBattler].physicalBattlerId = gBattlerAttacker;
+                            gSpecialStatuses[gActiveBattler].physicalBattlerId = gBattlerAttacker;
+                        }
+                        else
+                        {
+                            gProtectStructs[gActiveBattler].physicalBattlerId = gBattlerTarget;
+                            gSpecialStatuses[gActiveBattler].physicalBattlerId = gBattlerTarget;
+                        }
                     }
-                    else
+                    else if (IS_MOVE_SPECIAL(gCurrentMove) && !(gHitMarker & HITMARKER_PASSIVE_DAMAGE))
                     {
-                        gProtectStructs[gActiveBattler].physicalBattlerId = gBattlerTarget;
-                        gSpecialStatuses[gActiveBattler].physicalBattlerId = gBattlerTarget;
+                        gProtectStructs[gActiveBattler].specialDmg = gHpDealt;
+                        gSpecialStatuses[gActiveBattler].specialDmg = gHpDealt;
+                        if (gBattlescriptCurrInstr[1] == BS_TARGET)
+                        {
+                            gProtectStructs[gActiveBattler].specialBattlerId = gBattlerAttacker;
+                            gSpecialStatuses[gActiveBattler].specialBattlerId = gBattlerAttacker;
+                        }
+                        else
+                        {
+                            gProtectStructs[gActiveBattler].specialBattlerId = gBattlerTarget;
+                            gSpecialStatuses[gActiveBattler].specialBattlerId = gBattlerTarget;
+                        }
                     }
-                }
-                else if (IS_MOVE_SPECIAL(gCurrentMove) && !(gHitMarker & HITMARKER_PASSIVE_DAMAGE))
-                {
-                    gProtectStructs[gActiveBattler].specialDmg = gHpDealt;
-                    gSpecialStatuses[gActiveBattler].specialDmg = gHpDealt;
-                    if (gBattlescriptCurrInstr[1] == BS_TARGET)
+                if (VarGet(VAR_GAMEMODE) == GAMEMODE_CLASSIC)
+                    if (IS_TYPE_PHYSICAL(moveType) && !(gHitMarker & HITMARKER_PASSIVE_DAMAGE) && gCurrentMove != MOVE_PAIN_SPLIT)
                     {
-                        gProtectStructs[gActiveBattler].specialBattlerId = gBattlerAttacker;
-                        gSpecialStatuses[gActiveBattler].specialBattlerId = gBattlerAttacker;
+                        gProtectStructs[gActiveBattler].physicalDmg = gHpDealt;
+                        gSpecialStatuses[gActiveBattler].physicalDmg = gHpDealt;
+                        if (gBattlescriptCurrInstr[1] == BS_TARGET)
+                        {
+                            gProtectStructs[gActiveBattler].physicalBattlerId = gBattlerAttacker;
+                            gSpecialStatuses[gActiveBattler].physicalBattlerId = gBattlerAttacker;
+                        }
+                        else
+                        {
+                            gProtectStructs[gActiveBattler].physicalBattlerId = gBattlerTarget;
+                            gSpecialStatuses[gActiveBattler].physicalBattlerId = gBattlerTarget;
+                        }
                     }
-                    else
+                    else if (!IS_TYPE_PHYSICAL(moveType) && !(gHitMarker & HITMARKER_PASSIVE_DAMAGE))
                     {
-                        gProtectStructs[gActiveBattler].specialBattlerId = gBattlerTarget;
-                        gSpecialStatuses[gActiveBattler].specialBattlerId = gBattlerTarget;
+                        gProtectStructs[gActiveBattler].specialDmg = gHpDealt;
+                        gSpecialStatuses[gActiveBattler].specialDmg = gHpDealt;
+                        if (gBattlescriptCurrInstr[1] == BS_TARGET)
+                        {
+                            gProtectStructs[gActiveBattler].specialBattlerId = gBattlerAttacker;
+                            gSpecialStatuses[gActiveBattler].specialBattlerId = gBattlerAttacker;
+                        }
+                        else
+                        {
+                            gProtectStructs[gActiveBattler].specialBattlerId = gBattlerTarget;
+                            gSpecialStatuses[gActiveBattler].specialBattlerId = gBattlerTarget;
+                        }
                     }
-                }
             }
             gHitMarker &= ~HITMARKER_PASSIVE_DAMAGE;
             BtlController_EmitSetMonData(BUFFER_A, REQUEST_HP_BATTLE, 0, sizeof(gBattleMons[gActiveBattler].hp), &gBattleMons[gActiveBattler].hp);

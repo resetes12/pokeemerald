@@ -1056,17 +1056,74 @@ LittlerootTown_ProfessorBirchsLab_Text_Challenge:
 	.string "you like to play at?$"
 
 LittlerootTown_ProfessorBirchsLab_Text_SelectedEasy:
-	.string "Easy difficulty\n"
+	.string "EASY difficulty\n"
 	.string "was chosen.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_SelectedNormal:
-	.string "Normal difficulty\n"
+	.string "NORMAL difficulty\n"
 	.string "was chosen.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_SelectedHard:
-	.string "Hard difficulty\n"
+	.string "HARD difficulty\n"
 	.string "was chosen.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_SelectedCancel:
-	.string "Difficulty is\n"
-	.string "unchanged.$"
+	.string "DIFFICULTY not\n"
+	.string "changed.$"
+
+@Gamemode
+
+LittlerootTown_ProfessorBirchsLab_EventScript_Gamemode::
+	message LittlerootTown_ProfessorBirchsLab_Text_Gamemode
+	waitmessage
+	switch VAR_GAMEMODE
+	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_GamemodeModern
+	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_GamemodeClassic
+
+LittlerootTown_ProfessorBirchsLab_EventScript_GamemodeClassic:
+	multichoicedefault 21, 6, MULTI_TAG_GAMEMODE, 1, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_GamemodeSelect
+
+LittlerootTown_ProfessorBirchsLab_EventScript_GamemodeModern:
+	multichoicedefault 21, 6, MULTI_TAG_GAMEMODE, 0, FALSE
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_GamemodeSelect
+
+LittlerootTown_ProfessorBirchsLab_EventScript_GamemodeSelect:
+	switch VAR_RESULT
+	case 0, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedClassic
+	case 1, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedModern
+	case MULTI_B_PRESSED, LittlerootTown_ProfessorBirchsLab_EventScript_SelectedCancelGamemode
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SelectedClassic:
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_SelectedClassic, MSGBOX_DEFAULT
+	setvar VAR_GAMEMODE, 0
+	closemessage
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SelectedModern:
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_SelectedModern, MSGBOX_DEFAULT
+	setvar VAR_GAMEMODE, 1
+	closemessage
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_SelectedCancelGamemode:
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_SelectedCancelGamemode, MSGBOX_DEFAULT
+	closemessage
+	end
+
+LittlerootTown_ProfessorBirchsLab_Text_Gamemode:
+	.string "What GAMEMODE would\n"
+	.string "you like to use?$"
+
+LittlerootTown_ProfessorBirchsLab_Text_SelectedModern:
+	.string "MODERN GAMEMODE\n"
+	.string "was chosen.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_SelectedClassic:
+	.string "CLASSIC GAMEMODE\n"
+	.string "was chosen.$"
+
+LittlerootTown_ProfessorBirchsLab_Text_SelectedCancelGamemode:
+	.string "GAMEMODE not\n"
+	.string "changed.$"
