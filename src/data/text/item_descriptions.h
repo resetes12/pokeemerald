@@ -974,9 +974,9 @@ static const u8 sYellowScarfDesc[] = _(
 
 // Key items
 static const u8 sMachBikeDesc[] = _(
-    "A folding bicycle\n"
-    "that doubles your\n"
-    "speed or better.");
+    "A fast, folding bike\n"
+    "capable of jumps\n"
+    "and wheelies.");
 
 static const u8 sCoinCaseDesc[] = _(
     "A case that holds\n"

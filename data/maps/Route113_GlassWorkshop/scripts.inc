@@ -304,7 +304,9 @@ Route113_GlassWorkshop_Text_ExplainSootSack:
 	.string "through piles of ash, huff-puff.\p"
 	.string "And it will fill up with the volcanic ash,\n"
 	.string "huff-puff.\p"
-	.string "Once you think you've collected a good\n"
+	.string "You can check how much ash it\n"
+	.string "has from your BAG.\p"
+	.string "Once you you've collected a good\n"
 	.string "amount, come see me, huff-puff.$"
 
 Route113_GlassWorkshop_Text_LetsSeeCollectedAshes:

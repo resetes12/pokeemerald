@@ -154,3 +154,21 @@ FortreeCity_Text_GymSign:
 	.string "“The bird user taking flight into\n"
 	.string "the world.”$"
 
+FortreeCity_TChansey2::
+	trainerbattle TRAINER_BATTLE_CONTINUE_SCRIPT, TRAINER_CHANSEY2, 0, FortreeCity_TChansey2Intro, FortreeCity_TChansey2Defeat, FortreeCity_TChanseyBattleAgain
+	end
+
+FortreeCity_TChanseyBattleAgain::
+	faceplayer
+	msgbox FortreeCity_TChansey2Repeat, MSGBOX_AUTOCLOSE
+	clearflag 0x858
+	end
+
+FortreeCity_TChansey2Intro:
+	.string "My CHANSEY is ready for a battle!$"
+
+FortreeCity_TChansey2Defeat:
+	.string "Oh no... CHANSEY, use SOFT-BOILED!$"
+
+FortreeCity_TChansey2Repeat:
+	.string "We can battle again if you want!$"

@@ -1,3 +1,4 @@
+.set LOCALID_WOMAN, 8
 .set LOCALID_GRUNT_1, 10
 .set LOCALID_GRUNT_2, 11
 .set LOCALID_GRUNT_3, 12
@@ -56,12 +57,91 @@ MossdeepCity_EventScript_Girl::
 	end
 
 MossdeepCity_EventScript_Woman::
+	goto_if_set FLAG_JIRACHI, MossdeepCity_EventScript_Woman2
 	msgbox MossdeepCity_Text_SpecialSpaceCenterRock, MSGBOX_NPC
+	end
+
+MossdeepCity_EventScript_Woman2::
+	msgbox MossdeepCity_Text_SpecialSpaceCenterRock2, MSGBOX_NPC
 	end
 
 MossdeepCity_EventScript_WhiteRock::
 	msgbox MossdeepCity_Text_ItsAWhiteRock, MSGBOX_SIGN
+	goto_if_set FLAG_JIRACHI, MossdeepCity_EventScript_WhiteRockEnd
+	goto_if_set FLAG_IS_CHAMPION, MossdeepCity_EventScript_Jirachi
 	end
+
+MossdeepCity_EventScript_WhiteRockEnd::
+	end
+
+MossdeepCity_EventScript_Jirachi::
+	applymovement OBJ_EVENT_ID_PLAYER, MossdeepCity_EventScript_JirachiMoves
+	applymovement LOCALID_WOMAN, MossdeepCity_EventScript_JirachiMoves2
+	waitmovement 0
+	msgbox MossdeepCity_Text_ItsAWhiteRock2, MSGBOX_DEFAULT
+	waitmessage
+	setwildbattle SPECIES_JIRACHI, 70
+	waitse
+	playmoncry SPECIES_JIRACHI, CRY_MODE_ENCOUNTER
+	delay 40
+	waitmoncry
+	msgbox MossdeepCity_Text_ItsAWhiteRock3, MSGBOX_DEFAULT
+	closemessage
+	setflag FLAG_SYS_CTRL_OBJ_DELETE
+	setflag FLAG_SYS_SET_BATTLE_BGM
+	setvar VAR_TEMP_F, MUS_VS_MEW
+	dowildbattle
+	specialvar VAR_RESULT, GetBattleOutcome
+	goto_if_eq VAR_RESULT, B_OUTCOME_WON, MossdeepCity_EventScript_JirachiWon
+	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, MossdeepCity_EventScript_JirachiRan
+	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, MossdeepCity_EventScript_JirachiRan
+	release
+	end
+
+MossdeepCity_EventScript_JirachiWon::
+	setflag FLAG_JIRACHI
+	goto Common_EventScript_RemoveStaticPokemon
+	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	end
+
+MossdeepCity_EventScript_JirachiRan::
+	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	end
+
+MossdeepCity_EventScript_JirachiMoves:
+	delay_16
+	delay_16
+	delay_16
+	jump_in_place_up
+	delay_16
+	emote_exclamation_mark
+	delay_16
+	delay_16
+	delay_16
+	step_end
+
+MossdeepCity_EventScript_JirachiMoves2:
+	delay_16
+	delay_16
+	delay_16
+	jump_in_place_right
+	delay_16
+	emote_exclamation_mark
+	delay_16
+	delay_16
+	delay_16
+	step_end
+
+MossdeepCity_Text_ItsAWhiteRock2:
+	.string "Something...\p"
+	.string "...\p"
+	.string "Something is approaching\n"
+	.string "rapidly...\p"
+	.string "...$"
+
+MossdeepCity_Text_ItsAWhiteRock3:
+	.string "Something jumped you from\n"
+	.string "behind the white rock!$"
 
 MossdeepCity_EventScript_GymSign::
 	msgbox MossdeepCity_Text_GymSign, MSGBOX_SIGN
@@ -394,8 +474,12 @@ MossdeepCity_Text_SpecialSpaceCenterRock:
 	.string "I use a wish tag to make it happen.\n"
 	.string "That's what I do.$"
 
+MossdeepCity_Text_SpecialSpaceCenterRock2:
+	.string "What was that? That wasn't my wish!$"
+
 MossdeepCity_Text_ItsAWhiteRock:
-	.string "It's a white rock.$"
+	.string "It's a white rock.\p"
+	.string "It emanates a mysterious energy...$"
 
 MossdeepCity_Text_GymSign:
 	.string "MOSSDEEP CITY POKéMON GYM\n"
@@ -433,3 +517,21 @@ MossdeepCity_Text_SootopolisNewGymLeader:
 	.string "People tell me the new LEADER once\n"
 	.string "mentored WALLACE.$"
 
+MossdeepCity_Chansey3::
+	trainerbattle TRAINER_BATTLE_CONTINUE_SCRIPT, TRAINER_CHANSEY3, 0, MossdeepCity_Chansey3Intro, MossdeepCity_Chansey3Defeat, MossdeepCity_ChanseyBattleAgain
+	end
+
+MossdeepCity_ChanseyBattleAgain::
+	faceplayer
+	msgbox MossdeepCity_Chansey3Repeat, MSGBOX_AUTOCLOSE
+	clearflag 0x859
+	end
+
+MossdeepCity_Chansey3Intro:
+	.string "My CHANSEY is ready for a battle!$"
+
+MossdeepCity_Chansey3Defeat:
+	.string "Oh no... CHANSEY, use SOFT-BOILED!$"
+
+MossdeepCity_Chansey3Repeat:
+	.string "We can battle again if you want!$"

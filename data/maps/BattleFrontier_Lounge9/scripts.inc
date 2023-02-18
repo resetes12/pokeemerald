@@ -1,6 +1,25 @@
 BattleFrontier_Lounge9_MapScripts::
 	.byte 0
 
+BattleFrontier_Lounge9_Heal::
+	msgbox BattleFrontier_Lounge9_Heal_TEXT, MSGBOX_NPC
+	waitmessage
+	fadescreen 0x1
+	playfanfare MUS_HEAL
+	waitfanfare
+	special HealPlayerParty
+	fadescreen 0x0
+	msgbox BattleFrontier_Lounge9_Heal_TEXT2, MSGBOX_NPC
+	waitmessage
+	release
+	end
+
+BattleFrontier_Lounge9_Heal_TEXT:
+	.string "Hi! Welcome to the BATTLE FRONTIER\n"
+	.string "GYM! I will heal your POKéMON.$"
+
+BattleFrontier_Lounge9_Heal_TEXT2:
+	.string "We hope to see you again!$"
 
 BattleFrontier_Lounge9_EV_No:
 	msgbox BattleFrontier_Lounge9_EV_No_TEXT, MSGBOX_DEFAULT
@@ -319,8 +338,8 @@ BattleFrontier_Lounge9_IV_TextFirstTime:
 	.string "Hey! It's you! Nice to\n"
 	.string "see you around here!\p"
 	.string "Wait... You don't know me?\p"
-	.string "...\p"
-	.string "...\p"
+	.string ". . .\p"
+	.string ". . .\p"
 	.string "Oh... Of course! I saw you on\n"
 	.string "the TV a short while ago!\p"
 	.string "You are {PLAYER} and you recently\n"
@@ -363,25 +382,27 @@ BattleFrontier_Lounge9_IV_Finish:
 
 BattleFrontier_Lounge9_EV_SetZeroText:
 	.string "Hello there, trainer!\p"
+	.string "I'm known as EV Man, and I'm\n"
+	.string "the owner of this gym.\p"
 	.string "If you want to reset your POKéMON\n"
 	.string "EVs to zero, just talk to me.\p"
-	.string "So, do you want to reset any \n"
-	.string "POKéMON Effort Value?$"
+	.string "So, do you want to reset any\n"
+	.string "POKéMON EFFORT VALUE?$"
 
 BattleFrontier_Lounge9_EV_SetZeroText2:
 	.string "Alright, which POKéMON EVs\n"
 	.string "should I reset to zero?$"
 
 BattleFrontier_Lounge9_EV_SetZeroText3:
-	.string "Phew! It was hard, but I\n"
-	.string "managed it! Its EVs are now zero!$"
+	.string "Phew! It was hard, but I managed\n"
+	.string "it! Its EVs are now zero!$"
 
 BattleFrontier_Lounge9_EV_SetZeroTextEgg:
 	.string "Sorry, that won't work.$"
 
 BattleFrontier_Lounge9_EV_SetZeroTextNo:
-	.string "Alright, come back if you\n"
-	.string "need to!$"
+	.string "Alright, come back if\n"
+	.string "you need to!$"
 
 BattleFrontier_Lounge9_EV_SetZeroMoneyText:
 	.string "This process is quite difficult.\n"
@@ -393,79 +414,94 @@ BattleFrontier_Lounge9_EV_SetZeroTextNoMoney:
 	.string "Come back when you have.$"
 
 BattleFrontier_Lounge9_EV_SetZeroTextSure:
-	.string "Are you sure you want to\n"
-	.string "reset this POKéMON EV values?\p"
+	.string "Are you sure you want to reset\n"
+	.string "this POKéMON EV values?\p"
 	.string "This process can't be undone.$"
 
 BattleFrontier_Lounge9_EV_Column_Text:
-	.string "Welcome to the BATTLE\n"
-	.string "FRONTIER GYM!\p"
+	.string "Welcome to the BATTLE FRONTIER GYM!\p"
 	.string "Here you can train your POKéMON\n"
-	.string "to improve their skills.\p"
+	.string "to improve their STATS.\p"
 	.string "How does this work?\p"
-	.string "Win one battle and\n"
-	.string "obtain Effort Values\p"
+	.string "Win one battle and obtain EFFORT VALUES\n"
 	.string "for the selected stat of your POKéMON.\p"
-	.string "Equip one of the items\n"
-	.string "sold in this gym to your POKéMON\p"
-	.string "and get +8 extra EV!$"
-
-BattleFrontier_Lounge9_EV_Shop_Text:
-	.string "Welcome to the DEWFORD Gym!\n"
-	.string "Ready to train your POKéMON party?\p"
-	.string "Or maybe you want to buy\n"
-	.string "some equipment?$"
-
-BattleFrontier_Lounge9_EV_Shop_Text2:
-	.string "Keep the training up, buddy!$"
+	.string "TRAINER TIP 1:\p"
+	.string "Reset EVs to zero by talking\n"
+	.string "to the EV Man.\p"
+	.string "TRAINER TIP 2:\p"
+	.string "Equip a MACHO BRACE to multiply\n"
+	.string "by 10 the EVs gained.\p"
+	.string "TRAINER TIP 3:\p"
+	.string "A new type of training is available\n"
+	.string "at the right corner of the gym.$"
 
 BattleFrontier_Lounge9_EV_HP_TEXT:
-	.string "Welcome! I can train your POKéMON\n"
-	.string "in Health Points.\p"
+	.string "Hi ya buddy! I can train your\n"
+	.string "POKéMON in HEALTH POINTS.\p"
 	.string "Are you ready?$"
 
 BattleFrontier_Lounge9_EV_HP_TEXT2:
-	.string "Go Lickitung!$"
+	.string "Go LICKITUNG!$"
 
 BattleFrontier_Lounge9_EV_ATK_TEXT:
-	.string "Welcome! I can train your POKéMON\n"
-	.string "in Attack.\p"
+	.string "OSHA! I can train your POKéMON\n"
+	.string "in ATTACK.\p"
 	.string "Are you ready?$"
 
 BattleFrontier_Lounge9_EV_ATK_TEXT2:
-	.string "Go Hitmonlee!$"
+	.string "Go HITMONLEE!$"
 
 BattleFrontier_Lounge9_EV_SATK_TEXT:
-	.string "Welcome! I can train your POKéMON\n"
-	.string "in Special Attack.\p"
+	.string "Bonjour! I can train your POKéMON\n"
+	.string "in SPECIAL ATTACK.\p"
 	.string "Are you ready?$"
 
 BattleFrontier_Lounge9_EV_SATK_TEXT2:
-	.string "Go Gengar!$"
+	.string "Go GENGAR!$"
 	
 BattleFrontier_Lounge9_EV_DEF_TEXT:
-	.string "Welcome! I can train your POKéMON\n"
-	.string "in Defense.\p"
+	.string "Sup' kid! I can train your\n"
+	.string "POKéMON in DEFENSE.\p"
 	.string "Are you ready?$"
 
 BattleFrontier_Lounge9_EV_DEF_TEXT2:
-	.string "Go Onix!$"
+	.string "Go STEELIX!$"
 
 BattleFrontier_Lounge9_EV_SDEF_TEXT:
-	.string "Welcome! I can train your POKéMON\n"
-	.string "in Special Defense.\p"
+	.string "Bonjour mon trainer! I can train your\n"
+	.string "POKéMON in SPECIAL DEFENSE.\p"
 	.string "Are you ready?$"
 
 BattleFrontier_Lounge9_EV_SDEF_TEXT2:
-	.string "Go Hitmonchan!$"
+	.string "Go HITMONCHAN!$"
 
 BattleFrontier_Lounge9_EV_SPD_TEXT:
-	.string "Welcome! I can train your POKéMON\n"
-	.string "in Speed.\p"
+	.string ". . .\l"
+	.string "I can train your POKéMON\n"
+	.string "in SPEED.\p"
 	.string "Are you ready?$"
 
 BattleFrontier_Lounge9_EV_SPD_TEXT2:
-	.string "Go Furret!$"
+	.string "Go FURRET!$"
 
 BattleFrontier_Lounge9_EV_No_TEXT:
 	.string "No? Okay.$"
+
+BattleFrontier_Lounge9_Chansey5::
+	trainerbattle TRAINER_BATTLE_CONTINUE_SCRIPT, TRAINER_CHANSEY5, 0, BattleFrontier_Lounge9_Chansey5Intro, BattleFrontier_Lounge9_Chansey5Defeat, BattleFrontier_Lounge9_ChanseyBattleAgain
+	end
+
+BattleFrontier_Lounge9_ChanseyBattleAgain::
+	faceplayer
+	msgbox BattleFrontier_Lounge9_Chansey5Repeat, MSGBOX_AUTOCLOSE
+	clearflag 0x85B
+	end
+
+BattleFrontier_Lounge9_Chansey5Intro:
+	.string "My CHANSEY is ready for a battle!$"
+
+BattleFrontier_Lounge9_Chansey5Defeat:
+	.string "Oh no... CHANSEY, use SOFT-BOILED!$"
+
+BattleFrontier_Lounge9_Chansey5Repeat:
+	.string "We can battle again if you want!$"

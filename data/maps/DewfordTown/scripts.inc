@@ -721,7 +721,15 @@ DewfordTown_Text_ThrowInFishingAdvice:
 	.string "Sometimes you can snag something\n"
 	.string "immediately, but with bigger catches,\l"
 	.string "you need to time the pulls on your ROD\l"
-	.string "to haul them in.$"
+	.string "to haul them in.\p"
+	.string "Also, if you chain your fishing\n"
+	.string "strikes you may encounter\l"
+	.string "different colored POKéMON.\p"
+	.string "Fishing strikes means defeating\n"
+	.string "the wild POKéMON and starting a\l"
+	.string "a new fishing encounter.\p"
+	.string "If you run away or whiteout, you\n"
+	.string "will lose your fishing strike!$"
 
 DewfordTown_Text_ThatsTooBadThen:
 	.string "Oh, is that so?\n"

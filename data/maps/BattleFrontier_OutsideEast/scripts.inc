@@ -437,3 +437,68 @@ BattleFrontier_OutsideEast_Text_StickyMonWithLongTail:
 	.string "with a long tail up ahead!\p"
 	.string "It was hiding under a boulder, and\n"
 	.string "it kept staring at me!$"
+
+BattleFrontier_MoneyFarm01::
+	lock
+	setflag FLAG_SYS_NO_CATCHING
+	setflag FLAG_DAILY_MONEYFARM
+	setflag FLAG_SYS_SET_BATTLE_BGM
+	setvar VAR_TEMP_F, MUS_RG_VS_WILD
+	playmoncry SPECIES_MEOWTH, 2
+	msgbox BattleFrontier_MoneyText1, MSGBOX_DEFAULT
+	waitmoncry
+	delay 20
+	setvar VAR_LAST_TALKED, 27
+	setwildbattle SPECIES_MEOWTH, 32, ITEM_NONE
+	dowildbattle
+	specialvar VAR_RESULT, GetBattleOutcome
+	compare VAR_RESULT, B_OUTCOME_WON
+	goto_if_eq BattleFrontier_MoneyFarmDefeat
+	compare VAR_RESULT, B_OUTCOME_RAN
+	goto_if_eq BattleFrontier_MoneyFarmRun
+	compare VAR_RESULT, B_OUTCOME_CAUGHT
+	goto_if_eq BattleFrontier_MoneyFarmRun
+	compare VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED
+	goto_if_eq BattleFrontier_MoneyFarmRun
+	release
+	end
+
+BattleFrontier_MoneyFarmRun:
+	lock
+	clearflag FLAG_SYS_NO_CATCHING
+	clearflag FLAG_SYS_SET_BATTLE_BGM
+	msgbox BattleFrontier_MoneyText3, MSGBOX_DEFAULT
+	closemessage
+	delay 20
+	fadescreen 1
+	removeobject 27
+	fadescreen 0
+	release
+	release
+	end
+
+BattleFrontier_MoneyFarmDefeat:
+	lock
+	clearflag FLAG_SYS_NO_CATCHING
+	clearflag FLAG_SYS_SET_BATTLE_BGM
+	addmoney 100000 0
+	msgbox BattleFrontier_MoneyText2, MSGBOX_DEFAULT
+	closemessage
+	delay 20
+	fadescreen 1
+	removeobject 27
+	fadescreen 0
+	release
+	end
+
+BattleFrontier_MoneyText1:
+	.string "Meow!!$"
+
+BattleFrontier_MoneyText2:
+	.string "Meowth dropped a lot of money!\p"
+	.string "Maybe he will come\n"
+	.string "back tomorrow!$"
+
+BattleFrontier_MoneyText3:
+	.string "Maybe he will come\n"
+	.string "back tomorrow...$"

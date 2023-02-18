@@ -153,7 +153,7 @@
       "x": 14,
       "y": 2,
       "elevation": 0,
-      "player_facing_dir": "BG_EVENT_PLAYER_FACING_WEST",
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_EAST",
       "script": "LilycoveCity_DepartmentStore_1F_Machine"
     }
   ]

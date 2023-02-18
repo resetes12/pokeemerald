@@ -25,12 +25,12 @@ static const u16 sFrontierExchangeCorner_Decor2[] =
 
 static const u16 sFrontierExchangeCorner_Vitamins[] =
 {
-    ITEM_PROTEIN,
-    ITEM_CALCIUM,
-    ITEM_IRON,
-    ITEM_ZINC,
-    ITEM_CARBOS,
-    ITEM_HP_UP,
+    ITEM_EON_TICKET,
+    ITEM_MYSTIC_TICKET,
+    ITEM_AURORA_TICKET,
+    ITEM_OLD_SEA_MAP,
+    ITEM_MACHO_BRACE,
+    ITEM_LUCKY_EGG,
     ITEM_LIST_END
 };
 

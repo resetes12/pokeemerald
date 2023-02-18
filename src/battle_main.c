@@ -2065,6 +2065,8 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
     u8 monsCount;
     //u8 opponentClass = gTrainers[trainerNum].trainerClass;
     const u8 abilityIfNormansSlaking = 1; //norman slaking code
+    const u8 abilityIfChampionMilotic = 1; //norman slaking code
+    const u8 abilityIfChampionWhiscash = 1; //norman slaking code
 
     if (trainerNum == TRAINER_SECRET_BASE)
         return 0;
@@ -2165,6 +2167,12 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                     if (partyData[i].species == SPECIES_SLAKING && gTrainers[trainerNum].trainerPic == TRAINER_PIC_LEADER_NORMAN  //norman slaking code
                     && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_LEADER)  //Set Norman's Slaking to have intimidate
                         SetMonData(&party[i], MON_DATA_ABILITY_NUM, &abilityIfNormansSlaking); //norman slaking code
+                    if (partyData[i].species == SPECIES_MILOTIC && gTrainers[trainerNum].trainerPic == TRAINER_PIC_CHAMPION_WALLACE  
+                    && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_CHAMPION)  
+                        SetMonData(&party[i], MON_DATA_ABILITY_NUM, &abilityIfChampionMilotic); 
+                    if (partyData[i].species == SPECIES_WHISCASH && gTrainers[trainerNum].trainerPic == TRAINER_PIC_CHAMPION_WALLACE  
+                    && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_CHAMPION)  
+                        SetMonData(&party[i], MON_DATA_ABILITY_NUM, &abilityIfChampionWhiscash); 
                 }
                 //else
                 SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);

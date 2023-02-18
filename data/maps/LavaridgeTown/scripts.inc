@@ -407,3 +407,21 @@ LavaridgeTown_Text_HerbShopSign:
 	.string "POKéMON HERB SHOP\n"
 	.string "“Bitter taste--better cure!”$"
 
+LavaridgeTown_Chansey1::
+	trainerbattle TRAINER_BATTLE_CONTINUE_SCRIPT, TRAINER_CHANSEY1, 0, LavaridgeTown_Chansey1Intro, LavaridgeTown_Chansey1Defeat, LavaridgeTown_ChanseyBattleAgain
+	end
+
+LavaridgeTown_ChanseyBattleAgain::
+	faceplayer
+	msgbox LavaridgeTown_Chansey1Repeat, MSGBOX_AUTOCLOSE
+	clearflag 0x857
+	end
+
+LavaridgeTown_Chansey1Intro:
+	.string "My CHANSEY is ready for a battle!$"
+
+LavaridgeTown_Chansey1Defeat:
+	.string "Oh no... CHANSEY, use SOFT-BOILED!$"
+
+LavaridgeTown_Chansey1Repeat:
+	.string "We can battle again if you want!$"

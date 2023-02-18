@@ -32,5 +32,11 @@ PacifidlogTown_House5_Text_MirageIslandAppearDependingOnWeather:
 	.string "depending on the weather conditions\l"
 	.string "that make mirages appear.\p"
 	.string "Or is it really appearing and\n"
-	.string "disappearing?$"
+	.string "disappearing?\p"
+	.string ". . .\p"
+	.string "And have you heard about\n"
+	.string "the MIRAGE POKéMON?\p"
+	.string "No?\p"
+	.string "Some people also classify it as\n"
+	.string "a NEW SPECIES POKéMON.$"
 

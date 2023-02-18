@@ -3177,7 +3177,7 @@
       "width": 34,
       "height": 24,
       "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Facility",
+      "secondary_tileset": "gTileset_BattleFrontierOutsideEast",
       "border_filepath": "data/layouts/AquaHideout_UnusedRubyMap3/border.bin",
       "blockdata_filepath": "data/layouts/AquaHideout_UnusedRubyMap3/map.bin"
     },

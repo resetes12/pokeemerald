@@ -161,7 +161,6 @@ LilycoveCity_DepartmentStore_1F_Machine_NoMoney::
 SCRIPT_SelfTrade_V1::
 	lock
 	faceplayer
-	removemoney 10000, 0
 	msgbox SCRIPT_SelfTrade_Text_IllTradeIfYouWant, MSGBOX_YESNO
 	compare VAR_RESULT, NO
 	goto_if_eq SCRIPT_SelfTrade_DeclineTrade
@@ -174,6 +173,7 @@ SCRIPT_SelfTrade_V1::
 	special CreateInGameTradePokemon
 	special DoInGameTradeScene
 	waitstate
+	removemoney 10000, 0
 	msgbox SCRIPT_SelfTrade_Text_ComeBack, MSGBOX_DEFAULT
 	release
 	end
@@ -207,11 +207,14 @@ SCRIPT_SelfTrade_DeclineTrade::
 	end
 
 SCRIPT_SelfTrade_Text_IllTradeIfYouWant:
-	.string "A POKéMON, selected by\n"
-	.string "you, will be self-traded.\p"
+	.string "Welcome to the DEVON CORP.\n"
+	.string "SELF-TRADER app.\p"
+	.string "One of your POKéMON will\n"
+	.string "be self-traded.\p"
 	.string "A single operation\n"
 	.string "will cost 10.000¥\p"
-	.string "Do you want to continue?$"
+	.string "Do you want to continue to\n"
+	.string "the POKéMON selection?$"
 
 SCRIPT_SelfTrade_Text_ComeBack:
 	.string "Thank you using\n"
@@ -231,7 +234,7 @@ LilycoveCity_DepartmentStore_1F_TraderWoman_Text:
 	.string "Welcome to LILYCOVE DEPARTMENT STORE!\p"
 	.string "Do you want to know about the new\n"
 	.string "technology DEVON CORP. just developed?\p"
-	.string "It's an AUTO-TRADER! \p"
+	.string "It's an SELF-TRADER app!\p"
 	.string "With the help of a simple computer\n"
 	.string "program, you can send one POKéMON to\p"
 	.string "the DEVON CORP. server and get it\n"

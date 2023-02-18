@@ -47,15 +47,15 @@
 #define FLAG_SYS_NO_BAG_USE         0x23 // Unused Flag //DEBUG
 #define FLAG_SYS_NO_CATCHING        0x24 // Unused Flag //DEBUG
 #define FLAG_SYS_PC_FROM_DEBUG_MENU 0x25 // Unused Flag //DEBUG
-#define FLAG_UNUSED_0x026    0x26 // Unused Flag
+#define FLAG_CHANSEY_TRAINER        0x26 // Unused Flag
 #define FLAG_SYS_NO_BATTLE_DMG      0x27 // Unused Flag //DEBUG
 #define FLAG_IV_SETTER       0x28 // Unused Flag
 #define FLAG_UNUSED_0x029    0x29 // Unused Flag
 #define FLAG_UNUSED_0x02A    0x2A // Unused Flag
-#define FLAG_SYS_SET_BATTLE_BGM    0x2B // Unused Flag first, now changes BGM
-#define FLAG_UNUSED_0x02C    0x2C // Unused Flag
-#define FLAG_UNUSED_0x02D    0x2D // Unused Flag
-#define FLAG_UNUSED_0x02E    0x2E // Unused Flag
+#define FLAG_SYS_SET_BATTLE_BGM    0x2B // Changes BGM
+#define FLAG_TOTOTRADE       0x2C // Unused Flag
+#define FLAG_CYNDATRADE      0x2D // Unused Flag
+#define FLAG_CHIKORITRADE    0x2E // Unused Flag
 #define FLAG_UNUSED_0x02F    0x2F // Unused Flag
 #define FLAG_UNUSED_0x030    0x30 // Unused Flag
 #define FLAG_UNUSED_0x031    0x31 // Unused Flag
@@ -1217,7 +1217,7 @@
 #define FLAG_ITEM_SAFARI_ZONE_NORTH_EAST_NUGGET                     0x491
 #define FLAG_ITEM_SAFARI_ZONE_SOUTH_EAST_BIG_PEARL                  0x492
 
-#define FLAG_UNUSED_0x493                                           0x493 // Unused Flag
+#define FLAG_JIRACHI                                                0x493
 #define FLAG_UNUSED_0x494                                           0x494 // Unused Flag
 #define FLAG_UNUSED_0x495                                           0x495 // Unused Flag
 #define FLAG_UNUSED_0x496                                           0x496 // Unused Flag
