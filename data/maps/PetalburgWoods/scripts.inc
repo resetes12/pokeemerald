@@ -103,6 +103,7 @@ PetalburgWoods_CelebiEvent_Won::
 	applymovement LOCALID_CELEBI, PetalburgWoods_EventScript_CelebiMoves2
 	waitmovement 0
 	setflag FLAG_DEFEAT_CELEBI
+	clearflag FLAG_CELEBI_EVENT
 	fadescreen 0x0
 	end
 

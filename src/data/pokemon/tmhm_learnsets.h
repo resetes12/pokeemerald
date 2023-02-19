@@ -4601,11 +4601,14 @@ const u32 gTMHMLearnsets[][2] =
                                         | TMHM(TM22_SOLAR_BEAM)
                                         | TMHM(TM27_RETURN)
                                         | TMHM(TM32_DOUBLE_TEAM)
+                                        | TMHM(TM35_FLAMETHROWER)
                                         | TMHM(TM36_SLUDGE_BOMB)
+                                        | TMHM(TM38_FIRE_BLAST)
                                         | TMHM(TM42_FACADE)
                                         | TMHM(TM43_SECRET_POWER)
                                         | TMHM(TM44_REST)
                                         | TMHM(TM45_ATTRACT)
+                                        | TMHM(TM50_OVERHEAT)
                                         | TMHM(HM01_CUT)
                                         | TMHM(HM05_FLASH)),
 

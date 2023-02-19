@@ -1,6 +1,7 @@
 Common_EventScript_PkmnCenterNurse::
 	lock
 	faceplayer
+	goto_if_unset FLAG_OLDSAVE, Common_EventScript_PkmnCenterNurseOldSave
 	setvar VAR_0x8004, 0
 	specialvar VAR_RESULT, CountPlayerTrainerStars
 	goto_if_eq VAR_RESULT, 4, EventScript_PkmnCenterNurse_GoldCard
@@ -10,6 +11,105 @@ Common_EventScript_PkmnCenterNurse::
 EventScript_PkmnCenterNurse_Goodbye::
 	message gText_WeHopeToSeeYouAgain
 	return
+
+Common_EventScript_PkmnCenterNurseOldSave::
+	setflag FLAG_OLDSAVE
+	msgbox Common_EventScript_PkmnCenterNurseOldSaveText1, MSGBOX_DEFAULT
+	closemessage
+	delay 20
+	clearflag FLAG_ITEM_ROUTE_115_TM01
+	clearflag FLAG_ITEM_METEOR_FALLS_B1F_2R_TM02
+	clearflag FLAG_ITEM_FIERY_PATH_TM06
+	clearflag FLAG_ITEM_SHOAL_CAVE_ICE_ROOM_TM07
+	clearflag FLAG_ITEM_SCORCHED_SLAB_TM11
+	clearflag FLAG_ITEM_ABANDONED_SHIP_ROOMS_B1F_TM13
+	clearflag FLAG_ITEM_ABANDONED_SHIP_HIDDEN_FLOOR_ROOM_1_TM18
+	clearflag FLAG_ITEM_SAFARI_ZONE_NORTH_WEST_TM22
+	clearflag FLAG_ITEM_METEOR_FALLS_1F_1R_TM23
+	clearflag FLAG_ITEM_SEAFLOOR_CAVERN_ROOM_9_TM26
+	clearflag FLAG_ITEM_VICTORY_ROAD_B1F_TM29
+	clearflag FLAG_ITEM_MT_PYRE_6F_TM30
+	clearflag FLAG_ITEM_ROUTE_111_TM37
+	clearflag FLAG_ITEM_MT_PYRE_EXTERIOR_TM48
+	giveitem ITEM_TM03
+	giveitem ITEM_TM04
+	giveitem ITEM_TM05
+	giveitem ITEM_TM08
+	giveitem ITEM_TM09
+	giveitem ITEM_TM12
+	giveitem ITEM_TM19
+	giveitem ITEM_TM21
+	giveitem ITEM_TM27
+	giveitem ITEM_TM28
+	giveitem ITEM_TM31
+	giveitem ITEM_TM34
+	giveitem ITEM_TM36
+	giveitem ITEM_TM39
+	giveitem ITEM_TM40
+	giveitem ITEM_TM41
+	giveitem ITEM_TM42
+	giveitem ITEM_TM44
+	giveitem ITEM_TM45
+	giveitem ITEM_TM46
+	giveitem ITEM_TM47
+	giveitem ITEM_TM49
+	giveitem ITEM_TM50
+	msgbox Common_EventScript_PkmnCenterNurseOldSaveText2, MSGBOX_DEFAULT
+	closemessage
+	delay 20
+	removeitem ITEM_ACRO_BIKE
+	giveitem ITEM_MACH_BIKE
+	removeitem ITEM_EXP_SHARE, 99
+	giveitem ITEM_EXP_SHARE
+	msgbox Common_EventScript_PkmnCenterNurseOldSaveText3, MSGBOX_DEFAULT
+	closemessage
+	delay 20
+	goto Common_EventScript_PkmnCenterNurse
+	end
+
+Common_EventScript_PkmnCenterNurseOldSaveText1:
+	.string "Oh! Looks like you are loading an\n"
+	.string "OLD SAVEGAME. Let's fix the SAVEGAME\p"
+	.string "so you can fully enjoy this HACKROM.\n"
+	.string "Let's start with the basics...\p"
+	.string "In the PROF. BIRCH LAB, there's 3 PCs.\p"
+	.string "If you check the TOP one, you will be\n"
+	.string "to change the GAMEMODE. There's 2\p"
+	.string "GAMEMODES: CLASSIC, which doesn't\n"
+	.string "implement the PHYSICAL/SPECIAL split\p"
+	.string "created in GEN IV; and MODERN, which\n"
+	.string "it does.\p"
+	.string "Then, the PC on the LEFT contains a\n"
+	.string "DIFFICULTY changer. NORMAL is the\p"
+	.string "default experience, while EASY and\n"
+	.string "HARD makes the levels scale up to\p"
+	.string "6 levels (10 after being the CHAMPION).\n"
+	.string "Now, let's try to fix other things.\p"
+	.string "TMs are now infinite, which means\n"
+	.string "if you have used them, they are gone.\p"
+	.string "Let me respawn all TMs that can be\n"
+	.string "found in the overworld for you...$"
+
+Common_EventScript_PkmnCenterNurseOldSaveText2:
+	.string "There. You can go look for them!\p"
+	.string "Now... I also gave you copies of\n"
+	.string "TMs that were obtained from NPCs.\p"
+	.string "I'll give you a BIKE. This\n"
+	.string "BIKE is the MACH and ACRO version\p"
+	.string "in one. If you have the ACRO BIKE\n"
+	.string "it'll be removed. I'll do the same\p"
+	.string "with the EXP. SHARE, which is now a\n"
+	.string "KEY ITEM.$"
+
+Common_EventScript_PkmnCenterNurseOldSaveText3:
+	.string "Old EXP. SHARES are not deleted\n"
+	.string "so it's recommended that you load\p"
+	.string "the original SAVE into a clean\n"
+	.string "version of POKéMON EMERALD, delete\p"
+	.string "them, and then import the SAVE again\n"
+	.string "to this HACKROM. If not, old EXP\p"
+	.string "SHARES will not be deleteable from\n"
+	.string "the BAG.$"
 
 @ VAR_0x8004 is 1 when player has Gold Card; jumps are identical
 EventScript_PkmnCenterNurse_HealPkmn::

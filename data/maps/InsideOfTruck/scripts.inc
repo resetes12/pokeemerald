@@ -114,8 +114,8 @@ InsideOfTruck_Text_Challenge:
 	.string "scaling of POKéMON trainers.\p"
 	.string "NORMAL is just the default\n"
 	.string "experience, HARD scales up\p"
-	.string "to 5 levels upwards, and\n"
-	.string "EASY up to 5 levels\p"
+	.string "to 10 levels upwards, and\n"
+	.string "EASY up to 10 levels\p"
 	.string "downwards.$"
 
 InsideOfTruck_Text_SelectedEasy:
