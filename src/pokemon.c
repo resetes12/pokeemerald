@@ -2305,7 +2305,7 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
         SetBoxMonData(boxMon, MON_DATA_SPDEF_IV, &iv);
     }
 
-    if (gSpeciesInfo[species].abilities[1]  && species != SPECIES_SLAKING || species != SPECIES_MILOTIC || species != SPECIES_WHISCASH) //norman slaking code
+    if (gSpeciesInfo[species].abilities[1]  && (species != SPECIES_SLAKING || species != SPECIES_MILOTIC || species != SPECIES_WHISCASH)) //norman slaking code
     {
         value = personality & 1;
         SetBoxMonData(boxMon, MON_DATA_ABILITY_NUM, &value);
@@ -6571,7 +6571,7 @@ u16 GetBattleBGM(void)
         case TRAINER_CLASS_PYRAMID_KING:
             return MUS_VS_FRONTIER_BRAIN;
         default:
-            if (gMapHeader.regionMapSectionId == MAPSEC_LITTLEROOT_TOWN) //BGM by map
+            if (gMapHeader.regionMapSectionId == (MAPSEC_BATTLE_FRONTIER || MAPSEC_ARTISAN_CAVE)) //BGM by map
                 return MUS_RG_VS_TRAINER;
         else
                 return MUS_VS_TRAINER;

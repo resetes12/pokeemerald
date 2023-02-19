@@ -427,6 +427,10 @@ PlayersHouse_1F_Text_LatiEmergencyNewsFlash:
 	.string "POKéMON in flight.\p"
 	.string "The identity of this POKéMON is\n"
 	.string "currently unknown.\p"
+	.string "In other news, three large BEASTS\n"
+	.string "have also been spotted in specific\p"
+	.string "HOENN locations. More information\n"
+	.string "available in a few hours.\p"
 	.string "We now return you to the regular\n"
 	.string "movie program.$"
 
@@ -436,5 +440,8 @@ PlayersHouse_1F_Text_WhatColorDidTheySay:
 	.string "that POKéMON was?$"
 
 PlayersHouse_1F_Text_StillUnknownPokemon:
-	.string "MOM: Well, isn't that something!\n"
-	.string "There are still unknown POKéMON.$"
+	.string "MOM: Oh. Is that it?\p"
+	.string "And what do you think about the\n"
+	.string "Three BEASTS they mentioned?\p"
+	.string "Well, isn't that something!\n"
+	.string "There are still unknown POKéMON!$"

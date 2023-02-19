@@ -54,9 +54,9 @@
       "flag": "FLAG_ITEM_MAGMA_HIDEOUT_3F_1R_NUGGET"
     },
     {
-      "graphics_id": "OBJ_EVENT_GFX_ANABEL",
-      "x": 6,
-      "y": 14,
+      "graphics_id": "OBJ_EVENT_GFX_ENTEI",
+      "x": 7,
+      "y": 15,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_NONE",
       "movement_range_x": 0,

@@ -5,6 +5,7 @@
 .set LOCALID_GRUNT_4, 13
 .set LOCALID_MAXIE, 14
 .set LOCALID_SCOTT, 16
+.set LOCALID_JIRACHI, 19
 
 MossdeepCity_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, MossdeepCity_OnTransition
@@ -80,32 +81,41 @@ MossdeepCity_EventScript_Jirachi::
 	waitmovement 0
 	msgbox MossdeepCity_Text_ItsAWhiteRock2, MSGBOX_DEFAULT
 	waitmessage
-	setwildbattle SPECIES_JIRACHI, 70
+	setwildbattle SPECIES_JIRACHI, 60
 	waitse
 	playmoncry SPECIES_JIRACHI, CRY_MODE_ENCOUNTER
 	delay 40
 	waitmoncry
+	applymovement LOCALID_JIRACHI, MossdeepCity_EventScript_JirachiMoves3
+	waitmovement 0
 	msgbox MossdeepCity_Text_ItsAWhiteRock3, MSGBOX_DEFAULT
 	closemessage
-	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	setflag FLAG_SYS_SET_BATTLE_BGM
 	setvar VAR_TEMP_F, MUS_VS_MEW
 	dowildbattle
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, MossdeepCity_EventScript_JirachiWon
+	goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, MossdeepCity_EventScript_JirachiWon
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, MossdeepCity_EventScript_JirachiRan
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, MossdeepCity_EventScript_JirachiRan
 	release
 	end
 
 MossdeepCity_EventScript_JirachiWon::
+	fadescreen 0x1
+	delay 100
+	applymovement LOCALID_JIRACHI, MossdeepCity_EventScript_JirachiMoves4
+	waitmovement 0
 	setflag FLAG_JIRACHI
-	goto Common_EventScript_RemoveStaticPokemon
-	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	fadescreen 0x0
 	end
 
 MossdeepCity_EventScript_JirachiRan::
-	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	fadescreen 0x1
+	delay 100
+	applymovement LOCALID_JIRACHI, MossdeepCity_EventScript_JirachiMoves4
+	waitmovement 0
+	fadescreen 0x0
 	end
 
 MossdeepCity_EventScript_JirachiMoves:
@@ -132,11 +142,23 @@ MossdeepCity_EventScript_JirachiMoves2:
 	delay_16
 	step_end
 
+MossdeepCity_EventScript_JirachiMoves3:
+	delay_16
+	delay_16
+	delay_16
+	set_visible
+	walk_down
+	step_end
+
+MossdeepCity_EventScript_JirachiMoves4:
+	set_invisible
+	walk_up
+	step_end
+
 MossdeepCity_Text_ItsAWhiteRock2:
 	.string "Something...\p"
 	.string "...\p"
-	.string "Something is approaching\n"
-	.string "rapidly...\p"
+	.string "Something is moving...\n"
 	.string "...$"
 
 MossdeepCity_Text_ItsAWhiteRock3:

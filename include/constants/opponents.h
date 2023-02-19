@@ -861,16 +861,16 @@
 #define TRAINER_CHANSEY3                    857 //859
 #define TRAINER_CHANSEY4                    858 //85A
 #define TRAINER_CHANSEY5                    859 //85B
-//#define TRAINER_                            860 //85C
-//#define TRAINER_                            861 //85D
-//#define TRAINER_                            862 //85E
-//#define TRAINER_                            863 //85F
+#define TRAINER_FRONTIER1                   860 //85C
+#define TRAINER_FRONTIER2                   861 //85D
+#define TRAINER_FRONTIER3                   862 //85E
+#define TRAINER_FRONTIER4                   863 //85F
 
 // NOTE: Because each Trainer uses a flag to determine when they are defeated, there is only space for 9 additional trainers before trainer flag space overflows
 //       More space can be made by shifting flags around in constants/flags.h or changing how trainer flags are handled
 //       MAX_TRAINERS_COUNT can be increased but will take up additional saveblock space
 
-#define TRAINERS_COUNT                      859
+#define TRAINERS_COUNT                      864
 #define MAX_TRAINERS_COUNT                  864
 
 #endif  // GUARD_CONSTANTS_OPPONENTS_H

@@ -1,5 +1,6 @@
 .set LOCALID_GRUNT, 3
 .set LOCALID_DEVON_EMPLOYEE, 4
+.set LOCALID_CELEBI, 17
 
 PetalburgWoods_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, PetalburgWoods_OnTransition
@@ -30,13 +31,15 @@ PetalburgWoods_CelebiEvent::
 	playse SE_SUDOWOODO_SHAKE
 	waitse
 	msgbox Text_PetalburgWoods_Celebi0, MSGBOX_SIGN
-	waitbuttonpress
+	closemessage
 	checkflag FLAG_CELEBI_EVENT
 	call_if_unset FLAG_CELEBI_EVENT, PetalburgWoods_CelebiEvent_End
 	call_if_set FLAG_CELEBI_EVENT, PetalburgWoods_CelebiEventGo
 	end
 
 PetalburgWoods_CelebiEventGo::
+	applymovement OBJ_EVENT_ID_PLAYER, Movement_PetalburgWoods_Celebi1
+	waitmovement 0
 	msgbox Text_PetalburgWoods_Celebi1, MSGBOX_SIGN
 	special ChoosePartyMon
 	waitstate
@@ -71,66 +74,193 @@ PetalburgWoods_CelebiEvent_End::
 	end
 
 PetalburgWoods_CelebiBattle::
-	@waitstate
 	faceplayer
 	applymovement OBJ_EVENT_ID_PLAYER, Movement_PetalburgWoods_Celebi1
 	waitmovement 0
 	msgbox Text_PetalburgWoods_Celebi4, MSGBOX_DEFAULT
-	setwildbattle SPECIES_CELEBI, 70
+	setwildbattle SPECIES_CELEBI, 60
 	waitse
 	playmoncry SPECIES_CELEBI, CRY_MODE_ENCOUNTER
 	delay 40
 	waitmoncry
+	applymovement LOCALID_CELEBI, PetalburgWoods_EventScript_CelebiMoves
+	waitmovement 0
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	setflag FLAG_SYS_SET_BATTLE_BGM
 	setvar VAR_TEMP_F, MUS_VS_MEW
 	dowildbattle
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, PetalburgWoods_CelebiEvent_Won
+	goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, PetalburgWoods_CelebiEvent_Won
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, PetalburgWoods_CelebiEvent_Ran
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, PetalburgWoods_CelebiEvent_Ran
 	releaseall
 	end
 
 PetalburgWoods_CelebiEvent_Won::
+	fadescreen 0x1
+	delay 100
+	applymovement LOCALID_CELEBI, PetalburgWoods_EventScript_CelebiMoves2
+	waitmovement 0
 	setflag FLAG_DEFEAT_CELEBI
-	goto Common_EventScript_RemoveStaticPokemon
-	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	fadescreen 0x0
 	end
 
 PetalburgWoods_CelebiEvent_Ran::
-	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	fadescreen 0x1
+	delay 100
+	applymovement LOCALID_CELEBI, PetalburgWoods_EventScript_CelebiMoves2
+	waitmovement 0
+	fadescreen 0x0
 	end
 
-Text_PetalburgWoods_Celebi0:
-	.string "The tree is rattling,\n"
-	.string "but you cannot see any POKéMON.$"
-
-Text_PetalburgWoods_Celebi1:
-	.string "Show me the THUNDER POKéMON.$"
-
-Text_PetalburgWoods_Celebi2:
-	.string "Show me the VOLCANO POKéMON.$"
-
-Text_PetalburgWoods_Celebi3:
-	.string "Show me the AURORA POKéMON.$"
-
-Text_PetalburgWoods_Celebi4:
-	.string "Something is approaching...$"
-
-Text_PetalburgWoods_Celebi_Donthave:
-	.string "You don't have it.$"
-
-Movement_PetalburgWoods_Celebi1:
-	emote_exclamation_mark
+PetalburgWoods_EventScript_CelebiMoves:
+	delay_16
+	delay_16
+	delay_16
+	walk_down
+	set_visible
 	step_end
 
+PetalburgWoods_EventScript_CelebiMoves2:
+	set_invisible
+	walk_up
+	step_end
+
+Text_PetalburgWoods_Celebi0:
+	.string "The tree is rattling.\p"
+	.string "You also feel that someone or\n"
+	.string "something is observing you...\p"
+	.string "But... you cannot see any POKéMON...$"
+
+Text_PetalburgWoods_Celebi1:
+	.string ". . . \p"
+	.string ". . . \p"
+	.string "You can hear a dim voice.\p"
+	.string "S..w .. ..e . . .ER . K. ON\p"
+	.string ". . . \p"
+	.string "S..w me the THUND.R PO..MON...$"
+
+Text_PetalburgWoods_Celebi2:
+	.string ". . . \p"
+	.string ". . . \p"
+	.string "Sh.. me .he .OLCANO . ..MON$"
+
+Text_PetalburgWoods_Celebi3:
+	.string ". . . \p"
+	.string ". . . \p"
+	.string "Sho.. me t.. AU.ORA ...éMON.$"
+
+Text_PetalburgWoods_Celebi4:
+	.string ". . . \p"
+	.string "Something is approaching...\p"
+	.string ". . . $"
+
+Text_PetalburgWoods_Celebi_Donthave:
+	.string ". . . \p"
+	.string "..u d..'t h... i....\p"
+	.string "You don't have it...$"
+
+Movement_PetalburgWoods_Celebi1:
+	delay_16
+	delay_16
+	delay_16
+	emote_exclamation_mark
+	delay_16
+	step_end
+
+PetalburgWoods_Dusclops::
+	lock
+	faceplayer
+	waitse
+	playmoncry SPECIES_DUSCLOPS, CRY_MODE_NORMAL
+	msgbox PetalburgWoods_Text_Dusclops, MSGBOX_DEFAULT
+	waitmoncry
+	release
+	end
+
+PetalburgWoods_Text_Dusclops:
+	.string "DUSKY: Dusk, dusk!$"
+
 PetalburgWoods_Celebi_Sign::
-	msgbox Text_PetalburgWoods_Celebi_Sign, MSGBOX_SIGN
+	faceplayer
+	goto_if_unset FLAG_ROBERTO1, PetalburgWoods_Celebi_SignFirstTime
+	goto_if_set FLAG_DEFEAT_CELEBI, PetalburgWoods_Celebi_SignEventFinished
+	goto_if_set FLAG_IS_CHAMPION, PetalburgWoods_Celebi_SignChampion
+	msgbox Text_PetalburgWoods_Celebi_Sign, MSGBOX_NPC
+	end
+
+PetalburgWoods_Celebi_SignFirstTime::
+	faceplayer
+	msgbox Text_PetalburgWoods_Celebi_SignFirstTime, MSGBOX_NPC
+	setflag FLAG_ROBERTO1
+	end
+
+PetalburgWoods_Celebi_SignEventFinished::
+	faceplayer
+	msgbox Text_PetalburgWoods_Celebi_SignEventFinished, MSGBOX_NPC
+	end
+
+PetalburgWoods_Celebi_SignChampion::
+	faceplayer
+	msgbox Text_PetalburgWoods_Celebi_SignEventChampion, MSGBOX_NPC
 	end
 
 Text_PetalburgWoods_Celebi_Sign:
-	.string "PETALBURG WOODS SHRINE$"
+	.string "ROBERTO: Hi kid.\l"
+	.string "Dangerous? No, no. Don't\n"
+	.string "worry. I have my mighty DUSKY.\p"
+	.string "Have you gotten stronger?$"
+
+Text_PetalburgWoods_Celebi_SignFirstTime:
+	.string "Oh, a trainer...\p"
+	.string "What are you doing here, in\n"
+	.string "these shady woods?\p"
+	.string "Oh, I see...\p"
+	.string "Me?\p"
+	.string "Well, I'm just doing my daily\n"
+	.string "watering of the tree shrine.\p"
+	.string "No, no, it's not my tree. But you\n"
+	.string "see, this tree is special.\p"
+	.string "In these woods, a certain POKéMON\n"
+	.string "lives. It's the FOREST GUARDIAN.\p"
+	.string "In my 13 years of coming to this\n"
+	.string "place I've seen the GUARDIAN a\p"
+	.string "few times. It's small, GREEN, and\n"
+	.string "just seeing it feels ominous...\p"
+	.string "I think it can also talk!!\p"
+	.string "Sadly, last time I saw it was\n"
+	.string "many years ago...\p"
+	.string "Where could it be?\p"
+	.string "Maybe I need to be STRONGER to\n"
+	.string "make it appear...\p"
+	.string "Years have not been kind to me.\p"
+	.string "Oh, I'm ROBERTO, by the way.\n"
+	.string "Nice to meet you.$"
+
+Text_PetalburgWoods_Celebi_SignEventFinished:
+	.string "ROBERTO: . . . "
+	.string "I... I can't believe my eyes!!\n"
+	.string "You battled with the GUARDIAN!\p"
+	.string "I'll never forget this moment.\n"
+	.string "I'll keep watering this shrine\p"
+	.string "until it comes back in the future.$"
+
+Text_PetalburgWoods_Celebi_SignEventChampion:
+	.string "ROBERTO: Hi again, trainer.\n"
+	.string "There's something strange with\p"
+	.string "the tree... I've been hearing a\n"
+	.string "small muttering for a few hours.\p"
+	.string "Something about a THUNDER, VOLCANO\n"
+	.string "and AURORA POKéMON...\p"
+	.string "Wait... I know those descriptions...\n"
+	.string "Something about three beasts? But...\p"
+	.string "Not from this region...? Where were\n"
+	.string "they from? GIOTO? HOJO? JONO? JOHTO?\p"
+	.string "If they are here, in HOENN... Maybe\n"
+	.string "they are hiding in places related to\p"
+	.string "their descriptions...\p"
+	.string "You should also check the tree.$"
 
 PetalburgWoods_EventScript_DevonResearcherLeft::
 	lockall

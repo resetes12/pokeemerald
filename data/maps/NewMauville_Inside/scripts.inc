@@ -22,16 +22,17 @@ NewMauville_Inside_OnTransition:
 	call_if_unset FLAG_DEFEATED_VOLTORB_1_NEW_MAUVILLE, NewMauville_Inside_EventScript_ShowVoltorb1
 	call_if_unset FLAG_DEFEATED_VOLTORB_2_NEW_MAUVILLE, NewMauville_Inside_EventScript_ShowVoltorb2
 	call_if_unset FLAG_DEFEATED_VOLTORB_3_NEW_MAUVILLE, NewMauville_Inside_EventScript_ShowVoltorb3
-	call_if_unset FLAG_IS_CHAMPION, NewMauville_Inside_NoShowRaikou
-	call_if_set FLAG_IS_CHAMPION, NewMauville_Inside_ShowRaikou
+	goto_if_set FLAG_RAIKOU, NewMauville_Inside_ShowRaikou
+	goto_if_unset FLAG_IS_CHAMPION, NewMauville_Inside_NoShowRaikou
 	end
 
 NewMauville_Inside_NoShowRaikou::
+	playmoncry SPECIES_RAIKOU, CRY_MODE_ENCOUNTER
 	setflag FLAG_DEFEAT_RAIKOU
+	setflag FLAG_RAIKOU
 	end
 
 NewMauville_Inside_ShowRaikou::
-	clearflag FLAG_DEFEAT_RAIKOU
 	end
 
 NewMauville_Inside_EventScript_ShowVoltorb1::
@@ -258,7 +259,7 @@ NewMauville_Inside_EventScript_DefeatedVoltorb3::
 NewMauville_Inside_Raikou::
 	lock
 	faceplayer
-	setwildbattle SPECIES_RAIKOU, 70
+	setwildbattle SPECIES_RAIKOU, 60
 	waitse
 	playmoncry SPECIES_RAIKOU, CRY_MODE_ENCOUNTER
 	delay 40
@@ -269,6 +270,7 @@ NewMauville_Inside_Raikou::
 	dowildbattle
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, NewMauville_Inside_Raikou_Won
+	goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, NewMauville_Inside_Raikou_Won
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, NewMauville_Inside_Raikou_Ran
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, NewMauville_Inside_Raikou_Ran
 	release

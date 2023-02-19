@@ -3,22 +3,23 @@ MagmaHideout_3F_1R_MapScripts::
 	.byte 0
 
 MagmaHideout_3F_1R_OnTransition:
-	call_if_unset FLAG_IS_CHAMPION, MagmaHideout_3F_1R_EventScript_NoShowEntei
-	call_if_set FLAG_IS_CHAMPION, MagmaHideout_3F_1R_EventScript_ShowEntei
+	goto_if_set FLAG_ENTEI, MagmaHideout_3F_1R_EventScript_ShowEntei
+	goto_if_unset FLAG_IS_CHAMPION, MagmaHideout_3F_1R_EventScript_NoShowEntei
 	end
 
 MagmaHideout_3F_1R_EventScript_NoShowEntei::
+	playmoncry SPECIES_ENTEI, CRY_MODE_ENCOUNTER
 	setflag FLAG_DEFEAT_ENTEI
+	setflag FLAG_ENTEI
 	end
 
 MagmaHideout_3F_1R_EventScript_ShowEntei::
-	clearflag FLAG_DEFEAT_ENTEI
 	end
-	
+
 MagmaHideout_3F_1R_EventScript_Entei::
 	lock
 	faceplayer
-	setwildbattle SPECIES_ENTEI, 70
+	setwildbattle SPECIES_ENTEI, 60
 	waitse
 	playmoncry SPECIES_ENTEI, CRY_MODE_ENCOUNTER
 	delay 40
@@ -29,6 +30,7 @@ MagmaHideout_3F_1R_EventScript_Entei::
 	dowildbattle
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, MagmaHideout_3F_1R_EventScript_EnteiWon
+	goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, MagmaHideout_3F_1R_EventScript_EnteiWon
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, MagmaHideout_3F_1R_EventScript_EnteiRan
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, MagmaHideout_3F_1R_EventScript_EnteiRan
 	release

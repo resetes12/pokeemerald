@@ -856,12 +856,12 @@ u8 GetScaledLevel(u8 lvl)
     }
 
     if (FlagGet(FLAG_IS_CHAMPION))
-        levelScaling = 5;
+        levelScaling = 10;
     else if (badgeCount >= 6)
-        levelScaling = 4;
-    else if (badgeCount >= 4)
+        levelScaling = 6;
+    else if (badgeCount >= 3)
         levelScaling = 3;
-    else if (badgeCount >= 2)
+    else if (badgeCount >= 1)
         levelScaling = 2;
     else
         levelScaling = 1;

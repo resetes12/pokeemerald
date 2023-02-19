@@ -25,26 +25,26 @@
       "x": 23,
       "y": 14,
       "elevation": 0,
-      "movement_type": "MOVEMENT_TYPE_NONE",
+      "movement_type": "MOVEMENT_TYPE_WALK_RIGHT_AND_LEFT",
       "movement_range_x": 0,
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
-      "flag": "0"
+      "script": "BFNewZone_EventScript_Sudo2",
+      "flag": "FLAG_UNUSED_0x923"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_SUDOWOODO",
       "x": 25,
       "y": 9,
       "elevation": 0,
-      "movement_type": "MOVEMENT_TYPE_NONE",
+      "movement_type": "MOVEMENT_TYPE_WALK_RIGHT_AND_LEFT",
       "movement_range_x": 0,
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
-      "flag": "0"
+      "script": "BFNewZone_EventScript_Sudo3",
+      "flag": "FLAG_UNUSED_0x924"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_HIKER",
@@ -54,22 +54,22 @@
       "movement_type": "MOVEMENT_TYPE_WANDER_UP_AND_DOWN",
       "movement_range_x": 0,
       "movement_range_y": 3,
-      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "script": "BFNewZone_EventScript_Frontier1Trainer",
       "flag": "0"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_EXPERT_M",
       "x": 22,
-      "y": 10,
+      "y": 8,
       "elevation": 0,
-      "movement_type": "MOVEMENT_TYPE_FACE_UP",
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
       "movement_range_x": 0,
       "movement_range_y": 0,
-      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "script": "BFNewZone_EventScript_Frontier3Trainer",
       "flag": "0"
     },
     {
@@ -80,9 +80,9 @@
       "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
       "movement_range_x": 4,
       "movement_range_y": 4,
-      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "script": "BFNewZone_EventScript_Frontier2Trainer",
       "flag": "0"
     },
     {
@@ -93,9 +93,9 @@
       "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
       "movement_range_x": 3,
       "movement_range_y": 3,
-      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_type": "TRAINER_TYPE_NORMAL",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "script": "BFNewZone_EventScript_Frontier4Trainer",
       "flag": "0"
     },
     {
@@ -108,8 +108,8 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
-      "flag": "0"
+      "script": "BFNewZone_EventScript_Snorlax",
+      "flag": "FLAG_SNORLAX"
     }
   ],
   "warp_events": [
