@@ -1,6 +1,6 @@
 // Port of Watanabe Debug Menu -> Create Pokémon Menu
 /* TODO Known Bugs and Todo List:
-    * None as of right now
+    * Nickname length can't be changed
 Things that are not implemented yet, or bugs that are caused by unimplemented features:
     * PP are not recalculated when editing PP Up count or moves.
     * Only one of the sleep and toxic counter should be visible and editable at one time, but only if the status is sleep or toxic respectively. (This does not take the separate indexes for these two values into consideration.)
@@ -9,7 +9,6 @@ Things that are not implemented yet, or bugs that are caused by unimplemented fe
     * Setting "Egg" from Off to On should also update "Egg2", but setting "Egg2" to Off should NOT update "Egg". Also, setting "Egg" to Off should NOT update "Egg2".
     * Add a "Bad Egg" index as an alternate value for "Present".
     * In edit mode, pressing Select should reset that value; in mode 0, to default; else to that of the mon being edited.
-    * While not in edit mode, pressing Select when the cursor is selecting the PID or IVs, re-randomize them both according to "Method 1". When selecting Species, toggle that species' Pokédex flags, else copy to gEnemyParty then open up the Summary Screen. Set the PSS callback back to this menu.
     * If the mon being created would be Shiny, draw a star next to the nickname.
     * Dynamic max values:
         * PP (With max PP for that move including PP Up boosts)
@@ -24,6 +23,7 @@ Things that are not implemented yet, or bugs that are caused by unimplemented fe
 #include "data.h"
 #include "debug.h"
 #include "item.h"
+#include "list_menu.h"
 #include "main.h"
 #include "menu.h"
 #include "pokemon.h"
@@ -122,7 +122,7 @@ static const u8 Str_HexPrefix[] = _("0x");
 
 static const u8 Str_Header_Create[] = _("{COLOR GREEN}Create Pokémon");
 static const u8 Str_Header_Edit[] = _("{COLOR GREEN}Edit Pokémon");
-static const u8 Str_Header2[] = _("{START_BUTTON} Confirm {DPAD_LEFTRIGHT} Page");
+static const u8 Str_Header2[] = _("{START_BUTTON} Save & exit {DPAD_LEFTRIGHT} Page");
 
 static const u8 Str_DefaultOTName[8] = _("Debug-E");
 
@@ -445,20 +445,20 @@ static const u8 DebugPkmCreator_AltIndexes[PAGE_COUNT + 1][6][3] =
     },
 };
 
-struct EditPokemonRam
+struct PokemonCreator
 {
     struct Pokemon mon;
     struct Pokemon* monBeingEdited;
     u16 index;
     u16 mode;
     u32 data[EDIT_OPTION_COUNT];
+    u8 currentPage;
+    u8 selectedOption;
+    u8 headerWindowId;
+    u8 menuWindowId;
 };
 
-static EWRAM_DATA struct EditPokemonRam DebugPkmCreator_Data = {0};
-static EWRAM_DATA u8 DebugPkmCreator_CurrentPage = 0;
-static EWRAM_DATA u8 DebugPkmCreator_CurrentlySelectedOption = 0;
-static EWRAM_DATA u8 DebugPkmCreator_headerWindowId = 0;
-static EWRAM_DATA u8 DebugPkmCreator_menuWindowId = 0;
+static EWRAM_DATA struct PokemonCreator sDebugPkmCreatorData = {0};
 static EWRAM_DATA u8 DebugPkmCreator_NameBuffer[16] = {0};
 static EWRAM_DATA u32 DebugPkmCreator_editingVal[4] = {0};
 
@@ -503,45 +503,45 @@ void DebugPkmCreator_Init(u8 mode, u8 index)
 {
     struct Pokemon* mons;
     u32 i;
-    DebugPkmCreator_Data.mode = mode;
+    sDebugPkmCreatorData.mode = mode;
     switch (mode) {
     case 0:
     case 6:
         mons = &gEnemyParty[0];
         ZeroMonData(mons); // Is this really necessary?
-        ZeroMonData(&DebugPkmCreator_Data.mon);
-        DebugPkmCreator_Data.monBeingEdited = mons;
-        DebugPkmCreator_Data.index = 0;
+        ZeroMonData(&sDebugPkmCreatorData.mon);
+        sDebugPkmCreatorData.monBeingEdited = mons;
+        sDebugPkmCreatorData.index = 0;
         break;
     case 1:
     case 5: // used in Debug Battle
-        mons = &gPlayerParty[DebugPkmCreator_Data.index];
+        mons = &gPlayerParty[sDebugPkmCreatorData.index];
         if (mode == 1) 
-            CopyMon(&DebugPkmCreator_Data.mon, mons, sizeof(struct Pokemon));
-        DebugPkmCreator_Data.monBeingEdited = mons;
+            CopyMon(&sDebugPkmCreatorData.mon, mons, sizeof(struct Pokemon));
+        sDebugPkmCreatorData.monBeingEdited = mons;
         break;
     case 2:
-        mons = (struct Pokemon*) &gPokemonStoragePtr->boxes[0][DebugPkmCreator_Data.index];
-        CopyMon(&DebugPkmCreator_Data.mon, mons, sizeof(struct BoxPokemon));
-        CalculateMonStats(&DebugPkmCreator_Data.mon);
-        DebugPkmCreator_Data.monBeingEdited = mons;
+        mons = (struct Pokemon*) &gPokemonStoragePtr->boxes[0][sDebugPkmCreatorData.index];
+        CopyMon(&sDebugPkmCreatorData.mon, mons, sizeof(struct BoxPokemon));
+        CalculateMonStats(&sDebugPkmCreatorData.mon);
+        sDebugPkmCreatorData.monBeingEdited = mons;
         break;
     case 3:
     case 4: // used in Debug Battle
-        mons = &gEnemyParty[DebugPkmCreator_Data.index];
+        mons = &gEnemyParty[sDebugPkmCreatorData.index];
         if (mode == 3)
-            CopyMon(&DebugPkmCreator_Data.mon, mons, sizeof(struct Pokemon));
-        DebugPkmCreator_Data.monBeingEdited = mons;
+            CopyMon(&sDebugPkmCreatorData.mon, mons, sizeof(struct Pokemon));
+        sDebugPkmCreatorData.monBeingEdited = mons;
         break;
     case 7:
     case 8:
     default:
         if (mode == 8)
-            CopyMon(&DebugPkmCreator_Data.mon, &gPlayerParty[0], sizeof(struct Pokemon));
+            CopyMon(&sDebugPkmCreatorData.mon, &gPlayerParty[0], sizeof(struct Pokemon));
         else
-            ZeroMonData(&DebugPkmCreator_Data.mon);
-        DebugPkmCreator_Data.monBeingEdited = &DebugPkmCreator_Data.mon;
-        DebugPkmCreator_Data.index = 0;
+            ZeroMonData(&sDebugPkmCreatorData.mon);
+        sDebugPkmCreatorData.monBeingEdited = &sDebugPkmCreatorData.mon;
+        sDebugPkmCreatorData.index = 0;
         break;
     case 9: // Add to enemy party
         for (i = 0; i < PARTY_SIZE; i++)
@@ -553,38 +553,37 @@ void DebugPkmCreator_Init(u8 mode, u8 index)
         }
         if (i >= PARTY_SIZE)
             return;
-        //MgbaPrintf(MGBA_LOG_DEBUG, "i = %d", i);
         mons = &gEnemyParty[i];
         ZeroMonData(mons); // Is this really necessary?
-        ZeroMonData(&DebugPkmCreator_Data.mon);
-        DebugPkmCreator_Data.monBeingEdited = mons;
-        DebugPkmCreator_Data.index = i;
+        ZeroMonData(&sDebugPkmCreatorData.mon);
+        sDebugPkmCreatorData.monBeingEdited = mons;
+        sDebugPkmCreatorData.index = i;
         break;
     case 10: // Edit enemy party at index
-        DebugPkmCreator_Data.index = index;
-        mons = &gEnemyParty[DebugPkmCreator_Data.index];
-        CopyMon(&DebugPkmCreator_Data.mon, mons, sizeof(struct Pokemon));
-        DebugPkmCreator_Data.monBeingEdited = mons;
+        sDebugPkmCreatorData.index = index;
+        mons = &gEnemyParty[sDebugPkmCreatorData.index];
+        CopyMon(&sDebugPkmCreatorData.mon, mons, sizeof(struct Pokemon));
+        sDebugPkmCreatorData.monBeingEdited = mons;
         break;
     }
     // Set default data
     if (mode == 0 || mode == 6 || mode == 7 || mode == 9)
     {
-        SetMonData(&DebugPkmCreator_Data.mon, MON_DATA_OT_NAME, Str_DefaultOTName);
+        SetMonData(&sDebugPkmCreatorData.mon, MON_DATA_OT_NAME, Str_DefaultOTName);
         DebugPkmCreator_Init_SetDefaults();
     }
     // Populate the editor data
     DebugPkmCreator_PopulateDataStruct();
     // Draw the editor menu
     LoadMessageBoxAndBorderGfx();
-    DebugPkmCreator_headerWindowId = AddWindow(&DebugPkmCreator_HeaderWindowTemplate);
-    DrawStdWindowFrame(DebugPkmCreator_headerWindowId, FALSE);
-    CopyWindowToVram(DebugPkmCreator_headerWindowId, 3);
-    AddTextPrinterParameterized(DebugPkmCreator_headerWindowId, 1, mode == 0 ? Str_Header_Create : Str_Header_Edit, 0, 0, 0, NULL);
-    AddTextPrinterParameterized(DebugPkmCreator_headerWindowId, 0, Str_Header2, 105, 0, 0, NULL);
-    DebugPkmCreator_menuWindowId = AddWindow(&DebugPkmCreator_FullScreenWindowTemplate);
-    DrawStdWindowFrame(DebugPkmCreator_menuWindowId, FALSE);
-    CopyWindowToVram(DebugPkmCreator_menuWindowId, 3);
+    sDebugPkmCreatorData.headerWindowId = AddWindow(&DebugPkmCreator_HeaderWindowTemplate);
+    DrawStdWindowFrame(sDebugPkmCreatorData.headerWindowId, FALSE);
+    CopyWindowToVram(sDebugPkmCreatorData.headerWindowId, 3);
+    AddTextPrinterParameterized(sDebugPkmCreatorData.headerWindowId, 1, mode == 0 ? Str_Header_Create : Str_Header_Edit, 0, 0, 0, NULL);
+    AddTextPrinterParameterized(sDebugPkmCreatorData.headerWindowId, 0, Str_Header2, 105, 0, 0, NULL);
+    sDebugPkmCreatorData.menuWindowId = AddWindow(&DebugPkmCreator_FullScreenWindowTemplate);
+    DrawStdWindowFrame(sDebugPkmCreatorData.menuWindowId, FALSE);
+    CopyWindowToVram(sDebugPkmCreatorData.menuWindowId, 3);
     DebugPkmCreator_Redraw();
     CreateTask(DebugPkmCreator_ProcessInput, 10);
 }
@@ -597,19 +596,19 @@ static void DebugPkmCreator_Init_SetDefaults(void)
         switch (i)
         {
         default:
-            DebugPkmCreator_Data.data[i] = DebugPkmCreator_Options[i].initial;
+            sDebugPkmCreatorData.data[i] = DebugPkmCreator_Options[i].initial;
             break;
         case VAL_PID:
-            DebugPkmCreator_Data.data[i] = Random32();
+            sDebugPkmCreatorData.data[i] = Random32();
             break;
         case VAL_TID:
-            DebugPkmCreator_Data.data[i] = (*(u32*) &gSaveBlock2Ptr->playerTrainerId) & 0xffff;
+            sDebugPkmCreatorData.data[i] = (*(u32*) &gSaveBlock2Ptr->playerTrainerId) & 0xffff;
             break;
         case VAL_SID:
-            DebugPkmCreator_Data.data[i] = (*(u32*) &gSaveBlock2Ptr->playerTrainerId) >> 16;
+            sDebugPkmCreatorData.data[i] = (*(u32*) &gSaveBlock2Ptr->playerTrainerId) >> 16;
             break;
         case VAL_EXP:
-            DebugPkmCreator_Data.data[i] = gExperienceTables[gBaseStats[DebugPkmCreator_Options[0].initial].growthRate][DebugPkmCreator_Options[15].initial];
+            sDebugPkmCreatorData.data[i] = gExperienceTables[gBaseStats[DebugPkmCreator_Options[0].initial].growthRate][DebugPkmCreator_Options[15].initial];
             break;
         }
     }
@@ -618,23 +617,23 @@ static void DebugPkmCreator_Init_SetDefaults(void)
 
 static void DebugPkmCreator_Init_SetNewMonData(bool8 setMoves)
 {
-    struct Pokemon* mons = &DebugPkmCreator_Data.mon;
+    struct Pokemon* mons = &sDebugPkmCreatorData.mon;
     u32 data, i, j, k;
     // Buffer the OT name
     StringCopyN(DebugPkmCreator_NameBuffer, mons->box.otName, PLAYER_NAME_LENGTH);
-    data = (DebugPkmCreator_Data.data[3] << 16) | DebugPkmCreator_Data.data[2];
-    CreateMon(mons, DebugPkmCreator_Data.data[0], DebugPkmCreator_Data.data[15], 32, 1, DebugPkmCreator_Data.data[1], OT_ID_PRESET, data);
+    data = (sDebugPkmCreatorData.data[3] << 16) | sDebugPkmCreatorData.data[2];
+    CreateMon(mons, sDebugPkmCreatorData.data[0], sDebugPkmCreatorData.data[15], 32, 1, sDebugPkmCreatorData.data[1], OT_ID_PRESET, data);
     SetMonData(mons, MON_DATA_OT_NAME, DebugPkmCreator_NameBuffer);
-    data = ((DebugPkmCreator_Data.data[23] - 1) & 3) << 6;
-    data |= (DebugPkmCreator_Data.data[22] & 3) << 4;
-    data |= (DebugPkmCreator_Data.data[24] & 0xf);
+    data = ((sDebugPkmCreatorData.data[23] - 1) & 3) << 6;
+    data |= (sDebugPkmCreatorData.data[22] & 3) << 4;
+    data |= (sDebugPkmCreatorData.data[24] & 0xf);
     SetMonData(mons, MON_DATA_POKERUS, &data);
     for (i = 0; i < EDIT_OPTION_COUNT; i++)
     {
         switch (i)
         {
         default:
-            SetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, &DebugPkmCreator_Data.data[i]);
+            SetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, &sDebugPkmCreatorData.data[i]);
             break;
         // All these should already be set (or will be set later)
         case VAL_SPECIES ... VAL_OT: // PID, TID, OT
@@ -651,19 +650,19 @@ static void DebugPkmCreator_Init_SetNewMonData(bool8 setMoves)
         case VAL_METLOCATATION:
         case VAL_HP_CURRENT:
             if (!setMoves)
-                SetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, &DebugPkmCreator_Data.data[i]);
+                SetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, &sDebugPkmCreatorData.data[i]);
             break;
         case VAL_ABILITY:
             if (setMoves)
             {
-                if (gBaseStats[DebugPkmCreator_Data.data[0]].abilities[1])
+                if (gBaseStats[sDebugPkmCreatorData.data[0]].abilities[1])
                 {
-                    data = DebugPkmCreator_Data.data[1] & 1;
+                    data = sDebugPkmCreatorData.data[1] & 1;
                     SetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, &data);
                 }
                 break;
             }
-            SetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, &DebugPkmCreator_Data.data[i]);
+            SetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, &sDebugPkmCreatorData.data[i]);
             break;
         case VAL_SPDEF_IV: // IVs
             if (setMoves)
@@ -672,10 +671,10 @@ static void DebugPkmCreator_Init_SetNewMonData(bool8 setMoves)
                 SetMonData(mons, MON_DATA_IVS, &data);
                 break;
             }
-            SetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, &DebugPkmCreator_Data.data[i]);
+            SetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, &sDebugPkmCreatorData.data[i]);
             break;
         case VAL_STATUS:
-            j = DebugPkmCreator_Data.data[i];
+            j = sDebugPkmCreatorData.data[i];
             switch (j)
             {
             case 0:
@@ -704,21 +703,21 @@ static void DebugPkmCreator_Init_SetNewMonData(bool8 setMoves)
             SetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, &data);
             break;
         case VAL_SLEEP_TIMER:
-            if (DebugPkmCreator_Data.data[50] == 4)
+            if (sDebugPkmCreatorData.data[50] == 4)
             {
-                data = DebugPkmCreator_Data.data[i];
+                data = sDebugPkmCreatorData.data[i];
                 SetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, &data);
             }
             break;
         case VAL_PSN2_TIMER:
-            if (DebugPkmCreator_Data.data[i] == 6)
+            if (sDebugPkmCreatorData.data[i] == 6)
             {
-                data = DebugPkmCreator_Data.data[i] << 8 | STATUS1_TOXIC_POISON;
+                data = sDebugPkmCreatorData.data[i] << 8 | STATUS1_TOXIC_POISON;
                 SetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, &data);
             }
             break;
         case VAL_RIBBON_GIFTRIBBON:
-            data = DebugPkmCreator_Data.data[i];
+            data = sDebugPkmCreatorData.data[i];
             for (j = 0; j < 7; j++)
             {
                 k = data & 1;
@@ -732,14 +731,14 @@ static void DebugPkmCreator_Init_SetNewMonData(bool8 setMoves)
                 GiveMonInitialMoveset(mons);
                 break;
             }
-            SetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, &DebugPkmCreator_Data.data[i]);
+            SetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, &sDebugPkmCreatorData.data[i]);
             break;
         case VAL_MOVE_4_PPUP: // PP Up count (74 through 76 are set too)
             data = 0;
             for (j = 0; j < 4; j++)
             {
                 data <<= 2;
-                data |= (DebugPkmCreator_Data.data[74 + j] & 3);
+                data |= (sDebugPkmCreatorData.data[74 + j] & 3);
             }
             SetMonData(mons, DebugPkmCreator_Options[74].SetMonDataParam, &data);
             break;
@@ -751,18 +750,18 @@ static void DebugPkmCreator_Init_SetNewMonData(bool8 setMoves)
 
 static void DebugPkmCreator_SetMonData(void)
 {
-    struct Pokemon* mons = &DebugPkmCreator_Data.mon;
+    struct Pokemon* mons = &sDebugPkmCreatorData.mon;
     u32 data, i, j, k;
-    data = ((DebugPkmCreator_Data.data[23] - 1) & 3) << 6;
-    data |= (DebugPkmCreator_Data.data[22] & 3) << 4;
-    data |= (DebugPkmCreator_Data.data[24] & 0xf);
+    data = ((sDebugPkmCreatorData.data[23] - 1) & 3) << 6;
+    data |= (sDebugPkmCreatorData.data[22] & 3) << 4;
+    data |= (sDebugPkmCreatorData.data[24] & 0xf);
     SetMonData(mons, MON_DATA_POKERUS, &data);
     for (i = 0; i < EDIT_OPTION_COUNT; i++)
     {
         switch (i)
         {
         default:
-            SetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, &DebugPkmCreator_Data.data[i]);
+            SetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, &sDebugPkmCreatorData.data[i]);
             break;
         case VAL_SPECIES ... VAL_OT: // PID and TID, leave alone. 0 is species, which we handle in a different function
         case VAL_NICK ... VAL_NATURE: // Nickname (4) and OT name, set by the actual editor; 7-8 are gender and nature (readonly)
@@ -776,7 +775,7 @@ static void DebugPkmCreator_SetMonData(void)
             CalculateMonStats(mons);
             break;
         case 50: // Status
-            j = DebugPkmCreator_Data.data[i];
+            j = sDebugPkmCreatorData.data[i];
             switch (j)
             {
             case 0:
@@ -805,21 +804,21 @@ static void DebugPkmCreator_SetMonData(void)
             SetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, &data);
             break;
         case 51: // Sleep counter
-            if (DebugPkmCreator_Data.data[50] == 4)
+            if (sDebugPkmCreatorData.data[50] == 4)
             {
-                data = DebugPkmCreator_Data.data[i];
+                data = sDebugPkmCreatorData.data[i];
                 SetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, &data);
             }
             break;
         case 52: // Toxic counter
-            if (DebugPkmCreator_Data.data[i] == 6)
+            if (sDebugPkmCreatorData.data[i] == 6)
             {
-                data = DebugPkmCreator_Data.data[i] << 8 | STATUS1_TOXIC_POISON;
+                data = sDebugPkmCreatorData.data[i] << 8 | STATUS1_TOXIC_POISON;
                 SetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, &data);
             }
             break;
         case 63: // Gift ribbons
-            data = DebugPkmCreator_Data.data[i];
+            data = sDebugPkmCreatorData.data[i];
             for (j = 0; j < 7; j++)
             {
                 k = data & 1;
@@ -832,7 +831,7 @@ static void DebugPkmCreator_SetMonData(void)
             for (j = 0; j < 4; j++)
             {
                 data <<= 2;
-                data |= (DebugPkmCreator_Data.data[77 - j] & 3);
+                data |= (sDebugPkmCreatorData.data[77 - j] & 3);
             }
             SetMonData(mons, DebugPkmCreator_Options[74].SetMonDataParam, &data);
             break;
@@ -842,28 +841,28 @@ static void DebugPkmCreator_SetMonData(void)
 
 static void DebugPkmCreator_PopulateDataStruct(void)
 {
-    struct Pokemon* mons = &DebugPkmCreator_Data.mon;
+    struct Pokemon* mons = &sDebugPkmCreatorData.mon;
     u32 data, i, j;
     for (i = 0; i < EDIT_OPTION_COUNT; i++)
     {
         switch (i)
         {
         default:
-            DebugPkmCreator_Data.data[i] = GetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, NULL);
+            sDebugPkmCreatorData.data[i] = GetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, NULL);
             break;
         case VAL_TID:
             data = GetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, NULL);
-            DebugPkmCreator_Data.data[i] = data & 0xffff;
+            sDebugPkmCreatorData.data[i] = data & 0xffff;
             break;
         case VAL_SID:
             data = GetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, NULL);
-            DebugPkmCreator_Data.data[i] = data >> 16;
+            sDebugPkmCreatorData.data[i] = data >> 16;
             break;
         case VAL_OT:
-            DebugPkmCreator_Data.data[i] = (u32) &mons->box.otName;
+            sDebugPkmCreatorData.data[i] = (u32) &mons->box.otName;
             break;
         case VAL_NICK:
-            DebugPkmCreator_Data.data[i] = (u32) &mons->box.nickname;
+            sDebugPkmCreatorData.data[i] = (u32) &mons->box.nickname;
             break;
         case VAL_PKM_GENDER:
             data = GetMonGender(mons);
@@ -871,27 +870,27 @@ static void DebugPkmCreator_PopulateDataStruct(void)
                 data = 1;
             else if (data == MON_GENDERLESS)
                 data = 2;
-            DebugPkmCreator_Data.data[i] = data;
+            sDebugPkmCreatorData.data[i] = data;
             break;
         case VAL_NATURE:
-            DebugPkmCreator_Data.data[i] = GetNature(mons);
+            sDebugPkmCreatorData.data[i] = GetNature(mons);
             break;
         case VAL_PKRUS_STRAIN:
             data = GetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, NULL);
             data &= 0x30;
             data >>= 4;
-            DebugPkmCreator_Data.data[i] = data;
+            sDebugPkmCreatorData.data[i] = data;
             break;
         case VAL_PKRUS_DAYS_DEF:
             data = GetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, NULL);
             data &= 0xc0;
             data >>= 6;
-            DebugPkmCreator_Data.data[i] = data + 1;
+            sDebugPkmCreatorData.data[i] = data + 1;
             break;
         case VAL_PKRUS_DAYS_LEFT:
             data = GetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, NULL);
             data &= 0xf;
-            DebugPkmCreator_Data.data[i] = data;
+            sDebugPkmCreatorData.data[i] = data;
             break;
         case VAL_STATUS:
             data = GetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, NULL);
@@ -908,17 +907,17 @@ static void DebugPkmCreator_PopulateDataStruct(void)
             else if (data & STATUS1_TOXIC_POISON)
                 data = 6;
             else data = 0;
-            DebugPkmCreator_Data.data[i] = data;
+            sDebugPkmCreatorData.data[i] = data;
             break;
         case VAL_SLEEP_TIMER:
             data = GetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, NULL);
             data &= STATUS1_SLEEP;
-            DebugPkmCreator_Data.data[i] = data;
+            sDebugPkmCreatorData.data[i] = data;
             break;
         case VAL_PSN2_TIMER:
             data = GetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, NULL);
             data >>= 8;
-            DebugPkmCreator_Data.data[i] = data;
+            sDebugPkmCreatorData.data[i] = data;
             break;
         case VAL_RIBBON_GIFTRIBBON:
             data = 0;
@@ -927,17 +926,17 @@ static void DebugPkmCreator_PopulateDataStruct(void)
                 data <<= 1;
                 data |= GetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam - 1 + (7 - j), NULL);
             }
-            DebugPkmCreator_Data.data[i] = data;
+            sDebugPkmCreatorData.data[i] = data;
             break;
         case VAL_MOVE_1_PPUP ... VAL_MOVE_4_PPUP:
             data = GetMonData(mons, DebugPkmCreator_Options[i].SetMonDataParam, NULL);
             j = (i - 74) * 2;
             data >>= j;
-            DebugPkmCreator_Data.data[i] = data & 3;
+            sDebugPkmCreatorData.data[i] = data & 3;
             break;
         case VAL_IS_SHINY:
-            //GetMonData(&DebugPkmCreator_Data.mon, MON_DATA_PERSONALITY)
-            DebugPkmCreator_Data.data[i] = IsShinyOtIdPersonality(DebugPkmCreator_Data.data[VAL_OT], DebugPkmCreator_Data.data[VAL_PID]);
+            //GetMonData(&sDebugPkmCreatorData.mon, MON_DATA_PERSONALITY)
+            sDebugPkmCreatorData.data[i] = IsShinyOtIdPersonality(sDebugPkmCreatorData.data[VAL_OT], sDebugPkmCreatorData.data[VAL_PID]);
             break;
         }
     }
@@ -950,17 +949,17 @@ static void DebugPkmCreator_Redraw(void)
     u32 x = 0;
     u32 y = 0;
     u8* bufferPosition;
-    const u8* page = DebugPkmCreator_Pages[DebugPkmCreator_CurrentPage];
+    const u8* page = DebugPkmCreator_Pages[sDebugPkmCreatorData.currentPage];
     const struct EditPokemonStruct* data;
     u8 index;
-    ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_CurrentPage + 1, STR_CONV_MODE_LEFT_ALIGN, 2);
+    ConvertIntToDecimalStringN(gStringVar1, sDebugPkmCreatorData.currentPage + 1, STR_CONV_MODE_LEFT_ALIGN, 2);
     StringExpandPlaceholders(gStringVar2, Str_Page);
-    AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, 0, gStringVar2, x, y, 0, NULL);
-    if ((DebugPkmCreator_Data.mode >= 1 && DebugPkmCreator_Data.mode <= 5) || DebugPkmCreator_Data.mode == 10) {
+    AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, 0, gStringVar2, x, y, 0, NULL);
+    if ((sDebugPkmCreatorData.mode >= 1 && sDebugPkmCreatorData.mode <= 5) || sDebugPkmCreatorData.mode == 10) {
         x = 100;
-        ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_Data.index + 1, STR_CONV_MODE_LEFT_ALIGN, 2);
+        ConvertIntToDecimalStringN(gStringVar1, sDebugPkmCreatorData.index + 1, STR_CONV_MODE_LEFT_ALIGN, 2);
         StringExpandPlaceholders(gStringVar2, Str_Slot);
-        AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, 0, gStringVar2, x, y, 0, NULL);
+        AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, 0, gStringVar2, x, y, 0, NULL);
         x = 0;
     }
     y += 16;
@@ -969,7 +968,7 @@ static void DebugPkmCreator_Redraw(void)
         bufferPosition = gStringVar2;
         index = page[i];
         if (index == 0xFF) break;
-        if (i == DebugPkmCreator_CurrentlySelectedOption)
+        if (i == sDebugPkmCreatorData.selectedOption)
         {
             // Color the currently selected option green
             bufferPosition = StringCopy(bufferPosition, Str_CursorColor);
@@ -983,18 +982,18 @@ static void DebugPkmCreator_Redraw(void)
             case EDIT_NORMAL:
             case EDIT_READONLY:
             default:
-                ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_Data.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
+                ConvertIntToDecimalStringN(gStringVar1, sDebugPkmCreatorData.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
                 break;
             case EDIT_HEX:
-                ConvertUIntToHexStringN(gStringVar1, DebugPkmCreator_Data.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
+                ConvertUIntToHexStringN(gStringVar1, sDebugPkmCreatorData.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
                 break;
             case EDIT_NULL:
                 break;
             case EDIT_BOOL:
-                StringCopy(gStringVar1, DebugPkmCreator_Data.data[index] ? Str_On : Str_Off);
+                StringCopy(gStringVar1, sDebugPkmCreatorData.data[index] ? Str_On : Str_Off);
                 break;
             case EDIT_STRING:
-                StringCopyN(gStringVar1, (u8*) DebugPkmCreator_Data.data[index], data->digitCount);
+                StringCopyN(gStringVar1, (u8*) sDebugPkmCreatorData.data[index], data->digitCount);
                 // Pokémon names can sometimes be unterminated, so add an extra terminator here
                 gStringVar1[data->digitCount] = EOS;
                 break;
@@ -1010,10 +1009,10 @@ static void DebugPkmCreator_Redraw(void)
             }
             *gStringVar3 = EOS;
             StringExpandPlaceholders(bufferPosition, Str_StringVars);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
             break;
         case VAL_SPECIES:
-            ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_Data.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
+            ConvertIntToDecimalStringN(gStringVar1, sDebugPkmCreatorData.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
             if (data->text != NULL)
             {
                 bufferPosition = StringCopy(bufferPosition, data->text);
@@ -1021,12 +1020,12 @@ static void DebugPkmCreator_Redraw(void)
             }
             *gStringVar3 = EOS;
             StringExpandPlaceholders(bufferPosition, Str_StringVars);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
             x = 140;
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, 1, gSpeciesNames[DebugPkmCreator_Data.data[index]], x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, 1, gSpeciesNames[sDebugPkmCreatorData.data[index]], x, y, 0, NULL);
             break;
         case VAL_LEVEL:
-            ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_Data.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
+            ConvertIntToDecimalStringN(gStringVar1, sDebugPkmCreatorData.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
             if (data->text != NULL)
             {
                 bufferPosition = StringCopy(bufferPosition, data->text);
@@ -1034,13 +1033,13 @@ static void DebugPkmCreator_Redraw(void)
             }
             *gStringVar3 = EOS;
             StringExpandPlaceholders(bufferPosition, Str_StringVars);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
             x = 140;
-            ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_Data.data[VAL_EXP], STR_CONV_MODE_LEADING_ZEROS, DebugPkmCreator_Options[VAL_EXP].digitCount);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar1, x, y, 0, NULL);
+            ConvertIntToDecimalStringN(gStringVar1, sDebugPkmCreatorData.data[VAL_EXP], STR_CONV_MODE_LEADING_ZEROS, DebugPkmCreator_Options[VAL_EXP].digitCount);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar1, x, y, 0, NULL);
             break;
         case VAL_TID:
-            ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_Data.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
+            ConvertIntToDecimalStringN(gStringVar1, sDebugPkmCreatorData.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
             if (data->text != NULL)
             {
                 bufferPosition = StringCopy(bufferPosition, data->text);
@@ -1048,15 +1047,15 @@ static void DebugPkmCreator_Redraw(void)
             }
             *gStringVar3 = EOS;
             StringExpandPlaceholders(bufferPosition, Str_StringVars);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
             x = 140;
-            ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_Data.data[VAL_SID], STR_CONV_MODE_LEADING_ZEROS, DebugPkmCreator_Options[VAL_SID].digitCount);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar1, x, y, 0, NULL);
+            ConvertIntToDecimalStringN(gStringVar1, sDebugPkmCreatorData.data[VAL_SID], STR_CONV_MODE_LEADING_ZEROS, DebugPkmCreator_Options[VAL_SID].digitCount);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar1, x, y, 0, NULL);
             x = 180;
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, GenderIndexes[DebugPkmCreator_Data.data[VAL_OT_GENDER]], x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, GenderIndexes[sDebugPkmCreatorData.data[VAL_OT_GENDER]], x, y, 0, NULL);
             break;
         case VAL_PID:
-            ConvertUIntToHexStringN(gStringVar1, DebugPkmCreator_Data.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
+            ConvertUIntToHexStringN(gStringVar1, sDebugPkmCreatorData.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
             if (data->text != NULL)
             {
                 bufferPosition = StringCopy(bufferPosition, data->text);
@@ -1065,17 +1064,17 @@ static void DebugPkmCreator_Redraw(void)
             bufferPosition = StringCopy(bufferPosition, Str_HexPrefix);
             *gStringVar3 = EOS;
             StringExpandPlaceholders(bufferPosition, Str_StringVars);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
             x = 160;
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, 1, gNatureNamePointers[DebugPkmCreator_Data.data[8]], x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, 1, gNatureNamePointers[sDebugPkmCreatorData.data[8]], x, y, 0, NULL);
             x = 208;
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, GenderIndexes[DebugPkmCreator_Data.data[VAL_PKM_GENDER]], x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, GenderIndexes[sDebugPkmCreatorData.data[VAL_PKM_GENDER]], x, y, 0, NULL);
             x = 214;
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, IsShinyIndex[DebugPkmCreator_Data.data[VAL_IS_SHINY]], x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, IsShinyIndex[sDebugPkmCreatorData.data[VAL_IS_SHINY]], x, y, 0, NULL);
             break;
         case VAL_OT_GENDER:
         case VAL_PKM_GENDER:
-            StringCopy(gStringVar1, GenderIndexes[DebugPkmCreator_Data.data[index]]);
+            StringCopy(gStringVar1, GenderIndexes[sDebugPkmCreatorData.data[index]]);
             if (data->text != NULL)
             {
                 bufferPosition = StringCopy(bufferPosition, data->text);
@@ -1083,10 +1082,10 @@ static void DebugPkmCreator_Redraw(void)
             }
             *gStringVar3 = EOS;
             StringExpandPlaceholders(bufferPosition, Str_StringVars);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
             break;
         case VAL_GAME:
-            ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_Data.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
+            ConvertIntToDecimalStringN(gStringVar1, sDebugPkmCreatorData.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
             if (data->text != NULL)
             {
                 bufferPosition = StringCopy(bufferPosition, data->text);
@@ -1094,12 +1093,12 @@ static void DebugPkmCreator_Redraw(void)
             }
             *gStringVar3 = EOS;
             StringExpandPlaceholders(bufferPosition, Str_StringVars);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
             x = 130;
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, 1, gText_ThreeDashes, x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, 1, gText_ThreeDashes, x, y, 0, NULL);
             break;
         case VAL_ITEM:
-            ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_Data.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
+            ConvertIntToDecimalStringN(gStringVar1, sDebugPkmCreatorData.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
             if (data->text != NULL)
             {
                 bufferPosition = StringCopy(bufferPosition, data->text);
@@ -1107,13 +1106,13 @@ static void DebugPkmCreator_Redraw(void)
             }
             *gStringVar3 = EOS;
             StringExpandPlaceholders(bufferPosition, Str_StringVars);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
             x = 145;
-            CopyItemName(DebugPkmCreator_Data.data[index], gStringVar1);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, 1, gStringVar1, x, y, 0, NULL);
+            CopyItemName(sDebugPkmCreatorData.data[index], gStringVar1);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, 1, gStringVar1, x, y, 0, NULL);
             break;
         case VAL_ABILITY:
-            StringCopy(gStringVar1, gAbilityNames[GetAbilityBySpecies(DebugPkmCreator_Data.data[0], DebugPkmCreator_Data.data[index])]);
+            StringCopy(gStringVar1, gAbilityNames[GetAbilityBySpecies(sDebugPkmCreatorData.data[0], sDebugPkmCreatorData.data[index])]);
             if (data->text != NULL)
             {
                 bufferPosition = StringCopy(bufferPosition, data->text);
@@ -1121,10 +1120,10 @@ static void DebugPkmCreator_Redraw(void)
             }
             *gStringVar3 = EOS;
             StringExpandPlaceholders(bufferPosition, Str_StringVars);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
             break;
         case VAL_METLOCATATION:
-            ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_Data.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
+            ConvertIntToDecimalStringN(gStringVar1, sDebugPkmCreatorData.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
             if (data->text != NULL)
             {
                 bufferPosition = StringCopy(bufferPosition, data->text);
@@ -1132,13 +1131,13 @@ static void DebugPkmCreator_Redraw(void)
             }
             *gStringVar3 = EOS;
             StringExpandPlaceholders(bufferPosition, Str_StringVars);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
             x = 130;
-            GetMapName_HandleVersion(gStringVar1, DebugPkmCreator_Data.data[index], DebugPkmCreator_Data.data[13]);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, 1, gStringVar1, x, y, 0, NULL);
+            GetMapName_HandleVersion(gStringVar1, sDebugPkmCreatorData.data[index], sDebugPkmCreatorData.data[13]);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, 1, gStringVar1, x, y, 0, NULL);
             break;
         case VAL_BALL:
-            ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_Data.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
+            ConvertIntToDecimalStringN(gStringVar1, sDebugPkmCreatorData.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
             if (data->text != NULL)
             {
                 bufferPosition = StringCopy(bufferPosition, data->text);
@@ -1146,13 +1145,13 @@ static void DebugPkmCreator_Redraw(void)
             }
             *gStringVar3 = EOS;
             StringExpandPlaceholders(bufferPosition, Str_StringVars);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
             x = 130;
-            CopyItemName(DebugPkmCreator_Data.data[index], gStringVar1);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, 1, gStringVar1, x, y, 0, NULL);
+            CopyItemName(sDebugPkmCreatorData.data[index], gStringVar1);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, 1, gStringVar1, x, y, 0, NULL);
             break;
         case VAL_STATUS:
-            ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_Data.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
+            ConvertIntToDecimalStringN(gStringVar1, sDebugPkmCreatorData.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
             if (data->text != NULL)
             {
                 bufferPosition = StringCopy(bufferPosition, data->text);
@@ -1160,13 +1159,13 @@ static void DebugPkmCreator_Redraw(void)
             }
             *gStringVar3 = EOS;
             StringExpandPlaceholders(bufferPosition, Str_StringVars);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
             x = 130;
-            StringCopy(gStringVar1, StatusIndexes[DebugPkmCreator_Data.data[index]]);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, 1, gStringVar1, x, y, 0, NULL);
+            StringCopy(gStringVar1, StatusIndexes[sDebugPkmCreatorData.data[index]]);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, 1, gStringVar1, x, y, 0, NULL);
             break;			
         case VAL_MOVE_1 ... VAL_MOVE_4:
-            ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_Data.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
+            ConvertIntToDecimalStringN(gStringVar1, sDebugPkmCreatorData.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
             if (data->text != NULL)
             {
                 bufferPosition = StringCopy(bufferPosition, data->text);
@@ -1178,18 +1177,18 @@ static void DebugPkmCreator_Redraw(void)
             }
             *gStringVar3 = EOS;
             StringExpandPlaceholders(bufferPosition, Str_StringVars);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
             x = 120;
-            ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_Data.data[70 + (index - 66)], STR_CONV_MODE_LEADING_ZEROS, 2);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar1, x, y, 0, NULL);
+            ConvertIntToDecimalStringN(gStringVar1, sDebugPkmCreatorData.data[70 + (index - 66)], STR_CONV_MODE_LEADING_ZEROS, 2);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar1, x, y, 0, NULL);
             x = 136;
-            ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_Data.data[74 + (index - 66)], STR_CONV_MODE_LEADING_ZEROS, 1);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar1, x, y, 0, NULL);
+            ConvertIntToDecimalStringN(gStringVar1, sDebugPkmCreatorData.data[74 + (index - 66)], STR_CONV_MODE_LEADING_ZEROS, 1);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar1, x, y, 0, NULL);
             x = 144;
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, 1, gMoveNames[DebugPkmCreator_Data.data[index]], x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, 1, gMoveNames[sDebugPkmCreatorData.data[index]], x, y, 0, NULL);
             break;
         case VAL_PKRUS_STRAIN:
-            ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_Data.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
+            ConvertIntToDecimalStringN(gStringVar1, sDebugPkmCreatorData.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
             if (data->text != NULL)
             {
                 bufferPosition = StringCopy(bufferPosition, data->text);
@@ -1197,16 +1196,16 @@ static void DebugPkmCreator_Redraw(void)
             }
             *gStringVar3 = EOS;
             StringExpandPlaceholders(bufferPosition, Str_StringVars);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
             x = 140;
-            ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_Data.data[VAL_PKRUS_DAYS_DEF], STR_CONV_MODE_LEADING_ZEROS, DebugPkmCreator_Options[VAL_PKRUS_DAYS_DEF].digitCount);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar1, x, y, 0, NULL);
+            ConvertIntToDecimalStringN(gStringVar1, sDebugPkmCreatorData.data[VAL_PKRUS_DAYS_DEF], STR_CONV_MODE_LEADING_ZEROS, DebugPkmCreator_Options[VAL_PKRUS_DAYS_DEF].digitCount);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar1, x, y, 0, NULL);
             x = 180;
-            ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_Data.data[VAL_PKRUS_DAYS_LEFT], STR_CONV_MODE_LEADING_ZEROS, DebugPkmCreator_Options[VAL_PKRUS_DAYS_LEFT].digitCount);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar1, x, y, 0, NULL);
+            ConvertIntToDecimalStringN(gStringVar1, sDebugPkmCreatorData.data[VAL_PKRUS_DAYS_LEFT], STR_CONV_MODE_LEADING_ZEROS, DebugPkmCreator_Options[VAL_PKRUS_DAYS_LEFT].digitCount);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar1, x, y, 0, NULL);
             break;
         case VAL_HP_IV ... VAL_SPDEF_IV:
-            ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_Data.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
+            ConvertIntToDecimalStringN(gStringVar1, sDebugPkmCreatorData.data[index], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
             if (data->text != NULL)
             {
                 bufferPosition = StringCopy(bufferPosition, data->text);
@@ -1214,22 +1213,22 @@ static void DebugPkmCreator_Redraw(void)
             }
             *gStringVar3 = EOS;
             StringExpandPlaceholders(bufferPosition, Str_StringVars);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
 
             x = 136;
-            ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_Data.data[index + 6], STR_CONV_MODE_LEADING_ZEROS, DebugPkmCreator_Options[VAL_HP_MAX].digitCount);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar1, x, y, 0, NULL);
+            ConvertIntToDecimalStringN(gStringVar1, sDebugPkmCreatorData.data[index + 6], STR_CONV_MODE_LEADING_ZEROS, DebugPkmCreator_Options[VAL_HP_MAX].digitCount);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar1, x, y, 0, NULL);
             x = 172;
-            ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_Data.data[index - 6], STR_CONV_MODE_LEADING_ZEROS, DebugPkmCreator_Options[VAL_HP_MAX].digitCount);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar1, x, y, 0, NULL);
+            ConvertIntToDecimalStringN(gStringVar1, sDebugPkmCreatorData.data[index - 6], STR_CONV_MODE_LEADING_ZEROS, DebugPkmCreator_Options[VAL_HP_MAX].digitCount);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar1, x, y, 0, NULL);
             if (index == VAL_HP_IV)
             {
                 x = 172;
-                ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_Data.data[VAL_HP_CURRENT], STR_CONV_MODE_LEADING_ZEROS, DebugPkmCreator_Options[VAL_HP_MAX].digitCount);
-                AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar1, x, y, 0, NULL);
+                ConvertIntToDecimalStringN(gStringVar1, sDebugPkmCreatorData.data[VAL_HP_CURRENT], STR_CONV_MODE_LEADING_ZEROS, DebugPkmCreator_Options[VAL_HP_MAX].digitCount);
+                AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar1, x, y, 0, NULL);
                 x = 208;
-                ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_Data.data[VAL_HP_MAX], STR_CONV_MODE_LEADING_ZEROS, DebugPkmCreator_Options[VAL_HP_MAX].digitCount);
-                AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar1, x, y, 0, NULL);
+                ConvertIntToDecimalStringN(gStringVar1, sDebugPkmCreatorData.data[VAL_HP_MAX], STR_CONV_MODE_LEADING_ZEROS, DebugPkmCreator_Options[VAL_HP_MAX].digitCount);
+                AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar1, x, y, 0, NULL);
             }
             break;
         }
@@ -1246,21 +1245,21 @@ static void DebugPkmCreator_Redraw(void)
 static void DebugPkmCreator_EditModeRedraw(u32 digit, u8 editIndex)
 {
     u32 x = 100;
-    u32 y = DebugPkmCreator_CurrentlySelectedOption * 2 * 8 + 16;
+    u32 y = sDebugPkmCreatorData.selectedOption * 2 * 8 + 16;
     u32 i = 0;
     u8* bufferPosition = gStringVar2;
-    const u8* page = DebugPkmCreator_Pages[DebugPkmCreator_CurrentPage];
+    const u8* page = DebugPkmCreator_Pages[sDebugPkmCreatorData.currentPage];
     const struct EditPokemonStruct* data;
     u8 index;
     u32 digitToHighlight;
 
-    if (editIndex != 0 && DebugPkmCreator_AltIndexes[DebugPkmCreator_CurrentPage][DebugPkmCreator_CurrentlySelectedOption][editIndex - 1] != 0xFF)
+    if (editIndex != 0 && DebugPkmCreator_AltIndexes[sDebugPkmCreatorData.currentPage][sDebugPkmCreatorData.selectedOption][editIndex - 1] != 0xFF)
     {
-        index = DebugPkmCreator_AltIndexes[DebugPkmCreator_CurrentPage][DebugPkmCreator_CurrentlySelectedOption][editIndex - 1];
+        index = DebugPkmCreator_AltIndexes[sDebugPkmCreatorData.currentPage][sDebugPkmCreatorData.selectedOption][editIndex - 1];
         x += 5 * 8 * editIndex;
     }
     else
-        index = page[DebugPkmCreator_CurrentlySelectedOption];
+        index = page[sDebugPkmCreatorData.selectedOption];
 
     data = &DebugPkmCreator_Options[index];
 
@@ -1271,11 +1270,11 @@ static void DebugPkmCreator_EditModeRedraw(u32 digit, u8 editIndex)
         {
         case EDIT_NORMAL:
         default:
-            FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
+            FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
             ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_editingVal[editIndex], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
             break;
         case EDIT_HEX:
-            FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
+            FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
             ConvertUIntToHexStringN(gStringVar1, DebugPkmCreator_editingVal[editIndex], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
             bufferPosition = StringCopy(bufferPosition, Str_CursorColor);
             bufferPosition = StringCopy(bufferPosition, Str_HexPrefix);
@@ -1283,54 +1282,54 @@ static void DebugPkmCreator_EditModeRedraw(u32 digit, u8 editIndex)
         case EDIT_NULL:
             return; // Haha, don't even make the effort...
         case EDIT_BOOL:
-            FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, 24, 16);
+            FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, 24, 16);
             bufferPosition = StringCopy(bufferPosition, Str_Cursor2Color);
             bufferPosition = StringCopy(bufferPosition, DebugPkmCreator_editingVal[editIndex] ? Str_On : Str_Off);
             *bufferPosition = EOS;
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
             return;
         case EDIT_STRING:
-            FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
+            FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
             StringCopyN(gStringVar1, DebugPkmCreator_NameBuffer, data->digitCount);
             break;
         }
         break;
     case VAL_SPECIES:
         // Same as the default case, except we draw more data here
-        FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
+        FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
         ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_editingVal[editIndex], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
         if (editIndex == 0)
         {
             x = 140;
-            FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, 72, 16);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, 1, gSpeciesNames[DebugPkmCreator_editingVal[editIndex]], x, y, 0, NULL);
+            FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, 72, 16);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, 1, gSpeciesNames[DebugPkmCreator_editingVal[editIndex]], x, y, 0, NULL);
             x = 100; // Reset for the actual species number
         }
         break;
     case VAL_LEVEL:
-        FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
+        FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
         ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_editingVal[editIndex], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
         if (editIndex == 0)
         {
-            //u32 newExp = gExperienceTables[gBaseStats[DebugPkmCreator_Data.data[VAL_SPECIES]].growthRate][DebugPkmCreator_editingVal[editIndex]];
+            //u32 newExp = gExperienceTables[gBaseStats[sDebugPkmCreatorData.data[VAL_SPECIES]].growthRate][DebugPkmCreator_editingVal[editIndex]];
             x = 140;
-            FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, 120, 16);
-            ConvertIntToDecimalStringN(gStringVar2, DebugPkmCreator_Data.data[VAL_EXP], STR_CONV_MODE_LEADING_ZEROS, DebugPkmCreator_Options[VAL_EXP].digitCount);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
+            FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, 120, 16);
+            ConvertIntToDecimalStringN(gStringVar2, sDebugPkmCreatorData.data[VAL_EXP], STR_CONV_MODE_LEADING_ZEROS, DebugPkmCreator_Options[VAL_EXP].digitCount);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
             x = 100;
         }
         break;
     case VAL_TID:
-        FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
+        FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
         ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_editingVal[editIndex], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
         if (editIndex == 0)
         {
             x = 140;
-            FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, 120, 16);
-            ConvertIntToDecimalStringN(gStringVar2, DebugPkmCreator_Data.data[VAL_SID], STR_CONV_MODE_LEADING_ZEROS, DebugPkmCreator_Options[VAL_SID].digitCount);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
+            FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, 120, 16);
+            ConvertIntToDecimalStringN(gStringVar2, sDebugPkmCreatorData.data[VAL_SID], STR_CONV_MODE_LEADING_ZEROS, DebugPkmCreator_Options[VAL_SID].digitCount);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
             x = 180;
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, GenderIndexes[DebugPkmCreator_Data.data[VAL_OT_GENDER]], x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, GenderIndexes[sDebugPkmCreatorData.data[VAL_OT_GENDER]], x, y, 0, NULL);
             x = 100;
         }
         break;
@@ -1338,147 +1337,147 @@ static void DebugPkmCreator_EditModeRedraw(u32 digit, u8 editIndex)
         if (editIndex == 0) {
             u32 pid = DebugPkmCreator_editingVal[editIndex];
             u16 nature = GetNatureFromPersonality(pid);
-            u8 gender = GetGenderFromSpeciesAndPersonality(DebugPkmCreator_Data.data[VAL_SPECIES], pid);
-            u8 isSihny = IsShinyOtIdPersonality(DebugPkmCreator_Data.data[VAL_OT], pid);
+            u8 gender = GetGenderFromSpeciesAndPersonality(sDebugPkmCreatorData.data[VAL_SPECIES], pid);
+            u8 isSihny = IsShinyOtIdPersonality(sDebugPkmCreatorData.data[VAL_OT], pid);
             if (gender == MON_FEMALE) 
                 gender = 1;
             else if (gender == MON_GENDERLESS) 
                 gender = 2;
             x = 160;
-            FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, 120, 16);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, 1, gNatureNamePointers[nature], x, y, 0, NULL);
+            FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, 120, 16);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, 1, gNatureNamePointers[nature], x, y, 0, NULL);
             x = 208;
             StringCopy(gStringVar2, GenderIndexes[gender]);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
             x = 214;
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, IsShinyIndex[isSihny], x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, IsShinyIndex[isSihny], x, y, 0, NULL);
             x = 100;
         }
-        FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, 60, 16);
+        FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, 60, 16);
         ConvertUIntToHexStringN(gStringVar1, DebugPkmCreator_editingVal[editIndex], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
         bufferPosition = StringCopy(bufferPosition, Str_CursorColor);
         bufferPosition = StringCopy(bufferPosition, Str_HexPrefix);
         break;
     case VAL_OT_GENDER:
     case VAL_PKM_GENDER:
-        if (editIndex != 0 && page[DebugPkmCreator_CurrentlySelectedOption] == 0)
+        if (editIndex != 0 && page[sDebugPkmCreatorData.selectedOption] == 0)
             x = 204;
-        FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, 8, 16);
+        FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, 8, 16);
         bufferPosition = StringCopy(bufferPosition, Str_Cursor2Color);
         bufferPosition = StringCopy(bufferPosition, GenderIndexes[DebugPkmCreator_editingVal[editIndex]]);
         *bufferPosition = EOS;
-        AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
+        AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
         return;
     case VAL_GAME:
-        FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
+        FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
         ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_editingVal[editIndex], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
         if (editIndex == 0)
         {
             x = 130;
-            FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, 120, 16);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, 1, gText_ThreeDashes, x, y, 0, NULL);
+            FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, 120, 16);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, 1, gText_ThreeDashes, x, y, 0, NULL);
             x = 100;
         }
         break;
     case VAL_ITEM:
-        FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
+        FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
         ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_editingVal[editIndex], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
         if (editIndex == 0)
         {
             x = 145;
-            FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, 120, 16);
+            FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, 120, 16);
             CopyItemName(DebugPkmCreator_editingVal[editIndex], gStringVar2);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, 1, gStringVar2, x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, 1, gStringVar2, x, y, 0, NULL);
             x = 100;
         }
         break;
     case VAL_ABILITY:
-        if (editIndex != 0 && page[DebugPkmCreator_CurrentlySelectedOption] == 0)
+        if (editIndex != 0 && page[sDebugPkmCreatorData.selectedOption] == 0)
             x = 204;
-        FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, 120, 16);
+        FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, 120, 16);
         bufferPosition = StringCopy(bufferPosition, Str_Cursor2Color);
-        bufferPosition = StringCopy(bufferPosition, gAbilityNames[GetAbilityBySpecies(DebugPkmCreator_Data.data[0], DebugPkmCreator_editingVal[editIndex])]);
+        bufferPosition = StringCopy(bufferPosition, gAbilityNames[GetAbilityBySpecies(sDebugPkmCreatorData.data[0], DebugPkmCreator_editingVal[editIndex])]);
         *bufferPosition = EOS;
-        AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
+        AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
         return;
     case VAL_METLOCATATION:
-        FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
+        FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
         ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_editingVal[editIndex], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
         if (editIndex == 0)
         {
             x = 130;
-            FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, 120, 16);
-            GetMapName_HandleVersion(gStringVar2, DebugPkmCreator_editingVal[editIndex], DebugPkmCreator_Data.data[13]);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, 1, gStringVar2, x, y, 0, NULL);
+            FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, 120, 16);
+            GetMapName_HandleVersion(gStringVar2, DebugPkmCreator_editingVal[editIndex], sDebugPkmCreatorData.data[13]);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, 1, gStringVar2, x, y, 0, NULL);
             x = 100;
         }
         break;
     case VAL_BALL:
-        FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
+        FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
         ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_editingVal[editIndex], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
         if (editIndex == 0)
         {
             x = 130;
-            FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, 120, 16);
+            FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, 120, 16);
             CopyItemName(DebugPkmCreator_editingVal[editIndex], gStringVar2);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, 1, gStringVar2, x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, 1, gStringVar2, x, y, 0, NULL);
             x = 100;
         }
         break;
     case VAL_STATUS:
-        FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
+        FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
         ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_editingVal[editIndex], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
         if (editIndex == 0)
         {
             x = 130;
-            FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, 120, 16);
+            FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, 120, 16);
             CopyItemName(DebugPkmCreator_editingVal[editIndex], gStringVar2);
             StringCopy(gStringVar2, StatusIndexes[DebugPkmCreator_editingVal[editIndex]]);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, 1, gStringVar2, x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, 1, gStringVar2, x, y, 0, NULL);
             x = 100;
         }
         break;
     case VAL_HP_EV ... VAL_SPDEF_EV:
-        FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
+        FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
         ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_editingVal[editIndex], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
         x = 136;
         break;
     case VAL_HP_CURRENT:
-        FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
+        FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
         ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_editingVal[editIndex], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
         x = 172;
         break;
     case VAL_MOVE_1 ... VAL_MOVE_4:
-        FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, data->digitCount * 6 - 4, 16);
+        FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, data->digitCount * 6 - 4, 16);
         ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_editingVal[editIndex], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
         if (editIndex == 0)
         {
             x = 144;
             // TODO: Fill all the way to the end?
-            FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, 120, 16);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, 1, gMoveNames[DebugPkmCreator_editingVal[editIndex]], x, y, 0, NULL);
+            FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, 120, 16);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, 1, gMoveNames[DebugPkmCreator_editingVal[editIndex]], x, y, 0, NULL);
             x = 100;
         }
         break;
     case VAL_MOVE_1_PP ... VAL_MOVE_4_PP:
         x = 120;
-        FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
+        FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
         ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_editingVal[editIndex], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
         break;
     case VAL_MOVE_1_PPUP ... VAL_MOVE_4_PPUP:
         if (TRUE)
         {
-            u16 move = DebugPkmCreator_Data.data[index - 8];
+            u16 move = sDebugPkmCreatorData.data[index - 8];
             u8 basePP = gBattleMoves[move].pp;
             basePP = basePP + ((basePP * 20 * DebugPkmCreator_editingVal[editIndex]) / 100);
 
             x = 120;
-            FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, DebugPkmCreator_Options[VAL_MOVE_1_PP].digitCount * 6, 16);
+            FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, DebugPkmCreator_Options[VAL_MOVE_1_PP].digitCount * 6, 16);
             ConvertIntToDecimalStringN(gStringVar2, basePP, STR_CONV_MODE_LEADING_ZEROS, DebugPkmCreator_Options[VAL_MOVE_1_PP].digitCount);
-            AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
         }
         x = 136;
-        FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
+        FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
         ConvertIntToDecimalStringN(gStringVar1, DebugPkmCreator_editingVal[editIndex], STR_CONV_MODE_LEADING_ZEROS, data->digitCount);
         break;
     }
@@ -1495,7 +1494,7 @@ static void DebugPkmCreator_EditModeRedraw(u32 digit, u8 editIndex)
             bufferPosition = StringCopy(bufferPosition, Str_CursorColorOff);
     }
     *bufferPosition = EOS;
-    AddTextPrinterParameterized(DebugPkmCreator_menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
+    AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
     /* TODO Re-print the following data once edited:
         * PID (is shiny)
         * Status (sleep/toxic counter)
@@ -1513,42 +1512,42 @@ static void DebugPkmCreator_ProcessInput(u8 taskid)
 
     if (keys & DPAD_LEFT) // Switch Pages
     {
-        if (DebugPkmCreator_CurrentPage > 0)
-            DebugPkmCreator_CurrentPage--;
+        if (sDebugPkmCreatorData.currentPage > 0)
+            sDebugPkmCreatorData.currentPage--;
         else
-            DebugPkmCreator_CurrentPage = PAGE_COUNT;
-        FillWindowPixelBuffer(DebugPkmCreator_menuWindowId, 0x11);
+            sDebugPkmCreatorData.currentPage = PAGE_COUNT;
+        FillWindowPixelBuffer(sDebugPkmCreatorData.menuWindowId, 0x11);
         DebugPkmCreator_Redraw();
         PlaySE(SE_SELECT);
         return;
     }
     if (keys & DPAD_RIGHT) // Switch Pages
     {
-        if (DebugPkmCreator_CurrentPage < PAGE_COUNT)
-            DebugPkmCreator_CurrentPage++;
+        if (sDebugPkmCreatorData.currentPage < PAGE_COUNT)
+            sDebugPkmCreatorData.currentPage++;
         else
-            DebugPkmCreator_CurrentPage = 0;
-        FillWindowPixelBuffer(DebugPkmCreator_menuWindowId, 0x11);
+            sDebugPkmCreatorData.currentPage = 0;
+        FillWindowPixelBuffer(sDebugPkmCreatorData.menuWindowId, 0x11);
         DebugPkmCreator_Redraw();
         PlaySE(SE_SELECT);
         return;
     }
     if (keys & DPAD_UP) // Switch Entry
     {
-        if (DebugPkmCreator_CurrentlySelectedOption > 0)
-            DebugPkmCreator_CurrentlySelectedOption--;
+        if (sDebugPkmCreatorData.selectedOption > 0)
+            sDebugPkmCreatorData.selectedOption--;
         else
-            DebugPkmCreator_CurrentlySelectedOption = 5;
+            sDebugPkmCreatorData.selectedOption = 5;
         DebugPkmCreator_Redraw();
         PlaySE(SE_SELECT);
         return;
     }
     if (keys & DPAD_DOWN) // Switch Entry
     {
-        if (DebugPkmCreator_CurrentlySelectedOption < 5)
-            DebugPkmCreator_CurrentlySelectedOption++;
+        if (sDebugPkmCreatorData.selectedOption < 5)
+            sDebugPkmCreatorData.selectedOption++;
         else
-            DebugPkmCreator_CurrentlySelectedOption = 0;
+            sDebugPkmCreatorData.selectedOption = 0;
         DebugPkmCreator_Redraw();
         PlaySE(SE_SELECT);
         return;
@@ -1556,35 +1555,35 @@ static void DebugPkmCreator_ProcessInput(u8 taskid)
     if (keys & L_BUTTON) // Switch Pokemon e.g. in Box or Party (not used on ADD)
     {
         // This check is much simpler than the one below it...
-        if (DebugPkmCreator_Data.index <= 0) return;
-        DebugPkmCreator_Data.index--;
-        switch (DebugPkmCreator_Data.mode)
+        if (sDebugPkmCreatorData.index <= 0) return;
+        sDebugPkmCreatorData.index--;
+        switch (sDebugPkmCreatorData.mode)
         {
         case 2:
             // We can technically select slot 404 of box 1 (actually box 13 slot 14) but it's still valid behavior provided the max index was set properly above.
-            mons = (struct Pokemon*) &gPokemonStoragePtr->boxes[0][DebugPkmCreator_Data.index];
-            DebugPkmCreator_Data.monBeingEdited = mons;
-            CopyMon(&DebugPkmCreator_Data.mon, mons, sizeof(struct BoxPokemon));
-            CalculateMonStats(&DebugPkmCreator_Data.mon);
+            mons = (struct Pokemon*) &gPokemonStoragePtr->boxes[0][sDebugPkmCreatorData.index];
+            sDebugPkmCreatorData.monBeingEdited = mons;
+            CopyMon(&sDebugPkmCreatorData.mon, mons, sizeof(struct BoxPokemon));
+            CalculateMonStats(&sDebugPkmCreatorData.mon);
             break;
         case 1:
         case 5:
-            mons = &gPlayerParty[DebugPkmCreator_Data.index];
-            DebugPkmCreator_Data.monBeingEdited = mons;
-            CopyMon(&DebugPkmCreator_Data.mon, mons, sizeof(struct Pokemon));
+            mons = &gPlayerParty[sDebugPkmCreatorData.index];
+            sDebugPkmCreatorData.monBeingEdited = mons;
+            CopyMon(&sDebugPkmCreatorData.mon, mons, sizeof(struct Pokemon));
             break;
         case 3:
         case 4:
         case 10:
-            mons = &gEnemyParty[DebugPkmCreator_Data.index];
-            DebugPkmCreator_Data.monBeingEdited = mons;
-            CopyMon(&DebugPkmCreator_Data.mon, mons, sizeof(struct Pokemon));
+            mons = &gEnemyParty[sDebugPkmCreatorData.index];
+            sDebugPkmCreatorData.monBeingEdited = mons;
+            CopyMon(&sDebugPkmCreatorData.mon, mons, sizeof(struct Pokemon));
             break;
         default:
             break;
         }
         DebugPkmCreator_PopulateDataStruct();
-        FillWindowPixelBuffer(DebugPkmCreator_menuWindowId, 0x11);
+        FillWindowPixelBuffer(sDebugPkmCreatorData.menuWindowId, 0x11);
         DebugPkmCreator_Redraw();
         PlaySE(SE_SELECT);
         return;
@@ -1592,7 +1591,7 @@ static void DebugPkmCreator_ProcessInput(u8 taskid)
     if (keys & R_BUTTON) // Switch Pokemon e.g. in Box or Party (not used on ADD)
     {
         u32 max_index;
-        switch (DebugPkmCreator_Data.mode)
+        switch (sDebugPkmCreatorData.mode)
         {
         case 0:
         case 6 ... 8:
@@ -1607,45 +1606,45 @@ static void DebugPkmCreator_ProcessInput(u8 taskid)
             max_index = TOTAL_BOXES_COUNT * IN_BOX_COUNT;
             break;
         }
-        if (DebugPkmCreator_Data.index >= max_index - 1) return;
-        DebugPkmCreator_Data.index++;
-        switch (DebugPkmCreator_Data.mode)
+        if (sDebugPkmCreatorData.index >= max_index - 1) return;
+        sDebugPkmCreatorData.index++;
+        switch (sDebugPkmCreatorData.mode)
         {
         case 2:
-            mons = (struct Pokemon*) &gPokemonStoragePtr->boxes[0][DebugPkmCreator_Data.index];
-            DebugPkmCreator_Data.monBeingEdited = mons;
-            CopyMon(&DebugPkmCreator_Data.mon, mons, sizeof(struct BoxPokemon));
-            CalculateMonStats(&DebugPkmCreator_Data.mon);
+            mons = (struct Pokemon*) &gPokemonStoragePtr->boxes[0][sDebugPkmCreatorData.index];
+            sDebugPkmCreatorData.monBeingEdited = mons;
+            CopyMon(&sDebugPkmCreatorData.mon, mons, sizeof(struct BoxPokemon));
+            CalculateMonStats(&sDebugPkmCreatorData.mon);
             break;
         case 1:
         case 5:
-            mons = &gPlayerParty[DebugPkmCreator_Data.index];
-            DebugPkmCreator_Data.monBeingEdited = mons;
-            CopyMon(&DebugPkmCreator_Data.mon, mons, sizeof(struct Pokemon));
+            mons = &gPlayerParty[sDebugPkmCreatorData.index];
+            sDebugPkmCreatorData.monBeingEdited = mons;
+            CopyMon(&sDebugPkmCreatorData.mon, mons, sizeof(struct Pokemon));
             break;
         case 3:
         case 4:
         case 10:
-            mons = &gEnemyParty[DebugPkmCreator_Data.index];
-            DebugPkmCreator_Data.monBeingEdited = mons;
-            CopyMon(&DebugPkmCreator_Data.mon, mons, sizeof(struct Pokemon));
+            mons = &gEnemyParty[sDebugPkmCreatorData.index];
+            sDebugPkmCreatorData.monBeingEdited = mons;
+            CopyMon(&sDebugPkmCreatorData.mon, mons, sizeof(struct Pokemon));
             break;
         }
         DebugPkmCreator_PopulateDataStruct();
-        FillWindowPixelBuffer(DebugPkmCreator_menuWindowId, 0x11);
+        FillWindowPixelBuffer(sDebugPkmCreatorData.menuWindowId, 0x11);
         DebugPkmCreator_Redraw();
         PlaySE(SE_SELECT);
         return;
     }
     if (keys & B_BUTTON) // Close window
     {
-        ClearStdWindowAndFrame(DebugPkmCreator_headerWindowId, TRUE);
-        RemoveWindow(DebugPkmCreator_headerWindowId);
-        ClearStdWindowAndFrame(DebugPkmCreator_menuWindowId, TRUE);
-        RemoveWindow(DebugPkmCreator_menuWindowId);
+        ClearStdWindowAndFrame(sDebugPkmCreatorData.headerWindowId, TRUE);
+        RemoveWindow(sDebugPkmCreatorData.headerWindowId);
+        ClearStdWindowAndFrame(sDebugPkmCreatorData.menuWindowId, TRUE);
+        RemoveWindow(sDebugPkmCreatorData.menuWindowId);
         DestroyTask(taskid);
         
-        if (DebugPkmCreator_Data.mode == 9 || DebugPkmCreator_Data.mode == 10)
+        if (sDebugPkmCreatorData.mode == 9 || sDebugPkmCreatorData.mode == 10)
             Debug_ReShowBattleDebugMenu();
         else
         {
@@ -1661,10 +1660,10 @@ static void DebugPkmCreator_ProcessInput(u8 taskid)
     if (keys & A_BUTTON) // Enter Edit Mode
     {
         u32 i;
-        u8 index = DebugPkmCreator_Pages[DebugPkmCreator_CurrentPage][DebugPkmCreator_CurrentlySelectedOption];
+        u8 index = DebugPkmCreator_Pages[sDebugPkmCreatorData.currentPage][sDebugPkmCreatorData.selectedOption];
         if (DebugPkmCreator_Options[index].mode != EDIT_NULL && DebugPkmCreator_Options[index].mode != EDIT_READONLY)
         {
-            DebugPkmCreator_editingVal[0] = DebugPkmCreator_Data.data[index];
+            DebugPkmCreator_editingVal[0] = sDebugPkmCreatorData.data[index];
             if (DebugPkmCreator_Options[index].mode == EDIT_STRING)
             {
                 StringCopyN(DebugPkmCreator_NameBuffer, (u8*) DebugPkmCreator_editingVal[0], 16);
@@ -1674,9 +1673,9 @@ static void DebugPkmCreator_ProcessInput(u8 taskid)
             {
                 for (i = 1; i < 4; i++)
                 {
-                    if (DebugPkmCreator_AltIndexes[DebugPkmCreator_CurrentPage][DebugPkmCreator_CurrentlySelectedOption][i - 1] == 0xFF) 
+                    if (DebugPkmCreator_AltIndexes[sDebugPkmCreatorData.currentPage][sDebugPkmCreatorData.selectedOption][i - 1] == 0xFF) 
                         break;
-                    DebugPkmCreator_editingVal[i] = DebugPkmCreator_Data.data[DebugPkmCreator_AltIndexes[DebugPkmCreator_CurrentPage][DebugPkmCreator_CurrentlySelectedOption][i - 1]];
+                    DebugPkmCreator_editingVal[i] = sDebugPkmCreatorData.data[DebugPkmCreator_AltIndexes[sDebugPkmCreatorData.currentPage][sDebugPkmCreatorData.selectedOption][i - 1]];
                 }
             }
             task->data[0] = 0;
@@ -1696,12 +1695,12 @@ static void DebugPkmCreator_ProcessInput(u8 taskid)
         else
             PlaySE(SE_BOO);
 
-        ClearStdWindowAndFrame(DebugPkmCreator_headerWindowId, TRUE);
-        RemoveWindow(DebugPkmCreator_headerWindowId);
-        ClearStdWindowAndFrame(DebugPkmCreator_menuWindowId, TRUE);
-        RemoveWindow(DebugPkmCreator_menuWindowId);
+        ClearStdWindowAndFrame(sDebugPkmCreatorData.headerWindowId, TRUE);
+        RemoveWindow(sDebugPkmCreatorData.headerWindowId);
+        ClearStdWindowAndFrame(sDebugPkmCreatorData.menuWindowId, TRUE);
+        RemoveWindow(sDebugPkmCreatorData.menuWindowId);
         DestroyTask(taskid);
-        if (DebugPkmCreator_Data.mode == 9 || DebugPkmCreator_Data.mode == 10)
+        if (sDebugPkmCreatorData.mode == 9 || sDebugPkmCreatorData.mode == 10)
             Debug_ReShowBattleDebugMenu();
         else
             ScriptContext_Enable();
@@ -1734,15 +1733,15 @@ static void DebugPkmCreator_EditModeProcessInput(u8 taskid)
     u16 editIndex = task->data[1];
 
     u32 x = 100;
-    u32 y = DebugPkmCreator_CurrentlySelectedOption * 2 * 8 + 16;
+    u32 y = sDebugPkmCreatorData.selectedOption * 2 * 8 + 16;
 
     const struct EditPokemonStruct* data;
-    const u8* page = DebugPkmCreator_Pages[DebugPkmCreator_CurrentPage];
+    const u8* page = DebugPkmCreator_Pages[sDebugPkmCreatorData.currentPage];
 
-    if (editIndex != 0 && DebugPkmCreator_AltIndexes[DebugPkmCreator_CurrentPage][DebugPkmCreator_CurrentlySelectedOption][editIndex - 1] != 0xFF) 
-        index = DebugPkmCreator_AltIndexes[DebugPkmCreator_CurrentPage][DebugPkmCreator_CurrentlySelectedOption][editIndex - 1];
+    if (editIndex != 0 && DebugPkmCreator_AltIndexes[sDebugPkmCreatorData.currentPage][sDebugPkmCreatorData.selectedOption][editIndex - 1] != 0xFF) 
+        index = DebugPkmCreator_AltIndexes[sDebugPkmCreatorData.currentPage][sDebugPkmCreatorData.selectedOption][editIndex - 1];
     else
-        index = page[DebugPkmCreator_CurrentlySelectedOption];
+        index = page[sDebugPkmCreatorData.selectedOption];
 
     data = &DebugPkmCreator_Options[index];
 
@@ -1756,7 +1755,7 @@ static void DebugPkmCreator_EditModeProcessInput(u8 taskid)
 
     if (keys & B_BUTTON) // Leave Edit Mode
     {
-        FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, 124, 16);
+        FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, 124, 16);
         DebugPkmCreator_Redraw();
         task->func = DebugPkmCreator_ProcessInput;
         PlaySE(SE_SELECT);
@@ -1766,26 +1765,26 @@ static void DebugPkmCreator_EditModeProcessInput(u8 taskid)
     if (keys & (A_BUTTON | START_BUTTON)) // Confirm current changes
     {
         if (data->mode == EDIT_STRING)
-            StringCopyN((u8*) DebugPkmCreator_Data.data[index], DebugPkmCreator_NameBuffer, data->digitCount);
+            StringCopyN((u8*) sDebugPkmCreatorData.data[index], DebugPkmCreator_NameBuffer, data->digitCount);
         else
         {
             for (i = 0; i < 4; i++)
             {
                 if (i != 0)
-                    indexBeingEdited = DebugPkmCreator_AltIndexes[DebugPkmCreator_CurrentPage][DebugPkmCreator_CurrentlySelectedOption][i - 1];
+                    indexBeingEdited = DebugPkmCreator_AltIndexes[sDebugPkmCreatorData.currentPage][sDebugPkmCreatorData.selectedOption][i - 1];
                 else 
                     indexBeingEdited = index;
                 
                 // Skip if: no entry, no value change or readonly value
                 if (indexBeingEdited == 0xFF)
                     continue;
-                if (DebugPkmCreator_Data.data[indexBeingEdited] == DebugPkmCreator_editingVal[i])
+                if (sDebugPkmCreatorData.data[indexBeingEdited] == DebugPkmCreator_editingVal[i])
                     continue;
                 data = &DebugPkmCreator_Options[indexBeingEdited];
                 if (data->mode == EDIT_READONLY)
                     continue;
 
-                DebugPkmCreator_Data.data[indexBeingEdited] = DebugPkmCreator_editingVal[i];
+                sDebugPkmCreatorData.data[indexBeingEdited] = DebugPkmCreator_editingVal[i];
                 switch (indexBeingEdited)
                 {
                 default:
@@ -1794,23 +1793,23 @@ static void DebugPkmCreator_EditModeProcessInput(u8 taskid)
                     break;
                 case VAL_SPECIES:
                     DebugPkmCreator_SetMonData();
-                    SetMonData(&DebugPkmCreator_Data.mon, data->SetMonDataParam, &DebugPkmCreator_editingVal[i]);
-                    SetMonData(&DebugPkmCreator_Data.mon, MON_DATA_NICKNAME, gSpeciesNames[DebugPkmCreator_editingVal[i]]);
+                    SetMonData(&sDebugPkmCreatorData.mon, data->SetMonDataParam, &DebugPkmCreator_editingVal[i]);
+                    SetMonData(&sDebugPkmCreatorData.mon, MON_DATA_NICKNAME, gSpeciesNames[DebugPkmCreator_editingVal[i]]);
                     // Clear moves
-                    SetMonData(&DebugPkmCreator_Data.mon, MON_DATA_MOVE1, &z);
-                    SetMonData(&DebugPkmCreator_Data.mon, MON_DATA_MOVE2, &z);
-                    SetMonData(&DebugPkmCreator_Data.mon, MON_DATA_MOVE3, &z);
-                    SetMonData(&DebugPkmCreator_Data.mon, MON_DATA_MOVE4, &z);
-                    SetMonData(&DebugPkmCreator_Data.mon, MON_DATA_PP1, &z);
-                    SetMonData(&DebugPkmCreator_Data.mon, MON_DATA_PP2, &z);
-                    SetMonData(&DebugPkmCreator_Data.mon, MON_DATA_PP3, &z);
-                    SetMonData(&DebugPkmCreator_Data.mon, MON_DATA_PP4, &z);
-                    GiveMonInitialMoveset(&DebugPkmCreator_Data.mon);
+                    SetMonData(&sDebugPkmCreatorData.mon, MON_DATA_MOVE1, &z);
+                    SetMonData(&sDebugPkmCreatorData.mon, MON_DATA_MOVE2, &z);
+                    SetMonData(&sDebugPkmCreatorData.mon, MON_DATA_MOVE3, &z);
+                    SetMonData(&sDebugPkmCreatorData.mon, MON_DATA_MOVE4, &z);
+                    SetMonData(&sDebugPkmCreatorData.mon, MON_DATA_PP1, &z);
+                    SetMonData(&sDebugPkmCreatorData.mon, MON_DATA_PP2, &z);
+                    SetMonData(&sDebugPkmCreatorData.mon, MON_DATA_PP3, &z);
+                    SetMonData(&sDebugPkmCreatorData.mon, MON_DATA_PP4, &z);
+                    GiveMonInitialMoveset(&sDebugPkmCreatorData.mon);
                     // preserve level
-                    SetMonData(&DebugPkmCreator_Data.mon, MON_DATA_EXP, &gExperienceTables[gBaseStats[DebugPkmCreator_editingVal[i]].growthRate][DebugPkmCreator_Data.data[15]]);
-                    CalculateMonStats(&DebugPkmCreator_Data.mon);
+                    SetMonData(&sDebugPkmCreatorData.mon, MON_DATA_EXP, &gExperienceTables[gBaseStats[DebugPkmCreator_editingVal[i]].growthRate][sDebugPkmCreatorData.data[15]]);
+                    CalculateMonStats(&sDebugPkmCreatorData.mon);
                     // preserve sanity bit
-                    SetMonData(&DebugPkmCreator_Data.mon, MON_DATA_SANITY_HAS_SPECIES, &DebugPkmCreator_Data.data[11]);
+                    SetMonData(&sDebugPkmCreatorData.mon, MON_DATA_SANITY_HAS_SPECIES, &sDebugPkmCreatorData.data[11]);
                     DebugPkmCreator_PopulateDataStruct();
                     break;
                 case VAL_PID ... VAL_SID:
@@ -1818,41 +1817,41 @@ static void DebugPkmCreator_EditModeProcessInput(u8 taskid)
                     DebugPkmCreator_PopulateDataStruct();
                     break;
                 case VAL_LEVEL:
-                    SetMonData(&DebugPkmCreator_Data.mon, MON_DATA_EXP, &gExperienceTables[gBaseStats[DebugPkmCreator_Data.data[VAL_SPECIES]].growthRate][DebugPkmCreator_Data.data[VAL_LEVEL]]);
-                    CalculateMonStats(&DebugPkmCreator_Data.mon);
+                    SetMonData(&sDebugPkmCreatorData.mon, MON_DATA_EXP, &gExperienceTables[gBaseStats[sDebugPkmCreatorData.data[VAL_SPECIES]].growthRate][sDebugPkmCreatorData.data[VAL_LEVEL]]);
+                    CalculateMonStats(&sDebugPkmCreatorData.mon);
                     DebugPkmCreator_PopulateDataStruct();
-                    DebugPkmCreator_editingVal[0] = DebugPkmCreator_Data.data[VAL_LEVEL];
-                    DebugPkmCreator_editingVal[1] = DebugPkmCreator_Data.data[VAL_EXP];
+                    DebugPkmCreator_editingVal[0] = sDebugPkmCreatorData.data[VAL_LEVEL];
+                    DebugPkmCreator_editingVal[1] = sDebugPkmCreatorData.data[VAL_EXP];
                     break;
                 case VAL_EXP:
-                    SetMonData(&DebugPkmCreator_Data.mon, data->SetMonDataParam, &DebugPkmCreator_editingVal[i]);
-                    CalculateMonStats(&DebugPkmCreator_Data.mon);
+                    SetMonData(&sDebugPkmCreatorData.mon, data->SetMonDataParam, &DebugPkmCreator_editingVal[i]);
+                    CalculateMonStats(&sDebugPkmCreatorData.mon);
                     DebugPkmCreator_PopulateDataStruct();
                     break;
                 case VAL_HP_IV ... VAL_SPDEF_EV:
                     if (indexBeingEdited == VAL_HP_IV || indexBeingEdited == VAL_HP_EV)
                     {
                         u16 maxHp;
-                        SetMonData(&DebugPkmCreator_Data.mon, MON_DATA_HP_IV, &DebugPkmCreator_editingVal[0]);
-                        SetMonData(&DebugPkmCreator_Data.mon, MON_DATA_HP_EV, &DebugPkmCreator_editingVal[1]);
-                        CalculateMonStats(&DebugPkmCreator_Data.mon);
-                        maxHp = GetMonData(&DebugPkmCreator_Data.mon, MON_DATA_MAX_HP, NULL);
-                        DebugPkmCreator_Data.data[VAL_HP_CURRENT] = maxHp;
-                        SetMonData(&DebugPkmCreator_Data.mon, MON_DATA_HP, &maxHp);
+                        SetMonData(&sDebugPkmCreatorData.mon, MON_DATA_HP_IV, &DebugPkmCreator_editingVal[0]);
+                        SetMonData(&sDebugPkmCreatorData.mon, MON_DATA_HP_EV, &DebugPkmCreator_editingVal[1]);
+                        CalculateMonStats(&sDebugPkmCreatorData.mon);
+                        maxHp = GetMonData(&sDebugPkmCreatorData.mon, MON_DATA_MAX_HP, NULL);
+                        sDebugPkmCreatorData.data[VAL_HP_CURRENT] = maxHp;
+                        SetMonData(&sDebugPkmCreatorData.mon, MON_DATA_HP, &maxHp);
                         DebugPkmCreator_editingVal[2] = maxHp;
                         DebugPkmCreator_PopulateDataStruct();
                         i = 4;
                         break;
                     }
                     
-                    SetMonData(&DebugPkmCreator_Data.mon, data->SetMonDataParam, &DebugPkmCreator_editingVal[i]);
-                    CalculateMonStats(&DebugPkmCreator_Data.mon);
+                    SetMonData(&sDebugPkmCreatorData.mon, data->SetMonDataParam, &DebugPkmCreator_editingVal[i]);
+                    CalculateMonStats(&sDebugPkmCreatorData.mon);
                     DebugPkmCreator_PopulateDataStruct();
                     break;
                 }
             }
         }
-        FillWindowPixelRect(DebugPkmCreator_menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
+        FillWindowPixelRect(sDebugPkmCreatorData.menuWindowId, 0x11, x, y, data->digitCount * 6, 16);
         DebugPkmCreator_Redraw();
         task->func = DebugPkmCreator_ProcessInput;
         PlaySE(SE_SELECT);
@@ -1950,10 +1949,10 @@ static void DebugPkmCreator_EditModeProcessInput(u8 taskid)
         {
             if ((s16) (digit - 1) < 0)
             {
-                if ((editIndex != 0 && DebugPkmCreator_AltIndexes[DebugPkmCreator_CurrentPage][DebugPkmCreator_CurrentlySelectedOption][editIndex - 2] != 0xFF) || editIndex == 1)
+                if ((editIndex != 0 && DebugPkmCreator_AltIndexes[sDebugPkmCreatorData.currentPage][sDebugPkmCreatorData.selectedOption][editIndex - 2] != 0xFF) || editIndex == 1)
                 {
                     DebugPkmCreator_EditModeRedraw(data->digitCount, editIndex);
-                    digit = DebugPkmCreator_Options[DebugPkmCreator_AltIndexes[DebugPkmCreator_CurrentPage][DebugPkmCreator_CurrentlySelectedOption][editIndex]].digitCount - 1;
+                    digit = DebugPkmCreator_Options[DebugPkmCreator_AltIndexes[sDebugPkmCreatorData.currentPage][sDebugPkmCreatorData.selectedOption][editIndex]].digitCount - 1;
                     editIndex--;
                 }
                 else
@@ -1966,7 +1965,7 @@ static void DebugPkmCreator_EditModeProcessInput(u8 taskid)
         {
             if (digit >= data->digitCount - 1)
             {
-                if ((editIndex != 0 && DebugPkmCreator_AltIndexes[DebugPkmCreator_CurrentPage][DebugPkmCreator_CurrentlySelectedOption][editIndex - 2] != 0xFF) || editIndex == 1)
+                if ((editIndex != 0 && DebugPkmCreator_AltIndexes[sDebugPkmCreatorData.currentPage][sDebugPkmCreatorData.selectedOption][editIndex - 2] != 0xFF) || editIndex == 1)
                 {
                     DebugPkmCreator_EditModeRedraw(data->digitCount, editIndex);
                     digit = 0;
@@ -1990,7 +1989,7 @@ static void DebugPkmCreator_EditModeProcessInput(u8 taskid)
         {
             if (digit >= data->digitCount - 1)
             {
-                if (editIndex + 1 < 4 && DebugPkmCreator_AltIndexes[DebugPkmCreator_CurrentPage][DebugPkmCreator_CurrentlySelectedOption][editIndex] != 0xFF)
+                if (editIndex + 1 < 4 && DebugPkmCreator_AltIndexes[sDebugPkmCreatorData.currentPage][sDebugPkmCreatorData.selectedOption][editIndex] != 0xFF)
                 {
                     DebugPkmCreator_EditModeRedraw(data->digitCount, editIndex);
                     digit = 0;
@@ -2006,10 +2005,10 @@ static void DebugPkmCreator_EditModeProcessInput(u8 taskid)
         {
             if ((s16) (digit - 1) < 0) 
             {
-                if (editIndex + 1 < 4 && DebugPkmCreator_AltIndexes[DebugPkmCreator_CurrentPage][DebugPkmCreator_CurrentlySelectedOption][editIndex] != 0xFF && DebugPkmCreator_Options[DebugPkmCreator_AltIndexes[DebugPkmCreator_CurrentPage][DebugPkmCreator_CurrentlySelectedOption][editIndex]].mode != EDIT_READONLY)
+                if (editIndex + 1 < 4 && DebugPkmCreator_AltIndexes[sDebugPkmCreatorData.currentPage][sDebugPkmCreatorData.selectedOption][editIndex] != 0xFF && DebugPkmCreator_Options[DebugPkmCreator_AltIndexes[sDebugPkmCreatorData.currentPage][sDebugPkmCreatorData.selectedOption][editIndex]].mode != EDIT_READONLY)
                 {
                     DebugPkmCreator_EditModeRedraw(data->digitCount, editIndex);
-                    digit = DebugPkmCreator_Options[DebugPkmCreator_AltIndexes[DebugPkmCreator_CurrentPage][DebugPkmCreator_CurrentlySelectedOption][editIndex]].digitCount - 1;
+                    digit = DebugPkmCreator_Options[DebugPkmCreator_AltIndexes[sDebugPkmCreatorData.currentPage][sDebugPkmCreatorData.selectedOption][editIndex]].digitCount - 1;
                     editIndex++;
                 }
                 else
@@ -2031,8 +2030,8 @@ static void DebugPkmCreator_EditModeProcessInput(u8 taskid)
 static u8 DebugPkmCreator_GiveToPlayer(void)
 {
     u32 i;
-    struct Pokemon* mon = &DebugPkmCreator_Data.mon;
-    switch (DebugPkmCreator_Data.mode)
+    struct Pokemon* mon = &sDebugPkmCreatorData.mon;
+    switch (sDebugPkmCreatorData.mode)
     {
     case 0:
         for (i = 0; i < PARTY_SIZE; i++)
@@ -2050,10 +2049,10 @@ static u8 DebugPkmCreator_GiveToPlayer(void)
     case 1:
     case 3 ... 5:
     case 10:
-        CopyMon(DebugPkmCreator_Data.monBeingEdited, mon, sizeof(struct Pokemon));
+        CopyMon(sDebugPkmCreatorData.monBeingEdited, mon, sizeof(struct Pokemon));
         return MON_GIVEN_TO_PARTY;
     case 2:
-        CopyMon(DebugPkmCreator_Data.monBeingEdited, mon, sizeof(struct BoxPokemon));
+        CopyMon(sDebugPkmCreatorData.monBeingEdited, mon, sizeof(struct BoxPokemon));
         return MON_GIVEN_TO_PC;
     case 6:
     case 9:
