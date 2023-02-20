@@ -101,6 +101,15 @@ EverGrandeCity_PokemonCenter_1F_Text_ScottHappyForYou:
 	.string "Go for greatness!$"
 
 EverGrandeCity_PokemonCenter_1F_Chansey4::
+	faceplayer
+	goto_if_unset FLAG_CHANSEYTRAINERS, LavaridgeTown_ChanseyTrainersFirstEncounter
+	msgbox EverGrandeCity_PokemonCenter_1F_Chansey2Repeat2, MSGBOX_YESNO
+	switch VAR_RESULT
+	case NO, LavaridgeTown_Chansey1End
+	case YES, EverGrandeCity_PokemonCenter_1F_Chansey4Battle
+	case MULTI_B_PRESSED, LavaridgeTown_Chansey1End
+
+EverGrandeCity_PokemonCenter_1F_Chansey4Battle::
 	trainerbattle TRAINER_BATTLE_CONTINUE_SCRIPT, TRAINER_CHANSEY4, 0, EverGrandeCity_PokemonCenter_1F_Chansey4Intro, EverGrandeCity_PokemonCenter_1F_Chansey4Defeat, EverGrandeCity_PokemonCenter_1F_ChanseyBattleAgain
 	end
 
@@ -111,10 +120,13 @@ EverGrandeCity_PokemonCenter_1F_ChanseyBattleAgain::
 	end
 
 EverGrandeCity_PokemonCenter_1F_Chansey4Intro:
-	.string "My CHANSEY is ready for a battle!$"
+	.string "My CHANSEY is ready!$"
 
 EverGrandeCity_PokemonCenter_1F_Chansey4Defeat:
 	.string "Oh no... CHANSEY, use SOFT-BOILED!$"
 
 EverGrandeCity_PokemonCenter_1F_Chansey4Repeat:
 	.string "We can battle again if you want!$"
+
+EverGrandeCity_PokemonCenter_1F_Chansey2Repeat2:
+	.string "Ready for a battle?$"

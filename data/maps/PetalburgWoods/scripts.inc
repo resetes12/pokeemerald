@@ -75,6 +75,7 @@ PetalburgWoods_CelebiEvent_End::
 
 PetalburgWoods_CelebiBattle::
 	faceplayer
+	playse SE_PIN
 	applymovement OBJ_EVENT_ID_PLAYER, Movement_PetalburgWoods_Celebi1
 	waitmovement 0
 	msgbox Text_PetalburgWoods_Celebi4, MSGBOX_DEFAULT
@@ -163,10 +164,10 @@ Text_PetalburgWoods_Celebi_Donthave:
 	.string "You don't have it...$"
 
 Movement_PetalburgWoods_Celebi1:
-	delay_16
-	delay_16
-	delay_16
 	emote_exclamation_mark
+	delay_16
+	delay_16
+	delay_16
 	delay_16
 	step_end
 

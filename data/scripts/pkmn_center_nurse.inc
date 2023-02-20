@@ -13,8 +13,19 @@ EventScript_PkmnCenterNurse_Goodbye::
 	return
 
 Common_EventScript_PkmnCenterNurseOldSave::
+	@playse SE_PIN
 	setflag FLAG_OLDSAVE
+	setflag FLAG_ENABLE_SHIP_SOUTHERN_ISLAND
+	setflag FLAG_ENABLE_SHIP_NAVEL_ROCK
+	setflag FLAG_ENABLE_SHIP_BIRTH_ISLAND
+	setflag FLAG_ENABLE_SHIP_FARAWAY_ISLAND
+	clearflag FLAG_DEFEAT_SUICUNE
+	clearflag FLAG_DEFEAT_ENTEI
+	clearflag FLAG_DEFEAT_RAIKOU
 	msgbox Common_EventScript_PkmnCenterNurseOldSaveText1, MSGBOX_DEFAULT
+	closemessage
+	delay 20
+	msgbox Common_EventScript_PkmnCenterNurseOldSaveText1_5, MSGBOX_DEFAULT
 	closemessage
 	delay 20
 	clearflag FLAG_ITEM_ROUTE_115_TM01
@@ -31,29 +42,17 @@ Common_EventScript_PkmnCenterNurseOldSave::
 	clearflag FLAG_ITEM_MT_PYRE_6F_TM30
 	clearflag FLAG_ITEM_ROUTE_111_TM37
 	clearflag FLAG_ITEM_MT_PYRE_EXTERIOR_TM48
-	giveitem ITEM_TM03
-	giveitem ITEM_TM04
-	giveitem ITEM_TM05
-	giveitem ITEM_TM08
-	giveitem ITEM_TM09
-	giveitem ITEM_TM12
-	giveitem ITEM_TM19
-	giveitem ITEM_TM21
-	giveitem ITEM_TM27
-	giveitem ITEM_TM28
-	giveitem ITEM_TM31
-	giveitem ITEM_TM34
-	giveitem ITEM_TM36
-	giveitem ITEM_TM39
-	giveitem ITEM_TM40
-	giveitem ITEM_TM41
-	giveitem ITEM_TM42
-	giveitem ITEM_TM44
-	giveitem ITEM_TM45
-	giveitem ITEM_TM46
-	giveitem ITEM_TM47
-	giveitem ITEM_TM49
-	giveitem ITEM_TM50
+	clearflag FLAG_RECEIVED_TM05
+	clearflag FLAG_RECEIVED_TM09
+	clearflag FLAG_RECEIVED_TM19
+	clearflag FLAG_RECEIVED_TM28
+	clearflag FLAG_RECEIVED_TM31
+	clearflag FLAG_RECEIVED_TM36
+	clearflag FLAG_RECEIVED_TM41
+	clearflag FLAG_RECEIVED_TM44
+	clearflag FLAG_RECEIVED_TM45
+	clearflag FLAG_RECEIVED_TM46
+	clearflag FLAG_RECEIVED_TM49
 	msgbox Common_EventScript_PkmnCenterNurseOldSaveText2, MSGBOX_DEFAULT
 	closemessage
 	delay 20
@@ -68,48 +67,57 @@ Common_EventScript_PkmnCenterNurseOldSave::
 	end
 
 Common_EventScript_PkmnCenterNurseOldSaveText1:
-	.string "Oh! Looks like you are loading an\n"
-	.string "OLD SAVEGAME. Let's fix the SAVEGAME\p"
-	.string "so you can fully enjoy this HACKROM.\n"
+	.string "Oh! Looks like you are loading an OLD\n"
+	.string "SAVEGAME! Let's fix the SAVEGAME\l"
+	.string "so you can fully enjoy this HACKROM.\p"
 	.string "Let's start with the basics...\p"
-	.string "In the PROF. BIRCH LAB, there's 3 PCs.\p"
-	.string "If you check the TOP one, you will be\n"
-	.string "to change the GAMEMODE. There's 2\p"
-	.string "GAMEMODES: CLASSIC, which doesn't\n"
-	.string "implement the PHYSICAL/SPECIAL split\p"
-	.string "created in GEN IV; and MODERN, which\n"
-	.string "it does.\p"
+	.string "In the PROF. BIRCH LAB, there're 3 PCs.\n"
+	.string "If you check the TOP one, you\p"
+	.string "can change the GAMEMODE.\p"
+	.string "There are 2 GAMEMODES.\p"
+	.string "CLASSIC, which doesn't implement\n"
+	.string "the PHYSICAL/SPECIAL split\p"
+	.string "created in GEN IV; and\n"
+	.string "MODERN, which it does.\p"
 	.string "Then, the PC on the LEFT contains a\n"
 	.string "DIFFICULTY changer. NORMAL is the\p"
-	.string "default experience, while EASY and\n"
-	.string "HARD makes the levels scale up to\p"
-	.string "6 levels (10 after being the CHAMPION).\n"
-	.string "Now, let's try to fix other things.\p"
-	.string "TMs are now infinite, which means\n"
-	.string "if you have used them, they are gone.\p"
-	.string "Let me respawn all TMs that can be\n"
-	.string "found in the overworld for you...$"
-
-Common_EventScript_PkmnCenterNurseOldSaveText2:
-	.string "There. You can go look for them!\p"
-	.string "Now... I also gave you copies of\n"
-	.string "TMs that were obtained from NPCs.\p"
-	.string "I'll give you a BIKE. This\n"
-	.string "BIKE is the MACH and ACRO version\p"
-	.string "in one. If you have the ACRO BIKE\n"
-	.string "it'll be removed. I'll do the same\p"
-	.string "with the EXP. SHARE, which is now a\n"
-	.string "KEY ITEM.$"
-
-Common_EventScript_PkmnCenterNurseOldSaveText3:
+	.string "default experience, while EASY and HARD\n"
+	.string "make the levels scale up or down\p"
+	.string "10 levels after being the CHAMPION.\n"
+	.string "Now... let's try to fix other things.\p"
 	.string "Old EXP. SHARES are not deleted\n"
 	.string "so it's recommended that you load\p"
 	.string "the original SAVE into a clean\n"
 	.string "version of POKéMON EMERALD, delete\p"
 	.string "them, and then import the SAVE again\n"
 	.string "to this HACKROM. If not, old EXP\p"
-	.string "SHARES will not be deleteable from\n"
-	.string "the BAG.$"
+	.string "SHARES will not be deleteable\n"
+	.string "from the BAG.$"
+
+Common_EventScript_PkmnCenterNurseOldSaveText1_5:
+	.string "Then, let's talk about TMs.\p"
+	.string "TMs are now infinite, which means\n"
+	.string "if you have used them, they are gone.\p"
+	.string "Let me respawn all TMs that can be\n"
+	.string "found in the overworld for you.\p"
+	.string "Be sure to also talk to all\n"
+	.string "the NPCs who give TMs!\p"
+	.string "The MART in BATTLEFRONTIER contains\n"
+	.string "all the TMs from GYM LEADERS.\p"
+	.string "Go get them there!$"
+
+Common_EventScript_PkmnCenterNurseOldSaveText2:
+	.string "There. You can go look for them!\p"
+	.string "And lastly, let's talk about BIKES.\p"
+	.string "I'll give you this BIKE. This BIKE\n"
+	.string "is the MACH and ACRO version in one.\p"
+	.string "If you have the ACRO BIKE it'll be\n"
+	.string "removed. I'll do the same with the\p"
+	.string "EXP. SHARE, which is now a KEY ITEM.$"
+
+Common_EventScript_PkmnCenterNurseOldSaveText3:
+	.string "Thanks for your cooperation!\n"
+	.string "Have fun!$"
 
 @ VAR_0x8004 is 1 when player has Gold Card; jumps are identical
 EventScript_PkmnCenterNurse_HealPkmn::

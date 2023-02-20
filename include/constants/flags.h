@@ -1224,7 +1224,7 @@
 #define FLAG_RAIKOU                                                 0x497
 #define FLAG_SNORLAX                                                0x498
 #define FLAG_OLDSAVE                                                0x499 // Unused Flag
-#define FLAG_UNUSED_0x49A                                           0x49A // Unused Flag
+#define FLAG_CHANSEYTRAINERS                                        0x49A // Unused Flag
 #define FLAG_UNUSED_0x49B                                           0x49B // Unused Flag
 #define FLAG_UNUSED_0x49C                                           0x49C // Unused Flag
 #define FLAG_UNUSED_0x49D                                           0x49D // Unused Flag

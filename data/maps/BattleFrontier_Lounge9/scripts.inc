@@ -351,8 +351,8 @@ BattleFrontier_Lounge9_IV_TextFirstTime:
 	.string "so I joined this GYM a a few days ago.\p"
 	.string "My father works here in this island so\n"
 	.string "it's easy to come every day.\p"
-	.string "I love training in this GYM,\n"
-	.string "it's always full of strong trainers!\p"
+	.string "I love training in this GYM, since\n"
+	.string "it's always full of powerful trainers!\p"
 	.string "In fact, here I developed a technique\n"
 	.string "to maximize the potential of POKéMON.\p"
 	.string "If you want we can train together to\n"
@@ -377,7 +377,8 @@ BattleFrontier_Lounge9_IV_Text_No:
 BattleFrontier_Lounge9_IV_Finish:
 	.string "Phew... I'm exhausted...\n"
 	.string "What about your POKéMON?\p"
-	.string "You should buy some WATER for sure.\p"
+	.string "You should REST a bit\n"
+	.string "before going.\p"
 	.string "Well, see you soon!$"
 
 BattleFrontier_Lounge9_EV_SetZeroText:
@@ -488,6 +489,15 @@ BattleFrontier_Lounge9_EV_No_TEXT:
 	.string "No? Okay.$"
 
 BattleFrontier_Lounge9_Chansey5::
+	faceplayer
+	goto_if_unset FLAG_CHANSEYTRAINERS, LavaridgeTown_ChanseyTrainersFirstEncounter
+	msgbox BattleFrontier_Lounge9_Chansey5Repeat2, MSGBOX_YESNO
+	switch VAR_RESULT
+	case NO, LavaridgeTown_Chansey1End
+	case YES, BattleFrontier_Lounge9_Chansey5Battle
+	case MULTI_B_PRESSED, LavaridgeTown_Chansey1End
+
+BattleFrontier_Lounge9_Chansey5Battle::
 	trainerbattle TRAINER_BATTLE_CONTINUE_SCRIPT, TRAINER_CHANSEY5, 0, BattleFrontier_Lounge9_Chansey5Intro, BattleFrontier_Lounge9_Chansey5Defeat, BattleFrontier_Lounge9_ChanseyBattleAgain
 	end
 
@@ -498,10 +508,13 @@ BattleFrontier_Lounge9_ChanseyBattleAgain::
 	end
 
 BattleFrontier_Lounge9_Chansey5Intro:
-	.string "My CHANSEY is ready for a battle!$"
+	.string "My BLISSEY is ready!$"
 
 BattleFrontier_Lounge9_Chansey5Defeat:
-	.string "Oh no... CHANSEY, use SOFT-BOILED!$"
+	.string "Oh no... BLISSEY, use SOFT-BOILED!$"
 
 BattleFrontier_Lounge9_Chansey5Repeat:
 	.string "We can battle again if you want!$"
+
+BattleFrontier_Lounge9_Chansey5Repeat2:
+	.string "Ready for a battle?$"

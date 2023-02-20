@@ -59,6 +59,7 @@ InsideOfTruck_Text_BoxPrintedWithMonLogo:
 	.string "delivery service.$"
 
 InsideOfTruck_EventScript_Challenge::
+	setflag FLAG_OLDSAVE
 	message InsideOfTruck_Text_Challenge
 	waitmessage
 	switch VAR_DIFFICULTY
@@ -114,9 +115,9 @@ InsideOfTruck_Text_Challenge:
 	.string "scaling of POKéMON trainers.\p"
 	.string "NORMAL is just the default\n"
 	.string "experience, HARD scales up\p"
-	.string "to 10 levels upwards, and\n"
-	.string "EASY up to 10 levels\p"
-	.string "downwards.$"
+	.string "to 10 levels upwards, and EASY\n"
+	.string "up to 10 levels downwards.\p"
+	.string "It scales with your progress.$"
 
 InsideOfTruck_Text_SelectedEasy:
 	.string "EASY difficulty\n"

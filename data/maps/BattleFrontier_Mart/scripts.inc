@@ -22,12 +22,16 @@ BattleFrontier_Mart_Pokemart:
 	.2byte ITEM_FULL_HEAL
 	.2byte ITEM_REVIVE
 	.2byte ITEM_MAX_REPEL
-	.2byte ITEM_PROTEIN
-	.2byte ITEM_CALCIUM
-	.2byte ITEM_IRON
-	.2byte ITEM_ZINC
-	.2byte ITEM_CARBOS
-	.2byte ITEM_HP_UP
+	.2byte ITEM_TM03
+	.2byte ITEM_TM04
+	.2byte ITEM_TM08
+	.2byte ITEM_TM12
+	.2byte ITEM_TM34
+	.2byte ITEM_TM39
+	.2byte ITEM_TM40
+	.2byte ITEM_TM42
+	.2byte ITEM_TM47
+	.2byte ITEM_TM50
 	.2byte ITEM_NONE
 	release
 	end
