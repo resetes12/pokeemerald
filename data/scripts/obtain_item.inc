@@ -23,8 +23,9 @@ EventScript_ObtainItemMessage::
 	bufferitemnameplural STR_VAR_2, ITEMID, AMOUNT
 	checkitemtype ITEMID
 	call EventScript_BufferPocketNameAndTryFanfare
-	call_if_eq VAR_0x8007, TRUE, EventScript_ObtainedItem
+	@call_if_eq VAR_0x8007, TRUE, EventScript_ObtainedItem
 	call_if_ne VAR_0x8007, FALSE, EventScript_ObtainedItem
+	call_if_eq VAR_0x8007, FALSE, EventScript_NoRoomForItem
 	return
 
 EventScript_BufferPocketNameAndTryFanfare::
