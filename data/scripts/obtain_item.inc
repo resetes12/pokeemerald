@@ -23,7 +23,6 @@ EventScript_ObtainItemMessage::
 	bufferitemnameplural STR_VAR_2, ITEMID, AMOUNT
 	checkitemtype ITEMID
 	call EventScript_BufferPocketNameAndTryFanfare
-	@call_if_eq VAR_0x8007, TRUE, EventScript_ObtainedItem
 	call_if_ne VAR_0x8007, FALSE, EventScript_ObtainedItem
 	call_if_eq VAR_0x8007, FALSE, EventScript_NoRoomForItem
 	return
@@ -219,7 +218,6 @@ EventScript_PutHiddenItemInPocket::
 	waitfanfare
 	bufferitemnameplural STR_VAR_2, VAR_0x8004, 1
 	copyvar VAR_0x8004, VAR_0x8008
-	msgbox gText_PutItemInPocket, MSGBOX_DEFAULT
 	call EventScript_PutItemMsg
 	special TryPutTreasureInvestigatorsOnAir
 	special SetHiddenItemFlag
