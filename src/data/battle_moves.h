@@ -1810,7 +1810,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     {
         .effect = EFFECT_ALWAYS_HIT,
         .power = 60,
-        .type = TYPE_FAIRY,
+        .type = TYPE_NORMAL,
         .accuracy = 0,
         .pp = 20,
         .secondaryEffectChance = 0,
@@ -2076,7 +2076,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     {
         .effect = EFFECT_ACCURACY_DOWN,
         .power = 0,
-        .type = TYPE_ELECTRIC,
+        .type = TYPE_NORMAL,
         .accuracy = 70,
         .pp = 20,
         .secondaryEffectChance = 0,
@@ -4806,7 +4806,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     {
         .effect = EFFECT_THIEF,
         .power = 40,
-        .type = TYPE_NORMAL,
+        .type = TYPE_FAIRY,
         .accuracy = 100,
         .pp = 40,
         .secondaryEffectChance = 100,
