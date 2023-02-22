@@ -49,6 +49,7 @@
 #include "constants/union_room.h"
 #include "wild_encounter.h"
 #include "constants/region_map_sections.h"
+#include "constants/party_menu.h"
 
 struct SpeciesItem
 {

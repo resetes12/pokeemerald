@@ -193,7 +193,7 @@ static u8 ChooseWildMonLevel(const struct WildPokemon *wildPokemon)
     u8 max;
     u8 range;
     u8 rand;
-
+  
     // Make sure minimum level is less than maximum level
     if (wildPokemon->maxLevel >= wildPokemon->minLevel)
     {
@@ -204,9 +204,9 @@ static u8 ChooseWildMonLevel(const struct WildPokemon *wildPokemon)
     {
         min = wildPokemon->maxLevel;
         max = wildPokemon->minLevel;
-    }
+    }   
     range = max - min + 1;
-    rand = Random() % range;
+        rand = Random() % range;
 
     // check ability for max level mon
     if (!GetMonData(&gPlayerParty[0], MON_DATA_SANITY_IS_EGG))
@@ -214,14 +214,48 @@ static u8 ChooseWildMonLevel(const struct WildPokemon *wildPokemon)
         u8 ability = GetMonAbility(&gPlayerParty[0]);
         if (ability == ABILITY_HUSTLE || ability == ABILITY_VITAL_SPIRIT || ability == ABILITY_PRESSURE)
         {
-            if (Random() % 2 == 0)
-                return max;
+            if (Random() % 2 == 0) //Max level of the mon + (n), only for Hard Difficulty
+                if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_IS_CHAMPION))
+                    return max + 10;
+                else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE08_GET))
+                    return max + 8;
+                else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE07_GET))
+                    return max + 7;
+                else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE06_GET))
+                    return max + 6;
+                else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE05_GET))
+                    return max + 5;
+                else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE04_GET))
+                    return max + 4;
+                else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE03_GET))
+                    return max + 3;
+                else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE02_GET))
+                    return max + 1;
+                else
+                    return max;
 
             if (rand != 0)
                 rand--;
         }
     }
-    return min + rand;
+    if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_IS_CHAMPION))
+        return min + rand + 10;
+    else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE08_GET))
+        return min + rand + 8;
+    else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE07_GET))
+        return min + rand + 7;
+    else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE06_GET))
+        return min + rand + 6;
+    else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE05_GET))
+        return min + rand + 5;
+    else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE04_GET))
+        return min + rand + 4;
+    else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE03_GET))
+        return min + rand + 3;
+    else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE02_GET))
+        return min + rand + 1;   
+    else
+        return min + rand;
 }
 
 static u16 GetCurrentMapWildMonHeaderId(void)
