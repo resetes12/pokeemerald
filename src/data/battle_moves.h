@@ -521,7 +521,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     [MOVE_THRASH] =
     {
         .effect = EFFECT_RAMPAGE,
-        .power = 120,
+        .power = 105,
         .type = TYPE_NORMAL,
         .accuracy = 100,
         .pp = 10,
@@ -591,7 +591,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     [MOVE_PIN_MISSILE] =
     {
         .effect = EFFECT_MULTI_HIT,
-        .power = 25,
+        .power = 20,
         .type = TYPE_BUG,
         .accuracy = 95,
         .pp = 20,
@@ -1123,7 +1123,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     [MOVE_PETAL_DANCE] =
     {
         .effect = EFFECT_RAMPAGE,
-        .power = 120,
+        .power = 100,
         .type = TYPE_GRASS,
         .accuracy = 100,
         .pp = 10,
@@ -1977,7 +1977,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     [MOVE_LEECH_LIFE] =
     {
         .effect = EFFECT_ABSORB,
-        .power = 80,
+        .power = 60,
         .type = TYPE_BUG,
         .accuracy = 100,
         .pp = 10,
@@ -2355,7 +2355,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     [MOVE_THIEF] =
     {
         .effect = EFFECT_THIEF,
-        .power = 60,
+        .power = 50,
         .type = TYPE_DARK,
         .accuracy = 100,
         .pp = 25,
@@ -2803,7 +2803,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     [MOVE_OUTRAGE] =
     {
         .effect = EFFECT_RAMPAGE,
-        .power = 120,
+        .power = 100,
         .type = TYPE_DRAGON,
         .accuracy = 100,
         .pp = 10,
@@ -2943,7 +2943,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     [MOVE_FURY_CUTTER] =
     {
         .effect = EFFECT_FURY_CUTTER,
-        .power = 20,
+        .power = 40,
         .type = TYPE_BUG,
         .accuracy = 95,
         .pp = 20,
@@ -4637,7 +4637,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     [MOVE_BULLET_SEED] =
     {
         .effect = EFFECT_MULTI_HIT,
-        .power = 25,
+        .power = 20,
         .type = TYPE_GRASS,
         .accuracy = 100,
         .pp = 30,
@@ -4665,7 +4665,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     [MOVE_ICICLE_SPEAR] =
     {
         .effect = EFFECT_MULTI_HIT,
-        .power = 25,
+        .power = 20,
         .type = TYPE_ICE,
         .accuracy = 100,
         .pp = 30,

@@ -3326,6 +3326,8 @@ static void Cmd_getexp(void)
             calculatedExp = gSpeciesInfo[gBattleMons[gBattlerFainted].species].expYield * gBattleMons[gBattlerFainted].level / 7;
             if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD) //exp decrease for hard mode
                 calculatedExp *= 0.6;
+            if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_EASY) //exp decrease for easy mode
+                calculatedExp *= 1.2;
 
             if (gSaveBlock2Ptr->expShare) // exp share is turned on
             {
