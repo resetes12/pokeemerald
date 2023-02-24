@@ -68,6 +68,11 @@ void StopScript(struct ScriptContext *ctx)
     ctx->scriptPtr = NULL;
 }
 
+void GetObjectEventTrainerRangeFromTemplate(void)
+{
+    gSpecialVar_Result = gMapHeader.events->objectEvents[gSpecialVar_LastTalked - 1].trainerRange_berryTreeId;
+}
+
 bool8 RunScriptCommand(struct ScriptContext *ctx)
 {
     if (ctx->mode == SCRIPT_MODE_STOPPED)
