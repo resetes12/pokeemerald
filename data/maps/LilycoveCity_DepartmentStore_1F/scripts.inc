@@ -234,7 +234,7 @@ LilycoveCity_DepartmentStore_1F_TraderWoman_Text:
 	.string "Welcome to LILYCOVE DEPARTMENT STORE!\p"
 	.string "Do you want to know about the new\n"
 	.string "technology DEVON CORP. just developed?\p"
-	.string "It's an SELF-TRADER app!\p"
+	.string "It's a SELF-TRADER app!\p"
 	.string "With the help of a simple computer\n"
 	.string "program, you can send one POKéMON to\p"
 	.string "the DEVON CORP. server and get it\n"
