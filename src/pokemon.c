@@ -6584,12 +6584,17 @@ u16 GetBattleBGM(void)
         case TRAINER_CLASS_PYRAMID_KING:
             return MUS_VS_FRONTIER_BRAIN;
         default:
-            if (gMapHeader.regionMapSectionId == (MAPSEC_BATTLE_FRONTIER || MAPSEC_ARTISAN_CAVE)) //BGM by map
+            if (gMapHeader.regionMapSectionId == MAPSEC_BATTLE_FRONTIER) //BGM by map
                 return MUS_RG_VS_TRAINER;
         else
                 return MUS_VS_TRAINER;
         }
     }
+    else
+        if (gMapHeader.regionMapSectionId == MAPSEC_BATTLE_FRONTIER) //BGM by map
+            return MUS_RG_VS_WILD;
+        else if (gMapHeader.regionMapSectionId == MAPSEC_ARTISAN_CAVE)
+            return MUS_RG_VS_WILD;
     else
         return MUS_VS_WILD;
 }

@@ -10263,9 +10263,9 @@ const struct Trainer gTrainers[] = {
 
     [TRAINER_CHANSEY1] =
     {
-        .trainerClass = TRAINER_CLASS_BEAUTY,
+        .trainerClass = TRAINER_CLASS_NURSE,
         .encounterMusic_gender = F_TRAINER_FEMALE | TRAINER_ENCOUNTER_MUSIC_FEMALE,
-        .trainerPic = TRAINER_PIC_BEAUTY,
+        .trainerPic = TRAINER_PIC_NURSE,
         .trainerName = _("JOLANDA"),
         .items = {},
         .doubleBattle = FALSE,
@@ -10275,9 +10275,9 @@ const struct Trainer gTrainers[] = {
 
     [TRAINER_CHANSEY2] =
     {
-        .trainerClass = TRAINER_CLASS_BEAUTY,
+        .trainerClass = TRAINER_CLASS_NURSE,
         .encounterMusic_gender = F_TRAINER_FEMALE | TRAINER_ENCOUNTER_MUSIC_FEMALE,
-        .trainerPic = TRAINER_PIC_BEAUTY,
+        .trainerPic = TRAINER_PIC_NURSE,
         .trainerName = _("JOLINE"),
         .items = {},
         .doubleBattle = FALSE,
@@ -10287,9 +10287,9 @@ const struct Trainer gTrainers[] = {
 
     [TRAINER_CHANSEY3] =
     {
-        .trainerClass = TRAINER_CLASS_BEAUTY,
+        .trainerClass = TRAINER_CLASS_NURSE,
         .encounterMusic_gender = F_TRAINER_FEMALE | TRAINER_ENCOUNTER_MUSIC_FEMALE,
-        .trainerPic = TRAINER_PIC_BEAUTY,
+        .trainerPic = TRAINER_PIC_NURSE,
         .trainerName = _("JORDANNA"),
         .items = {},
         .doubleBattle = FALSE,
@@ -10299,9 +10299,9 @@ const struct Trainer gTrainers[] = {
 
     [TRAINER_CHANSEY4] =
     {
-        .trainerClass = TRAINER_CLASS_BEAUTY,
+        .trainerClass = TRAINER_CLASS_NURSE,
         .encounterMusic_gender = F_TRAINER_FEMALE | TRAINER_ENCOUNTER_MUSIC_FEMALE,
-        .trainerPic = TRAINER_PIC_BEAUTY,
+        .trainerPic = TRAINER_PIC_NURSE,
         .trainerName = _("JODELLE"),
         .items = {},
         .doubleBattle = FALSE,
@@ -10311,9 +10311,9 @@ const struct Trainer gTrainers[] = {
 
     [TRAINER_CHANSEY5] =
     {
-        .trainerClass = TRAINER_CLASS_BEAUTY,
+        .trainerClass = TRAINER_CLASS_NURSE,
         .encounterMusic_gender = F_TRAINER_FEMALE | TRAINER_ENCOUNTER_MUSIC_FEMALE,
-        .trainerPic = TRAINER_PIC_BEAUTY,
+        .trainerPic = TRAINER_PIC_NURSE,
         .trainerName = _("JOYCE"),
         .items = {},
         .doubleBattle = FALSE,

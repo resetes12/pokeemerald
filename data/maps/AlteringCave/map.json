@@ -24,8 +24,8 @@
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "ITEM_ADAMANT_MINT",
-      "script": "NULL",
-      "flag": "Common_EventScript_FindItem"
+      "script": "Common_EventScript_FindItem",
+      "flag": "0"
     }
   ],
   "warp_events": [
