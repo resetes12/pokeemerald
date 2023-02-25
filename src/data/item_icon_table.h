@@ -401,6 +401,28 @@ const u32 *const gItemIconTable[ITEMS_COUNT + 1][2] =
     // Emerald-only key items
     [ITEM_MAGMA_EMBLEM] = {gItemIcon_MagmaEmblem, gItemIconPalette_MagmaEmblem},
     [ITEM_OLD_SEA_MAP] = {gItemIcon_OldSeaMap, gItemIconPalette_OldSeaMap},
+        // mints
+    [ITEM_ADAMANT_MINT] = {gItemIcon_Mint, gItemIconPalette_RedMint},
+    [ITEM_BOLD_MINT] = {gItemIcon_Mint, gItemIconPalette_BlueMint},
+    [ITEM_BRAVE_MINT] = {gItemIcon_Mint, gItemIconPalette_RedMint},
+    [ITEM_CALM_MINT] = {gItemIcon_Mint, gItemIconPalette_PinkMint},
+    [ITEM_CAREFUL_MINT] = {gItemIcon_Mint, gItemIconPalette_PinkMint},
+    [ITEM_GENTLE_MINT] = {gItemIcon_Mint, gItemIconPalette_PinkMint},
+    [ITEM_HASTY_MINT] = {gItemIcon_Mint, gItemIconPalette_GreenMint},
+    [ITEM_IMPISH_MINT] = {gItemIcon_Mint, gItemIconPalette_BlueMint},
+    [ITEM_JOLLY_MINT] = {gItemIcon_Mint, gItemIconPalette_GreenMint},
+    [ITEM_LAX_MINT] = {gItemIcon_Mint, gItemIconPalette_BlueMint},
+    [ITEM_LONELY_MINT] = {gItemIcon_Mint, gItemIconPalette_RedMint},
+    [ITEM_MILD_MINT] = {gItemIcon_Mint, gItemIconPalette_LightBlueMint},
+    [ITEM_MODEST_MINT] = {gItemIcon_Mint, gItemIconPalette_LightBlueMint},
+    [ITEM_NAIVE_MINT] = {gItemIcon_Mint, gItemIconPalette_GreenMint},
+    [ITEM_NAUGHTY_MINT] = {gItemIcon_Mint, gItemIconPalette_RedMint},
+    [ITEM_QUIET_MINT] = {gItemIcon_Mint, gItemIconPalette_LightBlueMint},
+    [ITEM_RASH_MINT] = {gItemIcon_Mint, gItemIconPalette_LightBlueMint},
+    [ITEM_RELAXED_MINT] = {gItemIcon_Mint, gItemIconPalette_BlueMint},
+    [ITEM_SASSY_MINT] = {gItemIcon_Mint, gItemIconPalette_PinkMint},
+    [ITEM_SERIOUS_MINT] = {gItemIcon_Mint, gItemIconPalette_YellowMint},
+    [ITEM_TIMID_MINT] = {gItemIcon_Mint, gItemIconPalette_GreenMint},
     // Return to field arrow
     [ITEMS_COUNT] = {gItemIcon_ReturnToFieldArrow, gItemIconPalette_ReturnToFieldArrow},
 };

@@ -3852,6 +3852,15 @@ extern const u32 gItemIconPalette_MagmaEmblem[];
 extern const u32 gItemIcon_OldSeaMap[];
 extern const u32 gItemIconPalette_OldSeaMap[];
 
+// Mints
+extern const u32 gItemIcon_Mint[];
+extern const u32 gItemIconPalette_RedMint[];
+extern const u32 gItemIconPalette_BlueMint[];
+extern const u32 gItemIconPalette_PinkMint[];
+extern const u32 gItemIconPalette_GreenMint[];
+extern const u32 gItemIconPalette_LightBlueMint[];
+extern const u32 gItemIconPalette_YellowMint[];
+
 extern const u32 gItemIcon_ReturnToFieldArrow[];
 extern const u32 gItemIconPalette_ReturnToFieldArrow[];
 

@@ -2271,7 +2271,7 @@ static void InitDomeTrainers(void)
         for (j = 0; j < NUM_STATS; j++)
             gSaveBlock2Ptr->frontier.domePlayerPartyData[i].evs[j] = GetMonData(&gPlayerParty[gSaveBlock2Ptr->frontier.selectedPartyMons[i] - 1], MON_DATA_HP_EV + j, NULL);
 
-        gSaveBlock2Ptr->frontier.domePlayerPartyData[i].nature = GetNature(&gPlayerParty[gSaveBlock2Ptr->frontier.selectedPartyMons[i] - 1]);
+        gSaveBlock2Ptr->frontier.domePlayerPartyData[i].nature = GetNature(&gPlayerParty[gSaveBlock2Ptr->frontier.selectedPartyMons[i] - 1], FALSE);
     }
 
     // Populate the tourney roster with random frontier trainers (dependent on streak)
