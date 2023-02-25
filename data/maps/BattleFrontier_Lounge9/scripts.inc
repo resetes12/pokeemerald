@@ -15,7 +15,7 @@ BattleFrontier_Lounge9_Heal::
 	end
 
 BattleFrontier_Lounge9_Heal_TEXT:
-	.string "Hi! Welcome to the BATTLE FRONTIER\n"
+	.string "Hi! Welcome to the HYPER TRAINING\n"
 	.string "GYM! I will heal your POKéMON.$"
 
 BattleFrontier_Lounge9_Heal_TEXT2:
@@ -255,9 +255,10 @@ BattleFrontier_Lounge9_EV_SetZeroProceed::
 @IV setter to 31 (all of them)
 BattleFrontier_Lounge9_IV_Man::
 	checkflag FLAG_IV_SETTER
-	call_if_unset FLAG_IV_SETTER, BattleFrontier_Lounge9_IV_First_Time
 	lockall
 	faceplayer
+	goto_if_unset FLAG_IS_CHAMPION, BattleFrontier_Lounge9_IV_ManNoChampion
+	call_if_unset FLAG_IV_SETTER, BattleFrontier_Lounge9_IV_First_Time
 	msgbox BattleFrontier_Lounge9_IV_Text1, MSGBOX_YESNO
 	waitmessage
 	compare VAR_RESULT, YES
@@ -265,6 +266,16 @@ BattleFrontier_Lounge9_IV_Man::
 	compare VAR_RESULT, NO
 	goto_if_eq BattleFrontier_Lounge9_IV_No
 	end
+
+BattleFrontier_Lounge9_IV_ManNoChampion::
+	msgbox BattleFrontier_Lounge9_IV_TextNoChampion, MSGBOX_NPC
+	releaseall
+	end
+
+BattleFrontier_Lounge9_IV_TextNoChampion:
+	.string "Who are you? You seem... Weak?\n"
+	.string "Kinda...\p"
+	.string "Meh. Come back if you get stronger.$"
 
 BattleFrontier_Lounge9_IV_First_Time::
 	msgbox BattleFrontier_Lounge9_IV_TextFirstTime, MSGBOX_NPC
@@ -349,8 +360,8 @@ BattleFrontier_Lounge9_IV_TextFirstTime:
 	.string "that I decided to join your FAN CLUB!\p"
 	.string "Anyway, I decided to become stronger\n"
 	.string "so I joined this GYM a a few days ago.\p"
-	.string "My father works here in this island so\n"
-	.string "it's easy to come every day.\p"
+	.string "My dad works here in this city so it's\n"
+	.string "easy for me to come here every day.\p"
 	.string "I love training in this GYM, since\n"
 	.string "it's always full of powerful trainers!\p"
 	.string "In fact, here I developed a technique\n"
@@ -420,7 +431,7 @@ BattleFrontier_Lounge9_EV_SetZeroTextSure:
 	.string "This process can't be undone.$"
 
 BattleFrontier_Lounge9_EV_Column_Text:
-	.string "Welcome to the BATTLE FRONTIER GYM!\p"
+	.string "Welcome to the HYPER TRAINING GYM!\p"
 	.string "Here you can train your POKéMON\n"
 	.string "to improve their STATS.\p"
 	.string "How does this work?\p"
@@ -491,6 +502,7 @@ BattleFrontier_Lounge9_EV_No_TEXT:
 BattleFrontier_Lounge9_Chansey5::
 	faceplayer
 	goto_if_unset FLAG_CHANSEYTRAINERS, LavaridgeTown_ChanseyTrainersFirstEncounter
+	goto_if_unset FLAG_IS_CHAMPION, BattleFrontier_Lounge9_Chansey5Champion
 	msgbox BattleFrontier_Lounge9_Chansey5Repeat2, MSGBOX_YESNO
 	switch VAR_RESULT
 	case NO, LavaridgeTown_Chansey1End
@@ -506,6 +518,18 @@ BattleFrontier_Lounge9_ChanseyBattleAgain::
 	msgbox BattleFrontier_Lounge9_Chansey5Repeat, MSGBOX_AUTOCLOSE
 	clearflag 0x85B
 	end
+
+BattleFrontier_Lounge9_Chansey5Champion:
+	faceplayer
+	msgbox BattleFrontier_Lounge9_Chansey5ChampionText, MSGBOX_DEFAULT
+	release
+	end
+
+BattleFrontier_Lounge9_Chansey5ChampionText:
+	.string "How many badges you have?\p"
+	.string "Oh my! No, I cannot battle you!\n"
+	.string "You are not strong enough.\p"
+	.string "Come back when you get stronger.$"
 
 BattleFrontier_Lounge9_Chansey5Intro:
 	.string "My BLISSEY is ready!$"

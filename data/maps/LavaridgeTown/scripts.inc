@@ -296,6 +296,8 @@ LavaridgeTown_Text_MayExplainGoGogglesChallengeDad:
 	.string "want to lose to me, I bet!\p"
 	.string "{PLAYER}{KUN}, I think I should challenge\n"
 	.string "your dad in PETALBURG GYM.\p"
+	.string "Oh yeah, and you should check the\n"
+	.string "NATURE MINTS in the FLOWERSHOP!\p"
 	.string "See you again!$"
 
 LavaridgeTown_Text_BrendanNiceBadgesTakeThis:
@@ -318,6 +320,8 @@ LavaridgeTown_Text_BrendanExplainGoGogglesChallengeDad:
 	.string "the GYM LEADER of PETALBURG.\p"
 	.string "Unlike you, {PLAYER}, your dad looks like\n"
 	.string "he really is tough.\p"
+	.string "Oh, and go check the NATURE\n"
+	.string "MINTS in the FLOWERSHOP!\p"
 	.string "See you around!$"
 
 LavaridgeTown_Text_HaveEggWillYouTakeIt:

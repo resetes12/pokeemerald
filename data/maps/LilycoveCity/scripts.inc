@@ -149,6 +149,15 @@ LilycoveCity_EventScript_CitySign::
 	msgbox LilycoveCity_Text_CitySign, MSGBOX_SIGN
 	end
 
+LilycoveCity_EventScript_GymSign::
+	msgbox LilycoveCity_Text_GymSign, MSGBOX_SIGN
+	end
+
+LilycoveCity_Text_GymSign:
+	.string "HYPER TRAINING GYM.\p"
+	.string "Maximize the potential of your\n"
+	.string "POKéMON easily!$"
+
 LilycoveCity_EventScript_ContestHallSign::
 	msgbox LilycoveCity_Text_ContestHallSign, MSGBOX_SIGN
 	end

@@ -74,8 +74,8 @@
     },
     {
       "type": "hidden_item",
-      "x": 19,
-      "y": 43,
+      "x": 9,
+      "y": 27,
       "elevation": 0,
       "item": "ITEM_IRON",
       "flag": "FLAG_HIDDEN_ITEM_ARTISAN_CAVE_B1F_IRON"

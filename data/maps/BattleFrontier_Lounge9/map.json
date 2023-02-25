@@ -2,8 +2,8 @@
   "id": "MAP_BATTLE_FRONTIER_LOUNGE9",
   "name": "BattleFrontier_Lounge9",
   "layout": "LAYOUT_BATTLE_FRONTIER_LOUNGE2",
-  "music": "MUS_B_TOWER_RS",
-  "region_map_section": "MAPSEC_BATTLE_FRONTIER",
+  "music": "MUS_RG_GYM",
+  "region_map_section": "MAPSEC_LILYCOVE_CITY",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
   "map_type": "MAP_TYPE_INDOOR",
@@ -16,8 +16,8 @@
   "object_events": [
     {
       "graphics_id": "OBJ_EVENT_GFX_FISHERMAN",
-      "x": 12,
-      "y": 4,
+      "x": 11,
+      "y": 3,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
       "movement_range_x": 1,
@@ -43,7 +43,7 @@
     {
       "graphics_id": "OBJ_EVENT_GFX_BLACK_BELT",
       "x": 7,
-      "y": 3,
+      "y": 2,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
       "movement_range_x": 0,
@@ -56,7 +56,7 @@
     {
       "graphics_id": "OBJ_EVENT_GFX_ARTIST",
       "x": 18,
-      "y": 3,
+      "y": 2,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
       "movement_range_x": 0,
@@ -94,10 +94,10 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_UNION_ROOM_NURSE",
-      "x": 20,
+      "x": 6,
       "y": 6,
       "elevation": 0,
-      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_type": "MOVEMENT_TYPE_FACE_RIGHT",
       "movement_range_x": 6,
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
@@ -107,10 +107,10 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_MAN_2",
-      "x": 8,
-      "y": 6,
+      "x": 15,
+      "y": 5,
       "elevation": 0,
-      "movement_type": "MOVEMENT_TYPE_FACE_DOWN_AND_RIGHT",
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN_AND_LEFT",
       "movement_range_x": 0,
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
@@ -120,8 +120,8 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_MYSTERY_GIFT_MAN",
-      "x": 13,
-      "y": 4,
+      "x": 14,
+      "y": 3,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
       "movement_range_x": 0,
@@ -133,10 +133,10 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_NURSE",
-      "x": 15,
+      "x": 10,
       "y": 5,
       "elevation": 0,
-      "movement_type": "MOVEMENT_TYPE_NONE",
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
       "movement_range_x": 0,
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NONE",
@@ -150,15 +150,15 @@
       "x": 12,
       "y": 9,
       "elevation": 0,
-      "dest_map": "MAP_BATTLE_FRONTIER_OUTSIDE_EAST",
-      "dest_warp_id": "11"
+      "dest_map": "MAP_LILYCOVE_CITY",
+      "dest_warp_id": "14"
     },
     {
       "x": 13,
       "y": 9,
       "elevation": 0,
-      "dest_map": "MAP_BATTLE_FRONTIER_OUTSIDE_EAST",
-      "dest_warp_id": "11"
+      "dest_map": "MAP_LILYCOVE_CITY",
+      "dest_warp_id": "14"
     }
   ],
   "coord_events": [
@@ -167,16 +167,16 @@
   "bg_events": [
     {
       "type": "sign",
-      "x": 15,
-      "y": 4,
+      "x": 16,
+      "y": 5,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "BattleFrontier_Lounge9_EV_Column"
     },
     {
       "type": "sign",
-      "x": 10,
-      "y": 4,
+      "x": 9,
+      "y": 5,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "BattleFrontier_Lounge9_EV_Column"

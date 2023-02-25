@@ -28,6 +28,59 @@ Route104_PrettyPetalFlowerShop_EventScript_ShopOwner::
 	release
 	end
 
+Route104_PrettyPetalFlowerShop_EventScript_MintOwner::
+	lock
+	faceplayer
+	goto_if_unset FLAG_BADGE04_GET, Route104_PrettyPetalFlowerShop_EventScript_NoSellMints
+	msgbox Route104_PrettyPetalFlowerShop_Text_Mints1, MSGBOX_DEFAULT
+	waitmessage
+	pokemart Route104_PrettyPetalFlowerShop_MintShop
+	msgbox gText_PleaseComeAgain, MSGBOX_DEFAULT
+	release
+	end
+
+Route104_PrettyPetalFlowerShop_Text_Mints1:
+	.string "Our NATURE MINTS are back!\n"
+	.string "Have a look!$"
+
+Route104_PrettyPetalFlowerShop_Text_Mints2:
+	.string "Hi, dear trainer. If you are looking\n"
+	.string "to buy NATURE MINTS, you should have\l"
+	.string "come earlier. I just sold the last one.\n"
+	.string "Come back later.$"
+
+	.align 2
+Route104_PrettyPetalFlowerShop_MintShop:
+	.2byte ITEM_SERIOUS_MINT
+	.2byte ITEM_ADAMANT_MINT
+	.2byte ITEM_BOLD_MINT
+	.2byte ITEM_BRAVE_MINT
+	.2byte ITEM_CALM_MINT
+	.2byte ITEM_CAREFUL_MINT
+	.2byte ITEM_GENTLE_MINT
+	.2byte ITEM_HASTY_MINT
+	.2byte ITEM_IMPISH_MINT
+	.2byte ITEM_JOLLY_MINT
+	.2byte ITEM_LAX_MINT
+	.2byte ITEM_LONELY_MINT
+	.2byte ITEM_MILD_MINT
+	.2byte ITEM_MODEST_MINT
+	.2byte ITEM_NAIVE_MINT
+	.2byte ITEM_NAUGHTY_MINT
+	.2byte ITEM_QUIET_MINT
+	.2byte ITEM_RASH_MINT
+	.2byte ITEM_RELAXED_MINT
+	.2byte ITEM_SASSY_MINT
+	.2byte ITEM_TIMID_MINT
+	.2byte ITEM_NONE
+	release
+	end
+
+Route104_PrettyPetalFlowerShop_EventScript_NoSellMints::
+	msgbox Route104_PrettyPetalFlowerShop_Text_Mints2, MSGBOX_DEFAULT
+	release
+	end
+
 Route104_PrettyPetalFlowerShop_EventScript_AlreadyMet::
 	msgbox Route104_PrettyPetalFlowerShop_Text_LearnAboutBerries, MSGBOX_YESNO
 	call_if_eq VAR_RESULT, YES, Route104_PrettyPetalFlowerShop_EventScript_ExplainBerries
