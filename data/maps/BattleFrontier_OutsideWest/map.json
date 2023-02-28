@@ -343,7 +343,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "ITEM_TIMID_MINT",
       "script": "Common_EventScript_FindItem",
-      "flag": "0"
+      "flag": "FLAG_MINT_BF"
     }
   ],
   "warp_events": [

@@ -59,11 +59,11 @@
 #define FLAG_CAVE_SCALE      0x2F 
 #define FLAG_CAVE_MOONSTONE  0x30 
 #define FLAG_CAVE_SUNSTONE   0x31 
-#define FLAG_LEVELCAP        0x32 
-#define FLAG_UNUSED_0x033    0x33 // Unused Flag
-#define FLAG_UNUSED_0x034    0x34 // Unused Flag
-#define FLAG_UNUSED_0x035    0x35 // Unused Flag
-#define FLAG_UNUSED_0x036    0x36 // Unused Flag
+#define FLAG_LEVELCAP        0x32 //Unused for now
+#define FLAG_MINT_LILYCOVE   0x33
+#define FLAG_MINT_BF         0x34 
+#define FLAG_MINT_ALTERING   0x35 
+#define FLAG_MINT_SANDTOWER  0x36
 #define FLAG_UNUSED_0x037    0x37 // Unused Flag
 #define FLAG_UNUSED_0x038    0x38 // Unused Flag
 #define FLAG_UNUSED_0x039    0x39 // Unused Flag
