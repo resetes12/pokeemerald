@@ -43,7 +43,9 @@ BattleFrontier_Lounge9_EV_HP_Yes::
 	msgbox BattleFrontier_Lounge9_EV_HP_TEXT2, MSGBOX_DEFAULT
 	waitmessage
 	setflag FLAG_SYS_NO_CATCHING
-	setwildbattle SPECIES_LICKITUNG, 1, ITEM_NONE
+	setflag FLAG_SYS_SET_BATTLE_BGM
+	setvar VAR_TEMP_F, MUS_RG_VS_WILD
+	setwildbattle SPECIES_WAILORD, 1, ITEM_NONE
 	dowildbattle
 	clearflag FLAG_SYS_NO_CATCHING
 	release
@@ -64,7 +66,9 @@ BattleFrontier_Lounge9_EV_ATK_Yes::
 	msgbox BattleFrontier_Lounge9_EV_ATK_TEXT2, MSGBOX_DEFAULT
 	waitmessage
 	setflag FLAG_SYS_NO_CATCHING
-	setwildbattle SPECIES_HITMONLEE, 1, ITEM_NONE
+	setflag FLAG_SYS_SET_BATTLE_BGM
+	setvar VAR_TEMP_F, MUS_RG_VS_WILD
+	setwildbattle SPECIES_GALLADE, 1, ITEM_NONE
 	dowildbattle
 	clearflag FLAG_SYS_NO_CATCHING
 	release
@@ -85,7 +89,9 @@ BattleFrontier_Lounge9_EV_SATK_Yes::
 	msgbox BattleFrontier_Lounge9_EV_SATK_TEXT2, MSGBOX_DEFAULT
 	waitmessage
 	setflag FLAG_SYS_NO_CATCHING
-	setwildbattle SPECIES_GENGAR, 1, ITEM_NONE
+	setflag FLAG_SYS_SET_BATTLE_BGM
+	setvar VAR_TEMP_F, MUS_RG_VS_WILD
+	setwildbattle SPECIES_GARDEVOIR, 1, ITEM_NONE
 	dowildbattle
 	clearflag FLAG_SYS_NO_CATCHING
 	release
@@ -106,7 +112,9 @@ BattleFrontier_Lounge9_EV_DEF_Yes::
 	msgbox BattleFrontier_Lounge9_EV_DEF_TEXT2, MSGBOX_DEFAULT
 	waitmessage
 	setflag FLAG_SYS_NO_CATCHING
-	setwildbattle SPECIES_STEELIX, 1, ITEM_NONE
+	setflag FLAG_SYS_SET_BATTLE_BGM
+	setvar VAR_TEMP_F, MUS_RG_VS_WILD
+	setwildbattle SPECIES_AGGRON, 1, ITEM_NONE
 	dowildbattle
 	clearflag FLAG_SYS_NO_CATCHING
 	release
@@ -127,7 +135,9 @@ BattleFrontier_Lounge9_EV_SDEF_Yes::
 	msgbox BattleFrontier_Lounge9_EV_SDEF_TEXT2, MSGBOX_DEFAULT
 	waitmessage
 	setflag FLAG_SYS_NO_CATCHING
-	setwildbattle SPECIES_HITMONCHAN, 1, ITEM_NONE
+	setflag FLAG_SYS_SET_BATTLE_BGM
+	setvar VAR_TEMP_F, MUS_RG_VS_WILD
+	setwildbattle SPECIES_LUDICOLO, 1, ITEM_NONE
 	dowildbattle
 	clearflag FLAG_SYS_NO_CATCHING
 	release
@@ -148,7 +158,9 @@ BattleFrontier_Lounge9_EV_SPD_Yes::
 	msgbox BattleFrontier_Lounge9_EV_SPD_TEXT2, MSGBOX_DEFAULT
 	waitmessage
 	setflag FLAG_SYS_NO_CATCHING
-	setwildbattle SPECIES_FURRET, 1, ITEM_NONE
+	setflag FLAG_SYS_SET_BATTLE_BGM
+	setvar VAR_TEMP_F, MUS_RG_VS_WILD
+	setwildbattle SPECIES_SCEPTILE, 1, ITEM_NONE
 	dowildbattle
 	clearflag FLAG_SYS_NO_CATCHING
 	release
@@ -233,7 +245,7 @@ BattleFrontier_Lounge9_EV_SetZeroProceed::
 	faceplayer
 	fadescreen 0x1
 	delay 30
-	removemoney 5000, 0
+	removemoney 20000, 0
 	fadescreen 0x0
 	setvar VAR_0x8000, 0
 	setvar VAR_0x8001, 0
@@ -289,6 +301,12 @@ BattleFrontier_Lounge9_IV_No::
 	releaseall
 	end
 
+BattleFrontier_Lounge9_IV_NoLevel::
+	msgbox BattleFrontier_Lounge9_IV_Text_NoLevel, MSGBOX_DEFAULT
+	waitmessage
+	releaseall
+	end
+
 BattleFrontier_Lounge9_IV_CheckMoney::
 	checkmoney 60000, 0
 	compare VAR_RESULT, TRUE
@@ -312,6 +330,18 @@ BattleFrontier_Lounge9_IV_Continue::
 
 BattleFrontier_Lounge9_IV_Continue2::
 	faceplayer
+	waitmessage
+	checkpartymon 100
+	compare VAR_RESULT, TRUE
+	goto_if_eq BattleFrontier_Lounge9_IV_Continue3
+	compare VAR_RESULT, FALSE
+	goto_if_eq BattleFrontier_Lounge9_IV_NoLevel
+	end
+	releaseall
+	end
+
+BattleFrontier_Lounge9_IV_Continue3::
+	faceplayer
 	msgbox BattleFrontier_Lounge9_IV_Continue_Text, MSGBOX_YESNO
 	waitmessage
 	compare VAR_RESULT, YES
@@ -326,7 +356,7 @@ BattleFrontier_Lounge9_IV_SetMax::
 	faceplayer
 	fadescreen 0x1
 	delay 100
-	removemoney 60000, 0
+	removemoney 100000, 0
 	fadescreen 0x0
 	setvar VAR_0x8007, 31
 	setvar VAR_0x8008, 31
@@ -353,24 +383,27 @@ BattleFrontier_Lounge9_IV_TextFirstTime:
 	.string ". . .\p"
 	.string "Oh... Of course! I saw you on\n"
 	.string "the TV a short while ago!\p"
+	.string "I'm IVAN, but nou can call me IV-MAN!\p"
+	.string "I'm the brother of EV-MAN,\n"
+	.string "to no one's surprise.\p"
+	.string "And you...\p"
 	.string "You are {PLAYER} and you recently\n"
 	.string "won the POKéMON LEAGUE, right?\p"
-	.string "Your last combat was sooo amazing...\p"
+	.string "Your last combat was quite amazing.\p"
 	.string "I learned so many things from you\n"
 	.string "that I decided to join your FAN CLUB!\p"
-	.string "Anyway, I decided to become stronger\n"
-	.string "so I joined this GYM a a few days ago.\p"
-	.string "My dad works here in this city so it's\n"
-	.string "easy for me to come here every day.\p"
-	.string "I love training in this GYM, since\n"
-	.string "it's always full of powerful trainers!\p"
-	.string "In fact, here I developed a technique\n"
-	.string "to maximize the potential of POKéMON.\p"
+	.string "Anyway, I also decided to become stronger\n"
+	.string "so I created the absolute training routine.\p"
+	.string "For POKéMON, of course!\p"
 	.string "If you want we can train together to\n"
 	.string "maximize the potential of your POKéMON.\p"
+	.string "But... to maximize that potential, the\n"
+	.string "POKéMON needs to be ready for it.\p"
+	.string "Only POKéMON who have reached its maximum\n"
+	.string "LEVEL can whitstand this training routine.\p"
 	.string "Do you want to try it?\p"
 	.string "It's a lenghty and difficult process, so\n"
-	.string "I need 60.000¥ to prepare everything\p"
+	.string "I need 100.000¥ to prepare everything\p"
 	.string "Tell me when you are ready!$"
 
 BattleFrontier_Lounge9_IV_Text1:
@@ -385,6 +418,10 @@ BattleFrontier_Lounge9_IV_Continue_Text:
 BattleFrontier_Lounge9_IV_Text_No:
 	.string "Oh... Well, see you another time.$"
 
+BattleFrontier_Lounge9_IV_Text_NoLevel:
+	.string "I don't think your POKéMON has\n"
+	.string "reached its maximum LEVEL...$"
+
 BattleFrontier_Lounge9_IV_Finish:
 	.string "Phew... I'm exhausted...\n"
 	.string "What about your POKéMON?\p"
@@ -393,9 +430,10 @@ BattleFrontier_Lounge9_IV_Finish:
 	.string "Well, see you soon!$"
 
 BattleFrontier_Lounge9_EV_SetZeroText:
-	.string "Hello there, trainer!\p"
-	.string "I'm known as EV Man, and I'm\n"
-	.string "the owner of this gym.\p"
+	.string "Hello there, trainer! My name's EVAN,\n"
+	.string "but I'm known as EV-MAN around here!\p"
+	.string "I am the owner this GYM, and I train\n"
+	.string "here together with my brother IVAN.\p"
 	.string "If you want to reset your POKéMON\n"
 	.string "EVs to zero, just talk to me.\p"
 	.string "So, do you want to reset any\n"
@@ -418,7 +456,7 @@ BattleFrontier_Lounge9_EV_SetZeroTextNo:
 
 BattleFrontier_Lounge9_EV_SetZeroMoneyText:
 	.string "This process is quite difficult.\n"
-	.string "It will cost you 10.000¥.\p"
+	.string "It will cost you 20.000¥.\p"
 	.string "Do you want to continue?$"
 
 BattleFrontier_Lounge9_EV_SetZeroTextNoMoney:
@@ -439,7 +477,7 @@ BattleFrontier_Lounge9_EV_Column_Text:
 	.string "for the selected stat of your POKéMON.\p"
 	.string "TRAINER TIP 1:\p"
 	.string "Reset EVs to zero by talking\n"
-	.string "to the EV Man.\p"
+	.string "to EV-Man.\p"
 	.string "TRAINER TIP 2:\p"
 	.string "Equip a MACHO BRACE to multiply\n"
 	.string "by 10 the EVs gained.\p"
@@ -453,7 +491,7 @@ BattleFrontier_Lounge9_EV_HP_TEXT:
 	.string "Are you ready?$"
 
 BattleFrontier_Lounge9_EV_HP_TEXT2:
-	.string "Go LICKITUNG!$"
+	.string "Go WAILORD!$"
 
 BattleFrontier_Lounge9_EV_ATK_TEXT:
 	.string "OSHA! I can train your POKéMON\n"
@@ -461,7 +499,7 @@ BattleFrontier_Lounge9_EV_ATK_TEXT:
 	.string "Are you ready?$"
 
 BattleFrontier_Lounge9_EV_ATK_TEXT2:
-	.string "Go HITMONLEE!$"
+	.string "Go GALLADE!$"
 
 BattleFrontier_Lounge9_EV_SATK_TEXT:
 	.string "Bonjour! I can train your POKéMON\n"
@@ -469,7 +507,7 @@ BattleFrontier_Lounge9_EV_SATK_TEXT:
 	.string "Are you ready?$"
 
 BattleFrontier_Lounge9_EV_SATK_TEXT2:
-	.string "Go GENGAR!$"
+	.string "Go GARDEVOIR!$"
 	
 BattleFrontier_Lounge9_EV_DEF_TEXT:
 	.string "Sup' kid! I can train your\n"
@@ -477,7 +515,7 @@ BattleFrontier_Lounge9_EV_DEF_TEXT:
 	.string "Are you ready?$"
 
 BattleFrontier_Lounge9_EV_DEF_TEXT2:
-	.string "Go STEELIX!$"
+	.string "Go AGGRON!$"
 
 BattleFrontier_Lounge9_EV_SDEF_TEXT:
 	.string "Bonjour mon trainer! I can train your\n"
@@ -485,7 +523,7 @@ BattleFrontier_Lounge9_EV_SDEF_TEXT:
 	.string "Are you ready?$"
 
 BattleFrontier_Lounge9_EV_SDEF_TEXT2:
-	.string "Go HITMONCHAN!$"
+	.string "Go LUDICOLO!$"
 
 BattleFrontier_Lounge9_EV_SPD_TEXT:
 	.string ". . .\l"
@@ -494,7 +532,7 @@ BattleFrontier_Lounge9_EV_SPD_TEXT:
 	.string "Are you ready?$"
 
 BattleFrontier_Lounge9_EV_SPD_TEXT2:
-	.string "Go FURRET!$"
+	.string "Go SCEPTILE!$"
 
 BattleFrontier_Lounge9_EV_No_TEXT:
 	.string "No? Okay.$"

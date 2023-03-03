@@ -2314,3 +2314,15 @@ bool8 ScrCmd_warpwhitefade(struct ScriptContext *ctx)
     ResetInitialPlayerAvatarState();
     return TRUE;
 }
+
+bool8 ScrCmd_checkpartymon(struct ScriptContext *ctx)
+{
+    u16 speciesLook = VarGet(ScriptReadHalfword(ctx));
+
+    gSpecialVar_Result = PARTY_SIZE;
+    struct Pokemon *pokemon = &gPlayerParty[gSpecialVar_0x8004];
+    if (GetMonData(pokemon, MON_DATA_LEVEL) == 100) 
+        gSpecialVar_Result = TRUE;
+    else
+        gSpecialVar_Result = FALSE;
+}

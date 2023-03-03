@@ -1737,6 +1737,12 @@
 	.2byte \quantity
 	.endm
 
+	@ Checks to see if the player has a Pokemon in their party. Result returns to VAR_RESULT
+    .macro checkpartymon level:req
+    .byte 0xe4
+    .2byte \level
+    .endm
+
 @ Supplementary
 
 	.macro goto_if_unset flag:req, dest:req

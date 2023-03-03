@@ -986,24 +986,24 @@ static const struct InGameTrade sIngameTrades[] =
 {
     [INGAME_TRADE_SEEDOT] =
     {
-        .nickname = _("DOTS"),
-        .species = SPECIES_SEEDOT,
+        .nickname = _("BUDDY"),
+        .species = SPECIES_BUDEW,
         .ivs = {5, 4, 5, 4, 4, 4},
-        .abilityNum = 1,
+        .abilityNum = 0,
         .otId = 38726,
         .conditions = {30, 5, 5, 5, 5},
         .personality = 0x84,
         .heldItem = ITEM_CHESTO_BERRY,
         .mailNum = -1,
         .otName = _("KOBE"),
-        .otGender = MALE,
+        .otGender = FEMALE,
         .sheen = 10,
         .requestedSpecies = SPECIES_RALTS
     },
     [INGAME_TRADE_PLUSLE] =
     {
-        .nickname = _("PLUSES"),
-        .species = SPECIES_PLUSLE,
+        .nickname = _("PORY G"),
+        .species = SPECIES_PORYGON,
         .ivs = {4, 4, 4, 5, 5, 4},
         .abilityNum = 0,
         .otId = 73996,
@@ -1018,8 +1018,8 @@ static const struct InGameTrade sIngameTrades[] =
     },
     [INGAME_TRADE_HORSEA] =
     {
-        .nickname = _("SEASOR"),
-        .species = SPECIES_HORSEA,
+        .nickname = _("HAPPY"),
+        .species = SPECIES_HAPPINY,
         .ivs = {5, 4, 4, 4, 5, 4},
         .abilityNum = 0,
         .otId = 46285,
@@ -1048,54 +1048,6 @@ static const struct InGameTrade sIngameTrades[] =
         .sheen = 10,
         .requestedSpecies = SPECIES_SKITTY
     },
-    [INGAME_TRADE_CHIKO] =
-    {
-        .nickname = _("CHICKEN"),
-        .species = SPECIES_CHIKORITA,
-        .ivs = {4, 4, 4, 4, 4, 31},
-        .abilityNum = 0,
-        .otId = 69693,
-        .conditions = {5, 5, 5, 30, 5},
-        .personality = 0x6F,
-        .heldItem = ITEM_NONE,
-        .mailNum = -1,
-        .otName = _("JOSEPH"),
-        .otGender = MALE,
-        .sheen = 10,
-        .requestedSpecies = SPECIES_TOTODILE
-    },
-    [INGAME_TRADE_TOTODILE] =
-    {
-        .nickname = _("TOTO"),
-        .species = SPECIES_TOTODILE,
-        .ivs = {4, 4, 4, 4, 4, 31},
-        .abilityNum = 0,
-        .otId = 74368,
-        .conditions = {5, 5, 5, 30, 5},
-        .personality = 0x84,
-        .heldItem = ITEM_NONE,
-        .mailNum = -1,
-        .otName = _("JOSE"),
-        .otGender = MALE,
-        .sheen = 10,
-        .requestedSpecies = SPECIES_CYNDAQUIL
-    },
-    [INGAME_TRADE_CYNDAQUIL] =
-    {
-        .nickname = _("CINDER"),
-        .species = SPECIES_CYNDAQUIL,
-        .ivs = {4, 4, 4, 4, 4, 31},
-        .abilityNum = 0,
-        .otId = 54353,
-        .conditions = {5, 5, 5, 30, 5},
-        .personality = 0x7F,
-        .heldItem = ITEM_NONE,
-        .mailNum = -1,
-        .otName = _("JOY"),
-        .otGender = FEMALE,
-        .sheen = 10,
-        .requestedSpecies = SPECIES_CHIKORITA
-    }
 };
 
 static const u16 sIngameTradeMail[][MAIL_WORDS_COUNT + 1] =

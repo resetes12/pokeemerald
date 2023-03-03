@@ -547,3 +547,4 @@ gSpecials::
 	def_special SetSpdIvs
 	def_special SetSpAtkIvs
 	def_special SetSpDefIvs
+	def_special CreateWonderTradePokemon

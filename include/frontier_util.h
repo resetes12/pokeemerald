@@ -25,6 +25,8 @@ u8 GetFrontierBrainMonNature(u8 monId);
 u8 GetFrontierBrainMonEvs(u8 monId, u8 evStatId);
 s32 GetFronterBrainSymbol(void);
 
-extern const u16 gFrontierBannedSpecies[];
+extern const u16 gFrontierBannedSpeciesEasy[];
+extern const u16 gFrontierBannedSpeciesNormal[];
+extern const u16 gFrontierBannedSpeciesHard[];
 
 #endif // GUARD_FRONTIER_UTIL_H

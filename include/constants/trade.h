@@ -9,12 +9,6 @@
 #define INGAME_TRADE_PLUSLE 1
 #define INGAME_TRADE_HORSEA 2
 #define INGAME_TRADE_MEOWTH 3
-#define INGAME_TRADE_TOTODILE 4
-#define INGAME_TRADE_CYNDAQUIL 5
-#define INGAME_TRADE_NON1 6 //Don't touch, from Ingame trade with yourself
-#define INGAME_TRADE_NON2 7 //Don't touch, from Ingame trade with yourself
-#define INGAME_TRADE_NON3 8 //Don't touch, from Ingame trade with yourself
-#define INGAME_TRADE_CHIKO 9
 
 // Return values for CanTradeSelectedMon and CanSpinTradeMon
 #define CAN_TRADE_MON              0

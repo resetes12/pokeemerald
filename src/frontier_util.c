@@ -676,11 +676,29 @@ static const u8 sFrontierBrainObjEventGfx[NUM_FRONTIER_FACILITIES][2] =
     [FRONTIER_FACILITY_PYRAMID] = {OBJ_EVENT_GFX_BRANDON, FALSE},
 };
 
-const u16 gFrontierBannedSpecies[] =
+const u16 gFrontierBannedSpeciesNormal[] =
 {
-    //SPECIES_MEW, SPECIES_MEWTWO, SPECIES_HO_OH, SPECIES_LUGIA, SPECIES_CELEBI,
-    //SPECIES_KYOGRE, SPECIES_GROUDON, SPECIES_RAYQUAZA, SPECIES_JIRACHI, SPECIES_DEOXYS, 
-    0xFFFF
+        SPECIES_MEWTWO, SPECIES_HO_OH, SPECIES_LUGIA,
+        SPECIES_KYOGRE, SPECIES_GROUDON, SPECIES_RAYQUAZA, SPECIES_DEOXYS,
+        SPECIES_DEOXYS_SPEED, SPECIES_DEOXYS_ATTACK, SPECIES_DEOXYS_DEFENSE, SPECIES_ARCEUS,
+        SPECIES_REGIGIGAS,
+        0xFFFF
+};
+
+const u16 gFrontierBannedSpeciesHard[] = 
+{
+        SPECIES_MEW, SPECIES_MEWTWO, SPECIES_HO_OH, SPECIES_LUGIA, SPECIES_CELEBI,
+        SPECIES_KYOGRE, SPECIES_GROUDON, SPECIES_RAYQUAZA, SPECIES_JIRACHI, SPECIES_DEOXYS,
+        SPECIES_DEOXYS_SPEED, SPECIES_DEOXYS_ATTACK, SPECIES_DEOXYS_DEFENSE, SPECIES_ARCEUS,
+        SPECIES_REGIGIGAS, SPECIES_REGIDRAGO, SPECIES_REGIELEKI, SPECIES_REGISTEEL,
+        SPECIES_REGICE, SPECIES_REGIROCK, SPECIES_ARTICUNO, SPECIES_MOLTRES, SPECIES_ZAPDOS,
+        SPECIES_LATIOS, SPECIES_LATIAS, SPECIES_RAIKOU, SPECIES_ENTEI, SPECIES_SUICUNE,
+        0xFFFF
+};
+
+const u16 gFrontierBannedSpeciesEasy[] =
+{
+        0xFFFF
 };
 
 static const u8 *const sRecordsWindowChallengeTexts[][2] =
@@ -1975,6 +1993,13 @@ static u8 AppendCaughtBannedMonSpeciesName(u16 species, u8 count, s32 numBannedM
 static void AppendIfValid(u16 species, u16 heldItem, u16 hp, u8 lvlMode, u8 monLevel, u16 *speciesArray, u16 *itemsArray, u8 *count)
 {
     s32 i = 0;
+    u16* gFrontierBannedSpecies;
+    if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_NORMAL)
+        gFrontierBannedSpecies = gFrontierBannedSpeciesNormal;
+    if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_EASY)
+        gFrontierBannedSpecies = gFrontierBannedSpeciesEasy;
+    if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD)
+        gFrontierBannedSpecies = gFrontierBannedSpeciesHard;
 
     if (species == SPECIES_EGG || species == SPECIES_NONE)
         return;
@@ -2070,6 +2095,13 @@ static void CheckPartyIneligibility(void)
     {
         s32 i;
         s32 caughtBannedMons = 0;
+        u16* gFrontierBannedSpecies;
+        if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_NORMAL)
+            gFrontierBannedSpecies = gFrontierBannedSpeciesNormal;
+        if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_EASY)
+            gFrontierBannedSpecies = gFrontierBannedSpeciesEasy;
+        if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD)
+            gFrontierBannedSpecies = gFrontierBannedSpeciesHard;
         s32 species = gFrontierBannedSpecies[0];
         for (i = 0; species != 0xFFFF; i++, species = gFrontierBannedSpecies[i])
         {
