@@ -158,8 +158,8 @@
 #define MAPSEC_THREE_ISLE_PORT              0x9A
 #define MAPSEC_SEVII_ISLE_6                 0x9B
 #define MAPSEC_SEVII_ISLE_7                 0x9C
-#define MAPSEC_SEVII_ISLE_8                 0x9D
-#define MAPSEC_SEVII_ISLE_9                 0x9E
+#define MAPSEC_DRACO_CHAMBER                0x9D
+#define MAPSEC_CAVE_OF_SHOCK                0x9E
 #define MAPSEC_RESORT_GORGEOUS              0x9F
 #define MAPSEC_WATER_LABYRINTH              0xA0
 #define MAPSEC_FIVE_ISLE_MEADOW             0xA1

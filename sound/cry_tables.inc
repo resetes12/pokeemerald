@@ -388,6 +388,43 @@ gCryTable::
 	cry Cry_Jirachi
 	cry Cry_Deoxys
 	cry Cry_Chimecho
+	cry Cry_Ambipom
+	cry Cry_Arceus
+	cry Cry_Bonsly
+	cry Cry_Budew
+	cry Cry_Chingling
+	cry Cry_DeoxysA
+	cry Cry_DeoxysD
+	cry Cry_DeoxysS
+	cry Cry_Dusknoir
+	cry Cry_Electivire
+	cry Cry_Froslass
+	cry Cry_Gallade
+	cry Cry_Glaceon
+	cry Cry_Gliscor
+	cry Cry_Happiny
+	cry Cry_Honchkrow
+	cry Cry_Leafeon
+	cry Cry_Lickilicky
+	cry Cry_Magmortar
+	cry Cry_Magnezone
+	cry Cry_Mamoswine
+	cry Cry_Mantyke
+	cry Cry_Mismagius
+	cry Cry_MimeJr
+	cry Cry_Munchlax
+	cry Cry_PorygonZ
+	cry Cry_Probopass
+	cry Cry_Regidrago
+	cry Cry_Regieleki
+	cry Cry_Regigigas
+	cry Cry_Rhyperior
+	cry Cry_Roserade
+	cry Cry_Sylveon
+	cry Cry_Tangrowth
+	cry Cry_Togekiss
+	cry Cry_Weavile
+	cry Cry_Yanmega
 
 	.align 2
 gCryTable_Reverse::
@@ -779,3 +816,41 @@ gCryTable_Reverse::
 	cry_reverse Cry_Jirachi
 	cry_reverse Cry_Deoxys
 	cry_reverse Cry_Chimecho
+	cry_reverse Cry_Ambipom
+	cry_reverse Cry_Arceus
+	cry_reverse Cry_Bonsly
+	cry_reverse Cry_Budew
+	cry_reverse Cry_Chingling
+	cry_reverse Cry_DeoxysA
+	cry_reverse Cry_DeoxysD
+	cry_reverse Cry_DeoxysS
+	cry_reverse Cry_Dusknoir
+	cry_reverse Cry_Electivire
+	cry_reverse Cry_Froslass
+	cry_reverse Cry_Gallade
+	cry_reverse Cry_Glaceon
+	cry_reverse Cry_Gliscor
+	cry_reverse Cry_Happiny
+	cry_reverse Cry_Honchkrow
+	cry_reverse Cry_Leafeon
+	cry_reverse Cry_Lickilicky
+	cry_reverse Cry_Magmortar
+	cry_reverse Cry_Magnezone
+	cry_reverse Cry_Mamoswine
+	cry_reverse Cry_Mantyke
+	cry_reverse Cry_Mismagius
+	cry_reverse Cry_MimeJr
+	cry_reverse Cry_Munchlax
+	cry_reverse Cry_PorygonZ
+	cry_reverse Cry_Probopass
+	cry_reverse Cry_Regidrago
+	cry_reverse Cry_Regieleki
+	cry_reverse Cry_Regigigas
+	cry_reverse Cry_Rhyperior
+	cry_reverse Cry_Roserade
+	cry_reverse Cry_Sylveon
+	cry_reverse Cry_Tangrowth
+	cry_reverse Cry_Togekiss
+	cry_reverse Cry_Weavile
+	cry_reverse Cry_Yanmega
+

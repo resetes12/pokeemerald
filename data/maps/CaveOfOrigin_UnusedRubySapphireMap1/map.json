@@ -2,33 +2,93 @@
   "id": "MAP_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP1",
   "name": "CaveOfOrigin_UnusedRubySapphireMap1",
   "layout": "LAYOUT_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP1",
-  "music": "MUS_CAVE_OF_ORIGIN",
-  "region_map_section": "MAPSEC_CAVE_OF_ORIGIN",
-  "requires_flash": true,
-  "weather": "WEATHER_NONE",
-  "map_type": "MAP_TYPE_UNDERGROUND",
+  "music": "MUS_RG_SEVII_CAVE",
+  "region_map_section": "MAPSEC_CAVE_OF_SHOCK",
+  "requires_flash": false,
+  "weather": "WEATHER_ROUTE119_CYCLE",
+  "map_type": "MAP_TYPE_ROUTE",
   "allow_cycling": true,
-  "allow_escaping": true,
+  "allow_escaping": false,
   "allow_running": true,
-  "show_map_name": true,
+  "show_map_name": false,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
-  "connections": 0,
+  "connections": [
+    {
+      "map": "MAP_ROUTE118",
+      "offset": 0,
+      "direction": "up"
+    },
+    {
+      "map": "MAP_ROUTE110",
+      "offset": 0,
+      "direction": "left"
+    },
+    {
+      "map": "MAP_MAUVILLE_CITY",
+      "offset": -40,
+      "direction": "up"
+    }
+  ],
   "object_events": [
-
+    {
+      "graphics_id": "OBJ_EVENT_GFX_SCIENTIST_1",
+      "x": 10,
+      "y": 21,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 5,
+      "movement_range_y": 5,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "NULL",
+      "flag": "0"
+    },
+    {
+      "graphics_id": "OBJ_EVENT_GFX_SCIENTIST_2",
+      "x": 17,
+      "y": 22,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 1,
+      "movement_range_y": 1,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "NULL",
+      "flag": "0"
+    },
+    {
+      "graphics_id": "OBJ_EVENT_GFX_CAMPER",
+      "x": 13,
+      "y": 10,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 5,
+      "movement_range_y": 5,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "NULL",
+      "flag": "0"
+    },
+    {
+      "graphics_id": "OBJ_EVENT_GFX_KIRLIA",
+      "x": 12,
+      "y": 27,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 5,
+      "movement_range_y": 5,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "NULL",
+      "flag": "0"
+    }
   ],
   "warp_events": [
     {
-      "x": 13,
-      "y": 5,
-      "elevation": 3,
-      "dest_map": "MAP_CAVE_OF_ORIGIN_1F",
-      "dest_warp_id": "1"
-    },
-    {
-      "x": 5,
-      "y": 11,
-      "elevation": 3,
-      "dest_map": "MAP_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP2",
+      "x": 14,
+      "y": 15,
+      "elevation": 0,
+      "dest_map": "MAP_AQUA_HIDEOUT_UNUSED_RUBY_MAP2",
       "dest_warp_id": "0"
     }
   ],

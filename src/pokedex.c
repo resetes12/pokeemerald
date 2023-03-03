@@ -2241,7 +2241,8 @@ static void CreatePokedexList(u8 dexMode, u8 order)
         }
         break;
     case ORDER_ALPHABETICAL:
-        for (i = 0; i < NUM_SPECIES - 1; i++)
+        for (i = 0; i < ARRAY_COUNT(gPokedexOrder_Alphabetical); i++)
+        //for (i = 0; i < NUM_SPECIES - 1; i++)
         {
             temp_dexNum = gPokedexOrder_Alphabetical[i];
 
@@ -2255,7 +2256,8 @@ static void CreatePokedexList(u8 dexMode, u8 order)
         }
         break;
     case ORDER_HEAVIEST:
-        for (i = NATIONAL_DEX_COUNT - 1; i >= 0; i--)
+        for (i = ARRAY_COUNT(gPokedexOrder_Weight) - 1; i >= 0; i--)
+        //for (i = NATIONAL_DEX_COUNT - 1; i >= 0; i--)
         {
             temp_dexNum = gPokedexOrder_Weight[i];
 
@@ -2269,7 +2271,8 @@ static void CreatePokedexList(u8 dexMode, u8 order)
         }
         break;
     case ORDER_LIGHTEST:
-        for (i = 0; i < NATIONAL_DEX_COUNT; i++)
+        for (i = 0; i < ARRAY_COUNT(gPokedexOrder_Weight); i++)
+        //for (i = 0; i < NATIONAL_DEX_COUNT; i++)
         {
             temp_dexNum = gPokedexOrder_Weight[i];
 
@@ -2283,7 +2286,8 @@ static void CreatePokedexList(u8 dexMode, u8 order)
         }
         break;
     case ORDER_TALLEST:
-        for (i = NATIONAL_DEX_COUNT - 1; i >= 0; i--)
+        for (i = ARRAY_COUNT(gPokedexOrder_Height) - 1; i >= 0; i--)
+        //for (i = NATIONAL_DEX_COUNT - 1; i >= 0; i--)
         {
             temp_dexNum = gPokedexOrder_Height[i];
 
@@ -2297,7 +2301,8 @@ static void CreatePokedexList(u8 dexMode, u8 order)
         }
         break;
     case ORDER_SMALLEST:
-        for (i = 0; i < NATIONAL_DEX_COUNT; i++)
+        //for (i = 0; i < NATIONAL_DEX_COUNT; i++)
+        for (i = 0; i < ARRAY_COUNT(gPokedexOrder_Height); i++)
         {
             temp_dexNum = gPokedexOrder_Height[i];
 

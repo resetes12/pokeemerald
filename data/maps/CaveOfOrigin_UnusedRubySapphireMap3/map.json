@@ -2,34 +2,45 @@
   "id": "MAP_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP3",
   "name": "CaveOfOrigin_UnusedRubySapphireMap3",
   "layout": "LAYOUT_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP3",
-  "music": "MUS_CAVE_OF_ORIGIN",
-  "region_map_section": "MAPSEC_CAVE_OF_ORIGIN",
-  "requires_flash": true,
-  "weather": "WEATHER_FOG_HORIZONTAL",
-  "map_type": "MAP_TYPE_UNDERGROUND",
+  "music": "MUS_RG_SEVII_CAVE",
+  "region_map_section": "MAPSEC_DRACO_CHAMBER",
+  "requires_flash": false,
+  "weather": "WEATHER_SANDSTORM",
+  "map_type": "MAP_TYPE_ROUTE",
   "allow_cycling": true,
-  "allow_escaping": true,
+  "allow_escaping": false,
   "allow_running": true,
-  "show_map_name": true,
+  "show_map_name": false,
   "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
-  "connections": 0,
+  "connections": [
+    {
+      "map": "MAP_ROUTE132",
+      "offset": -5,
+      "direction": "down"
+    }
+  ],
   "object_events": [
-
+    {
+      "graphics_id": "OBJ_EVENT_GFX_HIKER",
+      "x": 10,
+      "y": 11,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
+      "movement_range_x": 5,
+      "movement_range_y": 5,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "NULL",
+      "flag": "0"
+    }
   ],
   "warp_events": [
     {
-      "x": 7,
-      "y": 14,
+      "x": 9,
+      "y": 7,
       "elevation": 3,
-      "dest_map": "MAP_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP2",
-      "dest_warp_id": "1"
-    },
-    {
-      "x": 12,
-      "y": 6,
-      "elevation": 3,
-      "dest_map": "MAP_CAVE_OF_ORIGIN_B1F",
-      "dest_warp_id": "0"
+      "dest_map": "MAP_AQUA_HIDEOUT_UNUSED_RUBY_MAP1",
+      "dest_warp_id": "2"
     }
   ],
   "coord_events": [

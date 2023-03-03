@@ -6630,3 +6630,188 @@ static const u16 sChimechoLevelUpLearnset[] = {
     LEVEL_UP_MOVE(46, MOVE_PSYCHIC),
     LEVEL_UP_END
 };
+
+static const u16 sAmbipomLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sArceusLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sBonslyLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sBudewLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sChinglingLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sDeoxysALevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sDeoxysDLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sDeoxysSLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sDusknoirLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sElectivireLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sFroslassLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sGalladeLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sGlaceonLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sGliscorLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sHappinyLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sHonchkrowLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sLeafeonLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sLickilickyLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sMagmortarLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sMagnezoneLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sMamoswineLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sMantykeLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sMismagiusLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sMimeJrLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sMunchlaxLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sPorygonZLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sProbopassLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sRegidragoLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sRegigigasLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sRegielekiLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sRhyperiorLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sRoseradeLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sSylveonLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sTangrowthLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sTogekissLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sWeavileLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};
+
+static const u16 sYanmegaLevelUpLearnset[] = {
+    LEVEL_UP_MOVE( 1, MOVE_TACKLE),
+    LEVEL_UP_END
+};

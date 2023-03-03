@@ -22,6 +22,11 @@
       "map": "MAP_PACIFIDLOG_TOWN",
       "offset": 0,
       "direction": "right"
+    },
+    {
+      "map": "MAP_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP3",
+      "offset": 5,
+      "direction": "up"
     }
   ],
   "object_events": [
@@ -40,10 +45,10 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_SWIMMER_F",
-      "x": 10,
-      "y": 6,
+      "x": 7,
+      "y": 8,
       "elevation": 1,
-      "movement_type": "MOVEMENT_TYPE_WALK_SEQUENCE_UP_LEFT_DOWN_RIGHT",
+      "movement_type": "MOVEMENT_TYPE_WALK_UP_AND_DOWN",
       "movement_range_x": 3,
       "movement_range_y": 3,
       "trainer_type": "TRAINER_TYPE_NORMAL",

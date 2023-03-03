@@ -27,6 +27,11 @@
       "map": "MAP_ROUTE123",
       "offset": 0,
       "direction": "right"
+    },
+    {
+      "map": "MAP_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP1",
+      "offset": 0,
+      "direction": "down"
     }
   ],
   "object_events": [
