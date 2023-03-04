@@ -1,4 +1,5 @@
 #include "global.h"
+#include "braille_puzzles.h"
 #include "event_data.h"
 #include "event_scripts.h"
 #include "field_effect.h"
@@ -44,6 +45,8 @@ bool8 FldEff_SweetScent(void)
     taskId = CreateFieldMoveTask();
     gTasks[taskId].data[8] = (u32)StartSweetScentFieldEffect >> 16;
     gTasks[taskId].data[9] = (u32)StartSweetScentFieldEffect;
+    if (!ShouldDoBrailleDigEffect())
+        SetPlayerAvatarTransitionFlags(PLAYER_AVATAR_FLAG_ON_FOOT);
     return FALSE;
 }
 
@@ -52,12 +55,19 @@ static void StartSweetScentFieldEffect(void)
     u8 taskId;
 
     PlaySE(SE_M_SWEET_SCENT);
-    CpuFastSet(gPlttBufferUnfaded, gPaletteDecompressionBuffer, 0x100);
-    CpuFastSet(gPlttBufferFaded, gPlttBufferUnfaded, 0x100);
-    BeginNormalPaletteFade(~(1 << (gSprites[GetPlayerAvatarSpriteId()].oam.paletteNum + 16)), 4, 0, 8, RGB_RED);
-    taskId = CreateTask(TrySweetScentEncounter, 0);
-    gTasks[taskId].data[0] = 0;
-    FieldEffectActiveListRemove(FLDEFF_SWEET_SCENT);
+    if (ShouldDoBrailleDigEffect())
+    {
+        DoBrailleDigEffect();
+    }
+    else
+    {
+        CpuFastSet(gPlttBufferUnfaded, gPaletteDecompressionBuffer, 0x100);
+        CpuFastSet(gPlttBufferFaded, gPlttBufferUnfaded, 0x100);
+        BeginNormalPaletteFade(~(1 << (gSprites[GetPlayerAvatarSpriteId()].oam.paletteNum + 16)), 4, 0, 8, RGB_RED);
+        taskId = CreateTask(TrySweetScentEncounter, 0);
+        gTasks[taskId].data[0] = 0;
+        FieldEffectActiveListRemove(FLDEFF_SWEET_SCENT);
+    }
 }
 
 static void TrySweetScentEncounter(u8 taskId)

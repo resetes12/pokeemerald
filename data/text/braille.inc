@@ -48,14 +48,15 @@ SealedChamber_OuterRoom_Braille_Comma:
 
 SealedChamber_OuterRoom_Braille_DigHere:
 	brailleformat 7, 4, 23, 15, 10, 7
-	.braille "DIG HERE.$"
+	.braille "SWEET SCENT\n"
+	.braille "HERE.$"
 
 SealedChamber_InnerRoom_Braille_FirstWailordLastRelicanth:
 	brailleformat 0, 0, 29, 19, 3, 3
 	.braille "FIRST COMES\n"
-	.braille "WAILORD.\n"
+	.braille "MAGNEZONE.\n"
 	.braille "LAST COMES\n"
-	.braille "RELICANTH.$"
+	.braille "VIBRAVA.$"
 
 SealedChamber_InnerRoom_Braille_InThisCaveWeHaveLived:
 	brailleformat 2, 0, 26, 19, 5, 3

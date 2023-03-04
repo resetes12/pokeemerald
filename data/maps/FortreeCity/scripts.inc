@@ -153,34 +153,3 @@ FortreeCity_Text_GymSign:
 	.string "LEADER: WINONA\p"
 	.string "“The bird user taking flight into\n"
 	.string "the world.”$"
-
-FortreeCity_TChansey2::
-	faceplayer
-	goto_if_unset FLAG_CHANSEYTRAINERS, LavaridgeTown_ChanseyTrainersFirstEncounter
-	msgbox FortreeCity_TChansey2Repeat2, MSGBOX_YESNO
-	switch VAR_RESULT
-	case NO, LavaridgeTown_Chansey1End
-	case YES, FortreeCity_TChansey2Battle
-	case MULTI_B_PRESSED, LavaridgeTown_Chansey1End
-
-FortreeCity_TChansey2Battle::
-	trainerbattle TRAINER_BATTLE_CONTINUE_SCRIPT, TRAINER_CHANSEY2, 0, FortreeCity_TChansey2Intro, FortreeCity_TChansey2Defeat, FortreeCity_TChanseyBattleAgain
-	end
-
-FortreeCity_TChanseyBattleAgain::
-	faceplayer
-	msgbox FortreeCity_TChansey2Repeat, MSGBOX_AUTOCLOSE
-	clearflag 0x858
-	end
-
-FortreeCity_TChansey2Intro:
-	.string "My CHANSEY is ready!$"
-
-FortreeCity_TChansey2Defeat:
-	.string "Oh no... CHANSEY, use SOFT-BOILED!$"
-
-FortreeCity_TChansey2Repeat:
-	.string "We can battle again if you want!$"
-
-FortreeCity_TChansey2Repeat2:
-	.string "Ready for a battle?$"

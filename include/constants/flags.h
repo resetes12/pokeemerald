@@ -50,12 +50,12 @@
 #define FLAG_CHANSEY_TRAINER        0x26 // Unused Flag
 #define FLAG_SYS_NO_BATTLE_DMG      0x27 // Unused Flag //DEBUG
 #define FLAG_IV_SETTER       0x28 
-#define FLAG_UNUSED_0x029    0x29 // Unused Flag
-#define FLAG_UNUSED_0x02A    0x2A // Unused Flag
+#define FLAG_SIDNEY_REMATCH    0x29 //Elite Four Rematch 1
+#define FLAG_PHOEBE_REMATCH    0x2A //Elite Four Rematch 2
 #define FLAG_SYS_SET_BATTLE_BGM    0x2B // Changes BGM
-#define FLAG_TOTOTRADE       0x2C 
-#define FLAG_CYNDATRADE      0x2D 
-#define FLAG_CHIKORITRADE    0x2E 
+#define FLAG_WONDERTRADE_FIRSTIME       0x2C 
+#define FLAG_WONDERTRADE_EVENT      0x2D 
+#define FLAG_GLACIA_REMATCH  0x2E //Elite Four Rematch 3
 #define FLAG_CAVE_SCALE      0x2F 
 #define FLAG_CAVE_MOONSTONE  0x30 
 #define FLAG_CAVE_SUNSTONE   0x31 
@@ -64,9 +64,9 @@
 #define FLAG_MINT_BF         0x34 
 #define FLAG_MINT_ALTERING   0x35 
 #define FLAG_MINT_SANDTOWER  0x36
-#define FLAG_UNUSED_0x037    0x37 // Unused Flag
-#define FLAG_UNUSED_0x038    0x38 // Unused Flag
-#define FLAG_UNUSED_0x039    0x39 // Unused Flag
+#define FLAG_DRAKE_REMATCH   0x37 //Elite Four Rematch 4
+#define FLAG_WALLACE_REMATCH 0x38 //Elite Four Rematch 5, Champion
+#define FLAG_STEVEN_REMATCH  0x39 // Steven Rematch, true champion
 #define FLAG_UNUSED_0x03A    0x3A // Unused Flag
 #define FLAG_UNUSED_0x03B    0x3B // Unused Flag
 #define FLAG_UNUSED_0x03C    0x3C // Unused Flag
@@ -1570,10 +1570,10 @@
 #define FLAG_DAILY_SECRET_BASE                      (DAILY_FLAGS_START + 0x2)
 #define FLAG_UNUSED_0x923                           (DAILY_FLAGS_START + 0x3)  // Sudo2
 #define FLAG_UNUSED_0x924                           (DAILY_FLAGS_START + 0x4)  // Sudo3
-#define FLAG_DAILY_MONEYFARM                        (DAILY_FLAGS_START + 0x5)  // Unused Flag
-#define FLAG_UNUSED_0x926                           (DAILY_FLAGS_START + 0x6)  // Unused Flag
-#define FLAG_UNUSED_0x927                           (DAILY_FLAGS_START + 0x7)  // Unused Flag
-#define FLAG_UNUSED_0x928                           (DAILY_FLAGS_START + 0x8)  // Unused Flag
+#define FLAG_DAILY_MONEYFARM                        (DAILY_FLAGS_START + 0x5)  // Meowth flag, daily, for money
+#define FLAG_WONDERTRADE1                           (DAILY_FLAGS_START + 0x6)  // WondertradeFlag (1)
+#define FLAG_WONDERTRADE2                           (DAILY_FLAGS_START + 0x7)  // WondertradeFlag (2)
+#define FLAG_WONDERTRADE3                           (DAILY_FLAGS_START + 0x8)  // WondertradeFlag (3)
 #define FLAG_UNUSED_0x929                           (DAILY_FLAGS_START + 0x9)  // Unused Flag
 #define FLAG_DAILY_PICKED_LOTO_TICKET               (DAILY_FLAGS_START + 0xA)
 #define FLAG_DAILY_ROUTE_114_RECEIVED_BERRY         (DAILY_FLAGS_START + 0xB)

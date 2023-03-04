@@ -924,6 +924,14 @@ static u8 GetTrainerBattleTransition(void)
             return B_TRANSITION_GLACIA;
         if (gTrainerBattleOpponent_A == TRAINER_DRAKE)
             return B_TRANSITION_DRAKE;
+        if (gTrainerBattleOpponent_A == TRAINER_SIDNEY2)
+            return B_TRANSITION_SIDNEY;
+        if (gTrainerBattleOpponent_A == TRAINER_PHOEBE2)
+            return B_TRANSITION_PHOEBE;
+        if (gTrainerBattleOpponent_A == TRAINER_GLACIA2)
+            return B_TRANSITION_GLACIA;
+        if (gTrainerBattleOpponent_A == TRAINER_DRAKE2)
+            return B_TRANSITION_DRAKE;
         return B_TRANSITION_CHAMPION;
     }
 

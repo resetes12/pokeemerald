@@ -40,9 +40,16 @@ EverGrandeCity_GlaciasRoom_EventScript_Glacia::
 	lock
 	faceplayer
 	goto_if_set FLAG_DEFEATED_ELITE_4_GLACIA, EverGrandeCity_GlaciasRoom_EventScript_PostBattleSpeech
+	goto_if_set FLAG_GLACIA_REMATCH, EverGrandeCity_GlaciasRoom_EventScript_GlaciaRematch
 	playbgm MUS_ENCOUNTER_ELITE_FOUR, FALSE
 	msgbox EverGrandeCity_GlaciasRoom_Text_IntroSpeech, MSGBOX_DEFAULT
 	trainerbattle_no_intro TRAINER_GLACIA, EverGrandeCity_GlaciasRoom_Text_Defeat
+	goto EverGrandeCity_GlaciasRoom_EventScript_Defeated
+	end
+
+EverGrandeCity_GlaciasRoom_EventScript_GlaciaRematch::
+	msgbox EverGrandeCity_GlaciasRoom_Text_IntroSpeech2, MSGBOX_DEFAULT
+	trainerbattle_no_intro TRAINER_GLACIA2, EverGrandeCity_GlaciasRoom_Text_Defeat2
 	goto EverGrandeCity_GlaciasRoom_EventScript_Defeated
 	end
 
@@ -69,6 +76,17 @@ EverGrandeCity_GlaciasRoom_Text_IntroSpeech:
 	.string "It would please me to no end if I could\n"
 	.string "go all out against you!$"
 
+EverGrandeCity_GlaciasRoom_Text_IntroSpeech2:
+	.string "Welcome again, I'm GLACIA. I won't\n"
+	.string "introduce myself again, you know me.\p"
+	.string "I haven't had any challenge since I\n"
+	.string "last battled you and your POKéMON.\p"
+	.string "What about you?\n"
+	.string "Have your skills honed?\p"
+	.string "It would please me to no end if I could\n"
+	.string "go all out against you!\p"
+	.string "But this time... I will win!$"
+
 EverGrandeCity_GlaciasRoom_Text_Defeat:
 	.string "You and your POKéMON…\n"
 	.string "How hot your spirits burn!\p"
@@ -76,8 +94,11 @@ EverGrandeCity_GlaciasRoom_Text_Defeat:
 	.string "It's no surprise that my icy skills\n"
 	.string "failed to harm you.$"
 
+EverGrandeCity_GlaciasRoom_Text_Defeat2:
+	.string "Your spirit is still burning! But\p"
+	.string "I got left in the cold again...$"
+
 EverGrandeCity_GlaciasRoom_Text_PostBattleSpeech:
 	.string "Advance to the next room.\p"
 	.string "And there, confirm the truly fearsome\n"
 	.string "side of the POKéMON LEAGUE.$"
-

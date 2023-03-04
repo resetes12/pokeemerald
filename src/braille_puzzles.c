@@ -91,13 +91,12 @@ void DoBrailleDigEffect(void)
 
 bool8 CheckRelicanthWailord(void)
 {
-    // Emerald change: why did they flip it?
-    // First comes Wailord
-    if (GetMonData(&gPlayerParty[0], MON_DATA_SPECIES2, 0) == SPECIES_WAILORD)
+    // First comes Magnezone
+    if (GetMonData(&gPlayerParty[0], MON_DATA_SPECIES2, 0) == SPECIES_MAGNEZONE)
     {
         CalculatePlayerPartyCount();
-        // Last comes Relicanth
-        if (GetMonData(&gPlayerParty[gPlayerPartyCount - 1], MON_DATA_SPECIES2, 0) == SPECIES_RELICANTH)
+        // Last comes Vibrava
+        if (GetMonData(&gPlayerParty[gPlayerPartyCount - 1], MON_DATA_SPECIES2, 0) == SPECIES_VIBRAVA)
             return TRUE;
     }
     return FALSE;
