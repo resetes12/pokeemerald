@@ -546,9 +546,9 @@ static const u16 sSpeciesToHoennPokedexNum[NUM_SPECIES - 1] =
     SPECIES_TO_HOENN(REGIELEKI),
     SPECIES_TO_HOENN(REGIGIGAS),
     SPECIES_TO_HOENN(ARCEUS),
-    SPECIES_TO_HOENN(DEOXYS_ATTACK),
-    SPECIES_TO_HOENN(DEOXYS_DEFENSE),
-    SPECIES_TO_HOENN(DEOXYS_SPEED),
+    //SPECIES_TO_HOENN(DEOXYS_ATTACK),
+    //SPECIES_TO_HOENN(DEOXYS_DEFENSE),
+    //SPECIES_TO_HOENN(DEOXYS_SPEED),
 };
 
 // Assigns all species to the National Dex Index (Summary No. for National Dex)
@@ -999,9 +999,9 @@ static const u16 sSpeciesToNationalPokedexNum[NUM_SPECIES - 1] =
     SPECIES_TO_NATIONAL(REGIELEKI),
     SPECIES_TO_NATIONAL(REGIGIGAS),
     SPECIES_TO_NATIONAL(ARCEUS),
-    SPECIES_TO_NATIONAL(DEOXYS_ATTACK),
-    SPECIES_TO_NATIONAL(DEOXYS_DEFENSE),
-    SPECIES_TO_NATIONAL(DEOXYS_SPEED),
+    //SPECIES_TO_NATIONAL(DEOXYS_ATTACK),
+    //SPECIES_TO_NATIONAL(DEOXYS_DEFENSE),
+    //SPECIES_TO_NATIONAL(DEOXYS_SPEED),
 };
 
 // Assigns all Hoenn Dex Indexes to a National Dex Index
@@ -1452,9 +1452,9 @@ static const u16 sHoennToNationalOrder[NUM_SPECIES - 1] =
     HOENN_TO_NATIONAL(GLACEON),
     HOENN_TO_NATIONAL(SYLVEON),
     HOENN_TO_NATIONAL(ARCEUS),
-    HOENN_TO_NATIONAL(DEOXYS_ATTACK),
-    HOENN_TO_NATIONAL(DEOXYS_DEFENSE),
-    HOENN_TO_NATIONAL(DEOXYS_SPEED),
+    //HOENN_TO_NATIONAL(DEOXYS_ATTACK),
+    //HOENN_TO_NATIONAL(DEOXYS_DEFENSE),
+    //HOENN_TO_NATIONAL(DEOXYS_SPEED),
 };
 
 const struct SpindaSpot gSpindaSpotGraphics[] =
@@ -2860,7 +2860,7 @@ bool8 ShouldIgnoreDeoxysForm(u8 caseId, u8 battlerId)
     return TRUE;
 }
 
-static u16 GetDeoxysStat(struct Pokemon *mon, s32 statId)
+/*static u16 GetDeoxysStat(struct Pokemon *mon, s32 statId)
 {
     s32 ivVal, evVal;
     u16 statValue = 0;
@@ -2903,7 +2903,7 @@ void SetDeoxysStats(void)
         value = GetMonData(mon, MON_DATA_SPDEF, NULL);
         SetMonData(mon, MON_DATA_SPDEF, &value);
     }
-}
+}*/
 
 u16 GetUnionRoomTrainerPic(void)
 {
@@ -3966,29 +3966,29 @@ u32 GetMonData(struct Pokemon *mon, s32 field, u8 *data)
         ret = mon->maxHP;
         break;
     case MON_DATA_ATK:
-        ret = GetDeoxysStat(mon, STAT_ATK);
-        if (!ret)
-            ret = mon->attack;
+        //ret = GetDeoxysStat(mon, STAT_ATK);
+        //if (!ret)
+        ret = mon->attack;
         break;
     case MON_DATA_DEF:
-        ret = GetDeoxysStat(mon, STAT_DEF);
-        if (!ret)
-            ret = mon->defense;
+        //ret = GetDeoxysStat(mon, STAT_DEF);
+        //if (!ret)
+        ret = mon->defense;
         break;
     case MON_DATA_SPEED:
-        ret = GetDeoxysStat(mon, STAT_SPEED);
-        if (!ret)
-            ret = mon->speed;
+        //ret = GetDeoxysStat(mon, STAT_SPEED);
+        //if (!ret)
+        ret = mon->speed;
         break;
     case MON_DATA_SPATK:
-        ret = GetDeoxysStat(mon, STAT_SPATK);
-        if (!ret)
-            ret = mon->spAttack;
+        //ret = GetDeoxysStat(mon, STAT_SPATK);
+        //if (!ret)
+        ret = mon->spAttack;
         break;
     case MON_DATA_SPDEF:
-        ret = GetDeoxysStat(mon, STAT_SPDEF);
-        if (!ret)
-            ret = mon->spDefense;
+        //ret = GetDeoxysStat(mon, STAT_SPDEF);
+        //if (!ret)
+        ret = mon->spDefense;
         break;
     case MON_DATA_ATK2:
         ret = mon->attack;

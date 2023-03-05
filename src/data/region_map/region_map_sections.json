@@ -1257,18 +1257,18 @@
       "height": 1
     },
     {
-      "map_section": "MAPSEC_SEVII_ISLE_8",
-      "name": "SEVII ISLE 8",
-      "x": 0,
-      "y": 0,
+      "map_section": "MAPSEC_DRACO_CHAMBER",
+      "name": "DRACO CHAMBER",
+      "x": 15,
+      "y": 9,
       "width": 1,
       "height": 1
     },
     {
-      "map_section": "MAPSEC_SEVII_ISLE_9",
-      "name": "SEVII ISLE 9",
-      "x": 0,
-      "y": 0,
+      "map_section": "MAPSEC_CAVE_OF_SHOCK",
+      "name": "CAVE OF SHOCK",
+      "x": 9,
+      "y": 7,
       "width": 1,
       "height": 1
     },
@@ -1701,22 +1701,6 @@
       "name": "TRAINER HILL",
       "x": 8,
       "y": 4,
-      "width": 1,
-      "height": 1
-    },
-    {
-      "map_section": "MAPSEC_DRACO_CHAMBER",
-      "name": "DRACO CHAMBER",
-      "x": 15,
-      "y": 9,
-      "width": 1,
-      "height": 1
-    },
-    {
-      "map_section": "MAPSEC_CAVE_OF_SHOCK",
-      "name": "CAVE OF SHOCK",
-      "x": 9,
-      "y": 7,
       "width": 1,
       "height": 1
     }

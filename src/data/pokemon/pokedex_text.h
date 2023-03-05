@@ -2327,13 +2327,13 @@ const u8 gAmbipomPokedexText[] = _(
     "its hands now.");
 
 const u8 gArceusPokedexText[] = _(
-    "It is told in mythology that this Pokémon\n"
-    "emerged from an egg and shaped all there\n"
-    "is in this world, before the universe\n"
-    "even existed.");
+    "An unknown POKéMON that emerged from an\n"
+    "egg. It looks mystical and whimsical,\n"
+    "yet this particular specimen does not\n"
+    "look very strong. Its voice is ethereal.");
 
 const u8 gBonslyPokedexText[] = _(
-    "Bonsly prefers an arid atmosphere.\n"
+    "BONSLY prefers an arid atmosphere.\n"
     "In order to adjust the level of fluids\n"
     "in its body, it exudes water from its eyes.\n"
     "This makes it appear to be crying.");
@@ -2351,7 +2351,7 @@ const u8 gChinglingPokedexText[] = _(
     "It can cry for an awfully long time.");
 
 const u8 gDusknoirPokedexText[] = _(
-    "This feared Pokémon is said to travel to\n"
+    "This feared POKéMON is said to travel to\n"
     "worlds unknown. Some even believe that\n"
     "it takes lost spirits into its pliant body\n"
     "and guides them home.");
@@ -2363,7 +2363,7 @@ const u8 gElectivirePokedexText[] = _(
     "begin to crackle between its horns.");
 
 const u8 gFroslassPokedexText[] = _(
-    "When it finds people or Pokémon it likes,\n"
+    "When it finds people or POKéMON it likes,\n"
     "it freezes them and takes them to its\n"
     "chilly den, where they become its\n"
     "decorations.");
@@ -2381,7 +2381,7 @@ const u8 gGlaceonPokedexText[] = _(
     "flurries of diamond dust.");
 
 const u8 gGliscorPokedexText[] = _(
-    "Gliscor observes prey while hanging\n"
+    "GLISCOR observes prey while hanging\n"
     "upside down from branches. Its flight is\n"
     "soundless. When the chance presents\n"
     "itself, it swoops!");
@@ -2412,27 +2412,27 @@ const u8 gLickilickyPokedexText[] = _(
 
 const u8 gMagmortarPokedexText[] = _(
     "According to what is known, a single pair\n"
-    "of male and female Magmortar lives in\n"
+    "of male and female MAGMORTAR lives in\n"
     "one volcano. From its arm, it launches\n"
     "fireballs hotter than 3,600ºF.");
 
 const u8 gMagnezonePokedexText[] = _(
     "As it zooms through the sky, this\n"
-    "Pokémon seems to be receiving signals\n"
+    "POKéMON seems to be receiving signals\n"
     "of unknown origin, while transmitting its\n"
     "own signals of unknown purpose.");
 
 const u8 gMamoswinePokedexText[] = _(
-    "A frozen Mamoswine was dug from ice\n"
+    "A frozen MAMOSWINE was dug from ice\n"
     "dating back 10,000 years. It woke up to\n"
-    "much amazement. This Pokémon has been\n"
+    "much amazement. This POKéMON has been\n"
     "around for a long, long, long time.");
 
 const u8 gMantykePokedexText[] = _(
     "When it swims close to the surface\n"
     "of the ocean, people aboard ships are\n"
     "able to observe the pattern on its back.\n"
-    "It often swims in a school of Remoraid.");
+    "It often swims in a school of REMORAID.");
 
 const u8 gMismagiusPokedexText[] = _(
     "Its cries sound like incantations.\n"
@@ -2444,7 +2444,7 @@ const u8 gMimeJrPokedexText[] = _(
     "In an attempt to confuse its enemy,\n"
     "it mimics the enemy's movements.\n"
     "Once mimicked, the foe cannot take\n"
-    "its eyes off this Pokémon.");
+    "its eyes off this POKéMON.");
 
 const u8 gMunchlaxPokedexText[] = _(
     "When it finds something that looks like\n"
@@ -2454,7 +2454,7 @@ const u8 gMunchlaxPokedexText[] = _(
 
 const u8 gPorygonZPokedexText[] = _(
     "In order to create a more advanced\n"
-    "Pokémon, an additional program was\n"
+    "POKéMON, an additional program was\n"
     "installed, but apparently it contained a\n"
     "defect that made it move oddly.");
 
@@ -2466,20 +2466,20 @@ const u8 gProbopassPokedexText[] = _(
 
 const u8 gRegidragoPokedexText[] = _(
     "An academic theory proposes that\n"
-    "Regidrago's arms were once the head of an\n"
-    "ancient dragon Pokémon. The theory\n"
+    "REGIDRAGO's arms were once the head of an\n"
+    "ancient dragon POKéMON. The theory\n"
     "remains unproven.");
 
 const u8 gRegielekiPokedexText[] = _(
-    "This Pokémon is a cluster of electrical\n"
+    "This POKéMON is a cluster of electrical\n"
     "energy. It's said that removing the rings\n"
-    "on Regieleki's body will unleash the\n"
-    "Pokémon's latent power.");
+    "on REGIELEKI's body will unleash the\n"
+    "POKéMON's latent power.");
 
 const u8 gRegigigasPokedexText[] = _(
     "There is an enduring legend that\n"
-    "states this Pokémon shaped Regirock,\n"
-    "Regice, and Registeel out of clay, ice,\n"
+    "states this POKéMON shaped REGIROCK,\n"
+    "REGICE, and REGISTEEL out of clay, ice,\n"
     "and magma.");
 
 const u8 gRhyperiorPokedexText[] = _(
@@ -2503,7 +2503,7 @@ const u8 gSylveonPokedexText[] = _(
 const u8 gTangrowthPokedexText[] = _(
     "It ensnares prey by extending arms made\n"
     "of vines. Even if one of its arms is eaten,\n"
-    "it's fine. The Pokémon regenerates quickly\n"
+    "it's fine. The POKéMON regenerates quickly\n"
     "and will go right back to normal.");
 
 const u8 gTogekissPokedexText[] = _(
@@ -2519,7 +2519,7 @@ const u8 gWeavilePokedexText[] = _(
     "with coordinated attacks.");
 
 const u8 gYanmegaPokedexText[] = _(
-    "This six-legged Pokémon is easily capable\n"
+    "This six-legged POKéMON is easily capable\n"
     "of transporting an adult in flight. It is\n"
     "adept at biting apart foes while flying\n"
     "by at high speed.");
