@@ -63,6 +63,8 @@
 #include "constants/trainers.h"
 #include "cable_club.h"
 #include "wild_encounter.h"
+#include "tx_randomizer_and_challenges.h"
+#include "overworld.h"
 
 extern const struct BgTemplate gBattleBgTemplates[];
 extern const struct WindowTemplate *const gBattleWindowTemplates[];
@@ -698,7 +700,7 @@ void CB2_InitBattle(void)
 
 static void CB2_InitBattleInternal(void)
 {
-    s32 i;
+    s32 i,j;
 
     SetHBlankCallback(NULL);
     SetVBlankCallback(NULL);
@@ -798,6 +800,17 @@ static void CB2_InitBattleInternal(void)
             if (gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS)
                 CreateNPCTrainerParty(&gEnemyParty[PARTY_SIZE / 2], gTrainerBattleOpponent_B, FALSE);
             SetWildMonHeldItem();
+            
+            if (gSaveBlock1Ptr->tx_Challenges_Mirror && (gBattleTypeFlags & BATTLE_TYPE_TRAINER || gBattleTypeFlags & BATTLE_TYPE_DOUBLE))
+            {
+                if (!gSaveBlock1Ptr->tx_Challenges_Mirror_Thief)
+                {
+                    for (j = 0; j < PARTY_SIZE; j++)
+                        gPlayerPartyBackup[j] = gPlayerParty[j];
+                }
+                for (j = 0; j < PARTY_SIZE; j++)
+                    gPlayerParty[j] = gEnemyParty[j];
+            }
         }
     }
 #endif
@@ -2065,6 +2078,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
     u8 fixedIV;
     s32 i, j;
     u8 monsCount;
+    u16 species, move; //tx_randomizer_and_challenges
     //u8 opponentClass = gTrainers[trainerNum].trainerClass;
     const u8 abilityIfNormansSlaking = 1; //norman slaking code
     const u8 abilityIfChampionMilotic = 1; //norman slaking code
@@ -2077,6 +2091,9 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                                                                         | BATTLE_TYPE_EREADER_TRAINER
                                                                         | BATTLE_TYPE_TRAINER_HILL)))
     {
+        #ifndef NDEBUG
+        MgbaPrintf(MGBA_LOG_DEBUG, "******** CreateTrainerParty ********");
+        #endif
         if (firstTrainer == TRUE)
             ZeroEnemyPartyMons();
 
@@ -2117,7 +2134,13 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
                 //CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
-                CreateMon(&party[i], partyData[i].species, GetScaledLevel(partyData[i].lvl), fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
+                if (gSaveBlock1Ptr->tx_Random_Trainer) //tx_randomizer_and_challenges
+                {
+                    species = GetSpeciesRandomSeeded(partyData[i].species, TX_RANDOM_T_TRAINER, trainerNum);
+                    CreateMon(&party[i], species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
+                }
+                else
+                    CreateMon(&party[i], partyData[i].species, GetScaledLevel(partyData[i].lvl), fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
                 break;
             }
             case F_TRAINER_PARTY_CUSTOM_MOVESET:
@@ -2130,12 +2153,30 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
                 //CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
-                CreateMon(&party[i], partyData[i].species, GetScaledLevel(partyData[i].lvl), fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
+
+                if (gSaveBlock1Ptr->tx_Random_Trainer) //tx_randomizer_and_challenges
+                {
+                    species = GetSpeciesRandomSeeded(partyData[i].species, TX_RANDOM_T_TRAINER, trainerNum);
+                    CreateMon(&party[i], species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
+                }
+                else
+                    CreateMon(&party[i], partyData[i].species, GetScaledLevel(partyData[i].lvl), fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
 
                 for (j = 0; j < MAX_MON_MOVES; j++)
                 {
-                    SetMonData(&party[i], MON_DATA_MOVE1 + j, &partyData[i].moves[j]);
-                    SetMonData(&party[i], MON_DATA_PP1 + j, &gBattleMoves[partyData[i].moves[j]].pp);
+                    if (gSaveBlock1Ptr->tx_Random_Moves) //tx_randomizer_and_challenges
+                    {
+                        move = GetRandomMove(partyData[i].moves[j], partyData[i].species);
+                        SetMonData(&party[i], MON_DATA_MOVE1 + j, &move);
+                        SetMonData(&party[i], MON_DATA_PP1 + j, &gBattleMoves[move].pp);
+                    }
+                    else
+                    {
+                        if (gSaveBlock1Ptr->tx_Random_Trainer) //tx_randomizer_and_challenges
+                            continue;
+                        SetMonData(&party[i], MON_DATA_MOVE1 + j, &partyData[i].moves[j]);
+                        SetMonData(&party[i], MON_DATA_PP1 + j, &gBattleMoves[partyData[i].moves[j]].pp);
+                    }
                 }
                 break;
             }
@@ -2149,7 +2190,13 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
                 //CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
-                CreateMon(&party[i], partyData[i].species, GetScaledLevel(partyData[i].lvl), fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
+                if (gSaveBlock1Ptr->tx_Random_Trainer) //tx_randomizer_and_challenges
+                {
+                    species = GetSpeciesRandomSeeded(partyData[i].species, TX_RANDOM_T_TRAINER, trainerNum);
+                    CreateMon(&party[i], species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
+                }
+                else
+                    CreateMon(&party[i], partyData[i].species, GetScaledLevel(partyData[i].lvl), fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
 
                 SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
                 break;
@@ -2164,25 +2211,43 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                 personalityValue += nameHash << 8;
                 fixedIV = partyData[i].iv * MAX_PER_STAT_IVS / 255;
                 //CreateMon(&party[i], partyData[i].species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
-                CreateMon(&party[i], partyData[i].species, GetScaledLevel(partyData[i].lvl), fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
-                if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD){ //only in hard mode
-                    if (partyData[i].species == SPECIES_SLAKING && gTrainers[trainerNum].trainerPic == TRAINER_PIC_LEADER_NORMAN  //norman slaking code
-                    && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_LEADER)  //Set Norman's Slaking to have intimidate
-                        SetMonData(&party[i], MON_DATA_ABILITY_NUM, &abilityIfNormansSlaking); //norman slaking code
-                    if (partyData[i].species == SPECIES_MILOTIC && gTrainers[trainerNum].trainerPic == TRAINER_PIC_CHAMPION_WALLACE  
-                    && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_CHAMPION)  
-                        SetMonData(&party[i], MON_DATA_ABILITY_NUM, &abilityIfChampionMilotic); 
-                    if (partyData[i].species == SPECIES_WHISCASH && gTrainers[trainerNum].trainerPic == TRAINER_PIC_CHAMPION_WALLACE  
-                    && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_CHAMPION)  
-                        SetMonData(&party[i], MON_DATA_ABILITY_NUM, &abilityIfChampionWhiscash); 
+                if (gSaveBlock1Ptr->tx_Random_Trainer) //tx_randomizer_and_challenges
+                {
+                    species = GetSpeciesRandomSeeded(partyData[i].species, TX_RANDOM_T_TRAINER, trainerNum);
+                    CreateMon(&party[i], species, partyData[i].lvl, fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
+                }
+                else
+                    CreateMon(&party[i], partyData[i].species, GetScaledLevel(partyData[i].lvl), fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
+                    if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD) //only in hard mode
+                {
+                        if (partyData[i].species == SPECIES_SLAKING && gTrainers[trainerNum].trainerPic == TRAINER_PIC_LEADER_NORMAN  //norman slaking code
+                        && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_LEADER)  //Set Norman's Slaking to have intimidate
+                            SetMonData(&party[i], MON_DATA_ABILITY_NUM, &abilityIfNormansSlaking); //norman slaking code
+                        if (partyData[i].species == SPECIES_MILOTIC && gTrainers[trainerNum].trainerPic == TRAINER_PIC_CHAMPION_WALLACE  
+                        && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_CHAMPION)  
+                            SetMonData(&party[i], MON_DATA_ABILITY_NUM, &abilityIfChampionMilotic); 
+                        if (partyData[i].species == SPECIES_WHISCASH && gTrainers[trainerNum].trainerPic == TRAINER_PIC_CHAMPION_WALLACE  
+                        && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_CHAMPION)  
+                            SetMonData(&party[i], MON_DATA_ABILITY_NUM, &abilityIfChampionWhiscash); 
                 }
                 //else
                 SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
 
                 for (j = 0; j < MAX_MON_MOVES; j++)
                 {
-                    SetMonData(&party[i], MON_DATA_MOVE1 + j, &partyData[i].moves[j]);
-                    SetMonData(&party[i], MON_DATA_PP1 + j, &gBattleMoves[partyData[i].moves[j]].pp);
+                    if (gSaveBlock1Ptr->tx_Random_Moves) //tx_randomizer_and_challenges
+                    {
+                        move = GetRandomMove(partyData[i].moves[j], partyData[i].species);
+                        SetMonData(&party[i], MON_DATA_MOVE1 + j, &move);
+                        SetMonData(&party[i], MON_DATA_PP1 + j, &gBattleMoves[move].pp);
+                    }
+                    else
+                    {
+                        if (gSaveBlock1Ptr->tx_Random_Trainer) //tx_randomizer_and_challenges
+                            continue;
+                        SetMonData(&party[i], MON_DATA_MOVE1 + j, &partyData[i].moves[j]);
+                        SetMonData(&party[i], MON_DATA_PP1 + j, &gBattleMoves[partyData[i].moves[j]].pp);
+                    }
                 }
                 break;
             }
@@ -2196,6 +2261,44 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
         }
 
         gBattleTypeFlags |= gTrainers[trainerNum].doubleBattle;
+
+        //tx_randomizer_and_challenges
+        if (gSaveBlock1Ptr->tx_Challenges_TrainerScalingIVs && !FlagGet(FLAG_IS_CHAMPION))
+        {
+            u8 iv = GetCurrentTrainerIVs();
+
+            for (i = 0; i < monsCount; i++)
+            {
+                for (j = 0; j < 6; j++)
+                {
+                    SetMonData(&party[i], MON_DATA_HP_IV + j, &iv);
+                }
+
+                CalculateMonStats(&party[i]);
+            }
+        }
+        if (gSaveBlock1Ptr->tx_Challenges_TrainerScalingEVs && !FlagGet(FLAG_IS_CHAMPION))
+        {
+            u8 ev = GetCurrentTrainerEVs();
+
+            for (i = 0; i < monsCount; i++)
+            {
+                // set EVs for HP, speed and the higher of either attack and defense stat
+                SetMonData(&party[i], MON_DATA_HP_EV, &ev);
+                SetMonData(&party[i], MON_DATA_SPEED_EV, &ev);
+                if (GetMonData(&party[i], MON_DATA_ATK) > GetMonData(&party[i], MON_DATA_SPATK))
+                    SetMonData(&party[i], MON_DATA_ATK_EV, &ev);
+                else
+                    SetMonData(&party[i], MON_DATA_SPATK_EV, &ev);
+                if (GetMonData(&party[i], MON_DATA_DEF) > GetMonData(&party[i], MON_DATA_SPDEF))
+                    SetMonData(&party[i], MON_DATA_DEF_EV, &ev);
+                else
+                    SetMonData(&party[i], MON_DATA_SPDEF_EV, &ev);
+
+                CalculateMonStats(&party[i]);
+            }
+        }
+
     }
 
     return gTrainers[trainerNum].partySize;
@@ -3476,8 +3579,8 @@ void FaintClearSetData(void)
 
     gBattleResources->flags->flags[gActiveBattler] = 0;
 
-    gBattleMons[gActiveBattler].type1 = gSpeciesInfo[gBattleMons[gActiveBattler].species].types[0];
-    gBattleMons[gActiveBattler].type2 = gSpeciesInfo[gBattleMons[gActiveBattler].species].types[1];
+    gBattleMons[gActiveBattler].type1 = GetTypeBySpecies(gBattleMons[gActiveBattler].species, 1); //tx_randomizer_and_challenges
+    gBattleMons[gActiveBattler].type2 = GetTypeBySpecies(gBattleMons[gActiveBattler].species, 2); //tx_randomizer_and_challenges
 
     ClearBattlerMoveHistory(gActiveBattler);
     ClearBattlerAbilityHistory(gActiveBattler);
@@ -3544,8 +3647,8 @@ static void BattleIntroDrawTrainersOrMonsSprites(void)
             for (i = 0; i < sizeof(struct BattlePokemon); i++)
                 ptr[i] = gBattleBufferB[gActiveBattler][4 + i];
 
-            gBattleMons[gActiveBattler].type1 = gSpeciesInfo[gBattleMons[gActiveBattler].species].types[0];
-            gBattleMons[gActiveBattler].type2 = gSpeciesInfo[gBattleMons[gActiveBattler].species].types[1];
+            gBattleMons[gActiveBattler].type1 = GetTypeBySpecies(gBattleMons[gActiveBattler].species, 1); //tx_randomizer_and_challenges
+            gBattleMons[gActiveBattler].type2 = GetTypeBySpecies(gBattleMons[gActiveBattler].species, 2); //tx_randomizer_and_challenges
             gBattleMons[gActiveBattler].ability = GetAbilityBySpecies(gBattleMons[gActiveBattler].species, gBattleMons[gActiveBattler].abilityNum);
             hpOnSwitchout = &gBattleStruct->hpOnSwitchout[GetBattlerSide(gActiveBattler)];
             *hpOnSwitchout = gBattleMons[gActiveBattler].hp;
@@ -3964,6 +4067,16 @@ static void TryDoEventsBeforeFirstTurn(void)
 
     if (gBattleControllerExecFlags)
         return;
+
+    // Set invalid mons as absent(for example when starting a double battle with only one pokemon).
+    if (!(gBattleTypeFlags & BATTLE_TYPE_SAFARI))
+    {
+        for (i = 0; i < gBattlersCount; i++)
+        {
+            if (gBattleMons[i].hp == 0 || gBattleMons[i].species == SPECIES_NONE)
+                gAbsentBattlerFlags |= gBitTable[i];
+        }
+    }
 
     if (gBattleStruct->switchInAbilitiesCounter == 0)
     {
@@ -4402,6 +4515,24 @@ static void HandleTurnActionSelectionState(void)
                     if (IsPlayerPartyAndPokemonStorageFull())
                     {
                         gSelectionBattleScripts[gActiveBattler] = BattleScript_PrintFullBox;
+                        gBattleCommunication[gActiveBattler] = STATE_SELECTION_SCRIPT;
+                        *(gBattleStruct->selectionScriptFinished + gActiveBattler) = FALSE;
+                        *(gBattleStruct->stateIdAfterSelScript + gActiveBattler) = STATE_BEFORE_ACTION_CHOSEN;
+                        return;
+                    }
+                    else if (IsNuzlockeActive() || IsOneTypeChallengeActive()) //tx_randomizer_and_challenges
+                    {
+                        if (NuzlockeIsCaptureBlocked)
+                            gSelectionBattleScripts[gActiveBattler] = BattleScript_Safari_NuzlockeCaptureBlocked;
+                        else if (NuzlockeIsSpeciesClauseActive == 2) //already have THIS_mon
+                            gSelectionBattleScripts[gActiveBattler] = BattleScript_Safari_SameSpeciesCaptureBlocked;
+                        else if (OneTypeChallengeCaptureBlocked) //pkmn not of the TYPE CHALLENGE type
+                            gSelectionBattleScripts[gActiveBattler] = BattleScript_Safari_OneTypeChallengeCaptureBlocked;
+                        else if (NuzlockeIsSpeciesClauseActive)
+                            gSelectionBattleScripts[gActiveBattler] = BattleScript_Safari_SpeciesClauseCaptureBlocked;
+                        else
+                            break;
+
                         gBattleCommunication[gActiveBattler] = STATE_SELECTION_SCRIPT;
                         *(gBattleStruct->selectionScriptFinished + gActiveBattler) = FALSE;
                         *(gBattleStruct->stateIdAfterSelScript + gActiveBattler) = STATE_BEFORE_ACTION_CHOSEN;
@@ -5230,8 +5361,15 @@ static void HandleEndTurn_MonFled(void)
 
 static void HandleEndTurn_FinishBattle(void)
 {
+    u8 j;
     if (gCurrentActionFuncId == B_ACTION_TRY_FINISH || gCurrentActionFuncId == B_ACTION_FINISHED)
     {
+    if (gSaveBlock1Ptr->tx_Challenges_Mirror && !gSaveBlock1Ptr->tx_Challenges_Mirror_Thief && (gBattleTypeFlags & BATTLE_TYPE_TRAINER || gBattleTypeFlags & BATTLE_TYPE_DOUBLE))
+        {
+            for (j = 0; j < PARTY_SIZE; j++)
+                gPlayerParty[j] = gPlayerPartyBackup[j];
+        }
+
         if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK
                                   | BATTLE_TYPE_RECORDED_LINK
                                   | BATTLE_TYPE_FIRST_BATTLE
@@ -5270,6 +5408,40 @@ static void HandleEndTurn_FinishBattle(void)
             && gBattleResults.shinyWildMon)
         {
             TryPutBreakingNewsOnAir();
+        }
+        //ty_difficulty_challenges
+        if (IsNuzlockeActive())
+        {
+            if (!(gBattleTypeFlags &(BATTLE_TYPE_LINK
+                                        | BATTLE_TYPE_LINK_IN_BATTLE
+                                        | BATTLE_TYPE_FIRST_BATTLE
+                                        | BATTLE_TYPE_WALLY_TUTORIAL
+                                        | BATTLE_TYPE_INGAME_PARTNER
+                                        | BATTLE_TYPE_TOWER_LINK_MULTI
+                                        | BATTLE_TYPE_RECORDED_LINK
+                                        | BATTLE_TYPE_FRONTIER)))
+                NuzlockeDeleteFaintedPartyPokemon();
+            if (!(gBattleTypeFlags & (BATTLE_TYPE_DOUBLE
+                                        | BATTLE_TYPE_LINK
+                                        | BATTLE_TYPE_TRAINER
+                                        | BATTLE_TYPE_FIRST_BATTLE
+                                        | BATTLE_TYPE_LINK_IN_BATTLE
+                                        | BATTLE_TYPE_MULTI
+                                        | BATTLE_TYPE_BATTLE_TOWER
+                                        | BATTLE_TYPE_WALLY_TUTORIAL
+                                        | BATTLE_TYPE_LEGENDARY
+                                        | BATTLE_TYPE_REGI
+                                        | BATTLE_TYPE_TWO_OPPONENTS
+                                        | BATTLE_TYPE_INGAME_PARTNER
+                                        | BATTLE_TYPE_TOWER_LINK_MULTI
+                                        | BATTLE_TYPE_RECORDED_LINK)))
+            {
+                if (!NuzlockeIsSpeciesClauseActive && !OneTypeChallengeCaptureBlocked)
+                    NuzlockeFlagSet(NuzlockeGetCurrentRegionMapSectionId());
+            }
+            NuzlockeIsCaptureBlocked = FALSE;
+            NuzlockeIsSpeciesClauseActive = FALSE;
+            OneTypeChallengeCaptureBlocked = FALSE;
         }
 
         RecordedBattle_SetPlaybackFinished();
@@ -5315,7 +5487,7 @@ static void TryEvolvePokemon(void)
 {
     s32 i;
 
-    while (gLeveledUpInBattle != 0)
+    while (gLeveledUpInBattle != 0 && gSaveBlock1Ptr->tx_Challenges_EvoLimit != 2) //tx_randomizer_and_challenges
     {
         for (i = 0; i < PARTY_SIZE; i++)
         {

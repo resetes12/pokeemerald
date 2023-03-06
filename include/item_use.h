@@ -34,6 +34,7 @@ void ItemUseInBattle_EnigmaBerry(u8);
 void Task_UseDigEscapeRopeOnField(u8 taskId);
 u8 CanUseDigOrEscapeRopeOnCurMap(void);
 u8 CheckIfItemIsTMHMOrEvolutionStone(u16 itemId);
+void DisplayCannotUseItemMessage(u8 taskId, bool8 isUsingRegisteredKeyItemOnField, const u8 *str); //tx_difficultiy_challenges
 void ItemUseOutOfBattle_PokeBall(u8);
 void ItemUseOutOfBattle_SootSack(u8);
 u16 GetAshCount(void);

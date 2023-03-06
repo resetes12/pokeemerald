@@ -51,6 +51,7 @@
 #include "constants/items.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "tx_randomizer_and_challenges.h"
 
 #define TAG_POCKET_SCROLL_ARROW 110
 #define TAG_BAG_SCROLL_ARROW    111
@@ -2037,6 +2038,13 @@ static void ItemMenu_Cancel(u8 taskId)
 
 static void ItemMenu_UseInBattle(u8 taskId)
 {
+    //tx_randomizer_and_challenges
+    if (gSaveBlock1Ptr->tx_Challenges_NoItemPlayer && ItemId_GetBattleFunc(gSpecialVar_ItemId) != ItemUseInBattle_PokeBall)
+    {
+        DisplayCannotUseItemMessage(taskId, FALSE, gText_BattleRules_NoItems_Player);
+        return;
+    }
+
     if (ItemId_GetBattleFunc(gSpecialVar_ItemId))
     {
         RemoveContextWindow();

@@ -221,7 +221,6 @@ Route101_EventScript_RouteSign::
 Route101_EventScript_BirchsBag::
 	lock
 	faceplayer
-	setflag FLAG_SYS_POKEMON_GET
 	setflag FLAG_RESCUED_BIRCH
 	fadescreen FADE_TO_BLACK
 	removeobject LOCALID_ZIGZAGOON
@@ -230,6 +229,7 @@ Route101_EventScript_BirchsBag::
 	waitmovement 0
 	special ChooseStarter
 	waitstate
+	setflag FLAG_SYS_POKEMON_GET
 	applymovement LOCALID_BIRCH, Route101_Movement_BirchApproachPlayer
 	waitmovement 0
 	msgbox Route101_Text_YouSavedMe, MSGBOX_DEFAULT

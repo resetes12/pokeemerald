@@ -29,6 +29,7 @@
 #include "main.h"
 #include "constants/event_objects.h"
 #include "constants/rgb.h"
+#include "tx_randomizer_and_challenges.h"
 
 enum {
     INPUT_NONE,
@@ -1510,6 +1511,8 @@ static bool8 KeyboardKeyHandler_Backspace(u8 input)
 static bool8 KeyboardKeyHandler_OK(u8 input)
 {
     TryStartButtonFlash(BUTTON_OK, TRUE, FALSE);
+    if (IsNuzlockeNicknamingActive() && GetTextEntryPosition() == 0)
+        return FALSE;
     if (input == INPUT_A_BUTTON)
     {
         PlaySE(SE_SELECT);

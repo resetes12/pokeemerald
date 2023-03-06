@@ -45,6 +45,7 @@
 #include "mystery_gift.h"
 #include "union_room_chat.h"
 #include "constants/items.h"
+#include "tx_randomizer_and_challenges.h"
 
 extern const u8 EventScript_ResetAllMapFlags[];
 
@@ -126,6 +127,7 @@ static void ClearFrontierRecord(void)
 
 static void WarpToTruck(void)
 {
+    SaveData_TxRandomizerAndChallenges();
     SetWarpDestination(MAP_GROUP(INSIDE_OF_TRUCK), MAP_NUM(INSIDE_OF_TRUCK), WARP_ID_NONE, -1, -1);
     WarpIntoMap();
 }

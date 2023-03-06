@@ -73,5 +73,9 @@ void SetWaldaPhrase(const u8 *src);
 bool32 IsWaldaPhraseEmpty(void);
 
 void EnterPokeStorage(u8 boxOption);
+//tx_randomizer_and_challenges
+void PurgeMonOrBoxMon(u8 boxId, u8 position);
+u16 GetFirstBoxPokemon(void);
+void MoveFirstBoxPokemon(void);
 
 #endif // GUARD_POKEMON_STORAGE_SYSTEM_H

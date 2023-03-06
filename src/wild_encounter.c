@@ -21,6 +21,7 @@
 #include "constants/items.h"
 #include "constants/layouts.h"
 #include "constants/weather.h"
+#include "tx_randomizer_and_challenges.h"
 
 extern const u8 EventScript_RepelWoreOff[];
 
@@ -415,6 +416,14 @@ static void CreateWildMon(u16 species, u8 level)
 
     ZeroEnemyPartyMons();
     checkCuteCharm = TRUE;
+
+    if (gSaveBlock1Ptr->tx_Random_WildPokemon) //tx_randomizer_and_challenges
+    {
+        #ifndef NDEBUG
+        MgbaPrintf(MGBA_LOG_DEBUG, "******** CreateWildMon ********");
+        #endif
+        species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_WILD_POKEMON, 0);
+    }
 
     switch (gSpeciesInfo[species].genderRatio)
     {
@@ -962,7 +971,7 @@ static bool8 TryGetRandomWildMonIndexByType(const struct WildPokemon *wildMon, u
 
     for (validMonCount = 0, i = 0; i < numMon; i++)
     {
-        if (gSpeciesInfo[wildMon[i].species].types[0] == type || gSpeciesInfo[wildMon[i].species].types[1] == type)
+        if (GetTypeBySpecies(wildMon[i].species, 1) == type || GetTypeBySpecies(wildMon[i].species, 2) == type)
             validIndexes[validMonCount++] = i;
     }
 

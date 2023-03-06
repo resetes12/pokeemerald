@@ -142,7 +142,13 @@ gSpecials::
 	def_special BufferDeepLinkPhrase
 	def_special GetDewfordHallPaintingNameIndex
 	def_special SwapRegisteredBike
-	def_special CalculatePlayerPartyCount
+	def_special CalculatePlayerPartyCount 		@ tx_randomizer_and_challenges
+	def_special GetMaxPartySize 					@ tx_randomizer_and_challenges
+	def_special IsPokecenterChallengeActivated 	@ tx_randomizer_and_challenges
+	def_special IsNuzlockeNicknamingActive		@ tx_randomizer_and_challenges
+	def_special IsRandomItemsActivated 			@ tx_randomizer_and_challenges
+	def_special RandomItem						@ tx_randomizer_and_challenges
+	def_special RandomItemHidden				@ tx_randomizer_and_challenges
 	def_special CountPartyNonEggMons
 	def_special CountPartyAliveNonEggMons_IgnoreVar0x8004Slot
 	def_special ShouldReadyContestArtist

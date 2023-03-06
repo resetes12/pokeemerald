@@ -27,8 +27,15 @@ EventScript_TryDoDoubleTrainerBattle::
 	call EventScript_RevealTrainer
 	specialvar VAR_RESULT, GetTrainerFlag
 	goto_if_ne VAR_RESULT, FALSE, EventScript_NoDoubleTrainerBattle
+	specialvar VAR_RESULT, GetMaxPartySize
+	goto_if_eq VAR_RESULT, 1, EventScript_TryDoDoubleTrainerBattle_PartyLimitOne
 	special HasEnoughMonsForDoubleBattle
 	goto_if_ne VAR_RESULT, PLAYER_HAS_TWO_USABLE_MONS, EventScript_NotEnoughMonsForDoubleBattle
+	special PlayTrainerEncounterMusic
+	special SetTrainerFacingDirection
+	goto EventScript_ShowTrainerIntroMsg
+
+EventScript_TryDoDoubleTrainerBattle_PartyLimitOne::
 	special PlayTrainerEncounterMusic
 	special SetTrainerFacingDirection
 	goto EventScript_ShowTrainerIntroMsg
@@ -70,8 +77,21 @@ EventScript_NoRematchTrainerBattle::
 EventScript_TryDoDoubleRematchBattle::
 	specialvar VAR_RESULT, IsTrainerReadyForRematch
 	goto_if_eq VAR_RESULT, FALSE, EventScript_NoDoubleRematchTrainerBattle
+	specialvar VAR_RESULT, GetMaxPartySize
+	goto_if_eq VAR_RESULT, 1, EventScript_TryDoDoubleRematchBattle_PartyLimitOne
 	special HasEnoughMonsForDoubleBattle
 	goto_if_ne VAR_RESULT, PLAYER_HAS_TWO_USABLE_MONS, EventScript_NotEnoughMonsForDoubleRematchBattle
+	special PlayTrainerEncounterMusic
+	special SetTrainerFacingDirection
+	special ShowTrainerIntroSpeech
+	waitmessage
+	waitbuttonpress
+	special BattleSetup_StartRematchBattle
+	waitstate
+	releaseall
+	end
+
+EventScript_TryDoDoubleRematchBattle_PartyLimitOne::
 	special PlayTrainerEncounterMusic
 	special SetTrainerFacingDirection
 	special ShowTrainerIntroSpeech

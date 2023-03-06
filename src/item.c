@@ -10,6 +10,8 @@
 #include "strings.h"
 #include "load_save.h"
 #include "item_use.h"
+#include "random.h"
+#include "overworld.h"
 #include "battle_pyramid.h"
 #include "battle_pyramid_bag.h"
 #include "constants/items.h"
@@ -998,4 +1000,248 @@ ItemUseFunc ItemId_GetBattleFunc(u16 itemId)
 u8 ItemId_GetSecondaryId(u16 itemId)
 {
     return gItems[SanitizeItemId(itemId)].secondaryId;
+}
+
+//tx_randomizer_and_challenges
+#define RANDOM_ITEM_COUNT ARRAY_COUNT(sRandomValidItems)
+static const u16 sRandomValidItems[] =
+{
+    // Balls,
+    ITEM_MASTER_BALL,
+    ITEM_ULTRA_BALL,
+    ITEM_GREAT_BALL,
+    ITEM_POKE_BALL,
+    ITEM_SAFARI_BALL,
+    ITEM_NET_BALL,
+    ITEM_DIVE_BALL,
+    ITEM_NEST_BALL,
+    ITEM_REPEAT_BALL,
+    ITEM_TIMER_BALL,
+    ITEM_LUXURY_BALL,
+    ITEM_PREMIER_BALL,
+    // Pokemon Items,
+    ITEM_POTION,
+    ITEM_ANTIDOTE,
+    ITEM_BURN_HEAL,
+    ITEM_ICE_HEAL,
+    ITEM_AWAKENING,
+    ITEM_PARALYZE_HEAL,
+    ITEM_FULL_RESTORE,
+    ITEM_MAX_POTION,
+    ITEM_HYPER_POTION,
+    ITEM_SUPER_POTION,
+    ITEM_FULL_HEAL,
+    ITEM_REVIVE,
+    ITEM_MAX_REVIVE,
+    ITEM_FRESH_WATER,
+    ITEM_SODA_POP,
+    ITEM_LEMONADE,
+    ITEM_MOOMOO_MILK,
+    ITEM_ENERGY_POWDER,
+    ITEM_ENERGY_ROOT,
+    ITEM_HEAL_POWDER,
+    ITEM_REVIVAL_HERB,
+    ITEM_ETHER,
+    ITEM_MAX_ETHER,
+    ITEM_ELIXIR,
+    ITEM_MAX_ELIXIR,
+    ITEM_LAVA_COOKIE,
+    ITEM_BLUE_FLUTE,
+    ITEM_YELLOW_FLUTE,
+    ITEM_RED_FLUTE,
+    ITEM_BLACK_FLUTE,
+    ITEM_WHITE_FLUTE,
+    ITEM_BERRY_JUICE,
+    ITEM_SACRED_ASH,
+    ITEM_SHOAL_SALT,
+    ITEM_SHOAL_SHELL,
+    ITEM_RED_SHARD,
+    ITEM_BLUE_SHARD,
+    ITEM_YELLOW_SHARD,
+    ITEM_GREEN_SHARD,
+    ITEM_HP_UP,
+    ITEM_PROTEIN,
+    ITEM_IRON,
+    ITEM_CARBOS,
+    ITEM_CALCIUM,
+    ITEM_RARE_CANDY,
+    ITEM_PP_UP,
+    ITEM_ZINC,
+    ITEM_PP_MAX,
+    ITEM_GUARD_SPEC,
+    ITEM_DIRE_HIT,
+    ITEM_X_ATTACK,
+    ITEM_X_DEFEND,
+    ITEM_X_SPEED,
+    ITEM_X_ACCURACY,
+    ITEM_X_SPECIAL,
+    ITEM_POKE_DOLL,
+    ITEM_FLUFFY_TAIL,
+    ITEM_SUPER_REPEL,
+    ITEM_MAX_REPEL,
+    ITEM_ESCAPE_ROPE,
+    ITEM_REPEL,
+    ITEM_SUN_STONE,
+    ITEM_MOON_STONE,
+    ITEM_FIRE_STONE,
+    ITEM_THUNDER_STONE,
+    ITEM_WATER_STONE,
+    ITEM_LEAF_STONE,
+    // Mails,
+    ITEM_ORANGE_MAIL,
+    ITEM_HARBOR_MAIL,
+    ITEM_GLITTER_MAIL,
+    ITEM_MECH_MAIL,
+    ITEM_WOOD_MAIL,
+    ITEM_WAVE_MAIL,
+    ITEM_BEAD_MAIL,
+    ITEM_SHADOW_MAIL,
+    ITEM_TROPIC_MAIL,
+    ITEM_DREAM_MAIL,
+    ITEM_FAB_MAIL,
+    ITEM_RETRO_MAIL,
+    // Berries,
+    ITEM_CHERI_BERRY,
+    ITEM_CHESTO_BERRY,
+    ITEM_PECHA_BERRY,
+    ITEM_RAWST_BERRY,
+    ITEM_ASPEAR_BERRY,
+    ITEM_LEPPA_BERRY,
+    ITEM_ORAN_BERRY,
+    ITEM_PERSIM_BERRY,
+    ITEM_LUM_BERRY,
+    ITEM_SITRUS_BERRY,
+    ITEM_FIGY_BERRY,
+    ITEM_WIKI_BERRY,
+    ITEM_MAGO_BERRY,
+    ITEM_AGUAV_BERRY,
+    ITEM_IAPAPA_BERRY,
+    ITEM_RAZZ_BERRY,
+    ITEM_BLUK_BERRY,
+    ITEM_NANAB_BERRY,
+    ITEM_WEPEAR_BERRY,
+    ITEM_PINAP_BERRY,
+    ITEM_POMEG_BERRY,
+    ITEM_KELPSY_BERRY,
+    ITEM_QUALOT_BERRY,
+    ITEM_HONDEW_BERRY,
+    ITEM_GREPA_BERRY,
+    ITEM_TAMATO_BERRY,
+    ITEM_CORNN_BERRY,
+    ITEM_MAGOST_BERRY,
+    ITEM_RABUTA_BERRY,
+    ITEM_NOMEL_BERRY,
+    ITEM_SPELON_BERRY,
+    ITEM_PAMTRE_BERRY,
+    ITEM_WATMEL_BERRY,
+    ITEM_DURIN_BERRY,
+    ITEM_BELUE_BERRY,
+    ITEM_LIECHI_BERRY,
+    ITEM_GANLON_BERRY,
+    ITEM_SALAC_BERRY,
+    ITEM_PETAYA_BERRY,
+    ITEM_APICOT_BERRY,
+    ITEM_LANSAT_BERRY,
+    ITEM_STARF_BERRY,
+    ITEM_ENIGMA_BERRY,
+    // Battle Held items,
+    ITEM_BRIGHT_POWDER,
+    ITEM_WHITE_HERB,
+    ITEM_MACHO_BRACE,
+    ITEM_EXP_SHARE,
+    ITEM_QUICK_CLAW,
+    ITEM_SOOTHE_BELL,
+    ITEM_MENTAL_HERB,
+    ITEM_CHOICE_BAND,
+    ITEM_KINGS_ROCK,
+    ITEM_SILVER_POWDER,
+    ITEM_AMULET_COIN,
+    ITEM_CLEANSE_TAG,
+    ITEM_SOUL_DEW,
+    ITEM_DEEP_SEA_TOOTH,
+    ITEM_DEEP_SEA_SCALE,
+    ITEM_SMOKE_BALL,
+    ITEM_EVERSTONE,
+    ITEM_FOCUS_BAND,
+    ITEM_LUCKY_EGG,
+    ITEM_SCOPE_LENS,
+    ITEM_METAL_COAT,
+    ITEM_LEFTOVERS,
+    ITEM_DRAGON_SCALE,
+    ITEM_LIGHT_BALL,
+    ITEM_SOFT_SAND,
+    ITEM_HARD_STONE,
+    ITEM_MIRACLE_SEED,
+    ITEM_BLACK_GLASSES,
+    ITEM_BLACK_BELT,
+    ITEM_MAGNET,
+    ITEM_MYSTIC_WATER,
+    ITEM_SHARP_BEAK,
+    ITEM_POISON_BARB,
+    ITEM_NEVER_MELT_ICE,
+    ITEM_SPELL_TAG,
+    ITEM_TWISTED_SPOON,
+    ITEM_CHARCOAL,
+    ITEM_DRAGON_FANG,
+    ITEM_SILK_SCARF,
+    ITEM_UP_GRADE,
+    ITEM_SHELL_BELL,
+    ITEM_SEA_INCENSE,
+    ITEM_LAX_INCENSE,
+    ITEM_LUCKY_PUNCH,
+    ITEM_METAL_POWDER,
+    ITEM_THICK_CLUB,
+    ITEM_STICK,
+    // Contest held items,
+    ITEM_RED_SCARF,
+    ITEM_BLUE_SCARF,
+    ITEM_PINK_SCARF,
+    ITEM_GREEN_SCARF,
+    ITEM_YELLOW_SCARF,
+};
+
+u16 RandomItemId(u16 itemId)
+{
+    u8 mapId = NuzlockeGetCurrentRegionMapSectionId();
+    if (ItemId_GetPocket(itemId) == POCKET_TM_HM)
+    {
+        if (itemId != ITEM_HM01
+            && itemId != ITEM_HM02
+            && itemId != ITEM_HM03
+            && itemId != ITEM_HM04
+            && itemId != ITEM_HM05
+            && itemId != ITEM_HM06
+            && itemId != ITEM_HM07
+            && itemId != ITEM_HM08)
+        {
+            u8 i;
+            itemId = ITEM_TM01 + RandomSeededModulo(itemId, 50);
+            for (i = 0; i < 255; i++)
+            {
+                if (!CheckBagHasItem(itemId, 1))
+                    break;
+                itemId = ITEM_TM01 + RandomSeededModulo(itemId, 50);
+            }
+        }
+    }
+    else if (ItemId_GetPocket(itemId) != POCKET_KEY_ITEMS)
+        itemId = sRandomValidItems[RandomSeededModulo(itemId + mapId, RANDOM_ITEM_COUNT)];
+
+    return itemId;
+}
+
+u16 RandomItem(void)
+{
+    u16 itemId = RandomItemId(gSpecialVar_0x8000);
+
+    gSpecialVar_0x8000 = itemId;
+    return itemId;
+}
+
+u16 RandomItemHidden(void) //same as normal hidden item, but differen special var
+{
+    u16 itemId = RandomItemId(gSpecialVar_0x8005);
+
+    gSpecialVar_0x8005 = itemId;
+    return itemId;
 }

@@ -249,8 +249,17 @@
 #define EVO_LEVEL_NINJASK    13 // Pokémon reaches the specified level (special value for Ninjask)
 #define EVO_LEVEL_SHEDINJA   14 // Pokémon reaches the specified level (special value for Shedinja)
 #define EVO_BEAUTY           15 // Pokémon levels up with beauty ≥ specified value
+#define EVO_LEVEL_FEMALE     16 // Pokémon reaches the specified level, is female
+#define EVO_LEVEL_MALE       17 // Pokémon reaches the specified level, is male
+#define EVO_LEVEL_NIGHT      18 // Pokémon reaches the specified level, is night
+#define EVO_LEVEL_DAY        19 // Pokémon reaches the specified level, is day
+#define EVO_ITEM_HOLD_DAY    20 // Pokémon levels up, holds specified item at day
+#define EVO_ITEM_HOLD_NIGHT  21 // Pokémon levels up, holds specified item at night
+#define EVO_MOVE             22 // Pokémon levels up, knows specified move
+#define EVO_MOVE_TYPE        23 // Pokémon levels up, knows move with specified type
 
-#define EVOS_PER_MON 5
+#define EVOS_PER_MON 8
+#define EVOS_PER_LINE 9
 
 // Evolution 'modes,' for GetEvolutionTargetSpecies
 #define EVO_MODE_NORMAL     0

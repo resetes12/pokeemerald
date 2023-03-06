@@ -1,12 +1,14 @@
 #include "global.h"
 #include "battle.h"
 #include "battle_gfx_sfx_util.h"
+#include "battle_setup.h" //tx_randomizer_and_challenges
 #include "berry.h"
 #include "data.h"
 #include "daycare.h"
 #include "decompress.h"
 #include "event_data.h"
 #include "international_string_util.h"
+#include "item.h" //tx_randomizer_and_challenges
 #include "link.h"
 #include "link_rfu.h"
 #include "main.h"
@@ -23,6 +25,7 @@
 #include "tv.h"
 #include "constants/items.h"
 #include "constants/battle_frontier.h"
+#include "tx_randomizer_and_challenges.h"
 
 static void CB2_ReturnFromChooseHalfParty(void);
 static void CB2_ReturnFromChooseBattleFrontierParty(void);
@@ -137,6 +140,11 @@ bool8 DoesPartyHaveEnigmaBerry(void)
 void CreateScriptedWildMon(u16 species, u8 level, u16 item)
 {
     u8 heldItem[2];
+    //tx_randomizer_and_challenges
+    if (gSaveBlock1Ptr->tx_Random_Static)
+        species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_STATIC, 0);
+    if (gSaveBlock1Ptr->tx_Random_Items)
+        item = RandomItemId(item);
 
     ZeroEnemyPartyMons();
     CreateMon(&gEnemyParty[0], species, level, USE_RANDOM_IVS, 0, 0, OT_ID_PLAYER_ID, 0);
@@ -146,6 +154,7 @@ void CreateScriptedWildMon(u16 species, u8 level, u16 item)
         heldItem[1] = item >> 8;
         SetMonData(&gEnemyParty[0], MON_DATA_HELD_ITEM, heldItem);
     }
+    SetNuzlockeChecks(); //tx_randomizer_and_challenges
 }
 
 void ScriptSetMonMoveSlot(u8 monIndex, u16 move, u8 slot)

@@ -15,6 +15,7 @@
 #include "util.h"
 #include "mystery_event_msg.h"
 #include "pokemon_storage_system.h"
+#include "tx_randomizer_and_challenges.h"
 
 extern ScrCmdFunc gMysteryEventScriptCmdTable[];
 extern ScrCmdFunc gMysteryEventScriptCmdTableEnd[];
@@ -326,7 +327,7 @@ bool8 MEScrCmd_givepokemon(struct ScriptContext *ctx)
     else
         StringCopyN(gStringVar1, gText_Pokemon, POKEMON_NAME_LENGTH + 1);
 
-    if (gPlayerPartyCount == PARTY_SIZE)
+    if (gPlayerPartyCount == GetMaxPartySize())
     {
         StringExpandPlaceholders(gStringVar4, gText_MysteryEventFullParty);
         ctx->mStatus = MEVENT_STATUS_FAILURE;

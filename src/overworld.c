@@ -67,6 +67,8 @@
 #include "constants/trainer_hill.h"
 #include "constants/weather.h"
 #include "dns.h"
+#include "tx_randomizer_and_challenges.h"
+#include "pokemon_storage_system.h" //tx_randomizer_and_challenges
 
 struct CableClubPlayer
 {
@@ -361,8 +363,15 @@ static void (*const sMovementStatusHandler[])(struct LinkPlayerObjectEvent *, st
 // code
 void DoWhiteOut(void)
 {
+    if (IsNuzlockeActive()) //tx_randomizer_and_challenges
+    {
+        if (GetFirstBoxPokemon() == IN_BOX_COUNT * TOTAL_BOXES_COUNT)
+            DoSoftReset();
+    }
     RunScriptImmediately(EventScript_WhiteOut);
     //SetMoney(&gSaveBlock1Ptr->money, GetMoney(&gSaveBlock1Ptr->money) / 2);
+    if (IsNuzlockeActive()) //tx_randomizer_and_challenges
+        MoveFirstBoxPokemon();
     HealPlayerParty();
     Overworld_ResetStateAfterWhiteOut();
     SetWarpDestinationToLastHealLocation();
@@ -1383,6 +1392,36 @@ u8 GetCurrentRegionMapSectionId(void)
     return Overworld_GetMapHeaderByGroupAndId(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum)->regionMapSectionId;
 }
 
+u8 NuzlockeGetCurrentRegionMapSectionId(void) //tx_randomizer_and_challenges @Kurausukun
+{
+    u8 regionMapSectionId = GetCurrentRegionMapSectionId();
+
+    #ifndef NDEBUG
+    MgbaPrintf(MGBA_LOG_DEBUG, "location.mapGroup=%d; location.mapNum=%d; location.regionMapSectionId=%d", gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum, Overworld_GetMapHeaderByGroupAndId(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum)->regionMapSectionId);
+    #endif
+
+    if (regionMapSectionId == MAPSEC_SAFARI_ZONE)
+    {
+        switch(gSaveBlock1Ptr->location.mapNum)
+        {
+        case MAP_NUM(SAFARI_ZONE_SOUTH):
+            return MAPSEC_SAFARI_ZONE_AREA1;
+        case MAP_NUM(SAFARI_ZONE_SOUTHWEST):
+            return MAPSEC_SAFARI_ZONE_AREA2;
+        case MAP_NUM(SAFARI_ZONE_NORTHWEST):
+            return MAPSEC_SAFARI_ZONE_AREA3;
+        case MAP_NUM(SAFARI_ZONE_NORTH):
+            return MAPSEC_SAFARI_ZONE_AREA4;
+        case MAP_NUM(SAFARI_ZONE_SOUTHEAST):
+            return MAPSEC_SAFARI_ZONE_AREA5;
+        case MAP_NUM(SAFARI_ZONE_NORTHEAST):
+            return MAPSEC_SAFARI_ZONE_AREA6;
+        }
+    }
+
+    return regionMapSectionId;
+}
+
 u8 GetCurrentMapBattleScene(void)
 {
     return Overworld_GetMapHeaderByGroupAndId(gSaveBlock1Ptr->location.mapGroup, gSaveBlock1Ptr->location.mapNum)->battleType;
@@ -1546,6 +1585,11 @@ void CB2_WhiteOut(void)
     {
         FieldClearVBlankHBlankCallbacks();
         StopMapMusic();
+        if (gSaveBlock1Ptr->tx_Challenges_NuzlockeHardcore && !FlagGet(FLAG_IS_CHAMPION)) //tx_randomizer_and_challenges
+        {
+            ClearSaveData();
+            DoSoftReset();
+        }
         ResetSafariZoneFlag_();
         DoWhiteOut();
         ResetInitialPlayerAvatarState();

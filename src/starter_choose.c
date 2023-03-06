@@ -23,6 +23,8 @@
 #include "window.h"
 #include "constants/songs.h"
 #include "constants/rgb.h"
+#include "tx_randomizer_and_challenges.h"
+
 
 #define STARTER_MON_COUNT   3
 
@@ -59,6 +61,8 @@ const u32 gBirchGrassTilemap[] = INCBIN_U32("graphics/starter_choose/birch_grass
 const u32 gBirchBagGrass_Gfx[] = INCBIN_U32("graphics/starter_choose/tiles.4bpp.lz");
 const u32 gPokeballSelection_Gfx[] = INCBIN_U32("graphics/starter_choose/pokeball_selection.4bpp.lz");
 static const u32 sStarterCircle_Gfx[] = INCBIN_U32("graphics/starter_choose/starter_circle.4bpp.lz");
+
+EWRAM_DATA static u16 sStarterList[3] = {0};
 
 static const struct WindowTemplate sWindowTemplates[] =
 {
@@ -350,9 +354,31 @@ static const struct SpriteTemplate sSpriteTemplate_StarterCircle =
 // .text
 u16 GetStarterPokemon(u16 chosenStarterId)
 {
+    //tx_randomizer_and_challenges
+    u16 mon = sStarterMon[chosenStarterId];
+    u16 i;
+
     if (chosenStarterId > STARTER_MON_COUNT)
         chosenStarterId = 0;
-    return sStarterMon[chosenStarterId];
+    //tx_randomizer_and_challenges
+    if (IsOneTypeChallengeActive())
+    {
+        if (sStarterList[chosenStarterId] == 0)
+            sStarterList[chosenStarterId] = PickRandomStarterForOneTypeChallenge(sStarterList, chosenStarterId);
+        mon = sStarterList[chosenStarterId];
+    }
+    else if (gSaveBlock1Ptr->tx_Random_Starter)
+    {
+        if (sStarterList[chosenStarterId] == 0)
+            sStarterList[chosenStarterId] = PickRandomStarter(sStarterList, chosenStarterId);
+        mon = sStarterList[chosenStarterId];
+    }
+
+    #ifndef NDEBUG
+        MgbaPrintf(MGBA_LOG_DEBUG, "new species[%d]", mon);
+    #endif
+
+    return mon;
 }
 
 static void VblankCB_StarterChoose(void)

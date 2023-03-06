@@ -26,6 +26,7 @@
 #include "constants/battle_anim.h"
 #include "constants/songs.h"
 #include "constants/trainers.h"
+#include "tx_randomizer_and_challenges.h"
 
 static void PlayerPartnerHandleGetMonData(void);
 static void PlayerPartnerHandleGetRawMonData(void);
@@ -1594,7 +1595,7 @@ static void PlayerPartnerHandleExpUpdate(void)
 {
     u8 monId = gBattleBufferA[gActiveBattler][1];
 
-    if (GetMonData(&gPlayerParty[monId], MON_DATA_LEVEL) >= MAX_LEVEL)
+    if (GetMonData(&gPlayerParty[monId], MON_DATA_LEVEL) >= GetCurrentPartyLevelCap())
     {
         PlayerPartnerBufferExecCompleted();
     }

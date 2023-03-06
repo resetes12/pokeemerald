@@ -1063,7 +1063,46 @@ struct SaveBlock1
     /*0x3D5A*/ u8 unused_3D5A[10];
     /*0x3D64*/ struct TrainerHillSave trainerHill;
     /*0x3D70*/ struct WaldaPhrase waldaPhrase;
-    // sizeof: 0x3D88
+    /*0x3D88*/ u8 NuzlockeEncounterFlags[9]; //tx_randomizer_and_challenges
+        u8 tx_Random_Chaos:1;
+        u8 tx_Random_WildPokemon:1;
+        u8 tx_Random_Similar:1;
+        u8 tx_Random_MapBased:1;
+        u8 tx_Random_IncludeLegendaries:1;
+        u8 tx_Random_Type:1;
+        u8 tx_Random_TypeEffectiveness:1;
+        u8 tx_Random_Abilities:1;
+        //
+        u8 tx_Random_Moves:1;
+        u8 tx_Random_Trainer:1;
+        u8 tx_Random_Evolutions:1;
+        u8 tx_Random_EvolutionMethods:1;
+        u8 tx_Challenges_EvoLimit:2;
+        u8 tx_Challenges_Nuzlocke:1;
+        u8 tx_Challenges_NuzlockeHardcore:1;
+        //
+        u8 tx_Challenges_OneTypeChallenge:5;
+        u8 tx_Challenges_PartyLimit:3;
+        //
+        u8 tx_Challenges_NoItemPlayer:1;
+        u8 tx_Challenges_NoItemTrainer:1;
+        u8 tx_Challenges_PkmnCenter:2;
+        u8 tx_Random_OneForOne:1; //unused
+        u8 tx_Challenges_BaseStatEqualizer:2;
+        u8 tx_Challenges_LevelCap:2;
+        u8 tx_Challenges_ExpMultiplier:2;
+        u8 tx_Random_Items:1;
+        u8 tx_Nuzlocke_SpeciesClause:1;
+        u8 tx_Nuzlocke_ShinyClause:1;
+        u8 tx_Nuzlocke_Nicknaming:1;
+        u8 tx_Challenges_Mirror:1;
+        u8 tx_Challenges_Mirror_Thief:1;
+        u8 tx_Random_Static:1;
+        u8 tx_Challenges_NoEVs:1;
+        u8 tx_Challenges_TrainerScalingIVs:2;
+        u8 tx_Challenges_TrainerScalingEVs:2;
+        u8 tx_Nuzlocke_Deletion:1;
+        u8 tx_Random_Starter:1;
 };
 
 extern struct SaveBlock1* gSaveBlock1Ptr;
@@ -1074,5 +1113,7 @@ struct MapPosition
     s16 y;
     s8 elevation;
 };
+
+#define TX_RANDOMIZER_AND_CHALLENGES TRUE
 
 #endif // GUARD_GLOBAL_H

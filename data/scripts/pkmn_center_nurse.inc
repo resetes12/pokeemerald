@@ -1,7 +1,8 @@
 Common_EventScript_PkmnCenterNurse::
 	lock
 	faceplayer
-	goto_if_unset FLAG_OLDSAVE, Common_EventScript_PkmnCenterNurseOldSave
+	specialvar VAR_RESULT, IsPokecenterChallengeActivated
+    goto_if_eq VAR_RESULT, TRUE, EventScript_PkmnCenterNurse_PkmnCenterChallenge_NoVisits
 	setvar VAR_0x8004, 0
 	specialvar VAR_RESULT, CountPlayerTrainerStars
 	goto_if_eq VAR_RESULT, 4, EventScript_PkmnCenterNurse_GoldCard
@@ -11,113 +12,6 @@ Common_EventScript_PkmnCenterNurse::
 EventScript_PkmnCenterNurse_Goodbye::
 	message gText_WeHopeToSeeYouAgain
 	return
-
-Common_EventScript_PkmnCenterNurseOldSave::
-	@playse SE_PIN
-	setflag FLAG_OLDSAVE
-	setflag FLAG_ENABLE_SHIP_SOUTHERN_ISLAND
-	setflag FLAG_ENABLE_SHIP_NAVEL_ROCK
-	setflag FLAG_ENABLE_SHIP_BIRTH_ISLAND
-	setflag FLAG_ENABLE_SHIP_FARAWAY_ISLAND
-	clearflag FLAG_DEFEAT_SUICUNE
-	clearflag FLAG_DEFEAT_ENTEI
-	clearflag FLAG_DEFEAT_RAIKOU
-	msgbox Common_EventScript_PkmnCenterNurseOldSaveText1, MSGBOX_DEFAULT
-	closemessage
-	delay 20
-	msgbox Common_EventScript_PkmnCenterNurseOldSaveText1_5, MSGBOX_DEFAULT
-	closemessage
-	delay 20
-	clearflag FLAG_ITEM_ROUTE_115_TM01
-	clearflag FLAG_ITEM_METEOR_FALLS_B1F_2R_TM02
-	clearflag FLAG_ITEM_FIERY_PATH_TM06
-	clearflag FLAG_ITEM_SHOAL_CAVE_ICE_ROOM_TM07
-	clearflag FLAG_ITEM_SCORCHED_SLAB_TM11
-	clearflag FLAG_ITEM_ABANDONED_SHIP_ROOMS_B1F_TM13
-	clearflag FLAG_ITEM_ABANDONED_SHIP_HIDDEN_FLOOR_ROOM_1_TM18
-	clearflag FLAG_ITEM_SAFARI_ZONE_NORTH_WEST_TM22
-	clearflag FLAG_ITEM_METEOR_FALLS_1F_1R_TM23
-	clearflag FLAG_ITEM_SEAFLOOR_CAVERN_ROOM_9_TM26
-	clearflag FLAG_ITEM_VICTORY_ROAD_B1F_TM29
-	clearflag FLAG_ITEM_MT_PYRE_6F_TM30
-	clearflag FLAG_ITEM_ROUTE_111_TM37
-	clearflag FLAG_ITEM_MT_PYRE_EXTERIOR_TM48
-	clearflag FLAG_RECEIVED_TM05
-	clearflag FLAG_RECEIVED_TM09
-	clearflag FLAG_RECEIVED_TM19
-	clearflag FLAG_RECEIVED_TM28
-	clearflag FLAG_RECEIVED_TM31
-	clearflag FLAG_RECEIVED_TM36
-	clearflag FLAG_RECEIVED_TM41
-	clearflag FLAG_RECEIVED_TM44
-	clearflag FLAG_RECEIVED_TM45
-	clearflag FLAG_RECEIVED_TM46
-	clearflag FLAG_RECEIVED_TM49
-	msgbox Common_EventScript_PkmnCenterNurseOldSaveText2, MSGBOX_DEFAULT
-	closemessage
-	delay 20
-	removeitem ITEM_ACRO_BIKE
-	giveitem ITEM_MACH_BIKE
-	removeitem ITEM_EXP_SHARE, 99
-	giveitem ITEM_EXP_SHARE
-	msgbox Common_EventScript_PkmnCenterNurseOldSaveText3, MSGBOX_DEFAULT
-	closemessage
-	delay 20
-	goto Common_EventScript_PkmnCenterNurse
-	end
-
-Common_EventScript_PkmnCenterNurseOldSaveText1:
-	.string "Oh! Looks like you are loading an OLD\n"
-	.string "SAVEGAME! Let's fix the SAVEGAME\l"
-	.string "so you can fully enjoy this HACKROM.\p"
-	.string "Let's start with the basics...\p"
-	.string "In the PROF. BIRCH LAB, there're 3 PCs.\n"
-	.string "If you check the TOP one, you\p"
-	.string "can change the GAMEMODE.\p"
-	.string "There are 2 GAMEMODES.\p"
-	.string "CLASSIC, which doesn't implement\n"
-	.string "the PHYSICAL/SPECIAL split\p"
-	.string "created in GEN IV; and\n"
-	.string "MODERN, which it does.\p"
-	.string "Then, the PC on the LEFT contains a\n"
-	.string "DIFFICULTY changer. NORMAL is the\p"
-	.string "default experience, while EASY and HARD\n"
-	.string "make the levels scale up or down\p"
-	.string "10 levels after being the CHAMPION.\n"
-	.string "Now... let's try to fix other things.\p"
-	.string "Old EXP. SHARES are not deleted\n"
-	.string "so it's recommended that you load\p"
-	.string "the original SAVE into a clean\n"
-	.string "version of POKéMON EMERALD, delete\p"
-	.string "them, and then import the SAVE again\n"
-	.string "to this HACKROM. If not, old EXP\p"
-	.string "SHARES will not be deleteable\n"
-	.string "from the BAG.$"
-
-Common_EventScript_PkmnCenterNurseOldSaveText1_5:
-	.string "Then, let's talk about TMs.\p"
-	.string "TMs are now infinite, which means\n"
-	.string "if you have used them, they are gone.\p"
-	.string "Let me respawn all TMs that can be\n"
-	.string "found in the overworld for you.\p"
-	.string "Be sure to also talk to all\n"
-	.string "the NPCs who give TMs!\p"
-	.string "The MART in BATTLEFRONTIER contains\n"
-	.string "all the TMs from GYM LEADERS.\p"
-	.string "Go get them there!$"
-
-Common_EventScript_PkmnCenterNurseOldSaveText2:
-	.string "There. You can go look for them!\p"
-	.string "And lastly, let's talk about BIKES.\p"
-	.string "I'll give you this BIKE. This BIKE\n"
-	.string "is the MACH and ACRO version in one.\p"
-	.string "If you have the ACRO BIKE it'll be\n"
-	.string "removed. I'll do the same with the\p"
-	.string "EXP. SHARE, which is now a KEY ITEM.$"
-
-Common_EventScript_PkmnCenterNurseOldSaveText3:
-	.string "Thanks for your cooperation!\n"
-	.string "Have fun!$"
 
 @ VAR_0x8004 is 1 when player has Gold Card; jumps are identical
 EventScript_PkmnCenterNurse_HealPkmn::
@@ -235,3 +129,11 @@ EventScript_PkmnCenterNurse_PlayerTurn::
    waitmovement 0
    release
    end
+
+EventScript_PkmnCenterNurse_PkmnCenterChallenge_NoVisits:: @ tx_randomizer_and_challenges
+    message gText_PkmnCenterChallenge_NoVisitsLeft
+    waitmessage
+    applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown
+    waitmovement 0
+    release
+    end
