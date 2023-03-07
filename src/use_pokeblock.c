@@ -665,11 +665,6 @@ static void UsePokeblockMenu(void)
             sInfo->mainState = STATE_HANDLE_INPUT;
             break;
         case 0: // YES
-            if (IsSheenMaxed())
-            {
-                PrintWontEatAnymore();
-                sInfo->mainState = STATE_WAIT_MSG;
-            }
             else
             {
                 SetUsePokeblockCallback(FeedPokeblockToMon);
@@ -999,7 +994,6 @@ static void AddPokeblockToConditions(struct Pokeblock *pokeblock, struct Pokemon
     s16 stat;
     u8 data;
 
-    if (GetMonData(mon, MON_DATA_SHEEN) != MAX_SHEEN)
     {
         CalculatePokeblockEffectiveness(pokeblock, mon);
         for (i = 0; i < CONDITION_COUNT; i++)
