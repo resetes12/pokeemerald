@@ -259,7 +259,7 @@ BattleFrontier_ExchangeServiceCorner_EventScript_ChooseVitamin::
 	case 2, BattleFrontier_ExchangeServiceCorner_EventScript_AuroraTicket
 	case 3, BattleFrontier_ExchangeServiceCorner_EventScript_OldMap
 	case 4, BattleFrontier_ExchangeServiceCorner_EventScript_Brace
-	case 5, BattleFrontier_ExchangeServiceCorner_EventScript_LuckyEgg
+	case 5, BattleFrontier_ExchangeServiceCorner_EventScript_Upgrade
 	case 6, BattleFrontier_ExchangeServiceCorner_EventScript_ClerkGoodbye
 	case MULTI_B_PRESSED, BattleFrontier_ExchangeServiceCorner_EventScript_ClerkGoodbye
 	end
@@ -304,11 +304,11 @@ BattleFrontier_ExchangeServiceCorner_EventScript_Brace::
 	goto BattleFrontier_ExchangeServiceCorner_EventScript_TryPurchasePrize
 	end
 
-BattleFrontier_ExchangeServiceCorner_EventScript_LuckyEgg::
-	msgbox BattleFrontier_ExchangeServiceCorner_Text_ConfirmLuckyEgg, MSGBOX_YESNO
+BattleFrontier_ExchangeServiceCorner_EventScript_Upgrade::
+	msgbox BattleFrontier_ExchangeServiceCorner_Text_ConfirmUpgrade, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, BattleFrontier_ExchangeServiceCorner_EventScript_ChooseVitamin
-	setvar VAR_0x8008, 4
-	setvar VAR_0x8009, ITEM_LUCKY_EGG
+	setvar VAR_0x8008, 16
+	setvar VAR_0x8009, ITEM_UP_GRADE
 	goto BattleFrontier_ExchangeServiceCorner_EventScript_TryPurchasePrize
 	end
 
@@ -518,15 +518,15 @@ BattleFrontier_ExchangeServiceCorner_Text_ConfirmAuroraTicket:
 	.string "TICKET Is that correct?$"
 
 BattleFrontier_ExchangeServiceCorner_Text_ConfirmOldMap:
-	.string "You've chosen the OldMap.\n"
+	.string "You've chosen the OLD MAP.\n"
 	.string "Is that correct?$"
 
 BattleFrontier_ExchangeServiceCorner_Text_ConfirmBrace:
 	.string "You've chosen the MACHO\n"
 	.string "BRACE. Is that correct?$"
 
-BattleFrontier_ExchangeServiceCorner_Text_ConfirmLuckyEgg:
-	.string "You've chosen the HP UP.\n"
+BattleFrontier_ExchangeServiceCorner_Text_ConfirmUpgrade:
+	.string "You've chosen the UP GRADE.\n"
 	.string "Is that correct?$"
 
 BattleFrontier_ExchangeServiceCorner_Text_ConfirmBrightpowder:
@@ -685,7 +685,8 @@ BattleFrontier_ExchangeServiceCorner_Text_CarbosDesc::
 	.string "x10 EV gain, but half speed.$"
 
 BattleFrontier_ExchangeServiceCorner_Text_HPUpDesc::
-	.string "Raises the experience gained.$"
+	.string "A peculiar box made\n"
+	.string "by SILPH CO.$"  
 
 BattleFrontier_ExchangeServiceCorner_Text_LeftoversDesc::
 	.string "A hold item that gradually restores\n"

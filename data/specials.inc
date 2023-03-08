@@ -554,3 +554,5 @@ gSpecials::
 	def_special SetSpAtkIvs
 	def_special SetSpDefIvs
 	def_special CreateWonderTradePokemon
+	def_special TryChangeDeoxysForm
+	def_special CheckPkm
