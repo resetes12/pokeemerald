@@ -370,7 +370,7 @@ const u16 gEggMoves[] = {
               MOVE_CURSE,
               MOVE_CRUSH_CLAW),
 
-    egg_moves(CHANSEY,
+    egg_moves(HAPPINY,
               MOVE_PRESENT,
               MOVE_METRONOME,
               MOVE_HEAL_BELL,
@@ -412,7 +412,7 @@ const u16 gEggMoves[] = {
               MOVE_SLEEP_TALK,
               MOVE_MUD_SPORT),
 
-    egg_moves(MR_MIME,
+    egg_moves(MIME_JR,
               MOVE_FUTURE_SIGHT,
               MOVE_HYPNOSIS,
               MOVE_MIMIC,
@@ -480,7 +480,7 @@ const u16 gEggMoves[] = {
               MOVE_DRAGON_BREATH,
               MOVE_CURSE),
 
-    egg_moves(SNORLAX,
+    egg_moves(MUNCHLAX,
               MOVE_LICK,
               MOVE_CHARM,
               MOVE_DOUBLE_EDGE,
@@ -627,7 +627,7 @@ const u16 gEggMoves[] = {
               MOVE_SUPERSONIC,
               MOVE_SUBSTITUTE),
 
-    egg_moves(SUDOWOODO,
+    egg_moves(BONSLY,
               MOVE_SELF_DESTRUCT),
 
     egg_moves(HOPPIP,
@@ -810,7 +810,7 @@ const u16 gEggMoves[] = {
               MOVE_RAPID_SPIN,
               MOVE_ICE_BALL),
 
-    egg_moves(MANTINE,
+    egg_moves(MANTYKE,
               MOVE_TWISTER,
               MOVE_HYDRO_PUMP,
               MOVE_HAZE,
@@ -1174,7 +1174,7 @@ const u16 gEggMoves[] = {
               MOVE_MEMENTO,
               MOVE_FAINT_ATTACK),
 
-    egg_moves(ROSELIA,
+    egg_moves(BUDEW,
               MOVE_SPIKES,
               MOVE_SYNTHESIS,
               MOVE_PIN_MISSILE,
@@ -1300,7 +1300,7 @@ const u16 gEggMoves[] = {
               MOVE_TWISTER,
               MOVE_DRAGON_DANCE),
 
-    egg_moves(CHIMECHO,
+    egg_moves(CHINGLING,
               MOVE_DISABLE,
               MOVE_CURSE,
               MOVE_HYPNOSIS,

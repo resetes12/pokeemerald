@@ -539,34 +539,3 @@ MossdeepCity_Text_SootopolisNewGymLeader:
 	.string "LEADER come in.\p"
 	.string "People tell me the new LEADER once\n"
 	.string "mentored WALLACE.$"
-
-MossdeepCity_Chansey3::
-	faceplayer
-	goto_if_unset FLAG_CHANSEYTRAINERS, LavaridgeTown_ChanseyTrainersFirstEncounter
-	msgbox MossdeepCity_Chansey3Repeat2, MSGBOX_YESNO
-	switch VAR_RESULT
-	case NO, LavaridgeTown_Chansey1End
-	case YES, MossdeepCity_Chansey3Battle
-	case MULTI_B_PRESSED, LavaridgeTown_Chansey1End
-
-MossdeepCity_Chansey3Battle::
-	trainerbattle TRAINER_BATTLE_CONTINUE_SCRIPT, TRAINER_CHANSEY3, 0, MossdeepCity_Chansey3Intro, MossdeepCity_Chansey3Defeat, MossdeepCity_ChanseyBattleAgain
-	end
-
-MossdeepCity_ChanseyBattleAgain::
-	faceplayer
-	msgbox MossdeepCity_Chansey3Repeat, MSGBOX_AUTOCLOSE
-	clearflag 0x859
-	end
-
-MossdeepCity_Chansey3Intro:
-	.string "My CHANSEY is ready!$"
-
-MossdeepCity_Chansey3Defeat:
-	.string "Oh no... CHANSEY, use SOFT-BOILED!$"
-
-MossdeepCity_Chansey3Repeat:
-	.string "We can battle again if you want!$"
-
-MossdeepCity_Chansey3Repeat2:
-	.string "Ready for a battle?$"

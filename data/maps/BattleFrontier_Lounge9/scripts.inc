@@ -543,16 +543,18 @@ BattleFrontier_Lounge9_EV_No_TEXT:
 
 BattleFrontier_Lounge9_Chansey5::
 	faceplayer
-	goto_if_unset FLAG_CHANSEYTRAINERS, LavaridgeTown_ChanseyTrainersFirstEncounter
 	goto_if_unset FLAG_IS_CHAMPION, BattleFrontier_Lounge9_Chansey5Champion
 	msgbox BattleFrontier_Lounge9_Chansey5Repeat2, MSGBOX_YESNO
 	switch VAR_RESULT
-	case NO, LavaridgeTown_Chansey1End
+	case NO, BattleFrontier_Lounge9_Chansey1End
 	case YES, BattleFrontier_Lounge9_Chansey5Battle
-	case MULTI_B_PRESSED, LavaridgeTown_Chansey1End
+	case MULTI_B_PRESSED, BattleFrontier_Lounge9_Chansey1End
 
 BattleFrontier_Lounge9_Chansey5Battle::
 	trainerbattle TRAINER_BATTLE_CONTINUE_SCRIPT, TRAINER_CHANSEY5, 0, BattleFrontier_Lounge9_Chansey5Intro, BattleFrontier_Lounge9_Chansey5Defeat, BattleFrontier_Lounge9_ChanseyBattleAgain
+	end
+
+BattleFrontier_Lounge9_Chansey1End::
 	end
 
 BattleFrontier_Lounge9_ChanseyBattleAgain::
