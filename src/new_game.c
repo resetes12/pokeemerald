@@ -150,6 +150,9 @@ void ResetMenuAndMonGlobals(void)
 
 void NewGameInitData(void)
 {
+    bool8 difficultyPrev = VarGet(VAR_DIFFICULTY);
+    bool8 gamemodePrev = VarGet(VAR_GAMEMODE);
+
     if (gSaveFileStatus == SAVE_STATUS_EMPTY || gSaveFileStatus == SAVE_STATUS_CORRUPT)
         RtcReset();
 
@@ -207,6 +210,18 @@ void NewGameInitData(void)
     ResetTrainerHillResults();
     ResetContestLinkResults();
     gSaveBlock2Ptr->expShare = 0;
+
+    if (difficultyPrev == DIFFICULTY_EASY)
+        VarSet(VAR_DIFFICULTY, DIFFICULTY_EASY);
+    else if (difficultyPrev == DIFFICULTY_NORMAL)
+        VarSet(VAR_DIFFICULTY, DIFFICULTY_NORMAL);
+    else if (difficultyPrev == DIFFICULTY_HARD)
+        VarSet(VAR_DIFFICULTY, DIFFICULTY_HARD);
+    
+    if (gamemodePrev == GAMEMODE_CLASSIC)
+        VarSet(VAR_GAMEMODE, GAMEMODE_CLASSIC);
+    else if (gamemodePrev == GAMEMODE_MODERN)
+        VarSet(VAR_GAMEMODE, GAMEMODE_MODERN);
 }
 
 static void ResetMiniGamesRecords(void)

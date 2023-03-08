@@ -318,6 +318,32 @@ static const u8 sLevelCapTable_Hard[] =
     [LEVEL_CAP_BADGE_7]     = 41,
     [LEVEL_CAP_BADGE_8]     = 55,
 };
+
+static const u8 sLevelCapTable_NormalHard[] =
+{
+    [LEVEL_CAP_NO_BADGES]   = 15,
+    [LEVEL_CAP_BADGE_1]     = 19,
+    [LEVEL_CAP_BADGE_2]     = 26,
+    [LEVEL_CAP_BADGE_3]     = 31,
+    [LEVEL_CAP_BADGE_4]     = 34,
+    [LEVEL_CAP_BADGE_5]     = 37,
+    [LEVEL_CAP_BADGE_6]     = 45,
+    [LEVEL_CAP_BADGE_7]     = 52,
+    [LEVEL_CAP_BADGE_8]     = 64,
+};
+
+static const u8 sLevelCapTable_HardHard[] =
+{
+    [LEVEL_CAP_NO_BADGES]   = 12,
+    [LEVEL_CAP_BADGE_1]     = 16,
+    [LEVEL_CAP_BADGE_2]     = 23,
+    [LEVEL_CAP_BADGE_3]     = 27,
+    [LEVEL_CAP_BADGE_4]     = 30,
+    [LEVEL_CAP_BADGE_5]     = 32,
+    [LEVEL_CAP_BADGE_6]     = 44,
+    [LEVEL_CAP_BADGE_7]     = 47,
+    [LEVEL_CAP_BADGE_8]     = 61,
+};
 #define TX_CHALLENGE_LEVEL_CAP_DEBUG 0
 u8 GetCurrentPartyLevelCap(void)
 {
@@ -328,12 +354,18 @@ u8 GetCurrentPartyLevelCap(void)
 
     if (FlagGet(FLAG_IS_CHAMPION)) //after beating the E4 remove the cap
         return MAX_LEVEL;
-
+    
     if (gSaveBlock1Ptr->tx_Challenges_LevelCap == 1) //normal level cap
-        return sLevelCapTable_Normal[badgeCount];
+        if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD)
+            return sLevelCapTable_NormalHard[badgeCount];
+        else
+            return sLevelCapTable_Normal[badgeCount];
 
     if (gSaveBlock1Ptr->tx_Challenges_LevelCap == 2) //hard level cap
-        return sLevelCapTable_Hard[badgeCount];
+        if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD)
+            return sLevelCapTable_HardHard[badgeCount];
+        else
+            return sLevelCapTable_Hard[badgeCount];
 
     return MAX_LEVEL;
 }

@@ -665,7 +665,6 @@ static void UsePokeblockMenu(void)
             sInfo->mainState = STATE_HANDLE_INPUT;
             break;
         case 0: // YES
-            else
             {
                 SetUsePokeblockCallback(FeedPokeblockToMon);
             }

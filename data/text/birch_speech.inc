@@ -35,15 +35,36 @@ gText_Birch_BoyOrGirl::
 	.string "Are you a boy?\n"
 	.string "Or are you a girl?$"
 
+gText_Birch_Difficulty::
+	.string "Aha...\p"
+	.string "And... How do you think this\n"
+	.string "adventure is going to be?$"
+
+gText_Birch_Gamemode::
+	.string "Is that so? Then...\p"
+	.string "Do you feel more of a MODERN STYLE of\n"
+	.string "person, or more of a CLASSIC one?\p"
+	.string "Tell me.$"
+
+gText_Birch_Challenge::
+	.string "Oh, I thought so. You look like it!\p"
+	.string "If you want to learn more about\n"
+	.string "the DIFFICULTY or the STYLES, just\l"
+	.string "use the computers in my LAB.\p"
+	.string "All right.\p"
+	.string "Do you expect any\n"
+	.string "CHALLENGE in your journey?\p"
+	.string "And what's your name?$"
+
 gText_Birch_WhatsYourName::
 	.string "All right.\n"
 	.string "What's your name?$"
 
 gText_Birch_SoItsPlayer::
-	.string "So it's {PLAYER}{KUN}?$"
+	.string "Oh! So you're {PLAYER}{KUN}?$"
 
 gText_Birch_YourePlayer::
-	.string "Ah, okay!\p"
+	.string "Ah, of course!\p"
 	.string "You're {PLAYER}{KUN} who's moving to my\n"
 	.string "hometown of LITTLEROOT.\l"
 	.string "I get it now!\p"

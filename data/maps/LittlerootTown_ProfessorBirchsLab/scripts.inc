@@ -1127,20 +1127,29 @@ LittlerootTown_ProfessorBirchsLab_EventScript_SelectedCancel:
 	end
 
 LittlerootTown_ProfessorBirchsLab_Text_Challenge:
-	.string "What difficulty would\n"
+	.string "What DIFFICULTY would\n"
 	.string "you like to play at?$"
 
 LittlerootTown_ProfessorBirchsLab_Text_SelectedEasy:
-	.string "EASY difficulty\n"
-	.string "was chosen.$"
+	.string "EASY DIFFICULTY\n"
+	.string "was chosen.\p"
+	.string "EASY DIFFICULTY scales down\n"
+	.string "TRAINERS and WILD BATTLES.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_SelectedNormal:
-	.string "NORMAL difficulty\n"
-	.string "was chosen.$"
+	.string "NORMAL DIFFICULTY\n"
+	.string "was chosen.\p"
+	.string "NORMAL DIFFICULTY is the standard\n"
+	.string "difficulty, without any change.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_SelectedHard:
-	.string "HARD difficulty\n"
-	.string "was chosen.$"
+	.string "HARD DIFFICULTY\n"
+	.string "was chosen.\p"
+	.string "HARD DIFFICULTY scales up\n"
+	.string "TRAINERS and WILD BATTLES,\p"
+	.string "and adds small additional\n"
+	.string "changes to make a more\l"
+	.string "challenging experience.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_SelectedCancel:
 	.string "DIFFICULTY not\n"
@@ -1188,17 +1197,25 @@ LittlerootTown_ProfessorBirchsLab_EventScript_SelectedCancelGamemode:
 	end
 
 LittlerootTown_ProfessorBirchsLab_Text_Gamemode:
-	.string "What GAMEMODE would\n"
+	.string "What STYLE would\n"
 	.string "you like to use?$"
 
 LittlerootTown_ProfessorBirchsLab_Text_SelectedModern:
-	.string "MODERN GAMEMODE\n"
-	.string "was chosen.$"
+	.string "MODERN STYLE\n"
+	.string "was chosen.\p"
+	.string "MODERN STYLE makes use of the\n"
+	.string "PHYSICAL and SPECIAL SPLIT made\p"
+	.string "for MOVES in GENERATION IV.\n"
+	.string "$"
 
 LittlerootTown_ProfessorBirchsLab_Text_SelectedClassic:
-	.string "CLASSIC GAMEMODE\n"
-	.string "was chosen.$"
+	.string "CLASSIC STYLE\n"
+	.string "was chosen.\p"
+	.string "CLASSIC STYLE does not makes use\n"
+	.string "of the PHYSICAL and SPECIAL SPLIT\p"
+	.string "made for MOVES in GENERATION IV.\n"
+	.string "$"
 
 LittlerootTown_ProfessorBirchsLab_Text_SelectedCancelGamemode:
-	.string "GAMEMODE not\n"
+	.string "STYLE not\n"
 	.string "changed.$"

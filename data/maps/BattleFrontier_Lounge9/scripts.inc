@@ -2,6 +2,8 @@ BattleFrontier_Lounge9_MapScripts::
 	.byte 0
 
 BattleFrontier_Lounge9_Heal::
+	specialvar VAR_RESULT, IsPokecenterChallengeActivated
+	goto_if_eq VAR_RESULT, TRUE, SSTidalRooms_EventScript_Bed_PokecenterChallenge
 	msgbox BattleFrontier_Lounge9_Heal_TEXT, MSGBOX_NPC
 	waitmessage
 	fadescreen 0x1
