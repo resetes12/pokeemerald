@@ -47,7 +47,7 @@
 #define FLAG_SYS_NO_BAG_USE         0x23 // Unused Flag //DEBUG
 #define FLAG_SYS_NO_CATCHING        0x24 // Unused Flag //DEBUG
 #define FLAG_SYS_PC_FROM_DEBUG_MENU 0x25 // Unused Flag //DEBUG
-#define FLAG_CHANSEY_TRAINER        0x26 // Unused Flag
+#define FLAG_ARCEUS_EGG_GIVE        0x26
 #define FLAG_SYS_NO_BATTLE_DMG      0x27 // Unused Flag //DEBUG
 #define FLAG_IV_SETTER       0x28 
 #define FLAG_SIDNEY_REMATCH    0x29 //Elite Four Rematch 1
@@ -59,7 +59,7 @@
 #define FLAG_CAVE_SCALE      0x2F 
 #define FLAG_CAVE_MOONSTONE  0x30 
 #define FLAG_CAVE_SUNSTONE   0x31 
-#define FLAG_IGNORE_CHALLENGES        0x32 
+#define FLAG_IGNORE_CHALLENGES        0x32 //Unused
 #define FLAG_MINT_LILYCOVE   0x33
 #define FLAG_MINT_BF         0x34 
 #define FLAG_MINT_ALTERING   0x35 

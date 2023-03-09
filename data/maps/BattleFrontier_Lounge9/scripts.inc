@@ -385,7 +385,7 @@ BattleFrontier_Lounge9_IV_TextFirstTime:
 	.string ". . .\p"
 	.string "Oh... Of course! I saw you on\n"
 	.string "the TV a short while ago!\p"
-	.string "I'm IVAN, but nou can call me IV-MAN!\p"
+	.string "I'm IVAN, but you can call me IV-MAN!\p"
 	.string "I'm the brother of EV-MAN,\n"
 	.string "to no one's surprise.\p"
 	.string "And you...\p"
@@ -397,8 +397,8 @@ BattleFrontier_Lounge9_IV_TextFirstTime:
 	.string "Anyway, I also decided to become\n"
 	.string "stronger so I crated the\l"
 	.string "absolute training routine.\p"
-	.string "For POKéMON, of course!\p"
-	.string "If you want we can train together to\n"
+	.string "For POKéMON, of course!\n"
+	.string "If you want we can train together to\l"
 	.string "maximize the potential of your POKéMON.\p"
 	.string "But... to maximize that potential, the\n"
 	.string "POKéMON needs to be ready for it.\p"
@@ -407,12 +407,12 @@ BattleFrontier_Lounge9_IV_TextFirstTime:
 	.string "this training routine.\p"
 	.string "Do you want to try it?\p"
 	.string "It's a lenghty and difficult process, so\n"
-	.string "I need 100.000¥ to prepare everything\p"
+	.string "I need 100.000¥ to prepare everything\l"
 	.string "Tell me when you are ready!$"
 
 BattleFrontier_Lounge9_IV_Text1:
-	.string "IV-MAN: Hi! What's up?\p"
-	.string "Ready for the best training\n"
+	.string "IV-MAN: Hi! What's up?\n"
+	.string "Ready for the best training\l"
 	.string "routine of all HOENN?$"
 
 BattleFrontier_Lounge9_IV_Continue_Text:
@@ -460,7 +460,7 @@ BattleFrontier_Lounge9_EV_SetZeroTextNo:
 
 BattleFrontier_Lounge9_EV_SetZeroMoneyText:
 	.string "This process is quite difficult.\n"
-	.string "It will cost you 20.000¥.\p"
+	.string "It will cost you 20.000¥.\l"
 	.string "Do you want to continue?$"
 
 BattleFrontier_Lounge9_EV_SetZeroTextNoMoney:
@@ -479,14 +479,14 @@ BattleFrontier_Lounge9_EV_Column_Text:
 	.string "How does this work?\p"
 	.string "Win one battle and obtain EFFORT VALUES\n"
 	.string "for the selected stat of your POKéMON.\p"
-	.string "TRAINER TIP 1:\p"
-	.string "Reset EVs to zero by talking\n"
+	.string "TRAINER TIP 1:\n"
+	.string "Reset EVs to zero by talking\l"
 	.string "to EV-Man.\p"
-	.string "TRAINER TIP 2:\p"
-	.string "Equip a MACHO BRACE to multiply\n"
+	.string "TRAINER TIP 2:\n"
+	.string "Equip a MACHO BRACE to multiply\l"
 	.string "by 10 the EVs gained.\p"
-	.string "TRAINER TIP 3:\p"
-	.string "A new type of training is available\n"
+	.string "TRAINER TIP 3:\n"
+	.string "A new type of training is available\l"
 	.string "at the right corner of the gym.$"
 
 BattleFrontier_Lounge9_EV_HP_TEXT:
@@ -572,11 +572,11 @@ BattleFrontier_Lounge9_Chansey5Champion:
 BattleFrontier_Lounge9_Chansey5ChampionText:
 	.string "How many badges you have?\p"
 	.string "Oh my! No, I cannot battle you!\n"
-	.string "You are not strong enough.\p"
+	.string "You are not strong enough.\l"
 	.string "Come back when you get stronger.$"
 
 BattleFrontier_Lounge9_Chansey5Intro:
-	.string "My BLISSEY is ready!$"
+	.string "My BLISSEY are ready!$"
 
 BattleFrontier_Lounge9_Chansey5Defeat:
 	.string "Oh no... BLISSEY, use SOFT-BOILED!$"

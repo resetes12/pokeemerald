@@ -44,6 +44,7 @@ MeteorFalls_StevensCave_EventScript_StevenRematch::
 	trainerbattle_no_intro TRAINER_STEVEN2, MeteorFalls_StevensCave_Text_StevenDefeat2
 	msgbox MeteorFalls_StevensCave_Text_MyPredictionCameTrue2, MSGBOX_DEFAULT
 	setflag FLAG_DEFEATED_METEOR_FALLS_STEVEN
+	goto_if_unset FLAG_ARCEUS_EGG_GIVE MeteorFalls_StevensCave_EventScript_StevenArceusEvent
 	release
 	end
 
@@ -53,6 +54,45 @@ MeteorFalls_StevensCave_EventScript_Defeated::
 	msgbox MeteorFalls_StevensCave_Text_MyPredictionCameTrue, MSGBOX_DEFAULT
 	release
 	end
+
+MeteorFalls_StevensCave_EventScript_StevenArceusEvent::
+	msgbox MeteorFalls_StevensCave_Text_ArceusEvent1, MSGBOX_DEFAULT
+	setflag FLAG_ARCEUS_EGG_GIVE
+	playfanfare MUS_OBTAIN_ITEM
+	message LavaridgeTown_Text_ReceivedTheEgg
+	waitfanfare
+	giveegg SPECIES_ARCEUS
+	goto_if_eq VAR_RESULT, MON_GIVEN_TO_PARTY, MeteorFalls_StevensCave_EventScript_StevenArceusEventToParty
+	goto_if_eq VAR_RESULT, MON_GIVEN_TO_PC, MeteorFalls_StevensCave_EventScript_StevenArceusEventToPC
+	release
+	end
+
+MeteorFalls_StevensCave_EventScript_StevenArceusEventToParty::
+	call Common_EventScript_GetGiftMonPartySlot
+	msgbox MeteorFalls_StevensCave_Text_ArceusEvent2, MSGBOX_DEFAULT
+	release
+	end
+
+MeteorFalls_StevensCave_EventScript_StevenArceusEventToPC::
+	call Common_EventScript_TransferredToPC
+	msgbox MeteorFalls_StevensCave_Text_ArceusEvent2, MSGBOX_DEFAULT
+	release
+	end
+
+MeteorFalls_StevensCave_Text_ArceusEvent1:
+	.string "And... I would like to give you\n"
+	.string "something I found while digging\l"
+	.string "around. It's a strange egg.\p"
+	.string "I've been carrying it for many\n"
+	.string "weeks but it doesn't hatch.\p"
+	.string "You're a better trainer than me,\n"
+	.string "so maybe you can make it hatch.$"
+
+MeteorFalls_StevensCave_Text_ArceusEvent2:
+	.string "I wonder which POKéMON lays its\n"
+	.string "eggs between rocks and goes away...\p"
+	.string "Maybe it's an ancient POKéMON?\p"
+	.string "Fufufu... who knows...$"
 
 MeteorFalls_StevensCave_Text_ShouldKnowHowGoodIAmExpectWorst:
 	.string "STEVEN: Oh, wow, {PLAYER}{KUN}.\n"
@@ -68,9 +108,9 @@ MeteorFalls_StevensCave_Text_ShouldKnowHowGoodIAmExpectWorst:
 	.string "a serious challenge, expect the worst!$"
 
 MeteorFalls_StevensCave_Text_ShouldKnowHowGoodIAmExpectWorst2:
-	.string "STEVEN: Oh, hey, {PLAYER}{KUN}.\n"
-	.string "You're back. WALLACE told me that\p"
-	.string "you have defeated him and all the\n"
+	.string "STEVEN: Oh, hey, {PLAYER}{KUN}.\p"
+	.string "You're back. WALLACE told me that\n"
+	.string "you have defeated him and all the\l"
 	.string "ELITE FOUR again. That's amazing!\p"
 	.string "I also got stronger. Can you give me\n"
 	.string "a serious challenge again?\p"

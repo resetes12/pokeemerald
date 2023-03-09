@@ -40,7 +40,7 @@
       "movement_range_y": 5,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "script": "CaveOfOrigin_UnusedRubySapphireMap1_Scientist3",
       "flag": "0"
     },
     {
@@ -53,7 +53,7 @@
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "script": "CaveOfOrigin_UnusedRubySapphireMap1_Scientist2",
       "flag": "0"
     },
     {
@@ -66,7 +66,7 @@
       "movement_range_y": 5,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "script": "CaveOfOrigin_UnusedRubySapphireMap1_Scientist1",
       "flag": "0"
     },
     {
@@ -79,7 +79,7 @@
       "movement_range_y": 5,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "script": "CaveOfOrigin_UnusedRubySapphireMap1_Kirlia",
       "flag": "0"
     }
   ],
