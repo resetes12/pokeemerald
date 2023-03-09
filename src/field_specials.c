@@ -67,6 +67,8 @@
 #include "constants/metatile_labels.h"
 #include "palette.h"
 #include "constants/metatile_behaviors.h"
+#include "item.h"
+#include "item_menu.h"
 
 #define TAG_ITEM_ICON 5500
 
@@ -76,6 +78,7 @@
 #define ELEVATOR_WINDOW_WIDTH  3
 #define ELEVATOR_WINDOW_HEIGHT 3
 #define ELEVATOR_LIGHT_STAGES  3
+
 
 EWRAM_DATA bool8 gBikeCyclingChallenge = FALSE;
 EWRAM_DATA u8 gBikeCollisions = 0;
@@ -4437,5 +4440,20 @@ void CheckPkm(void)
                 gSpecialVar_Result = FALSE;
             }
         }
+    }
+}
+
+void ChooseItemFromBag(void)
+{
+    switch (VarGet(VAR_TEMP_1))
+    {
+    case ITEMS_POCKET:
+    case BALLS_POCKET:
+    case TMHM_POCKET:
+    case BERRIES_POCKET:
+    case KEYITEMS_POCKET:
+        GoToBagMenu(ITEMMENULOCATION_CHOOSE_ITEM, VarGet(VAR_TEMP_1), CB2_ReturnToFieldContinueScript);
+    default:
+        break;
     }
 }

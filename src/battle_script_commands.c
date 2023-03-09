@@ -3348,7 +3348,7 @@ static void Cmd_getexp(void)
             }
 
             if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD) //exp decrease for hard mode
-                calculatedExp *= 0.75;
+                calculatedExp *= 0.65;
             if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_EASY) //exp decrease for easy mode
                 calculatedExp *= 1.2;
 

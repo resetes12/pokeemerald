@@ -10,7 +10,7 @@ BFNewZone_EventScript_Snorlax::
 	faceplayer
 	msgbox BFNewZone_EventScript_SnorlaxText, MSGBOX_DEFAULT
 	closemessage
-	setwildbattle SPECIES_SNORLAX, 60
+	setwildbattle SPECIES_SNORLAX, 50
 	waitse
 	playmoncry SPECIES_SNORLAX, CRY_MODE_ENCOUNTER
 	delay 40

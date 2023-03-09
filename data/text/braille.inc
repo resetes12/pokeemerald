@@ -116,3 +116,17 @@ AncientTomb_Braille_ShineInTheMiddle:
 	.braille "INHERIT OUR\n"
 	.braille "WILL, SHINE\n"
 	.braille "IN THE MIDDLE.$"
+
+Regieleki_Braille_Sapphire:
+	brailleformat 3, 0, 25, 19, 6, 3
+	.braille "GET THE BLUE\n"
+	.braille "GEM WHERE IT\n"
+	.braille "RAINS. PUT IT\n"
+	.braille "IN THE MIDDLE.$"
+
+Regidrago_Braille_Text:
+	brailleformat 3, 0, 25, 19, 6, 3
+	.braille "DOWN, THREE.\n"
+	.braille "RIGHT, FIVE.\n"
+	.braille "PRESS THE\n"
+	.braille "BUTTON.$"

@@ -556,3 +556,4 @@ gSpecials::
 	def_special CreateWonderTradePokemon
 	def_special TryChangeDeoxysForm
 	def_special CheckPkm
+	def_special ChooseItemFromBag
