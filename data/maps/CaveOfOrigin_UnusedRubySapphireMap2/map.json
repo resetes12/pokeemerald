@@ -2,7 +2,7 @@
   "id": "MAP_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP2",
   "name": "CaveOfOrigin_UnusedRubySapphireMap2",
   "layout": "LAYOUT_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP2",
-  "music": "MUS_MT_PYRE",
+  "music": "MUS_SEALED_CHAMBER",
   "region_map_section": "MAPSEC_GRANITE_CAVE",
   "requires_flash": true,
   "weather": "WEATHER_SHADE",
