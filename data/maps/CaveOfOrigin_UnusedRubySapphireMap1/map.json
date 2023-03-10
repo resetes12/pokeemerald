@@ -2,7 +2,7 @@
   "id": "MAP_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP1",
   "name": "CaveOfOrigin_UnusedRubySapphireMap1",
   "layout": "LAYOUT_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP1",
-  "music": "MUS_RG_SEVII_CAVE",
+  "music": "MUS_ROUTE110",
   "region_map_section": "MAPSEC_ROUTE_110",
   "requires_flash": false,
   "weather": "WEATHER_ROUTE119_CYCLE",

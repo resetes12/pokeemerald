@@ -57,6 +57,8 @@ static const u8 LandmarkName_MirageTower[] = _("MIRAGE TOWER");
 static const u8 LandmarkName_AlteringCave[] = _("ALTERING CAVE");
 static const u8 LandmarkName_DesertUnderpass[] = _("DESERT UNDERPASS");
 static const u8 LandmarkName_TrainerHill[] = _("TRAINER HILL");
+static const u8 LandmarkName_DracoChamber[] = _("DRACO CHAMBER");
+static const u8 LandmarkName_CaveOfShock[] = _("CAVE OF SHOCK");
 
 static const struct Landmark Landmark_FlowerShop = {LandmarkName_FlowerShop, FLAG_LANDMARK_FLOWER_SHOP};
 static const struct Landmark Landmark_PetalburgWoods = {LandmarkName_PetalburgWoods, -1};
@@ -99,6 +101,8 @@ static const struct Landmark Landmark_MirageTower = {LandmarkName_MirageTower, F
 static const struct Landmark Landmark_AlteringCave = {LandmarkName_AlteringCave, FLAG_LANDMARK_ALTERING_CAVE};
 static const struct Landmark Landmark_DesertUnderpass = {LandmarkName_DesertUnderpass, FLAG_LANDMARK_DESERT_UNDERPASS};
 static const struct Landmark Landmark_TrainerHill = {LandmarkName_TrainerHill, FLAG_LANDMARK_TRAINER_HILL};
+static const struct Landmark Landmark_DracoChamber = {LandmarkName_DracoChamber, FLAG_LANDMARK_DRACO_CHAMBER};
+static const struct Landmark Landmark_CaveofShock = {LandmarkName_CaveOfShock, FLAG_LANDMARK_CAVE_OF_SHOCK};
 
 static const struct Landmark *const Landmarks_Route103_2[]  =
 {
@@ -161,6 +165,12 @@ static const struct Landmark *const Landmarks_Route110_2[]  =
 {
     &Landmark_CyclingRoad,
     &Landmark_TrickHouse,
+    NULL,
+};
+
+static const struct Landmark *const Landmarks_Route110_3[]  =
+{
+    &Landmark_CaveofShock,
     NULL,
 };
 
@@ -316,6 +326,13 @@ static const struct Landmark *const Landmarks_Route131_1[]  =
     NULL,
 };
 
+static const struct Landmark *const Landmarks_Route132_0[]  =
+{
+    &Landmark_OceanCurrent,
+    &Landmark_DracoChamber,
+    NULL,
+};
+
 static const struct Landmark *const Landmarks_OceanCurrent[]  =
 {
     &Landmark_OceanCurrent,
@@ -346,8 +363,9 @@ static const struct LandmarkList sLandmarkLists[] =
     {MAPSEC_ROUTE_108, 0, Landmarks_Route108_0},
     {MAPSEC_ROUTE_109, 0, Landmarks_Route109_0},
     {MAPSEC_ROUTE_110, 0, Landmarks_Route110_0},
-    {MAPSEC_ROUTE_110, 1, Landmarks_Route110_1},
+    {MAPSEC_ROUTE_110, 1, Landmarks_Route110_3},
     {MAPSEC_ROUTE_110, 2, Landmarks_Route110_2},
+    {MAPSEC_ROUTE_110, 3, Landmarks_Route110_1},
     {MAPSEC_ROUTE_111, 0, Landmarks_Route111_0},
     {MAPSEC_ROUTE_111, 1, Landmarks_Route111_1},
     {MAPSEC_ROUTE_111, 2, Landmarks_Route111_2},
@@ -375,7 +393,7 @@ static const struct LandmarkList sLandmarkLists[] =
     {MAPSEC_ROUTE_125, 2, Landmarks_Route125_2},
     {MAPSEC_ROUTE_128, 1, Landmarks_Route128_1},
     {MAPSEC_ROUTE_131, 1, Landmarks_Route131_1},
-    {MAPSEC_ROUTE_132, 0, Landmarks_OceanCurrent},
+    {MAPSEC_ROUTE_132, 0, Landmarks_Route132_0},
     {MAPSEC_ROUTE_132, 1, Landmarks_OceanCurrent},
     {MAPSEC_ROUTE_133, 0, Landmarks_OceanCurrent},
     {MAPSEC_ROUTE_133, 1, Landmarks_OceanCurrent},

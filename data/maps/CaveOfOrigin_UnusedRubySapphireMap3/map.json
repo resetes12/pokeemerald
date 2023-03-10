@@ -2,7 +2,7 @@
   "id": "MAP_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP3",
   "name": "CaveOfOrigin_UnusedRubySapphireMap3",
   "layout": "LAYOUT_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP3",
-  "music": "MUS_RG_SEVII_CAVE",
+  "music": "MUS_ROUTE119",
   "region_map_section": "MAPSEC_ROUTE_132",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
@@ -30,7 +30,7 @@
       "movement_range_y": 5,
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "0",
-      "script": "NULL",
+      "script": "CaveOfOrigin_UnusedRubySapphireMap3_Hiker",
       "flag": "0"
     }
   ],

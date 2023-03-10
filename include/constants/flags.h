@@ -75,9 +75,9 @@
 #define FLAG_SYS_BRAILLE_REGIDRAGO_COMPLETED    0x3F
 #define FLAG_DEFEATED_REGIDRAGO    0x40 
 #define FLAG_DEFEATED_DUSKNOIR    0x41 
-#define FLAG_UNUSED_0x042    0x42 // Unused Flag
-#define FLAG_UNUSED_0x043    0x43 // Unused Flag
-#define FLAG_UNUSED_0x044    0x44 // Unused Flag
+#define FLAG_SYS_BRAILLE_REGIGIGAS_COMPLETED    0x42
+#define FLAG_DEFEATED_REGIGIGAS    0x43
+#define FLAG_HIDE_REGIGIGAS    0x44 
 #define FLAG_UNUSED_0x045    0x45 // Unused Flag
 #define FLAG_UNUSED_0x046    0x46 // Unused Flag
 #define FLAG_UNUSED_0x047    0x47 // Unused Flag
@@ -1408,8 +1408,8 @@
 #define FLAG_SYS_CLOCK_SET                          (SYSTEM_FLAGS + 0x35)
 #define FLAG_SYS_NATIONAL_DEX                       (SYSTEM_FLAGS + 0x36)
 #define FLAG_SYS_CAVE_SHIP                          (SYSTEM_FLAGS + 0x37) // Unused Flag, leftover from R/S debug, presumably used by Emerald's debug too
-#define FLAG_SYS_CAVE_WONDER                        (SYSTEM_FLAGS + 0x38) // Unused Flag, same as above
-#define FLAG_SYS_CAVE_BATTLE                        (SYSTEM_FLAGS + 0x39) // Unused Flag, same as above
+#define FLAG_LANDMARK_CAVE_OF_SHOCK                 (SYSTEM_FLAGS + 0x38) 
+#define FLAG_LANDMARK_DRACO_CHAMBER                 (SYSTEM_FLAGS + 0x39) 
 #define FLAG_SYS_SHOAL_TIDE                         (SYSTEM_FLAGS + 0x3A)
 #define FLAG_SYS_RIBBON_GET                         (SYSTEM_FLAGS + 0x3B)
 

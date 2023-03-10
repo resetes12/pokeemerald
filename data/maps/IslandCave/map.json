@@ -4,7 +4,7 @@
   "layout": "LAYOUT_ISLAND_CAVE",
   "music": "MUS_SEALED_CHAMBER",
   "region_map_section": "MAPSEC_ISLAND_CAVE",
-  "requires_flash": true,
+  "requires_flash": false,
   "weather": "WEATHER_NONE",
   "map_type": "MAP_TYPE_UNDERGROUND",
   "allow_cycling": true,

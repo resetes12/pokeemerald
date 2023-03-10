@@ -1535,7 +1535,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_UnusedPikachuDoll 
     .anims = sAnimTable_Inanimate,
     .images = sPicTable_UnusedPikachuDoll,
     .affineAnims = gDummySpriteAffineAnimTable,
-};*/
+};
 
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_UnusedPorygon2Doll = {
     .tileTag = TAG_NONE,
@@ -1554,7 +1554,7 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_UnusedPorygon2Doll
     .anims = sAnimTable_Inanimate,
     .images = sPicTable_UnusedPorygon2Doll,
     .affineAnims = gDummySpriteAffineAnimTable,
-};
+};*/
 
 const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_CuttableTree = {
     .tileTag = TAG_NONE,
@@ -3513,60 +3513,79 @@ const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BigWailmerDoll = {
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BigRegirockDoll = {
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Mewtwo = {
     .tileTag = TAG_NONE,
-    .paletteTag = OBJ_EVENT_PAL_TAG_NPC_1,
+    .paletteTag = OBJ_EVENT_PAL_TAG_MEWTWO,
     .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_NONE,
     .size = 512,
     .width = 32,
     .height = 32,
-    .paletteSlot = PALSLOT_NPC_1,
+    .paletteSlot = 10,
     .shadowSize = SHADOW_SIZE_M,
     .inanimate = TRUE,
     .disableReflectionPaletteLoad = FALSE,
-    .tracks = TRACKS_NONE,
+    .tracks = TRACKS_FOOT,
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
-    .anims = sAnimTable_Inanimate,
-    .images = sPicTable_BigRegirockDoll,
+    .anims = sAnimTable_Standard,
+    .images = gObjectEventPicTable_Mewtwo,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BigRegiceDoll = {
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Articuno = {
     .tileTag = TAG_NONE,
-    .paletteTag = OBJ_EVENT_PAL_TAG_NPC_3,
+    .paletteTag = OBJ_EVENT_PAL_TAG_ARTICUNO,
     .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_NONE,
     .size = 512,
     .width = 32,
     .height = 32,
-    .paletteSlot = PALSLOT_NPC_3,
+    .paletteSlot = 10,
     .shadowSize = SHADOW_SIZE_M,
     .inanimate = TRUE,
     .disableReflectionPaletteLoad = FALSE,
-    .tracks = TRACKS_NONE,
+    .tracks = TRACKS_FOOT,
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
-    .anims = sAnimTable_Inanimate,
-    .images = sPicTable_BigRegiceDoll,
+    .anims = sAnimTable_Standard,
+    .images = gObjectEventPicTable_Articuno,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 
-const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_BigRegisteelDoll = {
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Zapdos = {
     .tileTag = TAG_NONE,
-    .paletteTag = OBJ_EVENT_PAL_TAG_NPC_4,
+    .paletteTag = OBJ_EVENT_PAL_TAG_ZAPDOS,
     .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_NONE,
     .size = 512,
     .width = 32,
     .height = 32,
-    .paletteSlot = PALSLOT_NPC_4,
+    .paletteSlot = 10,
     .shadowSize = SHADOW_SIZE_M,
     .inanimate = TRUE,
     .disableReflectionPaletteLoad = FALSE,
-    .tracks = TRACKS_NONE,
+    .tracks = TRACKS_FOOT,
     .oam = &gObjectEventBaseOam_32x32,
     .subspriteTables = sOamTables_32x32,
-    .anims = sAnimTable_Inanimate,
-    .images = sPicTable_BigRegisteelDoll,
+    .anims = sAnimTable_Standard,
+    .images = gObjectEventPicTable_Zapdos,
+    .affineAnims = gDummySpriteAffineAnimTable,
+};
+
+const struct ObjectEventGraphicsInfo gObjectEventGraphicsInfo_Moltres = {
+    .tileTag = TAG_NONE,
+    .paletteTag = OBJ_EVENT_PAL_TAG_MOLTRES,
+    .reflectionPaletteTag = OBJ_EVENT_PAL_TAG_NONE,
+    .size = 512,
+    .width = 32,
+    .height = 32,
+    .paletteSlot = 10,
+    .shadowSize = SHADOW_SIZE_M,
+    .inanimate = TRUE,
+    .disableReflectionPaletteLoad = FALSE,
+    .tracks = TRACKS_FOOT,
+    .oam = &gObjectEventBaseOam_32x32,
+    .subspriteTables = sOamTables_32x32,
+    .anims = sAnimTable_Standard,
+    .images = gObjectEventPicTable_Moltres,
     .affineAnims = gDummySpriteAffineAnimTable,
 };
 

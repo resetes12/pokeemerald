@@ -6804,72 +6804,7 @@
         },
         {
           "map": "MAP_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP2",
-          "base_label": "gCaveOfOrigin_UnusedRubySapphireMap2",
-          "land_mons": {
-            "encounter_rate": 100,
-            "mons": [
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_REGIELEKI"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_REGIELEKI"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_REGIELEKI"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_REGIELEKI"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_REGIELEKI"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_REGIELEKI"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_REGIELEKI"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_REGIELEKI"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_REGIELEKI"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_REGIELEKI"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_REGIELEKI"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_REGIELEKI"
-              }
-            ]
-          }
+          "base_label": "gCaveOfOrigin_UnusedRubySapphireMap2"
         },
         {
           "map": "MAP_CAVE_OF_ORIGIN_UNUSED_RUBY_SAPPHIRE_MAP3",

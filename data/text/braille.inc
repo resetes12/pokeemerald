@@ -130,3 +130,10 @@ Regidrago_Braille_Text:
 	.braille "RIGHT, FIVE.\n"
 	.braille "PRESS THE\n"
 	.braille "BUTTON.$"
+
+Regigigas_Braille_Text:
+	brailleformat 3, 0, 25, 19, 6, 3
+	.braille "FIVE TITANS\n"
+	.braille "DEFEATED.\n"
+	.braille "YOU ARE\n"
+	.braille "CHAMPION.$"
