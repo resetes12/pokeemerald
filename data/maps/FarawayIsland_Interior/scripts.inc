@@ -140,11 +140,17 @@ FarawayIsland_Interior_EventScript_Mew::
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, FarawayIsland_Interior_EventScript_PlayerOrMewRan
 	goto_if_eq VAR_RESULT, B_OUTCOME_MON_TELEPORTED, FarawayIsland_Interior_EventScript_PlayerOrMewRan
 	setflag FLAG_CAUGHT_MEW
+	setflag FLAG_UNLOCK_MEWTWO
+	playmoncry SPECIES_MEWTWO, CRY_MODE_NORMAL
+	waitmoncry
 	release
 	end
 
 FarawayIsland_Interior_EventScript_MewDefeated::
 	setflag FLAG_DEFEATED_MEW
+	setflag FLAG_UNLOCK_MEWTWO
+	playmoncry SPECIES_MEWTWO, CRY_MODE_NORMAL
+	waitmoncry
 	setvar VAR_0x8004, SPECIES_MEW
 	goto Common_EventScript_LegendaryFlewAway
 	end

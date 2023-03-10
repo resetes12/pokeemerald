@@ -78,16 +78,16 @@
 #define FLAG_SYS_BRAILLE_REGIGIGAS_COMPLETED    0x42
 #define FLAG_DEFEATED_REGIGIGAS    0x43
 #define FLAG_HIDE_REGIGIGAS    0x44 
-#define FLAG_UNUSED_0x045    0x45 // Unused Flag
-#define FLAG_UNUSED_0x046    0x46 // Unused Flag
-#define FLAG_UNUSED_0x047    0x47 // Unused Flag
-#define FLAG_UNUSED_0x048    0x48 // Unused Flag
-#define FLAG_UNUSED_0x049    0x49 // Unused Flag
-#define FLAG_UNUSED_0x04A    0x4A // Unused Flag
-#define FLAG_UNUSED_0x04B    0x4B // Unused Flag
-#define FLAG_UNUSED_0x04C    0x4C // Unused Flag
-#define FLAG_UNUSED_0x04D    0x4D // Unused Flag
-#define FLAG_UNUSED_0x04E    0x4E // Unused Flag
+#define FLAG_DEFEATED_ARTICUNO    0x45 
+#define FLAG_DEFEATED_ZAPDOS    0x46
+#define FLAG_DEFEATED_MOLTRES    0x47 
+#define FLAG_HIDE_ARTICUNO    0x48 
+#define FLAG_HIDE_ZAPDOS    0x49 
+#define FLAG_HIDE_MOLTRES    0x4A 
+#define FLAG_DEFEATED_MEWTWO    0x4B
+#define FLAG_HIDE_MEWTWO    0x4C 
+#define FLAG_UNLOCK_BIRDS    0x4D
+#define FLAG_UNLOCK_MEWTWO   0x4E
 #define FLAG_UNUSED_0x04F    0x4F // Unused Flag
 
 // Scripts

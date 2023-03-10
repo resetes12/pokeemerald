@@ -29,7 +29,6 @@ AquaHideout_UnusedRubyMap2_EventScript_HideRegiEntrance::
 
 AquaHideout_UnusedRubyMap2_OnTransition:
 	setflag FLAG_LANDMARK_CAVE_OF_SHOCK
-	@call AquaHideout_UnusedRubyMap2_EventScript_ClearSteps
 	call_if_unset FLAG_DEFEATED_REGIELEKI, AquaHideout_UnusedRubyMap2_EventScript_ShowRegieleki
 	end
 

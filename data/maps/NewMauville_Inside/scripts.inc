@@ -23,11 +23,11 @@ NewMauville_Inside_OnTransition:
 	call_if_unset FLAG_DEFEATED_VOLTORB_2_NEW_MAUVILLE, NewMauville_Inside_EventScript_ShowVoltorb2
 	call_if_unset FLAG_DEFEATED_VOLTORB_3_NEW_MAUVILLE, NewMauville_Inside_EventScript_ShowVoltorb3
 	goto_if_set FLAG_RAIKOU, NewMauville_Inside_ShowRaikou
-	goto_if_unset FLAG_IS_CHAMPION, NewMauville_Inside_NoShowRaikou
+	goto_if_unset FLAG_DEFEATED_LUGIA, NewMauville_Inside_NoShowRaikou
 	end
 
 NewMauville_Inside_NoShowRaikou::
-	playmoncry SPECIES_RAIKOU, CRY_MODE_ENCOUNTER
+	@playmoncry SPECIES_RAIKOU, CRY_MODE_ENCOUNTER
 	setflag FLAG_DEFEAT_RAIKOU
 	setflag FLAG_RAIKOU
 	end
@@ -259,7 +259,7 @@ NewMauville_Inside_EventScript_DefeatedVoltorb3::
 NewMauville_Inside_Raikou::
 	lock
 	faceplayer
-	setwildbattle SPECIES_RAIKOU, 60
+	setwildbattle SPECIES_RAIKOU, 50
 	waitse
 	playmoncry SPECIES_RAIKOU, CRY_MODE_ENCOUNTER
 	delay 40

@@ -6815,17 +6815,17 @@
               {
                 "min_level": 30,
                 "max_level": 30,
-                "species": "SPECIES_IGGLYBUFF"
+                "species": "SPECIES_LINOONE"
               },
               {
                 "min_level": 31,
                 "max_level": 31,
-                "species": "SPECIES_IGGLYBUFF"
+                "species": "SPECIES_LINOONE"
               },
               {
                 "min_level": 32,
                 "max_level": 32,
-                "species": "SPECIES_IGGLYBUFF"
+                "species": "SPECIES_LINOONE"
               },
               {
                 "min_level": 30,
@@ -6835,17 +6835,17 @@
               {
                 "min_level": 32,
                 "max_level": 32,
-                "species": "SPECIES_IGGLYBUFF"
+                "species": "SPECIES_TRAPINCH"
               },
               {
                 "min_level": 34,
                 "max_level": 34,
-                "species": "SPECIES_IGGLYBUFF"
+                "species": "SPECIES_TRAPINCH"
               },
               {
                 "min_level": 33,
                 "max_level": 33,
-                "species": "SPECIES_IGGLYBUFF"
+                "species": "SPECIES_STARYU"
               },
               {
                 "min_level": 34,
@@ -6863,9 +6863,9 @@
                 "species": "SPECIES_SWELLOW"
               },
               {
-                "min_level": 35,
+                "min_level": 31,
                 "max_level": 35,
-                "species": "SPECIES_VIBRAVA"
+                "species": "SPECIES_WIGGLYTUFF"
               },
               {
                 "min_level": 36,
@@ -11614,12 +11614,12 @@
               {
                 "min_level": 5,
                 "max_level": 61,
-                "species": "SPECIES_HAPPINY"
+                "species": "SPECIES_BONSLY"
               },
               {
                 "min_level": 5,
                 "max_level": 60,
-                "species": "SPECIES_WYNAUT"
+                "species": "SPECIES_BONSLY"
               },
               {
                 "min_level": 5,

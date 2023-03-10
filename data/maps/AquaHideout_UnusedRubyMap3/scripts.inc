@@ -5,43 +5,6 @@ AquaHideout_UnusedRubyMap3_MapScripts::
 AquaHideout_UnusedRubyMap3_OnTransition::
 	end
 
-BFNewZone_EventScript_Snorlax::
-	lock
-	faceplayer
-	msgbox BFNewZone_EventScript_SnorlaxText, MSGBOX_DEFAULT
-	closemessage
-	setwildbattle SPECIES_SNORLAX, 50
-	waitse
-	playmoncry SPECIES_SNORLAX, CRY_MODE_ENCOUNTER
-	delay 40
-	waitmoncry
-	setflag FLAG_SYS_CTRL_OBJ_DELETE
-	setflag FLAG_SYS_SET_BATTLE_BGM
-	setvar VAR_TEMP_F, MUS_RG_VS_WILD
-	dowildbattle
-	specialvar VAR_RESULT, GetBattleOutcome
-	goto_if_eq VAR_RESULT, B_OUTCOME_WON, BFNewZone_EventScript_Snorlax_Won
-	goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, BFNewZone_EventScript_Snorlax_Won
-	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, BFNewZone_EventScript_Snorlax_Ran
-	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, BFNewZone_EventScript_Snorlax_Ran
-	release
-	end
-
-BFNewZone_EventScript_SnorlaxText:
-	.string "SNOOOR!!\p"
-	.string "A big POKéMON is sleeping.\p"
-	.string "Wait, it's not sleeping!$"
-
-BFNewZone_EventScript_Snorlax_Won::
-	setflag FLAG_SNORLAX
-	goto Common_EventScript_RemoveStaticPokemon
-	clearflag FLAG_SYS_CTRL_OBJ_DELETE
-	end
-
-BFNewZone_EventScript_Snorlax_Ran::
-	clearflag FLAG_SYS_CTRL_OBJ_DELETE
-	end
-
 BFNewZone_EventScript_Sudo2::
 	lock
 	faceplayer
@@ -65,8 +28,8 @@ BFNewZone_EventScript_Sudo2::
 	end
 
 BFNewZone_EventScript_SudoText:
-	.string "Wait, I've see a tree like\n"
-	.string "this before...\p"
+	.string "Wait, I've see a tree\n"
+	.string "like this before...\p"
 	.string "It's not a tree! It attacked!$"
 
 BFNewZone_EventScript_Sudo2_Won::

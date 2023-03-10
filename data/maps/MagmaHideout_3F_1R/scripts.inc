@@ -4,11 +4,11 @@ MagmaHideout_3F_1R_MapScripts::
 
 MagmaHideout_3F_1R_OnTransition:
 	goto_if_set FLAG_ENTEI, MagmaHideout_3F_1R_EventScript_ShowEntei
-	goto_if_unset FLAG_IS_CHAMPION, MagmaHideout_3F_1R_EventScript_NoShowEntei
+	goto_if_unset FLAG_DEFEATED_LUGIA, MagmaHideout_3F_1R_EventScript_NoShowEntei
 	end
 
 MagmaHideout_3F_1R_EventScript_NoShowEntei::
-	playmoncry SPECIES_ENTEI, CRY_MODE_ENCOUNTER
+	@playmoncry SPECIES_ENTEI, CRY_MODE_ENCOUNTER
 	setflag FLAG_DEFEAT_ENTEI
 	setflag FLAG_ENTEI
 	end
@@ -19,7 +19,7 @@ MagmaHideout_3F_1R_EventScript_ShowEntei::
 MagmaHideout_3F_1R_EventScript_Entei::
 	lock
 	faceplayer
-	setwildbattle SPECIES_ENTEI, 60
+	setwildbattle SPECIES_ENTEI, 50
 	waitse
 	playmoncry SPECIES_ENTEI, CRY_MODE_ENCOUNTER
 	delay 40

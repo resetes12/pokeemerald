@@ -5,11 +5,11 @@ ShoalCave_LowTideIceRoom_MapScripts::
 
 ShoalCave_LowTideIceRoom_OnTransition::
 	goto_if_set FLAG_SUICUNE, ShoalCave_LowTideIceRoom_Show
-	goto_if_unset FLAG_IS_CHAMPION, ShoalCave_LowTideIceRoom_HideSuicune
+	goto_if_unset FLAG_DEFEATED_LUGIA, ShoalCave_LowTideIceRoom_HideSuicune
 	end
 
 ShoalCave_LowTideIceRoom_HideSuicune::
-	playmoncry SPECIES_SUICUNE, CRY_MODE_ENCOUNTER
+	@playmoncry SPECIES_SUICUNE, CRY_MODE_ENCOUNTER
 	setflag FLAG_DEFEAT_SUICUNE
 	setflag FLAG_SUICUNE
 	end
@@ -20,7 +20,7 @@ ShoalCave_LowTideIceRoom_Show::
 ShoalCave_LowTideIceRoom_Suicune::
 	lock
 	faceplayer
-	setwildbattle SPECIES_SUICUNE, 60
+	setwildbattle SPECIES_SUICUNE, 50
 	waitse
 	playmoncry SPECIES_SUICUNE, CRY_MODE_ENCOUNTER
 	delay 40

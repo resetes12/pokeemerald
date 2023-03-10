@@ -215,12 +215,6 @@ LittlerootTown_ProfessorBirchsLab_EventScript_UpgradeToNationalDex::
 	setflag FLAG_ENABLE_SHIP_NAVEL_ROCK
 	setflag FLAG_ENABLE_SHIP_BIRTH_ISLAND
 	setflag FLAG_ENABLE_SHIP_FARAWAY_ISLAND
-	clearflag FLAG_DEFEAT_SUICUNE
-	@clearflag FLAG_SUICUNE
-	clearflag FLAG_DEFEAT_ENTEI
-	@clearflag FLAG_ENTEI
-	clearflag FLAG_DEFEAT_RAIKOU
-	@clearflag FLAG_RAIKOU
 	special EnableNationalPokedex
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_GrassyPatchWaiting2, MSGBOX_DEFAULT
 	closemessage
