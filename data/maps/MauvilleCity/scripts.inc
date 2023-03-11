@@ -16,28 +16,25 @@ MauvilleCity_OnTransition:
 	call_if_set FLAG_GOT_TM24_FROM_WATTSON, MauvilleCity_EventScript_MoveWattsonBackToGym
 	end
 
-EventScript_CheckSpecies::
-	checkpartymon 100
-	goto_if_eq VAR_RESULT, TRUE, EventScript_Yes
-	msgbox Text_No, MSGBOX_SIGN
-	end
-
-EventScript_Yes:
-	msgbox Test_Yes, MSGBOX_SIGN
-	end
-
-Test_Yes:
-	.string "Woah! Your mon is lvl100$"
-
-Text_No:
-	.string "Whaat? You don't have a lvl100\n"
-	.string "That is so lame!$"
-
 MauvilleCity_EventScript_MoveWattsonBackToGym::
 	clearflag FLAG_HIDE_MAUVILLE_GYM_WATTSON
 	setflag FLAG_HIDE_MAUVILLE_CITY_WATTSON
 	setflag FLAG_WATTSON_REMATCH_AVAILABLE
 	return
+
+MauvilleCity_EventScript_MagnezoneEvo::
+	msgbox MauvilleCity_EventScript_MagnezoneEvo_Text, MSGBOX_NPC
+	end
+
+MauvilleCity_EventScript_MagnezoneEvo_Text:
+	.string "Did you know that MAGNETON\n"
+	.string "can evolve? Do you know how?\p"
+	.string "Because... I don't exactly\n"
+	.string "remember... I know it had\l"
+	.string "to do with a THUNDER STONE.\p"
+	.string "But it was not using it.\n"
+	.string "Battling? HOLDING IT?\l"
+	.string "I seriously don't know...$"
 
 MauvilleCity_EventScript_Boy::
 	msgbox MauvilleCity_Text_NurseHurtMonBackToHealth, MSGBOX_NPC

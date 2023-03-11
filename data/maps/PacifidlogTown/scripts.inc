@@ -11,6 +11,18 @@ PacifidlogTown_OnResume:
 	setstepcallback STEP_CB_PACIFIDLOG_BRIDGE
 	end
 
+PacifidlogTown_MantykeEvo::
+	msgbox PacifidlogTown_MantykeEvo_Text, MSGBOX_NPC
+	end
+
+PacifidlogTown_MantykeEvo_Text:
+	.string "OH!\p"
+	.string "HAVE YOU SEEN THAT?\p"
+	.string "That MANTYKE was trying\n"
+	.string "to evolve, so it was using\l"
+	.string "WATER PULSE!\p"
+	.string "Nature is sure beautiful!$"
+
 PacifidlogTown_EventScript_NinjaBoy::
 	msgbox PacifidlogTown_Text_NeatHousesOnWater, MSGBOX_NPC
 	end

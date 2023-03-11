@@ -13,6 +13,19 @@ EverGrandeCity_PokemonLeague_1F_OnTransition:
 	call_if_unset FLAG_ENTERED_ELITE_FOUR, EverGrandeCity_PokemonLeague_1F_EventScript_GuardsBlockDoor
 	end
 
+EverGrandeCity_PokemonLeague_1F_AncientPower::
+	msgbox EverGrandeCity_PokemonLeague_1F_AncientPower_Text, MSGBOX_NPC
+	end
+
+EverGrandeCity_PokemonLeague_1F_AncientPower_Text:
+	.string "There are three POKéMON that\n"
+	.string "evolve using a certain MOVE.\p"
+	.string "They are YANMA, PILOSWINE\n"
+	.string "and TANGELA.\p"
+	.string "Now... the move... I don't\n"
+	.string "remember exactly... Something\l"
+	.string "about an ANCIENT MOVE...$"
+
 EverGrandeCity_PokemonLeague_1F_EventScript_GuardsBlockDoor::
 	setobjectxyperm LOCALID_GUARD_1, 9, 2
 	setobjectxyperm LOCALID_GUARD_2, 10, 2

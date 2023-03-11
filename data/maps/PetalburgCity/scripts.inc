@@ -17,6 +17,17 @@ PetalburgCity_OnTransition:
 	call_if_eq VAR_PETALBURG_GYM_STATE, 8, PetalburgCity_EventScript_SetGymDoorsUnlocked
 	end
 
+PetalburgCity_GalladeEvo::
+	msgbox PetalburgCity_GalladeEvo_Text, MSGBOX_NPC
+	end
+
+PetalburgCity_GalladeEvo_Text:
+	.string "Choosing between a MALE or\n"
+	.string "FEMALE RALTS is quite important.\p"
+	.string "Depending on what you capture,\n"
+	.string "the last evolution of RALTS will\l"
+	.string "be different.$"
+
 PetalburgCity_EventScript_MoveGymBoyToWestEntrance::
 	setobjectxyperm LOCALID_GYM_BOY, 5, 11
 	return

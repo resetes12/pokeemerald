@@ -14,6 +14,16 @@ Route116_OnTransition:
 	call_if_eq VAR_ABNORMAL_WEATHER_LOCATION, ABNORMAL_WEATHER_ROUTE_116_SOUTH, AbnormalWeather_StartGroudonWeather
 	end
 
+Route116_RoseradeEvo::
+	msgbox Route116_RoseradeEvo_Text, MSGBOX_NPC
+	end
+
+Route116_RoseradeEvo_Text:
+	.string "My ROSERADE loves eating POKéBLOCKS!\p"
+	.string "I also think they make her beautiful.\n"
+	.string "In fact, it got so beautiful\l"
+	.string "that it evolved!$"
+
 Route116_EventScript_SetWandasBoyfriendPos::
 	setobjectxyperm LOCALID_WANDAS_BF_OUTSIDE, 38, 10
 	return

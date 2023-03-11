@@ -20,6 +20,19 @@ Route125_OnFrame:
 	map_script_2 VAR_SHOULD_END_ABNORMAL_WEATHER, 1, AbnormalWeather_EventScript_EndEventAndCleanup_1
 	.2byte 0
 
+Route125_FroslassEvo::
+	msgbox Route125_FroslassEvo_Text, MSGBOX_NPC
+	end
+
+Route125_FroslassEvo_Text:
+	.string "W-What happened to my\n"
+	.string "cute little baby?\p"
+	.string "My SNORUNT evolved into...\n"
+	.string "something I didn't expect!\p"
+	.string "I wanted a GLALIE, yet I got a\n"
+	.string "FROSLASS. How? SHE just evolved\l"
+	.string "out of nowhere. Why?$"
+
 Route125_EventScript_Nolen::
 	trainerbattle_single TRAINER_NOLEN, Route125_Text_NolenIntro, Route125_Text_NolenDefeat
 	msgbox Route125_Text_NolenPostBattle, MSGBOX_AUTOCLOSE

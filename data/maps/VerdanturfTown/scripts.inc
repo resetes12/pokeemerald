@@ -9,6 +9,14 @@ VerdanturfTown_OnTransition:
 	setvar VAR_CONTEST_HALL_STATE, 0
 	end
 
+VerdanturfTown_LickyEvo::
+	msgbox VerdanturfTown_LickyEvo_Text, MSGBOX_NPC
+	end
+
+VerdanturfTown_LickyEvo_Text:
+	.string "LICKITUNG evolves by rolling\n"
+	.string "around. Try that!$"
+
 VerdanturfTown_EventScript_Twin::
 	lock
 	faceplayer

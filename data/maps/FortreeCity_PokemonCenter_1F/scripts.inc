@@ -9,6 +9,20 @@ FortreeCity_PokemonCenter_1F_OnTransition:
 	setrespawn HEAL_LOCATION_FORTREE_CITY
 	end
 
+FortreeCity_PokemonCenter_1F_RhyperiorEvo::
+	msgbox FortreeCity_PokemonCenter_1F_RhyperiorEvo_Text, MSGBOX_NPC
+	end
+
+FortreeCity_PokemonCenter_1F_RhyperiorEvo_Text:
+	.string "RHYDON evolves by trading.\n"
+	.string "But only if it is traded with\l"
+	.string "an object.\p"
+	.string "Which object?\p"
+	.string "Well... My memory is not as\n"
+	.string "good as it was before...\l"
+	.string "HARD... HARD... Ah.\p"
+	.string "I don't know. Sorry.$"
+
 FortreeCity_PokemonCenter_1F_EventScript_Nurse::
 	setvar VAR_0x800B, LOCALID_NURSE
 	call Common_EventScript_PkmnCenterNurse

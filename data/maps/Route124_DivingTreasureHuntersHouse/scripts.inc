@@ -6,6 +6,18 @@ Route124_DivingTreasureHuntersHouse_OnTransition:
 	setflag FLAG_LANDMARK_HUNTERS_HOUSE
 	end
 
+Route124_DivingTreasureHuntersHouse_TogekissEvo::
+	msgbox Route124_DivingTreasureHuntersHouse_TogekissEvo_Text, MSGBOX_NPC
+	end
+
+Route124_DivingTreasureHuntersHouse_TogekissEvo_Text:
+	.string "There's one POKéMON that\n"
+	.string "evolves HOLDING a HEART\l"
+	.string "SCALE during the day.\p"
+	.string "That POKéMON is TOGETIC!\n"
+	.string "I wish I had one. I love\l"
+	.string "HEART SCALES too much!$"
+
 Route124_DivingTreasureHuntersHouse_EventScript_TreasureHunter::
 	lock
 	faceplayer

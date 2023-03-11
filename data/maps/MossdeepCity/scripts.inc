@@ -19,6 +19,35 @@ MossdeepCity_OnTransition:
 	call_if_set FLAG_SYS_WEATHER_CTRL, Common_EventScript_SetAbnormalWeather
 	end
 
+MossdeepCity_EventScript_Evo::
+	msgbox MossdeepCity_EventScript_Evo_Text, MSGBOX_NPC
+	end
+
+MossdeepCity_EventScript_Evo_Text:
+	.string "The POKéMON EEVEEE evolves\n"
+	.string "in many different ways.\p"
+	.string "Using a THUNDER STONE, FIRE STONE,\n"
+	.string "WATER STONE... Just like, for\l"
+	.string "example, ELECTABUZZ and MAGMAR.\p"
+	.string "They also evolve with STONES.$"
+
+MossdeepCity_EventScript_Evo2::
+	msgbox MossdeepCity_EventScript_Evo2_Text, MSGBOX_NPC
+	end
+
+MossdeepCity_EventScript_Evo2_Text:
+	.string "My wife loves the POKéMON EEVEE.\p"
+	.string "She knows all the ways they can\n"
+	.string "evolve. Like, when HOLDING a\l"
+	.string "NEVER MELT ICE at night, or when\l"
+	.string "holding a MIRACLE SEED during the day.\p"
+	.string "Or being HAPPY during day or night.\p"
+	.string "Or being cute! Try using a\n"
+	.string "FAIRY TYPE move.\p"
+	.string "...\p"
+	.string "I think I'll try to get an EEVEE\n"
+	.string "for her... She's gonna love it.$"
+
 MossdeepCity_EventScript_PokefanF::
 	lock
 	faceplayer

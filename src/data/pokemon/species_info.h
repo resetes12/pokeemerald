@@ -1419,9 +1419,9 @@ const struct SpeciesInfo gSpeciesInfo[] =
     [SPECIES_PARASECT] =
     {
         .baseHP        = 90, //+30
-        .baseAttack    = 95,
+        .baseAttack    = 100, //+5
         .baseDefense   = 80,
-        .baseSpeed     = 30,
+        .baseSpeed     = 45, //+15
         .baseSpAttack  = 60,
         .baseSpDefense = 80,
         .types = { TYPE_BUG, TYPE_GRASS },
@@ -7029,7 +7029,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
     [SPECIES_STANTLER] =
     {
         .baseHP        = 73,
-        .baseAttack    = 105, //+10
+        .baseAttack    = 95,
         .baseDefense   = 62,
         .baseSpeed     = 85,
         .baseSpAttack  = 85,
@@ -9060,8 +9060,8 @@ const struct SpeciesInfo gSpeciesInfo[] =
     {
         .baseHP        = 73, //+30
         .baseAttack    = 30,
-        .baseDefense   = 55,
-        .baseSpeed     = 103, //+5
+        .baseDefense   = 65, //+10
+        .baseSpeed     = 118, //+15
         .baseSpAttack  = 65, //+25
         .baseSpDefense = 75, //+10
         .types = { TYPE_WATER, TYPE_FAIRY },

@@ -5,6 +5,29 @@ AquaHideout_UnusedRubyMap3_MapScripts::
 AquaHideout_UnusedRubyMap3_OnTransition::
 	end
 
+AquaHideout_UnusedRubyMap3_BonslyMunchEvo::
+	msgbox AquaHideout_UnusedRubyMap3_BonslyMunchEvo_Text, MSGBOX_NPC
+	end
+
+AquaHideout_UnusedRubyMap3_BonslyMunchEvo_Text:
+	.string "Have you see those strange\n"
+	.string "moving trees? They are a\l"
+	.string "POKéMON named SUDOWOODO!\p"
+	.string "It's a POKéMON that disguises\n"
+	.string "itself as a tree.\p"
+	.string "And there's also BONSLY, which\n"
+	.string "does the same... but doesn't\l"
+	.string "look as realistic.\p"
+	.string "Speaking of which, I've seen\n"
+	.string "BONSLY evolve while trying\l"
+	.string "to imitate other SUDOWOODO.\p"
+	.string "Is that how they evolve?\p"
+	.string "If I'm not mistaken, MIME JR.\n"
+	.string "also evolves that way.\p"
+	.string "Very different from my\n"
+	.string "MUNCHLAX, who evolved by\l"
+	.string "FRIENDSHIP, right?$"
+
 BFNewZone_EventScript_Sudo2::
 	lock
 	faceplayer

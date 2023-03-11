@@ -365,8 +365,8 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_MEOWTH_DOLL",
-      "x": 65,
-      "y": 59,
+      "x": 22,
+      "y": 55,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_NONE",
       "movement_range_x": 0,
