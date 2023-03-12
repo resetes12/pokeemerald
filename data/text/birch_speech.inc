@@ -44,6 +44,10 @@ gText_Birch_Gamemode::
 	.string "Is that so? Then...\p"
 	.string "Do you feel more of a MODERN STYLE of\n"
 	.string "person, or more of a CLASSIC one?\p"
+	.string "This option refers to the PHYSICAL and\n"
+	.string "SPECIAL MOVE split that happened in\l"
+	.string "GENERATION IV. MODERN activates it,\l"
+	.string "while CLASSIC doesn't.\p"
 	.string "Tell me.$"
 
 gText_Birch_Challenge::

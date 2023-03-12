@@ -1336,12 +1336,11 @@ static void CB2_NewGameBirchSpeech_ReturnFromTxRandomizerChallengesOptions(void)
     LZ77UnCompVram(sBirchSpeechBgMap, (u8*)(BG_SCREEN_ADDR(7)));
     LoadPalette(sBirchSpeechBgPals, 0, 64);
     LoadPalette(&sBirchSpeechBgGradientPal[1], 1, 16);
+    ResetTasks();
     //taskId = CreateTask(Task_NewGameBirchSpeech_Init, 0); //old
+    taskId = CreateTask(Task_NewGameBirchSpeech_WhatsYourName, 0);
     gTasks[taskId].tTimer = 5;
     gTasks[taskId].tBG1HOFS = -60;
-    ResetTasks();
-    taskId = CreateTask(Task_NewGameBirchSpeech_WhatsYourName, 0);
-    gTasks[taskId].func = Task_NewGameBirchSpeech_WhatsYourName;
     SetVBlankCallback(VBlankCB_MainMenu);
     SetMainCallback2(CB2_MainMenu);
 }
@@ -1773,7 +1772,8 @@ static void Task_NewGameBirchSpeech_WhatsYourName(u8 taskId)
 static void Task_NewGameBirchSpeech_WaitForWhatsYourNameToPrint(u8 taskId)
 {
     if (!RunTextPrintersAndIsPrinter0Active())
-        gTasks[taskId].func = Task_NewGameBirchSpeech_WaitPressBeforeNameChoice;
+        //gTasks[taskId].func = Task_NewGameBirchSpeech_WaitPressBeforeNameChoice;
+        gTasks[taskId].func = Task_NewGameBirchSpeech_StartNamingScreen;
 }
 
 static void Task_NewGameBirchSpeech_WaitPressBeforeNameChoice(u8 taskId)

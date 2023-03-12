@@ -209,10 +209,11 @@ PetalburgWoods_Celebi_SignChampion::
 	end
 
 Text_PetalburgWoods_Celebi_Sign:
-	.string "ROBERTO: Hi kid.\l"
-	.string "Dangerous? No, no. Don't\n"
+	.string "ROBERTO: Hi kid.\n"
+	.string "Dangerous? No, no. Don't\l"
 	.string "worry. I have my mighty DUSKY.\p"
-	.string "Have you gotten stronger?$"
+	.string "And you? How is your\n"
+	.string "adventure going?$"
 
 Text_PetalburgWoods_Celebi_SignFirstTime:
 	.string "Oh, a trainer...\p"
@@ -227,31 +228,31 @@ Text_PetalburgWoods_Celebi_SignFirstTime:
 	.string "In these woods, a certain POKéMON\n"
 	.string "lives. It's the FOREST GUARDIAN.\p"
 	.string "In my 13 years of coming to this\n"
-	.string "place I've seen the GUARDIAN a\p"
-	.string "few times. It's small, GREEN, and\n"
+	.string "place I've seen the GUARDIAN a\l"
+	.string "few times. It's small, GREEN, and\l"
 	.string "just seeing it feels ominous...\p"
 	.string "I think it can also talk!!\p"
 	.string "Sadly, last time I saw it was\n"
 	.string "many years ago...\p"
-	.string "Where could it be?\p"
-	.string "Maybe I need to be STRONGER to\n"
+	.string "Where could it be?\n"
+	.string "Maybe I need to be STRONGER to\l"
 	.string "make it appear...\p"
 	.string "Years have not been kind to me.\p"
 	.string "Oh, I'm ROBERTO, by the way.\n"
 	.string "Nice to meet you.$"
 
 Text_PetalburgWoods_Celebi_SignEventFinished:
-	.string "ROBERTO: . . . "
+	.string "ROBERTO: . . . \p"
 	.string "I... I can't believe my eyes!!\n"
 	.string "You battled with the GUARDIAN!\p"
 	.string "I'll never forget this moment.\n"
-	.string "I'll keep watering this shrine\p"
+	.string "I'll keep watering this shrine\l"
 	.string "until it comes back in the future.$"
 
 Text_PetalburgWoods_Celebi_SignEventChampion:
-	.string "ROBERTO: Hi again, trainer.\n"
-	.string "There's something strange with\p"
-	.string "the tree... I've been hearing a\n"
+	.string "ROBERTO: Hi again, trainer.\p"
+	.string "There's something strange with\n"
+	.string "the tree... I've been hearing a\l"
 	.string "small muttering for a few hours.\p"
 	.string "Something about a THUNDER, VOLCANO\n"
 	.string "and AURORA POKéMON...\p"
@@ -260,7 +261,7 @@ Text_PetalburgWoods_Celebi_SignEventChampion:
 	.string "Not from this region...? Where were\n"
 	.string "they from? GIOTO? HOJO? JONO? JOHTO?\p"
 	.string "If they are here, in HOENN... Maybe\n"
-	.string "they are hiding in places related to\p"
+	.string "they are hiding in places related to\l"
 	.string "their descriptions...\p"
 	.string "You should also check the tree.$"
 

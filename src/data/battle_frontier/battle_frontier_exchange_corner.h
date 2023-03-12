@@ -30,7 +30,7 @@ static const u16 sFrontierExchangeCorner_Vitamins[] =
     ITEM_AURORA_TICKET,
     ITEM_OLD_SEA_MAP,
     ITEM_MACHO_BRACE,
-    ITEM_LUCKY_EGG,
+    ITEM_UP_GRADE,
     ITEM_LIST_END
 };
 
