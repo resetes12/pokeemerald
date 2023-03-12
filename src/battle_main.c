@@ -2218,18 +2218,18 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                 }
                 else
                     CreateMon(&party[i], partyData[i].species, GetScaledLevel(partyData[i].lvl), fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
-                    if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD) //only in hard mode
-                {
-                        if (partyData[i].species == SPECIES_SLAKING && gTrainers[trainerNum].trainerPic == TRAINER_PIC_LEADER_NORMAN  //norman slaking code
-                        && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_LEADER)  //Set Norman's Slaking to have intimidate
-                            SetMonData(&party[i], MON_DATA_ABILITY_NUM, &abilityIfNormansSlaking); //norman slaking code
-                        if (partyData[i].species == SPECIES_MILOTIC && gTrainers[trainerNum].trainerPic == TRAINER_PIC_CHAMPION_WALLACE  
-                        && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_CHAMPION)  
-                            SetMonData(&party[i], MON_DATA_ABILITY_NUM, &abilityIfChampionMilotic); 
-                        if (partyData[i].species == SPECIES_WHISCASH && gTrainers[trainerNum].trainerPic == TRAINER_PIC_CHAMPION_WALLACE  
-                        && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_CHAMPION)  
-                            SetMonData(&party[i], MON_DATA_ABILITY_NUM, &abilityIfChampionWhiscash); 
-                }
+                        if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD) //only in hard mode
+                        {
+                                if (partyData[i].species == SPECIES_SLAKING && gTrainers[trainerNum].trainerPic == TRAINER_PIC_LEADER_NORMAN  //norman slaking code
+                                && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_LEADER)  //Set Norman's Slaking to have intimidate
+                                    SetMonData(&party[i], MON_DATA_ABILITY_NUM, &abilityIfNormansSlaking); //norman slaking code
+                                if (partyData[i].species == SPECIES_MILOTIC && gTrainers[trainerNum].trainerPic == TRAINER_PIC_CHAMPION_WALLACE  
+                                && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_CHAMPION)  
+                                    SetMonData(&party[i], MON_DATA_ABILITY_NUM, &abilityIfChampionMilotic); 
+                                if (partyData[i].species == SPECIES_WHISCASH && gTrainers[trainerNum].trainerPic == TRAINER_PIC_CHAMPION_WALLACE  
+                                && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_CHAMPION)  
+                                    SetMonData(&party[i], MON_DATA_ABILITY_NUM, &abilityIfChampionWhiscash); 
+                        }
                 //else
                 SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
 
@@ -5364,7 +5364,7 @@ static void HandleEndTurn_FinishBattle(void)
     u8 j;
     if (gCurrentActionFuncId == B_ACTION_TRY_FINISH || gCurrentActionFuncId == B_ACTION_FINISHED)
     {
-    if (gSaveBlock1Ptr->tx_Challenges_Mirror && !gSaveBlock1Ptr->tx_Challenges_Mirror_Thief && (gBattleTypeFlags & BATTLE_TYPE_TRAINER || gBattleTypeFlags & BATTLE_TYPE_DOUBLE))
+        if (gSaveBlock1Ptr->tx_Challenges_Mirror && !gSaveBlock1Ptr->tx_Challenges_Mirror_Thief && (gBattleTypeFlags & BATTLE_TYPE_TRAINER || gBattleTypeFlags & BATTLE_TYPE_DOUBLE))
         {
             for (j = 0; j < PARTY_SIZE; j++)
                 gPlayerParty[j] = gPlayerPartyBackup[j];
