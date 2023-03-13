@@ -154,6 +154,8 @@ const struct Tileset gTileset_EverGrande =
     .metatiles = gMetatiles_EverGrande,
     .metatileAttributes = gMetatileAttributes_EverGrande,
     .callback = InitTilesetAnim_EverGrande,
+    .lightPalettes = LIGHT_PAL(8),
+    .swapPalettes = SWAP_PAL(8),
 };
 
 const struct Tileset gTileset_Pacifidlog =
@@ -174,8 +176,8 @@ const struct Tileset gTileset_Sootopolis =
     .isCompressed = TRUE,
     .swapPalettes = SWAP_PAL(6),
     .isSecondary = TRUE,
-    .lightPalettes = LIGHT_PAL(6),
-    .customLightColor = LIGHT_PAL(6),
+    .lightPalettes = LIGHT_PAL(6) | LIGHT_PAL(10),
+    .customLightColor = LIGHT_PAL(6) | LIGHT_PAL(10),
     .tiles = gTilesetTiles_Sootopolis,
     .palettes = gTilesetPalettes_Sootopolis,
     .metatiles = gMetatiles_Sootopolis,
