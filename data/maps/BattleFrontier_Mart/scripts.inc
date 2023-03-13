@@ -16,22 +16,20 @@ BattleFrontier_Mart_EventScript_Clerk::
 	.align 2
 BattleFrontier_Mart_Pokemart:
 	.2byte ITEM_ULTRA_BALL
-	.2byte ITEM_HYPER_POTION
 	.2byte ITEM_MAX_POTION
 	.2byte ITEM_FULL_RESTORE
 	.2byte ITEM_FULL_HEAL
-	.2byte ITEM_REVIVE
+	.2byte ITEM_MAX_REVIVE
 	.2byte ITEM_MAX_REPEL
-	.2byte ITEM_TM03
-	.2byte ITEM_TM04
-	.2byte ITEM_TM08
-	.2byte ITEM_TM12
-	.2byte ITEM_TM34
-	.2byte ITEM_TM39
-	.2byte ITEM_TM40
-	.2byte ITEM_TM42
-	.2byte ITEM_TM47
-	.2byte ITEM_TM50
+	.2byte ITEM_PP_UP
+	.2byte ITEM_ETHER
+	.2byte ITEM_MAX_ETHER
+	.2byte ITEM_ELIXIR
+	.2byte ITEM_MAX_ELIXIR
+	.2byte ITEM_GANLON_BERRY
+	.2byte ITEM_SALAC_BERRY
+	.2byte ITEM_PETAYA_BERRY
+	.2byte ITEM_APICOT_BERRY
 	.2byte ITEM_NONE
 	release
 	end

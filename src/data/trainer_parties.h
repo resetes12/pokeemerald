@@ -392,7 +392,7 @@ static const struct TrainerMonNoItemDefaultMoves sParty_Daisy[] = {
     {
     .iv = 0,
     .lvl = 14,
-    .species = SPECIES_ROSELIA,
+    .species = SPECIES_BUDEW,
     }
 };
 
@@ -7701,7 +7701,7 @@ static const struct TrainerMonNoItemDefaultMoves sParty_Lydia2[] = {
     {
     .iv = 10,
     .lvl = 29,
-    .species = SPECIES_BUDEW,
+    .species = SPECIES_ROSELIA,
     },
     {
     .iv = 10,
