@@ -11,7 +11,8 @@ gText_SavingDontTurnOff::
 	.string "DON'T TURN OFF THE POWER.$"
 
 gText_PlayerSavedGame::
-	.string "{PLAYER} saved the game.$"
+	.string "{PLAYER} saved the game. Wait 5 seconds\n"
+	.string "to exit if you are using a flashcard.$"
 
 gText_DifferentSaveFile::
 	.string "WARNING!\p"

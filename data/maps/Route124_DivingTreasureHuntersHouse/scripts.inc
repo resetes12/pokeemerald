@@ -16,7 +16,7 @@ Route124_DivingTreasureHuntersHouse_TogekissEvo_Text:
 	.string "SCALE during the day.\p"
 	.string "That POKéMON is TOGETIC!\n"
 	.string "I wish I had one. I love\l"
-	.string "HEART SCALES too much!$"
+	.string "HEART SCALES so much!$"
 
 Route124_DivingTreasureHuntersHouse_EventScript_TreasureHunter::
 	lock

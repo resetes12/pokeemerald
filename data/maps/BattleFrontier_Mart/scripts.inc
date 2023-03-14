@@ -16,6 +16,7 @@ BattleFrontier_Mart_EventScript_Clerk::
 	.align 2
 BattleFrontier_Mart_Pokemart:
 	.2byte ITEM_ULTRA_BALL
+	.2byte ITEM_SAFARI_BALL
 	.2byte ITEM_MAX_POTION
 	.2byte ITEM_FULL_RESTORE
 	.2byte ITEM_FULL_HEAL
@@ -26,10 +27,6 @@ BattleFrontier_Mart_Pokemart:
 	.2byte ITEM_MAX_ETHER
 	.2byte ITEM_ELIXIR
 	.2byte ITEM_MAX_ELIXIR
-	.2byte ITEM_GANLON_BERRY
-	.2byte ITEM_SALAC_BERRY
-	.2byte ITEM_PETAYA_BERRY
-	.2byte ITEM_APICOT_BERRY
 	.2byte ITEM_NONE
 	release
 	end

@@ -823,7 +823,7 @@ static const u16 sRarePickupItems[] =
     ITEM_FULL_RESTORE,
     ITEM_ETHER,
     ITEM_WHITE_HERB,
-    ITEM_TM44_REST,
+    ITEM_NUGGET,
     ITEM_ELIXIR,
     ITEM_NUGGET,
     ITEM_LEFTOVERS,
