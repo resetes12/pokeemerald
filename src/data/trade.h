@@ -1018,8 +1018,8 @@ static const struct InGameTrade sIngameTrades[] =
     },
     [INGAME_TRADE_HORSEA] =
     {
-        .nickname = _("HAPPY"),
-        .species = SPECIES_HAPPINY,
+        .nickname = _("SEASOR"),
+        .species = SPECIES_HORSEA,
         .ivs = {5, 4, 4, 4, 5, 4},
         .abilityNum = 0,
         .otId = 46285,

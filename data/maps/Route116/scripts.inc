@@ -19,10 +19,10 @@ Route116_RoseradeEvo::
 	end
 
 Route116_RoseradeEvo_Text:
-	.string "My ROSERADE loves eating POKéBLOCKS!\p"
-	.string "I also think they make her beautiful.\n"
-	.string "In fact, it got so beautiful\l"
-	.string "that it evolved!$"
+	.string "Did you know that certain POKéMON\n"
+	.string "evolve when their BEAUTY reaches its\l"
+	.string "maximum level?\p"
+	.string "That's how my ROSELIA evolved!$"
 
 Route116_EventScript_SetWandasBoyfriendPos::
 	setobjectxyperm LOCALID_WANDAS_BF_OUTSIDE, 38, 10

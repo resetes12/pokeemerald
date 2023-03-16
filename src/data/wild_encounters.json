@@ -6809,53 +6809,53 @@
             "encounter_rate": 70,
             "mons": [
               {
-                "min_level": 5,
-                "max_level": 5,
+                "min_level": 15,
+                "max_level": 20,
                 "species": "SPECIES_CLAMPERL"
               },
               {
-                "min_level": 5,
-                "max_level": 5,
+                "min_level": 14,
+                "max_level": 20,
                 "species": "SPECIES_CLAMPERL"
               },
               {
-                "min_level": 5,
-                "max_level": 5,
+                "min_level": 20,
+                "max_level": 28,
                 "species": "SPECIES_CLAMPERL"
               },
               {
-                "min_level": 5,
-                "max_level": 5,
+                "min_level": 28,
+                "max_level": 29,
+                "species": "SPECIES_SHARPEDO"
+              },
+              {
+                "min_level": 2,
+                "max_level": 29,
                 "species": "SPECIES_CLAMPERL"
               },
               {
-                "min_level": 5,
-                "max_level": 5,
+                "min_level": 32,
+                "max_level": 35,
+                "species": "SPECIES_CLAMPERL"
+              },
+              {
+                "min_level": 31,
+                "max_level": 36,
+                "species": "SPECIES_CLAMPERL"
+              },
+              {
+                "min_level": 30,
+                "max_level": 36,
+                "species": "SPECIES_SHARPEDO"
+              },
+              {
+                "min_level": 31,
+                "max_level": 34,
                 "species": "SPECIES_HORSEA"
               },
               {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_CLAMPERL"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_CLAMPERL"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_CORSOLA"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
-                "species": "SPECIES_SEADRA"
-              },
-              {
-                "min_level": 5,
-                "max_level": 5,
+                "min_level": 36,
+                "max_level": 36,
                 "species": "SPECIES_SEADRA"
               }
             ]

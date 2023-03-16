@@ -88,7 +88,7 @@
 #define FLAG_HIDE_MEWTWO    0x4C 
 #define FLAG_UNLOCK_BIRDS    0x4D
 #define FLAG_UNLOCK_MEWTWO   0x4E
-#define FLAG_UNUSED_0x04F    0x4F // Unused Flag
+#define FLAG_RASH_MINT_METEOR_FALLS    0x4F
 
 // Scripts
 #define FLAG_HIDE_SKY_PILLAR_TOP_RAYQUAZA_STILL  0x50
