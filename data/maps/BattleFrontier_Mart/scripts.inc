@@ -8,6 +8,16 @@ BattleFrontier_Mart_EventScript_Clerk::
 	faceplayer
 	message gText_HowMayIServeYou
 	waitmessage
+	pokemart 0
+	msgbox gText_PleaseComeAgain, MSGBOX_DEFAULT
+	release
+	end
+
+BattleFrontier_Mart_EventScript_Clerk2::
+	lock
+	faceplayer
+	message gText_HowMayIServeYou
+	waitmessage
 	pokemart BattleFrontier_Mart_Pokemart
 	msgbox gText_PleaseComeAgain, MSGBOX_DEFAULT
 	release
@@ -15,13 +25,8 @@ BattleFrontier_Mart_EventScript_Clerk::
 
 	.align 2
 BattleFrontier_Mart_Pokemart:
-	.2byte ITEM_ULTRA_BALL
 	.2byte ITEM_SAFARI_BALL
-	.2byte ITEM_MAX_POTION
-	.2byte ITEM_FULL_RESTORE
-	.2byte ITEM_FULL_HEAL
 	.2byte ITEM_MAX_REVIVE
-	.2byte ITEM_MAX_REPEL
 	.2byte ITEM_PP_UP
 	.2byte ITEM_ETHER
 	.2byte ITEM_MAX_ETHER
