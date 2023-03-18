@@ -1106,6 +1106,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_SelectedNormal:
 LittlerootTown_ProfessorBirchsLab_EventScript_SelectedHard:
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_SelectedHard, MSGBOX_DEFAULT
 	setvar VAR_DIFFICULTY, 1
+	callnative DifficultyHardStyleToSet
 	closemessage
 	end
 
@@ -1122,32 +1123,28 @@ LittlerootTown_ProfessorBirchsLab_EventScript_SelectedCancel:
 
 LittlerootTown_ProfessorBirchsLab_Text_Challenge:
 	.string "What DIFFICULTY would\n"
-	.string "you like to play at?$"
+	.string "you like to play on?$"
 
 LittlerootTown_ProfessorBirchsLab_Text_SelectedEasy:
-	.string "EASY DIFFICULTY\n"
-	.string "was chosen.\p"
+	.string "EASY DIFFICULTY was chosen.\p"
 	.string "EASY DIFFICULTY scales down\n"
 	.string "TRAINERS and WILD BATTLES.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_SelectedNormal:
-	.string "NORMAL DIFFICULTY\n"
-	.string "was chosen.\p"
+	.string "NORMAL DIFFICULTY was chosen.\p"
 	.string "NORMAL DIFFICULTY is the standard\n"
 	.string "difficulty, without any change.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_SelectedHard:
-	.string "HARD DIFFICULTY\n"
-	.string "was chosen.\p"
+	.string "HARD DIFFICULTY was chosen.\p"
 	.string "HARD DIFFICULTY scales up\n"
-	.string "TRAINERS and WILD BATTLES,\p"
-	.string "and adds small additional\n"
-	.string "changes to make a more\l"
-	.string "challenging experience.$"
+	.string "TRAINERS and WILD BATTLES,\l"
+	.string "forces SET BATTLE STYLE,\l"
+	.string "and adds small additional changes to\l"
+	.string "make a more challenging experience.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_SelectedCancel:
-	.string "DIFFICULTY not\n"
-	.string "changed.$"
+	.string "DIFFICULTY not changed.$"
 
 @Gamemode
 
@@ -1195,21 +1192,18 @@ LittlerootTown_ProfessorBirchsLab_Text_Gamemode:
 	.string "you like to use?$"
 
 LittlerootTown_ProfessorBirchsLab_Text_SelectedModern:
-	.string "MODERN STYLE\n"
-	.string "was chosen.\p"
+	.string "MODERN STYLE was chosen.\p"
 	.string "MODERN STYLE makes use of the\n"
 	.string "PHYSICAL and SPECIAL SPLIT made\p"
 	.string "for MOVES in GENERATION IV.\n"
 	.string "$"
 
 LittlerootTown_ProfessorBirchsLab_Text_SelectedClassic:
-	.string "CLASSIC STYLE\n"
-	.string "was chosen.\p"
+	.string "CLASSIC STYLE was chosen.\p"
 	.string "CLASSIC STYLE does not makes use\n"
 	.string "of the PHYSICAL and SPECIAL SPLIT\p"
 	.string "made for MOVES in GENERATION IV.\n"
 	.string "$"
 
 LittlerootTown_ProfessorBirchsLab_Text_SelectedCancelGamemode:
-	.string "STYLE not\n"
-	.string "changed.$"
+	.string "STYLE not changed.$"

@@ -1,6 +1,7 @@
 #include "global.h"
 #include "option_menu.h"
 #include "bg.h"
+#include "event_data.h"
 #include "gpu_regs.h"
 #include "international_string_util.h"
 #include "main.h"
@@ -9,12 +10,14 @@
 #include "scanline_effect.h"
 #include "sprite.h"
 #include "strings.h"
+#include "sound.h"
 #include "task.h"
 #include "text.h"
 #include "text_window.h"
 #include "window.h"
 #include "gba/m4a_internal.h"
 #include "constants/rgb.h"
+#include "constants/songs.h"
 
 #define tMenuSelection data[0]
 #define tTextSpeed data[1]
@@ -467,10 +470,15 @@ static void BattleScene_DrawChoices(u8 selection)
 static u8 BattleStyle_ProcessInput(u8 selection)
 {
     if (JOY_NEW(DPAD_LEFT | DPAD_RIGHT))
-    {
-        selection ^= 1;
-        sArrowPressed = TRUE;
-    }
+        if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD)
+        {
+            PlaySE(SE_FAILURE);
+        }
+        else
+        {
+            selection ^= 1;
+            sArrowPressed = TRUE;
+        }
 
     return selection;
 }

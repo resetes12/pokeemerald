@@ -73,6 +73,11 @@ void GetObjectEventTrainerRangeFromTemplate(void)
     gSpecialVar_Result = gMapHeader.events->objectEvents[gSpecialVar_LastTalked - 1].trainerRange_berryTreeId;
 }
 
+void DifficultyHardStyleToSet(void)
+{
+    gSaveBlock2Ptr->optionsBattleStyle = OPTIONS_BATTLE_STYLE_SET;
+}
+
 bool8 RunScriptCommand(struct ScriptContext *ctx)
 {
     if (ctx->mode == SCRIPT_MODE_STOPPED)

@@ -176,14 +176,21 @@ BattleFrontier_Lounge9_EV_Column::
 BattleFrontier_Lounge9_EV_SetZero::
 	lockall
 	faceplayer
-	msgbox BattleFrontier_Lounge9_EV_SetZeroText, MSGBOX_YESNO
+	goto_if_unset FLAG_EV_MAN_FIRSTIME, BattleFrontier_Lounge9_EV_SetZeroIntro
+	msgbox BattleFrontier_Lounge9_EV_SetZeroTextNoIntro, MSGBOX_YESNO
 	waitmessage
 	compare VAR_RESULT, YES
 	goto_if_eq BattleFrontier_Lounge9_EV_SetZeroMoney
 	compare VAR_RESULT, NO
 	goto_if_eq BattleFrontier_Lounge9_EV_SetZeroNo
 	end
-	
+
+BattleFrontier_Lounge9_EV_SetZeroIntro::
+	setflag FLAG_EV_MAN_FIRSTIME
+	msgbox BattleFrontier_Lounge9_EV_SetZeroText, MSGBOX_NPC
+	waitmessage
+	end
+
 BattleFrontier_Lounge9_EV_SetZeroMoney::
 	msgbox BattleFrontier_Lounge9_EV_SetZeroMoneyText, MSGBOX_YESNO
 	waitmessage
@@ -439,9 +446,12 @@ BattleFrontier_Lounge9_EV_SetZeroText:
 	.string "I am the owner this GYM, and I train\n"
 	.string "here together with my brother IVAN.\p"
 	.string "If you want to reset your POKéMON\n"
-	.string "EVs to zero, just talk to me.\p"
-	.string "So, do you want to reset any\n"
-	.string "POKéMON EFFORT VALUE?$"
+	.string "EVs to zero, just talk to me.$"
+
+BattleFrontier_Lounge9_EV_SetZeroTextNoIntro:
+	.string "EV-MAN: Welcome again!\n"
+	.string "Do you want to reset all\l"
+	.string "POKéMON EFFORT VALUES to zero?$"
 
 BattleFrontier_Lounge9_EV_SetZeroText2:
 	.string "Alright, which POKéMON EVs\n"
@@ -484,7 +494,7 @@ BattleFrontier_Lounge9_EV_Column_Text:
 	.string "to EV-Man.\p"
 	.string "TRAINER TIP 2:\n"
 	.string "Equip a MACHO BRACE to multiply\l"
-	.string "by 10 the EVs gained.\p"
+	.string "by 5 the EVs gained.\p"
 	.string "TRAINER TIP 3:\n"
 	.string "A new type of training is available\l"
 	.string "at the right corner of the gym.$"
@@ -530,9 +540,8 @@ BattleFrontier_Lounge9_EV_SDEF_TEXT2:
 	.string "Go LUDICOLO!$"
 
 BattleFrontier_Lounge9_EV_SPD_TEXT:
-	.string ". . .\l"
-	.string "I can train your POKéMON\n"
-	.string "in SPEED.\p"
+	.string "Hmph... I can train your\n"
+	.string "POKéMON in SPEED.\p"
 	.string "Are you ready?$"
 
 BattleFrontier_Lounge9_EV_SPD_TEXT2:
@@ -576,7 +585,8 @@ BattleFrontier_Lounge9_Chansey5ChampionText:
 	.string "Come back when you get stronger.$"
 
 BattleFrontier_Lounge9_Chansey5Intro:
-	.string "My BLISSEY are ready!$"
+	.string "Have you come to train?\n"
+	.string "My BLISSEY are ready for it!$"
 
 BattleFrontier_Lounge9_Chansey5Defeat:
 	.string "Oh no... BLISSEY, use SOFT-BOILED!$"

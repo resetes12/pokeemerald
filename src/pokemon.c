@@ -4869,7 +4869,7 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
         SetBoxMonData(boxMon, MON_DATA_SPDEF_IV, &iv);
     }
 
-    if ((GetAbilityBySpecies(species, 1) != ABILITY_NONE) && (species != SPECIES_SLAKING || species != SPECIES_MILOTIC || species != SPECIES_WHISCASH)) //tx_randomizer_and_challenges
+    if ((GetAbilityBySpecies(species, 1) != ABILITY_NONE) && (species != SPECIES_SLAKING || species != SPECIES_MILOTIC || species != SPECIES_WHISCASH || species != SPECIES_KINGDRA || species != SPECIES_DUSKNOIR)) //tx_randomizer_and_challenges
     //if (gSpeciesInfo[species].abilities[1]  && (species != SPECIES_SLAKING || species != SPECIES_MILOTIC || species != SPECIES_WHISCASH)) //norman slaking code
     {
         value = personality & 1;
@@ -8880,7 +8880,7 @@ void MonGainEVs(struct Pokemon *mon, u16 defeatedSpecies)
         }
 
         if (holdEffect == HOLD_EFFECT_MACHO_BRACE)
-            evIncrease *= 10;
+            evIncrease *= 5;
 
         if (totalEVs + (s16)evIncrease > MAX_TOTAL_EVS)
             evIncrease = ((s16)evIncrease + MAX_TOTAL_EVS) - (totalEVs + evIncrease);

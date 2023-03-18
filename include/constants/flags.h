@@ -59,7 +59,7 @@
 #define FLAG_CAVE_SCALE      0x2F 
 #define FLAG_CAVE_MOONSTONE  0x30 
 #define FLAG_CAVE_SUNSTONE   0x31 
-#define FLAG_IGNORE_CHALLENGES        0x32 //Unused
+#define FLAG_EV_MAN_FIRSTIME        0x32
 #define FLAG_MINT_LILYCOVE   0x33
 #define FLAG_MINT_BF         0x34 
 #define FLAG_MINT_ALTERING   0x35 
