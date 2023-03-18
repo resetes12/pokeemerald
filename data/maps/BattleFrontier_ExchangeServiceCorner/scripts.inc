@@ -682,7 +682,7 @@ BattleFrontier_ExchangeServiceCorner_Text_ZincDesc::
 	.string "it will get you somewhere.$"
 
 BattleFrontier_ExchangeServiceCorner_Text_CarbosDesc::
-	.string "x10 EV gain, but half speed.$"
+	.string "x10 EV gain, but halves speed.$"
 
 BattleFrontier_ExchangeServiceCorner_Text_HPUpDesc::
 	.string "A peculiar box made\n"
