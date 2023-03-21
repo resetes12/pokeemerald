@@ -17,8 +17,8 @@ BattleFrontier_Lounge9_Heal::
 	end
 
 BattleFrontier_Lounge9_Heal_TEXT:
-	.string "Hi! Welcome to the HYPER TRAINING\n"
-	.string "GYM! I will heal your POKéMON.$"
+	.string "Hi! Welcome to the HYPER TRAINING GYM!\n"
+	.string "I will heal your POKéMON.$"
 
 BattleFrontier_Lounge9_Heal_TEXT2:
 	.string "We hope to see you again!$"
@@ -419,19 +419,19 @@ BattleFrontier_Lounge9_IV_TextFirstTime:
 
 BattleFrontier_Lounge9_IV_Text1:
 	.string "IV-MAN: Hi! What's up?\n"
-	.string "Ready for the best training\l"
-	.string "routine of all HOENN?$"
+	.string "Ready for the best training routine of\l"
+	.string "all HOENN?$"
 
 BattleFrontier_Lounge9_IV_Continue_Text:
-	.string "Are you sure that this \n"
-	.string "is the correct POKéMON?$"
+	.string "Are you sure that this is the correct\n"
+	.string "POKéMON?$"
 
 BattleFrontier_Lounge9_IV_Text_No:
 	.string "Oh... Well, see you another time.$"
 
 BattleFrontier_Lounge9_IV_Text_NoLevel:
-	.string "I don't think your POKéMON has\n"
-	.string "reached its maximum LEVEL...$"
+	.string "I don't think your POKéMON has reached\n"
+	.string "its maximum LEVEL...$"
 
 BattleFrontier_Lounge9_IV_Finish:
 	.string "Phew... I'm exhausted...\n"
@@ -450,23 +450,22 @@ BattleFrontier_Lounge9_EV_SetZeroText:
 
 BattleFrontier_Lounge9_EV_SetZeroTextNoIntro:
 	.string "EV-MAN: Welcome again!\n"
-	.string "Do you want to reset all\l"
-	.string "POKéMON EFFORT VALUES to zero?$"
+	.string "Do you want to reset all POKéMON\l"
+	.string "EFFORT VALUES to zero?$"
 
 BattleFrontier_Lounge9_EV_SetZeroText2:
-	.string "Alright, which POKéMON EVs\n"
-	.string "should I reset to zero?$"
+	.string "Alright, which POKéMON EVs should I\n"
+	.string "reset to zero?$"
 
 BattleFrontier_Lounge9_EV_SetZeroText3:
-	.string "Phew! It was hard, but I managed\n"
-	.string "it! Its EVs are now zero!$"
+	.string "Phew! It was hard, but I managed it!\n"
+	.string "Its EVs are now zero!$"
 
 BattleFrontier_Lounge9_EV_SetZeroTextEgg:
 	.string "Sorry, that won't work.$"
 
 BattleFrontier_Lounge9_EV_SetZeroTextNo:
-	.string "Alright, come back if\n"
-	.string "you need to!$"
+	.string "Alright, come back if you need to!$"
 
 BattleFrontier_Lounge9_EV_SetZeroMoneyText:
 	.string "This process is quite difficult.\n"
@@ -478,8 +477,8 @@ BattleFrontier_Lounge9_EV_SetZeroTextNoMoney:
 	.string "Come back when you have.$"
 
 BattleFrontier_Lounge9_EV_SetZeroTextSure:
-	.string "Are you sure you want to reset\n"
-	.string "this POKéMON EV values?\p"
+	.string "Are you sure you want to reset this\n"
+	.string "POKéMON EV values?\p"
 	.string "This process can't be undone.$"
 
 BattleFrontier_Lounge9_EV_Column_Text:

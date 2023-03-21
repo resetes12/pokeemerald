@@ -1,3 +1,5 @@
+.set LOCALID_MANTYKEMAN, 4
+
 PacifidlogTown_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, PacifidlogTown_OnTransition
 	map_script MAP_SCRIPT_ON_RESUME, PacifidlogTown_OnResume
@@ -12,16 +14,26 @@ PacifidlogTown_OnResume:
 	end
 
 PacifidlogTown_MantykeEvo::
-	msgbox PacifidlogTown_MantykeEvo_Text, MSGBOX_NPC
+	msgbox PacifidlogTown_MantykeEvo_Text, MSGBOX_SIGN
+	waitmessage
+	msgbox PacifidlogTown_MantykeEvo_Text2, MSGBOX_NPC
+	applymovement LOCALID_MANTYKEMAN, PacifidlogTown_MantykeEvoMoves
+	waitmovement 0
 	end
 
+PacifidlogTown_MantykeEvoMoves:
+	face_right
+	step_end
+
 PacifidlogTown_MantykeEvo_Text:
-	.string "OH!\p"
+	.string "OH!$"
+
+PacifidlogTown_MantykeEvo_Text2:
 	.string "HAVE YOU SEEN THAT?\p"
 	.string "That MANTYKE was trying\n"
 	.string "to evolve, so it was using\l"
 	.string "WATER PULSE!\p"
-	.string "Nature is sure beautiful!$"
+	.string "Nature is beautiful!$"
 
 PacifidlogTown_EventScript_NinjaBoy::
 	msgbox PacifidlogTown_Text_NeatHousesOnWater, MSGBOX_NPC

@@ -14,8 +14,8 @@ VerdanturfTown_LickyEvo::
 	end
 
 VerdanturfTown_LickyEvo_Text:
-	.string "LICKITUNG evolves by rolling\n"
-	.string "around. Try that!$"
+	.string "LICKITUNG evolves by rolling around.\n"
+	.string "Try doing that!$"
 
 VerdanturfTown_EventScript_Twin::
 	lock
