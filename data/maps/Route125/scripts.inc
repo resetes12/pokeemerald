@@ -25,13 +25,14 @@ Route125_FroslassEvo::
 	end
 
 Route125_FroslassEvo_Text:
-	.string "W-What happened to my\n"
-	.string "cute little baby?\p"
+	.string "What happened to my cute little baby?\p"
 	.string "My SNORUNT evolved into...\n"
-	.string "something I didn't expect!\p"
+	.string "Something I didn't expect!\p"
 	.string "I wanted a GLALIE, yet I got a\n"
-	.string "FROSLASS. How? SHE just evolved\l"
-	.string "out of nowhere. Why?$"
+	.string "FROSLASS. How? SHE just evolved out\l"
+	.string "of nowhere, when we were training\l"
+	.string "during the MORNING!\p"
+	.string "I want my baby back!$"
 
 Route125_EventScript_Nolen::
 	trainerbattle_single TRAINER_NOLEN, Route125_Text_NolenIntro, Route125_Text_NolenDefeat

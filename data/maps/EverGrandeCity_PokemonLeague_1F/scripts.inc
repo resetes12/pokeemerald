@@ -20,11 +20,10 @@ EverGrandeCity_PokemonLeague_1F_AncientPower::
 EverGrandeCity_PokemonLeague_1F_AncientPower_Text:
 	.string "There are three POKéMON that\n"
 	.string "evolve using a certain MOVE.\p"
-	.string "They are YANMA, PILOSWINE\n"
-	.string "and TANGELA.\p"
-	.string "Now... the move... I don't\n"
-	.string "remember exactly... Something\l"
-	.string "about an ANCIENT MOVE...$"
+	.string "They are YANMA, PILOSWINE and TANGELA.\p"
+	.string "Now... the move... I don't remember\n"
+	.string "exactly... Something about an\l"
+	.string "ANCIENT MOVE...$"
 
 EverGrandeCity_PokemonLeague_1F_EventScript_GuardsBlockDoor::
 	setobjectxyperm LOCALID_GUARD_1, 9, 2

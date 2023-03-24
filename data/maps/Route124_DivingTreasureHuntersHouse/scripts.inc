@@ -11,12 +11,10 @@ Route124_DivingTreasureHuntersHouse_TogekissEvo::
 	end
 
 Route124_DivingTreasureHuntersHouse_TogekissEvo_Text:
-	.string "There's one POKéMON that\n"
-	.string "evolves HOLDING a HEART\l"
-	.string "SCALE during the day.\p"
-	.string "That POKéMON is TOGETIC!\n"
-	.string "I wish I had one. I love\l"
-	.string "HEART SCALES so much!$"
+	.string "There's one POKéMON that evolves\n"
+	.string "HOLDING a HEART SCALE during the day.\p"
+	.string "That POKéMON is TOGETIC!\n" 
+	.string "I wish I had one...$"
 
 Route124_DivingTreasureHuntersHouse_EventScript_TreasureHunter::
 	lock

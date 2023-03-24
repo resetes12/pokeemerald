@@ -18,15 +18,37 @@ PetalburgCity_OnTransition:
 	end
 
 PetalburgCity_GalladeEvo::
-	msgbox PetalburgCity_GalladeEvo_Text, MSGBOX_NPC
+	faceplayer
+	msgbox PetalburgCity_GalladeEvo_Text, MSGBOX_YESNO
+	goto_if_eq VAR_RESULT, YES, PetalburgCity_GalladeEvo2
+	end
+
+PetalburgCity_GalladeEvo2:
+	msgbox PetalburgCity_GalladeEvo_Text2, MSGBOX_NPC
 	end
 
 PetalburgCity_GalladeEvo_Text:
-	.string "Choosing between a MALE or\n"
-	.string "FEMALE RALTS is quite important.\p"
-	.string "Depending on what you capture,\n"
-	.string "the last evolution of RALTS will\l"
-	.string "be different.$"
+	.string "PROF. BIRCH might be the most famous\n"
+	.string "PROFFESOR of HOENN, but I am also a\l"
+	.string "reliable PROFESSOR.\p"
+	.string "To prove it, I can give you a piece of\n"
+	.string "information that he might not know\l"
+	.string "about. Do you want to listen to it?$"
+
+PetalburgCity_GalladeEvo_Text2:
+	.string "Choosing between a MALE or FEMALE RALTS\n"
+	.string "is quite important.\p"
+	.string "Depending on what you capture, the last\n"
+	.string "evolution of RALTS will be different.\p"
+	.string "If RALTS is MALE, he will naturally\n"
+	.string "evolve into GALLADE but only if it\l"
+	.string "happens during the morning, which is\l"
+	.string "from 6AM to 9AM.\p"
+	.string "RALTS will evolve into GARDEVOIR if he\n"
+	.string "doesn't evolve during morning, or if\l"
+	.string "said RALTS is FEMALE.\p"
+	.string "I believe this information might be\n"
+	.string "useful for a new trainer like you.$"
 
 PetalburgCity_EventScript_MoveGymBoyToWestEntrance::
 	setobjectxyperm LOCALID_GYM_BOY, 5, 11

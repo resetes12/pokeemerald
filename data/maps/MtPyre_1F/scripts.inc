@@ -6,16 +6,11 @@ MtPyre_1F_DusknoirMisdreavusEvo::
 	end
 
 MtPyre_1F_DusknoirMisdreavusEvo_Text:
-	.string "Wild DUSKULL sometimes hold\n"
-	.string "a SPELL TAG. I wonder why?\p"
-	.string "What do they do with it?\p"
-	.string "...\p"
-	.string "Maybe they evolve with it?\n"
-	.string "I can try TRADING with my\l"
-	.string "grandson, maybe that does it.\p"
-	.string "What I do know is that\n"
-	.string "MISDREAVUS evolves if it\l"
-	.string "holds it during the night.$"
+	.string "Wild DUSKULL sometimes hold a SPELL TAG.\n"
+	.string "I wonder why? What do they do with it?\l"
+	.string "Maybe they use it to evolve?\p"
+	.string "What I do know is that MISDREAVUS\n"
+	.string "evolves if it holds it during the night.$"
 
 MtPyre_1F_EventScript_CleanseTagWoman::
 	lock
