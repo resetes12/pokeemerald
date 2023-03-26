@@ -1703,6 +1703,22 @@
       "y": 4,
       "width": 1,
       "height": 1
+    },
+    {
+      "map_section": "MAPSEC_DRACO_CHAMBER2",
+      "name": "DRACO CHAMBER",
+      "x": 15,
+      "y": 9,
+      "width": 1,
+      "height": 1
+    },
+    {
+      "map_section": "MAPSEC_CAVE_OF_SHOCK2",
+      "name": "CAVE OF SHOCK",
+      "x": 9,
+      "y": 7,
+      "width": 1,
+      "height": 1
     }
   ]
 }

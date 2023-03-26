@@ -214,15 +214,17 @@
 #define MAPSEC_ALTERING_CAVE                0xD2
 #define MAPSEC_NAVEL_ROCK                   0xD3
 #define MAPSEC_TRAINER_HILL                 0xD4
-#define MAPSEC_NONE                         0xD5
+#define MAPSEC_DRACO_CHAMBER2               0xD5
+#define MAPSEC_CAVE_OF_SHOCK2               0xD6
+#define MAPSEC_NONE                         0xD7
 
 //ty_difficulty_challenges
-#define MAPSEC_SAFARI_ZONE_AREA1            0xD6
-#define MAPSEC_SAFARI_ZONE_AREA2            0xD7
-#define MAPSEC_SAFARI_ZONE_AREA3            0xD8
-#define MAPSEC_SAFARI_ZONE_AREA4            0xD9
-#define MAPSEC_SAFARI_ZONE_AREA5            0xDA
-#define MAPSEC_SAFARI_ZONE_AREA6            0xDB
+#define MAPSEC_SAFARI_ZONE_AREA1            0xD8
+#define MAPSEC_SAFARI_ZONE_AREA2            0xD9
+#define MAPSEC_SAFARI_ZONE_AREA3            0xDA
+#define MAPSEC_SAFARI_ZONE_AREA4            0xDB
+#define MAPSEC_SAFARI_ZONE_AREA5            0xDC
+#define MAPSEC_SAFARI_ZONE_AREA6            0xDD
 
 #define METLOC_SPECIAL_EGG                  0xFD
 #define METLOC_IN_GAME_TRADE                0xFE

@@ -3,7 +3,7 @@
   "name": "AquaHideout_UnusedRubyMap2",
   "layout": "LAYOUT_AQUA_HIDEOUT_UNUSED_RUBY_MAP2",
   "music": "MUS_SEALED_CHAMBER",
-  "region_map_section": "MAPSEC_CAVE_OF_SHOCK",
+  "region_map_section": "MAPSEC_CAVE_OF_SHOCK2",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
   "map_type": "MAP_TYPE_UNDERGROUND",
