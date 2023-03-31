@@ -38,6 +38,8 @@ PacifidlogTown_House2_EventScript_ClearReceivedFanClubTM::
 
 PacifidlogTown_House2_EventScript_GiveReturn::
 	msgbox PacifidlogTown_House2_Text_AdoringPokemonTakeThis, MSGBOX_DEFAULT
+	checkitem ITEM_TM27
+	goto_if_eq VAR_RESULT, TRUE, PacifidlogTown_House2_EventScript_GiveReturnDone
 	giveitem ITEM_TM27
 	goto_if_eq VAR_RESULT, FALSE, Common_EventScript_ShowBagIsFull
 	setflag FLAG_RECEIVED_FANCLUB_TM_THIS_WEEK
@@ -46,6 +48,14 @@ PacifidlogTown_House2_EventScript_GiveReturn::
 	release
 	end
 
+PacifidlogTown_House2_EventScript_GiveReturnDone::
+	msgbox PacifidlogTown_House2_Text_GiveReturnDone, MSGBOX_NPC
+	release
+	end
+
+PacifidlogTown_House2_Text_GiveReturnDone:
+	.string "Oh, you already have it.$"
+
 PacifidlogTown_House2_EventScript_PutInEffort::
 	msgbox PacifidlogTown_House2_Text_PutInSomeMoreEffort, MSGBOX_DEFAULT
 	release
@@ -53,6 +63,8 @@ PacifidlogTown_House2_EventScript_PutInEffort::
 
 PacifidlogTown_House2_EventScript_GiveFrustration::
 	msgbox PacifidlogTown_House2_Text_ViciousPokemonTakeThis, MSGBOX_DEFAULT
+	checkitem ITEM_TM21
+	goto_if_eq VAR_RESULT, TRUE, PacifidlogTown_House2_EventScript_GiveReturnDone
 	giveitem ITEM_TM21
 	goto_if_eq VAR_RESULT, FALSE, Common_EventScript_ShowBagIsFull
 	setflag FLAG_RECEIVED_FANCLUB_TM_THIS_WEEK

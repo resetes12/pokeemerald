@@ -2237,8 +2237,13 @@ static void Task_HandleReplaceMoveInput(u8 taskId)
                 }
                 else
                 {
-                    PlaySE(SE_FAILURE);
-                    ShowCantForgetHMsWindow(taskId);
+                    //PlaySE(SE_FAILURE);
+                    //ShowCantForgetHMsWindow(taskId);
+                    StopPokemonAnimations();
+                    PlaySE(SE_SELECT);
+                    sMoveSlotToReplace = sMonSummaryScreen->firstMoveIndex;
+                    gSpecialVar_0x8005 = sMoveSlotToReplace;
+                    BeginCloseSummaryScreen(taskId);
                 }
             }
             else if (JOY_NEW(B_BUTTON))
