@@ -2977,6 +2977,7 @@ extern const u8 gText_CheckMapOfHoenn[];
 extern const u8 gText_CheckPokemonInDetail[];
 extern const u8 gText_CallRegisteredTrainer[];
 extern const u8 gText_CheckObtainedRibbons[];
+extern const u8 gText_Pokenav_AllowCalls[];
 extern const u8 gText_PutAwayPokenav[];
 extern const u8 gText_CheckPartyPokemonInDetail[];
 extern const u8 gText_CheckAllPokemonInDetail[];
@@ -2988,6 +2989,7 @@ extern const u8 gText_FindSmartPokemon[];
 extern const u8 gText_FindToughPokemon[];
 extern const u8 gText_ReturnToConditionMenu[];
 extern const u8 gText_NoRibbonWinners[];
+extern const u8 gText_Pokenav_AllowCallsYes[];
 
 // Pokenav
 extern const u8 gText_NumberIndex[];

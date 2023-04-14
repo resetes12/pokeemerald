@@ -4,6 +4,11 @@
 #include "main.h"
 #include "sound.h"
 #include "constants/songs.h"
+#include "task.h"
+#include "palette.h"
+#include "script.h"
+#include "overworld.h"
+#include "event_scripts.h"
 
 struct Pokenav_Menu
 {
@@ -37,7 +42,7 @@ static const u8 sLastCursorPositions[] =
     [POKENAV_MENU_TYPE_DEFAULT]           = 2,
     [POKENAV_MENU_TYPE_UNLOCK_MC]         = 3,
     [POKENAV_MENU_TYPE_UNLOCK_MC_RIBBONS] = 4,
-    [POKENAV_MENU_TYPE_CONDITION]         = 2,
+    [POKENAV_MENU_TYPE_CONDITION]         = 3,
     [POKENAV_MENU_TYPE_CONDITION_SEARCH]  = 5
 };
 
@@ -66,10 +71,11 @@ static const u8 sMenuItems[][MAX_POKENAV_MENUITEMS] =
     },
     [POKENAV_MENU_TYPE_CONDITION] =
     {
+        POKENAV_MENUITEM_CONDITION_ALLOW_MATCH_CALLS,
         POKENAV_MENUITEM_CONDITION_PARTY,
         POKENAV_MENUITEM_CONDITION_SEARCH,
         POKENAV_MENUITEM_CONDITION_CANCEL,
-        [3 ... MAX_POKENAV_MENUITEMS - 1] = POKENAV_MENUITEM_SWITCH_OFF
+        [4 ... MAX_POKENAV_MENUITEMS - 1] = POKENAV_MENUITEM_SWITCH_OFF
     },
     [POKENAV_MENU_TYPE_CONDITION_SEARCH] =
     {
@@ -146,7 +152,7 @@ bool32 PokenavCallback_Init_ConditionMenu(void)
 
     menu->menuType = POKENAV_MENU_TYPE_CONDITION;
     menu->cursorPos = 0;   //party
-    menu->currMenuItem = POKENAV_MENUITEM_CONDITION_PARTY;
+    menu->currMenuItem = POKENAV_MENUITEM_CONDITION_ALLOW_MATCH_CALLS;
     menu->helpBarIndex = HELPBAR_NONE;
     SetMenuInputHandler(menu);
     return TRUE;
@@ -338,6 +344,23 @@ static u32 HandleCantOpenRibbonsInput(struct Pokenav_Menu *menu)
     return POKENAV_MENU_FUNC_NONE;
 }
 
+static u32 HandleAllowMatchCalls(struct Pokenav_Menu *menu)
+{
+    if (UpdateMenuCursorPos(menu))
+    {
+        menu->callback = HandleConditionMenuInput;
+        return POKENAV_MENU_FUNC_MOVE_CURSOR;
+    }
+
+    if (JOY_NEW(A_BUTTON | B_BUTTON))
+    {
+        menu->callback = HandleConditionMenuInput;
+        return POKENAV_MENU_FUNC_RESHOW_DESCRIPTION;
+    }
+
+    return POKENAV_MENU_FUNC_NONE;
+}
+
 static u32 HandleConditionMenuInput(struct Pokenav_Menu *menu)
 {
     if (UpdateMenuCursorPos(menu))
@@ -353,6 +376,19 @@ static u32 HandleConditionMenuInput(struct Pokenav_Menu *menu)
             menu->currMenuItem = sMenuItems[POKENAV_MENU_TYPE_CONDITION_SEARCH][0];
             menu->callback = HandleConditionSearchMenuInput;
             return POKENAV_MENU_FUNC_OPEN_CONDITION_SEARCH;
+        case POKENAV_MENUITEM_CONDITION_ALLOW_MATCH_CALLS:
+            if (FlagGet(FLAG_HAS_MATCH_CALL) == TRUE)
+            {
+                PlaySE(SE_PC_OFF);
+                FlagClear(FLAG_HAS_MATCH_CALL);
+            }
+            else
+            {
+                PlaySE(SE_PC_ON);
+                FlagSet(FLAG_HAS_MATCH_CALL);
+            }
+            //menu->callback = HandleAllowMatchCalls;
+            return POKENAV_MENU_FUNC_ALLOW_MATCH_CALLS;
         case POKENAV_MENUITEM_CONDITION_PARTY:
             menu->helpBarIndex = 0;
             SetMenuIdAndCB(menu, POKENAV_CONDITION_GRAPH_PARTY);

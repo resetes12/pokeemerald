@@ -1444,7 +1444,7 @@
               {
                 "min_level": 14,
                 "max_level": 14,
-                "species": "SPECIES_POOCHYENA"
+                "species": "SPECIES_BUDEW"
               },
               {
                 "min_level": 14,
@@ -2014,12 +2014,12 @@
               {
                 "min_level": 8,
                 "max_level": 8,
-                "species": "SPECIES_MEDITITE"
+                "species": "SPECIES_GEODUDE"
               },
               {
                 "min_level": 6,
                 "max_level": 6,
-                "species": "SPECIES_MEDITITE"
+                "species": "SPECIES_GEODUDE"
               },
               {
                 "min_level": 9,
@@ -2078,7 +2078,7 @@
               {
                 "min_level": 10,
                 "max_level": 10,
-                "species": "SPECIES_MEDITITE"
+                "species": "SPECIES_SABLEYE"
               },
               {
                 "min_level": 10,
@@ -2231,7 +2231,7 @@
               {
                 "min_level": 36,
                 "max_level": 39,
-                "species": "SPECIES_MEDICHAM"
+                "species": "SPECIES_WHISMUR"
               }
             ]
           }
@@ -2467,7 +2467,7 @@
               {
                 "min_level": 10,
                 "max_level": 10,
-                "species": "SPECIES_MEDITITE"
+                "species": "SPECIES_SABLEYE"
               },
               {
                 "min_level": 11,
@@ -4497,22 +4497,22 @@
               {
                 "min_level": 27,
                 "max_level": 27,
-                "species": "SPECIES_WINGULL"
+                "species": "SPECIES_MEDITITE"
               },
               {
                 "min_level": 27,
                 "max_level": 27,
-                "species": "SPECIES_WINGULL"
+                "species": "SPECIES_MEDITITE"
               },
               {
                 "min_level": 26,
                 "max_level": 26,
-                "species": "SPECIES_WINGULL"
+                "species": "SPECIES_MEDITITE"
               },
               {
                 "min_level": 28,
                 "max_level": 28,
-                "species": "SPECIES_WINGULL"
+                "species": "SPECIES_MEDITITE"
               }
             ]
           }
@@ -4640,7 +4640,7 @@
               {
                 "min_level": 8,
                 "max_level": 8,
-                "species": "SPECIES_MEDITITE"
+                "species": "SPECIES_ARON"
               },
               {
                 "min_level": 7,
@@ -7396,7 +7396,7 @@
               {
                 "min_level": 44,
                 "max_level": 46,
-                "species": "SPECIES_GOLBAT"
+                "species": "SPECIES_MEDITITE"
               },
               {
                 "min_level": 44,
@@ -7426,7 +7426,7 @@
               {
                 "min_level": 46,
                 "max_level": 46,
-                "species": "SPECIES_LAIRON"
+                "species": "SPECIES_MEDICHAM"
               },
               {
                 "min_level": 44,
@@ -7495,7 +7495,7 @@
               {
                 "min_level": 44,
                 "max_level": 46,
-                "species": "SPECIES_GOLBAT"
+                "species": "SPECIES_MEDITITE"
               },
               {
                 "min_level": 42,
@@ -7505,7 +7505,7 @@
               {
                 "min_level": 44,
                 "max_level": 46,
-                "species": "SPECIES_MEDITITE"
+                "species": "SPECIES_MEDICHAM"
               },
               {
                 "min_level": 44,
