@@ -209,7 +209,8 @@ void NewGameInitData(void)
     WipeTrainerNameRecords();
     ResetTrainerHillResults();
     ResetContestLinkResults();
-    gSaveBlock2Ptr->expShare = 0;
+    gSaveBlock2Ptr->expShare = 0; //unused but not removed just in case
+    gSaveBlock2Ptr->autoRun = FALSE;
 
     if (difficultyPrev == DIFFICULTY_EASY)
         VarSet(VAR_DIFFICULTY, DIFFICULTY_EASY);

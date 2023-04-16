@@ -4,28 +4,29 @@ EventScript_CutTree::
 	goto_if_unset FLAG_BADGE01_GET, EventScript_CheckTreeCantCut
 	checkpartymove MOVE_CUT
 	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_CheckTreeCantCut
-	setfieldeffectargument 0, VAR_RESULT
+	@setfieldeffectargument 0, VAR_RESULT
 	bufferpartymonnick STR_VAR_1, VAR_RESULT
 	buffermovename STR_VAR_2, MOVE_CUT
-	msgbox Text_WantToCut, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, NO, EventScript_CancelCut
+	@msgbox Text_WantToCut, MSGBOX_YESNO
+	@goto_if_eq VAR_RESULT, NO, EventScript_CancelCut
 	msgbox Text_MonUsedFieldMove, MSGBOX_DEFAULT
 	closemessage
-	dofieldeffect FLDEFF_USE_CUT_ON_TREE
-	waitstate
+	@dofieldeffect FLDEFF_USE_CUT_ON_TREE
+	@waitstate
 	goto EventScript_CutTreeDown
 	end
 
 @ Use cut from party menu
 EventScript_UseCut::
 	lockall
-	dofieldeffect FLDEFF_USE_CUT_ON_TREE
-	waitstate
+	@dofieldeffect FLDEFF_USE_CUT_ON_TREE
+	@waitstate
 	goto EventScript_CutTreeDown
 	end
 
 EventScript_CutTreeDown::
 	applymovement VAR_LAST_TALKED, Movement_CutTreeDown
+	playse SE_M_CUT
 	waitmovement 0
 	removeobject VAR_LAST_TALKED
 	releaseall
@@ -63,28 +64,29 @@ EventScript_RockSmash::
 	goto_if_unset FLAG_BADGE03_GET, EventScript_CantSmashRock
 	checkpartymove MOVE_ROCK_SMASH
 	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_CantSmashRock
-	setfieldeffectargument 0, VAR_RESULT
+	@setfieldeffectargument 0, VAR_RESULT
 	bufferpartymonnick STR_VAR_1, VAR_RESULT
 	buffermovename STR_VAR_2, MOVE_ROCK_SMASH
-	msgbox Text_WantToSmash, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, NO, EventScript_CancelSmash
+	@msgbox Text_WantToSmash, MSGBOX_YESNO
+	@goto_if_eq VAR_RESULT, NO, EventScript_CancelSmash
 	msgbox Text_MonUsedFieldMove, MSGBOX_DEFAULT
 	closemessage
-	dofieldeffect FLDEFF_USE_ROCK_SMASH
-	waitstate
+	@dofieldeffect FLDEFF_USE_ROCK_SMASH
+	@waitstate
 	goto EventScript_SmashRock
 	end
 
 @ Use rock smash from party menu
 EventScript_UseRockSmash::
 	lockall
-	dofieldeffect FLDEFF_USE_ROCK_SMASH
-	waitstate
+	@dofieldeffect FLDEFF_USE_ROCK_SMASH
+	@waitstate
 	goto EventScript_SmashRock
 	end
 
 EventScript_SmashRock::
 	applymovement VAR_LAST_TALKED, Movement_SmashRock
+	playse SE_M_ROCK_THROW
 	waitmovement 0
 	removeobject VAR_LAST_TALKED
 	specialvar VAR_RESULT, TryUpdateRusturfTunnelState
@@ -128,18 +130,19 @@ EventScript_StrengthBoulder::
 	checkpartymove MOVE_STRENGTH
 	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_CantStrength
 	setfieldeffectargument 0, VAR_RESULT
-	msgbox Text_WantToStrength, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, NO, EventScript_CancelStrength
-	closemessage
-	dofieldeffect FLDEFF_USE_STRENGTH
-	waitstate
+	bufferpartymonnick STR_VAR_1, VAR_RESULT
+	@msgbox Text_WantToStrength, MSGBOX_YESNO
+	@goto_if_eq VAR_RESULT, NO, EventScript_CancelStrength
+	@closemessage
+	@dofieldeffect FLDEFF_USE_STRENGTH
+	@waitstate
 	goto EventScript_ActivateStrength
 	end
 
 EventScript_UseStrength::
 	lockall
-	dofieldeffect FLDEFF_USE_STRENGTH
-	waitstate
+	@dofieldeffect FLDEFF_USE_STRENGTH
+	@waitstate
 	goto EventScript_ActivateStrength
 	end
 
@@ -170,9 +173,7 @@ Text_WantToStrength:
 	.string "Would you like to use STRENGTH?$"
 
 Text_MonUsedStrength:
-	.string "{STR_VAR_1} used STRENGTH!\p"
-	.string "{STR_VAR_1}'s STRENGTH made it\n"
-	.string "possible to move boulders around!$"
+	.string "{STR_VAR_1} used STRENGTH!$"
 
 Text_CantStrength:
 	.string "It's a big boulder, but a POKéMON\n"
@@ -188,8 +189,8 @@ EventScript_UseWaterfall::
 	goto_if_eq VAR_RESULT, PARTY_SIZE, EventScript_CantWaterfall
 	bufferpartymonnick STR_VAR_1, VAR_RESULT
 	setfieldeffectargument 0, VAR_RESULT
-	msgbox Text_WantToWaterfall, MSGBOX_YESNO
-	goto_if_eq VAR_RESULT, NO, EventScript_EndWaterfall
+	@msgbox Text_WantToWaterfall, MSGBOX_YESNO
+	@goto_if_eq VAR_RESULT, NO, EventScript_EndWaterfall
 	msgbox Text_MonUsedWaterfall, MSGBOX_DEFAULT
 	dofieldeffect FLDEFF_USE_WATERFALL
 	goto EventScript_EndWaterfall
