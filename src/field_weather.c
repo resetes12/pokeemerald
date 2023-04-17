@@ -493,7 +493,9 @@ static void ApplyColorMap(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex)
         // Loop through the specified palette range and apply necessary color maps.
         while (curPalIndex < numPalettes)
         {
-            if (sPaletteColorMapTypes[curPalIndex] == COLOR_MAP_NONE)
+            // don't blend special palettes immune to blending
+            if (sPaletteColorMapTypes[curPalIndex] == COLOR_MAP_NONE ||
+                (curPalIndex >= 16 && GetSpritePaletteTagByPaletteNum(curPalIndex - 16) >> 15))
             {
                 // No palette change.
                 palOffset += 16;
@@ -502,10 +504,7 @@ static void ApplyColorMap(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex)
             {
                 u8 r, g, b;
 
-                // don't blend special sprite palette tags
-                if (sPaletteColorMapTypes[curPalIndex] == COLOR_MAP_CONTRAST ||
-                    (curPalIndex >= 16 && (curPalIndex - 16 == gWeatherPtr->contrastColorMapSpritePalIndex ||
-                        GetSpritePaletteTagByPaletteNum(curPalIndex - 16) >> 15)))
+                if (sPaletteColorMapTypes[curPalIndex] == COLOR_MAP_CONTRAST || curPalIndex - 16 == gWeatherPtr->contrastColorMapSpritePalIndex)
                     colorMap = gWeatherPtr->contrastColorMaps[colorMapIndex];
                 else
                     colorMap = gWeatherPtr->darkenedContrastColorMaps[colorMapIndex];
