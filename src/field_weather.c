@@ -493,7 +493,9 @@ static void ApplyColorMap(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex)
         // Loop through the specified palette range and apply necessary color maps.
         while (curPalIndex < numPalettes)
         {
-            if (sPaletteColorMapTypes[curPalIndex] == COLOR_MAP_NONE)
+            // don't blend special palettes immune to blending
+            if (sPaletteColorMapTypes[curPalIndex] == COLOR_MAP_NONE ||
+                (curPalIndex >= 16 && GetSpritePaletteTagByPaletteNum(curPalIndex - 16) >> 15))
             {
                 // No palette change.
                 palOffset += 16;
@@ -502,10 +504,7 @@ static void ApplyColorMap(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex)
             {
                 u8 r, g, b;
 
-                // don't blend special sprite palette tags
-                if (sPaletteColorMapTypes[curPalIndex] == COLOR_MAP_CONTRAST ||
-                    (curPalIndex >= 16 && (curPalIndex - 16 == gWeatherPtr->contrastColorMapSpritePalIndex ||
-                        GetSpritePaletteTagByPaletteNum(curPalIndex - 16) >> 15)))
+                if (sPaletteColorMapTypes[curPalIndex] == COLOR_MAP_CONTRAST || curPalIndex - 16 == gWeatherPtr->contrastColorMapSpritePalIndex)
                     colorMap = gWeatherPtr->contrastColorMaps[colorMapIndex];
                 else
                     colorMap = gWeatherPtr->darkenedContrastColorMaps[colorMapIndex];
@@ -673,56 +672,27 @@ static void ApplyDroughtColorMapWithBlend(s8 colorMapIndex, u8 blendCoeff, u16 b
     }
 }
 
-static void ApplyFogBlend(u8 blendCoeff, u16 blendColor) // TODO: Optimize this with time blending
+// This is only called during fade-in/fade-out in fog
+// blendCoeff & blendColor are the *fade* colors, not fog colors
+static void ApplyFogBlend(u8 blendCoeff, u16 blendColor)
 {
-    struct RGBColor color;
-    u8 rBlend;
-    u8 gBlend;
-    u8 bBlend;
-    u16 curPalIndex;
+    u32 curPalIndex;
+    u16 fogCoeff = min((gTimeOfDay + 1) * 4, 12);
 
     // First blend all palettes with time
     UpdateAltBgPalettes(PALETTES_BG);
-    CpuFastCopy(gPlttBufferUnfaded, gPlttBufferFaded, 0x400);
+    CpuFastCopy(gPlttBufferUnfaded, gPlttBufferFaded, PLTT_BUFFER_SIZE * 2);
     UpdatePalettesWithTime(PALETTES_ALL);
-    // Then blend tile palettes [0, 12] faded->faded
+    // Then blend tile palettes [0, 12] faded->faded with fadeIn color
     BlendPalettesFine(0x1FFF, gPlttBufferFaded, gPlttBufferFaded, blendCoeff, blendColor);
-    color = *(struct RGBColor *)&blendColor;
-    rBlend = color.r;
-    gBlend = color.g;
-    bBlend = color.b;
 
-    for (curPalIndex = 16; curPalIndex < 32; curPalIndex++)
-    {
+    // Do fog blending on marked sprite palettes
+    for (curPalIndex = 16; curPalIndex < 32; curPalIndex++) {
         if (LightenSpritePaletteInFog(curPalIndex))
-        {
-            u16 palEnd = (curPalIndex + 1) * 16;
-            u16 palOffset = curPalIndex * 16;
-
-            while (palOffset < palEnd)
-            {
-                struct RGBColor color = *(struct RGBColor *)&gPlttBufferFaded[palOffset];
-                u8 r = color.r;
-                u8 g = color.g;
-                u8 b = color.b;
-
-                r += ((28 - r) * 3) >> 2;
-                g += ((31 - g) * 3) >> 2;
-                b += ((28 - b) * 3) >> 2;
-
-                r += ((rBlend - r) * blendCoeff) >> 4;
-                g += ((gBlend - g) * blendCoeff) >> 4;
-                b += ((bBlend - b) * blendCoeff) >> 4;
-
-                gPlttBufferFaded[palOffset] = RGB2(r, g, b);
-                palOffset++;
-            }
-        }
-        else
-        {
-            BlendPalettesFine(1, gPlttBufferFaded + curPalIndex * 16, gPlttBufferFaded + curPalIndex * 16, blendCoeff, blendColor);
-        }
+            BlendPalettesFine(1, gPlttBufferFaded + PLTT_ID(curPalIndex), gPlttBufferFaded + PLTT_ID(curPalIndex), fogCoeff, RGB(28, 31, 28));
     }
+    // Finally blend all sprite palettes faded->faded with fadeIn color
+    BlendPalettesFine(PALETTES_OBJECTS, gPlttBufferFaded, gPlttBufferFaded, blendCoeff, blendColor);
 }
 
 static void MarkFogSpritePalToLighten(u8 paletteIndex)
@@ -737,6 +707,9 @@ static void MarkFogSpritePalToLighten(u8 paletteIndex)
 static bool8 LightenSpritePaletteInFog(u8 paletteIndex)
 {
     u16 i;
+
+    if (paletteIndex >= 16 && (GetSpritePaletteTagByPaletteNum(i - 16) >> 15)) // don't blend specialpalette tags
+        return FALSE;
 
     for (i = 0; i < gWeatherPtr->lightenedFogSpritePalsCount; i++)
     {
@@ -880,20 +853,21 @@ void UpdateSpritePaletteWithWeather(u8 spritePaletteIndex, bool8 allowFog)
     default:
         if (gWeatherPtr->currWeather != WEATHER_FOG_HORIZONTAL) {
             if (gWeatherPtr->colorMapIndex)
-              ApplyColorMap(paletteIndex, 1, gWeatherPtr->colorMapIndex);
+                ApplyColorMap(paletteIndex, 1, gWeatherPtr->colorMapIndex);
             else
-              UpdateSpritePaletteWithTime(spritePaletteIndex);
+                UpdateSpritePaletteWithTime(spritePaletteIndex);
         } else { // In horizontal fog, only specific palettes should be fog-blended
-          if (allowFog) {
-            paletteIndex = PLTT_ID(paletteIndex);
-            // First blend with time
-            CpuFastCopy(gPlttBufferUnfaded + paletteIndex, gPlttBufferFaded + paletteIndex, 32);
-            UpdateSpritePaletteWithTime(spritePaletteIndex);
-            // Then blend faded->faded
-            BlendPalettesFine(1 << (spritePaletteIndex + 16), gPlttBufferFaded + paletteIndex, gPlttBufferFaded + paletteIndex, 12, RGB(28, 31, 28));
-          } else { // Otherwise, just time-blend the palette
-              UpdateSpritePaletteWithTime(spritePaletteIndex);
-          }
+            if (allowFog) {
+                i = min((gTimeOfDay + 1) * 4, 12); // fog coeff, highest in day and lowest at night
+                paletteIndex = PLTT_ID(paletteIndex);
+                // First blend with time
+                CpuFastCopy(gPlttBufferUnfaded + paletteIndex, gPlttBufferFaded + paletteIndex, PLTT_SIZE_4BPP);
+                UpdateSpritePaletteWithTime(spritePaletteIndex);
+                // Then blend faded->faded with fog coeff
+                BlendPalettesFine(1, gPlttBufferFaded + paletteIndex, gPlttBufferFaded + paletteIndex, i, RGB(28, 31, 28));
+            } else { // Otherwise, just time-blend the palette
+                UpdateSpritePaletteWithTime(spritePaletteIndex);
+            }
         }
         break;
     }
