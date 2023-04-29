@@ -229,6 +229,8 @@ gScriptCmdTable::
 	.4byte ScrCmd_bufferitemnameplural      @ 0xe2
 	.4byte ScrCmd_checkpcspace              @ 0xe3
 	.4byte ScrCmd_checkpartymon             @ 0xe4
+	.4byte ScrCmd_calculatemonstats         @ 0xe5
+	.4byte ScrCmd_deleteparty               @ 0xe6
 
 gScriptCmdTableEnd::
 	.4byte ScrCmd_nop

@@ -121,6 +121,7 @@ BattleFrontier_BattleTowerLobby_EventScript_AskSaveBattle::
 	message BattleFrontier_BattleTowerLobby_Text_RecordWillBeSaved
 	waitmessage
 	frontier_checkairshow
+	clearflag FLAG_LIMIT_TO_50
 	special LoadPlayerParty
 	special HealPlayerParty
 	tower_save 0
@@ -219,6 +220,8 @@ BattleFrontier_BattleTowerLobby_EventScript_SaveBeforeSinglesChallenge::
 	tower_set TOWER_DATA_WIN_STREAK_ACTIVE, TRUE
 	frontier_set FRONTIER_DATA_PAUSED, FALSE
 	special LoadPlayerParty
+	setflag FLAG_LIMIT_TO_50
+	calculatemonstats
 	closemessage
 	delay 2
 	call Common_EventScript_SaveGame
@@ -576,6 +579,7 @@ BattleFrontier_BattleTowerLobby_EventScript_CancelChallengeSaveFailed::
 	end
 
 BattleFrontier_BattleTowerLobby_EventScript_LoadPartyCancelChallenge::
+	clearflag FLAG_LIMIT_TO_50
 	special LoadPlayerParty
 BattleFrontier_BattleTowerLobby_EventScript_CancelChallenge::
 	special CloseLink
@@ -585,7 +589,7 @@ BattleFrontier_BattleTowerLobby_EventScript_EndCancelChallenge::
 	end
 
 BattleFrontier_BattleTowerLobby_EventScript_EnterElevator::
-	special SavePlayerParty
+	@special SavePlayerParty
 	setvar VAR_0x8004, FRONTIER_UTIL_FUNC_SET_PARTY_ORDER
 	call BattleFrontier_BattleTowerLobby_EventScript_GetPartySize
 	special CallFrontierUtilFunc

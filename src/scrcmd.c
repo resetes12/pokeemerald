@@ -31,6 +31,7 @@
 #include "palette.h"
 #include "party_menu.h"
 #include "pokemon_storage_system.h"
+#include "pokemon.h"
 #include "random.h"
 #include "overworld.h"
 #include "rotating_tile_puzzle.h"
@@ -2356,4 +2357,19 @@ bool8 ScrCmd_checkpartymon(struct ScriptContext *ctx)
         gSpecialVar_Result = TRUE;
     else
         gSpecialVar_Result = FALSE;
+}
+
+bool8 ScrCmd_calculatemonstats(void)
+{
+    s32 i;
+    for (i = 0; i < PARTY_SIZE; i++)
+        CalculateMonStats(&gPlayerParty[i]);
+}
+
+
+bool8 ScrCmd_deleteparty(void)
+{
+    s32 i;
+    for (i = 0; i < PARTY_SIZE; i++)
+        ZeroMonData(&gPlayerParty[i]);
 }

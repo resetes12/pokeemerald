@@ -1743,6 +1743,16 @@
     .2byte \level
     .endm
 
+	@ re-calculates mon party
+    .macro calculatemonstats
+    .byte 0xe5
+    .endm
+
+	@ deletesparty
+    .macro deleteparty
+    .byte 0xe6
+    .endm
+
 @ Supplementary
 
 	.macro goto_if_unset flag:req, dest:req
