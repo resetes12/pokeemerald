@@ -66,7 +66,6 @@
 #include "constants/songs.h"
 #include "constants/trainer_hill.h"
 #include "constants/weather.h"
-#include "dns.h"
 #include "tx_randomizer_and_challenges.h"
 #include "pokemon_storage_system.h" //tx_randomizer_and_challenges
 #include "item.h"
@@ -1510,7 +1509,6 @@ void CB1_Overworld(void)
 
 static void OverworldBasic(void)
 {
-    DnsApplyFilters();
     ScriptContext_RunScript();
     RunTasks();
     AnimateSprites();

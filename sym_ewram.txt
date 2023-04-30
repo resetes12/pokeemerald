@@ -149,7 +149,6 @@
 	.include "src/trainer_hill.o"
 	.include "src/rayquaza_scene.o"
 	.include "src/debug.o"
-	.include "src/dns.o"
 	.include "src/tx_rac_menu.o"
 	.include "src/tx_randomizer_and_challenges.o"
 	.include "src/starter_choose.o"

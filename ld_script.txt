@@ -344,7 +344,6 @@ SECTIONS {
         src/gym_leader_rematch.o(.text);
         src/battle_transition_frontier.o(.text);
         src/international_string_util.o(.text);
-        src/dns.o(.text);
         src/tx_rac_menu.o(.text);
         src/tx_randomizer_and_challenges.o(.text);
     } =0
@@ -713,7 +712,6 @@ SECTIONS {
         data/sound_data.o(.rodata);
         src/tx_rac_menu.o(.rodata);
         src/tx_randomizer_and_challenges.o(.rodata);
-        src/dns.o(.rodata);
     } =0
 
     song_data :
