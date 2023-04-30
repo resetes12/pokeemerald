@@ -1415,5 +1415,40 @@ const struct Decoration gDecorations[] =
         .description = DecorDesc_WAILMER_DOLL,
         .tiles = DecorGfx_WAILMER_DOLL,
     },
+    
+    [DECOR_REGIROCK_DOLL] =
+    {
+        .id = DECOR_REGIROCK_DOLL,
+        .name = _("REGIROCK DOLL"),
+        .permission = DECORPERM_SPRITE,
+        .shape = DECORSHAPE_1x2,
+        .category = DECORCAT_DOLL,
+        .price = 10000,
+        .description = DecorDesc_REGIROCK_DOLL,
+        .tiles = DecorGfx_REGIROCK_DOLL,
+    },
 
+    [DECOR_REGICE_DOLL] =
+    {
+        .id = DECOR_REGICE_DOLL,
+        .name = _("REGICE DOLL"),
+        .permission = DECORPERM_SPRITE,
+        .shape = DECORSHAPE_1x2,
+        .category = DECORCAT_DOLL,
+        .price = 10000,
+        .description = DecorDesc_REGICE_DOLL,
+        .tiles = DecorGfx_REGICE_DOLL,
+    },
+
+    [DECOR_REGISTEEL_DOLL] =
+    {
+        .id = DECOR_REGISTEEL_DOLL,
+        .name = _("REGISTEEL DOLL"),
+        .permission = DECORPERM_SPRITE,
+        .shape = DECORSHAPE_1x2,
+        .category = DECORCAT_DOLL,
+        .price = 10000,
+        .description = DecorDesc_REGISTEEL_DOLL,
+        .tiles = DecorGfx_REGISTEEL_DOLL,
+    }
 };

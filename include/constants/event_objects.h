@@ -77,12 +77,12 @@
 #define OBJ_EVENT_GFX_SPENSER                     73
 #define OBJ_EVENT_GFX_NOLAND                      74
 #define OBJ_EVENT_GFX_LUCY                        75
-#define OBJ_EVENT_GFX_CELEBI                      76 //OBJ_EVENT_GFX_UNUSED_NATU_DOLL
-#define OBJ_EVENT_GFX_SUICUNE                     77 //OBJ_EVENT_GFX_UNUSED_MAGNEMITE_DOLL
-#define OBJ_EVENT_GFX_RAIKOU                      78 //OBJ_EVENT_GFX_UNUSED_SQUIRTLE_DOLL
-#define OBJ_EVENT_GFX_ENTEI                       79 //OBJ_EVENT_GFX_UNUSED_WOOPER_DOLL
-#define OBJ_EVENT_GFX_JIRACHI                     80 //OBJ_EVENT_GFX_UNUSED_PIKACHU_DOLL
-#define OBJ_EVENT_GFX_MEWTWO                      81 //OBJ_EVENT_GFX_UNUSED_PORYGON2_DOLL
+#define OBJ_EVENT_GFX_UNUSED_NATU_DOLL            76
+#define OBJ_EVENT_GFX_UNUSED_MAGNEMITE_DOLL       77
+#define OBJ_EVENT_GFX_UNUSED_SQUIRTLE_DOLL        78
+#define OBJ_EVENT_GFX_UNUSED_WOOPER_DOLL          79
+#define OBJ_EVENT_GFX_UNUSED_PIKACHU_DOLL         80
+#define OBJ_EVENT_GFX_UNUSED_PORYGON2_DOLL        81
 #define OBJ_EVENT_GFX_CUTTABLE_TREE               82
 #define OBJ_EVENT_GFX_MART_EMPLOYEE               83
 #define OBJ_EVENT_GFX_ROOFTOP_SALE_WOMAN          84
@@ -185,9 +185,9 @@
 #define OBJ_EVENT_GFX_BIG_CHARIZARD_DOLL         181
 #define OBJ_EVENT_GFX_BIG_BLASTOISE_DOLL         182
 #define OBJ_EVENT_GFX_BIG_WAILMER_DOLL           183
-#define OBJ_EVENT_GFX_ARTICUNO                   184 //OBJ_EVENT_GFX_BIG_REGIROCK_DOLL
-#define OBJ_EVENT_GFX_ZAPDOS                     185 //OBJ_EVENT_GFX_BIG_REGICE_DOLL
-#define OBJ_EVENT_GFX_MOLTRES                    186 //OBJ_EVENT_GFX_BIG_REGISTEEL_DOLL
+#define OBJ_EVENT_GFX_BIG_REGIROCK_DOLL          184
+#define OBJ_EVENT_GFX_BIG_REGICE_DOLL            185
+#define OBJ_EVENT_GFX_BIG_REGISTEEL_DOLL         186
 #define OBJ_EVENT_GFX_LATIAS                     187
 #define OBJ_EVENT_GFX_LATIOS                     188
 #define OBJ_EVENT_GFX_GAMEBOY_KID                189
@@ -287,6 +287,9 @@
 #define TRACKS_BIKE_TIRE  2
 
 #define FIRST_DECORATION_SPRITE_GFX OBJ_EVENT_GFX_PICHU_DOLL
+
+#define OBJ_KIND_NORMAL 0
+#define OBJ_KIND_CLONE  255 // Exclusive to FRLG
 
 // Special object event local ids
 #define OBJ_EVENT_ID_PLAYER 0xFF
