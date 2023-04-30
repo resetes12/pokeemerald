@@ -3,6 +3,7 @@
 SafariZone_South_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, SafariZone_South_OnTransition
 	map_script MAP_SCRIPT_ON_FRAME_TABLE, SafariZone_South_OnFrame
+	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
 	.byte 0
 
 SafariZone_South_OnFrame:
@@ -21,6 +22,7 @@ SafariZone_South_EventScript_EnterSafariZone::
 	end
 
 SafariZone_South_OnTransition:
+	callnative SetTimeBasedEncounters
 	call_if_eq VAR_SAFARI_ZONE_STATE, 2, SafariZone_South_EventScript_SetExitAttendantAside
 	end
 

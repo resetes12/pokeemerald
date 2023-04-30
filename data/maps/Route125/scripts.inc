@@ -2,9 +2,11 @@ Route125_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, Route125_OnTransition
 	map_script MAP_SCRIPT_ON_LOAD, Route125_OnLoad
 	map_script MAP_SCRIPT_ON_FRAME_TABLE, Route125_OnFrame
+	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
 	.byte 0
 
 Route125_OnTransition:
+	callnative SetTimeBasedEncounters
 	call_if_set FLAG_SYS_WEATHER_CTRL, Common_EventScript_SetAbnormalWeather
 	call_if_eq VAR_SHOULD_END_ABNORMAL_WEATHER, 1, AbnormalWeather_EventScript_HideMapNamePopup
 	call_if_eq VAR_ABNORMAL_WEATHER_LOCATION, ABNORMAL_WEATHER_ROUTE_125_WEST, AbnormalWeather_StartKyogreWeather

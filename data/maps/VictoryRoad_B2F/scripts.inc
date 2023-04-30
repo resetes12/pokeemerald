@@ -6,6 +6,7 @@ VictoryRoad_B2F_MapScripts::
 	.byte 0
 
 VictoryRoad_B2F_OnResume:
+	callnative SetTimeBasedEncounters
 	call_if_set FLAG_SYS_CTRL_OBJ_DELETE, VictoryRoad_B2F_EventScript_TryRemoveMoltres
 	end
 
@@ -16,6 +17,7 @@ VictoryRoad_B2F_EventScript_TryRemoveMoltres::
 	return
 
 VictoryRoad_B2F_OnTransition:
+	callnative SetTimeBasedEncounters
 	call_if_unset FLAG_UNLOCK_BIRDS, VictoryRoad_B2F_EventScript_HideMoltres
 	call_if_unset FLAG_DEFEATED_MOLTRES, VictoryRoad_B2F_EventScript_ShowMoltres
 	end

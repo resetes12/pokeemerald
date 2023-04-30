@@ -1002,8 +1002,8 @@ static const struct InGameTrade sIngameTrades[] =
     },
     [INGAME_TRADE_PLUSLE] =
     {
-        .nickname = _("PORY G"),
-        .species = SPECIES_PORYGON,
+        .nickname = _("CHING"),
+        .species = SPECIES_CHINGLING,
         .ivs = {4, 4, 4, 5, 5, 4},
         .abilityNum = 0,
         .otId = 73996,
@@ -1012,7 +1012,7 @@ static const struct InGameTrade sIngameTrades[] =
         .heldItem = ITEM_WOOD_MAIL,
         .mailNum = 0,
         .otName = _("ROMAN"),
-        .otGender = MALE,
+        .otGender = FEMALE,
         .sheen = 10,
         .requestedSpecies = SPECIES_VOLBEAT
     },

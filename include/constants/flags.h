@@ -56,13 +56,13 @@
 #define FLAG_WONDERTRADE_FIRSTIME       0x2C 
 #define FLAG_WONDERTRADE_EVENT      0x2D 
 #define FLAG_GLACIA_REMATCH  0x2E //Elite Four Rematch 3
-#define FLAG_CAVE_SCALE      0x2F 
+#define FLAG_DOME_FOSSIL_ALTERING_CAVE      0x2F 
 #define FLAG_CAVE_MOONSTONE  0x30 
 #define FLAG_CAVE_SUNSTONE   0x31 
 #define FLAG_EV_MAN_FIRSTIME        0x32
 #define FLAG_MINT_LILYCOVE   0x33
 #define FLAG_MINT_BF         0x34 
-#define FLAG_MINT_ALTERING   0x35 
+#define FLAG_HELIX_FOSSIL_ALTERING   0x35 
 #define FLAG_MINT_SANDTOWER  0x36
 #define FLAG_DRAKE_REMATCH   0x37 //Elite Four Rematch 4
 #define FLAG_WALLACE_REMATCH 0x38 //Elite Four Rematch 5, Champion
@@ -97,7 +97,7 @@
 #define FLAG_LEGENDARIES_IN_SOOTOPOLIS           0x53
 
 #define FLAG_LIMIT_TO_50                     0x54
-#define FLAG_UNUSED_0x055                    0x55  // Unused Flag
+#define FLAG_MODERN_SPAWNS               0x55  // Unused Flag
 
 #define FLAG_HIDE_CONTEST_POKE_BALL          0x56  // Always set after new game, object it hides is added directly
 #define FLAG_MET_RIVAL_MOM                   0x57
@@ -118,7 +118,7 @@
 #define FLAG_MOSSDEEP_GYM_SWITCH_3           0x66 //
 #define FLAG_MOSSDEEP_GYM_SWITCH_4           0x67 //
 
-#define FLAG_UNUSED_0x068                    0x68  // Unused Flag
+#define FLAG_OLD_AMBER_ALTERING_CAVE                    0x68  // Unused Flag
 
 #define FLAG_OCEANIC_MUSEUM_MET_REPORTER     0x69
 #define FLAG_RECEIVED_HM04                   0x6A

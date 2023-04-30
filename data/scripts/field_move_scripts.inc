@@ -288,3 +288,7 @@ EventScript_FailSweetScent::
 
 Text_FailSweetScent:
 	.string "Looks like there's nothing here…$"
+
+SetTimeEncounters::
+	callnative SetTimeBasedEncounters
+	return

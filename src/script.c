@@ -5,6 +5,7 @@
 #include "util.h"
 #include "constants/event_objects.h"
 #include "constants/map_scripts.h"
+#include "rtc.h"
 
 #define RAM_SCRIPT_MAGIC 51
 
@@ -478,3 +479,24 @@ void InitRamScript_NoObjectEvent(u8 *script, u16 scriptSize)
         scriptSize = sizeof(gSaveBlock1Ptr->ramScript.data.script);
     InitRamScript(script, scriptSize, MAP_GROUP(UNDEFINED), MAP_NUM(UNDEFINED), NO_OBJECT);
 }
+
+void SetTimeBasedEncounters(void)
+{
+	RtcCalcLocalTime();
+    if (FlagGet(FLAG_MODERN_SPAWNS) && (gLocalTime.hours >= 6 && gLocalTime.hours <= 19))
+    {
+		VarSet(VAR_TIME_BASED_ENCOUNTER, 3); // Modern Spawns, Day
+	}
+    else if (FlagGet(FLAG_MODERN_SPAWNS))
+    {
+		VarSet(VAR_TIME_BASED_ENCOUNTER, 4); // Modern Spawns, Night
+	}
+	else if (gLocalTime.hours >= 6 && gLocalTime.hours <= 19)
+	{
+		VarSet(VAR_TIME_BASED_ENCOUNTER, 1); // Day
+	}
+	else
+    {
+		VarSet(VAR_TIME_BASED_ENCOUNTER, 2); // Night
+	}
+}    

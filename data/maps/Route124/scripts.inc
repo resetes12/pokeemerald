@@ -1,8 +1,10 @@
 Route124_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, Route124_OnTransition
+	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
 	.byte 0
 
 Route124_OnTransition:
+	callnative SetTimeBasedEncounters
 	call_if_set FLAG_SYS_WEATHER_CTRL, Common_EventScript_SetAbnormalWeather
 	end
 

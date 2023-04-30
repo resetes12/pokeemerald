@@ -1,8 +1,10 @@
 Route134_MapScripts::
 	map_script MAP_SCRIPT_ON_RESUME, Route134_OnResume
+	map_script MAP_SCRIPT_ON_TRANSITION, SetTimeEncounters
 	.byte 0
 
 Route134_OnResume:
+	callnative SetTimeBasedEncounters
 	setdivewarp MAP_UNDERWATER_ROUTE134, 8, 6
 	end
 

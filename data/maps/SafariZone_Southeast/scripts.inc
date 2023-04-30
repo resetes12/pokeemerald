@@ -1,6 +1,8 @@
 .set LOCALID_MANTYKEMAN, 7
 
 SafariZone_Southeast_MapScripts::
+	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
+	map_script MAP_SCRIPT_ON_TRANSITION, SetTimeEncounters
 	.byte 0
 
 SafariZone_Southeast_GliscorEvo::

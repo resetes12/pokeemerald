@@ -10,10 +10,12 @@ Route110_MapScripts::
 	.byte 0
 
 Route110_OnResume:
+	callnative SetTimeBasedEncounters
 	special UpdateCyclingRoadState
 	end
 
 Route110_OnTransition:
+	callnative SetTimeBasedEncounters
 	call Common_EventScript_SetupRivalGfxId
 	call Common_EventScript_SetupRivalOnBikeGfxId
 	call_if_eq VAR_CYCLING_CHALLENGE_STATE, 1, Route110_EventScript_SaveCyclingMusic

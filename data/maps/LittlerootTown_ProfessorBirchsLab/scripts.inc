@@ -216,6 +216,20 @@ LittlerootTown_ProfessorBirchsLab_EventScript_UpgradeToNationalDex::
 	setflag FLAG_ENABLE_SHIP_BIRTH_ISLAND
 	setflag FLAG_ENABLE_SHIP_FARAWAY_ISLAND
 	special EnableNationalPokedex
+	goto_if_set FLAG_MODERN_SPAWNS, LittlerootTown_ProfessorBirchsLab_EventScript_IHadDoneThat
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_GrassyPatchWaiting2, MSGBOX_DEFAULT
+	closemessage
+	setflag FLAG_HIDE_LITTLEROOT_TOWN_BIRCH
+	setflag FLAG_HIDE_LITTLEROOT_TOWN_RIVAL
+	setvar VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 2
+	setvar VAR_SCOTT_BF_CALL_STEP_COUNTER, 0
+	setflag FLAG_SCOTT_CALL_BATTLE_FRONTIER
+	releaseall
+	end
+
+LittlerootTown_ProfessorBirchsLab_EventScript_IHadDoneThat::
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_IHadDoneThat, MSGBOX_DEFAULT
+	closemessage
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_GrassyPatchWaiting2, MSGBOX_DEFAULT
 	closemessage
 	setflag FLAG_HIDE_LITTLEROOT_TOWN_BIRCH
@@ -611,8 +625,14 @@ LittlerootTown_ProfessorBirchsLab_EventScript_ReceivePokedex::
 	waitfanfare
 	setflag FLAG_SYS_POKEDEX_GET
 	special SetUnlockedPokedexFlags
+	goto_if_set FLAG_MODERN_SPAWNS, LittlerootTown_ProfessorBirchsLab_EventScript_ReceivePokedexAltered
 	setflag FLAG_RECEIVED_POKEDEX_FROM_BIRCH
 	setvar VAR_CABLE_CLUB_TUTORIAL_STATE, 1
+	return
+
+LittlerootTown_ProfessorBirchsLab_EventScript_ReceivePokedexAltered::
+	setflag FLAG_SYS_NATIONAL_DEX
+	special EnableNationalPokedex
 	return
 
 LittlerootTown_ProfessorBirchsLab_EventScript_PokemonAwait::
@@ -924,6 +944,12 @@ LittlerootTown_ProfessorBirchsLab_Text_BrendanYouCanThankMe:
 
 LittlerootTown_ProfessorBirchsLab_Text_OkayAllDone:
 	.string "PROF. BIRCH: Okay, all done!$"
+
+LittlerootTown_ProfessorBirchsLab_Text_IHadDoneThat:
+	.string "PROF. BIRCH: Wait, what do you mean\n"
+	.string "you have the NATIONAL POKéDEX?\p"
+	.string "I had already upgraded it?\n"
+	.string "Oh well... Doesn't matter.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_PokedexUpgradedToNational:
 	.string "{PLAYER}'s POKéDEX was upgraded\n"

@@ -4,10 +4,12 @@ Route113_MapScripts::
 	.byte 0
 
 Route113_OnResume:
+	callnative SetTimeBasedEncounters
 	setstepcallback STEP_CB_ASH
 	end
 
 Route113_OnTransition:
+	callnative SetTimeBasedEncounters
 	clearflag FLAG_FORCE_MIRAGE_TOWER_VISIBLE
 	call Route113_EventScript_CheckSetAshWeather
 	end

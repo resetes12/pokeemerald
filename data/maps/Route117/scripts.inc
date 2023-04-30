@@ -2,9 +2,11 @@
 
 Route117_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, Route117_OnTransition
+	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
 	.byte 0
 
 Route117_OnTransition:
+	callnative SetTimeBasedEncounters
 	call Route117_EventScript_TryMoveDayCareMan
 	end
 

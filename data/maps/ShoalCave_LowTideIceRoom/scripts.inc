@@ -1,9 +1,11 @@
 
 ShoalCave_LowTideIceRoom_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, ShoalCave_LowTideIceRoom_OnTransition
+	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
 	.byte 0
 
 ShoalCave_LowTideIceRoom_OnTransition::
+	callnative SetTimeBasedEncounters
 	goto_if_set FLAG_SUICUNE, ShoalCave_LowTideIceRoom_Show
 	goto_if_unset FLAG_DEFEATED_LUGIA, ShoalCave_LowTideIceRoom_HideSuicune
 	end

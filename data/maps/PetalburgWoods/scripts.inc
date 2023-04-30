@@ -4,9 +4,11 @@
 
 PetalburgWoods_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, PetalburgWoods_OnTransition
+	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
 	.byte 0
 
 PetalburgWoods_OnTransition::
+	callnative SetTimeBasedEncounters
 	call_if_unset FLAG_IS_CHAMPION, PetalburgWoods_NoCelebiEvent
 	call_if_set FLAG_IS_CHAMPION, PetalburgWoods_YesCelebiEvent
 	end
