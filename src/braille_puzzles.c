@@ -92,11 +92,11 @@ void DoBrailleDigEffect(void)
 bool8 CheckRelicanthWailord(void)
 {
     // First comes Magnezone
-    if (GetMonData(&gPlayerParty[0], MON_DATA_SPECIES2, 0) == SPECIES_MAGNEZONE)
+    if (GetMonData(&gPlayerParty[0], MON_DATA_SPECIES_OR_EGG, 0) == SPECIES_MAGNEZONE)
     {
         CalculatePlayerPartyCount();
         // Last comes Vibrava
-        if (GetMonData(&gPlayerParty[gPlayerPartyCount - 1], MON_DATA_SPECIES2, 0) == SPECIES_VIBRAVA)
+        if (GetMonData(&gPlayerParty[gPlayerPartyCount - 1], MON_DATA_SPECIES_OR_EGG, 0) == SPECIES_VIBRAVA)
             return TRUE;
     }
     return FALSE;
