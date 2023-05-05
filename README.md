@@ -4,8 +4,35 @@ This is a decompilation of Pokémon Emerald, edited to be Pokémon Modern Emeral
 You can get more information about Modern Emerald at [Pokecommunity](https://www.pokecommunity.com/showthread.php?t=494005)
 
 
-It builds the following ROM:
+This fork tries to maintain vanilla compatibility whenever possible. It doesn't increase the size of any save data structure or the object event structure.
 
-* [**pokeemerald.gba**](https://datomatic.no-intro.org/index.php?page=show_record&s=23&n=1961) `sha1: f3ae088181bf583e55daf962a92bb46f4f1d07b7`
+There are several branches, each with one main feature (and sometimes some extra stuff):
+
+**followers** branch:
+* [HGSS-style pokémon followers](https://bulbapedia.bulbagarden.net/wiki/Walking_Pok%C3%A9mon#Pok.C3.A9mon_HeartGold_and_SoulSilver) for all 386 pokémon, including emotes, the 28 Unown forms and a majority of follower messages.
+* Dynamic overworld palettes & reflections compatible with vanilla berry trees.
+* PID (but not legitimacy) preserving Pokémon nature-changing function
+* Function to detect modern emulators/GBA hardware.
+
+**icons** branch:
+* Everything from the **followers** branch.
+* All pokemon icons updated to Gen 6, based on [this repo](https://github.com/msikma/pokesprite/tree/master/icons/pokemon/regular)
+* This includes compatibility with the PC, trade, contests, mail, Battle Dome. Examples:
+![PC](https://i.imgur.com/wzwJfd1.png)
+![Party](https://i.imgur.com/8hbE88t.png)
+![Contest](https://i.imgur.com/S9mCEFL.png)
+* Icons share palettes with front sprites, meaning that shiny pokemon will also have shiny icons!
+
+**lighting** branch:
+* Everything from the **followers** branch.
+* Day/night shading compatible with weather.
+* GSC-style window lights.
+* WIP interframe-blended lamp lights at night, i.e in Rustboro.
+* HGSS-style alpha-blended shadows for object events.
+
+Additional branches  to mention:
+
+* `followers-expanded-id` - like `followers`, but includes backwards-compatible 16-bit graphics IDs for object events.
+* `lighting-expanded-id` - like the above but for `lighting`.
 
 To set up the repository, see [INSTALL.md](INSTALL.md).

@@ -67,7 +67,7 @@
       "flag": "FLAG_CAVE_MOONSTONE"
     },
     {
-      "graphics_id": "OBJ_EVENT_GFX_ANABEL",
+      "graphics_id": "OBJ_EVENT_GFX_MON_BASE+SPECIES_MEWTWO",
       "x": 7,
       "y": 2,
       "elevation": 0,

@@ -584,7 +584,7 @@ u8 CreateSpriteAt(u8 index, const struct SpriteTemplate *template, s16 x, s16 y,
     if (sprite->oam.affineMode & ST_OAM_AFFINE_ON_MASK)
         InitSpriteAffineAnim(sprite);
 
-    if (template->paletteTag != TAG_NONE)
+    if (template->paletteTag != TAG_NONE) // TODO: Load sprite palette if tag not present
         sprite->oam.paletteNum = IndexOfSpritePaletteTag(template->paletteTag);
 
     return index;
@@ -1497,6 +1497,21 @@ u16 LoadSpriteSheet(const struct SpriteSheet *sheet)
     }
 }
 
+// Like LoadSpriteSheet, but checks if already, and uses template image frames
+u16 LoadSpriteSheetByTemplate(const struct SpriteTemplate *template, u8 frame) {
+    u16 tileStart;
+    struct SpriteSheet tempSheet;
+    // error if template is null or tile tag or images not set
+    if (!template || template->tileTag == TAG_NONE || !template->images)
+        return 0xFFFF;
+    if ((tileStart = GetSpriteTileStartByTag(template->tileTag)) != 0xFFFF) // return if already loaded
+        return tileStart;
+    tempSheet.data = template->images[frame].data;
+    tempSheet.size = template->images[frame].size;
+    tempSheet.tag = template->tileTag;
+    return LoadSpriteSheet(&tempSheet);
+}
+
 void LoadSpriteSheets(const struct SpriteSheet *sheets)
 {
     u8 i;
@@ -1587,6 +1602,8 @@ void FreeAllSpritePalettes(void)
 u8 LoadSpritePalette(const struct SpritePalette *palette)
 {
     u8 index = IndexOfSpritePaletteTag(palette->tag);
+    u8 i;
+    u16 *debugPtr = (u16*) 0x0203d800;
 
     if (index != 0xFF)
         return index;
@@ -1600,6 +1617,9 @@ u8 LoadSpritePalette(const struct SpritePalette *palette)
     else
     {
         sSpritePaletteTags[index] = palette->tag;
+        for (i = 0; i < 16; i++) {
+          debugPtr[i] = sSpritePaletteTags[i];
+        }
         DoLoadSpritePalette(palette->data, index * 16);
         return index;
     }
@@ -1613,9 +1633,16 @@ void LoadSpritePalettes(const struct SpritePalette *palettes)
             break;
 }
 
+u8 LoadSpritePaletteInSlot(const struct SpritePalette *palette, u8 paletteNum) {
+    paletteNum = min(15, paletteNum);
+    sSpritePaletteTags[paletteNum] = palette->tag;
+    DoLoadSpritePalette(palette->data, paletteNum * 16);
+    return paletteNum;
+}
+
 void DoLoadSpritePalette(const u16 *src, u16 paletteOffset)
 {
-    LoadPalette(src, OBJ_PLTT_OFFSET + paletteOffset, PLTT_SIZE_4BPP);
+    LoadPaletteFast(src, paletteOffset + OBJ_PLTT_OFFSET, PLTT_SIZE_4BPP);
 }
 
 u8 AllocSpritePalette(u16 tag)
@@ -1650,8 +1677,12 @@ u16 GetSpritePaletteTagByPaletteNum(u8 paletteNum)
 void FreeSpritePaletteByTag(u16 tag)
 {
     u8 index = IndexOfSpritePaletteTag(tag);
-    if (index != 0xFF)
-        sSpritePaletteTags[index] = TAG_NONE;
+    if (index != 0xFF) {
+      sSpritePaletteTags[index] = TAG_NONE;
+      #if DEBUG
+      FillPalette(0, index * 16 + 0x100, 32);
+      #endif
+    }
 }
 
 void SetSubspriteTables(struct Sprite *sprite, const struct SubspriteTable *subspriteTables)

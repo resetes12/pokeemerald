@@ -231,6 +231,7 @@ gScriptCmdTable::
 	.4byte ScrCmd_checkpartymon                     @ 0xe4
 	.4byte ScrCmd_calculatemonstats                 @ 0xe5
 	.4byte ScrCmd_deleteparty                       @ 0xe6
+	.4byte ScrCmd_callfunc                          @ 0xe7
 
 gScriptCmdTableEnd::
 	.4byte ScrCmd_nop

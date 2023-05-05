@@ -17,6 +17,7 @@ BattleFrontier_BattleDomeBattleRoom_MapScripts::
 	.byte 0
 
 BattleFrontier_BattleDomeBattleRoom_OnTransition:
+  setflag FLAG_TEMP_HIDE_FOLLOWER
 	dome_setopponentgfx
 	frontier_get FRONTIER_DATA_BATTLE_NUM
 	copyvar VAR_TEMP_F, VAR_RESULT
@@ -475,6 +476,7 @@ BattleFrontier_BattleDomeBattleRoom_EventScript_SetUpObjects::
 	call BattleFrontier_EventScript_SetBrainObjectGfx
 	setobjectxyperm LOCALID_OPPONENT, 13, 9
 	removeobject LOCALID_OPPONENT
+	delay 1
 	addobject LOCALID_OPPONENT
 	applymovement LOCALID_OPPONENT, BattleFrontier_BattleDomeBattleRoom_Movement_SetInvisibleFacingUp
 BattleFrontier_BattleDomeBattleRoom_EventScript_EndSetUpObjects::

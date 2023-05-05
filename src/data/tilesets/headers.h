@@ -1,7 +1,17 @@
+#include "fieldmap.h"
+
+// Whether a palette has a night version, located at ((x + 9) % 16).pal
+#define SWAP_PAL(x) ((x) < NUM_PALS_IN_PRIMARY ? 1 << (x) : 1 << ((x) - NUM_PALS_IN_PRIMARY))
+// Whether a palette has lights
+// the color indices to blend are stored in the palette's color 0
+#define LIGHT_PAL(x) ((x) < NUM_PALS_IN_PRIMARY ? 1 << (x) : 1 << ((x) - NUM_PALS_IN_PRIMARY))
+
 const struct Tileset gTileset_General =
 {
     .isCompressed = TRUE,
+    .swapPalettes = SWAP_PAL(4),
     .isSecondary = FALSE,
+    .lightPalettes = LIGHT_PAL(4),
     .tiles = gTilesetTiles_General,
     .palettes = gTilesetPalettes_General,
     .metatiles = gMetatiles_General,
@@ -12,7 +22,9 @@ const struct Tileset gTileset_General =
 const struct Tileset gTileset_Petalburg =
 {
     .isCompressed = TRUE,
+    .swapPalettes = SWAP_PAL(9),
     .isSecondary = TRUE,
+    .lightPalettes = LIGHT_PAL(6) | LIGHT_PAL(7) | LIGHT_PAL(9),
     .tiles = gTilesetTiles_Petalburg,
     .palettes = gTilesetPalettes_Petalburg,
     .metatiles = gMetatiles_Petalburg,
@@ -24,6 +36,7 @@ const struct Tileset gTileset_Rustboro =
 {
     .isCompressed = TRUE,
     .isSecondary = TRUE,
+    .lightPalettes = LIGHT_PAL(6),
     .tiles = gTilesetTiles_Rustboro,
     .palettes = gTilesetPalettes_Rustboro,
     .metatiles = gMetatiles_Rustboro,
@@ -45,7 +58,9 @@ const struct Tileset gTileset_Dewford =
 const struct Tileset gTileset_Slateport =
 {
     .isCompressed = TRUE,
+    .swapPalettes = SWAP_PAL(6),
     .isSecondary = TRUE,
+    .lightPalettes = LIGHT_PAL(6) | LIGHT_PAL(12),
     .tiles = gTilesetTiles_Slateport,
     .palettes = gTilesetPalettes_Slateport,
     .metatiles = gMetatiles_Slateport,
@@ -57,6 +72,7 @@ const struct Tileset gTileset_Mauville =
 {
     .isCompressed = TRUE,
     .isSecondary = TRUE,
+    .lightPalettes = LIGHT_PAL(7) | LIGHT_PAL(10) | LIGHT_PAL(11),
     .tiles = gTilesetTiles_Mauville,
     .palettes = gTilesetPalettes_Mauville,
     .metatiles = gMetatiles_Mauville,
@@ -68,6 +84,8 @@ const struct Tileset gTileset_Lavaridge =
 {
     .isCompressed = TRUE,
     .isSecondary = TRUE,
+    .lightPalettes = LIGHT_PAL(6),
+    .customLightColor = LIGHT_PAL(6),
     .tiles = gTilesetTiles_Lavaridge,
     .palettes = gTilesetPalettes_Lavaridge,
     .metatiles = gMetatiles_Lavaridge,
@@ -78,7 +96,9 @@ const struct Tileset gTileset_Lavaridge =
 const struct Tileset gTileset_Fallarbor =
 {
     .isCompressed = TRUE,
+    .swapPalettes = SWAP_PAL(7),
     .isSecondary = TRUE,
+    .lightPalettes = LIGHT_PAL(7),
     .tiles = gTilesetTiles_Fallarbor,
     .palettes = gTilesetPalettes_Fallarbor,
     .metatiles = gMetatiles_Fallarbor,
@@ -90,6 +110,8 @@ const struct Tileset gTileset_Fortree =
 {
     .isCompressed = TRUE,
     .isSecondary = TRUE,
+    .lightPalettes = LIGHT_PAL(8),
+    .customLightColor = LIGHT_PAL(8),
     .tiles = gTilesetTiles_Fortree,
     .palettes = gTilesetPalettes_Fortree,
     .metatiles = gMetatiles_Fortree,
@@ -100,7 +122,9 @@ const struct Tileset gTileset_Fortree =
 const struct Tileset gTileset_Lilycove =
 {
     .isCompressed = TRUE,
+    .swapPalettes = SWAP_PAL(6),
     .isSecondary = TRUE,
+    .lightPalettes = LIGHT_PAL(6),
     .tiles = gTilesetTiles_Lilycove,
     .palettes = gTilesetPalettes_Lilycove,
     .metatiles = gMetatiles_Lilycove,
@@ -111,7 +135,9 @@ const struct Tileset gTileset_Lilycove =
 const struct Tileset gTileset_Mossdeep =
 {
     .isCompressed = TRUE,
+    .swapPalettes = SWAP_PAL(8),
     .isSecondary = TRUE,
+    .lightPalettes = LIGHT_PAL(8),
     .tiles = gTilesetTiles_Mossdeep,
     .palettes = gTilesetPalettes_Mossdeep,
     .metatiles = gMetatiles_Mossdeep,
@@ -128,12 +154,16 @@ const struct Tileset gTileset_EverGrande =
     .metatiles = gMetatiles_EverGrande,
     .metatileAttributes = gMetatileAttributes_EverGrande,
     .callback = InitTilesetAnim_EverGrande,
+    .lightPalettes = LIGHT_PAL(8),
+    .swapPalettes = SWAP_PAL(8),
 };
 
 const struct Tileset gTileset_Pacifidlog =
 {
     .isCompressed = TRUE,
+    .swapPalettes = SWAP_PAL(9),
     .isSecondary = TRUE,
+    .lightPalettes = LIGHT_PAL(9),
     .tiles = gTilesetTiles_Pacifidlog,
     .palettes = gTilesetPalettes_Pacifidlog,
     .metatiles = gMetatiles_Pacifidlog,
@@ -144,7 +174,10 @@ const struct Tileset gTileset_Pacifidlog =
 const struct Tileset gTileset_Sootopolis =
 {
     .isCompressed = TRUE,
+    .swapPalettes = SWAP_PAL(6),
     .isSecondary = TRUE,
+    .lightPalettes = LIGHT_PAL(6) | LIGHT_PAL(10),
+    .customLightColor = LIGHT_PAL(6) | LIGHT_PAL(10),
     .tiles = gTilesetTiles_Sootopolis,
     .palettes = gTilesetPalettes_Sootopolis,
     .metatiles = gMetatiles_Sootopolis,

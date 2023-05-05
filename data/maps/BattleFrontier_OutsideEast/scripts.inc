@@ -442,6 +442,7 @@ BattleFrontier_OutsideEast_Text_StickyMonWithLongTail:
 
 BattleFrontier_MoneyFarm01::
 	lock
+	faceplayer
 	setflag FLAG_SYS_NO_CATCHING
 	setflag FLAG_DAILY_MONEYFARM
 	setflag FLAG_SYS_SET_BATTLE_BGM

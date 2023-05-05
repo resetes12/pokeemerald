@@ -717,11 +717,14 @@ Common_EventScript_PlayGymBadgeFanfare::
 	return
 
 Common_EventScript_OutOfCenterPartyHeal::
-	fadescreen FADE_TO_BLACK
+	fadescreenswapbuffers FADE_TO_BLACK
 	playfanfare MUS_HEAL
 	waitfanfare
 	special HealPlayerParty
-	fadescreen FADE_FROM_BLACK
+  @ start fade then immediately load following pokemon, and wait for fade
+	fadescreenswapbuffers FADE_FROM_BLACK, 1
+  callnative UpdateFollowingPokemon
+  callfunc ScrFunc_WaitPaletteNotActive
 	return
 
 EventScript_RegionMap::
@@ -1054,6 +1057,7 @@ Common_EventScript_LegendaryFlewAway::
 	.include "data/scripts/move_tutors.inc"
 	.include "data/scripts/trainer_hill.inc"
 	.include "data/scripts/test_signpost.inc"
+  .include "data/scripts/follower.inc"
 	.include "data/text/frontier_brain.inc"
 	.include "data/text/save.inc"
 	.include "data/text/birch_speech.inc"
