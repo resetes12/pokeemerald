@@ -19,6 +19,9 @@
 #include "constants/rgb.h"
 #include "constants/songs.h"
 #include "event_data.h"
+#include "option_plus_menu.h"
+
+#define useOptionPlusMenu TRUE
 
 #define tMenuSelection data[0]
 #define tTextSpeed data[1]
@@ -161,6 +164,12 @@ static void VBlankCB(void)
 
 void CB2_InitOptionMenu(void)
 {
+    if (useOptionPlusMenu)
+    {
+        CB2_InitOptionPlusMenu();
+        return;
+    }
+
     switch (gMain.state)
     {
     default:
@@ -241,7 +250,7 @@ void CB2_InitOptionMenu(void)
         gTasks[taskId].tTextSpeed = gSaveBlock2Ptr->optionsTextSpeed;
         gTasks[taskId].tBattleSceneOff = gSaveBlock2Ptr->optionsBattleSceneOff;
         gTasks[taskId].tBattleStyle = gSaveBlock2Ptr->optionsBattleStyle;
-        gTasks[taskId].tAutorun = gSaveBlock2Ptr->autoRun;
+        //gTasks[taskId].tAutorun = gSaveBlock2Ptr->optionsautoRun;
         gTasks[taskId].tSound = gSaveBlock2Ptr->optionsSound;
         gTasks[taskId].tButtonMode = gSaveBlock2Ptr->optionsButtonMode;
         gTasks[taskId].tWindowFrameType = gSaveBlock2Ptr->optionsWindowFrameType;
@@ -486,7 +495,7 @@ static void BattleScene_DrawChoices(u8 selection)
 static u8 BattleStyle_ProcessInput(u8 selection)
 {
     if (JOY_NEW(DPAD_LEFT | DPAD_RIGHT))
-        if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD)
+        if (gSaveBlock2Ptr->optionsDifficulty == 2)
         {
             PlaySE(SE_FAILURE);
         }
@@ -532,11 +541,11 @@ static void Autorun_DrawChoices(u8 selection)
 
     if (selection == 0)
     {
-        gSaveBlock2Ptr->autoRun = FALSE;
+        //gSaveBlock2Ptr->optionsautoRun = FALSE;
     }
     else
     {
-        gSaveBlock2Ptr->autoRun = TRUE;
+        //gSaveBlock2Ptr->optionsautoRun = TRUE;
     }
 
     DrawOptionMenuChoice(gText_AutorunOff, 104, YPOS_AUTORUN, styles[0]);

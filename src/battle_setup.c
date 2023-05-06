@@ -887,9 +887,9 @@ u8 GetScaledLevel(u8 lvl)
     else
         levelScaling = 1;
 
-    if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD)
+    if (gSaveBlock2Ptr->optionsDifficulty == 2)
         lvl += levelScaling;
-    else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_EASY)
+    else if (gSaveBlock2Ptr->optionsDifficulty == 0)
         lvl -= levelScaling;
 
     if (lvl > 100)

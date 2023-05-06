@@ -305,6 +305,12 @@ extern const u8 gText_BattleSceneOn[];
 extern const u8 gText_BattleSceneOff[];
 extern const u8 gText_BattleStyleShift[];
 extern const u8 gText_BattleStyleSet[];
+extern const u8 gText_OptionMenuSave[];   //tx_optionsPlus
+extern const u8 gText_FollowerEnable[];   //tx_optionsPlus
+extern const u8 gText_AutorunEnable[];   //tx_optionsPlus
+extern const u8 gText_OptionMatchCalls[];   //tx_optionsPlus
+extern const u8 gText_OptionStyle[];    //tx_optionsPlus
+extern const u8 gText_OptionDifficulty[];    //tx_optionsPlus
 extern const u8 gText_AutorunOff[];
 extern const u8 gText_AutorunOn[];
 extern const u8 gText_SoundMono[];
@@ -351,7 +357,7 @@ extern const u8 gText_Birch_MainSpeech[];
 extern const u8 gText_Birch_AndYouAre[];
 extern const u8 gText_Birch_BoyOrGirl[];
 extern const u8 gText_Birch_Difficulty[];
-extern const u8 gText_Birch_Gamemode[];
+extern const u8 gText_Birch_LockDifficulty[];
 extern const u8 gText_Birch_Challenge[];
 extern const u8 gText_Birch_WhatsYourName[];
 extern const u8 gText_Birch_SoItsPlayer[];
@@ -2983,7 +2989,6 @@ extern const u8 gText_CheckMapOfHoenn[];
 extern const u8 gText_CheckPokemonInDetail[];
 extern const u8 gText_CallRegisteredTrainer[];
 extern const u8 gText_CheckObtainedRibbons[];
-extern const u8 gText_Pokenav_AllowCalls[];
 extern const u8 gText_PutAwayPokenav[];
 extern const u8 gText_CheckPartyPokemonInDetail[];
 extern const u8 gText_CheckAllPokemonInDetail[];
@@ -2995,7 +3000,6 @@ extern const u8 gText_FindSmartPokemon[];
 extern const u8 gText_FindToughPokemon[];
 extern const u8 gText_ReturnToConditionMenu[];
 extern const u8 gText_NoRibbonWinners[];
-extern const u8 gText_Pokenav_AllowCallsYes[];
 
 // Pokenav
 extern const u8 gText_NumberIndex[];

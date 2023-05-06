@@ -606,11 +606,11 @@ static void PlayerNotOnBikeTurningInPlace(u8 direction, u16 heldKeys)
 
 static bool8 IsPlayerTryingToRun(u16 heldKeys)
 {
-  if (gSaveBlock2Ptr->autoRun)
-    return TRUE;
-  else if (heldKeys & B_BUTTON)
-      return TRUE;
-  return FALSE;
+    if (gSaveBlock2Ptr->optionsautoRun == 0)
+        return TRUE;
+    else if (heldKeys & B_BUTTON)
+        return TRUE;
+    return FALSE;
 }
 
 static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
@@ -652,7 +652,7 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
     if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_UNDERWATER) && IsPlayerTryingToRun(heldKeys) && FlagGet(FLAG_SYS_B_DASH)
      && IsRunningDisallowed(gObjectEvents[gPlayerAvatar.objectEventId].currentMetatileBehavior) == 0)
     {
-        if (heldKeys & B_BUTTON && gSaveBlock2Ptr->autoRun == TRUE)
+        if (heldKeys & B_BUTTON && gSaveBlock2Ptr->optionsautoRun == 0)
         {
             PlayerWalkNormal(direction);
         }

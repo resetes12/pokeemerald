@@ -113,7 +113,7 @@ MossdeepCity_EventScript_Jirachi::
 	waitmovement 0
 	msgbox MossdeepCity_Text_ItsAWhiteRock2, MSGBOX_DEFAULT
 	waitmessage
-	setwildbattle SPECIES_JIRACHI, 60
+	setwildbattle SPECIES_JIRACHI, 50
 	waitse
 	playmoncry SPECIES_JIRACHI, CRY_MODE_ENCOUNTER
 	delay 40

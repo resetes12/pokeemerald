@@ -2016,11 +2016,11 @@ static void AppendIfValid(u16 species, u16 heldItem, u16 hp, u8 lvlMode, u8 monL
 {
     s32 i = 0;
     u16* gFrontierBannedSpecies;
-    if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_NORMAL)
+    if (gSaveBlock2Ptr->optionsDifficulty == 1)
         gFrontierBannedSpecies = gFrontierBannedSpeciesNormal;
-    if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_EASY)
+    if (gSaveBlock2Ptr->optionsDifficulty == 0)
         gFrontierBannedSpecies = gFrontierBannedSpeciesEasy;
-    if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD)
+    if (gSaveBlock2Ptr->optionsDifficulty == 2)
         gFrontierBannedSpecies = gFrontierBannedSpeciesHard;
 
     if (species == SPECIES_EGG || species == SPECIES_NONE)
@@ -2118,11 +2118,11 @@ static void CheckPartyIneligibility(void)
         s32 i;
         s32 caughtBannedMons = 0;
         u16* gFrontierBannedSpecies;
-        if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_NORMAL)
+        if (gSaveBlock2Ptr->optionsDifficulty == 1)
             gFrontierBannedSpecies = gFrontierBannedSpeciesNormal;
-        if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_EASY)
+        if (gSaveBlock2Ptr->optionsDifficulty == 0)
             gFrontierBannedSpecies = gFrontierBannedSpeciesEasy;
-        if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD)
+        if (gSaveBlock2Ptr->optionsDifficulty == 2)
             gFrontierBannedSpecies = gFrontierBannedSpeciesHard;
         s32 species = gFrontierBannedSpecies[0];
         for (i = 0; species != 0xFFFF; i++, species = gFrontierBannedSpecies[i])

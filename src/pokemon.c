@@ -5904,7 +5904,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     // Apply type-bonus hold item
     for (i = 0; i < ARRAY_COUNT(sHoldEffectToType); i++)
     {
-        if (VarGet(VAR_GAMEMODE) == GAMEMODE_CLASSIC)
+        if (gSaveBlock2Ptr->optionStyle == 1)
             if (attackerHoldEffect == sHoldEffectToType[i][0]
                 && type == sHoldEffectToType[i][1])
             {
@@ -5914,7 +5914,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
                     spAttack = (spAttack * (attackerHoldEffectParam + 100)) / 100;
                 break;
             }
-        if (VarGet(VAR_GAMEMODE) == GAMEMODE_MODERN)
+        if (gSaveBlock2Ptr->optionStyle == 0)
             if (attackerHoldEffect == sHoldEffectToType[i][0]
                 && type == sHoldEffectToType[i][1])
             {
@@ -5943,10 +5943,10 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         attack *= 2;
 
     // Apply abilities / field sports
-    if (VarGet(VAR_GAMEMODE) == GAMEMODE_MODERN)
+    if (gSaveBlock2Ptr->optionStyle == 0)
         if (defender->ability == ABILITY_THICK_FAT && (type == TYPE_FIRE || type == TYPE_ICE))
             gBattleMovePower /= 2;
-    if (VarGet(VAR_GAMEMODE) ==GAMEMODE_CLASSIC)
+    if (gSaveBlock2Ptr->optionStyle == 1)
         if (defender->ability == ABILITY_THICK_FAT && (type == TYPE_FIRE || type == TYPE_ICE))
             spAttack /= 2;
     if (attacker->ability == ABILITY_HUSTLE)
@@ -5975,7 +5975,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     // Self-destruct / Explosion cut defense in half
     if (gBattleMoves[gCurrentMove].effect == EFFECT_EXPLOSION)
         defense /= 2;
-    if (VarGet(VAR_GAMEMODE) == GAMEMODE_MODERN)
+    if (gSaveBlock2Ptr->optionStyle == 0)
         if (IS_MOVE_PHYSICAL(gCurrentMove))
         {
             if (gCritMultiplier == 2)
@@ -6027,7 +6027,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
             if (damage == 0)
                 damage = 1;
         }
-    if (VarGet(VAR_GAMEMODE) == GAMEMODE_CLASSIC)
+    if (gSaveBlock2Ptr->optionStyle == 1)
         if (IS_TYPE_PHYSICAL(type))
         {
             if (gCritMultiplier == 2)
@@ -6083,7 +6083,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     if (type == TYPE_MYSTERY)
         damage = 0; // is ??? type. does 0 damage.
 
-    if (VarGet(VAR_GAMEMODE) == GAMEMODE_MODERN)
+    if (gSaveBlock2Ptr->optionStyle == 0)
         if (IS_MOVE_SPECIAL(gCurrentMove))
         {
             if (gCritMultiplier == 2)
@@ -6128,7 +6128,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
                 damage /= 2;
         }
 
-    if (VarGet(VAR_GAMEMODE) == GAMEMODE_CLASSIC)
+    if (gSaveBlock2Ptr->optionStyle == 1)
         if (IS_TYPE_SPECIAL(type))
         {
             if (gCritMultiplier == 2)
@@ -6214,7 +6214,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         }
 
     // Are effects of weather negated with cloud nine or air lock
-    if (VarGet(VAR_GAMEMODE) == GAMEMODE_MODERN)
+    if (gSaveBlock2Ptr->optionStyle == 0)
         if (WEATHER_HAS_EFFECT2)
         {
             // Rain weakens Fire, boosts Water
@@ -6292,7 +6292,7 @@ static bool8 ShouldGetStatBadgeBoost(u16 badgeFlag, u8 battlerId)
 {
     if (gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_RECORDED_LINK | BATTLE_TYPE_FRONTIER))
         return FALSE;
-    if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD)
+    if (gSaveBlock2Ptr->optionsDifficulty == 2)
         return FALSE;
     else if (GetBattlerSide(battlerId) != B_SIDE_PLAYER)
         return FALSE;

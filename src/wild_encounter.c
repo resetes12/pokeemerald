@@ -293,21 +293,21 @@ static u8 ChooseWildMonLevel(const struct WildPokemon *wildPokemon)
         if (ability == ABILITY_HUSTLE || ability == ABILITY_VITAL_SPIRIT || ability == ABILITY_PRESSURE)
         {
             if (Random() % 2 == 0) //Max level of the mon + (n), only for Hard Difficulty
-                if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_IS_CHAMPION))
+                if (gSaveBlock2Ptr->optionsDifficulty == 2 && FlagGet(FLAG_IS_CHAMPION))
                     return max + 10;
-                else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE08_GET))
+                else if (gSaveBlock2Ptr->optionsDifficulty == 2 && FlagGet(FLAG_BADGE08_GET))
                     return max + 8;
-                else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE07_GET))
+                else if (gSaveBlock2Ptr->optionsDifficulty == 2 && FlagGet(FLAG_BADGE07_GET))
                     return max + 7;
-                else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE06_GET))
+                else if (gSaveBlock2Ptr->optionsDifficulty == 2 && FlagGet(FLAG_BADGE06_GET))
                     return max + 6;
-                else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE05_GET))
+                else if (gSaveBlock2Ptr->optionsDifficulty == 2 && FlagGet(FLAG_BADGE05_GET))
                     return max + 5;
-                else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE04_GET))
+                else if (gSaveBlock2Ptr->optionsDifficulty == 2 && FlagGet(FLAG_BADGE04_GET))
                     return max + 4;
-                else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE03_GET))
+                else if (gSaveBlock2Ptr->optionsDifficulty == 2 && FlagGet(FLAG_BADGE03_GET))
                     return max + 3;
-                else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE02_GET))
+                else if (gSaveBlock2Ptr->optionsDifficulty == 2 && FlagGet(FLAG_BADGE02_GET))
                     return max + 1;
                 else
                     return max;
@@ -316,21 +316,21 @@ static u8 ChooseWildMonLevel(const struct WildPokemon *wildPokemon)
                 rand--;
         }
     }
-    if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_IS_CHAMPION))
+    if (gSaveBlock2Ptr->optionsDifficulty == 2 && FlagGet(FLAG_IS_CHAMPION))
         return min + rand + 10;
-    else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE08_GET))
+    else if (gSaveBlock2Ptr->optionsDifficulty == 2 && FlagGet(FLAG_BADGE08_GET))
         return min + rand + 8;
-    else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE07_GET))
+    else if (gSaveBlock2Ptr->optionsDifficulty == 2 && FlagGet(FLAG_BADGE07_GET))
         return min + rand + 7;
-    else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE06_GET))
+    else if (gSaveBlock2Ptr->optionsDifficulty == 2 && FlagGet(FLAG_BADGE06_GET))
         return min + rand + 6;
-    else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE05_GET))
+    else if (gSaveBlock2Ptr->optionsDifficulty == 2 && FlagGet(FLAG_BADGE05_GET))
         return min + rand + 5;
-    else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE04_GET))
+    else if (gSaveBlock2Ptr->optionsDifficulty == 2 && FlagGet(FLAG_BADGE04_GET))
         return min + rand + 4;
-    else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE03_GET))
+    else if (gSaveBlock2Ptr->optionsDifficulty == 2 && FlagGet(FLAG_BADGE03_GET))
         return min + rand + 3;
-    else if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD && FlagGet(FLAG_BADGE02_GET))
+    else if (gSaveBlock2Ptr->optionsDifficulty == 2 && FlagGet(FLAG_BADGE02_GET))
         return min + rand + 1;   
     else
         return min + rand;

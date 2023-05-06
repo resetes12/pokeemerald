@@ -1882,7 +1882,10 @@ static bool8 GetMonInfo(struct Pokemon * mon, u16 *species, u8 *form, u8 *shiny)
 // Retrieve graphic information about the following pokemon, if any
 static bool8 GetFollowerInfo(u16 *species, u8 *form, u8 *shiny) 
 {
+    if (gSaveBlock2Ptr->optionsfollowerEnable == 0) 
         return GetMonInfo(GetFirstLiveMon(), species, form, shiny);
+    else
+        return;
 }
 
 void UpdateFollowingPokemon(void) { // Update following pokemon if any
@@ -1891,36 +1894,35 @@ void UpdateFollowingPokemon(void) { // Update following pokemon if any
     u16 species;
     bool8 shiny;
     u8 form;
-    if (FlagGet(FLAG_ENABLE_FOLLOWER) == TRUE) //if enabled, enable following mons
-        // Avoid spawning large (64x64) follower pokemon inside buildings
-        if (GetFollowerInfo(&species, &form, &shiny) && !(gMapHeader.mapType == MAP_TYPE_INDOOR && SpeciesToGraphicsInfo(species, 0)->height == 64) && !FlagGet(FLAG_TEMP_HIDE_FOLLOWER)) {
-            if (objEvent == NULL) { // Spawn follower
-            struct ObjectEventTemplate template = {
-                .localId = OBJ_EVENT_ID_FOLLOWER,
-                .graphicsId = OBJ_EVENT_GFX_MON_BASE + species,
-                .flagId = 0,
-                .x = gSaveBlock1Ptr->pos.x,
-                .y = gSaveBlock1Ptr->pos.y,
-                // If player active, copy player elevation
-                .elevation = gObjectEvents[gPlayerAvatar.objectEventId].active ? gObjectEvents[gPlayerAvatar.objectEventId].currentElevation : 3,
-                .movementType = MOVEMENT_TYPE_FOLLOW_PLAYER,
-                // store form info in template
-                .trainerRange_berryTreeId = (form & 0x1F) | (shiny << 5),
-            };
-            objEvent = &gObjectEvents[SpawnSpecialObjectEvent(&template)];
-            objEvent->invisible = TRUE;
-            }
-            sprite = &gSprites[objEvent->spriteId];
-            // Follower appearance changed; move to player and set invisible
-            if (species != OW_SPECIES(objEvent) || shiny != objEvent->shiny || form != OW_FORM(objEvent)) {
-            MoveObjectEventToMapCoords(objEvent, gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x, gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y);
-            FollowerSetGraphics(objEvent, species, form, shiny, TRUE);
-            objEvent->invisible = TRUE;
-            }
-            sprite->data[6] = 0; // set animation data
-        } else {
-            RemoveFollowingPokemon();
+    // Avoid spawning large (64x64) follower pokemon inside buildings
+    if (GetFollowerInfo(&species, &form, &shiny) && !(gMapHeader.mapType == MAP_TYPE_INDOOR && SpeciesToGraphicsInfo(species, 0)->height == 64) && !FlagGet(FLAG_TEMP_HIDE_FOLLOWER)) {
+        if (objEvent == NULL) { // Spawn follower
+        struct ObjectEventTemplate template = {
+            .localId = OBJ_EVENT_ID_FOLLOWER,
+            .graphicsId = OBJ_EVENT_GFX_MON_BASE + species,
+            .flagId = 0,
+            .x = gSaveBlock1Ptr->pos.x,
+            .y = gSaveBlock1Ptr->pos.y,
+            // If player active, copy player elevation
+            .elevation = gObjectEvents[gPlayerAvatar.objectEventId].active ? gObjectEvents[gPlayerAvatar.objectEventId].currentElevation : 3,
+            .movementType = MOVEMENT_TYPE_FOLLOW_PLAYER,
+            // store form info in template
+            .trainerRange_berryTreeId = (form & 0x1F) | (shiny << 5),
+        };
+        objEvent = &gObjectEvents[SpawnSpecialObjectEvent(&template)];
+        objEvent->invisible = TRUE;
         }
+        sprite = &gSprites[objEvent->spriteId];
+        // Follower appearance changed; move to player and set invisible
+        if (species != OW_SPECIES(objEvent) || shiny != objEvent->shiny || form != OW_FORM(objEvent)) {
+        MoveObjectEventToMapCoords(objEvent, gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.x, gObjectEvents[gPlayerAvatar.objectEventId].currentCoords.y);
+        FollowerSetGraphics(objEvent, species, form, shiny, TRUE);
+        objEvent->invisible = TRUE;
+        }
+        sprite->data[6] = 0; // set animation data
+    } else {
+        RemoveFollowingPokemon();
+    }
 }
 
 void RemoveFollowingPokemon(void) { // Remove follower object. Idempotent.

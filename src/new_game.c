@@ -97,6 +97,11 @@ static void SetDefaultOptions(void)
     gSaveBlock2Ptr->optionsBattleStyle = OPTIONS_BATTLE_STYLE_SET;
     gSaveBlock2Ptr->optionsBattleSceneOff = FALSE;
     gSaveBlock2Ptr->regionMapZoom = FALSE;
+    gSaveBlock2Ptr->optionsDifficulty = 1;
+    gSaveBlock2Ptr->optionsfollowerEnable = 0;
+    gSaveBlock2Ptr->optionsautoRun = 1;
+    gSaveBlock2Ptr->optionsDisableMatchCall = 0;
+    gSaveBlock2Ptr->optionStyle = 1;
 }
 
 static void ClearPokedexFlags(void)
@@ -150,8 +155,9 @@ void ResetMenuAndMonGlobals(void)
 
 void NewGameInitData(void)
 {
-    bool8 difficultyPrev = VarGet(VAR_DIFFICULTY);
-    bool8 gamemodePrev = VarGet(VAR_GAMEMODE);
+    //bool8 difficultyPrev = VarGet(VAR_DIFFICULTY);
+    bool8 HardPrev = FlagGet(FLAG_DIFFICULTY_HARD);
+    bool8 lockPrev = FlagGet(FLAG_LOCK_DIFFICULTY);
 
     if (gSaveFileStatus == SAVE_STATUS_EMPTY || gSaveFileStatus == SAVE_STATUS_CORRUPT)
         RtcReset();
@@ -209,20 +215,17 @@ void NewGameInitData(void)
     WipeTrainerNameRecords();
     ResetTrainerHillResults();
     ResetContestLinkResults();
-    gSaveBlock2Ptr->expShare = 0; //unused but not removed just in case
-    gSaveBlock2Ptr->autoRun = FALSE;
 
-    if (difficultyPrev == DIFFICULTY_EASY)
+    HardPrev ? FlagSet(FLAG_DIFFICULTY_HARD) : FlagClear(FLAG_DIFFICULTY_HARD);
+    lockPrev ? FlagSet(FLAG_LOCK_DIFFICULTY) : FlagClear(FLAG_LOCK_DIFFICULTY);
+
+    /*if (difficultyPrev == DIFFICULTY_EASY)
         VarSet(VAR_DIFFICULTY, DIFFICULTY_EASY);
     else if (difficultyPrev == DIFFICULTY_NORMAL)
         VarSet(VAR_DIFFICULTY, DIFFICULTY_NORMAL);
     else if (difficultyPrev == DIFFICULTY_HARD)
-        VarSet(VAR_DIFFICULTY, DIFFICULTY_HARD);
+        VarSet(VAR_DIFFICULTY, DIFFICULTY_HARD);*/
     
-    if (gamemodePrev == GAMEMODE_CLASSIC)
-        VarSet(VAR_GAMEMODE, GAMEMODE_CLASSIC);
-    else if (gamemodePrev == GAMEMODE_MODERN)
-        VarSet(VAR_GAMEMODE, GAMEMODE_MODERN);
 }
 
 static void ResetMiniGamesRecords(void)

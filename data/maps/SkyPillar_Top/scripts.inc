@@ -43,8 +43,8 @@ SkyPillar_Top_EventScript_RayquazaFaceDown::
 	end
 
 SkyPillar_Top_EventScript_Rayquaza::
-	call_if_eq VAR_DIFFICULTY, 1, SkyPillar_Top_EventScript_RayquazaHard
-	call_if_ne VAR_DIFFICULTY, 1, SkyPillar_Top_EventScript_RayquazaNormal
+	call_if_set FLAG_DIFFICULTY_HARD, SkyPillar_Top_EventScript_RayquazaHard
+	call_if_unset FLAG_DIFFICULTY_HARD, SkyPillar_Top_EventScript_RayquazaNormal
 	end
 
 SkyPillar_Top_EventScript_RayquazaNormal::

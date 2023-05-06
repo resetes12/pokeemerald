@@ -40,23 +40,19 @@ gText_Birch_Difficulty::
 	.string "And... How do you think this\n"
 	.string "adventure is going to be?$"
 
-gText_Birch_Gamemode::
-	.string "Is that so? Then...\p"
-	.string "Do you feel more of a MODERN STYLE of\n"
-	.string "person, or more of a CLASSIC one?\p"
-	.string "This option refers to the PHYSICAL and\n"
-	.string "SPECIAL MOVE split that happened in\l"
-	.string "GENERATION IV. MODERN activates it,\l"
-	.string "while CLASSIC doesn't.\p"
-	.string "Tell me.$"
+gText_Birch_LockDifficulty::
+	.string "If you need to change the DIFFICULTY\n"
+	.string "you can open the OPTIONS MENU and\l"
+	.string "change it from there.\p"
+	.string "You can also lock it, if you want.\n"
+	.string "Do you want to lock the\l"
+	.string "chosen DIFFICULTY?\p"
+	.string "This cannot be changed later.$"
 
 gText_Birch_Challenge::
-	.string "Oh, I thought so. You look like it!\p"
-	.string "If you want to learn more about\n"
-	.string "the DIFFICULTY or the STYLES, just\l"
-	.string "use the computers in my LAB.\p"
-	.string "All right.\p"
-	.string "Do you expect any\n"
+	.string "Oh, is that so?\p"
+	.string "All right, with that clear...\n"
+	.string "Do you expect any\l"
 	.string "CHALLENGE in your journey?\p"
 	.string "And what's your name?$"
 

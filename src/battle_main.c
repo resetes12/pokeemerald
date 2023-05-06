@@ -2225,7 +2225,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                 }
                 else
                     CreateMon(&party[i], partyData[i].species, GetScaledLevel(partyData[i].lvl), fixedIV, TRUE, personalityValue, OT_ID_RANDOM_NO_SHINY, 0);
-                        if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD) //only in hard mode
+                        if (gSaveBlock2Ptr->optionsDifficulty == 2) //only in hard mode
                         {
                                 if (partyData[i].species == SPECIES_SLAKING && gTrainers[trainerNum].trainerPic == TRAINER_PIC_LEADER_NORMAN  //norman slaking code
                                 && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_LEADER)  //Set Norman's Slaking to have intimidate
@@ -2246,7 +2246,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                 SetMonData(&party[i], MON_DATA_HELD_ITEM, &partyData[i].heldItem);
                     helditem = GetMonData(&party[i], MON_DATA_HELD_ITEM);
 
-                    if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD) //only in hard mode
+                    if (gSaveBlock2Ptr->optionsDifficulty == 2) //only in hard mode
                     {
                         if (partyData[i].species == SPECIES_ALTARIA && gTrainers[trainerNum].trainerPic == TRAINER_PIC_LEADER_WINONA  
                         && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_LEADER)
@@ -4970,7 +4970,7 @@ u8 GetWhoStrikesFirst(u8 battler1, u8 battler2, bool8 ignoreChosenMoves)
     // badge boost
     if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK | BATTLE_TYPE_FRONTIER))
         && FlagGet(FLAG_BADGE03_GET)
-        && (VarGet(VAR_DIFFICULTY) != DIFFICULTY_HARD)
+        && (gSaveBlock2Ptr->optionsDifficulty == 2)
         && GetBattlerSide(battler1) == B_SIDE_PLAYER)
     {
         speedBattler1 = (speedBattler1 * 110) / 100;
@@ -5005,7 +5005,7 @@ u8 GetWhoStrikesFirst(u8 battler1, u8 battler2, bool8 ignoreChosenMoves)
     // badge boost
     if (!(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK | BATTLE_TYPE_FRONTIER))
         && FlagGet(FLAG_BADGE03_GET)
-        && (VarGet(VAR_DIFFICULTY) != DIFFICULTY_HARD)
+        && (gSaveBlock2Ptr->optionsDifficulty == 2)
         && GetBattlerSide(battler2) == B_SIDE_PLAYER)
     {
         speedBattler2 = (speedBattler2 * 110) / 100;

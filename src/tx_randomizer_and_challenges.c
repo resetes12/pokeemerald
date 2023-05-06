@@ -356,13 +356,13 @@ u8 GetCurrentPartyLevelCap(void)
         return MAX_LEVEL;
     
     if (gSaveBlock1Ptr->tx_Challenges_LevelCap == 1) //normal level cap
-        if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD)
+        if (gSaveBlock2Ptr->optionsDifficulty == 2)
             return sLevelCapTable_NormalHard[badgeCount];
         else
             return sLevelCapTable_Normal[badgeCount];
 
     if (gSaveBlock1Ptr->tx_Challenges_LevelCap == 2) //hard level cap
-        if (VarGet(VAR_DIFFICULTY) == DIFFICULTY_HARD)
+        if (gSaveBlock2Ptr->optionsDifficulty == 2)
             return sLevelCapTable_HardHard[badgeCount];
         else
             return sLevelCapTable_Hard[badgeCount];
