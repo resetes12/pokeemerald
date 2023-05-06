@@ -3140,14 +3140,21 @@ void SpriteCB_HideAsMoveTarget(struct Sprite *sprite)
 
 void SpriteCB_OpponentMonFromBall(struct Sprite *sprite)
 {
-    if (sprite->affineAnimEnded)
+    if (gSaveBlock2Ptr->optionsBattleSceneOff == 1)
     {
-        if (!(gHitMarker & HITMARKER_NO_ANIMATIONS) || gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK))
+        sprite->callback = SpriteCallbackDummy;
+    }
+    else
+    {
+        if (sprite->affineAnimEnded)
         {
-            if (HasTwoFramesAnimation(sprite->sSpeciesId))
-                StartSpriteAnim(sprite, 1);
+            if (!(gHitMarker & HITMARKER_NO_ANIMATIONS) || gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK))
+            {
+                if (HasTwoFramesAnimation(sprite->sSpeciesId))
+                    StartSpriteAnim(sprite, 1);
+            }
+            BattleAnimateFrontSprite(sprite, sprite->sSpeciesId, TRUE, 1);
         }
-        BattleAnimateFrontSprite(sprite, sprite->sSpeciesId, TRUE, 1);
     }
 }
 
