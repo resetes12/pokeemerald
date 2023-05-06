@@ -80,6 +80,8 @@ enum
 
 enum
 {
+    MENUITEM_CHALLENGES_ALTERNATE_SPAWNS,
+    MENUITEM_CHALLENGES_LIMIT_DIFFICULTY,
     MENUITEM_CHALLENGES_EVO_LIMIT,
     MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE,
     MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER,
@@ -244,6 +246,8 @@ static void DrawChoices_Challenges_OneTypeChallenge(int selection, int y);
 static void DrawChoices_Challenges_BaseStatEqualizer(int selection, int y);
 static void DrawChoices_Challenges_Mirror(int selection, int y);
 static void DrawChoices_Challenges_Mirror_Thief(int selection, int y);
+static void DrawChoices_Challenges_AlternateSpawns(int selection, int y);
+static void DrawChoices_Challenges_LimitDifficulty(int selection, int y);
 
 static void PrintCurrentSelections(void);
 
@@ -338,6 +342,8 @@ struct // MENU_CHALLENGES
     [MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]   = {DrawChoices_Challenges_BaseStatEqualizer,    ProcessInput_Options_Four},
     [MENUITEM_CHALLENGES_MIRROR]                = {DrawChoices_Challenges_Mirror,               ProcessInput_Options_Two},
     [MENUITEM_CHALLENGES_MIRROR_THIEF]          = {DrawChoices_Challenges_Mirror_Thief,         ProcessInput_Options_Two},
+    [MENUITEM_CHALLENGES_ALTERNATE_SPAWNS]      = {DrawChoices_Challenges_AlternateSpawns,      ProcessInput_Options_Two},
+    [MENUITEM_CHALLENGES_LIMIT_DIFFICULTY]      = {DrawChoices_Challenges_LimitDifficulty,      ProcessInput_Options_Two},
     [MENUITEM_CHALLENGES_SAVE] = {NULL, NULL},
 };
 
@@ -425,6 +431,8 @@ static const u8 sText_OneTypeChallenge[]    = _("ONE TYPE ONLY");
 static const u8 sText_BaseStatEqualizer[]   = _("STAT EQUALIZER");
 static const u8 sText_Mirror[]              = _("MIRROR MODE");
 static const u8 sText_MirrorThief[]         = _("MIRROR THIEF");
+static const u8 sText_AlternateSpawns[]     = _("MODERN SPAWNS");
+static const u8 sText_LimitDifficulty[]     = _("LOCK DIFFICULTY");
 static const u8 sText_Save[]                = _("SAVE");
 static const u8 *const sOptionMenuItemsNamesChallenges[MENUITEM_CHALLENGES_COUNT] =
 {
@@ -433,6 +441,8 @@ static const u8 *const sOptionMenuItemsNamesChallenges[MENUITEM_CHALLENGES_COUNT
     [MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]   = sText_BaseStatEqualizer,
     [MENUITEM_CHALLENGES_MIRROR]                = sText_Mirror,
     [MENUITEM_CHALLENGES_MIRROR_THIEF]          = sText_MirrorThief,
+    [MENUITEM_CHALLENGES_ALTERNATE_SPAWNS]      = sText_AlternateSpawns,
+    [MENUITEM_CHALLENGES_LIMIT_DIFFICULTY]      = sText_LimitDifficulty,
     [MENUITEM_CHALLENGES_SAVE]                  = sText_Save,
 };
 
@@ -640,6 +650,10 @@ static const u8 sText_Description_Challenges_Mirror_Trainer[]           = _("In 
 static const u8 sText_Description_Challenges_Mirror_All[]               = _("The player gets a copy of the\nenemies party in {COLOR 7}{COLOR 8}ALL battles!");
 static const u8 sText_Description_Challenges_MirrorThief_Off[]          = _("The player gets their own party back\nafter battles.");
 static const u8 sText_Description_Challenges_MirrorThief_On[]           = _("The player keeps the enemies party\nafter battle!");
+static const u8 sText_Description_Challenges_AlternateSpawns_Off[]      = _("Use vanilla-ish {PKMN} spawns.\nNo version exclusives.");
+static const u8 sText_Description_Challenges_AlternateSpawns_On[]       = _("Use Modern Emerald {PKMN} spawns.\nAll 420 {PKMN} available.");
+static const u8 sText_Description_Challenges_LimitDifficulty_Off[]      = _("Change the difficulty whenever and\nwherever you want.");
+static const u8 sText_Description_Challenges_LimitDifficulty_On[]       = _("Difficulty cannot be changed.\nHARD MODE locks BATTLE STYLE to SET.");
 static const u8 *const sOptionMenuItemDescriptionsChallenges[MENUITEM_CHALLENGES_COUNT][4] =
 {
     [MENUITEM_CHALLENGES_EVO_LIMIT]             = {sText_Description_Challenges_EvoLimit_Base,          sText_Description_Challenges_EvoLimit_First,        sText_Description_Challenges_EvoLimit_All,          sText_Empty},
@@ -647,6 +661,8 @@ static const u8 *const sOptionMenuItemDescriptionsChallenges[MENUITEM_CHALLENGES
     [MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]   = {sText_Description_Challenges_BaseStatEqualizer_Base, sText_Description_Challenges_BaseStatEqualizer_100, sText_Description_Challenges_BaseStatEqualizer_255, sText_Description_Challenges_BaseStatEqualizer_500},
     [MENUITEM_CHALLENGES_MIRROR]                = {sText_Description_Challenges_Mirror_Off,             sText_Description_Challenges_Mirror_Trainer,        sText_Empty,                                        sText_Empty},
     [MENUITEM_CHALLENGES_MIRROR_THIEF]          = {sText_Description_Challenges_MirrorThief_Off,        sText_Description_Challenges_MirrorThief_On,        sText_Empty,                                        sText_Empty},
+    [MENUITEM_CHALLENGES_ALTERNATE_SPAWNS]      = {sText_Description_Challenges_AlternateSpawns_Off,    sText_Description_Challenges_AlternateSpawns_On,    sText_Empty,                                        sText_Empty},
+    [MENUITEM_CHALLENGES_LIMIT_DIFFICULTY]      = {sText_Description_Challenges_LimitDifficulty_Off,    sText_Description_Challenges_LimitDifficulty_On,    sText_Empty,                                        sText_Empty},
     [MENUITEM_CHALLENGES_SAVE]                  = {sText_Description_Save,                              sText_Empty,                                        sText_Empty,                                        sText_Empty},
 };
 
@@ -801,7 +817,7 @@ static const u8 sText_TopBar_Right[]            = _("{R_BUTTON}NEXT");
 static const u8 sText_TopBar_Randomizer[]       = _("RANDOMIZER");
 static const u8 sText_TopBar_Nuzlocke[]         = _("NUZLOCKE");
 static const u8 sText_TopBar_Difficulty[]       = _("DIFFICULTY");
-static const u8 sText_TopBar_Challenges[]       = _("CHALLENGES");
+static const u8 sText_TopBar_Challenges[]       = _("CHALLENGES / EXTRA");
 static void DrawTopBarText(void)
 {
     const u8 color[3] = { TEXT_DYNAMIC_COLOR_6, TEXT_COLOR_WHITE, TEXT_COLOR_OPTIONS_GRAY_FG };
@@ -1033,6 +1049,8 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer     = TX_CHALLENGE_BASE_STAT_EQUALIZER;
         gSaveBlock1Ptr->tx_Challenges_Mirror                = TX_CHALLENGE_MIRROR;
         gSaveBlock1Ptr->tx_Challenges_Mirror_Thief          = TX_CHALLENGE_MIRROR_THIEF;
+        gSaveBlock2Ptr->optionsAlternateSpawns              = TX_CHALLENGE_ALTERNATE_SPAWNS;
+        gSaveBlock2Ptr->optionsLimitDifficulty              = TX_CHALLENGE_LIMIT_DIFFICULTY;
                
 
         sOptions = AllocZeroed(sizeof(*sOptions));
@@ -1080,6 +1098,8 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         sOptions->sel_challenges[MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]    = gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer;
         sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR]                 = gSaveBlock1Ptr->tx_Challenges_Mirror;
         sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR_THIEF]           = gSaveBlock1Ptr->tx_Challenges_Mirror_Thief;
+        sOptions->sel_challenges[MENUITEM_CHALLENGES_ALTERNATE_SPAWNS]       = gSaveBlock2Ptr->optionsAlternateSpawns;
+        sOptions->sel_challenges[MENUITEM_CHALLENGES_LIMIT_DIFFICULTY]       = gSaveBlock2Ptr->optionsLimitDifficulty;
 
         sOptions->submenu = MENU_RANDOMIZER;
 
@@ -1402,6 +1422,8 @@ void SaveData_TxRandomizerAndChallenges(void)
     gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer    = sOptions->sel_challenges[MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER];
     gSaveBlock1Ptr->tx_Challenges_Mirror               = sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR]; 
     gSaveBlock1Ptr->tx_Challenges_Mirror_Thief         = sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR_THIEF]; 
+    gSaveBlock2Ptr->optionsAlternateSpawns             = sOptions->sel_challenges[MENUITEM_CHALLENGES_ALTERNATE_SPAWNS]; 
+    gSaveBlock2Ptr->optionsLimitDifficulty             = sOptions->sel_challenges[MENUITEM_CHALLENGES_LIMIT_DIFFICULTY]; 
 
     PrintTXSaveData();
 
@@ -1957,6 +1979,43 @@ static void DrawChoices_Challenges_Mirror_Thief(int selection, int y)
     DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
 }
 
+static void DrawChoices_Challenges_AlternateSpawns(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_CHALLENGES_ALTERNATE_SPAWNS);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock2Ptr->optionsAlternateSpawns = 1; //Off, new spawns
+    }
+    else
+    {
+        gSaveBlock2Ptr->optionsAlternateSpawns = 3; //On, new spawns
+    }
+
+    DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
+}
+
+static void DrawChoices_Challenges_LimitDifficulty(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_CHALLENGES_LIMIT_DIFFICULTY);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock2Ptr->optionsLimitDifficulty = 0; //Don't limit difficulty
+    }
+    else
+    {
+        gSaveBlock2Ptr->optionsLimitDifficulty = 1; //limit difficulty
+    }
+
+    DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
+}
 
 // Background tilemap
 #define TILE_TOP_CORNER_L 0x1A2 // 418

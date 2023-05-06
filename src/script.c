@@ -485,18 +485,18 @@ void SetTimeBasedEncounters(void)
 	RtcCalcLocalTime();
     if (FlagGet(FLAG_MODERN_SPAWNS) && (gLocalTime.hours >= 6 && gLocalTime.hours <= 19))
     {
-		VarSet(VAR_TIME_BASED_ENCOUNTER, 3); // Modern Spawns, Day
+		gSaveBlock2Ptr->optionsAlternateSpawns = 3; // Modern Spawns, Day
 	}
     else if (FlagGet(FLAG_MODERN_SPAWNS))
     {
-		VarSet(VAR_TIME_BASED_ENCOUNTER, 4); // Modern Spawns, Night
+		gSaveBlock2Ptr->optionsAlternateSpawns = 4; // Modern Spawns, Night
 	}
 	else if (gLocalTime.hours >= 6 && gLocalTime.hours <= 19)
 	{
-		VarSet(VAR_TIME_BASED_ENCOUNTER, 1); // Day
+		gSaveBlock2Ptr->optionsAlternateSpawns = 1; // Day
 	}
 	else
     {
-		VarSet(VAR_TIME_BASED_ENCOUNTER, 2); // Night
+		gSaveBlock2Ptr->optionsAlternateSpawns = 2; // Night
 	}
 }    

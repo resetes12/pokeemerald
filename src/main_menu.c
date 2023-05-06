@@ -212,7 +212,6 @@ static void Task_NewGameBirchSpeech_StartPlayerFadeIn(u8);
 static void Task_NewGameBirchSpeech_WaitForPlayerFadeIn(u8);
 static void Task_NewGameBirchSpeech_BoyOrGirl(u8);
 static void Task_NewGameBirchSpeech_Difficulty(u8);
-static void Task_NewGameBirchSpeech_Gamemode(u8);
 static void Task_NewGameBirchSpeech_Challenge(u8);
 static void LoadMainMenuWindowFrameTiles(u8, u16);
 static void DrawMainMenuWindowBorder(const struct WindowTemplate *, u16);
@@ -221,8 +220,6 @@ static void Task_NewGameBirchSpeech_WaitToShowGenderMenu(u8);
 static void Task_NewGameBirchSpeech_ChooseGender(u8);
 static void Task_NewGameBirchSpeech_WaitToShowDifficultyMenu(u8);
 static void Task_NewGameBirchSpeech_ChooseDifficulty(u8);
-static void Task_NewGameBirchSpeech_WaitToShowGamemodeMenu(u8);
-static void Task_NewGameBirchSpeech_ChooseGamemode(u8);
 static void Task_NewGameBirchSpeech_WaitToShowChallengeMenu(u8);
 static void Task_NewGameBirchSpeech_ChooseChallenge(u8);
 static void NewGameBirchSpeech_ShowGenderMenu(void);
@@ -231,9 +228,6 @@ static void NewGameBirchSpeech_ClearGenderWindow(u8, u8);
 static void NewGameBirchSpeech_ShowDifficultyMenu(void);
 static s8 NewGameBirchSpeech_ProcessDifficultyMenuInput(void);
 static void NewGameBirchSpeech_ClearDifficultyWindow(u8, u8);
-static void NewGameBirchSpeech_ShowGamemodeMenu(void);
-static s8 NewGameBirchSpeech_ProcessGamemodeMenuInput(void);
-static void NewGameBirchSpeech_ClearGamemodeWindow(u8, u8);
 static void Task_NewGameBirchSpeech_WhatsYourName(u8);
 static void Task_NewGameBirchSpeech_SlideOutOldGenderSprite(u8);
 static void Task_NewGameBirchSpeech_SlideInNewGenderSprite(u8);
@@ -497,11 +491,6 @@ static const struct MenuAction sMenuActions_Difficulty[] = {
     {gText_Easy, NULL},
     {gText_Normal, NULL},
     {gText_Hard, NULL}
-};
-
-static const struct MenuAction sMenuActions_Gamemode[] = {
-    {gText_No, NULL},
-    {gText_Yes, NULL}
 };
 
 static const u8 *const sMalePresetNames[] = {
@@ -1681,57 +1670,20 @@ static void Task_NewGameBirchSpeech_ChooseDifficulty(u8 taskId)
             gSaveBlock2Ptr->optionsDifficulty = 0; //easy
             FlagClear(FLAG_DIFFICULTY_HARD);
             NewGameBirchSpeech_ClearDifficultyWindow(1, 1);
-            gTasks[taskId].func = Task_NewGameBirchSpeech_Gamemode;
+            gTasks[taskId].func = Task_NewGameBirchSpeech_Challenge;
             break;
         case 1:
             PlaySE(SE_SELECT);
             gSaveBlock2Ptr->optionsDifficulty = 1; //normal
             FlagClear(FLAG_DIFFICULTY_HARD);
             NewGameBirchSpeech_ClearDifficultyWindow(1, 1);
-            gTasks[taskId].func = Task_NewGameBirchSpeech_Gamemode;
+            gTasks[taskId].func = Task_NewGameBirchSpeech_Challenge;
             break;
         case 2:
             PlaySE(SE_SELECT);
             gSaveBlock2Ptr->optionsDifficulty = 2; //hard
             FlagSet(FLAG_DIFFICULTY_HARD);
             NewGameBirchSpeech_ClearDifficultyWindow(1, 1);
-            gTasks[taskId].func = Task_NewGameBirchSpeech_Gamemode;
-            break;
-    }
-}
-
-static void Task_NewGameBirchSpeech_Gamemode(u8 taskId) //Lock difficulty
-{
-    NewGameBirchSpeech_ClearWindow(0);
-    StringExpandPlaceholders(gStringVar4, gText_Birch_LockDifficulty);
-    AddTextPrinterForMessage(TRUE);
-    gTasks[taskId].func = Task_NewGameBirchSpeech_WaitToShowGamemodeMenu;
-}
-
-static void Task_NewGameBirchSpeech_WaitToShowGamemodeMenu(u8 taskId)
-{
-    if (!RunTextPrintersAndIsPrinter0Active())
-    {
-        NewGameBirchSpeech_ShowGamemodeMenu();
-        gTasks[taskId].func = Task_NewGameBirchSpeech_ChooseGamemode;
-    }
-}
-
-static void Task_NewGameBirchSpeech_ChooseGamemode(u8 taskId)
-{
-    int gamemode = NewGameBirchSpeech_ProcessGamemodeMenuInput();
-    switch (gamemode)
-    {
-        case 0:
-            PlaySE(SE_SELECT);
-            FlagClear(FLAG_LOCK_DIFFICULTY); //Don't lock
-            NewGameBirchSpeech_ClearGamemodeWindow(1, 1);
-            gTasks[taskId].func = Task_NewGameBirchSpeech_Challenge;
-            break;
-        case 1:
-            PlaySE(SE_SELECT);
-            FlagSet(FLAG_LOCK_DIFFICULTY); //Yes lock
-            NewGameBirchSpeech_ClearGamemodeWindow(1, 1);
             gTasks[taskId].func = Task_NewGameBirchSpeech_Challenge;
             break;
     }
@@ -2312,21 +2264,6 @@ static s8 NewGameBirchSpeech_ProcessDifficultyMenuInput(void)
     return Menu_ProcessInputNoWrap();
 }
 
-static void NewGameBirchSpeech_ShowGamemodeMenu(void)
-{
-    DrawMainMenuWindowBorder(&sNewGameBirchSpeechTextWindows[1], 0xF3);
-    FillWindowPixelBuffer(1, PIXEL_FILL(1));
-    PrintMenuTable(1, ARRAY_COUNT(sMenuActions_Gamemode), sMenuActions_Gamemode);
-    InitMenuInUpperLeftCornerNormal(1, ARRAY_COUNT(sMenuActions_Gamemode), 0);
-    PutWindowTilemap(1);
-    CopyWindowToVram(1, COPYWIN_FULL);
-}
-
-static s8 NewGameBirchSpeech_ProcessGamemodeMenuInput(void)
-{
-    return Menu_ProcessInputNoWrap();
-}
-
 void NewGameBirchSpeech_SetDefaultPlayerName(u8 nameId)
 {
     const u8 *name;
@@ -2470,20 +2407,6 @@ static void NewGameBirchSpeech_ClearDifficultyWindowTilemap(u8 bg, u8 x, u8 y, u
 static void NewGameBirchSpeech_ClearDifficultyWindow(u8 windowId, bool8 copyToVram)
 {
     CallWindowFunction(windowId, NewGameBirchSpeech_ClearDifficultyWindowTilemap);
-    FillWindowPixelBuffer(windowId, PIXEL_FILL(1));
-    ClearWindowTilemap(windowId);
-    if (copyToVram == TRUE)
-        CopyWindowToVram(windowId, COPYWIN_FULL);
-}
-
-static void NewGameBirchSpeech_ClearGamemodeWindowTilemap(u8 bg, u8 x, u8 y, u8 width, u8 height, u8 unused)
-{
-    FillBgTilemapBufferRect(bg, 0, x + 255, y + 255, width + 2, height + 2, 2);
-}
-
-static void NewGameBirchSpeech_ClearGamemodeWindow(u8 windowId, bool8 copyToVram)
-{
-    CallWindowFunction(windowId, NewGameBirchSpeech_ClearGamemodeWindowTilemap);
     FillWindowPixelBuffer(windowId, PIXEL_FILL(1));
     ClearWindowTilemap(windowId);
     if (copyToVram == TRUE)

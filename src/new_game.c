@@ -105,6 +105,8 @@ static void SetDefaultOptions(void)
     gSaveBlock2Ptr->optionTypeEffective = 1;
     gSaveBlock2Ptr->optionsFishing = 1;
     gSaveBlock2Ptr->optionsFastIntro = 1;
+    gSaveBlock2Ptr->optionsAlternateSpawns = 0;
+    gSaveBlock2Ptr->optionsShinyChance = 0;
 }
 
 static void ClearPokedexFlags(void)
@@ -158,7 +160,8 @@ void ResetMenuAndMonGlobals(void)
 
 void NewGameInitData(void)
 {
-    //bool8 difficultyPrev = VarGet(VAR_DIFFICULTY);
+    bool8 spawnsPrev = gSaveBlock2Ptr->optionsAlternateSpawns;
+    bool8 difficultyPrev = gSaveBlock2Ptr->optionsLimitDifficulty;
     bool8 HardPrev = FlagGet(FLAG_DIFFICULTY_HARD);
     bool8 lockPrev = FlagGet(FLAG_LOCK_DIFFICULTY);
 
@@ -222,6 +225,10 @@ void NewGameInitData(void)
     HardPrev ? FlagSet(FLAG_DIFFICULTY_HARD) : FlagClear(FLAG_DIFFICULTY_HARD);
     lockPrev ? FlagSet(FLAG_LOCK_DIFFICULTY) : FlagClear(FLAG_LOCK_DIFFICULTY);
 
+    if (spawnsPrev == 3)
+        FlagSet(FLAG_MODERN_SPAWNS) == TRUE;
+    if (difficultyPrev == 1)
+        FlagSet(FLAG_LOCK_DIFFICULTY) == TRUE;
     /*if (difficultyPrev == DIFFICULTY_EASY)
         VarSet(VAR_DIFFICULTY, DIFFICULTY_EASY);
     else if (difficultyPrev == DIFFICULTY_NORMAL)
