@@ -104,6 +104,7 @@ static void SetDefaultOptions(void)
     gSaveBlock2Ptr->optionStyle = 1;
     gSaveBlock2Ptr->optionTypeEffective = 1;
     gSaveBlock2Ptr->optionsFishing = 1;
+    gSaveBlock2Ptr->optionsFastIntro = 1;
 }
 
 static void ClearPokedexFlags(void)
