@@ -516,6 +516,8 @@ struct SaveBlock2
              u16 optionsDisableMatchCall:1;
              u16 optionStyle:1;
              u16 optionsDifficulty:2;
+             u16 optionTypeEffective:1;
+             u16 optionsFishing:1;
     /*0x18*/ struct Pokedex pokedex;
     /*0x90*/ u8 filler_90[0x8];
     /*0x98*/ struct Time localTimeOffset;

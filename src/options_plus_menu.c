@@ -47,6 +47,8 @@ enum
     MENUITEM_CUSTOM_AUTORUN,
     MENUITEM_CUSTOM_MATCHCALL,
     MENUITEM_CUSTOM_STYLE,
+    MENUITEM_CUSTOM_TYPE_EFFECTIVE,
+    MENUITEM_CUSTOM_FISHING,
     MENUITEM_CUSTOM_CANCEL,
     MENUITEM_CUSTOM_COUNT,
 };
@@ -171,6 +173,8 @@ static void DrawChoices_Autorun(int selection, int y);
 static void DrawChoices_FrameType(int selection, int y);
 static void DrawChoices_MatchCall(int selection, int y);
 static void DrawChoices_Style(int selection, int y);
+static void DrawChoices_TypeEffective(int selection, int y);
+static void DrawChoices_Fishing(int selection, int y);
 static void DrawBgWindowFrames(void);
 
 // EWRAM vars
@@ -223,11 +227,14 @@ struct // MENU_CUSTOM
     [MENUITEM_CUSTOM_AUTORUN]      = {DrawChoices_Autorun,     ProcessInput_Options_Two},
     [MENUITEM_CUSTOM_MATCHCALL]    = {DrawChoices_MatchCall,   ProcessInput_Options_Two},
     [MENUITEM_CUSTOM_STYLE]        = {DrawChoices_Style,       ProcessInput_Options_Two},
+    [MENUITEM_CUSTOM_TYPE_EFFECTIVE] = {DrawChoices_TypeEffective,     ProcessInput_Options_Two},
+    [MENUITEM_CUSTOM_FISHING]      = {DrawChoices_Fishing,       ProcessInput_Options_Two},
     [MENUITEM_CUSTOM_CANCEL]       = {NULL, NULL},
 };
 
 // Menu left side option names text
-//static const u8 sText_Difficulty[]       = _("DIFFICULTY");
+static const u8 sText_OptionTypeEffective[]       = _("SHOW EFFECTIVE");
+static const u8 sText_OptionFishing[]             = _("EASIER FISHING");
 static const u8 *const sOptionMenuItemsNamesMain[MENUITEM_MAIN_COUNT] =
 {
     [MENUITEM_MAIN_TEXTSPEED]   = gText_TextSpeed,
@@ -246,6 +253,8 @@ static const u8 *const sOptionMenuItemsNamesCustom[MENUITEM_CUSTOM_COUNT] =
     [MENUITEM_CUSTOM_AUTORUN]     = gText_AutorunEnable,
     [MENUITEM_CUSTOM_MATCHCALL]   = gText_OptionMatchCalls,
     [MENUITEM_CUSTOM_STYLE]       = gText_OptionStyle,
+    [MENUITEM_CUSTOM_TYPE_EFFECTIVE] = sText_OptionTypeEffective,
+    [MENUITEM_CUSTOM_FISHING]     = sText_OptionFishing,
     [MENUITEM_CUSTOM_CANCEL]      = gText_OptionMenuSave,
 };
 
@@ -283,6 +292,8 @@ static bool8 CheckConditions(int selection)
         case MENUITEM_CUSTOM_AUTORUN:         return TRUE;
         case MENUITEM_CUSTOM_MATCHCALL:       return TRUE;
         case MENUITEM_CUSTOM_STYLE:           return TRUE;
+        case MENUITEM_CUSTOM_TYPE_EFFECTIVE:  return TRUE;
+        case MENUITEM_CUSTOM_FISHING:         return TRUE;
         case MENUITEM_CUSTOM_CANCEL:          return TRUE;
         case MENUITEM_CUSTOM_COUNT:           return TRUE;
         }
@@ -325,14 +336,20 @@ static const u8 sText_Desc_AutorunOn[]             = _("Press and hold B to run.
 static const u8 sText_Desc_AutorunOff[]            = _("Run without pressing B.");
 static const u8 sText_Desc_OverworldCallsOn[]      = _("TRAINERs will be able to call you,\noffering rematches and info.");
 static const u8 sText_Desc_OverworldCallsOff[]     = _("You will not receive calls.\nSpecial events will still occur.");
-static const u8 sText_Desc_StyleOn[]               = _("PHYSICAL and SPECIAL MOVES\nare MOVE specific."); //Use the SPLIT of PHY/SP MOVES\nthat happened in GEN IV.
+static const u8 sText_Desc_StyleOn[]               = _("PHYSICAL and SPECIAL MOVES\nare MOVE specific.");
 static const u8 sText_Desc_StyleOff[]              = _("PHYSICAL and SPECIAL MOVES\ndepend on the POKéMON TYPE.");
+static const u8 sText_Desc_TypeEffectiveOn[]       = _("TYPE effectiveness will be\nshown in battles.");
+static const u8 sText_Desc_TypeEffectiveOff[]      = _("TYPE effectiveness won't be\nshown in battles.");
+static const u8 sText_Desc_FishingOn[]             = _("Automatically reel while fishing.");
+static const u8 sText_Desc_FishingOff[]            = _("Manually reel while fishing.\nFish like you always fished!");
 static const u8 *const sOptionMenuItemDescriptionsCustom[MENUITEM_CUSTOM_COUNT][2] =
 {
     [MENUITEM_CUSTOM_FOLLOWER]    = {sText_Desc_FollowerOn,           sText_Desc_FollowerOff},
     [MENUITEM_CUSTOM_AUTORUN]     = {sText_Desc_AutorunOn,            sText_Desc_AutorunOff},
     [MENUITEM_CUSTOM_MATCHCALL]   = {sText_Desc_OverworldCallsOn,     sText_Desc_OverworldCallsOff},
     [MENUITEM_CUSTOM_STYLE]       = {sText_Desc_StyleOn,              sText_Desc_StyleOff},
+    [MENUITEM_CUSTOM_TYPE_EFFECTIVE]       = {sText_Desc_TypeEffectiveOn,              sText_Desc_TypeEffectiveOff},
+    [MENUITEM_CUSTOM_FISHING]     = {sText_Desc_FishingOn,            sText_Desc_FishingOff},
     [MENUITEM_CUSTOM_CANCEL]      = {sText_Desc_Save,                 sText_Empty},
 };
 
@@ -358,6 +375,8 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledCustom[MENUITEM_CUSTOM
     [MENUITEM_CUSTOM_AUTORUN]     = sText_Empty,
     [MENUITEM_CUSTOM_MATCHCALL]   = sText_Empty,
     [MENUITEM_CUSTOM_STYLE]       = sText_Empty,
+    [MENUITEM_CUSTOM_TYPE_EFFECTIVE]       = sText_Empty,
+    [MENUITEM_CUSTOM_FISHING]     = sText_Empty,
     [MENUITEM_CUSTOM_CANCEL]      = sText_Empty,
 };
 
@@ -601,6 +620,8 @@ void CB2_InitOptionPlusMenu(void)
         sOptions->sel_custom[MENUITEM_CUSTOM_AUTORUN]     = gSaveBlock2Ptr->optionsautoRun;
         sOptions->sel_custom[MENUITEM_CUSTOM_MATCHCALL]   = gSaveBlock2Ptr->optionsDisableMatchCall;
         sOptions->sel_custom[MENUITEM_CUSTOM_STYLE]       = gSaveBlock2Ptr->optionStyle;
+        sOptions->sel_custom[MENUITEM_CUSTOM_TYPE_EFFECTIVE]       = gSaveBlock2Ptr->optionTypeEffective;
+        sOptions->sel_custom[MENUITEM_CUSTOM_FISHING]     = gSaveBlock2Ptr->optionsFishing;
 
         sOptions->submenu = MENU_MAIN;
 
@@ -789,7 +810,9 @@ static void Task_OptionMenuSave(u8 taskId)
     gSaveBlock2Ptr->optionsfollowerEnable   = sOptions->sel_custom[MENUITEM_CUSTOM_FOLLOWER];
     gSaveBlock2Ptr->optionsautoRun          = sOptions->sel_custom[MENUITEM_CUSTOM_AUTORUN];
     gSaveBlock2Ptr->optionsDisableMatchCall = sOptions->sel_custom[MENUITEM_CUSTOM_MATCHCALL];
-    gSaveBlock2Ptr->optionStyle            = sOptions->sel_custom[MENUITEM_CUSTOM_STYLE];
+    gSaveBlock2Ptr->optionStyle             = sOptions->sel_custom[MENUITEM_CUSTOM_STYLE];
+    gSaveBlock2Ptr->optionTypeEffective     = sOptions->sel_custom[MENUITEM_CUSTOM_TYPE_EFFECTIVE];
+    gSaveBlock2Ptr->optionsFishing          = sOptions->sel_custom[MENUITEM_CUSTOM_FISHING];
 
     BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);
     gTasks[taskId].func = Task_OptionMenuFadeOut;
@@ -1208,6 +1231,45 @@ static void DrawChoices_Style(int selection, int y)
     DrawOptionMenuChoice(gText_BattleSceneOn, 104, y, styles[0], active);
     DrawOptionMenuChoice(gText_BattleSceneOff, GetStringRightAlignXOffset(1, gText_BattleSceneOff, 198), y, styles[1], active);
 }
+
+static void DrawChoices_TypeEffective(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_CUSTOM_TYPE_EFFECTIVE);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock2Ptr->optionTypeEffective = 0; //Yes
+    }
+    else
+    {
+        gSaveBlock2Ptr->optionTypeEffective = 1; //No
+    }
+
+    DrawOptionMenuChoice(gText_BattleSceneOn, 104, y, styles[0], active);
+    DrawOptionMenuChoice(gText_BattleSceneOff, GetStringRightAlignXOffset(1, gText_BattleSceneOff, 198), y, styles[1], active);
+}
+
+static void DrawChoices_Fishing(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_CUSTOM_FISHING);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock2Ptr->optionsFishing = 0; //FRLG
+    }
+    else
+    {
+        gSaveBlock2Ptr->optionsFishing = 1; //Emerald
+    }
+
+    DrawOptionMenuChoice(gText_BattleSceneOn, 104, y, styles[0], active);
+    DrawOptionMenuChoice(gText_BattleSceneOff, GetStringRightAlignXOffset(1, gText_BattleSceneOff, 198), y, styles[1], active);
+}
+
 
 // Background tilemap
 #define TILE_TOP_CORNER_L 0x1A2 // 418

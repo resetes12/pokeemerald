@@ -102,6 +102,8 @@ static void SetDefaultOptions(void)
     gSaveBlock2Ptr->optionsautoRun = 1;
     gSaveBlock2Ptr->optionsDisableMatchCall = 0;
     gSaveBlock2Ptr->optionStyle = 1;
+    gSaveBlock2Ptr->optionTypeEffective = 1;
+    gSaveBlock2Ptr->optionsFishing = 1;
 }
 
 static void ClearPokedexFlags(void)
