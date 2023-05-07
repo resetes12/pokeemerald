@@ -62,6 +62,7 @@ bool8 AreAnyChallengesActive(void)
         || gSaveBlock1Ptr->tx_Challenges_Mirror_Thief
         || gSaveBlock2Ptr->optionsAlternateSpawns
         || gSaveBlock2Ptr->optionsLimitDifficulty
+        || gSaveBlock2Ptr->optionsShinyChance
         || IsOneTypeChallengeActive())
         return TRUE;
 

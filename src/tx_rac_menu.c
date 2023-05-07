@@ -82,6 +82,7 @@ enum
 {
     MENUITEM_CHALLENGES_ALTERNATE_SPAWNS,
     MENUITEM_CHALLENGES_LIMIT_DIFFICULTY,
+    MENUITEM_CHALLENGES_SHINY_CHANCE,
     MENUITEM_CHALLENGES_EVO_LIMIT,
     MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE,
     MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER,
@@ -189,6 +190,7 @@ static int XOptions_ProcessInput(int x, int selection);
 static int ProcessInput_Options_Two(int selection);
 static int ProcessInput_Options_Three(int selection);
 static int ProcessInput_Options_Four(int selection);
+static int ProcessInput_Options_Five(int selection);
 static int ProcessInput_Options_Six(int selection);
 static int ProcessInput_Options_Eleven(int selection);
 static int ProcessInput_Options_OneTypeChallenge(int selection);
@@ -202,6 +204,7 @@ static u8 MenuItemCancel(void);
 static void DrawDescriptionText(void);
 static void DrawOptionMenuChoice(const u8 *text, u8 x, u8 y, u8 style, bool8 active);
 static void DrawChoices_Options_Four(const u8 *const *const strings, int selection, int y, bool8 active);
+static void DrawChoices_Options_Five(const u8 *const *const strings, int selection, int y, bool8 active);
 static void ReDrawAll(void);
 static void DrawBgWindowFrames(void);
 
@@ -248,6 +251,7 @@ static void DrawChoices_Challenges_Mirror(int selection, int y);
 static void DrawChoices_Challenges_Mirror_Thief(int selection, int y);
 static void DrawChoices_Challenges_AlternateSpawns(int selection, int y);
 static void DrawChoices_Challenges_LimitDifficulty(int selection, int y);
+static void DrawChoices_Challenges_ShinyChance(int selection, int y);
 
 static void PrintCurrentSelections(void);
 
@@ -344,6 +348,7 @@ struct // MENU_CHALLENGES
     [MENUITEM_CHALLENGES_MIRROR_THIEF]          = {DrawChoices_Challenges_Mirror_Thief,         ProcessInput_Options_Two},
     [MENUITEM_CHALLENGES_ALTERNATE_SPAWNS]      = {DrawChoices_Challenges_AlternateSpawns,      ProcessInput_Options_Two},
     [MENUITEM_CHALLENGES_LIMIT_DIFFICULTY]      = {DrawChoices_Challenges_LimitDifficulty,      ProcessInput_Options_Two},
+    [MENUITEM_CHALLENGES_SHINY_CHANCE]          = {DrawChoices_Challenges_ShinyChance,          ProcessInput_Options_Five},
     [MENUITEM_CHALLENGES_SAVE] = {NULL, NULL},
 };
 
@@ -433,6 +438,7 @@ static const u8 sText_Mirror[]              = _("MIRROR MODE");
 static const u8 sText_MirrorThief[]         = _("MIRROR THIEF");
 static const u8 sText_AlternateSpawns[]     = _("MODERN SPAWNS");
 static const u8 sText_LimitDifficulty[]     = _("LOCK DIFFICULTY");
+static const u8 sText_ShinyChance[]         = _("SHINY CHANCE");
 static const u8 sText_Save[]                = _("SAVE");
 static const u8 *const sOptionMenuItemsNamesChallenges[MENUITEM_CHALLENGES_COUNT] =
 {
@@ -443,6 +449,7 @@ static const u8 *const sOptionMenuItemsNamesChallenges[MENUITEM_CHALLENGES_COUNT
     [MENUITEM_CHALLENGES_MIRROR_THIEF]          = sText_MirrorThief,
     [MENUITEM_CHALLENGES_ALTERNATE_SPAWNS]      = sText_AlternateSpawns,
     [MENUITEM_CHALLENGES_LIMIT_DIFFICULTY]      = sText_LimitDifficulty,
+    [MENUITEM_CHALLENGES_SHINY_CHANCE]          = sText_ShinyChance,
     [MENUITEM_CHALLENGES_SAVE]                  = sText_Save,
 };
 
@@ -654,16 +661,22 @@ static const u8 sText_Description_Challenges_AlternateSpawns_Off[]      = _("Use
 static const u8 sText_Description_Challenges_AlternateSpawns_On[]       = _("Use Modern Emerald {PKMN} spawns.\nAll 420 {PKMN} available.");
 static const u8 sText_Description_Challenges_LimitDifficulty_Off[]      = _("Change the difficulty whenever and\nwherever you want.");
 static const u8 sText_Description_Challenges_LimitDifficulty_On[]       = _("Difficulty cannot be changed.\nHARD MODE locks BATTLE STYLE to SET.");
-static const u8 *const sOptionMenuItemDescriptionsChallenges[MENUITEM_CHALLENGES_COUNT][4] =
+static const u8 sText_Description_Challenges_ShinyChance_8192[]         = _("Very low chance of SHINY encounter.\nDefault chance from Generation III.");
+static const u8 sText_Description_Challenges_ShinyChance_4096[]         = _("Low chance of SHINY encounter.\nDefault chance from Generation VI.");
+static const u8 sText_Description_Challenges_ShinyChance_2048[]         = _("Decent chance of SHINY encounter.");
+static const u8 sText_Description_Challenges_ShinyChance_1024[]         = _("High chance of SHINY encounter.");
+static const u8 sText_Description_Challenges_ShinyChance_512[]          = _("Very high chance of SHINY encounter.");
+static const u8 *const sOptionMenuItemDescriptionsChallenges[MENUITEM_CHALLENGES_COUNT][5] =
 {
-    [MENUITEM_CHALLENGES_EVO_LIMIT]             = {sText_Description_Challenges_EvoLimit_Base,          sText_Description_Challenges_EvoLimit_First,        sText_Description_Challenges_EvoLimit_All,          sText_Empty},
-    [MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]    = {sText_Description_Challenges_OneTypeChallenge,       sText_Empty,                                        sText_Empty,                                        sText_Empty},
-    [MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]   = {sText_Description_Challenges_BaseStatEqualizer_Base, sText_Description_Challenges_BaseStatEqualizer_100, sText_Description_Challenges_BaseStatEqualizer_255, sText_Description_Challenges_BaseStatEqualizer_500},
-    [MENUITEM_CHALLENGES_MIRROR]                = {sText_Description_Challenges_Mirror_Off,             sText_Description_Challenges_Mirror_Trainer,        sText_Empty,                                        sText_Empty},
-    [MENUITEM_CHALLENGES_MIRROR_THIEF]          = {sText_Description_Challenges_MirrorThief_Off,        sText_Description_Challenges_MirrorThief_On,        sText_Empty,                                        sText_Empty},
-    [MENUITEM_CHALLENGES_ALTERNATE_SPAWNS]      = {sText_Description_Challenges_AlternateSpawns_Off,    sText_Description_Challenges_AlternateSpawns_On,    sText_Empty,                                        sText_Empty},
-    [MENUITEM_CHALLENGES_LIMIT_DIFFICULTY]      = {sText_Description_Challenges_LimitDifficulty_Off,    sText_Description_Challenges_LimitDifficulty_On,    sText_Empty,                                        sText_Empty},
-    [MENUITEM_CHALLENGES_SAVE]                  = {sText_Description_Save,                              sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_CHALLENGES_EVO_LIMIT]             = {sText_Description_Challenges_EvoLimit_Base,          sText_Description_Challenges_EvoLimit_First,        sText_Description_Challenges_EvoLimit_All,          sText_Empty,                                        sText_Empty},
+    [MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]    = {sText_Description_Challenges_OneTypeChallenge,       sText_Empty,                                        sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]   = {sText_Description_Challenges_BaseStatEqualizer_Base, sText_Description_Challenges_BaseStatEqualizer_100, sText_Description_Challenges_BaseStatEqualizer_255, sText_Description_Challenges_BaseStatEqualizer_500, sText_Empty},
+    [MENUITEM_CHALLENGES_MIRROR]                = {sText_Description_Challenges_Mirror_Off,             sText_Description_Challenges_Mirror_Trainer,        sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_CHALLENGES_MIRROR_THIEF]          = {sText_Description_Challenges_MirrorThief_Off,        sText_Description_Challenges_MirrorThief_On,        sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_CHALLENGES_ALTERNATE_SPAWNS]      = {sText_Description_Challenges_AlternateSpawns_Off,    sText_Description_Challenges_AlternateSpawns_On,    sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_CHALLENGES_LIMIT_DIFFICULTY]      = {sText_Description_Challenges_LimitDifficulty_Off,    sText_Description_Challenges_LimitDifficulty_On,    sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_CHALLENGES_SHINY_CHANCE]          = {sText_Description_Challenges_ShinyChance_8192,       sText_Description_Challenges_ShinyChance_4096,      sText_Description_Challenges_ShinyChance_2048,      sText_Description_Challenges_ShinyChance_1024, sText_Description_Challenges_ShinyChance_512},
+    [MENUITEM_CHALLENGES_SAVE]                  = {sText_Description_Save,                              sText_Empty,                                        sText_Empty,                                        sText_Empty,                                        sText_Empty},
 };
 
 // Disabled descriptions
@@ -1051,6 +1064,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         gSaveBlock1Ptr->tx_Challenges_Mirror_Thief          = TX_CHALLENGE_MIRROR_THIEF;
         gSaveBlock2Ptr->optionsAlternateSpawns              = TX_CHALLENGE_ALTERNATE_SPAWNS;
         gSaveBlock2Ptr->optionsLimitDifficulty              = TX_CHALLENGE_LIMIT_DIFFICULTY;
+        gSaveBlock2Ptr->optionsShinyChance                  = TX_CHALLENGE_SHINY_CHANCE;
                
 
         sOptions = AllocZeroed(sizeof(*sOptions));
@@ -1100,6 +1114,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR_THIEF]           = gSaveBlock1Ptr->tx_Challenges_Mirror_Thief;
         sOptions->sel_challenges[MENUITEM_CHALLENGES_ALTERNATE_SPAWNS]       = gSaveBlock2Ptr->optionsAlternateSpawns;
         sOptions->sel_challenges[MENUITEM_CHALLENGES_LIMIT_DIFFICULTY]       = gSaveBlock2Ptr->optionsLimitDifficulty;
+        sOptions->sel_challenges[MENUITEM_CHALLENGES_SHINY_CHANCE]           = gSaveBlock2Ptr->optionsShinyChance;
 
         sOptions->submenu = MENU_RANDOMIZER;
 
@@ -1423,7 +1438,8 @@ void SaveData_TxRandomizerAndChallenges(void)
     gSaveBlock1Ptr->tx_Challenges_Mirror               = sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR]; 
     gSaveBlock1Ptr->tx_Challenges_Mirror_Thief         = sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR_THIEF]; 
     gSaveBlock2Ptr->optionsAlternateSpawns             = sOptions->sel_challenges[MENUITEM_CHALLENGES_ALTERNATE_SPAWNS]; 
-    gSaveBlock2Ptr->optionsLimitDifficulty             = sOptions->sel_challenges[MENUITEM_CHALLENGES_LIMIT_DIFFICULTY]; 
+    gSaveBlock2Ptr->optionsLimitDifficulty             = sOptions->sel_challenges[MENUITEM_CHALLENGES_LIMIT_DIFFICULTY];
+    gSaveBlock2Ptr->optionsShinyChance                 = sOptions->sel_challenges[MENUITEM_CHALLENGES_SHINY_CHANCE]; 
 
     PrintTXSaveData();
 
@@ -1531,6 +1547,11 @@ static int ProcessInput_Options_Four(int selection)
     return XOptions_ProcessInput(4, selection);
 }
 
+static int ProcessInput_Options_Five(int selection)
+{
+    return XOptions_ProcessInput(5, selection);
+}
+
 static int ProcessInput_Options_Six(int selection)
 {
     return XOptions_ProcessInput(6, selection);
@@ -1603,6 +1624,27 @@ static void DrawChoices_Options_Four(const u8 *const *const strings, int selecti
         {1, 2, 3},
     };
     u8 styles[4] = {0};
+    int xMid;
+    const u8 *order = choiceOrders[selection];
+    styles[selection] = 1;
+    xMid = GetMiddleX(strings[order[0]], strings[order[1]], strings[order[2]]);
+
+    DrawOptionMenuChoice(strings[order[0]], 104, y, styles[order[0]], active);
+    DrawOptionMenuChoice(strings[order[1]], xMid, y, styles[order[1]], active);
+    DrawOptionMenuChoice(strings[order[2]], GetStringRightAlignXOffset(1, strings[order[2]], 198), y, styles[order[2]], active);
+}
+
+static void DrawChoices_Options_Five(const u8 *const *const strings, int selection, int y, bool8 active)
+{
+    static const u8 choiceOrders[][3] =
+    {
+        {0, 1, 2},
+        {0, 1, 2},
+        {1, 2, 3},
+        {1, 2, 3},
+        {2, 3, 4},
+    };
+    u8 styles[5] = {0};
     int xMid;
     const u8 *order = choiceOrders[selection];
     styles[selection] = 1;
@@ -2015,6 +2057,39 @@ static void DrawChoices_Challenges_LimitDifficulty(int selection, int y)
 
     DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
     DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
+}
+
+static const u8 sText_Challenges_ShinyChance_8192[]   = _("8192");
+static const u8 sText_Challenges_ShinyChance_4096[]   = _("4096");
+static const u8 sText_Challenges_ShinyChance_2048[]   = _("2048");
+static const u8 sText_Challenges_ShinyChance_1024[]   = _("1024");
+static const u8 sText_Challenges_ShinyChance_512[]    = _("512");
+static const u8 *const sText_Challenges_ShinyChance_Strings[] = {sText_Challenges_ShinyChance_8192,  sText_Challenges_ShinyChance_4096,  sText_Challenges_ShinyChance_2048,  sText_Challenges_ShinyChance_1024,  sText_Challenges_ShinyChance_512};
+static void DrawChoices_Challenges_ShinyChance(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_CHALLENGES_SHINY_CHANCE);
+    DrawChoices_Options_Five(sText_Challenges_ShinyChance_Strings, selection, y, active);
+    
+    if (selection == 0)
+    {
+        gSaveBlock2Ptr->optionsShinyChance = 0; // 1/8192
+    }
+    else if (selection == 1)
+    {
+        gSaveBlock2Ptr->optionsShinyChance = 1; // 1/4096 -> Gen VI
+    }
+    else if (selection == 2)
+    {
+        gSaveBlock2Ptr->optionsShinyChance = 2; // 1/2048
+    }
+    else if (selection == 3)
+    {
+        gSaveBlock2Ptr->optionsShinyChance = 3; // 1/1024
+    }
+    else //(selection == 4)
+    {
+        gSaveBlock2Ptr->optionsShinyChance = 4; // 1/512
+    }
 }
 
 // Background tilemap

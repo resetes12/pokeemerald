@@ -4783,12 +4783,37 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
     if (otIdType == OT_ID_RANDOM_NO_SHINY)
     {
         u32 shinyValue;
-        do
-        {
-            // Choose random OT IDs until one that results in a non-shiny Pokémon
-            value = Random32();
-            shinyValue = GET_SHINY_VALUE(value, personality);
-        } while (shinyValue < SHINY_ODDS);
+        if (gSaveBlock2Ptr->optionsShinyChance == 0) // 1/8192
+            do
+            {
+                // Choose random OT IDs until one that results in a non-shiny Pokémon
+                value = Random32();
+                shinyValue = GET_SHINY_VALUE(value, personality);
+            } while (shinyValue < SHINY_ODDS);
+        else if (gSaveBlock2Ptr->optionsShinyChance == 1) // 1/4096
+            do
+            {
+                value = Random32();
+                shinyValue = GET_SHINY_VALUE(value, personality);
+            } while (shinyValue < 16);
+        else if (gSaveBlock2Ptr->optionsShinyChance == 2) // 1/2048
+            do
+            {
+                value = Random32();
+                shinyValue = GET_SHINY_VALUE(value, personality);
+            } while (shinyValue < 32);
+        else if (gSaveBlock2Ptr->optionsShinyChance == 3) // 1/1024
+            do
+            {
+                value = Random32();
+                shinyValue = GET_SHINY_VALUE(value, personality);
+            } while (shinyValue < 64);
+        else if (gSaveBlock2Ptr->optionsShinyChance == 4) // 1/512
+            do
+            {
+                value = Random32();
+                shinyValue = GET_SHINY_VALUE(value, personality);
+            } while (shinyValue < 128);
     }
     else if (otIdType == OT_ID_PRESET)
     {
@@ -4809,11 +4834,36 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
 
         if (shinyRolls)
         {
-            do {
-                personality = Random32();
-                shinyValue = HIHALF(value) ^ LOHALF(value) ^ HIHALF(personality) ^ LOHALF(personality);
-                rolls++;
-            } while (shinyValue >= SHINY_ODDS && rolls < shinyRolls);
+            if (gSaveBlock2Ptr->optionsShinyChance == 0) // 1/8192
+                do {
+                    personality = Random32();
+                    shinyValue = HIHALF(value) ^ LOHALF(value) ^ HIHALF(personality) ^ LOHALF(personality);
+                    rolls++;
+                } while (shinyValue >= SHINY_ODDS && rolls < shinyRolls);    
+            else if (gSaveBlock2Ptr->optionsShinyChance == 1) // 1/4096
+                do {
+                    personality = Random32();
+                    shinyValue = HIHALF(value) ^ LOHALF(value) ^ HIHALF(personality) ^ LOHALF(personality);
+                    rolls++;
+                } while (shinyValue >= 16 && rolls < shinyRolls);
+            else if (gSaveBlock2Ptr->optionsShinyChance == 2) // 1/2048
+                do {
+                    personality = Random32();
+                    shinyValue = HIHALF(value) ^ LOHALF(value) ^ HIHALF(personality) ^ LOHALF(personality);
+                    rolls++;
+                } while (shinyValue >= 32 && rolls < shinyRolls);
+            else if (gSaveBlock2Ptr->optionsShinyChance == 3) // 1/1024
+                do {
+                    personality = Random32();
+                    shinyValue = HIHALF(value) ^ LOHALF(value) ^ HIHALF(personality) ^ LOHALF(personality);
+                    rolls++;
+                } while (shinyValue >= 64 && rolls < shinyRolls);
+            else if (gSaveBlock2Ptr->optionsShinyChance == 4) // 1/512
+                do {
+                    personality = Random32();
+                    shinyValue = HIHALF(value) ^ LOHALF(value) ^ HIHALF(personality) ^ LOHALF(personality);
+                    rolls++;
+                } while (shinyValue >= 128 && rolls < shinyRolls);   
         }
     }
 
@@ -9524,17 +9574,59 @@ const u32 *GetMonFrontSpritePal(struct Pokemon *mon)
 const u32 *GetMonSpritePalFromSpeciesAndPersonality(u16 species, u32 otId, u32 personality)
 {
     u32 shinyValue;
+    struct Pokemon *mon;
 
     if (species > NUM_SPECIES)
         return gMonPaletteTable[SPECIES_NONE].data;
 
     shinyValue = GET_SHINY_VALUE(otId, personality);
-    if (shinyValue < SHINY_ODDS)
-        return gMonShinyPaletteTable[species].data;
-    else
-        return gMonPaletteTable[species].data;
-}
 
+    if (gSaveBlock2Ptr->optionsShinyChance == 0) // 1/8192
+    {
+        if (shinyValue < SHINY_ODDS)
+            return gMonShinyPaletteTable[species].data;
+        else
+        {
+            return gMonPaletteTable[species].data;
+        }
+    }
+    else if (gSaveBlock2Ptr->optionsShinyChance == 1) // 1/4096
+    {
+        if (shinyValue < 16 && personality !=0)
+            return gMonShinyPaletteTable[species].data;
+        else
+        {
+            return gMonPaletteTable[species].data;
+        }
+    }
+    else if (gSaveBlock2Ptr->optionsShinyChance == 2) // 1/2048
+    {
+        if (shinyValue < 32 && personality !=0)
+            return gMonShinyPaletteTable[species].data;
+        else
+        {
+            return gMonPaletteTable[species].data;
+        }
+    }
+    else if (gSaveBlock2Ptr->optionsShinyChance == 3) // 1/1024
+    {
+        if (shinyValue < 64 && personality !=0)
+            return gMonShinyPaletteTable[species].data;
+        else
+        {
+            return gMonPaletteTable[species].data;
+        }
+    }
+    else if (gSaveBlock2Ptr->optionsShinyChance == 4) // 1/512
+    {
+        if (shinyValue < 128 && personality !=0)
+            return gMonShinyPaletteTable[species].data;
+        else
+        {
+            return gMonPaletteTable[species].data;
+        }
+    }
+}
 const struct CompressedSpritePalette *GetMonSpritePalStruct(struct Pokemon *mon)
 {
     u16 species = GetMonData(mon, MON_DATA_SPECIES_OR_EGG, 0);
@@ -9548,10 +9640,52 @@ const struct CompressedSpritePalette *GetMonSpritePalStructFromOtIdPersonality(u
     u32 shinyValue;
 
     shinyValue = GET_SHINY_VALUE(otId, personality);
-    if (shinyValue < SHINY_ODDS)
-        return &gMonShinyPaletteTable[species];
-    else
-        return &gMonPaletteTable[species];
+
+    if (gSaveBlock2Ptr->optionsShinyChance == 0) // 1/8192
+    {
+        if (shinyValue < SHINY_ODDS)
+            return &gMonShinyPaletteTable[species];
+        else
+        {
+            return &gMonPaletteTable[species];
+        }
+    }
+    else if (gSaveBlock2Ptr->optionsShinyChance == 1) // 1/4096
+    {
+        if (shinyValue < 16)
+            return &gMonShinyPaletteTable[species];
+        else
+        {
+            return &gMonPaletteTable[species];
+        }
+    }
+    else if (gSaveBlock2Ptr->optionsShinyChance == 2) // 1/2048
+    {
+        if (shinyValue < 32)
+            return &gMonShinyPaletteTable[species];
+        else
+        {
+            return &gMonPaletteTable[species];
+        }
+    }
+    else if (gSaveBlock2Ptr->optionsShinyChance == 3) // 1/1024
+    {
+        if (shinyValue < 64)
+            return &gMonShinyPaletteTable[species];
+        else
+        {
+            return &gMonPaletteTable[species];
+        }
+    }
+    else if (gSaveBlock2Ptr->optionsShinyChance == 4) // 1/512
+    {
+        if (shinyValue < 128)
+            return &gMonShinyPaletteTable[species];
+        else
+        {
+            return &gMonPaletteTable[species];
+        }
+    }      
 }
 
 bool32 IsHMMove2(u16 move)
@@ -9724,9 +9858,37 @@ bool8 IsShinyOtIdPersonality(u32 otId, u32 personality)
 {
     bool8 retVal = FALSE;
     u32 shinyValue = GET_SHINY_VALUE(otId, personality);
-    if (shinyValue < SHINY_ODDS)
-        retVal = TRUE;
-    return retVal;
+
+    if (gSaveBlock2Ptr->optionsShinyChance == 0) // 1/8192
+    {
+        if (shinyValue < SHINY_ODDS)
+            retVal = TRUE;
+        return retVal;
+    }
+    else if (gSaveBlock2Ptr->optionsShinyChance == 1) // 1/4096
+    {
+        if (shinyValue < 16)
+            retVal = TRUE;
+        return retVal;
+    }
+    else if (gSaveBlock2Ptr->optionsShinyChance == 2) // 1/2048
+    {
+        if (shinyValue < 32)
+            retVal = TRUE;
+        return retVal;
+    }
+    else if (gSaveBlock2Ptr->optionsShinyChance == 3) // 1/1024
+    {
+        if (shinyValue < 64)
+            retVal = TRUE;
+        return retVal;
+    }
+    else if (gSaveBlock2Ptr->optionsShinyChance == 4) // 1/512
+    {
+        if (shinyValue < 128)
+            retVal = TRUE;
+        return retVal;
+    }
 }
 
 const u8 *GetTrainerPartnerName(void)

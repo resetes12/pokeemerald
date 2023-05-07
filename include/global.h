@@ -521,7 +521,7 @@ struct SaveBlock2
              u16 optionsFastIntro:1;
              u16 optionsAlternateSpawns:4;
              u16 optionsLimitDifficulty:1;
-             u16 optionsShinyChance:3;
+             u16 optionsShinyChance:4;
     /*0x18*/ struct Pokedex pokedex;
     /*0x90*/ u8 filler_90[0x8];
     /*0x98*/ struct Time localTimeOffset;

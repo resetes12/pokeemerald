@@ -5167,13 +5167,21 @@ static const union AnimCmd sAnim_Honchkrow_1[] =
 
 static const union AnimCmd sAnim_Regidrago_1[] =
 {
-    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_FRAME(0, 30),
+    ANIMCMD_FRAME(1, 70),
+    ANIMCMD_FRAME(1, 70),
+    ANIMCMD_FRAME(1, 70),
+    ANIMCMD_FRAME(0, 30),
     ANIMCMD_END,
 };
 
 static const union AnimCmd sAnim_Regieleki_1[] =
 {
-    ANIMCMD_FRAME(0, 1),
+    ANIMCMD_FRAME(0, 30),
+    ANIMCMD_FRAME(1, 20),
+    ANIMCMD_FRAME(0, 30),
+    ANIMCMD_FRAME(1, 20),
+    ANIMCMD_FRAME(0, 30),
     ANIMCMD_END,
 };
 

@@ -70,7 +70,7 @@ static const struct WindowTemplate sOptionMenuWinTemplates[] =
         .tilemapTop = 0,
         .width = 30,
         .height = 2,
-        .paletteNum = 2,
+        .paletteNum = 1,
         .baseBlock = 2
     },
     {//WIN_OPTIONS
@@ -79,7 +79,7 @@ static const struct WindowTemplate sOptionMenuWinTemplates[] =
         .tilemapTop = 3,
         .width = 26,
         .height = 10,
-        .paletteNum = 2,
+        .paletteNum = 1,
         .baseBlock = 62
     },
     {//WIN_DESCRIPTION
@@ -88,7 +88,7 @@ static const struct WindowTemplate sOptionMenuWinTemplates[] =
         .tilemapTop = 15,
         .width = 26,
         .height = 4,
-        .paletteNum = 2,
+        .paletteNum = 1,
         .baseBlock = 500
     },
     DUMMY_WIN_TEMPLATE
@@ -101,7 +101,7 @@ static const struct BgTemplate sOptionMenuBgTemplates[] =
        .charBaseIndex = 1,
        .mapBaseIndex = 30,
        .screenSize = 0,
-       .paletteMode = 3,
+       .paletteMode = 0,
        .priority = 1,
        .baseTile = 0
     },
@@ -110,7 +110,7 @@ static const struct BgTemplate sOptionMenuBgTemplates[] =
        .charBaseIndex = 1,
        .mapBaseIndex = 31,
        .screenSize = 0,
-       .paletteMode = 3,
+       .paletteMode = 0,
        .priority = 0,
        .baseTile = 0
     },
