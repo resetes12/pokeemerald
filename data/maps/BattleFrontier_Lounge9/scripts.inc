@@ -340,7 +340,7 @@ BattleFrontier_Lounge9_IV_Continue::
 BattleFrontier_Lounge9_IV_Continue2::
 	faceplayer
 	waitmessage
-	checkpartymon 100
+	checkpartymonlevel 100
 	compare VAR_RESULT, TRUE
 	goto_if_eq BattleFrontier_Lounge9_IV_Continue3
 	compare VAR_RESULT, FALSE
@@ -402,7 +402,7 @@ BattleFrontier_Lounge9_IV_TextFirstTime:
 	.string "I learned so many things from you\n"
 	.string "that I decided to join your FAN CLUB!\p"
 	.string "Anyway, I also decided to become\n"
-	.string "stronger so I crated the\l"
+	.string "stronger so I created the\l"
 	.string "absolute training routine.\p"
 	.string "For POKéMON, of course!\n"
 	.string "If you want we can train together to\l"

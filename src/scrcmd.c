@@ -2410,7 +2410,7 @@ bool8 ScrCmd_warpwhitefade(struct ScriptContext *ctx)
     return TRUE;
 }
 
-bool8 ScrCmd_checkpartymon(struct ScriptContext *ctx)
+bool8 ScrCmd_checkpartymonlevel(struct ScriptContext *ctx)
 {
     u16 speciesLook = VarGet(ScriptReadHalfword(ctx));
 

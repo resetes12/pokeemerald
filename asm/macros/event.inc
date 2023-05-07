@@ -1740,7 +1740,7 @@
 	.endm
 
 	@ Checks to see if the player has a Pokemon in their party. Result returns to VAR_RESULT
-    .macro checkpartymon level:req
+    .macro checkpartymonlevel level:req
     .byte 0xe4
     .2byte \level
     .endm

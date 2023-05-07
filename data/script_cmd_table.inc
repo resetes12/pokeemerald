@@ -228,7 +228,7 @@ gScriptCmdTable::
 	.4byte ScrCmd_buffercontestname                 @ 0xe1
 	.4byte ScrCmd_bufferitemnameplural              @ 0xe2
 	.4byte ScrCmd_checkpcspace                      @ 0xe3
-	.4byte ScrCmd_checkpartymon                     @ 0xe4
+	.4byte ScrCmd_checkpartymonlevel                @ 0xe4
 	.4byte ScrCmd_calculatemonstats                 @ 0xe5
 	.4byte ScrCmd_deleteparty                       @ 0xe6
 	.4byte ScrCmd_callfunc                          @ 0xe7
