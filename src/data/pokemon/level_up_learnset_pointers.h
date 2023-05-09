@@ -449,5 +449,18 @@ const u16 *const gLevelUpLearnsets[NUM_SPECIES] =
     [SPECIES_TOGEKISS] = sTogekissLevelUpLearnset,
     [SPECIES_WEAVILE] = sWeavileLevelUpLearnset,
     [SPECIES_YANMEGA] = sYanmegaLevelUpLearnset, 
+    [SPECIES_ANNIHILAPE] = sAnnihilapeLevelUpLearnset, 
+    [SPECIES_FARIGIRAF] = sFarigirafLevelUpLearnset, 
+    [SPECIES_DUDUNSPARCE] = sDudunsparceLevelUpLearnset, 
+    [SPECIES_UNUSED_SPACE1] = sUnusedSpace1LevelUpLearnset, 
+    [SPECIES_UNUSED_SPACE2] = sUnusedSpace2LevelUpLearnset, 
+    [SPECIES_UNUSED_SPACE3] = sUnusedSpace3LevelUpLearnset, 
+    [SPECIES_UNUSED_SPACE4] = sUnusedSpace4LevelUpLearnset, 
+    [SPECIES_UNUSED_SPACE5] = sUnusedSpace5LevelUpLearnset, 
+    [SPECIES_UNUSED_SPACE6] = sUnusedSpace6LevelUpLearnset, 
+    [SPECIES_UNUSED_SPACE7] = sUnusedSpace7LevelUpLearnset, 
+    [SPECIES_UNUSED_SPACE8] = sUnusedSpace8LevelUpLearnset, 
+    [SPECIES_UNUSED_SPACE9] = sUnusedSpace9LevelUpLearnset, 
+    [SPECIES_UNUSED_SPACE10] = sUnusedSpace10LevelUpLearnset, 
 
 };

@@ -481,5 +481,17 @@ const struct MonCoords gMonFrontPicCoords[] =
     [SPECIES_TOGEKISS]                     = { .size = MON_COORDS_SIZE(64, 56), .y_offset = 10 },
     [SPECIES_WEAVILE]                      = { .size = MON_COORDS_SIZE(56, 56), .y_offset =  4 },
     [SPECIES_YANMEGA]                      = { .size = MON_COORDS_SIZE(64, 56), .y_offset =  5 },
-
+    [SPECIES_ANNIHILAPE]                   = { .size = MON_COORDS_SIZE(64, 56), .y_offset =  1 },
+    [SPECIES_FARIGIRAF]                    = { .size = MON_COORDS_SIZE(64, 56), .y_offset =  1 },
+    [SPECIES_DUDUNSPARCE]                  = { .size = MON_COORDS_SIZE(64, 56), .y_offset =  5 },
+    //[SPECIES_UNUSED_SPACE1]                = { .size = MON_COORDS_SIZE(64, 56), .y_offset =  5 },
+    //[SPECIES_UNUSED_SPACE2]                = { .size = MON_COORDS_SIZE(64, 56), .y_offset =  5 },
+    //[SPECIES_UNUSED_SPACE3]                = { .size = MON_COORDS_SIZE(64, 56), .y_offset =  5 },
+    //[SPECIES_UNUSED_SPACE4]                = { .size = MON_COORDS_SIZE(64, 56), .y_offset =  5 },
+    //[SPECIES_UNUSED_SPACE5]                = { .size = MON_COORDS_SIZE(64, 56), .y_offset =  5 },
+    //[SPECIES_UNUSED_SPACE6]                = { .size = MON_COORDS_SIZE(64, 56), .y_offset =  5 },
+    //[SPECIES_UNUSED_SPACE7]                = { .size = MON_COORDS_SIZE(64, 56), .y_offset =  5 },
+    //[SPECIES_UNUSED_SPACE8]                = { .size = MON_COORDS_SIZE(64, 56), .y_offset =  5 },
+    //[SPECIES_UNUSED_SPACE9]                = { .size = MON_COORDS_SIZE(64, 56), .y_offset =  5 },
+    //[SPECIES_UNUSED_SPACE10]               = { .size = MON_COORDS_SIZE(64, 56), .y_offset =  5 },
 };

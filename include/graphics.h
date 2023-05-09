@@ -3150,6 +3150,30 @@ extern const u32 gMonStillFrontPic_DeoxysS[];
 extern const u8 gMonIcon_DeoxysS[];
 extern const u8 gMonFootprint_DeoxysS[];
 
+extern const u32 gMonFrontPic_Annihilape[];
+extern const u32 gMonPalette_Annihilape[];
+extern const u32 gMonBackPic_Annihilape[];
+extern const u32 gMonShinyPalette_Annihilape[];
+extern const u32 gMonStillFrontPic_Annihilape[];
+extern const u8 gMonIcon_Annihilape[];
+extern const u8 gMonFootprint_Annihilape[];
+
+extern const u32 gMonFrontPic_Farigiraf[];
+extern const u32 gMonPalette_Farigiraf[];
+extern const u32 gMonBackPic_Farigiraf[];
+extern const u32 gMonShinyPalette_Farigiraf[];
+extern const u32 gMonStillFrontPic_Farigiraf[];
+extern const u8 gMonIcon_Farigiraf[];
+extern const u8 gMonFootprint_Farigiraf[];
+
+extern const u32 gMonFrontPic_Dudunsparce[];
+extern const u32 gMonPalette_Dudunsparce[];
+extern const u32 gMonBackPic_Dudunsparce[];
+extern const u32 gMonShinyPalette_Dudunsparce[];
+extern const u32 gMonStillFrontPic_Dudunsparce[];
+extern const u8 gMonIcon_Dudunsparce[];
+extern const u8 gMonFootprint_Dudunsparce[];
+
 extern const u32 gMonFrontPic_CircledQuestionMark[];
 extern const u32 gMonBackPic_CircledQuestionMark[];
 extern const u32 gMonPalette_CircledQuestionMark[];

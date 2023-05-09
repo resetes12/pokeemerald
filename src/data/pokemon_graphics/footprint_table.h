@@ -447,5 +447,17 @@ const u8 *const gMonFootprintTable[] =
     [SPECIES_TOGEKISS] = gMonFootprint_Togekiss,
     [SPECIES_WEAVILE] = gMonFootprint_Weavile,
     [SPECIES_YANMEGA] = gMonFootprint_Yanmega,
-
+    [SPECIES_ANNIHILAPE] = gMonFootprint_Annihilape,
+    [SPECIES_FARIGIRAF] = gMonFootprint_Farigiraf,
+    [SPECIES_DUDUNSPARCE] = gMonFootprint_Dudunsparce,
+    //[SPECIES_UNUSED_SPACE1] = gMonFootprint_Unused_Space1,
+    //[SPECIES_UNUSED_SPACE2] = gMonFootprint_Unused_Space2, 
+    //[SPECIES_UNUSED_SPACE3] = gMonFootprint_Unused_Space3, 
+    //[SPECIES_UNUSED_SPACE4] = gMonFootprint_Unused_Space4, 
+    //[SPECIES_UNUSED_SPACE5] = gMonFootprint_Unused_Space5, 
+    //[SPECIES_UNUSED_SPACE6] = gMonFootprint_Unused_Space6, 
+    //[SPECIES_UNUSED_SPACE7] = gMonFootprint_Unused_Space7, 
+    //[SPECIES_UNUSED_SPACE8] = gMonFootprint_Unused_Space8, 
+    //[SPECIES_UNUSED_SPACE9] = gMonFootprint_Unused_Space9, 
+    //[SPECIES_UNUSED_SPACE10] = gMonFootprint_Unused_Space10,
 };

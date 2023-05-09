@@ -477,5 +477,17 @@ const struct CompressedSpriteSheet gMonBackPicTable[] =
     SPECIES_SPRITE(TOGEKISS, gMonBackPic_Togekiss),
     SPECIES_SPRITE(WEAVILE, gMonBackPic_Weavile),
     SPECIES_SPRITE(YANMEGA, gMonBackPic_Yanmega),
-
+    SPECIES_SPRITE(ANNIHILAPE, gMonBackPic_Annihilape),
+    SPECIES_SPRITE(FARIGIRAF, gMonBackPic_Farigiraf),
+    SPECIES_SPRITE(DUDUNSPARCE, gMonBackPic_Dudunsparce),
+    //SPECIES_SPRITE(UNUSED_SPACE1, gMonBackPic_Unused_Space1),
+    //SPECIES_SPRITE(UNUSED_SPACE2, gMonBackPic_Unused_Space2),
+    //SPECIES_SPRITE(UNUSED_SPACE3, gMonBackPic_Unused_Space3),
+    //SPECIES_SPRITE(UNUSED_SPACE4, gMonBackPic_Unused_Space4),
+    //SPECIES_SPRITE(UNUSED_SPACE5, gMonBackPic_Unused_Space5),
+    //SPECIES_SPRITE(UNUSED_SPACE6, gMonBackPic_Unused_Space6),
+    //SPECIES_SPRITE(UNUSED_SPACE7, gMonBackPic_Unused_Space7),
+    //SPECIES_SPRITE(UNUSED_SPACE8, gMonBackPic_Unused_Space8),
+    //SPECIES_SPRITE(UNUSED_SPACE9, gMonBackPic_Unused_Space9),
+    //SPECIES_SPRITE(UNUSED_SPACE10, gMonBackPic_Unused_Space10),
 };

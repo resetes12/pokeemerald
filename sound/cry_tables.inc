@@ -425,6 +425,9 @@ gCryTable::
 	cry Cry_Togekiss
 	cry Cry_Weavile
 	cry Cry_Yanmega
+	cry Cry_Annihilape
+	cry Cry_Farigiraf
+	cry Cry_Dudunsparce
 
 	.align 2
 gCryTable_Reverse::
@@ -853,4 +856,7 @@ gCryTable_Reverse::
 	cry_reverse Cry_Togekiss
 	cry_reverse Cry_Weavile
 	cry_reverse Cry_Yanmega
+	cry_reverse Cry_Annihilape
+	cry_reverse Cry_Farigiraf
+	cry_reverse Cry_Dudunsparce
 

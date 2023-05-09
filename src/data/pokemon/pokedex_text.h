@@ -2523,3 +2523,21 @@ const u8 gYanmegaPokedexText[] = _(
     "of transporting an adult in flight. It is\n"
     "adept at biting apart foes while flying\n"
     "by at high speed.");
+
+const u8 gAnnihilapePokedexText[] = _(
+    "When its anger rose beyond a critical\n"
+    "point, this Pokémon gained power that\n" 
+    "is unfettered by the limits of its\n"
+    "physical body.");
+
+const u8 gFarigirafPokedexText[] = _(
+    "The hardened head from the tail\n"
+    "protects the head of the main body\n" 
+    "as FARIGIRAF whips its long neck\n"
+    "around to headbutt enemies.");
+
+const u8 gDudunsparcePokedexText[] = _(
+    "It drives enemies out of its nest by\n"
+    "sucking in enough air to fill its long,\n"
+    "narrow lungs, then releasing the air\n"
+    "in an intense blast.");

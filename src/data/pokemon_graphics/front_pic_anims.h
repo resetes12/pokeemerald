@@ -5168,9 +5168,9 @@ static const union AnimCmd sAnim_Honchkrow_1[] =
 static const union AnimCmd sAnim_Regidrago_1[] =
 {
     ANIMCMD_FRAME(0, 30),
-    ANIMCMD_FRAME(1, 70),
-    ANIMCMD_FRAME(1, 70),
-    ANIMCMD_FRAME(1, 70),
+    ANIMCMD_FRAME(1, 50),
+    ANIMCMD_FRAME(1, 50),
+    ANIMCMD_FRAME(1, 50),
     ANIMCMD_FRAME(0, 30),
     ANIMCMD_END,
 };
@@ -5212,6 +5212,38 @@ static const union AnimCmd sAnim_Regigigas_1[] =
 {
     ANIMCMD_FRAME(1, 40),
     ANIMCMD_FRAME(0, 5),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_Annihilape_1[] =
+{
+    ANIMCMD_FRAME(1, 15),
+    ANIMCMD_FRAME(0, 15),
+    ANIMCMD_FRAME(1, 15),
+    ANIMCMD_FRAME(0, 15),
+    ANIMCMD_FRAME(1, 15),
+    ANIMCMD_FRAME(0, 15),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_Farigiraf_1[] =
+{
+    ANIMCMD_FRAME(0, 15),
+    ANIMCMD_FRAME(1, 20),
+    ANIMCMD_FRAME(0, 15),
+    ANIMCMD_FRAME(1, 10),
+    ANIMCMD_FRAME(0, 15),
+    ANIMCMD_FRAME(1, 10),
+    ANIMCMD_FRAME(0, 15),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_Dudunsparce_1[] =
+{
+    ANIMCMD_FRAME(1, 10),
+    ANIMCMD_FRAME(0, 15),
+    ANIMCMD_FRAME(1, 15),
+    ANIMCMD_FRAME(0, 10),
     ANIMCMD_END,
 };
 
@@ -5696,6 +5728,9 @@ SINGLE_ANIMATION(Tangrowth);
 SINGLE_ANIMATION(Togekiss);
 SINGLE_ANIMATION(Weavile);
 SINGLE_ANIMATION(Yanmega);
+SINGLE_ANIMATION(Annihilape);
+SINGLE_ANIMATION(Farigiraf);
+SINGLE_ANIMATION(Dudunsparce);
 
 const union AnimCmd *const *const gMonFrontAnimsPtrTable[] =
 {
@@ -6176,5 +6211,8 @@ const union AnimCmd *const *const gMonFrontAnimsPtrTable[] =
     [SPECIES_DEOXYS_SPEED] = sAnims_DeoxysS,
     [SPECIES_REGIDRAGO] = sAnims_Regidrago,
     [SPECIES_REGIGIGAS] = sAnims_Regigigas,
+    [SPECIES_ANNIHILAPE] = sAnims_Annihilape,
+    [SPECIES_FARIGIRAF] = sAnims_Annihilape,
+    [SPECIES_DUDUNSPARCE] = sAnims_Dudunsparce,
 
 };

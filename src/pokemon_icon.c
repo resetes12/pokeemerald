@@ -501,6 +501,19 @@ const u8 *const gMonIconTable[] =
     [SPECIES_TOGEKISS] = gMonIcon_Togekiss,
     [SPECIES_WEAVILE] = gMonIcon_Weavile,
     [SPECIES_YANMEGA] = gMonIcon_Yanmega,
+    [SPECIES_ANNIHILAPE] = gMonIcon_Annihilape,
+    [SPECIES_FARIGIRAF] = gMonIcon_Farigiraf,
+    [SPECIES_DUDUNSPARCE] = gMonIcon_Dudunsparce,
+    //[SPECIES_UNUSED_SPACE1] = gMonIcon_Unused_Space1,
+    //[SPECIES_UNUSED_SPACE2] = gMonIcon_Unused_Space2, 
+    //[SPECIES_UNUSED_SPACE3] = gMonIcon_Unused_Space3, 
+    //[SPECIES_UNUSED_SPACE4] = gMonIcon_Unused_Space4, 
+    //[SPECIES_UNUSED_SPACE5] = gMonIcon_Unused_Space5, 
+    //[SPECIES_UNUSED_SPACE6] = gMonIcon_Unused_Space6, 
+    //[SPECIES_UNUSED_SPACE7] = gMonIcon_Unused_Space7, 
+    //[SPECIES_UNUSED_SPACE8] = gMonIcon_Unused_Space8, 
+    //[SPECIES_UNUSED_SPACE9] = gMonIcon_Unused_Space9, 
+    //[SPECIES_UNUSED_SPACE10] = gMonIcon_Unused_Space10,
 };
 
 const u8 gMonIconPaletteIndices[] =
@@ -982,6 +995,19 @@ const u8 gMonIconPaletteIndices[] =
     [SPECIES_TOGEKISS] = 2,
     [SPECIES_WEAVILE] = 0,
     [SPECIES_YANMEGA] = 1,
+    [SPECIES_ANNIHILAPE] = 0,
+    [SPECIES_FARIGIRAF] = 0,
+    [SPECIES_DUDUNSPARCE] = 0,
+    //[SPECIES_UNUSED_SPACE1] = 0,
+    //[SPECIES_UNUSED_SPACE2] = 0,
+    //[SPECIES_UNUSED_SPACE3] = 0,
+    //[SPECIES_UNUSED_SPACE4] = 0,
+    //[SPECIES_UNUSED_SPACE5] = 0,
+    //[SPECIES_UNUSED_SPACE6] = 0,
+    //[SPECIES_UNUSED_SPACE7] = 0,
+    //[SPECIES_UNUSED_SPACE8] = 0,
+    //[SPECIES_UNUSED_SPACE9] = 0,
+    //[SPECIES_UNUSED_SPACE10] = 0,
 };
 
 const struct SpritePalette gMonIconPaletteTable[] =
