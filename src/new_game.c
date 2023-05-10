@@ -98,7 +98,8 @@ static void SetDefaultOptions(void)
     gSaveBlock2Ptr->optionsBattleSceneOff = FALSE;
     gSaveBlock2Ptr->regionMapZoom = FALSE;
     gSaveBlock2Ptr->optionsDifficulty = 1;
-    gSaveBlock2Ptr->optionsfollowerEnable = 0;
+    gSaveBlock2Ptr->optionsfollowerEnable = 1;
+    gSaveBlock2Ptr->optionsfollowerLargeEnable = 1;
     gSaveBlock2Ptr->optionsautoRun = 1;
     gSaveBlock2Ptr->optionsDisableMatchCall = 0;
     gSaveBlock2Ptr->optionStyle = 1;

@@ -44,6 +44,7 @@ enum
 enum
 {
     MENUITEM_CUSTOM_FOLLOWER,
+    MENUITEM_CUSTOM_LARGE_FOLLOWER,
     MENUITEM_CUSTOM_AUTORUN,
     MENUITEM_CUSTOM_FAST_INTRO,
     MENUITEM_CUSTOM_MATCHCALL,
@@ -170,6 +171,7 @@ static void DrawChoices_BattleStyle(int selection, int y);
 static void DrawChoices_Sound(int selection, int y);
 static void DrawChoices_ButtonMode(int selection, int y);
 static void DrawChoices_Follower(int selection, int y);
+static void DrawChoices_LargeFollower(int selection, int y);
 static void DrawChoices_Autorun(int selection, int y);
 static void DrawChoices_FrameType(int selection, int y);
 static void DrawChoices_MatchCall(int selection, int y);
@@ -226,6 +228,7 @@ struct // MENU_CUSTOM
 } static const sItemFunctionsCustom[MENUITEM_CUSTOM_COUNT] =
 {
     [MENUITEM_CUSTOM_FOLLOWER]     = {DrawChoices_Follower,    ProcessInput_Options_Two},
+    [MENUITEM_CUSTOM_LARGE_FOLLOWER]     = {DrawChoices_LargeFollower,    ProcessInput_Options_Two},
     [MENUITEM_CUSTOM_AUTORUN]      = {DrawChoices_Autorun,     ProcessInput_Options_Two},
     [MENUITEM_CUSTOM_FAST_INTRO]   = {DrawChoices_FastIntro,   ProcessInput_Options_Two},
     [MENUITEM_CUSTOM_MATCHCALL]    = {DrawChoices_MatchCall,   ProcessInput_Options_Two},
@@ -239,6 +242,7 @@ struct // MENU_CUSTOM
 static const u8 sText_OptionTypeEffective[]       = _("SHOW EFFECTIVE");
 static const u8 sText_OptionFishing[]             = _("EASIER FISHING");
 static const u8 sText_OptionFastIntro[]           = _("FAST INTRO");
+static const u8 sText_OptionLargeFollower[]       = _("BIG FOLLOWERS");
 static const u8 *const sOptionMenuItemsNamesMain[MENUITEM_MAIN_COUNT] =
 {
     [MENUITEM_MAIN_TEXTSPEED]   = gText_TextSpeed,
@@ -254,6 +258,7 @@ static const u8 *const sOptionMenuItemsNamesMain[MENUITEM_MAIN_COUNT] =
 static const u8 *const sOptionMenuItemsNamesCustom[MENUITEM_CUSTOM_COUNT] =
 {
     [MENUITEM_CUSTOM_FOLLOWER]    = gText_FollowerEnable,
+    [MENUITEM_CUSTOM_LARGE_FOLLOWER]    = sText_OptionLargeFollower,
     [MENUITEM_CUSTOM_AUTORUN]     = gText_AutorunEnable,
     [MENUITEM_CUSTOM_FAST_INTRO]     = sText_OptionFastIntro,
     [MENUITEM_CUSTOM_MATCHCALL]   = gText_OptionMatchCalls,
@@ -294,6 +299,7 @@ static bool8 CheckConditions(int selection)
         switch(selection)
         {
         case MENUITEM_CUSTOM_FOLLOWER:        return TRUE;
+        case MENUITEM_CUSTOM_LARGE_FOLLOWER:        return TRUE;
         case MENUITEM_CUSTOM_AUTORUN:         return TRUE;
         case MENUITEM_CUSTOM_FAST_INTRO:      return TRUE;
         case MENUITEM_CUSTOM_MATCHCALL:       return TRUE;
@@ -338,6 +344,8 @@ static const u8 *const sOptionMenuItemDescriptionsMain[MENUITEM_MAIN_COUNT][3] =
 // Custom {PKMN}
 static const u8 sText_Desc_FollowerOn[]            = _("Let the first POKéMON in your\nparty follow you.");
 static const u8 sText_Desc_FollowerOff[]           = _("Walk alone.");
+static const u8 sText_Desc_FollowerLargeOn[]       = _("Enable large {PKMN} followers.\nCan cause graphical issues.");
+static const u8 sText_Desc_FollowerLargeOff[]      = _("Disable large {PKMN} followers.\nRecommended.");
 static const u8 sText_Desc_AutorunOn[]             = _("Press and hold B to run.");
 static const u8 sText_Desc_AutorunOff[]            = _("Run without pressing B.");
 static const u8 sText_Desc_OverworldCallsOn[]      = _("TRAINERs will be able to call you,\noffering rematches and info.");
@@ -353,6 +361,7 @@ static const u8 sText_Desc_FastIntroOff[]          = _("Battles load at the usua
 static const u8 *const sOptionMenuItemDescriptionsCustom[MENUITEM_CUSTOM_COUNT][2] =
 {
     [MENUITEM_CUSTOM_FOLLOWER]    = {sText_Desc_FollowerOn,           sText_Desc_FollowerOff},
+    [MENUITEM_CUSTOM_LARGE_FOLLOWER]    = {sText_Desc_FollowerLargeOn,           sText_Desc_FollowerLargeOff},
     [MENUITEM_CUSTOM_AUTORUN]     = {sText_Desc_AutorunOn,            sText_Desc_AutorunOff},
     [MENUITEM_CUSTOM_FAST_INTRO]  = {sText_Desc_FastIntroOn,          sText_Desc_FastIntroOff},
     [MENUITEM_CUSTOM_MATCHCALL]   = {sText_Desc_OverworldCallsOn,     sText_Desc_OverworldCallsOff},
@@ -381,6 +390,7 @@ static const u8 sText_Desc_Disabled_BattleHPBar[]   = _("Only active if xyz.");
 static const u8 *const sOptionMenuItemDescriptionsDisabledCustom[MENUITEM_CUSTOM_COUNT] =
 {
     [MENUITEM_CUSTOM_FOLLOWER]    = sText_Desc_Disabled_BattleHPBar,
+    [MENUITEM_CUSTOM_LARGE_FOLLOWER]    = sText_Desc_Disabled_BattleHPBar,
     [MENUITEM_CUSTOM_AUTORUN]     = sText_Empty,
     [MENUITEM_CUSTOM_FAST_INTRO]  = sText_Empty,
     [MENUITEM_CUSTOM_MATCHCALL]   = sText_Empty,
@@ -627,6 +637,7 @@ void CB2_InitOptionPlusMenu(void)
         sOptions->sel[MENUITEM_MAIN_FRAMETYPE]   = gSaveBlock2Ptr->optionsWindowFrameType;
         
         sOptions->sel_custom[MENUITEM_CUSTOM_FOLLOWER]    = gSaveBlock2Ptr->optionsfollowerEnable;
+        sOptions->sel_custom[MENUITEM_CUSTOM_LARGE_FOLLOWER]    = gSaveBlock2Ptr->optionsfollowerLargeEnable;
         sOptions->sel_custom[MENUITEM_CUSTOM_AUTORUN]     = gSaveBlock2Ptr->optionsautoRun;
         sOptions->sel_custom[MENUITEM_CUSTOM_FAST_INTRO]  = gSaveBlock2Ptr->optionsFastIntro;
         sOptions->sel_custom[MENUITEM_CUSTOM_MATCHCALL]   = gSaveBlock2Ptr->optionsDisableMatchCall;
@@ -819,6 +830,7 @@ static void Task_OptionMenuSave(u8 taskId)
     gSaveBlock2Ptr->optionsWindowFrameType  = sOptions->sel[MENUITEM_MAIN_FRAMETYPE];
 
     gSaveBlock2Ptr->optionsfollowerEnable   = sOptions->sel_custom[MENUITEM_CUSTOM_FOLLOWER];
+    gSaveBlock2Ptr->optionsfollowerLargeEnable   = sOptions->sel_custom[MENUITEM_CUSTOM_LARGE_FOLLOWER];
     gSaveBlock2Ptr->optionsautoRun          = sOptions->sel_custom[MENUITEM_CUSTOM_AUTORUN];
     gSaveBlock2Ptr->optionsFastIntro        = sOptions->sel_custom[MENUITEM_CUSTOM_FAST_INTRO];
     gSaveBlock2Ptr->optionsDisableMatchCall = sOptions->sel_custom[MENUITEM_CUSTOM_MATCHCALL];
@@ -1195,6 +1207,26 @@ static void DrawChoices_Follower(int selection, int y)
     DrawOptionMenuChoice(gText_BattleSceneOn, 104, y, styles[0], active);
     DrawOptionMenuChoice(gText_BattleSceneOff, GetStringRightAlignXOffset(1, gText_BattleSceneOff, 198), y, styles[1], active);
 }
+
+static void DrawChoices_LargeFollower(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_CUSTOM_LARGE_FOLLOWER);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock2Ptr->optionsfollowerLargeEnable = 0; //on
+    }
+    else
+    {
+        gSaveBlock2Ptr->optionsfollowerLargeEnable = 1; //off
+    }
+
+    DrawOptionMenuChoice(gText_BattleSceneOn, 104, y, styles[0], active);
+    DrawOptionMenuChoice(gText_BattleSceneOff, GetStringRightAlignXOffset(1, gText_BattleSceneOff, 198), y, styles[1], active);
+}
+
 
 static void DrawChoices_Autorun(int selection, int y)
 {
