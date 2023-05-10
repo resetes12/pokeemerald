@@ -5,8 +5,8 @@ MeteorFalls_StevensCave_MapScripts::
 
 MeteorFalls_StevensCave_EventScript_Steven::
 	lock
-	goto_if_set FLAG_DEFEATED_METEOR_FALLS_STEVEN, MeteorFalls_StevensCave_EventScript_Defeated
 	goto_if_set FLAG_STEVEN_REMATCH, MeteorFalls_StevensCave_EventScript_StevenRematch
+	goto_if_set FLAG_DEFEATED_METEOR_FALLS_STEVEN, MeteorFalls_StevensCave_EventScript_Defeated
 	waitse
 	playse SE_PIN
 	applymovement LOCALID_STEVEN, Common_Movement_ExclamationMark
@@ -43,7 +43,7 @@ MeteorFalls_StevensCave_EventScript_StevenRematch::
 	setvar VAR_TEMP_F, MUS_RG_VS_CHAMPION
 	trainerbattle_no_intro TRAINER_STEVEN2, MeteorFalls_StevensCave_Text_StevenDefeat2
 	msgbox MeteorFalls_StevensCave_Text_MyPredictionCameTrue2, MSGBOX_DEFAULT
-	setflag FLAG_DEFEATED_METEOR_FALLS_STEVEN
+	clearflag FLAG_STEVEN_REMATCH
 	goto_if_unset FLAG_ARCEUS_EGG_GIVE MeteorFalls_StevensCave_EventScript_StevenArceusEvent
 	release
 	end
@@ -144,7 +144,7 @@ MeteorFalls_StevensCave_Text_MyPredictionCameTrue2:
 	.string "our paths first crossed in GRANITE\l"
 	.string "CAVE in DEWFORD, I had this feeling.\p"
 	.string "I thought that you would eventually\n"
-	.string "become stronger than the CHAMPION.\p"
+	.string "become stronger than me.\p"
 	.string "My predictions usually come true.\p"
 	.string "And where will you go from here?\p"
 	.string "… … … … … …\n"
