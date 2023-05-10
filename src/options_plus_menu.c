@@ -356,7 +356,7 @@ static const u8 sText_Desc_TypeEffectiveOn[]       = _("TYPE effectiveness will 
 static const u8 sText_Desc_TypeEffectiveOff[]      = _("TYPE effectiveness won't be\nshown in battles.");
 static const u8 sText_Desc_FishingOn[]             = _("Automatically reel while fishing.");
 static const u8 sText_Desc_FishingOff[]            = _("Manually reel while fishing.\nFish like you always fished!");
-static const u8 sText_Desc_FastIntroOn[]           = _("Skip the sliding animation\n and enter battles faster.");
+static const u8 sText_Desc_FastIntroOn[]           = _("Skip the sliding animation\nand enter battles faster.");
 static const u8 sText_Desc_FastIntroOff[]          = _("Battles load at the usual speed.");
 static const u8 *const sOptionMenuItemDescriptionsCustom[MENUITEM_CUSTOM_COUNT][2] =
 {
