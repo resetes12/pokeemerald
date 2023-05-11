@@ -802,6 +802,9 @@ const u32 gObjectEventPic_Tangrowth[] = INCBIN_U32("graphics/object_events/pics/
 const u32 gObjectEventPic_Togekiss[] = INCBIN_U32("graphics/object_events/pics/pokemon/followers/togekiss.4bpp");
 const u32 gObjectEventPic_Weavile[] = INCBIN_U32("graphics/object_events/pics/pokemon/followers/weavile.4bpp");
 const u32 gObjectEventPic_Yanmega[] = INCBIN_U32("graphics/object_events/pics/pokemon/followers/yanmega.4bpp");
+const u32 gObjectEventPic_Annihilape[] = INCBIN_U32("graphics/object_events/pics/pokemon/followers/annihilape.4bpp");
+const u32 gObjectEventPic_Farigiraf[] = INCBIN_U32("graphics/object_events/pics/pokemon/followers/farigiraf.4bpp");
+const u32 gObjectEventPic_Dudunsparce[] = INCBIN_U32("graphics/object_events/pics/pokemon/followers/dudunsparce.4bpp");
 
 const u16 gObjectEventPal_Rayquaza[] = INCBIN_U16("graphics/object_events/pics/pokemon/rayquaza.gbapal");
 
