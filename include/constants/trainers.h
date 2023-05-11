@@ -110,6 +110,8 @@
 #define TRAINER_PIC_RS_BRENDAN            91
 #define TRAINER_PIC_RS_MAY                92
 #define TRAINER_PIC_NURSE                 93
+#define TRAINER_PIC_LEADER_TATE           94
+#define TRAINER_PIC_LEADER_LIZA           95
 
 // The player back pics are assumed to alternate according to the gender values (MALE/FEMALE)
 #define TRAINER_BACK_PIC_BRENDAN                0
@@ -158,7 +160,7 @@
 #define FACILITY_CLASS_ELITE_FOUR_PHOEBE     0x22
 #define FACILITY_CLASS_LEADER_ROXANNE        0x23
 #define FACILITY_CLASS_LEADER_BRAWLY         0x24
-#define FACILITY_CLASS_LEADER_TATE_AND_LIZA  0x25
+#define FACILITY_CLASS_LEADER_TATE           0x25
 #define FACILITY_CLASS_SCHOOL_KID_M          0x26
 #define FACILITY_CLASS_SCHOOL_KID_F          0x27
 #define FACILITY_CLASS_SR_AND_JR             0x28
@@ -196,15 +198,23 @@
 #define FACILITY_CLASS_YOUNG_COUPLE          0x48
 #define FACILITY_CLASS_OLD_COUPLE            0x49
 #define FACILITY_CLASS_SIS_AND_BRO           0x4a
-#define FACILITY_CLASS_STEVEN                0x4b
+#define FACILITY_CLASS_CHAMPION_STEVEN       0x4b
 #define FACILITY_CLASS_SALON_MAIDEN_ANABEL   0x4c
 #define FACILITY_CLASS_DOME_ACE_TUCKER       0x4d
 #define FACILITY_CLASS_RED                   0x4e
 #define FACILITY_CLASS_LEAF                  0x4f
 #define FACILITY_CLASS_RS_BRENDAN            0x50
 #define FACILITY_CLASS_RS_MAY                0x51
+#define FACILITY_CLASS_LEADER_WATTSON        0x52
+#define FACILITY_CLASS_LEADER_FLANNERY       0x53
+#define FACILITY_CLASS_LEADER_NORMAN         0x54
+#define FACILITY_CLASS_LEADER_WINONA         0x55
+#define FACILITY_CLASS_LEADER_LIZA           0x56
+#define FACILITY_CLASS_LEADER_JUAN           0x57
+#define FACILITY_CLASS_ELITE_FOUR_GLACIA     0x58
+#define FACILITY_CLASS_ELITE_FOUR_DRAKE      0x59
 
-#define FACILITY_CLASSES_COUNT               0x52
+#define FACILITY_CLASSES_COUNT               0x5a
 
 #define RS_FACILITY_CLASS_AQUA_LEADER_ARCHIE    0x0
 #define RS_FACILITY_CLASS_AQUA_GRUNT_M          0x1

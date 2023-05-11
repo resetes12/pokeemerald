@@ -7965,3 +7965,103 @@ const u16 gBattleFrontierTrainerMons_Gretel[] =
 {
     FRONTIER_MONS_AROMA_LADY_3
 };
+
+const u16 gBattleFrontierTrainerMons_Roxanne[] =
+{
+    FRONTIER_MONS_RUIN_MANIAC_4
+};
+
+const u16 gBattleFrontierTrainerMons_Brawly[] =
+{
+    FRONTIER_MONS_BLACK_BELT_BATTLE_GIRL_2C
+};
+
+const u16 gBattleFrontierTrainerMons_Wattson[] =
+{
+    FRONTIER_MONS_GUITARIST_3A
+};
+
+const u16 gBattleFrontierTrainerMons_Flannery[] =
+{
+    FRONTIER_MONS_KINDLER_3
+};
+
+const u16 gBattleFrontierTrainerMons_Norman[] =
+{
+    FRONTIER_MONS_PARASOL_LADY_3
+};
+
+const u16 gBattleFrontierTrainerMons_Winona[] =
+{
+    FRONTIER_MONS_BIRD_KEEPER_3
+};
+
+const u16 gBattleFrontierTrainerMons_Tate[] =
+{
+    FRONTIER_MONS_PSYCHIC_2A(LATIOS)
+};
+
+const u16 gBattleFrontierTrainerMons_Liza[] =
+{
+    FRONTIER_MONS_PSYCHIC_2B(LATIAS)
+};
+
+const u16 gBattleFrontierTrainerMons_Juan[] =
+{
+    FRONTIER_MONS_SAILOR_3
+};
+
+const u16 gBattleFrontierTrainerMons_Sidney[] =
+{
+    FRONTIER_MONS_HEX_MANIAC_2C
+};
+
+const u16 gBattleFrontierTrainerMons_Phoebe[] =
+{
+    FRONTIER_MONS_HEX_MANIAC_2A
+};
+
+const u16 gBattleFrontierTrainerMons_Glacia[] =
+{
+    FRONTIER_MONS_BEAUTY_2
+};
+
+const u16 gBattleFrontierTrainerMons_Drake[] =
+{
+    FRONTIER_MONS_DRAGON_TAMER_2
+};
+
+const u16 gBattleFrontierTrainerMons_Wallace[] =
+{
+    FRONTIER_MONS_EXPERT_2B(LATIOS)
+};
+
+const u16 gBattleFrontierTrainerMons_Steven[] =
+{
+    FRONTIER_MONS_EXPERT_2A(TYRANITAR)
+};
+
+const u16 gBattleFrontierTrainerMons_Archie[] =
+{
+    FRONTIER_MONS_SWIMMING_TRIATHLETE_M_3
+};
+
+const u16 gBattleFrontierTrainerMons_Maxie[] =
+{
+    FRONTIER_MONS_HIKER_3
+};
+
+const u16 gBattleFrontierTrainerMons_Red[] =
+{
+    FRONTIER_MONS_GENTLEMAN_3B
+};
+
+const u16 gBattleFrontierTrainerMons_Leaf[] =
+{
+    FRONTIER_MONS_GENTLEMAN_3A
+};
+
+const u16 gBattleFrontierTrainerMons_Wally[] =
+{
+    FRONTIER_MONS_COLLECTOR_3
+};

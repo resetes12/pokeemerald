@@ -660,7 +660,7 @@ static void (*const sMatchCall_GetNameAndDescFunctions[])(match_call_t, const u8
 static const struct MatchCallCheckPageOverride sCheckPageOverrides[] = {
     {
         .idx = MC_HEADER_STEVEN,
-        .facilityClass = FACILITY_CLASS_STEVEN,
+        .facilityClass = FACILITY_CLASS_CHAMPION_STEVEN,
         .flag = 0xFFFF,
         .flavorTexts = {
             [CHECK_PAGE_STRATEGY] = gText_MatchCallSteven_Strategy,
@@ -671,7 +671,7 @@ static const struct MatchCallCheckPageOverride sCheckPageOverrides[] = {
     },
     {
         .idx = MC_HEADER_STEVEN,
-        .facilityClass = FACILITY_CLASS_STEVEN,
+        .facilityClass = FACILITY_CLASS_CHAMPION_STEVEN,
         .flag = FLAG_DEFEATED_MOSSDEEP_GYM,
         .flavorTexts = {
             [CHECK_PAGE_STRATEGY] = gText_MatchCallSteven_Strategy,

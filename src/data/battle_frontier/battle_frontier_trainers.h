@@ -1608,6 +1608,118 @@ const struct BattleFrontierTrainer gBattleFrontierTrainers[FRONTIER_TRAINERS_COU
         .speechLose = {EC_WORD_PLEASE, EC_WORD_I, EC_WORD_NEED, EC_WORD_A, EC_WORD_SHELL_ARMOR, EC_WORD_EXCL},
         .monSet = gBattleFrontierTrainerMons_Jaxon
     },
+    [FRONTIER_TRAINER_LEADER_ROXANNE] = {
+        .facilityClass = FACILITY_CLASS_LEADER_ROXANNE,
+        .trainerName = _("ROXANNE"),
+        .speechBefore = {EC_WORD_I, EC_WORD_WILL, EC_WORD_ROCK, EC_WORD_YOUR, EC_WORD_WORLD, EC_WORD_EXCL},
+        .speechWin = {EC_WORD_IT, EC_WORD_IS, EC_WORD_WHAT, EC_WORD_IT, EC_WORD_IS, EC_EMPTY_WORD},
+        .speechLose = {EC_WORD_IT, EC_WORD_IS, EC_WORD_WHAT, EC_WORD_IT, EC_WORD_IS, EC_WORD_ELLIPSIS_ELLIPSIS_ELLIPSIS},
+        .monSet = gBattleFrontierTrainerMons_Roxanne
+    },
+    [FRONTIER_TRAINER_LEADER_BRAWLY] = {
+        .facilityClass = FACILITY_CLASS_LEADER_BRAWLY,
+        .trainerName = _("BRAWLY"),
+        .speechBefore = {EC_WORD_HEY_THERE, EC_WORD_EXCL_EXCL, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .speechWin = {EC_WORD_WHAT, EC_WORD_AN, EC_WORD_EASY, EC_WORD_FIGHT, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .speechLose = {EC_WORD_WHAT, EC_WORD_A, EC_WORD_TERRIBLE, EC_WORD_FIGHT, EC_WORD_ELLIPSIS_ELLIPSIS_ELLIPSIS, EC_EMPTY_WORD},
+        .monSet = gBattleFrontierTrainerMons_Brawly
+    },
+    [FRONTIER_TRAINER_LEADER_WATTSON] = {
+        .facilityClass = FACILITY_CLASS_LEADER_WATTSON,
+        .trainerName = _("WATTSON"),
+        .speechBefore = {EC_WORD_TODAY, EC_WORD_FORECAST, EC_WORD_IS, EC_WORD_ELECTRIC, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .speechWin = {EC_WORD_TODAY, EC_WORD_I, EC_WORD_WIN, EC_WORD_ELLIPSIS, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .speechLose = {EC_WORD_CANCEL, EC_WORD_TODAY, EC_WORD_FORECAST, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .monSet = gBattleFrontierTrainerMons_Wattson
+    },
+    [FRONTIER_TRAINER_LEADER_FLANNERY] = {
+        .facilityClass = FACILITY_CLASS_LEADER_FLANNERY,
+        .trainerName = _("FLANERY"),
+        .speechBefore = {EC_WORD_MY, EC_WORD_TRUMP_CARD, EC_WORD_IS, EC_WORD_DROUGHT, EC_WORD_ELLIPSIS, EC_EMPTY_WORD},
+        .speechWin = {EC_WORD_MY, EC_WORD_FIRE, EC_WORD_TRUMP_CARD, EC_WORD_WORKS, EC_WORD_EXCL, EC_EMPTY_WORD},
+        .speechLose = {EC_WORD_MY, EC_WORD_FIRE, EC_WORD_TRUMP_CARD, EC_WORD_DOESN_T, EC_WORD_WORK, EC_WORD_EXCL},
+        .monSet = gBattleFrontierTrainerMons_Flannery
+    },
+    [FRONTIER_TRAINER_LEADER_NORMAN] = { 
+        .facilityClass = FACILITY_CLASS_LEADER_NORMAN,
+        .trainerName = _("NORMAN"),
+        .speechBefore = {EC_WORD_HI, EC_WORD_SON, EC_WORD_ELLIPSIS, EC_WORD_LET_S, EC_WORD_FIGHT, EC_WORD_EXCL},
+        .speechWin = {EC_WORD_AHAHA, EC_WORD_EXCL, EC_WORD_IT_S, EC_WORD_OKAY, EC_WORD_ELLIPSIS, EC_EMPTY_WORD},
+        .speechLose = {EC_WORD_YOUR, EC_WORD_MOTHER, EC_WORD_WILL, EC_WORD_BE, EC_WORD_HAPPY, EC_WORD_EXCL},
+        .monSet = gBattleFrontierTrainerMons_Norman
+    },
+    [FRONTIER_TRAINER_LEADER_WINONA] = {
+        .facilityClass = FACILITY_CLASS_LEADER_WINONA,
+        .trainerName = _("WINONA"),
+        .speechBefore = {EC_WORD_GO, EC_WORD_FLYING, EC_WORD_FRIEND, EC_WORD_EXCL, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .speechWin = {EC_WORD_MY, EC_WORD_FLYING, EC_WORD_SKILL, EC_WORD_HAS, EC_WORD_NO_MATCH, EC_WORD_EXCL},
+        .speechLose = {EC_WORD_I, EC_WORD_HAVE, EC_WORD_BEEN, EC_WORD_DESTROYED, EC_WORD_ELLIPSIS_ELLIPSIS_ELLIPSIS, EC_EMPTY_WORD},
+        .monSet = gBattleFrontierTrainerMons_Winona
+    },
+    [FRONTIER_TRAINER_LEADER_TATE] = {
+        .facilityClass = FACILITY_CLASS_LEADER_TATE,
+        .trainerName = _("TATE"),
+        .speechBefore = {EC_WORD_WHERE, EC_WORD_IS, EC_WORD_MY, EC_WORD_SISTER, EC_WORD_QUES, EC_EMPTY_WORD},
+        .speechWin = {EC_WORD_WHOAH, EC_WORD_EXCL, EC_WORD_SISTER, EC_WORD_EXCL, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .speechLose = {EC_WORD_SISTER, EC_WORD_ELLIPSIS_ELLIPSIS_ELLIPSIS, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .monSet = gBattleFrontierTrainerMons_Tate
+    },
+    [FRONTIER_TRAINER_LEADER_LIZA] = { 
+        .facilityClass = FACILITY_CLASS_LEADER_LIZA,
+        .trainerName = _("LIZA"),
+        .speechBefore = {EC_WORD_I, EC_WORD_AM, EC_WORD_STRONG, EC_WORD_AS, EC_WORD_MY, EC_WORD_BROTHER},
+        .speechWin = {EC_WORD_MY, EC_WORD_BROTHER, EC_WORD_WILL, EC_WORD_BE, EC_WORD_HAPPY, EC_WORD_EXCL},
+        .speechLose = {EC_WORD_ELLIPSIS_ELLIPSIS_ELLIPSIS, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .monSet = gBattleFrontierTrainerMons_Liza
+    },
+    [FRONTIER_TRAINER_LEADER_JUAN] = {
+        .facilityClass = FACILITY_CLASS_LEADER_JUAN,
+        .trainerName = _("JUAN"),
+        .speechBefore = {EC_WORD_WATER, EC_WORD_TYPE, EC_WORD_IS, EC_WORD_THE, EC_WORD_BEST, EC_WORD_ELLIPSIS},
+        .speechWin = {EC_WORD_OH, EC_WORD_MY, EC_WORD_ELLIPSIS_ELLIPSIS_ELLIPSIS, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .speechLose = {EC_WORD_AHAHA, EC_WORD_ELLIPSIS_ELLIPSIS_ELLIPSIS, EC_WORD_WHAT, EC_WORD_EXCL_EXCL, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .monSet = gBattleFrontierTrainerMons_Juan
+    },
+    [FRONTIER_TRAINER_ELITE_FOUR_SIDNEY] = { 
+        .facilityClass = FACILITY_CLASS_ELITE_FOUR_SIDNEY,
+        .trainerName = _("SIDNEY"),
+        .speechBefore = {EC_WORD_WHAT, EC_WORD_ARE, EC_WORD_YOUR, EC_WORD_PLANS, EC_WORD_QUES, EC_EMPTY_WORD},
+        .speechWin = {EC_WORD_YOUR, EC_WORD_PLANS, EC_WORD_ARE, EC_WORD_TOO, EC_WORD_SIMPLE, EC_WORD_EXCL},
+        .speechLose = {EC_WORD_YOUR, EC_WORD_PLANS, EC_WORD_ARE, EC_WORD_TOO, EC_WORD_STRONG, EC_WORD_EXCL},
+        .monSet = gBattleFrontierTrainerMons_Sidney
+    },
+    [FRONTIER_TRAINER_ELITE_FOUR_PHOEBE] = {
+        .facilityClass = FACILITY_CLASS_ELITE_FOUR_PHOEBE,
+        .trainerName = _("PHOEBE"),
+        .speechBefore = {EC_WORD_DON_T, EC_WORD_TALK, EC_WORD_JUST, EC_WORD_BATTLE, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .speechWin = {EC_WORD_BYE_BYE, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .speechLose = {EC_WORD_KTHX_BYE, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .monSet = gBattleFrontierTrainerMons_Phoebe
+    },
+    [FRONTIER_TRAINER_ELITE_FOUR_GLACIA] = {
+        .facilityClass = FACILITY_CLASS_ELITE_FOUR_GLACIA,
+        .trainerName = _("GLACIA"),
+        .speechBefore = {EC_WORD_ICE, EC_WORD_IS, EC_WORD_HOT, EC_WORD_OR, EC_WORD_COLD, EC_WORD_QUES},
+        .speechWin = {EC_WORD_YOU, EC_WORD_HAVE, EC_WORD_BEEN, EC_WORD_DEFEATED, EC_WORD_IN, EC_WORD_COLD},
+        .speechLose = {EC_WORD_ICE, EC_WORD_IS, EC_WORD_COLD, EC_WORD_AND, EC_WORD_YOU, EC_WORD_TOO},
+        .monSet = gBattleFrontierTrainerMons_Glacia
+    },
+    [FRONTIER_TRAINER_ELITE_FOUR_DRAKE] = {
+        .facilityClass = FACILITY_CLASS_ELITE_FOUR_DRAKE,
+        .trainerName = _("DRAKE"),
+        .speechBefore = {EC_WORD_MY, EC_WORD_HOBBY, EC_WORD_ARE, EC_WORD_DRAGON, EC_WORD_POKEMON, EC_WORD_EXCL},
+        .speechWin = {EC_WORD_DRAGON, EC_WORD_POWER, EC_WORD_EXCL, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .speechLose = {EC_WORD_DRAGON, EC_WORD_DESTROYED, EC_WORD_DRAGON, EC_WORD_DESTROYED, EC_WORD_EXCL_EXCL, EC_EMPTY_WORD},
+        .monSet = gBattleFrontierTrainerMons_Drake
+    },
+    [FRONTIER_TRAINER_WALLY] = {
+        .facilityClass = FACILITY_CLASS_WALLY,
+        .trainerName = _("WALLY"),
+        .speechBefore = {EC_WORD_HI, EC_WORD_EXCL, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .speechWin = {EC_WORD_OH, EC_WORD_WHAT, EC_WORD_QUES_EXCL, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .speechLose = {EC_WORD_NEXT, EC_WORD_TIME, EC_WORD_WILL, EC_WORD_BE, EC_WORD_THE, EC_WORD_TIME},
+        .monSet = gBattleFrontierTrainerMons_Wally
+    },
     [FRONTIER_TRAINER_LOGAN] = {
         .facilityClass = FACILITY_CLASS_YOUNGSTER,
         .trainerName = _("LOGAN"),
@@ -1767,6 +1879,54 @@ const struct BattleFrontierTrainer gBattleFrontierTrainers[FRONTIER_TRAINERS_COU
         .speechWin = {EC_WORD_I, EC_WORD_DID, EC_WORD_IT, EC_MOVE2(JUMP_KICK), EC_WORD_FOR, EC_WORD_JOY},
         .speechLose = {EC_WORD_BACK, EC_WORD_HOME, EC_WORD_I, EC_WORD_WILL, EC_WORD_GO, EC_WORD_ELLIPSIS},
         .monSet = gBattleFrontierTrainerMons_Leon
+    },
+    [FRONTIER_TRAINER_CHAMPION_WALLACE] = {
+        .facilityClass = FACILITY_CLASS_CHAMPION_WALLACE,
+        .trainerName = _("WALLACE"),
+        .speechBefore = {EC_WORD_I, EC_WORD_HAVE, EC_WORD_TO, EC_WORD_WIN, EC_WORD_EXCL, EC_EMPTY_WORD},
+        .speechWin = {EC_WORD_I, EC_WORD_WON, EC_WORD_ELLIPSIS, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .speechLose = {EC_WORD_I, EC_WORD_LOST, EC_WORD_ELLIPSIS, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .monSet = gBattleFrontierTrainerMons_Wallace
+    },
+    [FRONTIER_TRAINER_CHAMPION_STEVEN] = {
+        .facilityClass = FACILITY_CLASS_CHAMPION_STEVEN,
+        .trainerName = _("STEVEN"),
+        .speechBefore = {EC_WORD_ROCK, EC_WORD_ARE, EC_WORD_COOL, EC_WORD_ELLIPSIS, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .speechWin = {EC_WORD_STEEL, EC_WORD_IS, EC_WORD_BETTER, EC_WORD_ELLIPSIS, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .speechLose = {EC_WORD_AWFUL, EC_WORD_ELLIPSIS, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .monSet = gBattleFrontierTrainerMons_Steven
+    },
+    [FRONTIER_TRAINER_AQUA_LEADER_ARCHIE] = {//EC_EMPTY_WORD
+        .facilityClass = FACILITY_CLASS_AQUA_LEADER_ARCHIE,
+        .trainerName = _("ARCHIE"),
+        .speechBefore = {EC_WORD_WATER, EC_WORD_POWER, EC_WORD_IS, EC_WORD_INCREDIBLE, EC_WORD_EXCL, EC_EMPTY_WORD},
+        .speechWin = {EC_WORD_THERE, EC_WORD_WE, EC_WORD_GO, EC_WORD_EXCL, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .speechLose = {EC_WORD_SORRY, EC_WORD_ELLIPSIS_ELLIPSIS_ELLIPSIS, EC_WORD_I, EC_WORD_WASN_T, EC_WORD_ENOUGH, EC_WORD_ELLIPSIS},
+        .monSet = gBattleFrontierTrainerMons_Archie
+    },
+    [FRONTIER_TRAINER_MAGMA_LEADER_MAXIE] = {
+        .facilityClass = FACILITY_CLASS_MAGMA_LEADER_MAXIE,
+        .trainerName = _("MAXIE"),
+        .speechBefore = {EC_WORD_GROUND, EC_WORD_POWER, EC_WORD_IS, EC_WORD_INCREDIBLE, EC_WORD_EXCL, EC_EMPTY_WORD},
+        .speechWin = {EC_WORD_NOT, EC_WORD_BAD, EC_WORD_EXCL, EC_WORD_FOR, EC_WORD_ME, EC_WORD_EXCL},
+        .speechLose = {EC_WORD_WHAT, EC_WORD_ELLIPSIS_ELLIPSIS_ELLIPSIS, EC_WORD_YOU, EC_WORD_WERE, EC_WORD_BETTER, EC_WORD_ELLIPSIS},
+        .monSet = gBattleFrontierTrainerMons_Maxie
+    },
+    [FRONTIER_TRAINER_RED] = {
+        .facilityClass = FACILITY_CLASS_RED,
+        .trainerName = _("RED"),
+        .speechBefore = {EC_WORD_ELLIPSIS_ELLIPSIS_ELLIPSIS, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .speechWin = {EC_WORD_ELLIPSIS_ELLIPSIS_ELLIPSIS, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .speechLose = {EC_WORD_ELLIPSIS_ELLIPSIS_ELLIPSIS, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .monSet = gBattleFrontierTrainerMons_Red
+    },
+    [FRONTIER_TRAINER_LEAF] = {
+        .facilityClass = FACILITY_CLASS_LEAF,
+        .trainerName = _("LEAF"),
+        .speechBefore = {EC_WORD_ELLIPSIS_ELLIPSIS_ELLIPSIS, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .speechWin = {EC_WORD_ELLIPSIS_ELLIPSIS_ELLIPSIS, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .speechLose = {EC_WORD_ELLIPSIS_ELLIPSIS_ELLIPSIS, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD, EC_EMPTY_WORD},
+        .monSet = gBattleFrontierTrainerMons_Leaf
     },
     [FRONTIER_TRAINER_ALONZO] = {
         .facilityClass = FACILITY_CLASS_COOLTRAINER_M,

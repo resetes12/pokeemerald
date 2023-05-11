@@ -291,3 +291,7 @@ const u32 gTrainerBackPicPalette_Leaf[] = INCBIN_U32("graphics/trainers/back_pic
 
 const u32 gTrainerFrontPic_Nurse[] = INCBIN_U32("graphics/trainers/front_pics/nurse.4bpp.lz");
 const u32 gTrainerPalette_Nurse[] = INCBIN_U32("graphics/trainers/palettes/nurse.gbapal.lz");
+
+const u32 gTrainerFrontPic_Tate[] = INCBIN_U32("graphics/trainers/front_pics/leader_tate.4bpp.lz");
+
+const u32 gTrainerFrontPic_Liza[] = INCBIN_U32("graphics/trainers/front_pics/leader_liza.4bpp.lz");
