@@ -1066,7 +1066,8 @@ struct SaveBlock1
     /*0x31DC*/ struct Roamer roamer;
     /*0x31F8*/ struct EnigmaBerry enigmaBerry;
     /*0x322C*/ struct MysteryGiftSave mysteryGift;
-    /*0x3598*/ u8 unused_3598[0x90];
+    /*0x3598*/ u8 unused_3598[0x8E];
+    /*0x3716*/ u16 registeredLongItem; // registered for long press of SELECT button
     /*0x3718*/ u32 trainerHillTimes[NUM_TRAINER_HILL_MODES];
     /*0x3728*/ struct RamScript ramScript;
     /*0x3B14*/ struct RecordMixingGift recordMixingGift;
