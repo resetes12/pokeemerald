@@ -210,7 +210,7 @@
       "flag": "0"
     },
     {
-      "graphics_id": "OBJ_EVENT_GFX_DUSCLOPS",
+      "graphics_id": "OBJ_EVENT_GFX_MON_BASE+SPECIES_DUSCLOPS",
       "x": 44,
       "y": 16,
       "elevation": 0,
