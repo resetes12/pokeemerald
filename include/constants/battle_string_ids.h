@@ -386,9 +386,11 @@
 #define STRINGID_SPECIESCLAUSECAPTUREBLOCKED 385
 #define STRINGID_SAMESPECIESCAPTUREBLOCKED  386
 #define STRINGID_PKMNGAINEDEXPALL           387
+#define STRINGID_PKMNDROPPEDITEM            388
+#define STRINGID_BAGISFULL                  389
 
 
-#define BATTLESTRINGS_COUNT                 388
+#define BATTLESTRINGS_COUNT                 390
 
 // This is the string id that gBattleStringsTable starts with.
 // String ids before this (e.g. STRINGID_INTROMSG) are not in the table,
@@ -609,5 +611,9 @@
 #define B_MSG_REF_COMMENCE_BATTLE    8
 
 #define NUM_TRAPPING_MOVES 6
+
+// gItemDroppedStringIds
+#define B_MSG_ITEM_DROPPED   0
+#define B_MSG_BAG_IS_FULL    1
 
 #endif // GUARD_CONSTANTS_BATTLE_STRING_IDS_H

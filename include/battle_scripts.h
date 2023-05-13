@@ -228,4 +228,6 @@ extern const u8 BattleScript_Safari_NuzlockeCaptureBlocked[];
 extern const u8 BattleScript_Safari_SpeciesClauseCaptureBlocked[];
 extern const u8 BattleScript_Safari_SameSpeciesCaptureBlocked[];
 
+extern const u8 BattleScript_ItemDropped[];
+
 #endif // GUARD_BATTLE_SCRIPTS_H

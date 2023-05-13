@@ -2812,6 +2812,7 @@ BattleScript_FaintAttacker::
 	dofaintanimation BS_ATTACKER
 	cleareffectsonfaint BS_ATTACKER
 	printstring STRINGID_ATTACKERFAINTED
+	savebattleritem BS_ATTACKER
 	return
 
 BattleScript_FaintTarget::
@@ -2820,6 +2821,7 @@ BattleScript_FaintTarget::
 	dofaintanimation BS_TARGET
 	cleareffectsonfaint BS_TARGET
 	printstring STRINGID_TARGETFAINTED
+	savebattleritem BS_TARGET
 	return
 
 BattleScript_GiveExp::
@@ -2939,6 +2941,7 @@ BattleScript_LocalBattleWonReward::
 	waitmessage B_WAIT_TIME_LONG
 BattleScript_PayDayMoneyAndPickUpItems::
 	givepaydaymoney
+	givedroppeditems
 	pickup
 	end2
 
@@ -4584,3 +4587,8 @@ BattleScript_Safari_SpeciesClauseCaptureBlocked::
 BattleScript_Safari_SameSpeciesCaptureBlocked::
 	printselectionstring STRINGID_SAMESPECIESCAPTUREBLOCKED
 	endselectionscript
+
+BattleScript_ItemDropped::
+	playse SE_BALL_BOUNCE_1
+	printfromtable gItemDroppedStringIds
+	return
