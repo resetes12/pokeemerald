@@ -106,8 +106,11 @@ static void SetDefaultOptions(void)
     gSaveBlock2Ptr->optionTypeEffective = 1;
     gSaveBlock2Ptr->optionsFishing = 1;
     gSaveBlock2Ptr->optionsFastIntro = 1;
-    gSaveBlock2Ptr->optionsAlternateSpawns = 0;
-    gSaveBlock2Ptr->optionsShinyChance = 0;
+    gSaveBlock2Ptr->optionsLimitDifficulty = 0; //in challenges menu
+    gSaveBlock2Ptr->optionsAlternateSpawns = 0; //in challenges menu
+    gSaveBlock2Ptr->optionsShinyChance = 0; //in challenges menu
+    gSaveBlock2Ptr->optionsWildMonDropItems = 0; //in challenges menu
+    gSaveBlock2Ptr->optionsFastBattle = 0;
 }
 
 static void ClearPokedexFlags(void)

@@ -2254,7 +2254,7 @@ static void Cmd_waitmessage(void)
         else
         {
             u16 toWait = T2_READ_16(gBattlescriptCurrInstr + 1);
-            if (++gPauseCounterBattle >= toWait || (JOY_NEW(A_BUTTON | B_BUTTON)) || (gSaveBlock2Ptr->optionsFastIntro == 0))
+            if (++gPauseCounterBattle >= toWait || (JOY_NEW(A_BUTTON | B_BUTTON)) || (gSaveBlock2Ptr->optionsFastBattle == 0))
             {
                 gPauseCounterBattle = 0;
                 gBattlescriptCurrInstr += 3;
@@ -4054,7 +4054,7 @@ static void Cmd_pause(void)
     if (gBattleControllerExecFlags == 0)
     {
         u16 value = T2_READ_16(gBattlescriptCurrInstr + 1);
-        if (++gPauseCounterBattle >= value || (JOY_NEW(A_BUTTON | B_BUTTON)) || (gSaveBlock2Ptr->optionsFastIntro == 0))
+        if (++gPauseCounterBattle >= value || (JOY_NEW(A_BUTTON | B_BUTTON)) || (gSaveBlock2Ptr->optionsFastBattle == 0))
         {
             gPauseCounterBattle = 0;
             gBattlescriptCurrInstr += 3;
@@ -6674,7 +6674,7 @@ static void Cmd_various(void)
         {
             gLastUsedItem = gBattleResources->battleHistory->heldItem[battlers[i]];
             gBattleResources->battleHistory->heldItem[battlers[i]] = ITEM_NONE;
-            if (gLastUsedItem && !(gBattleTypeFlags & (BATTLE_TYPE_TRAINER | BATTLE_TYPE_FIRST_BATTLE | BATTLE_TYPE_WALLY_TUTORIAL)))
+            if ((gSaveBlock2Ptr->optionsWildMonDropItems == 1) && gLastUsedItem && !(gBattleTypeFlags & (BATTLE_TYPE_TRAINER | BATTLE_TYPE_FIRST_BATTLE | BATTLE_TYPE_WALLY_TUTORIAL)))
             {
                 if(AddBagItem(gLastUsedItem, 1))
                     gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_ITEM_DROPPED;

@@ -47,6 +47,7 @@ enum
     MENUITEM_CUSTOM_LARGE_FOLLOWER,
     MENUITEM_CUSTOM_AUTORUN,
     MENUITEM_CUSTOM_FAST_INTRO,
+    MENUITEM_CUSTOM_FAST_BATTLES,
     MENUITEM_CUSTOM_MATCHCALL,
     MENUITEM_CUSTOM_STYLE,
     MENUITEM_CUSTOM_TYPE_EFFECTIVE,
@@ -179,6 +180,7 @@ static void DrawChoices_Style(int selection, int y);
 static void DrawChoices_TypeEffective(int selection, int y);
 static void DrawChoices_Fishing(int selection, int y);
 static void DrawChoices_FastIntro(int selection, int y);
+static void DrawChoices_FastBattles(int selection, int y);
 static void DrawBgWindowFrames(void);
 
 // EWRAM vars
@@ -235,6 +237,7 @@ struct // MENU_CUSTOM
     [MENUITEM_CUSTOM_STYLE]        = {DrawChoices_Style,       ProcessInput_Options_Two},
     [MENUITEM_CUSTOM_TYPE_EFFECTIVE] = {DrawChoices_TypeEffective,     ProcessInput_Options_Two},
     [MENUITEM_CUSTOM_FISHING]      = {DrawChoices_Fishing,       ProcessInput_Options_Two},
+    [MENUITEM_CUSTOM_FAST_BATTLES] = {DrawChoices_FastBattles,     ProcessInput_Options_Two},
     [MENUITEM_CUSTOM_CANCEL]       = {NULL, NULL},
 };
 
@@ -243,6 +246,7 @@ static const u8 sText_OptionTypeEffective[]       = _("SHOW EFFECTIVE");
 static const u8 sText_OptionFishing[]             = _("EASIER FISHING");
 static const u8 sText_OptionFastIntro[]           = _("FAST INTRO");
 static const u8 sText_OptionLargeFollower[]       = _("BIG FOLLOWERS");
+static const u8 sText_OptionFastBattles[]       = _("FAST BATTLES");
 static const u8 *const sOptionMenuItemsNamesMain[MENUITEM_MAIN_COUNT] =
 {
     [MENUITEM_MAIN_TEXTSPEED]   = gText_TextSpeed,
@@ -265,6 +269,7 @@ static const u8 *const sOptionMenuItemsNamesCustom[MENUITEM_CUSTOM_COUNT] =
     [MENUITEM_CUSTOM_STYLE]       = gText_OptionStyle,
     [MENUITEM_CUSTOM_TYPE_EFFECTIVE] = sText_OptionTypeEffective,
     [MENUITEM_CUSTOM_FISHING]     = sText_OptionFishing,
+    [MENUITEM_CUSTOM_FAST_BATTLES]     = sText_OptionFastBattles,
     [MENUITEM_CUSTOM_CANCEL]      = gText_OptionMenuSave,
 };
 
@@ -299,12 +304,13 @@ static bool8 CheckConditions(int selection)
         switch(selection)
         {
         case MENUITEM_CUSTOM_FOLLOWER:        return TRUE;
-        case MENUITEM_CUSTOM_LARGE_FOLLOWER:        return TRUE;
+        case MENUITEM_CUSTOM_LARGE_FOLLOWER:  return TRUE;
         case MENUITEM_CUSTOM_AUTORUN:         return TRUE;
         case MENUITEM_CUSTOM_FAST_INTRO:      return TRUE;
         case MENUITEM_CUSTOM_MATCHCALL:       return TRUE;
         case MENUITEM_CUSTOM_STYLE:           return TRUE;
         case MENUITEM_CUSTOM_TYPE_EFFECTIVE:  return TRUE;
+        case MENUITEM_CUSTOM_FAST_BATTLES:    return TRUE;
         case MENUITEM_CUSTOM_FISHING:         return TRUE;
         case MENUITEM_CUSTOM_CANCEL:          return TRUE;
         case MENUITEM_CUSTOM_COUNT:           return TRUE;
@@ -358,12 +364,15 @@ static const u8 sText_Desc_FishingOn[]             = _("Automatically reel while
 static const u8 sText_Desc_FishingOff[]            = _("Manually reel while fishing.\nFish like you always fished!");
 static const u8 sText_Desc_FastIntroOn[]           = _("Skip the sliding animation\nand enter battles faster.");
 static const u8 sText_Desc_FastIntroOff[]          = _("Battles load at the usual speed.");
+static const u8 sText_Desc_FastBattleOn[]          = _("Skips all delays in battles, which\nmakes them faster.");
+static const u8 sText_Desc_FastBattleOff[]         = _("Manual delay skipping. You can\npress A or B to skip delays.");
 static const u8 *const sOptionMenuItemDescriptionsCustom[MENUITEM_CUSTOM_COUNT][2] =
 {
     [MENUITEM_CUSTOM_FOLLOWER]    = {sText_Desc_FollowerOn,           sText_Desc_FollowerOff},
     [MENUITEM_CUSTOM_LARGE_FOLLOWER]    = {sText_Desc_FollowerLargeOn,           sText_Desc_FollowerLargeOff},
     [MENUITEM_CUSTOM_AUTORUN]     = {sText_Desc_AutorunOn,            sText_Desc_AutorunOff},
     [MENUITEM_CUSTOM_FAST_INTRO]  = {sText_Desc_FastIntroOn,          sText_Desc_FastIntroOff},
+    [MENUITEM_CUSTOM_FAST_BATTLES]  = {sText_Desc_FastBattleOn,          sText_Desc_FastBattleOff},
     [MENUITEM_CUSTOM_MATCHCALL]   = {sText_Desc_OverworldCallsOn,     sText_Desc_OverworldCallsOff},
     [MENUITEM_CUSTOM_STYLE]       = {sText_Desc_StyleOn,              sText_Desc_StyleOff},
     [MENUITEM_CUSTOM_TYPE_EFFECTIVE]       = {sText_Desc_TypeEffectiveOn,              sText_Desc_TypeEffectiveOff},
@@ -393,6 +402,7 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledCustom[MENUITEM_CUSTOM
     [MENUITEM_CUSTOM_LARGE_FOLLOWER]    = sText_Desc_Disabled_BattleHPBar,
     [MENUITEM_CUSTOM_AUTORUN]     = sText_Empty,
     [MENUITEM_CUSTOM_FAST_INTRO]  = sText_Empty,
+    [MENUITEM_CUSTOM_FAST_BATTLES]  = sText_Empty,
     [MENUITEM_CUSTOM_MATCHCALL]   = sText_Empty,
     [MENUITEM_CUSTOM_STYLE]       = sText_Empty,
     [MENUITEM_CUSTOM_TYPE_EFFECTIVE]       = sText_Empty,
@@ -640,6 +650,7 @@ void CB2_InitOptionPlusMenu(void)
         sOptions->sel_custom[MENUITEM_CUSTOM_LARGE_FOLLOWER]    = gSaveBlock2Ptr->optionsfollowerLargeEnable;
         sOptions->sel_custom[MENUITEM_CUSTOM_AUTORUN]     = gSaveBlock2Ptr->optionsautoRun;
         sOptions->sel_custom[MENUITEM_CUSTOM_FAST_INTRO]  = gSaveBlock2Ptr->optionsFastIntro;
+        sOptions->sel_custom[MENUITEM_CUSTOM_FAST_BATTLES]     = gSaveBlock2Ptr->optionsFastBattle;
         sOptions->sel_custom[MENUITEM_CUSTOM_MATCHCALL]   = gSaveBlock2Ptr->optionsDisableMatchCall;
         sOptions->sel_custom[MENUITEM_CUSTOM_STYLE]       = gSaveBlock2Ptr->optionStyle;
         sOptions->sel_custom[MENUITEM_CUSTOM_TYPE_EFFECTIVE]       = gSaveBlock2Ptr->optionTypeEffective;
@@ -833,6 +844,7 @@ static void Task_OptionMenuSave(u8 taskId)
     gSaveBlock2Ptr->optionsfollowerLargeEnable   = sOptions->sel_custom[MENUITEM_CUSTOM_LARGE_FOLLOWER];
     gSaveBlock2Ptr->optionsautoRun          = sOptions->sel_custom[MENUITEM_CUSTOM_AUTORUN];
     gSaveBlock2Ptr->optionsFastIntro        = sOptions->sel_custom[MENUITEM_CUSTOM_FAST_INTRO];
+    gSaveBlock2Ptr->optionsFastBattle       = sOptions->sel_custom[MENUITEM_CUSTOM_FAST_BATTLES];
     gSaveBlock2Ptr->optionsDisableMatchCall = sOptions->sel_custom[MENUITEM_CUSTOM_MATCHCALL];
     gSaveBlock2Ptr->optionStyle             = sOptions->sel_custom[MENUITEM_CUSTOM_STYLE];
     gSaveBlock2Ptr->optionTypeEffective     = sOptions->sel_custom[MENUITEM_CUSTOM_TYPE_EFFECTIVE];
@@ -1327,6 +1339,25 @@ static void DrawChoices_FastIntro(int selection, int y)
     else
     {
         gSaveBlock2Ptr->optionsFastIntro = 1; //Off
+    }
+
+    DrawOptionMenuChoice(gText_BattleSceneOn, 104, y, styles[0], active);
+    DrawOptionMenuChoice(gText_BattleSceneOff, GetStringRightAlignXOffset(1, gText_BattleSceneOff, 198), y, styles[1], active);
+}
+
+static void DrawChoices_FastBattles(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_CUSTOM_FAST_BATTLES);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock2Ptr->optionsFastBattle = 1; //on
+    }
+    else
+    {
+        gSaveBlock2Ptr->optionsFastBattle = 0; //Off
     }
 
     DrawOptionMenuChoice(gText_BattleSceneOn, 104, y, styles[0], active);

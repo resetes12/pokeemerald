@@ -83,6 +83,7 @@ enum
     MENUITEM_CHALLENGES_ALTERNATE_SPAWNS,
     MENUITEM_CHALLENGES_LIMIT_DIFFICULTY,
     MENUITEM_CHALLENGES_SHINY_CHANCE,
+    MENUITEM_CHALLENGES_ITEM_DROP,
     MENUITEM_CHALLENGES_EVO_LIMIT,
     MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE,
     MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER,
@@ -252,6 +253,7 @@ static void DrawChoices_Challenges_Mirror_Thief(int selection, int y);
 static void DrawChoices_Challenges_AlternateSpawns(int selection, int y);
 static void DrawChoices_Challenges_LimitDifficulty(int selection, int y);
 static void DrawChoices_Challenges_ShinyChance(int selection, int y);
+static void DrawChoices_Challenges_ItemDrop(int selection, int y);
 
 static void PrintCurrentSelections(void);
 
@@ -349,6 +351,7 @@ struct // MENU_CHALLENGES
     [MENUITEM_CHALLENGES_ALTERNATE_SPAWNS]      = {DrawChoices_Challenges_AlternateSpawns,      ProcessInput_Options_Two},
     [MENUITEM_CHALLENGES_LIMIT_DIFFICULTY]      = {DrawChoices_Challenges_LimitDifficulty,      ProcessInput_Options_Two},
     [MENUITEM_CHALLENGES_SHINY_CHANCE]          = {DrawChoices_Challenges_ShinyChance,          ProcessInput_Options_Five},
+    [MENUITEM_CHALLENGES_ITEM_DROP]             = {DrawChoices_Challenges_ItemDrop,             ProcessInput_Options_Two},
     [MENUITEM_CHALLENGES_SAVE] = {NULL, NULL},
 };
 
@@ -439,6 +442,7 @@ static const u8 sText_MirrorThief[]         = _("MIRROR THIEF");
 static const u8 sText_AlternateSpawns[]     = _("MODERN SPAWNS");
 static const u8 sText_LimitDifficulty[]     = _("LOCK DIFFICULTY");
 static const u8 sText_ShinyChance[]         = _("SHINY CHANCE");
+static const u8 sText_ItemDrop[]            = _("ITEM DROP");
 static const u8 sText_Save[]                = _("SAVE");
 static const u8 *const sOptionMenuItemsNamesChallenges[MENUITEM_CHALLENGES_COUNT] =
 {
@@ -450,6 +454,7 @@ static const u8 *const sOptionMenuItemsNamesChallenges[MENUITEM_CHALLENGES_COUNT
     [MENUITEM_CHALLENGES_ALTERNATE_SPAWNS]      = sText_AlternateSpawns,
     [MENUITEM_CHALLENGES_LIMIT_DIFFICULTY]      = sText_LimitDifficulty,
     [MENUITEM_CHALLENGES_SHINY_CHANCE]          = sText_ShinyChance,
+    [MENUITEM_CHALLENGES_ITEM_DROP]             = sText_ItemDrop,
     [MENUITEM_CHALLENGES_SAVE]                  = sText_Save,
 };
 
@@ -661,6 +666,8 @@ static const u8 sText_Description_Challenges_AlternateSpawns_Off[]      = _("Use
 static const u8 sText_Description_Challenges_AlternateSpawns_On[]       = _("Use Modern Emerald {PKMN} spawns.\nAll 420 {PKMN} available.");
 static const u8 sText_Description_Challenges_LimitDifficulty_Off[]      = _("Change the difficulty whenever and\nwherever you want.");
 static const u8 sText_Description_Challenges_LimitDifficulty_On[]       = _("Difficulty cannot be changed.\nHARD MODE locks BATTLE STYLE to SET.");
+static const u8 sText_Description_Challenges_ItemDrop_On[]              = _("Wild {PKMN} will drop their hold\nitem after defeating them.");
+static const u8 sText_Description_Challenges_ItemDrop_Off[]             = _("Wild {PKMN} items will be only\nobtainable via capture or Thief.");
 static const u8 sText_Description_Challenges_ShinyChance_8192[]         = _("Very low chance of SHINY encounter.\nDefault chance from Generation III.");
 static const u8 sText_Description_Challenges_ShinyChance_4096[]         = _("Low chance of SHINY encounter.\nDefault chance from Generation VI.");
 static const u8 sText_Description_Challenges_ShinyChance_2048[]         = _("Decent chance of SHINY encounter.");
@@ -677,6 +684,7 @@ static const u8 *const sOptionMenuItemDescriptionsChallenges[MENUITEM_CHALLENGES
     [MENUITEM_CHALLENGES_LIMIT_DIFFICULTY]      = {sText_Description_Challenges_LimitDifficulty_Off,    sText_Description_Challenges_LimitDifficulty_On,    sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_CHALLENGES_SHINY_CHANCE]          = {sText_Description_Challenges_ShinyChance_8192,       sText_Description_Challenges_ShinyChance_4096,      sText_Description_Challenges_ShinyChance_2048,      sText_Description_Challenges_ShinyChance_1024, sText_Description_Challenges_ShinyChance_512},
     [MENUITEM_CHALLENGES_SAVE]                  = {sText_Description_Save,                              sText_Empty,                                        sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_CHALLENGES_ITEM_DROP]             = {sText_Description_Challenges_ItemDrop_Off,           sText_Description_Challenges_ItemDrop_On,           sText_Empty,                                        sText_Empty,                                        sText_Empty},
 };
 
 // Disabled descriptions
@@ -1065,6 +1073,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         gSaveBlock2Ptr->optionsAlternateSpawns              = TX_CHALLENGE_ALTERNATE_SPAWNS;
         gSaveBlock2Ptr->optionsLimitDifficulty              = TX_CHALLENGE_LIMIT_DIFFICULTY;
         gSaveBlock2Ptr->optionsShinyChance                  = TX_CHALLENGE_SHINY_CHANCE;
+        gSaveBlock2Ptr->optionsWildMonDropItems              = TX_CHALLENGE_ITEM_DROP;
                
 
         sOptions = AllocZeroed(sizeof(*sOptions));
@@ -1115,6 +1124,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         sOptions->sel_challenges[MENUITEM_CHALLENGES_ALTERNATE_SPAWNS]       = gSaveBlock2Ptr->optionsAlternateSpawns;
         sOptions->sel_challenges[MENUITEM_CHALLENGES_LIMIT_DIFFICULTY]       = gSaveBlock2Ptr->optionsLimitDifficulty;
         sOptions->sel_challenges[MENUITEM_CHALLENGES_SHINY_CHANCE]           = gSaveBlock2Ptr->optionsShinyChance;
+        sOptions->sel_challenges[MENUITEM_CHALLENGES_ITEM_DROP]              = gSaveBlock2Ptr->optionsWildMonDropItems;
 
         sOptions->submenu = MENU_RANDOMIZER;
 
@@ -1440,6 +1450,7 @@ void SaveData_TxRandomizerAndChallenges(void)
     gSaveBlock2Ptr->optionsAlternateSpawns             = sOptions->sel_challenges[MENUITEM_CHALLENGES_ALTERNATE_SPAWNS]; 
     gSaveBlock2Ptr->optionsLimitDifficulty             = sOptions->sel_challenges[MENUITEM_CHALLENGES_LIMIT_DIFFICULTY];
     gSaveBlock2Ptr->optionsShinyChance                 = sOptions->sel_challenges[MENUITEM_CHALLENGES_SHINY_CHANCE]; 
+    gSaveBlock2Ptr->optionsWildMonDropItems             = sOptions->sel_challenges[MENUITEM_CHALLENGES_ITEM_DROP]; 
 
     PrintTXSaveData();
 
@@ -2053,6 +2064,25 @@ static void DrawChoices_Challenges_LimitDifficulty(int selection, int y)
     else
     {
         gSaveBlock2Ptr->optionsLimitDifficulty = 1; //limit difficulty
+    }
+
+    DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
+}
+
+static void DrawChoices_Challenges_ItemDrop(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_CHALLENGES_ITEM_DROP);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock2Ptr->optionsWildMonDropItems = 0; //items don't drop
+    }
+    else
+    {
+        gSaveBlock2Ptr->optionsWildMonDropItems = 1; //items do drop
     }
 
     DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);

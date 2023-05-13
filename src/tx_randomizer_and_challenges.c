@@ -63,6 +63,7 @@ bool8 AreAnyChallengesActive(void)
         || gSaveBlock2Ptr->optionsAlternateSpawns
         || gSaveBlock2Ptr->optionsLimitDifficulty
         || gSaveBlock2Ptr->optionsShinyChance
+        || gSaveBlock2Ptr->optionsWildMonDropItems
         || IsOneTypeChallengeActive())
         return TRUE;
 
