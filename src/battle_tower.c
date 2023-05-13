@@ -1677,6 +1677,7 @@ static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
     u16 chosenMonIndices[MAX_FRONTIER_PARTY_SIZE];
     u8 friendship = MAX_FRIENDSHIP;
     u8 level = SetFacilityPtrsGetLevel();
+    u8 lvlMode = gSaveBlock2Ptr->frontier.lvlMode;
     u8 fixedIV = 0;
     u8 bfMonCount;
     const u16 *monSet = NULL;
@@ -1734,7 +1735,7 @@ static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
 
         // "High tier" pokemon are only allowed on open level mode
         // 20 is not a possible value for level here
-        if ((level == FRONTIER_MAX_LEVEL_50 || level == 20) && monId > FRONTIER_MONS_HIGH_TIER)
+        if (lvlMode == FRONTIER_LVL_OPEN && monId > FRONTIER_MONS_HIGH_TIER)
             continue;
 
         // Ensure this pokemon species isn't a duplicate.
@@ -1834,6 +1835,7 @@ u16 GetRandomFrontierMonFromSet(u16 trainerId)
     const u16 *monSet = gFacilityTrainers[trainerId].monSet;
     u8 numMons = 0;
     u32 monId = monSet[numMons];
+    u8 lvlMode = gSaveBlock2Ptr->frontier.lvlMode;
 
     while (monId != 0xFFFF)
     {
@@ -1848,7 +1850,7 @@ u16 GetRandomFrontierMonFromSet(u16 trainerId)
         // "High tier" pokemon are only allowed on open level mode
         // 20 is not a possible value for level here
         monId = monSet[Random() % numMons];
-    } while((level == FRONTIER_MAX_LEVEL_50 || level == 20) && monId > FRONTIER_MONS_HIGH_TIER);
+    } while(lvlMode == FRONTIER_LVL_OPEN && monId > FRONTIER_MONS_HIGH_TIER);
 
     return monId;
 }
