@@ -1118,6 +1118,13 @@ static void GetInBattlePyramid(void)
 
 static void UpdatePyramidLightRadius(void)
 {
+     s32 j;
+    
+    FlagSet(FLAG_LIMIT_TO_50);
+
+    for (j = 0; j < PARTY_SIZE; j++)
+        CalculateMonStats(&gPlayerParty[j]);
+    
     switch (gSpecialVar_0x8006)
     {
     case PYRAMID_LIGHT_SET_RADIUS:
@@ -1165,6 +1172,12 @@ static void ClearPyramidPartyHeldItems(void)
 {
     int i, j;
     u16 item = 0;
+    s32 g;
+    
+    FlagClear(FLAG_LIMIT_TO_50);
+
+    for (g = 0; g < PARTY_SIZE; g++)
+        CalculateMonStats(&gPlayerParty[g]);
 
     for (i = 0; i < PARTY_SIZE; i++)
     {
@@ -1346,6 +1359,12 @@ void GenerateBattlePyramidWildMon(void)
     u32 id;
     u32 lvl = gSaveBlock2Ptr->frontier.lvlMode;
     u16 round = (gSaveBlock2Ptr->frontier.pyramidWinStreaks[lvl] / FRONTIER_STAGES_PER_CHALLENGE) % TOTAL_PYRAMID_ROUNDS;
+/*    s32 j;
+    
+    FlagSet(FLAG_LIMIT_TO_50);
+
+    for (j = 0; j < PARTY_SIZE; j++)
+        CalculateMonStats(&gPlayerParty[j]);*/
 
     if (round >= TOTAL_PYRAMID_ROUNDS)
         round = TOTAL_PYRAMID_ROUNDS - 1;
@@ -1452,6 +1471,13 @@ void SoftResetInBattlePyramid(void)
 
 void CopyPyramidTrainerSpeechBefore(u16 trainerId)
 {
+/*    s32 j;
+    
+    FlagSet(FLAG_LIMIT_TO_50);
+
+    for (j = 0; j < PARTY_SIZE; j++)
+        CalculateMonStats(&gPlayerParty[j]);*/
+
     FrontierSpeechToString(gFacilityTrainers[trainerId].speechBefore);
 }
 

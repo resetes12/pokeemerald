@@ -87,8 +87,8 @@ gText_ApprenticeWhichLevelMode0::
 	.string "I'm so happy, I'm crying…\p"
 	.string "Um… Then please tell me!\n"
 	.string "It's about the BATTLE TOWER.\p"
-	.string "Which would be better for me: Level 50\n"
-	.string "or the Open Level?$"
+	.string "Which would be better for me: NORMAL\n"
+	.string "or HARD Level?$"
 
 gText_ApprenticeLevelModeThanks0::
 	.string "{STR_VAR_1}?\n"
@@ -118,7 +118,7 @@ gText_ApprenticeWhichLevelMode1::
 	.string "Yay! Great!\p"
 	.string "The first thing I wanted to ask you is\n"
 	.string "about the BATTLE TOWER!\p"
-	.string "The Level 50 and Open Level Rooms…\n"
+	.string "The NORMAL and HARD Rooms…\n"
 	.string "Which would be perfect for me?$"
 
 gText_ApprenticeLevelModeThanks1::
@@ -146,7 +146,7 @@ gText_ApprenticeWhichLevelMode2::
 	.string "Thank you!\n"
 	.string "Here's my first question right away!\p"
 	.string "The BATTLE TOWER has two levels,\n"
-	.string "Level 50 and Open Level, right?\p"
+	.string "NORMAL and HARD, right?\p"
 	.string "Which level do you think is more\n"
 	.string "suitable for me?$"
 
@@ -198,7 +198,7 @@ gText_ApprenticeWhichLevelMode3::
 	.string "What I want to ask you is really\n"
 	.string "trivial, but I can't decide…\p"
 	.string "At the BATTLE TOWER, they let you\n"
-	.string "choose Level 50 or Open Level.\p"
+	.string "choose NORMAL or HARD Level.\p"
 	.string "Which course do you think even I may\n"
 	.string "have a chance at?$"
 
@@ -233,7 +233,7 @@ gText_ApprenticeWhichLevelMode4::
 	.string "Okay, so there is this something.\n"
 	.string "I want you to decide it for me.\p"
 	.string "You know that the BATTLE TOWER has\n"
-	.string "Level 50 and Open Level Rooms?\p"
+	.string "NORMAL and HARD Rooms?\p"
 	.string "Which do you think would be good\n"
 	.string "for me, {PLAYER}{KUN}?$"
 
@@ -272,7 +272,7 @@ gText_ApprenticeWhichLevelMode5::
 	.string "So, let's start with an easy one!\p"
 	.string "You know about the BATTLE TOWER's\n"
 	.string "two courses, right?\l"
-	.string "You know, Level 50 and Open Level.\p"
+	.string "You know, NORMAL and HARD Level.\p"
 	.string "Me being a busy guy, which one should\n"
 	.string "I gear up for?$"
 
@@ -310,7 +310,7 @@ gText_ApprenticeWhichLevelMode6::
 	.string "The question I have is…\p"
 	.string "If I were to take a BATTLE TOWER\n"
 	.string "challenge, which way should I go?\p"
-	.string "Level 50 or Open Level?\n"
+	.string "NORMAL or HARD?\n"
 	.string "Which suits me more?$"
 
 gText_ApprenticeLevelModeThanks6::
@@ -352,7 +352,7 @@ gText_ApprenticeWhichLevelMode7::
 	.string "challenge soon.\p"
 	.string "However, there are two levels…\p"
 	.string "Which would be most suitable for me?\n"
-	.string "Level 50 or Open Level?$"
+	.string "NORMAL or HARD?$"
 
 gText_ApprenticeLevelModeThanks7::
 	.string "{STR_VAR_1} is your choice!\n"
@@ -389,7 +389,7 @@ gText_ApprenticeWhichLevelMode8::
 	.string "Thank you ever so much!\p"
 	.string "Then, here's my question!\p"
 	.string "At the BATTLE TOWER, what is right\n"
-	.string "for me, Level 50 or Open Level?$"
+	.string "for me, NORMAL or HARD?$"
 
 gText_ApprenticeLevelModeThanks8::
 	.string "{STR_VAR_1}! Perfectly understood!\n"
@@ -423,7 +423,7 @@ gText_ApprenticeWhichLevelMode9::
 	.string "So how about a first piece of advice\n"
 	.string "on the BATTLE TOWER?\p"
 	.string "If I were to go, what would be better?\n"
-	.string "Level 50 or Open Level?$"
+	.string "NORMAL or HARD?$"
 
 gText_ApprenticeLevelModeThanks9::
 	.string "Uh-huh, {STR_VAR_1} it is!\n"
@@ -459,8 +459,8 @@ gText_ApprenticeWhichLevelMode10::
 	.string "I'll buy you a boat for that!\p"
 	.string "Of course I'm lying again!\n"
 	.string "But… Thank you, master!\p"
-	.string "You know how there's Level 50 and\n"
-	.string "Open Level at the BATTLE TOWER?\p"
+	.string "You know how there's NORMAL and\n"
+	.string "HARD Level at the BATTLE TOWER?\p"
 	.string "I'm having trouble deciding which\n"
 	.string "level I should challenge…\p"
 	.string "Can you decide for me, master?$"
@@ -504,7 +504,7 @@ gText_ApprenticeWhichLevelMode11::
 	.string "that begs your suggestion!\p"
 	.string "It's about the BATTLE TOWER,\n"
 	.string "and it hinges on my power!\p"
-	.string "Level 50 and Open Level there be,\n"
+	.string "NORMAL and HARD Level there be,\n"
 	.string "which is the one that's good for me?$"
 
 gText_ApprenticeLevelModeThanks11::
@@ -576,7 +576,7 @@ gText_ApprenticeWhichLevelMode13::
 	.string "Oogh, I have to toughen up quick…\p"
 	.string "I'll be heading off to the BATTLE TOWER\n"
 	.string "right away, but what would be better\l"
-	.string "for me? Level 50 or Open Level?$"
+	.string "for me? NORMAL or HARD?$"
 
 gText_ApprenticeLevelModeThanks13::
 	.string "Hm, all right. That's {STR_VAR_1}.\n"
@@ -652,7 +652,7 @@ gText_ApprenticeWhichLevelMode15::
 	.string "But now, I need your advice.\p"
 	.string "If I were to enter the BATTLE TOWER,\n"
 	.string "what would be worthy of me?\l"
-	.string "Level 50 or Open Level?$"
+	.string "NORMAL or HARD?$"
 
 gText_ApprenticeLevelModeThanks15::
 	.string "{STR_VAR_1}?\n"

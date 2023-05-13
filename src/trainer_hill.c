@@ -868,7 +868,7 @@ static void CreateNPCTrainerHillParty(u16 trainerId, u8 firstMonId)
 
     trId = trainerId - 1;
     SetUpDataStruct();
-    level = GetHighestLevelInPlayerParty();
+    level = 50;
     floorId = GetFloorId();
     for (i = firstMonId, partySlot = 0; i < firstMonId + PARTY_SIZE / 2; i++, partySlot++)
     {

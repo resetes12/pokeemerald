@@ -417,7 +417,7 @@ BattleFrontier_BattlePalaceLobby_Text_ReturnWhenFortified:
 
 BattleFrontier_BattlePalaceLobby_Text_WhichChallenge:
 	.string "There are two BATTLE HALLS,\n"
-	.string "Level 50 and Open Level.\l"
+	.string "the NORMAL and HARD ones.\l"
 	.string "Which is your choice of a challenge?$"
 
 BattleFrontier_BattlePalaceLobby_Text_NotEnoughValidMonsLv50:

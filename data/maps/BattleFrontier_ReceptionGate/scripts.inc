@@ -126,23 +126,8 @@ BattleFrontier_ReceptionGate_Movement_FacilityGuideFaceScott:
 BattleFrontier_ReceptionGate_EventScript_Greeter::
 	lock
 	faceplayer
-	msgbox BattleFrontier_ReceptionGate_Text_WelcomeToBattleFrontierLevel50, MSGBOX_YESNO
-	waitmessage
-	compare VAR_RESULT, YES
-	goto_if_eq BattleFrontier_ReceptionGate_EventScript_GreeterSet50
+	msgbox BattleFrontier_ReceptionGate_Text_WelcomeToBattleFrontier, MSGBOX_DEFAULT
 	msgbox BattleFrontier_ReceptionGate_Text_EnjoyBattleFrontier, MSGBOX_DEFAULT
-	release
-	end
-
-BattleFrontier_ReceptionGate_EventScript_GreeterSet50::
-	msgbox BattleFrontier_ReceptionGate_Text_WelcomeToBattleFrontierLevel50_2, MSGBOX_DEFAULT
-	waitmessage
-	special SavePlayerParty
-	setflag FLAG_LIMIT_TO_50
-	calculatemonstats
-	msgbox BattleFrontier_ReceptionGate_Text_WelcomeToBattleFrontierLevel50_3, MSGBOX_DEFAULT
-	waitmessage
-	clearflag FLAG_LIMIT_TO_50
 	release
 	end
 
@@ -321,22 +306,6 @@ BattleFrontier_ReceptionGate_Text_WelcomeToBattleFrontier:
 	.string "The front lines of POKéMON battling!\n"
 	.string "Welcome to the BATTLE FRONTIER!$"
 
-BattleFrontier_ReceptionGate_Text_WelcomeToBattleFrontierLevel50:
-	.string "The front lines of POKéMON battling!\n"
-	.string "Welcome to the BATTLE FRONTIER!\p"
-	.string "Would you like to set your POKéMON\n"
-	.string "level to 50? BE CAREFUL, THIS CANNOT\l"
-	.string "BE UNDONE.$"
-
-BattleFrontier_ReceptionGate_Text_WelcomeToBattleFrontierLevel50_2:
-	.string "Understood, please wait a second...$"
-
-BattleFrontier_ReceptionGate_Text_WelcomeToBattleFrontierLevel50_3:
-	.string "Done! I finished limiting your\n"
-	.string "POKéMON to level 50.\p"
-	.string "Please enjoy your stay in the\n"
-	.string "BATTLE FRONTIER!$"
-
 BattleFrontier_ReceptionGate_Text_IssueFrontierPass:
 	.string "For a first-time visitor, we issue\n"
 	.string "the FRONTIER PASS.\p"
@@ -462,10 +431,10 @@ BattleFrontier_ReceptionGate_Text_LearnAboutWhat:
 BattleFrontier_ReceptionGate_Text_LevelModeInfo:
 	.string "All the challenges at the BATTLE\n"
 	.string "FRONTIER's facilities come in\l"
-	.string "two courses--Level 50 and Open Level.$"
+	.string "two courses--NORMAL and HARD.$"
 
 BattleFrontier_ReceptionGate_Text_Level50Info:
-	.string "The Level 50 course is open to POKéMON\n"
+	.string "The NORMAL course is open to POKéMON\n"
 	.string "up to and including Level 50.\p"
 	.string "Please keep in mind, however, that\n"
 	.string "no TRAINER you face will have any\l"
@@ -476,7 +445,7 @@ BattleFrontier_ReceptionGate_Text_Level50Info:
 	.string "this course.$"
 
 BattleFrontier_ReceptionGate_Text_OpenLevelInfo:
-	.string "The Open Level course places no limit\n"
+	.string "The HARD course places no limit\n"
 	.string "on the levels of POKéMON entering\l"
 	.string "challenges.\p"
 	.string "The levels of your opponents will\n"

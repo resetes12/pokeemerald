@@ -46,6 +46,8 @@ TrainerHill_Entrance_OnReturn:
 	end
 
 TrainerHill_Entrance_OnLoad:
+	setflag FLAG_LIMIT_TO_50
+	calculatemonstats
 	call_if_eq VAR_TEMP_D, 17, TrainerHill_Entrance_EventScript_OpenCounterDoor
 	end
 

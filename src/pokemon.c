@@ -5598,6 +5598,15 @@ static u16 CalculateBoxMonChecksum(struct BoxPokemon *boxMon)
     SetMonData(mon, field, &n);                                 \
 }
 
+#define CALC_STAT_EQUALIZED50(base, iv, ev, statIndex, field, option)\
+{                                                               \
+    u16 baseStat[] = {100, 255, 500};                                         \
+    s32 n = (((2 * baseStat[option] + iv + ev / 4) * 50) / 100) + 5; \
+    u8 nature = GetNature(mon, TRUE);                                 \
+    n = ModifyStatByNature(nature, n, statIndex);               \
+    SetMonData(mon, field, &n);                                 \
+}
+
 void CalculateMonStats(struct Pokemon *mon)
 {
     s32 oldMaxHP = GetMonData(mon, MON_DATA_MAX_HP, NULL);
@@ -5618,170 +5627,116 @@ void CalculateMonStats(struct Pokemon *mon)
     s32 level = GetLevelFromMonExp(mon);
     s32 newMaxHP;
 
-    if (FlagGet(FLAG_LIMIT_TO_50) == TRUE) //Try to limit mons to level 50 for frontier
     {
-        s32 level = 50;
-        u32 exp = gExperienceTables[gSpeciesInfo[species].growthRate][50];
-
-            SetMonData(mon, MON_DATA_EXP, &exp);
+        if (FlagGet(FLAG_LIMIT_TO_50) == TRUE) //Try to limit mons to level 50 for frontier)
+        {
+            level = 50;
             SetMonData(mon, MON_DATA_LEVEL, &level);
-
-        if (species == SPECIES_SHEDINJA)
-        {
-            newMaxHP = 1;
         }
         else
         {
-            s32 n = 2 * gSpeciesInfo[species].baseHP + hpIV;
-            switch(gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer)
-            {
-            case 0:
-                break;
-            case 1: 
-                n = 2 * 100 + hpIV;
-                break;
-            case 2: 
-                n = 2 * 255 + hpIV;
-                break;
-            case 3: 
-                n = 2 * 500 + hpIV;
-                break;
-            default:
-                break;
-            }
-            newMaxHP = (((n + hpEV / 4) * level) / 100) + 50 + 10;
+        SetMonData(mon, MON_DATA_LEVEL, &level);
         }
+    }
 
-        gBattleScripting.levelUpHP = newMaxHP - oldMaxHP;
-        if (gBattleScripting.levelUpHP == 0)
-            gBattleScripting.levelUpHP = 1;
-
-        SetMonData(mon, MON_DATA_MAX_HP, &newMaxHP);
-
-        if (gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer)
-        {
-            u8 option = gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer - 1;
-            CALC_STAT_EQUALIZED(baseAttack, attackIV, attackEV, STAT_ATK, MON_DATA_ATK, option)
-            CALC_STAT_EQUALIZED(baseDefense, defenseIV, defenseEV, STAT_DEF, MON_DATA_DEF, option)
-            CALC_STAT_EQUALIZED(baseSpeed, speedIV, speedEV, STAT_SPEED, MON_DATA_SPEED, option)
-            CALC_STAT_EQUALIZED(baseSpAttack, spAttackIV, spAttackEV, STAT_SPATK, MON_DATA_SPATK, option)
-            CALC_STAT_EQUALIZED(baseSpDefense, spDefenseIV, spDefenseEV, STAT_SPDEF, MON_DATA_SPDEF, option)
-        }
-        else
-        {
-            CALC_STAT50(baseAttack, attackIV, attackEV, STAT_ATK, MON_DATA_ATK)
-            CALC_STAT50(baseDefense, defenseIV, defenseEV, STAT_DEF, MON_DATA_DEF)
-            CALC_STAT50(baseSpeed, speedIV, speedEV, STAT_SPEED, MON_DATA_SPEED)
-            CALC_STAT50(baseSpAttack, spAttackIV, spAttackEV, STAT_SPATK, MON_DATA_SPATK)
-            CALC_STAT50(baseSpDefense, spDefenseIV, spDefenseEV, STAT_SPDEF, MON_DATA_SPDEF)
-        }
-
-        if (species == SPECIES_SHEDINJA)
-        {
-            if (currentHP != 0 || oldMaxHP == 0)
-                currentHP = 1;
-            else
-                return;
-        }
-        else
-        {
-            if (currentHP == 0 && oldMaxHP == 0)
-                currentHP = newMaxHP;
-            else if (currentHP != 0) {
-                // BUG: currentHP is unintentionally able to become <= 0 after the instruction below. This causes the pomeg berry glitch.
-                currentHP += newMaxHP - oldMaxHP;
-                #ifdef BUGFIX
-                if (currentHP <= 0)
-                    currentHP = 1;
-                #endif
-            }
-            else
-                return;
-        }
-
-        SetMonData(mon, MON_DATA_HP, &currentHP);
+    if (species == SPECIES_SHEDINJA)
+    {
+        newMaxHP = 1;
     }
     else
     {
+        s32 n = 2 * gSpeciesInfo[species].baseHP + hpIV;
+        switch(gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer)
         {
-            SetMonData(mon, MON_DATA_LEVEL, &level);
+        case 0:
+            break;
+        case 1: 
+            n = 2 * 100 + hpIV;
+            break;
+        case 2: 
+            n = 2 * 255 + hpIV;
+            break;
+        case 3: 
+            n = 2 * 500 + hpIV;
+            break;
+        default:
+            break;
         }
-
-        if (species == SPECIES_SHEDINJA)
+        if (FlagGet(FLAG_LIMIT_TO_50) == TRUE) //Try to limit mons to level 50 for frontier)
         {
-            newMaxHP = 1;
+            newMaxHP = (((n + hpEV / 4) * 50) / 100) + 50 + 10;
         }
         else
         {
-            s32 n = 2 * gSpeciesInfo[species].baseHP + hpIV;
-            switch(gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer)
-            {
-            case 0:
-                break;
-            case 1: 
-                n = 2 * 100 + hpIV;
-                break;
-            case 2: 
-                n = 2 * 255 + hpIV;
-                break;
-            case 3: 
-                n = 2 * 500 + hpIV;
-                break;
-            default:
-                break;
-            }
             newMaxHP = (((n + hpEV / 4) * level) / 100) + level + 10;
         }
-
-        gBattleScripting.levelUpHP = newMaxHP - oldMaxHP;
-        if (gBattleScripting.levelUpHP == 0)
-            gBattleScripting.levelUpHP = 1;
-
-        SetMonData(mon, MON_DATA_MAX_HP, &newMaxHP);
-
-        if (gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer)
-        {
-            u8 option = gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer - 1;
-            CALC_STAT_EQUALIZED(baseAttack, attackIV, attackEV, STAT_ATK, MON_DATA_ATK, option)
-            CALC_STAT_EQUALIZED(baseDefense, defenseIV, defenseEV, STAT_DEF, MON_DATA_DEF, option)
-            CALC_STAT_EQUALIZED(baseSpeed, speedIV, speedEV, STAT_SPEED, MON_DATA_SPEED, option)
-            CALC_STAT_EQUALIZED(baseSpAttack, spAttackIV, spAttackEV, STAT_SPATK, MON_DATA_SPATK, option)
-            CALC_STAT_EQUALIZED(baseSpDefense, spDefenseIV, spDefenseEV, STAT_SPDEF, MON_DATA_SPDEF, option)
-        }
-        else
-        {
-            CALC_STAT(baseAttack, attackIV, attackEV, STAT_ATK, MON_DATA_ATK)
-            CALC_STAT(baseDefense, defenseIV, defenseEV, STAT_DEF, MON_DATA_DEF)
-            CALC_STAT(baseSpeed, speedIV, speedEV, STAT_SPEED, MON_DATA_SPEED)
-            CALC_STAT(baseSpAttack, spAttackIV, spAttackEV, STAT_SPATK, MON_DATA_SPATK)
-            CALC_STAT(baseSpDefense, spDefenseIV, spDefenseEV, STAT_SPDEF, MON_DATA_SPDEF)
-        }
-
-        if (species == SPECIES_SHEDINJA)
-        {
-            if (currentHP != 0 || oldMaxHP == 0)
-                currentHP = 1;
-            else
-                return;
-        }
-        else
-        {
-            if (currentHP == 0 && oldMaxHP == 0)
-                currentHP = newMaxHP;
-            else if (currentHP != 0) {
-                // BUG: currentHP is unintentionally able to become <= 0 after the instruction below. This causes the pomeg berry glitch.
-                currentHP += newMaxHP - oldMaxHP;
-                #ifdef BUGFIX
-                if (currentHP <= 0)
-                    currentHP = 1;
-                #endif
-            }
-            else
-                return;
-        }
-
-        SetMonData(mon, MON_DATA_HP, &currentHP);
     }
+
+    gBattleScripting.levelUpHP = newMaxHP - oldMaxHP;
+    if (gBattleScripting.levelUpHP == 0)
+        gBattleScripting.levelUpHP = 1;
+
+    SetMonData(mon, MON_DATA_MAX_HP, &newMaxHP);
+
+    if (gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer)
+    {
+        u8 option = gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer - 1;
+        CALC_STAT_EQUALIZED(baseAttack, attackIV, attackEV, STAT_ATK, MON_DATA_ATK, option)
+        CALC_STAT_EQUALIZED(baseDefense, defenseIV, defenseEV, STAT_DEF, MON_DATA_DEF, option)
+        CALC_STAT_EQUALIZED(baseSpeed, speedIV, speedEV, STAT_SPEED, MON_DATA_SPEED, option)
+        CALC_STAT_EQUALIZED(baseSpAttack, spAttackIV, spAttackEV, STAT_SPATK, MON_DATA_SPATK, option)
+        CALC_STAT_EQUALIZED(baseSpDefense, spDefenseIV, spDefenseEV, STAT_SPDEF, MON_DATA_SPDEF, option)
+    }
+    else if (FlagGet(FLAG_LIMIT_TO_50) == TRUE) //Try to limit mons to level 50 for frontier)
+    {
+        CALC_STAT50(baseAttack, attackIV, attackEV, STAT_ATK, MON_DATA_ATK)
+        CALC_STAT50(baseDefense, defenseIV, defenseEV, STAT_DEF, MON_DATA_DEF)
+        CALC_STAT50(baseSpeed, speedIV, speedEV, STAT_SPEED, MON_DATA_SPEED)
+        CALC_STAT50(baseSpAttack, spAttackIV, spAttackEV, STAT_SPATK, MON_DATA_SPATK)
+        CALC_STAT50(baseSpDefense, spDefenseIV, spDefenseEV, STAT_SPDEF, MON_DATA_SPDEF)
+    }
+    else if ((FlagGet(FLAG_LIMIT_TO_50) == TRUE) && (gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer)) //Try to limit mons to level 50 for frontier)
+    {
+        u8 option = gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer - 1;
+        CALC_STAT_EQUALIZED50(baseAttack, attackIV, attackEV, STAT_ATK, MON_DATA_ATK, option)
+        CALC_STAT_EQUALIZED50(baseDefense, defenseIV, defenseEV, STAT_DEF, MON_DATA_DEF, option)
+        CALC_STAT_EQUALIZED50(baseSpeed, speedIV, speedEV, STAT_SPEED, MON_DATA_SPEED, option)
+        CALC_STAT_EQUALIZED50(baseSpAttack, spAttackIV, spAttackEV, STAT_SPATK, MON_DATA_SPATK, option)
+        CALC_STAT_EQUALIZED50(baseSpDefense, spDefenseIV, spDefenseEV, STAT_SPDEF, MON_DATA_SPDEF, option)
+    }
+    else
+    {
+        CALC_STAT(baseAttack, attackIV, attackEV, STAT_ATK, MON_DATA_ATK)
+        CALC_STAT(baseDefense, defenseIV, defenseEV, STAT_DEF, MON_DATA_DEF)
+        CALC_STAT(baseSpeed, speedIV, speedEV, STAT_SPEED, MON_DATA_SPEED)
+        CALC_STAT(baseSpAttack, spAttackIV, spAttackEV, STAT_SPATK, MON_DATA_SPATK)
+        CALC_STAT(baseSpDefense, spDefenseIV, spDefenseEV, STAT_SPDEF, MON_DATA_SPDEF)
+    }
+
+    if (species == SPECIES_SHEDINJA)
+    {
+        if (currentHP != 0 || oldMaxHP == 0)
+            currentHP = 1;
+        else
+            return;
+    }
+    else
+    {
+        if (currentHP == 0 && oldMaxHP == 0)
+            currentHP = newMaxHP;
+        else if (currentHP != 0) {
+            // BUG: currentHP is unintentionally able to become <= 0 after the instruction below. This causes the pomeg berry glitch.
+            currentHP += newMaxHP - oldMaxHP;
+            #ifdef BUGFIX
+            if (currentHP <= 0)
+                currentHP = 1;
+            #endif
+        }
+        else
+            return;
+    }
+
+    SetMonData(mon, MON_DATA_HP, &currentHP);
 }
 
 void BoxMonToMon(const struct BoxPokemon *src, struct Pokemon *dest)

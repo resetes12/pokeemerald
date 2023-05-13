@@ -1057,7 +1057,7 @@ BattleFrontier_BattleTowerLobby_Text_LookForwardToAnotherChallenge:
 
 BattleFrontier_BattleTowerLobby_Text_WhichLevelMode:
 	.string "The BATTLE ROOM offers two levels\n"
-	.string "of challenge, Level 50 and Open Level.\l"
+	.string "of challenge, NORMAL and HARD.\l"
 	.string "Which is your choice?$"
 
 @ Unused

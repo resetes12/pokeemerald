@@ -563,7 +563,7 @@ BattleFrontier_BattlePyramidLobby_Text_ExplainBattlePyramid:
 
 BattleFrontier_BattlePyramidLobby_Text_WhichLevelMode:
 	.string "The PYRAMID offers two courses,\n"
-	.string "Level 50 and Open Level.\l"
+	.string "NORMAL and HARD.\l"
 	.string "Which will you enter?$"
 
 BattleFrontier_BattlePyramidLobby_Text_SelectThreeMons:
@@ -898,8 +898,8 @@ BattleFrontier_BattlePyramidLobby_Text_ExplainBagRules:
 	.string "The BATTLE BAG serves as your BAG\n"
 	.string "while in the PYRAMID.\p"
 	.string "There are two separate BATTLE BAGS--\n"
-	.string "one each for the Level 50 and\l"
-	.string "Open Level adventures.\p"
+	.string "one each for the NORMAL and\l"
+	.string "HARD level adventures.\p"
 	.string "They each can hold up to 99 pieces\n"
 	.string "of ten kinds of items.\p"
 	.string "The contents of the BATTLE BAG are\n"
