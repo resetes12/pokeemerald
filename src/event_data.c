@@ -50,7 +50,7 @@ void ClearTempFieldEventData(void)
     FlagClear(FLAG_SYS_USE_STRENGTH);
     FlagClear(FLAG_SYS_CTRL_OBJ_DELETE);
     FlagClear(FLAG_NURSE_UNION_ROOM_REMINDER);
-    gSaveBlock2Ptr->optionsAlternateSpawns = 0;
+    VarSet(VAR_TIME_BASED_ENCOUNTER, 0);
 }
 
 void ClearDailyFlags(void)

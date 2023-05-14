@@ -20,6 +20,7 @@
 #include "battle_main.h"
 #include "tx_randomizer_and_challenges.h"
 #include "pokemon.h"
+#include "event_data.h"
 
 enum
 {
@@ -65,6 +66,7 @@ enum
 
 enum
 {
+    MENUITEM_DIFFICULTY_LIMIT_DIFFICULTY,
     MENUITEM_DIFFICULTY_PARTY_LIMIT,
     MENUITEM_DIFFICULTY_LEVEL_CAP,
     MENUITEM_DIFFICULTY_EXP_MULTIPLIER,
@@ -81,7 +83,6 @@ enum
 enum
 {
     MENUITEM_CHALLENGES_ALTERNATE_SPAWNS,
-    MENUITEM_CHALLENGES_LIMIT_DIFFICULTY,
     MENUITEM_CHALLENGES_SHINY_CHANCE,
     MENUITEM_CHALLENGES_ITEM_DROP,
     MENUITEM_CHALLENGES_EVO_LIMIT,
@@ -334,6 +335,7 @@ struct // MENU_DIFFICULTY
     [MENUITEM_DIFFICULTY_SCALING_IVS]           = {DrawChoices_Challenges_ScalingIVs,       ProcessInput_Options_Three},
     [MENUITEM_DIFFICULTY_SCALING_EVS]           = {DrawChoices_Challenges_ScalingEVs,       ProcessInput_Options_Four},
     [MENUITEM_DIFFICULTY_POKECENTER]            = {DrawChoices_Challenges_Pokecenters,      ProcessInput_Options_Two},
+    [MENUITEM_DIFFICULTY_LIMIT_DIFFICULTY]      = {DrawChoices_Challenges_LimitDifficulty,  ProcessInput_Options_Two},
     [MENUITEM_DIFFICULTY_NEXT] = {NULL, NULL},
 };
 
@@ -349,7 +351,6 @@ struct // MENU_CHALLENGES
     [MENUITEM_CHALLENGES_MIRROR]                = {DrawChoices_Challenges_Mirror,               ProcessInput_Options_Two},
     [MENUITEM_CHALLENGES_MIRROR_THIEF]          = {DrawChoices_Challenges_Mirror_Thief,         ProcessInput_Options_Two},
     [MENUITEM_CHALLENGES_ALTERNATE_SPAWNS]      = {DrawChoices_Challenges_AlternateSpawns,      ProcessInput_Options_Two},
-    [MENUITEM_CHALLENGES_LIMIT_DIFFICULTY]      = {DrawChoices_Challenges_LimitDifficulty,      ProcessInput_Options_Two},
     [MENUITEM_CHALLENGES_SHINY_CHANCE]          = {DrawChoices_Challenges_ShinyChance,          ProcessInput_Options_Five},
     [MENUITEM_CHALLENGES_ITEM_DROP]             = {DrawChoices_Challenges_ItemDrop,             ProcessInput_Options_Two},
     [MENUITEM_CHALLENGES_SAVE] = {NULL, NULL},
@@ -419,6 +420,7 @@ static const u8 sText_NoEVs[]               = _("PLAYER EVs");
 static const u8 sText_ScalingIVs[]          = _("TRAINER IVs");
 static const u8 sText_ScalingEVs[]          = _("TRAINER EVs");
 static const u8 sText_Pokecenter[]          = _("POKéCENTER");
+static const u8 sText_LimitDifficulty[]     = _("LOCK DIFFICULTY");
 static const u8 *const sOptionMenuItemsNamesDifficulty[MENUITEM_DIFFICULTY_COUNT] =
 {
     [MENUITEM_DIFFICULTY_PARTY_LIMIT]           = sText_PartyLimit,
@@ -430,6 +432,7 @@ static const u8 *const sOptionMenuItemsNamesDifficulty[MENUITEM_DIFFICULTY_COUNT
     [MENUITEM_DIFFICULTY_SCALING_IVS]           = sText_ScalingIVs,
     [MENUITEM_DIFFICULTY_SCALING_EVS]           = sText_ScalingEVs,
     [MENUITEM_DIFFICULTY_POKECENTER]            = sText_Pokecenter,
+    [MENUITEM_DIFFICULTY_LIMIT_DIFFICULTY]      = sText_LimitDifficulty,
     [MENUITEM_DIFFICULTY_NEXT]                  = sText_Next,
 };
 
@@ -440,7 +443,6 @@ static const u8 sText_BaseStatEqualizer[]   = _("STAT EQUALIZER");
 static const u8 sText_Mirror[]              = _("MIRROR MODE");
 static const u8 sText_MirrorThief[]         = _("MIRROR THIEF");
 static const u8 sText_AlternateSpawns[]     = _("MODERN SPAWNS");
-static const u8 sText_LimitDifficulty[]     = _("LOCK DIFFICULTY");
 static const u8 sText_ShinyChance[]         = _("SHINY CHANCE");
 static const u8 sText_ItemDrop[]            = _("ITEM DROP");
 static const u8 sText_Save[]                = _("SAVE");
@@ -452,7 +454,6 @@ static const u8 *const sOptionMenuItemsNamesChallenges[MENUITEM_CHALLENGES_COUNT
     [MENUITEM_CHALLENGES_MIRROR]                = sText_Mirror,
     [MENUITEM_CHALLENGES_MIRROR_THIEF]          = sText_MirrorThief,
     [MENUITEM_CHALLENGES_ALTERNATE_SPAWNS]      = sText_AlternateSpawns,
-    [MENUITEM_CHALLENGES_LIMIT_DIFFICULTY]      = sText_LimitDifficulty,
     [MENUITEM_CHALLENGES_SHINY_CHANCE]          = sText_ShinyChance,
     [MENUITEM_CHALLENGES_ITEM_DROP]             = sText_ItemDrop,
     [MENUITEM_CHALLENGES_SAVE]                  = sText_Save,
@@ -635,6 +636,8 @@ static const u8 sText_Description_Difficulty_ScalingEVs_Scaling[]       = _("The
 static const u8 sText_Description_Difficulty_ScalingEVs_Hard[]          = _("All Trainer POKéMON have high EVs!");
 static const u8 sText_Description_Difficulty_ScalingEVs_Extreme[]       = _("All Trainer POKéMON have {COLOR 7}{COLOR 8}252 EVs!\nVery Hard!");
 static const u8 sText_Description_Difficulty_Next[]              = _("Continue to challenge options.");
+static const u8 sText_Description_Challenges_LimitDifficulty_Off[]      = _("Change the difficulty whenever and\nwherever you want.");
+static const u8 sText_Description_Challenges_LimitDifficulty_On[]       = _("Difficulty cannot be changed.\nHARD MODE locks BATTLE STYLE to SET.");
 static const u8 *const sOptionMenuItemDescriptionsDifficulty[MENUITEM_DIFFICULTY_COUNT][4] =
 {
     [MENUITEM_DIFFICULTY_PARTY_LIMIT]           = {sText_Description_Difficulty_Party_Limit,        sText_Empty,                                        sText_Empty,                                    sText_Empty},
@@ -647,6 +650,7 @@ static const u8 *const sOptionMenuItemDescriptionsDifficulty[MENUITEM_DIFFICULTY
     [MENUITEM_DIFFICULTY_SCALING_EVS]           = {sText_Description_Difficulty_ScalingEVs_Off,     sText_Description_Difficulty_ScalingEVs_Scaling,    sText_Description_Difficulty_ScalingEVs_Hard,   sText_Description_Difficulty_ScalingEVs_Extreme},
     [MENUITEM_DIFFICULTY_POKECENTER]            = {sText_Description_Difficulty_Pokecenter_Yes,     sText_Description_Difficulty_Pokecenter_No,         sText_Empty,                                    sText_Empty},
     [MENUITEM_DIFFICULTY_NEXT]                  = {sText_Description_Difficulty_Next,               sText_Empty,                                        sText_Empty,                                    sText_Empty},
+    [MENUITEM_DIFFICULTY_LIMIT_DIFFICULTY]      = {sText_Description_Challenges_LimitDifficulty_Off,    sText_Description_Challenges_LimitDifficulty_On,    sText_Empty,                                        sText_Empty},
 };  
 
 static const u8 sText_Description_Challenges_EvoLimit_Base[]            = _("POKéMON evolve as expected.");
@@ -664,10 +668,8 @@ static const u8 sText_Description_Challenges_MirrorThief_Off[]          = _("The
 static const u8 sText_Description_Challenges_MirrorThief_On[]           = _("The player keeps the enemies party\nafter battle!");
 static const u8 sText_Description_Challenges_AlternateSpawns_Off[]      = _("Use vanilla-ish {PKMN} spawns.\nNo version exclusives.");
 static const u8 sText_Description_Challenges_AlternateSpawns_On[]       = _("Use Modern Emerald {PKMN} spawns.\nAll 420 {PKMN} available.");
-static const u8 sText_Description_Challenges_LimitDifficulty_Off[]      = _("Change the difficulty whenever and\nwherever you want.");
-static const u8 sText_Description_Challenges_LimitDifficulty_On[]       = _("Difficulty cannot be changed.\nHARD MODE locks BATTLE STYLE to SET.");
-static const u8 sText_Description_Challenges_ItemDrop_On[]              = _("Wild {PKMN} will drop their hold\nitem after defeating them.");
-static const u8 sText_Description_Challenges_ItemDrop_Off[]             = _("Wild {PKMN} items will be only\nobtainable via capture or Thief.");
+static const u8 sText_Description_Challenges_ItemDrop_On[]              = _("Wild {PKMN} will drop their hold item\nafter defeating them.");
+static const u8 sText_Description_Challenges_ItemDrop_Off[]             = _("Wild {PKMN} items will be only obtainable\nvia capture or THIEF.");
 static const u8 sText_Description_Challenges_ShinyChance_8192[]         = _("Very low chance of SHINY encounter.\nDefault chance from Generation III.");
 static const u8 sText_Description_Challenges_ShinyChance_4096[]         = _("Low chance of SHINY encounter.\nDefault chance from Generation VI.");
 static const u8 sText_Description_Challenges_ShinyChance_2048[]         = _("Decent chance of SHINY encounter.");
@@ -681,7 +683,6 @@ static const u8 *const sOptionMenuItemDescriptionsChallenges[MENUITEM_CHALLENGES
     [MENUITEM_CHALLENGES_MIRROR]                = {sText_Description_Challenges_Mirror_Off,             sText_Description_Challenges_Mirror_Trainer,        sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_CHALLENGES_MIRROR_THIEF]          = {sText_Description_Challenges_MirrorThief_Off,        sText_Description_Challenges_MirrorThief_On,        sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_CHALLENGES_ALTERNATE_SPAWNS]      = {sText_Description_Challenges_AlternateSpawns_Off,    sText_Description_Challenges_AlternateSpawns_On,    sText_Empty,                                        sText_Empty,                                        sText_Empty},
-    [MENUITEM_CHALLENGES_LIMIT_DIFFICULTY]      = {sText_Description_Challenges_LimitDifficulty_Off,    sText_Description_Challenges_LimitDifficulty_On,    sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_CHALLENGES_SHINY_CHANCE]          = {sText_Description_Challenges_ShinyChance_8192,       sText_Description_Challenges_ShinyChance_4096,      sText_Description_Challenges_ShinyChance_2048,      sText_Description_Challenges_ShinyChance_1024, sText_Description_Challenges_ShinyChance_512},
     [MENUITEM_CHALLENGES_SAVE]                  = {sText_Description_Save,                              sText_Empty,                                        sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_CHALLENGES_ITEM_DROP]             = {sText_Description_Challenges_ItemDrop_Off,           sText_Description_Challenges_ItemDrop_On,           sText_Empty,                                        sText_Empty,                                        sText_Empty},
@@ -838,7 +839,7 @@ static const u8 sText_TopBar_Right[]            = _("{R_BUTTON}NEXT");
 static const u8 sText_TopBar_Randomizer[]       = _("RANDOMIZER");
 static const u8 sText_TopBar_Nuzlocke[]         = _("NUZLOCKE");
 static const u8 sText_TopBar_Difficulty[]       = _("DIFFICULTY");
-static const u8 sText_TopBar_Challenges[]       = _("CHALLENGES / EXTRA");
+static const u8 sText_TopBar_Challenges[]       = _("EXTRA & CHALLENGES");
 static void DrawTopBarText(void)
 {
     const u8 color[3] = { TEXT_DYNAMIC_COLOR_6, TEXT_COLOR_WHITE, TEXT_COLOR_OPTIONS_GRAY_FG };
@@ -1064,6 +1065,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         gSaveBlock1Ptr->tx_Challenges_TrainerScalingIVs     = TX_DIFFICULTY_SCALING_IVS;
         gSaveBlock1Ptr->tx_Challenges_TrainerScalingEVs     = TX_DIFFICULTY_SCALING_EVS;
         gSaveBlock1Ptr->tx_Challenges_PkmnCenter            = TX_DIFFICULTY_PKMN_CENTER;
+        gSaveBlock2Ptr->optionsLimitDifficulty              = TX_DIFFICULTY_LIMIT_DIFFICULTY;
 
         gSaveBlock1Ptr->tx_Challenges_EvoLimit              = TX_CHALLENGE_EVO_LIMIT;
         gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge      = TX_CHALLENGE_TYPE;
@@ -1071,9 +1073,8 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         gSaveBlock1Ptr->tx_Challenges_Mirror                = TX_CHALLENGE_MIRROR;
         gSaveBlock1Ptr->tx_Challenges_Mirror_Thief          = TX_CHALLENGE_MIRROR_THIEF;
         gSaveBlock2Ptr->optionsAlternateSpawns              = TX_CHALLENGE_ALTERNATE_SPAWNS;
-        gSaveBlock2Ptr->optionsLimitDifficulty              = TX_CHALLENGE_LIMIT_DIFFICULTY;
         gSaveBlock2Ptr->optionsShinyChance                  = TX_CHALLENGE_SHINY_CHANCE;
-        gSaveBlock2Ptr->optionsWildMonDropItems              = TX_CHALLENGE_ITEM_DROP;
+        gSaveBlock2Ptr->optionsWildMonDropItems             = TX_CHALLENGE_ITEM_DROP;
                
 
         sOptions = AllocZeroed(sizeof(*sOptions));
@@ -1115,6 +1116,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         sOptions->sel_difficulty[MENUITEM_DIFFICULTY_SCALING_IVS]    = gSaveBlock1Ptr->tx_Challenges_TrainerScalingIVs;
         sOptions->sel_difficulty[MENUITEM_DIFFICULTY_SCALING_EVS]    = gSaveBlock1Ptr->tx_Challenges_TrainerScalingEVs;
         sOptions->sel_difficulty[MENUITEM_DIFFICULTY_POKECENTER]     = gSaveBlock1Ptr->tx_Challenges_PkmnCenter;
+        sOptions->sel_difficulty[MENUITEM_DIFFICULTY_LIMIT_DIFFICULTY]       = gSaveBlock2Ptr->optionsLimitDifficulty;
         // MENU_CHALLENGES
         sOptions->sel_challenges[MENUITEM_CHALLENGES_EVO_LIMIT]              = gSaveBlock1Ptr->tx_Challenges_EvoLimit;
         sOptions->sel_challenges[MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]     = gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge;
@@ -1122,7 +1124,6 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR]                 = gSaveBlock1Ptr->tx_Challenges_Mirror;
         sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR_THIEF]           = gSaveBlock1Ptr->tx_Challenges_Mirror_Thief;
         sOptions->sel_challenges[MENUITEM_CHALLENGES_ALTERNATE_SPAWNS]       = gSaveBlock2Ptr->optionsAlternateSpawns;
-        sOptions->sel_challenges[MENUITEM_CHALLENGES_LIMIT_DIFFICULTY]       = gSaveBlock2Ptr->optionsLimitDifficulty;
         sOptions->sel_challenges[MENUITEM_CHALLENGES_SHINY_CHANCE]           = gSaveBlock2Ptr->optionsShinyChance;
         sOptions->sel_challenges[MENUITEM_CHALLENGES_ITEM_DROP]              = gSaveBlock2Ptr->optionsWildMonDropItems;
 
@@ -1434,6 +1435,7 @@ void SaveData_TxRandomizerAndChallenges(void)
     gSaveBlock1Ptr->tx_Challenges_TrainerScalingIVs     = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_SCALING_IVS];
     gSaveBlock1Ptr->tx_Challenges_TrainerScalingEVs     = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_SCALING_EVS];
     gSaveBlock1Ptr->tx_Challenges_PkmnCenter            = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_POKECENTER];
+    gSaveBlock2Ptr->optionsLimitDifficulty              = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_LIMIT_DIFFICULTY];
     // MENU_CHALLENGES
     gSaveBlock1Ptr->tx_Challenges_EvoLimit             = sOptions->sel_challenges[MENUITEM_CHALLENGES_EVO_LIMIT];
     if (sOptions->sel_challenges[MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE] > NUMBER_OF_MON_TYPES-1)
@@ -1448,7 +1450,6 @@ void SaveData_TxRandomizerAndChallenges(void)
     gSaveBlock1Ptr->tx_Challenges_Mirror               = sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR]; 
     gSaveBlock1Ptr->tx_Challenges_Mirror_Thief         = sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR_THIEF]; 
     gSaveBlock2Ptr->optionsAlternateSpawns             = sOptions->sel_challenges[MENUITEM_CHALLENGES_ALTERNATE_SPAWNS]; 
-    gSaveBlock2Ptr->optionsLimitDifficulty             = sOptions->sel_challenges[MENUITEM_CHALLENGES_LIMIT_DIFFICULTY];
     gSaveBlock2Ptr->optionsShinyChance                 = sOptions->sel_challenges[MENUITEM_CHALLENGES_SHINY_CHANCE]; 
     gSaveBlock2Ptr->optionsWildMonDropItems             = sOptions->sel_challenges[MENUITEM_CHALLENGES_ITEM_DROP]; 
 
@@ -2040,11 +2041,11 @@ static void DrawChoices_Challenges_AlternateSpawns(int selection, int y)
 
     if (selection == 0)
     {
-        gSaveBlock2Ptr->optionsAlternateSpawns = 1; //Off, new spawns
+        gSaveBlock2Ptr->optionsAlternateSpawns = 0; //Off, no spawns
     }
     else
     {
-        gSaveBlock2Ptr->optionsAlternateSpawns = 3; //On, new spawns
+        gSaveBlock2Ptr->optionsAlternateSpawns = 1; //On, new spawns
     }
 
     DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
@@ -2053,7 +2054,7 @@ static void DrawChoices_Challenges_AlternateSpawns(int selection, int y)
 
 static void DrawChoices_Challenges_LimitDifficulty(int selection, int y)
 {
-    bool8 active = CheckConditions(MENUITEM_CHALLENGES_LIMIT_DIFFICULTY);
+    bool8 active = CheckConditions(MENUITEM_DIFFICULTY_LIMIT_DIFFICULTY);
     u8 styles[2] = {0};
     styles[selection] = 1;
 

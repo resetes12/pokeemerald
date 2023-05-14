@@ -519,7 +519,7 @@ struct SaveBlock2
              u16 optionTypeEffective:1;
              u16 optionsFishing:1;
              u16 optionsFastIntro:1;
-             u16 optionsAlternateSpawns:4; //in the challenges menu
+             u16 optionsAlternateSpawns:1; //in the challenges menu
              u16 optionsLimitDifficulty:1; //in the challenges menu
              u16 optionsShinyChance:4; //in the challenges menu
              u16 optionsfollowerLargeEnable:1;

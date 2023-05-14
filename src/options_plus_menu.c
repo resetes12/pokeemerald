@@ -1013,7 +1013,7 @@ static int ProcessInput_FrameType(int selection)
 static int ProcessInput_BattleStyle(int selection)
 {
     if (JOY_NEW(DPAD_LEFT | DPAD_RIGHT))
-        if (gSaveBlock2Ptr->optionsDifficulty == 2 && FlagGet(FLAG_LOCK_DIFFICULTY) == TRUE)
+        if ((gSaveBlock2Ptr->optionsDifficulty == 2) && (gSaveBlock2Ptr->optionsLimitDifficulty == 1))
         {
             PlaySE(SE_FAILURE);
         }
@@ -1027,14 +1027,21 @@ static int ProcessInput_BattleStyle(int selection)
 
 static int ProcessInput_Difficulty(int selection)
 {
-    if (FlagGet(FLAG_LOCK_DIFFICULTY) == TRUE)
+    if (JOY_NEW(DPAD_RIGHT))
     {
-        PlaySE(SE_FAILURE);
+        if (gSaveBlock2Ptr->optionsLimitDifficulty == 1)
+            PlaySE(SE_FAILURE);
+        else if (++selection > (3 - 1))
+            selection = 0;
     }
-    else
+    if (JOY_NEW(DPAD_LEFT))
     {
-        return XOptions_ProcessInput(3, selection);
+        if (gSaveBlock2Ptr->optionsLimitDifficulty == 1)
+            PlaySE(SE_FAILURE);
+        else if (--selection < 0)
+            selection = (3 - 1);
     }
+    return selection;
 }
 
 // Draw Choices functions ****GENERIC****

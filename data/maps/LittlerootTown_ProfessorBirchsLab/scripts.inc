@@ -216,7 +216,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_UpgradeToNationalDex::
 	setflag FLAG_ENABLE_SHIP_BIRTH_ISLAND
 	setflag FLAG_ENABLE_SHIP_FARAWAY_ISLAND
 	special EnableNationalPokedex
-	goto_if_set FLAG_MODERN_SPAWNS, LittlerootTown_ProfessorBirchsLab_EventScript_IHadDoneThat
+	goto_if_ge VAR_TIME_BASED_ENCOUNTER, 3, LittlerootTown_ProfessorBirchsLab_EventScript_IHadDoneThat
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_GrassyPatchWaiting2, MSGBOX_DEFAULT
 	closemessage
 	setflag FLAG_HIDE_LITTLEROOT_TOWN_BIRCH
@@ -625,7 +625,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_ReceivePokedex::
 	waitfanfare
 	setflag FLAG_SYS_POKEDEX_GET
 	special SetUnlockedPokedexFlags
-	goto_if_set FLAG_MODERN_SPAWNS, LittlerootTown_ProfessorBirchsLab_EventScript_ReceivePokedexAltered
+	goto_if_ge VAR_TIME_BASED_ENCOUNTER, 3, LittlerootTown_ProfessorBirchsLab_EventScript_ReceivePokedexAltered
 	setflag FLAG_RECEIVED_POKEDEX_FROM_BIRCH
 	setvar VAR_CABLE_CLUB_TUTORIAL_STATE, 1
 	return

@@ -97,7 +97,7 @@
 #define FLAG_LEGENDARIES_IN_SOOTOPOLIS           0x53
 
 #define FLAG_LIMIT_TO_50                     0x54
-#define FLAG_MODERN_SPAWNS                   0x55
+#define FLAG_UNUSED_0x55                     0x55 //Unused
 
 #define FLAG_HIDE_CONTEST_POKE_BALL          0x56  // Always set after new game, object it hides is added directly
 #define FLAG_MET_RIVAL_MOM                   0x57
@@ -456,7 +456,7 @@
 #define FLAG_REMATCH_WALLACE                 0x1A9
 
 #define FLAG_DIFFICULTY_HARD                 0x1AA
-#define FLAG_LOCK_DIFFICULTY                 0x1AB
+#define FLAG_UNUSED_0x1AB                    0x1AB //Unused
 
 #define FLAG_DEFEATED_DEOXYS                 0x1AC
 #define FLAG_BATTLED_DEOXYS                  0x1AD
