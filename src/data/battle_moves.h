@@ -1416,8 +1416,8 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
 
     [MOVE_NIGHT_SHADE] =
     {
-        .effect = EFFECT_LEVEL_DAMAGE,
-        .power = 1,
+        .effect = EFFECT_HIT,
+        .power = 60,
         .type = TYPE_GHOST,
         .accuracy = 100,
         .pp = 15,
@@ -4273,7 +4273,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     [MOVE_POISON_FANG] =
     {
         .effect = EFFECT_POISON_FANG,
-        .power = 50,
+        .power = 65,
         .type = TYPE_POISON,
         .accuracy = 100,
         .pp = 15,
@@ -4624,7 +4624,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     {
         .effect = EFFECT_ACCURACY_DOWN_HIT,
         .power = 90,
-        .type = TYPE_WATER,
+        .type = TYPE_GROUND,
         .accuracy = 85,
         .pp = 10,
         .secondaryEffectChance = 30,
