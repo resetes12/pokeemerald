@@ -98,7 +98,7 @@ static void SetDefaultOptions(void)
     gSaveBlock2Ptr->optionsBattleSceneOff = FALSE;
     gSaveBlock2Ptr->regionMapZoom = FALSE;
     gSaveBlock2Ptr->optionsDifficulty = 1;
-    gSaveBlock2Ptr->optionsfollowerEnable = 1;
+    gSaveBlock2Ptr->optionsfollowerEnable = 0;
     gSaveBlock2Ptr->optionsfollowerLargeEnable = 1;
     gSaveBlock2Ptr->optionsautoRun = 1;
     gSaveBlock2Ptr->optionsDisableMatchCall = 0;
@@ -110,7 +110,7 @@ static void SetDefaultOptions(void)
     gSaveBlock2Ptr->optionsAlternateSpawns = 0; //in challenges menu
     gSaveBlock2Ptr->optionsShinyChance = 0; //in challenges menu
     gSaveBlock2Ptr->optionsWildMonDropItems = 0; //in challenges menu
-    gSaveBlock2Ptr->optionsFastBattle = 0;
+    gSaveBlock2Ptr->optionsFastBattle = 1;
 }
 
 static void ClearPokedexFlags(void)

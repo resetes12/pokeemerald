@@ -1418,13 +1418,13 @@ const struct SpeciesInfo gSpeciesInfo[] =
 
     [SPECIES_PARASECT] =
     {
-        .baseHP        = 90, //+30
-        .baseAttack    = 100, //+5
+        .baseHP        = 110, //+50
+        .baseAttack    = 90, 
         .baseDefense   = 80,
-        .baseSpeed     = 45, //+15
+        .baseSpeed     = 30, 
         .baseSpAttack  = 60,
         .baseSpDefense = 80,
-        .types = { TYPE_BUG, TYPE_GRASS },
+        .types = { TYPE_BUG, TYPE_GHOST },
         .catchRate = 75,
         .expYield = 128,
         .evYield_HP        = 0,
