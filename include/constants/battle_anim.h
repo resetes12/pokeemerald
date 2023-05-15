@@ -296,6 +296,11 @@
 #define ANIM_TAG_SLASH_2                    (ANIM_SPRITES_START + 286)
 #define ANIM_TAG_WHIP_HIT                   (ANIM_SPRITES_START + 287)
 #define ANIM_TAG_BLUE_RING_2                (ANIM_SPRITES_START + 288)
+#define ANIM_TAG_FLASH_CANNON_BALL          (ANIM_SPRITES_START + 289)
+#define ANIM_TAG_PSYCHO_CUT                 (ANIM_SPRITES_START + 290)
+#define ANIM_TAG_POWER_GEM                  (ANIM_SPRITES_START + 291)
+#define ANIM_TAG_DRAGON_PULSE               (ANIM_SPRITES_START + 292)
+#define ANIM_TAG_DRAGON_PULSE_RING          (ANIM_SPRITES_START + 293)
 
 // battlers
 #define ANIM_ATTACKER         0
@@ -352,6 +357,7 @@
 #define BG_SOLAR_BEAM_OPPONENT 24
 #define BG_SOLAR_BEAM_PLAYER 25
 #define BG_SOLAR_BEAM_CONTESTS 26
+#define BG_FOCUS_BLAST 27
 
 // table ids for general animations (gBattleAnims_General)
 #define B_ANIM_CASTFORM_CHANGE          0

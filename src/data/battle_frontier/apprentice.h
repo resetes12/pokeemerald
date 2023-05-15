@@ -927,6 +927,15 @@ static const bool8 sValidApprenticeMoves[MOVES_COUNT] =
     [MOVE_WATER_PULSE] = TRUE,
     [MOVE_DOOM_DESIRE] = TRUE,
     [MOVE_PSYCHO_BOOST] = TRUE,
+    [MOVE_DARK_PULSE] = TRUE,
+    [MOVE_PSYCHO_CUT] = TRUE,
+    [MOVE_FOCUS_BLAST] = TRUE,
+    [MOVE_POWER_GEM] = TRUE,
+    [MOVE_SHADOW_CLAW] = TRUE,
+    [MOVE_FLASH_CANNON] = TRUE,
+    [MOVE_AIR_SLASH] = TRUE,
+    [MOVE_BUG_BUZZ] = TRUE,
+    [MOVE_DRAGON_PULSE] = TRUE,
 };
 
 // The possible questions to ask after the initial 3 WHICH MON questions. Retrieved from here and shuffled

@@ -5435,6 +5435,21 @@ extern const u8 gMailTilemap_Fab[];
 extern const u8 gMailTiles_Retro[];
 extern const u8 gMailTilemap_Retro[];
 
+//new moves
+extern const u32 gBattleAnimSpriteGfx_FlashCannonBall[];
+extern const u32 gBattleAnimSpritePal_FlashCannonBall[];
+extern const u32 gBattleAnimSpriteGfx_PsychoCut[];
+extern const u32 gBattleAnimSpritePal_PsychoCut[];
+extern const u32 gBattleAnimBgImage_FocusBlast[];
+extern const u32 gBattleAnimBgPalette_FocusBlast[];
+extern const u32 gBattleAnimBgTilemap_FocusBlast[];
+extern const u32 gBattleAnimSpriteGfx_PowerGem[];
+extern const u32 gBattleAnimSpritePal_PowerGem[];
+extern const u32 gBattleAnimSpriteGfx_DragonPulse[];
+extern const u32 gBattleAnimSpritePal_DragonPulse[];
+extern const u32 gBattleAnimSpriteGfx_DragonPulseRing[];
+extern const u32 gBattleAnimSpritePal_DragonPulseRing[];
+
 extern const u8 gMonMarkingsMenu_Gfx[];
 extern const u16 gMonMarkingsMenu_Pal[];
 
