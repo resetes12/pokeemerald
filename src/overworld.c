@@ -1531,8 +1531,8 @@ bool8 MapHasNaturalLight(u8 mapType) { // Whether a map type is naturally lit/ou
 
 // Update & mix day / night bg palettes (into unfaded)
 void UpdateAltBgPalettes(u16 palettes) {
-    struct Tileset *primary = gMapHeader.mapLayout->primaryTileset;
-    struct Tileset *secondary = gMapHeader.mapLayout->secondaryTileset;
+    const struct Tileset *primary = gMapHeader.mapLayout->primaryTileset;
+    const struct Tileset *secondary = gMapHeader.mapLayout->secondaryTileset;
     u32 i = 1;
     if (!MapHasNaturalLight(gMapHeader.mapType))
         return;
