@@ -313,9 +313,7 @@ struct PokedexView
     u8 statBarsSpriteId; //HGSS_Ui
     u8 statBarsBgSpriteId; //HGSS_Ui
     bool8 justScrolled; //HGSS_Ui
-    #ifdef BATTLE_ENGINE
     u8 splitIconSpriteId;  //HGSS_Ui Physical/Special Split from BE
-    #endif
     u8 numEggMoves; //HGSS_Ui
     u8 numLevelUpMoves; //HGSS_Ui
     u8 numTMHMMoves; //HGSS_Ui
@@ -530,7 +528,7 @@ static void Task_ExitFormsScreen(u8 taskId);
 #endif
 
 //HGSS_UI Physical Special Split icon for BattleEngine (rhh)
-#ifdef BATTLE_ENGINE
+
 static u8 ShowSplitIcon(u32 split); //Physical/Special Split from BE
 static void DestroySplitIcon(void); //Physical/Special Split from BE
 
@@ -588,7 +586,7 @@ static const struct SpriteTemplate sSpriteTemplate_SplitIcons =
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCallbackDummy
 };
-#endif
+
 
 //HGSS_Ui Stat bars by DizzyEgg
 #define TAG_STAT_BAR 4097
@@ -4882,7 +4880,7 @@ static void LoadTilesetTilemapHGSS(u8 page)
 }
 
 //Physical/Special Split from BE
-#ifdef BATTLE_ENGINE
+
 static u8 ShowSplitIcon(u32 split)
 {
     if (sPokedexView->splitIconSpriteId == 0xFF)
@@ -4898,7 +4896,7 @@ static void DestroySplitIcon(void)
         DestroySprite(&gSprites[sPokedexView->splitIconSpriteId]);
     sPokedexView->splitIconSpriteId = 0xFF;
 }
-#endif
+
 
 
 
@@ -5023,12 +5021,10 @@ static void Task_LoadStatsScreen(u8 taskId)
         sPokedexView->typeIconSpriteIds[0] = 0xFF;
         sPokedexView->typeIconSpriteIds[1] = 0xFF;
         CreateTypeIconSprites();
-        #ifdef BATTLE_ENGINE
-            sPokedexView->splitIconSpriteId = 0xFF; //Physical/Special Split from BE
-            LoadCompressedPalette(gMoveTypes_Pal, 0x1D0, 0x60); //Physical/Special Split from BE
-            LoadCompressedSpriteSheet(&sSpriteSheet_SplitIcons); //Physical/Special Split from BE
-            LoadSpritePalette(&sSpritePal_SplitIcons); //Physical/Special Split from BE
-        #endif
+        sPokedexView->splitIconSpriteId = 0xFF; //Physical/Special Split from BE
+        LoadCompressedPalette(gMoveTypes_Pal, 0x1D0, 0x60); //Physical/Special Split from BE
+        LoadCompressedSpriteSheet(&sSpriteSheet_SplitIcons); //Physical/Special Split from BE
+        LoadSpritePalette(&sSpritePal_SplitIcons); //Physical/Special Split from BE
         gMain.state++;
         break;
     case 4:
@@ -5482,10 +5478,9 @@ static void PrintStatsScreen_Moves_Bottom(u8 taskId)
             ConvertIntToDecimalStringN(gStringVar1, gBattleMoves[move].power, STR_CONV_MODE_RIGHT_ALIGN, 3);
         PrintStatsScreenTextSmall(WIN_STATS_MOVES_BOTTOM, gStringVar1, moves_x + 45, moves_y);
         //Physical/Special Split from BE
-        #ifdef BATTLE_ENGINE
-            DestroySplitIcon();
-            ShowSplitIcon(GetBattleMoveSplit(move));
-        #endif
+        DestroySplitIcon();
+        if (gSaveBlock2Ptr->optionStyle == 0)
+            ShowSplitIcon(gBattleMoves[move].category);
         //Accuracy
         if (gBattleMoves[move].accuracy == 0)
             StringCopy(gStringVar1, gText_ThreeDashes);
@@ -5495,10 +5490,8 @@ static void PrintStatsScreen_Moves_Bottom(u8 taskId)
     }
     else //Appeal + Jam
     {
-        #ifdef BATTLE_ENGINE
             DestroySplitIcon();
             gSprites[sPokedexView->splitIconSpriteId].invisible = TRUE;
-        #endif
         //Appeal
         contest_effectValue = gContestEffects[gContestMoves[move].effect].appeal;
         if (contest_effectValue != 0xFF)
