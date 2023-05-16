@@ -1258,7 +1258,7 @@
     },
     {
       "map_section": "MAPSEC_DRACO_CHAMBER",
-      "name": "DRACO CHAMBER",
+      "name": "ROUTE 132 NORTH",
       "x": 15,
       "y": 9,
       "width": 1,
@@ -1266,7 +1266,7 @@
     },
     {
       "map_section": "MAPSEC_CAVE_OF_SHOCK",
-      "name": "CAVE OF SHOCK",
+      "name": "ROUTE 110 EAST",
       "x": 9,
       "y": 7,
       "width": 1,

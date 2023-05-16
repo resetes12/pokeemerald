@@ -1225,7 +1225,7 @@
 #define FLAG_SNORLAX                                                0x498
 #define FLAG_OLDSAVE                                                0x499 // Unused Flag
 #define FLAG_CHANSEYTRAINERS                                        0x49A // Unused Flag
-#define FLAG_UNUSED_0x49B                                           0x49B // Unused Flag
+#define FLAG_LANDMARK_DRACO_CHAMBER                                 0x49B
 #define FLAG_UNUSED_0x49C                                           0x49C // Unused Flag
 #define FLAG_UNUSED_0x49D                                           0x49D // Unused Flag
 #define FLAG_UNUSED_0x49E                                           0x49E // Unused Flag
@@ -1409,7 +1409,7 @@
 #define FLAG_SYS_NATIONAL_DEX                       (SYSTEM_FLAGS + 0x36)
 #define FLAG_SYS_CAVE_SHIP                          (SYSTEM_FLAGS + 0x37) // Unused Flag, leftover from R/S debug, presumably used by Emerald's debug too
 #define FLAG_LANDMARK_CAVE_OF_SHOCK                 (SYSTEM_FLAGS + 0x38) 
-#define FLAG_LANDMARK_DRACO_CHAMBER                 (SYSTEM_FLAGS + 0x39) 
+#define UNUSED_SYSTEM_FLAG_0x39                     (SYSTEM_FLAGS + 0x39) // Unused Flag
 #define FLAG_SYS_SHOAL_TIDE                         (SYSTEM_FLAGS + 0x3A)
 #define FLAG_SYS_RIBBON_GET                         (SYSTEM_FLAGS + 0x3B)
 
