@@ -2008,7 +2008,7 @@ static void HandleSpecialTrainerBattleEnd(void)
     case SPECIAL_BATTLE_FACTORY:
         if (gSaveBlock2Ptr->frontier.battlesCount < 0xFFFFFF)
         {
-            if (FlagGet(FLAG_SYS_GAME_CLEAR) == TRUE)
+            if (VarGet(VAR_MOSSDEEP_SPACE_CENTER_STATE) != 2)
             {
                 FlagClear(FLAG_LIMIT_TO_50);
 
@@ -2021,7 +2021,7 @@ static void HandleSpecialTrainerBattleEnd(void)
         }
         else
         {
-            if (FlagGet(FLAG_SYS_GAME_CLEAR) == TRUE)
+            if (VarGet(VAR_MOSSDEEP_SPACE_CENTER_STATE) != 2)
             {
                 FlagClear(FLAG_LIMIT_TO_50);
 
@@ -2074,7 +2074,7 @@ void DoSpecialTrainerBattle(void)
 {
     s32 i, j;
 
-    if (FlagGet(FLAG_SYS_GAME_CLEAR) == TRUE)
+    if (VarGet(VAR_MOSSDEEP_SPACE_CENTER_STATE) != 2)
     {
         FlagSet(FLAG_LIMIT_TO_50);
 
