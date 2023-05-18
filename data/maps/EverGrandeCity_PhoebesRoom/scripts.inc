@@ -80,7 +80,7 @@ EverGrandeCity_PhoebesRoom_Text_IntroSpeech:
 EverGrandeCity_PhoebesRoom_Text_IntroSpeech2:
 	.string "Ahahaha! It's you again!\p"
 	.string "I'm PHOEBE of the ELITE FOUR.\n"
-	.string "The bond I developed with my POKéMON\n"
+	.string "The bond I developed with my POKéMON\l"
 	.string "has grown even stronger!\p"
 	.string "So just try and see if you can even\n"
 	.string "inflict damage on my POKéMON.\p"

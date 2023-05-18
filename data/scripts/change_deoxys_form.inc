@@ -1,10 +1,13 @@
 ChangeDeoxysForm::
 	lockall
+	applymovement OBJ_EVENT_ID_PLAYER, ChangeDeoxysForm_Movement
+	waitmovement 0
 	msgbox ChangeDeoxysForm_Text_Beginning, MSGBOX_YESNO
 	compare VAR_RESULT, YES
 	goto_if_eq ChangeDeoxysForm_Start
 ChangeDeoxysForm_End:
 	msgbox ChangeDeoxysForm_Text_End, MSGBOX_DEFAULT
+	callnative UpdateFollowingPokemon
 	releaseall
 	end
 
@@ -60,3 +63,7 @@ ChangeDeoxysForm_Text_Select:
 
 ChangeDeoxysForm_Text_Success:
 	.string "Something has happened to DEOXYS!$"
+
+ChangeDeoxysForm_Movement:
+	emote_question_mark
+	step_end

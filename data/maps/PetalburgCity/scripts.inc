@@ -21,10 +21,17 @@ PetalburgCity_GalladeEvo::
 	faceplayer
 	msgbox PetalburgCity_GalladeEvo_Text, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, YES, PetalburgCity_GalladeEvo2
+	goto_if_eq VAR_RESULT, NO, PetalburgCity_GalladeEvo3
 	end
 
 PetalburgCity_GalladeEvo2:
-	msgbox PetalburgCity_GalladeEvo_Text2, MSGBOX_NPC
+	msgbox PetalburgCity_GalladeEvo_Text2, MSGBOX_DEFAULT
+	closemessage
+	end
+
+PetalburgCity_GalladeEvo3:
+	msgbox PetalburgCity_GalladeEvo_Text3, MSGBOX_DEFAULT
+	closemessage
 	end
 
 PetalburgCity_GalladeEvo_Text:
@@ -49,6 +56,9 @@ PetalburgCity_GalladeEvo_Text2:
 	.string "said RALTS is FEMALE.\p"
 	.string "I believe this information might be\n"
 	.string "useful for a new trainer like you.$"
+
+PetalburgCity_GalladeEvo_Text3:
+	.string "Oh... Okay...$"
 
 PetalburgCity_EventScript_MoveGymBoyToWestEntrance::
 	setobjectxyperm LOCALID_GYM_BOY, 5, 11

@@ -306,7 +306,7 @@ RusturfTunnel_EventScript_Peeko::
 RusturfTunnel_EventScript_Grunt::
 	lock
 	faceplayer
-	setflag FLAG_TEMP_HIDE_FOLLOWER
+	callnative RemoveFollowingPokemon
 	playbgm MUS_ENCOUNTER_AQUA, FALSE
 	msgbox RusturfTunnel_Text_GruntIntro, MSGBOX_DEFAULT
 	trainerbattle_no_intro TRAINER_GRUNT_RUSTURF_TUNNEL, RusturfTunnel_Text_GruntDefeat
@@ -345,6 +345,7 @@ RusturfTunnel_EventScript_Grunt::
 	setvar VAR_RUSTBORO_CITY_STATE, 4
 	setvar VAR_BRINEY_HOUSE_STATE, 1
 	setflag FLAG_HIDE_ROUTE_116_MR_BRINEY
+	callnative UpdateFollowingPokemon
 	release
 	end
 

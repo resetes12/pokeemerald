@@ -110,6 +110,8 @@ AquaHideout_UnusedRubyMap1_EventScript_RanFromRegidrago::
 
 AquaHideout_UnusedRubyMap1_EventScript_DusknoirButton::
 	lockall
+	applymovement OBJ_EVENT_ID_PLAYER, AquaHideout_UnusedRubyMap1_Movement
+	waitmovement 0
 	goto_if_set FLAG_DEFEATED_DUSKNOIR, AquaHideout_UnusedRubyMap1_EventScript_DusknoirButtonFinished
 	msgbox AquaHideout_UnusedRubyMap1_EventScript_DusknoirButtonText, MSGBOX_YESNO
 	waitmessage
@@ -155,16 +157,19 @@ AquaHideout_UnusedRubyMap1_EventScript_DusknoirButtonBattle_Won::
 	setflag FLAG_DEFEATED_DUSKNOIR
 	clearflag FLAG_SYS_NO_CATCHING
 	clearflag FLAG_SYS_NO_BAG_USE
+	callnative UpdateFollowingPokemon
 	goto AquaHideout_UnusedRubyMap1_EventScript_OpenRegiEntrance
 	end
 
 AquaHideout_UnusedRubyMap1_EventScript_DusknoirButtonBattle_Ran::
 	clearflag FLAG_SYS_NO_CATCHING
 	clearflag FLAG_SYS_NO_BAG_USE
+	callnative UpdateFollowingPokemon
 	end
 
 AquaHideout_UnusedRubyMap1_EventScript_DusknoirButtonNo::
 	releaseall
+	callnative UpdateFollowingPokemon
 	end
 
 AquaHideout_UnusedRubyMap1_EventScript_DusknoirButtonText:
@@ -185,3 +190,6 @@ AquaHideout_UnusedRubyMap1_EventScript_DusknoirButtonText2:
 
 AquaHideout_UnusedRubyMap1_EventScript_DusknoirButtonText3::
 	.string "The button has been pressed.$"
+
+AquaHideout_UnusedRubyMap1_Movement:
+	step_end
