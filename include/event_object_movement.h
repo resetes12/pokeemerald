@@ -214,13 +214,7 @@ s16 GetFigure8YOffset(s16 idx);
 void CameraObjectReset2(void);
 u8 GetObjectEventBerryTreeId(u8 objectEventId);
 void SetBerryTreeJustPicked(u8 mapId, u8 mapNumber, u8 mapGroup);
-<<<<<<< HEAD
-bool8 IsBerryTreeSparkling(u8, u8, u8);
-struct ObjectEventTemplate *GetObjectEventTemplateByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroup);
-u8 TrySpawnObjectEventTemplate(struct ObjectEventTemplate *objectEventTemplate, u8 mapNum, u8 mapGroup, s16 cameraX, s16 cameraY);
-=======
 bool8 IsBerryTreeSparkling(u8 localId, u8 mapNum, u8 mapGroup);
->>>>>>> 73a6a583b3706979e1a15976e30270984f1f0c26
 
 void MovementType_None(struct Sprite *);
 void MovementType_LookAround(struct Sprite *);
