@@ -724,7 +724,7 @@
               {
                 "min_level": 4,
                 "max_level": 5,
-                "species": "SPECIES_MUNCHLAX"
+                "species": "SPECIES_SEEDOT"
               }
             ]
           },
@@ -878,7 +878,7 @@
               {
                 "min_level": 4,
                 "max_level": 5,
-                "species": "SPECIES_MIME_JR"
+                "species": "SPECIES_SEEDOT"
               }
             ]
           },
@@ -1340,7 +1340,7 @@
               {
                 "min_level": 4,
                 "max_level": 4,
-                "species": "SPECIES_EEVEE"
+                "species": "SPECIES_HOPPIP"
               }
             ]
           },
@@ -1494,7 +1494,7 @@
               {
                 "min_level": 4,
                 "max_level": 4,
-                "species": "SPECIES_EEVEE"
+                "species": "SPECIES_POLIWAG"
               }
             ]
           },
@@ -2888,7 +2888,7 @@
               {
                 "min_level": 13,
                 "max_level": 13,
-                "species": "SPECIES_ELECTRIKE"
+                "species": "SPECIES_ODDISH"
               },
               {
                 "min_level": 13,
@@ -3042,7 +3042,7 @@
               {
                 "min_level": 13,
                 "max_level": 13,
-                "species": "SPECIES_ELECTRIKE"
+                "species": "SPECIES_ODDISH"
               },
               {
                 "min_level": 13,
@@ -13179,7 +13179,7 @@
               {
                 "min_level": 28,
                 "max_level": 28,
-                "species": "SPECIES_SHUPPET"
+                "species": "SPECIES_GLOOM"
               },
               {
                 "min_level": 28,
@@ -13194,7 +13194,7 @@
               {
                 "min_level": 28,
                 "max_level": 28,
-                "species": "SPECIES_FEAROW"
+                "species": "SPECIES_ODDISH"
               },
               {
                 "min_level": 28,
@@ -14156,7 +14156,7 @@
               {
                 "min_level": 28,
                 "max_level": 28,
-                "species": "SPECIES_MIGHTYENA"
+                "species": "SPECIES_GLOOM"
               },
               {
                 "min_level": 26,
@@ -14166,7 +14166,7 @@
               {
                 "min_level": 28,
                 "max_level": 28,
-                "species": "SPECIES_HOPPIP"
+                "species": "SPECIES_ODDISH"
               },
               {
                 "min_level": 28,
@@ -14310,7 +14310,7 @@
               {
                 "min_level": 28,
                 "max_level": 28,
-                "species": "SPECIES_MIGHTYENA"
+                "species": "SPECIES_GLOOM"
               },
               {
                 "min_level": 26,

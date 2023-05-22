@@ -198,6 +198,8 @@ static const u8 sUnused[] = {0x48, 0x48, 0x20, 0x5a, 0x50, 0x50, 0x50, 0x58};
 
 static const u16 sSplitIcons_Pal[] = INCBIN_U16("graphics/battle_interface/split_icons_battle.gbapal");
 static const u8 sSplitIcons_Gfx[] = INCBIN_U8("graphics/battle_interface/split_icons_battle.4bpp");
+static const u16 sSplitIconsEmpty_Pal[] = INCBIN_U16("graphics/battle_interface/split_icons_battle_empty.gbapal");
+static const u8 sSplitIconsEmpty_Gfx[] = INCBIN_U8("graphics/battle_interface/split_icons_battle_empty.4bpp");
 
 void BattleControllerDummy(void)
 {
@@ -1670,8 +1672,7 @@ static void MoveSelectionDisplayMoveType(void)
     
     BattlePutTextOnWindow(gDisplayedStringBattle, typeColor);
     
-    if (gSaveBlock2Ptr->optionStyle == 0)
-        MoveSelectionDisplaySplitIcon();
+    MoveSelectionDisplaySplitIcon();
 }
 
 static void MoveSelectionCreateCursorAt(u8 cursorPosition, u8 baseTileNum)
@@ -3349,8 +3350,16 @@ static void MoveSelectionDisplaySplitIcon(void){
 
 	moveInfo = (struct ChooseMoveStruct*)(&gBattleBufferA[gActiveBattler][MAX_BATTLERS_COUNT]);
     moveCategory = gBattleMoves[moveInfo->moves[gMoveSelectionCursor[gActiveBattler]]].category;
-	LoadPalette(sSplitIcons_Pal, 10 * 0x10, 0x20);
-	BlitBitmapToWindow(B_WIN_PSS_ICON, sSplitIcons_Gfx + 0x80 * moveCategory, 0, 0, 16, 16);
+    if (gSaveBlock2Ptr->optionStyle == 0)
+        {
+        LoadPalette(sSplitIcons_Pal, 10 * 0x10, 0x20);
+        BlitBitmapToWindow(B_WIN_PSS_ICON, sSplitIcons_Gfx + 0x80 * moveCategory, 0, 0, 16, 16);
+        }
+    else if (gSaveBlock2Ptr->optionStyle == 1)
+        {
+        LoadPalette(sSplitIconsEmpty_Pal, 10 * 0x10, 0x20);
+        BlitBitmapToWindow(B_WIN_PSS_ICON, sSplitIconsEmpty_Gfx + 0x80 * moveCategory, 0, 0, 16, 16);
+        }
 	PutWindowTilemap(B_WIN_PSS_ICON);
 	CopyWindowToVram(B_WIN_PSS_ICON, 3);
 }
