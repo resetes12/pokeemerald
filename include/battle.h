@@ -509,8 +509,8 @@ struct BattleScripting
     u8 windowsType; // B_WIN_TYPE_*
     u8 multiplayerId;
     u8 specialTrainerBattleType;
-    u8 monCaught;
-    u8 expOnCatch;
+    bool8 monCaught;
+    bool8 expOnCatch;
 };
 
 struct BattleSpriteInfo
