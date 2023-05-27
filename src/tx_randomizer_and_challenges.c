@@ -60,6 +60,7 @@ bool8 AreAnyChallengesActive(void)
         || gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer
         || gSaveBlock1Ptr->tx_Challenges_Mirror
         || gSaveBlock1Ptr->tx_Challenges_Mirror_Thief
+        || gSaveBlock1Ptr->MaxPartyIVs
         || gSaveBlock2Ptr->optionsAlternateSpawns
         || gSaveBlock2Ptr->optionsLimitDifficulty
         || gSaveBlock2Ptr->optionsShinyChance

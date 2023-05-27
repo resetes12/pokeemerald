@@ -72,8 +72,9 @@ enum
     MENUITEM_DIFFICULTY_EXP_MULTIPLIER,
     MENUITEM_DIFFICULTY_ITEM_PLAYER,
     MENUITEM_DIFFICULTY_ITEM_TRAINER,
-    MENUITEM_DIFFICULTY_NO_EVS,
+    MENUITEM_DIFFICULTY_MAX_PARTY_IVS,
     MENUITEM_DIFFICULTY_SCALING_IVS,
+    MENUITEM_DIFFICULTY_NO_EVS,
     MENUITEM_DIFFICULTY_SCALING_EVS,
     MENUITEM_DIFFICULTY_POKECENTER,
     MENUITEM_DIFFICULTY_NEXT,
@@ -253,6 +254,7 @@ static void DrawChoices_Challenges_Mirror(int selection, int y);
 static void DrawChoices_Challenges_Mirror_Thief(int selection, int y);
 static void DrawChoices_Challenges_AlternateSpawns(int selection, int y);
 static void DrawChoices_Challenges_LimitDifficulty(int selection, int y);
+static void DrawChoices_Challenges_MaxPartyIVs(int selection, int y);
 static void DrawChoices_Challenges_ShinyChance(int selection, int y);
 static void DrawChoices_Challenges_ItemDrop(int selection, int y);
 
@@ -336,6 +338,7 @@ struct // MENU_DIFFICULTY
     [MENUITEM_DIFFICULTY_SCALING_EVS]           = {DrawChoices_Challenges_ScalingEVs,       ProcessInput_Options_Four},
     [MENUITEM_DIFFICULTY_POKECENTER]            = {DrawChoices_Challenges_Pokecenters,      ProcessInput_Options_Two},
     [MENUITEM_DIFFICULTY_LIMIT_DIFFICULTY]      = {DrawChoices_Challenges_LimitDifficulty,  ProcessInput_Options_Two},
+    [MENUITEM_DIFFICULTY_MAX_PARTY_IVS]         = {DrawChoices_Challenges_MaxPartyIVs,      ProcessInput_Options_Two},
     [MENUITEM_DIFFICULTY_NEXT] = {NULL, NULL},
 };
 
@@ -421,6 +424,7 @@ static const u8 sText_ScalingIVs[]          = _("TRAINER IVs");
 static const u8 sText_ScalingEVs[]          = _("TRAINER EVs");
 static const u8 sText_Pokecenter[]          = _("POKéCENTER");
 static const u8 sText_LimitDifficulty[]     = _("LOCK DIFFICULTY");
+static const u8 sText_MaxPartyIvs[]         = _("PLAYER IVs");
 static const u8 *const sOptionMenuItemsNamesDifficulty[MENUITEM_DIFFICULTY_COUNT] =
 {
     [MENUITEM_DIFFICULTY_PARTY_LIMIT]           = sText_PartyLimit,
@@ -433,6 +437,7 @@ static const u8 *const sOptionMenuItemsNamesDifficulty[MENUITEM_DIFFICULTY_COUNT
     [MENUITEM_DIFFICULTY_SCALING_EVS]           = sText_ScalingEVs,
     [MENUITEM_DIFFICULTY_POKECENTER]            = sText_Pokecenter,
     [MENUITEM_DIFFICULTY_LIMIT_DIFFICULTY]      = sText_LimitDifficulty,
+    [MENUITEM_DIFFICULTY_MAX_PARTY_IVS]         = sText_MaxPartyIvs,
     [MENUITEM_DIFFICULTY_NEXT]                  = sText_Next,
 };
 
@@ -638,6 +643,8 @@ static const u8 sText_Description_Difficulty_ScalingEVs_Extreme[]       = _("All
 static const u8 sText_Description_Difficulty_Next[]              = _("Continue to challenge options.");
 static const u8 sText_Description_Challenges_LimitDifficulty_Off[]      = _("Change the difficulty whenever and\nwherever you want.");
 static const u8 sText_Description_Challenges_LimitDifficulty_On[]       = _("Difficulty cannot be changed.\nHARD MODE locks BATTLE STYLE to SET.");
+static const u8 sText_Description_Difficulty_MaxPartyIvs_Off[]          = _("Your POKéMON have the expected IVs.");
+static const u8 sText_Description_Difficulty_MaxPartyIvs_On[]           = _("The IVs of your POKéMON are set\nto the maximum.");
 static const u8 *const sOptionMenuItemDescriptionsDifficulty[MENUITEM_DIFFICULTY_COUNT][4] =
 {
     [MENUITEM_DIFFICULTY_PARTY_LIMIT]           = {sText_Description_Difficulty_Party_Limit,        sText_Empty,                                        sText_Empty,                                    sText_Empty},
@@ -651,6 +658,7 @@ static const u8 *const sOptionMenuItemDescriptionsDifficulty[MENUITEM_DIFFICULTY
     [MENUITEM_DIFFICULTY_POKECENTER]            = {sText_Description_Difficulty_Pokecenter_Yes,     sText_Description_Difficulty_Pokecenter_No,         sText_Empty,                                    sText_Empty},
     [MENUITEM_DIFFICULTY_NEXT]                  = {sText_Description_Difficulty_Next,               sText_Empty,                                        sText_Empty,                                    sText_Empty},
     [MENUITEM_DIFFICULTY_LIMIT_DIFFICULTY]      = {sText_Description_Challenges_LimitDifficulty_Off,    sText_Description_Challenges_LimitDifficulty_On,    sText_Empty,                                        sText_Empty},
+    [MENUITEM_DIFFICULTY_MAX_PARTY_IVS]         = {sText_Description_Difficulty_MaxPartyIvs_Off,    sText_Description_Difficulty_MaxPartyIvs_On,    sText_Empty,                                        sText_Empty},
 };  
 
 static const u8 sText_Description_Challenges_EvoLimit_Base[]            = _("POKéMON evolve as expected.");
@@ -1066,6 +1074,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         gSaveBlock1Ptr->tx_Challenges_TrainerScalingEVs     = TX_DIFFICULTY_SCALING_EVS;
         gSaveBlock1Ptr->tx_Challenges_PkmnCenter            = TX_DIFFICULTY_PKMN_CENTER;
         gSaveBlock2Ptr->optionsLimitDifficulty              = TX_DIFFICULTY_LIMIT_DIFFICULTY;
+        gSaveBlock1Ptr->MaxPartyIVs                         = TX_DIFFICULTY_MAX_PARTY_IVS;
 
         gSaveBlock1Ptr->tx_Challenges_EvoLimit              = TX_CHALLENGE_EVO_LIMIT;
         gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge      = TX_CHALLENGE_TYPE;
@@ -1117,6 +1126,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         sOptions->sel_difficulty[MENUITEM_DIFFICULTY_SCALING_EVS]    = gSaveBlock1Ptr->tx_Challenges_TrainerScalingEVs;
         sOptions->sel_difficulty[MENUITEM_DIFFICULTY_POKECENTER]     = gSaveBlock1Ptr->tx_Challenges_PkmnCenter;
         sOptions->sel_difficulty[MENUITEM_DIFFICULTY_LIMIT_DIFFICULTY]       = gSaveBlock2Ptr->optionsLimitDifficulty;
+        sOptions->sel_difficulty[MENUITEM_DIFFICULTY_MAX_PARTY_IVS]       = gSaveBlock1Ptr->MaxPartyIVs;
         // MENU_CHALLENGES
         sOptions->sel_challenges[MENUITEM_CHALLENGES_EVO_LIMIT]              = gSaveBlock1Ptr->tx_Challenges_EvoLimit;
         sOptions->sel_challenges[MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]     = gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge;
@@ -1436,6 +1446,7 @@ void SaveData_TxRandomizerAndChallenges(void)
     gSaveBlock1Ptr->tx_Challenges_TrainerScalingEVs     = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_SCALING_EVS];
     gSaveBlock1Ptr->tx_Challenges_PkmnCenter            = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_POKECENTER];
     gSaveBlock2Ptr->optionsLimitDifficulty              = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_LIMIT_DIFFICULTY];
+    gSaveBlock1Ptr->MaxPartyIVs                         = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_MAX_PARTY_IVS];
     // MENU_CHALLENGES
     gSaveBlock1Ptr->tx_Challenges_EvoLimit             = sOptions->sel_challenges[MENUITEM_CHALLENGES_EVO_LIMIT];
     if (sOptions->sel_challenges[MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE] > NUMBER_OF_MON_TYPES-1)
@@ -2069,6 +2080,25 @@ static void DrawChoices_Challenges_LimitDifficulty(int selection, int y)
 
     DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
     DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
+}
+
+static void DrawChoices_Challenges_MaxPartyIVs(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_DIFFICULTY_MAX_PARTY_IVS);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock1Ptr->MaxPartyIVs = 0; //Ivs set to normal
+    }
+    else
+    {
+        gSaveBlock1Ptr->MaxPartyIVs = 1; //Ivs are always 31
+    }
+
+    DrawOptionMenuChoice(sText_Yes, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_No, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
 }
 
 static void DrawChoices_Challenges_ItemDrop(int selection, int y)
