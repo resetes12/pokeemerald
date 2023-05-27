@@ -27,6 +27,7 @@ struct InGameTrade {
     /*0x00*/ u8 nickname[POKEMON_NAME_LENGTH + 1];
     /*0x0C*/ u16 species;
     /*0x0E*/ u8 ivs[NUM_STATS];
+    /*0x0E*/ u8 ivs31[NUM_STATS];
     /*0x14*/ u8 abilityNum;
     /*0x18*/ u32 otId;
     /*0x1C*/ u8 conditions[CONTEST_CATEGORIES_COUNT];
@@ -280,6 +281,7 @@ void CreateWonderTradePokemon(u8 whichPlayerMon)
         {
             _(""), species,
             (Random() % 32), (Random() % 32), (Random() % 32), (Random() % 32), (Random() % 32), (Random() % 32),
+            31, 31, 31, 31, 31, 31,
             (Random() % 2), OTID,
             0, 0, 0, 0, 0,
             personality,
@@ -309,7 +311,7 @@ void CreateWonderTradePokemon(u8 whichPlayerMon)
     GetSpeciesName(name, species);
 
     // 10% chance of having the generated Wonder Traded 'mon carry an item.
-    if ((Random() % 99) < 10)
+    if ((Random() % 99) < 15)
         heldItem = GetValidWonderTradeItem(heldItem);
 
     if (currHeldItem == ITEM_NONE)
@@ -338,12 +340,24 @@ void CreateWonderTradePokemon(u8 whichPlayerMon)
     }
 
     SetMonData(pokemon, MON_DATA_HELD_ITEM, &heldItem);
-    SetMonData(pokemon, MON_DATA_HP_IV, &inGameTrade->ivs[0]);
-    SetMonData(pokemon, MON_DATA_ATK_IV, &inGameTrade->ivs[1]);
-    SetMonData(pokemon, MON_DATA_DEF_IV, &inGameTrade->ivs[2]);
-    SetMonData(pokemon, MON_DATA_SPEED_IV, &inGameTrade->ivs[3]);
-    SetMonData(pokemon, MON_DATA_SPATK_IV, &inGameTrade->ivs[4]);
-    SetMonData(pokemon, MON_DATA_SPDEF_IV, &inGameTrade->ivs[5]);
+    if (gSaveBlock1Ptr->MaxPartyIVs == 0)
+    {
+        SetMonData(pokemon, MON_DATA_HP_IV, &inGameTrade->ivs[0]);
+        SetMonData(pokemon, MON_DATA_ATK_IV, &inGameTrade->ivs[1]);
+        SetMonData(pokemon, MON_DATA_DEF_IV, &inGameTrade->ivs[2]);
+        SetMonData(pokemon, MON_DATA_SPEED_IV, &inGameTrade->ivs[3]);
+        SetMonData(pokemon, MON_DATA_SPATK_IV, &inGameTrade->ivs[4]);
+        SetMonData(pokemon, MON_DATA_SPDEF_IV, &inGameTrade->ivs[5]);
+    }
+    else if (gSaveBlock1Ptr->MaxPartyIVs == 1)
+    {
+        SetMonData(pokemon, MON_DATA_HP_IV, &inGameTrade->ivs31[0]);
+        SetMonData(pokemon, MON_DATA_ATK_IV, &inGameTrade->ivs31[1]);
+        SetMonData(pokemon, MON_DATA_DEF_IV, &inGameTrade->ivs31[2]);
+        SetMonData(pokemon, MON_DATA_SPEED_IV, &inGameTrade->ivs31[3]);
+        SetMonData(pokemon, MON_DATA_SPATK_IV, &inGameTrade->ivs31[4]);
+        SetMonData(pokemon, MON_DATA_SPDEF_IV, &inGameTrade->ivs31[5]);
+    }
     SetMonData(pokemon, MON_DATA_NICKNAME, name);
     SetMonData(pokemon, MON_DATA_OT_NAME, nameOT);
     SetMonData(pokemon, MON_DATA_BEAUTY, &inGameTrade->conditions[1]);
