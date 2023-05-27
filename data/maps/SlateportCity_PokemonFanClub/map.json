@@ -80,7 +80,7 @@
       "flag": "0"
     },
     {
-      "graphics_id": "OBJ_EVENT_GFX_ZIGZAGOON_1",
+      "graphics_id": "OBJ_EVENT_GFX_MON_BASE+SPECIES_ZIGZAGOON",
       "x": 3,
       "y": 9,
       "elevation": 3,

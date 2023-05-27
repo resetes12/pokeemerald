@@ -273,7 +273,7 @@
       "flag": "0"
     },
     {
-      "graphics_id": "OBJ_EVENT_GFX_ZIGZAGOON_1",
+      "graphics_id": "OBJ_EVENT_GFX_MON_BASE+SPECIES_ZIGZAGOON",
       "x": 32,
       "y": 6,
       "elevation": 3,
