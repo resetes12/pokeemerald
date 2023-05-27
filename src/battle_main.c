@@ -1987,10 +1987,6 @@ void BattleMainCB2(void)
     RunTextPrinters();
     UpdatePaletteFade();
     RunTasks();
-    //DNS in battles, todo
-    //UpdateAltBgPalettes(PALETTES_ALL);
-    //CpuFastCopy(gPlttBufferUnfaded, gPlttBufferFaded, PLTT_BUFFER_SIZE * 2);
-    //UpdatePalettesWithTime(PALETTES_ALL);
 
     if (JOY_HELD(B_BUTTON) && gBattleTypeFlags & BATTLE_TYPE_RECORDED && RecordedBattle_CanStopPlayback())
     {
