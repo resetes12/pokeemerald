@@ -2033,7 +2033,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     [MOVE_BUBBLE] =
     {
         .effect = EFFECT_SPEED_DOWN_HIT,
-        .power = 40,
+        .power = 30,
         .type = TYPE_WATER,
         .accuracy = 100,
         .pp = 30,
