@@ -4470,6 +4470,7 @@ extern const u32 gSubstituteDollBackGfx[];
 extern const u32 gSubstituteDollFrontGfx[];
 extern const u32 gSubstituteDollPal[];
 extern const u32 gHealthboxSinglesPlayerGfx[];
+extern const u32 gHealthboxSinglesPlayerGfx_Frontier[];
 extern const u32 gHealthboxSinglesOpponentGfx[];
 extern const u32 gHealthboxDoublesPlayerGfx[];
 extern const u32 gHealthboxDoublesOpponentGfx[];
