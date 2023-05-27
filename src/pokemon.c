@@ -5088,8 +5088,7 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
         }
     }
 
-    if ((GetAbilityBySpecies(species, 1) != ABILITY_NONE) && (species != SPECIES_SLAKING || species != SPECIES_MILOTIC || species != SPECIES_WHISCASH || species != SPECIES_KINGDRA || species != SPECIES_DUSKNOIR)) //tx_randomizer_and_challenges
-    //if (gSpeciesInfo[species].abilities[1]  && (species != SPECIES_SLAKING || species != SPECIES_MILOTIC || species != SPECIES_WHISCASH)) //norman slaking code
+    if ((GetAbilityBySpecies(species, 1) != ABILITY_NONE) && (species != SPECIES_SLAKING || species != SPECIES_MILOTIC || species != SPECIES_WHISCASH || species != SPECIES_KINGDRA || species != SPECIES_DUSKNOIR)) //tx_randomizer_and_challenges + norman slaking code for hard mode
     {
         value = personality & 1;
         SetBoxMonData(boxMon, MON_DATA_ABILITY_NUM, &value);

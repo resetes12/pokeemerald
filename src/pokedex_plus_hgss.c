@@ -1941,9 +1941,7 @@ static const struct SearchOptionText sDexSearchTypeOptions[NUMBER_OF_MON_TYPES +
     {gText_DexEmptyString, gTypeNames[TYPE_ICE]},
     {gText_DexEmptyString, gTypeNames[TYPE_DRAGON]},
     {gText_DexEmptyString, gTypeNames[TYPE_DARK]},
-    #ifdef BATTLE_ENGINE
     {gText_DexEmptyString, gTypeNames[TYPE_FAIRY]},
-    #endif
     {},
 };
 
@@ -1978,9 +1976,7 @@ static const u8 sDexSearchTypeIds[NUMBER_OF_MON_TYPES] =
     TYPE_ICE,
     TYPE_DRAGON,
     TYPE_DARK,
-    #ifdef BATTLE_ENGINE
     TYPE_FAIRY,
-    #endif
 };
 
 // Number pairs are the task data for tracking the cursor pos and scroll offset of each option list
@@ -4379,9 +4375,7 @@ static const u8 sMoveTypeToOamPaletteNum[NUMBER_OF_MON_TYPES + CONTEST_CATEGORIE
     [NUMBER_OF_MON_TYPES + CONTEST_CATEGORY_CUTE] = TYPE_ICON_PAL_NUM_1,
     [NUMBER_OF_MON_TYPES + CONTEST_CATEGORY_SMART] = TYPE_ICON_PAL_NUM_2,
     [NUMBER_OF_MON_TYPES + CONTEST_CATEGORY_TOUGH] = TYPE_ICON_PAL_NUM_0,
-    #ifdef TYPE_FAIRY
     [TYPE_FAIRY] = TYPE_ICON_PAL_NUM_1, //based on battle_engine
-    #endif
 };
 static void SetTypeIconPosAndPal(u8 typeId, u8 x, u8 y, u8 spriteArrayId)
 {
@@ -6038,10 +6032,38 @@ static void PrintStatsScreen_Abilities(u8 taskId)
         PrintStatsScreenTextSmall(WIN_STATS_ABILITIES, gAbilityDescriptionPointers[ability0], abilities_x, abilities_y + 14);
 
         ability1 = sPokedexView->sPokemonStats.ability1;
-        if (ability1 != ABILITY_NONE && ability1 != ability0)
+        if (ability1 != ability0)
         {
-            PrintStatsScreenTextSmallWhite(WIN_STATS_ABILITIES, gAbilityNames[ability1], abilities_x, abilities_y + 30);
-            PrintStatsScreenTextSmall(WIN_STATS_ABILITIES, gAbilityDescriptionPointers[ability1], abilities_x, abilities_y + 44);
+            if (ability1 == ABILITY_IMMUNITY && species == SPECIES_SLAKING) //Norman Slaking Code
+            {
+                PrintStatsScreenTextSmallWhite(WIN_STATS_ABILITIES, gAbilityNames[ABILITY_NONE], abilities_x, abilities_y + 30);
+                PrintStatsScreenTextSmall(WIN_STATS_ABILITIES, gAbilityDescriptionPointers[ABILITY_NONE], abilities_x, abilities_y + 44);
+            }
+            else if (ability1 == ABILITY_DRIZZLE && species == SPECIES_WHISCASH)
+            {
+                PrintStatsScreenTextSmallWhite(WIN_STATS_ABILITIES, gAbilityNames[ABILITY_NONE], abilities_x, abilities_y + 30);
+                PrintStatsScreenTextSmall(WIN_STATS_ABILITIES, gAbilityDescriptionPointers[ABILITY_NONE], abilities_x, abilities_y + 44);
+            }
+            else if (ability1 == ABILITY_SWIFT_SWIM && species == SPECIES_MILOTIC)
+            {
+                PrintStatsScreenTextSmallWhite(WIN_STATS_ABILITIES, gAbilityNames[ABILITY_NONE], abilities_x, abilities_y + 30);
+                PrintStatsScreenTextSmall(WIN_STATS_ABILITIES, gAbilityDescriptionPointers[ABILITY_NONE], abilities_x, abilities_y + 44);
+            }
+            else if (ability1 == ABILITY_LEVITATE && species == SPECIES_DUSKNOIR)
+            {
+                PrintStatsScreenTextSmallWhite(WIN_STATS_ABILITIES, gAbilityNames[ABILITY_NONE], abilities_x, abilities_y + 30);
+                PrintStatsScreenTextSmall(WIN_STATS_ABILITIES, gAbilityDescriptionPointers[ABILITY_NONE], abilities_x, abilities_y + 44);
+            }
+            else if (ability1 == ABILITY_DRIZZLE && species == SPECIES_KINGDRA)
+            {
+                PrintStatsScreenTextSmallWhite(WIN_STATS_ABILITIES, gAbilityNames[ABILITY_NONE], abilities_x, abilities_y + 30);
+                PrintStatsScreenTextSmall(WIN_STATS_ABILITIES, gAbilityDescriptionPointers[ABILITY_NONE], abilities_x, abilities_y + 44);
+            }
+            else
+            {
+                PrintStatsScreenTextSmallWhite(WIN_STATS_ABILITIES, gAbilityNames[ability1], abilities_x, abilities_y + 30);
+                PrintStatsScreenTextSmall(WIN_STATS_ABILITIES, gAbilityDescriptionPointers[ability1], abilities_x, abilities_y + 44);
+            }
         }
     #ifdef POKEMON_EXPANSION
     }

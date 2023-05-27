@@ -1,4 +1,4 @@
-static const u8 sNoneDescription[] = _("No special ability.");
+static const u8 sNoneDescription[] = _("");
 static const u8 sStenchDescription[] = _("Helps repel wild POKéMON.");
 static const u8 sDrizzleDescription[] = _("Summons rain in battle.");
 static const u8 sSpeedBoostDescription[] = _("Gradually boosts SPEED.");
@@ -79,7 +79,7 @@ static const u8 sAirLockDescription[] = _("Negates weather effects.");
 
 const u8 gAbilityNames[ABILITIES_COUNT][ABILITY_NAME_LENGTH + 1] =
 {
-    [ABILITY_NONE] = _("-------"),
+    [ABILITY_NONE] = _(""),
     [ABILITY_STENCH] = _("STENCH"),
     [ABILITY_DRIZZLE] = _("DRIZZLE"),
     [ABILITY_SPEED_BOOST] = _("SPEED BOOST"),

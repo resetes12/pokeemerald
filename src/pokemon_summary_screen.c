@@ -2838,6 +2838,7 @@ static void PrintMonInfo(void)
         PrintEggInfo();
     ScheduleBgCopyTilemapToVram(0);
 }
+static const u8 sText_Deoxys_Number[] = _("{NO}{CLEAR 0x01}386");
 
 static void PrintNotEggInfo(void)
 {
@@ -2845,8 +2846,23 @@ static void PrintNotEggInfo(void)
     struct Pokemon *mon = &sMonSummaryScreen->currentMon;
     struct PokeSummary *summary = &sMonSummaryScreen->summary;
     u16 dexNum = SpeciesToPokedexNum(summary->species);
+    u16 species = GetMonData(mon, MON_DATA_SPECIES);
 
-    if (dexNum != 0xFFFF)
+    if (species == SPECIES_DEOXYS_ATTACK || species == SPECIES_DEOXYS_DEFENSE || species == SPECIES_DEOXYS_SPEED)
+    {
+        if (!IsMonShiny(mon))
+        {
+            PrintTextOnWindow(PSS_LABEL_WINDOW_PORTRAIT_DEX_NUMBER, sText_Deoxys_Number, 0, 1, 0, 1);
+            SetMonPicBackgroundPalette(FALSE);
+        }
+        else
+        {
+            PrintTextOnWindow(PSS_LABEL_WINDOW_PORTRAIT_DEX_NUMBER, sText_Deoxys_Number, 0, 1, 0, 1);
+            SetMonPicBackgroundPalette(TRUE);
+        }
+        PutWindowTilemap(PSS_LABEL_WINDOW_PORTRAIT_DEX_NUMBER);
+    }
+    else if (dexNum != 0xFFFF)
     {
         StringCopy(gStringVar1, &gText_NumberClear01[0]);
         ConvertIntToDecimalStringN(gStringVar2, dexNum, STR_CONV_MODE_LEADING_ZEROS, 3);
