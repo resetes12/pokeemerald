@@ -210,4 +210,5 @@ const u16 gEasyChatGroup_Move2[] = {
     MOVE_AIR_SLASH,
     MOVE_BUG_BUZZ,
     MOVE_DRAGON_PULSE,
+    MOVE_EARTH_POWER,
 };

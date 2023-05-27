@@ -364,4 +364,5 @@ const u8 gMoveNames[MOVES_COUNT][MOVE_NAME_LENGTH + 1] =
     [MOVE_AIR_SLASH] = _("AIR SLASH"),
     [MOVE_BUG_BUZZ] = _("BUG BUZZ"),
     [MOVE_DRAGON_PULSE] = _("DRAGON PULSE"),
+    [MOVE_EARTH_POWER] = _("EARTH POWER"),
 };

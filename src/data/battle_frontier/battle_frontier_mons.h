@@ -4706,7 +4706,7 @@ const struct FacilityMon gBattleFrontierMons[NUM_FRONTIER_MONS] =
     },
     [FRONTIER_MON_WHISCASH_4] = {
         .species = SPECIES_WHISCASH,
-        .moves = {MOVE_FISSURE, MOVE_SURF, MOVE_MUDDY_WATER, MOVE_ICE_BEAM},
+        .moves = {MOVE_FISSURE, MOVE_SURF, MOVE_EARTH_POWER, MOVE_ICE_BEAM},
         .itemTableId = BATTLE_FRONTIER_ITEM_QUICK_CLAW,
         .evSpread = F_EV_SPREAD_SP_ATTACK | F_EV_SPREAD_ATTACK,
         .nature = NATURE_QUIET

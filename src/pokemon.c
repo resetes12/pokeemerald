@@ -4844,6 +4844,7 @@ static const u16 sRandomValidMoves[MOVES_COUNT-1] =
     MOVE_AIR_SLASH,
     MOVE_BUG_BUZZ,
     MOVE_DRAGON_PULSE,
+    MOVE_EARTH_POWER,
 };
 //**********************
 

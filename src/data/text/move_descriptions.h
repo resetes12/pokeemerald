@@ -1453,6 +1453,10 @@ static const u8 sDragonPulseDescription[] = _(
     "Generates a shock wave to\n"
     "damage the foe.");
 
+static const u8 sEarthPowerDescription[] = _(
+    "Makes the ground erupt with\n"
+    "power. May lower Sp. Def.");
+
 // MOVE_NONE is ignored in this table. Make sure to always subtract 1 before getting the right pointer.
 const u8 *const gMoveDescriptionPointers[MOVES_COUNT - 1] =
 {
@@ -1819,4 +1823,5 @@ const u8 *const gMoveDescriptionPointers[MOVES_COUNT - 1] =
     [MOVE_AIR_SLASH - 1] = sAirSlashDescription,
     [MOVE_BUG_BUZZ - 1] = sBugBuzzDescription,
     [MOVE_DRAGON_PULSE - 1] = sDragonPulseDescription,
+    [MOVE_EARTH_POWER - 1] = sEarthPowerDescription,
 };

@@ -1000,6 +1000,7 @@ const u16 gEggMoves[] = {
               MOVE_SPIT_UP,
               MOVE_STOCKPILE,
               MOVE_SWALLOW,
+              MOVE_EARTH_POWER,
               MOVE_HEAT_WAVE),
 
     egg_moves(SWINUB,
@@ -1340,6 +1341,7 @@ const u16 gEggMoves[] = {
               MOVE_DRAGON_DANCE,
               MOVE_FLAIL,
               MOVE_HYDRO_PUMP,
+              MOVE_EARTH_POWER,
               MOVE_TAKE_DOWN,
               MOVE_WHIRLPOOL,
               MOVE_SPARK),
@@ -1381,6 +1383,7 @@ const u16 gEggMoves[] = {
               MOVE_FOCUS_ENERGY,
               MOVE_MUD_SHOT,
               MOVE_FLAIL,
+              MOVE_EARTH_POWER,
               MOVE_FURY_CUTTER,
               MOVE_QUICK_ATTACK,
               MOVE_GUST),

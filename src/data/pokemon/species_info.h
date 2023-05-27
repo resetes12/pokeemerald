@@ -4721,10 +4721,10 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseHP        = 78,
         .baseAttack    = 84,
         .baseDefense   = 78,
-        .baseSpeed     = 106, //+6
+        .baseSpeed     = 100,
         .baseSpAttack  = 109,
         .baseSpDefense = 85,
-        .types = { TYPE_FIRE, TYPE_FIRE },
+        .types = { TYPE_FIRE, TYPE_GROUND }, //changed
         .catchRate = 45,
         .expYield = 209,
         .evYield_HP        = 0,
@@ -6366,14 +6366,14 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .noFlip = FALSE,
     },
 
-    [SPECIES_SCIZOR] = //buffed
+    [SPECIES_SCIZOR] = 
     {
         .baseHP        = 70,
         .baseAttack    = 130,
         .baseDefense   = 100,
         .baseSpeed     = 65,
         .baseSpAttack  = 55,
-        .baseSpDefense = 90, //+10
+        .baseSpDefense = 80, 
         .types = { TYPE_BUG, TYPE_STEEL },
         .catchRate = 25,
         .expYield = 200,
@@ -7676,9 +7676,9 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .noFlip = FALSE,
     },
 
-    [SPECIES_SCEPTILE] = //buffed
+    [SPECIES_SCEPTILE] =
     {
-        .baseHP        = 75, //+5
+        .baseHP        = 70,
         .baseAttack    = 85,
         .baseDefense   = 65,
         .baseSpeed     = 120,
@@ -7766,12 +7766,12 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .noFlip = FALSE,
     },
 
-    [SPECIES_BLAZIKEN] = //buffed
+    [SPECIES_BLAZIKEN] =
     {
         .baseHP        = 80,
         .baseAttack    = 120,
         .baseDefense   = 70,
-        .baseSpeed     = 85, //+5
+        .baseSpeed     = 85,
         .baseSpAttack  = 110,
         .baseSpDefense = 70,
         .types = { TYPE_FIRE, TYPE_FIGHTING },
@@ -10316,7 +10316,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .noFlip = FALSE,
     },
 
-    [SPECIES_GULPIN] =
+    [SPECIES_GULPIN] = //buffed
     {
         .baseHP        = 70,
         .baseAttack    = 43,
@@ -10324,7 +10324,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseSpeed     = 40,
         .baseSpAttack  = 43,
         .baseSpDefense = 53,
-        .types = { TYPE_POISON, TYPE_POISON },
+        .types = { TYPE_POISON, TYPE_NORMAL }, //changed
         .catchRate = 225,
         .expYield = 75,
         .evYield_HP        = 1,
@@ -10346,7 +10346,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .noFlip = FALSE,
     },
 
-    [SPECIES_SWALOT] =
+    [SPECIES_SWALOT] = //buffed
     {
         .baseHP        = 100,
         .baseAttack    = 73,
@@ -10354,7 +10354,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseSpeed     = 55,
         .baseSpAttack  = 73,
         .baseSpDefense = 83,
-        .types = { TYPE_POISON, TYPE_POISON },
+        .types = { TYPE_POISON, TYPE_NORMAL }, //changed
         .catchRate = 75,
         .expYield = 168,
         .evYield_HP        = 2,

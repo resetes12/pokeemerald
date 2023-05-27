@@ -2918,6 +2918,14 @@ const struct BardSound gBardSounds_Moves[MOVES_COUNT][6] = {
         NULL_BARD_SOUND,
         NULL_BARD_SOUND,
     },
+    [MOVE_EARTH_POWER] = {
+        { .songLengthId = 42 },
+        { .songLengthId = 22 },
+        { .songLengthId = 2 },
+        NULL_BARD_SOUND,
+        NULL_BARD_SOUND,
+        NULL_BARD_SOUND,
+    },
 };
 
 #endif //GUARD_DATA_BARD_MUSIC_MOVES_H

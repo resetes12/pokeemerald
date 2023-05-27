@@ -365,8 +365,9 @@
 #define MOVE_AIR_SLASH 361
 #define MOVE_BUG_BUZZ 362
 #define MOVE_DRAGON_PULSE 363
+#define MOVE_EARTH_POWER 364
 
-#define MOVES_COUNT 364
+#define MOVES_COUNT 365
 
 // Used for checks for moves affected by Disable, Mimic, etc.
 #define MOVE_UNAVAILABLE 0xFFFF
