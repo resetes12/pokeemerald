@@ -3919,10 +3919,14 @@ static void BattleIntroQuickRun(void)
 {
     if (gBattleControllerExecFlags == 0)
     {
-        if ((JOY_HELD(R_BUTTON))&&(JOY_HELD(L_BUTTON)))
-            gBattleMainFunc = HandleEndTurn_RanFromBattle;
-        else
-            gBattleMainFunc = BattleIntroPrintPlayerSendsOut;
+        if ((JOY_HELD(R_BUTTON))&&(JOY_HELD(L_BUTTON))){
+            if (!IsRunningFromBattleImpossible() && TryRunFromBattle(gBattlerAttacker)){
+                gBattleMainFunc = HandleEndTurn_RanFromBattle;
+                return;
+            }
+            PrepareStringBattle(STRINGID_CANTESCAPE, 0);
+        }
+        gBattleMainFunc = BattleIntroPrintPlayerSendsOut;
     }
 }
 

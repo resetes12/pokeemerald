@@ -289,13 +289,13 @@ static const struct ListMenuTemplate sItemListMenu =
     .cursorKind = CURSOR_BLACK_ARROW
 };
 
-static const u8 sMenuText_ByName[] = _("Name");
-static const u8 sMenuText_ByType[] = _("Type");
-static const u8 sMenuText_ByAmount[] = _("Amount");
-static const u8 sMenuText_ByNumber[] = _("Number");
+static const u8 sMenuText_ByName[] = _("NAME");
+static const u8 sMenuText_ByType[] = _("TYPE");
+static const u8 sMenuText_ByAmount[] = _("AMOUNT");
+static const u8 sMenuText_ByNumber[] = _("NUMBER");
 static const u8 sText_NothingToSort[] = _("There's nothing to sort!");
-static const u8 sMenuText_Tap[] = _("Tap");
-static const u8 sMenuText_Hold[] = _("Hold");
+static const u8 sMenuText_Tap[] = _("TAP");
+static const u8 sMenuText_Hold[] = _("HOLD");
 static const u8 sText_RegisterHow[] = _("Register this\nitem by tapping or\nholding SELECT?");
 static const struct MenuAction sItemMenuActions[] = {
     [ACTION_USE]               = {gMenuText_Use,      ItemMenu_UseOutOfBattle},
