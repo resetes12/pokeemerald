@@ -2926,6 +2926,22 @@ const struct BardSound gBardSounds_Moves[MOVES_COUNT][6] = {
         NULL_BARD_SOUND,
         NULL_BARD_SOUND,
     },
+    [MOVE_PLAY_ROUGH] = {
+        { .songLengthId = 42 },
+        { .songLengthId = 22 },
+        { .songLengthId = 2 },
+        NULL_BARD_SOUND,
+        NULL_BARD_SOUND,
+        NULL_BARD_SOUND,
+    },
+    [MOVE_MOONBLAST] = {
+        { .songLengthId = 33 },
+        { .songLengthId =  5 },
+        { .songLengthId =  4 },
+        NULL_BARD_SOUND,
+        NULL_BARD_SOUND,
+        NULL_BARD_SOUND,
+    },
 };
 
 #endif //GUARD_DATA_BARD_MUSIC_MOVES_H

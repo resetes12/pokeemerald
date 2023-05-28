@@ -982,6 +982,7 @@ const u16 gEggMoves[] = {
 
     egg_moves(TEDDIURSA,
               MOVE_CRUNCH,
+              MOVE_PLAY_ROUGH,
               MOVE_BELLY_DRUM,
               MOVE_CROSS_CHOP,
               MOVE_TAKE_DOWN,
@@ -1088,6 +1089,7 @@ const u16 gEggMoves[] = {
     egg_moves(PHANPY,
               MOVE_FOCUS_ENERGY,
               MOVE_ENDEAVOR,
+              MOVE_PLAY_ROUGH,
               MOVE_BODY_SLAM,
               MOVE_ANCIENT_POWER,
               MOVE_SNORE,
@@ -1203,6 +1205,7 @@ const u16 gEggMoves[] = {
 
     egg_moves(POOCHYENA,
               MOVE_ASTONISH,
+              MOVE_PLAY_ROUGH,
               MOVE_POISON_FANG,
               MOVE_COVET,
               MOVE_LEER,
@@ -1496,6 +1499,7 @@ const u16 gEggMoves[] = {
 
     egg_moves(SWABLU,
               MOVE_AGILITY,
+              MOVE_PLAY_ROUGH,
               MOVE_HAZE,
               MOVE_PURSUIT,
               MOVE_RAGE),
@@ -1580,6 +1584,7 @@ const u16 gEggMoves[] = {
               MOVE_MEAN_LOOK,
               MOVE_MEGAHORN,
               MOVE_FAINT_ATTACK,
+              MOVE_PLAY_ROUGH,
               MOVE_DOUBLE_EDGE,
               MOVE_MAGIC_COAT,
               MOVE_CURSE,

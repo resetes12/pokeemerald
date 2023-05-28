@@ -1457,6 +1457,14 @@ static const u8 sEarthPowerDescription[] = _(
     "Makes the ground erupt with\n"
     "power. May lower Sp. Def.");
 
+static const u8 sPlayRoughDescription[] = _(
+    "Plays rough with the foe.\n"
+    "May lower Attack.");
+
+static const u8 sMoonblastDescription[] = _(
+    "Attacks with the power of\n"
+    "the moon. May lower Sp. Atk.");
+
 // MOVE_NONE is ignored in this table. Make sure to always subtract 1 before getting the right pointer.
 const u8 *const gMoveDescriptionPointers[MOVES_COUNT - 1] =
 {
@@ -1824,4 +1832,6 @@ const u8 *const gMoveDescriptionPointers[MOVES_COUNT - 1] =
     [MOVE_BUG_BUZZ - 1] = sBugBuzzDescription,
     [MOVE_DRAGON_PULSE - 1] = sDragonPulseDescription,
     [MOVE_EARTH_POWER - 1] = sEarthPowerDescription,
+    [MOVE_PLAY_ROUGH - 1] = sPlayRoughDescription,
+    [MOVE_MOONBLAST - 1] = sMoonblastDescription,
 };

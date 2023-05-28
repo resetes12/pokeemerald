@@ -283,6 +283,8 @@ static const s8 sMindRatings[MOVES_COUNT] =
     [MOVE_BUG_BUZZ] = 1,
     [MOVE_DRAGON_PULSE] = 1,
     [MOVE_EARTH_POWER] = 1,
+    [MOVE_PLAY_ROUGH] = 1,
+    [MOVE_MOONBLAST] = 1,
 };
 
 static const struct OamData sOam_JudgmentIcon =

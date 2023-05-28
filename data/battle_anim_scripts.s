@@ -381,6 +381,8 @@ gBattleAnims_Moves::
 	.4byte Move_BUG_BUZZ
 	.4byte Move_DRAGON_PULSE
 	.4byte Move_EARTH_POWER
+	.4byte Move_PLAY_ROUGH
+	.4byte Move_MOONBLAST
 	.4byte Move_COUNT @ cannot be reached, because last move is Psycho Boost
 
 	.align 2
@@ -11082,4 +11084,83 @@ Move_EARTH_POWER:
 	waitforvisualfinish
 	createsprite gSlideMonToOriginalPosSpriteTemplate, 194, 3, 0, 0, 4
 	waitforvisualfinish
+	end
+
+Move_PLAY_ROUGH::
+	loadspritegfx ANIM_TAG_IMPACT
+	loadspritegfx ANIM_TAG_PINK_HEART
+	loadspritegfx ANIM_TAG_DUCK
+	monbg 0x3
+	setalpha 12, 8
+	playsewithpan SE_M_CRABHAMMER, SOUND_PAN_ATTACKER
+	waitplaysewithpan SE_M_FLAMETHROWER, SOUND_PAN_TARGET, 0xa
+	waitplaysewithpan SE_M_CRABHAMMER, SOUND_PAN_ATTACKER, 0x14
+	waitplaysewithpan SE_M_FLAMETHROWER, SOUND_PAN_TARGET, 0x1e
+	waitplaysewithpan SE_M_CRABHAMMER, SOUND_PAN_ATTACKER, 0x28
+	waitplaysewithpan SE_M_FLAMETHROWER, SOUND_PAN_TARGET, 0x32
+	waitplaysewithpan SE_M_CRABHAMMER, SOUND_PAN_ATTACKER, 0x3c
+	waitplaysewithpan SE_M_FLAMETHROWER, SOUND_PAN_TARGET, 0x46
+	waitplaysewithpan SE_M_CRABHAMMER, SOUND_PAN_ATTACKER, 0x50
+	waitplaysewithpan SE_M_FLAMETHROWER, SOUND_PAN_TARGET, 0x5a
+	launchtask AnimTask_TranslateMonElliptical 0x2 0x5 0x0 0xffee 0x6 0x6 0x4
+	launchtask AnimTask_TranslateMonElliptical 0x2 0x5 0x1 0x12 0x6 0x6 0x4
+	launchtemplate gPinkHeartSpriteTemplate 0x83 0x2 0xff00 0xffd6
+	launchtemplate gPinkHeartSpriteTemplate 0x83 0x2 0x80 0xfff2
+	launchtemplate gPinkHeartSpriteTemplate 0x83 0x2 0x1a0 0xffda
+	launchtemplate gPinkHeartSpriteTemplate 0x83 0x2 0xff80 0xffea
+	delay 0x0
+	call SubmissionHit
+	playsewithpan SE_M_FLAMETHROWER, SOUND_PAN_TARGET
+	launchtemplate gDizzyPunchDuckSpriteTemplate 0x83 0x4 0x10 0x8 0xa0 0xffe0
+	launchtemplate gDizzyPunchDuckSpriteTemplate 0x83 0x4 0x10 0x8 0xff00 0xffd8
+	launchtemplate gDizzyPunchDuckSpriteTemplate 0x83 0x4 0x10 0x8 0x80 0xfff0
+	launchtemplate gDizzyPunchDuckSpriteTemplate 0x83 0x4 0x10 0x8 0x1a0 0xffda
+	launchtemplate gDizzyPunchDuckSpriteTemplate 0x83 0x4 0x10 0x8 0xff80 0xffea
+	launchtemplate gDizzyPunchDuckSpriteTemplate 0x83 0x4 0x10 0x8 0xfe80 0xffe1
+	delay 0x0
+	call SubmissionHit
+	playsewithpan SE_M_DIVE, SOUND_PAN_TARGET
+	launchtemplate gPinkHeartSpriteTemplate 0x83 0x2 0xff00 0xffd6
+	launchtemplate gPinkHeartSpriteTemplate 0x83 0x2 0x80 0xfff2
+	launchtemplate gPinkHeartSpriteTemplate 0x83 0x2 0x1a0 0xffda
+	launchtemplate gPinkHeartSpriteTemplate 0x83 0x2 0xff80 0xffea
+	delay 0x0
+	playsewithpan SE_M_FLAMETHROWER, SOUND_PAN_TARGET
+	launchtemplate gDizzyPunchDuckSpriteTemplate 0x83 0x4 0x10 0x8 0xa0 0xffe0
+	launchtemplate gDizzyPunchDuckSpriteTemplate 0x83 0x4 0x10 0x8 0xff00 0xffd8
+	launchtemplate gDizzyPunchDuckSpriteTemplate 0x83 0x4 0x10 0x8 0x80 0xfff0
+	launchtemplate gDizzyPunchDuckSpriteTemplate 0x83 0x4 0x10 0x8 0x1a0 0xffda
+	launchtemplate gDizzyPunchDuckSpriteTemplate 0x83 0x4 0x10 0x8 0xff80 0xffea
+	launchtemplate gDizzyPunchDuckSpriteTemplate 0x83 0x4 0x10 0x8 0xfe80 0xffe1
+	delay 0x0
+	call SubmissionHit
+	waitforvisualfinish
+	delay 0xD
+	stopsound
+	clearmonbg 0x3
+	blendoff
+	waitforvisualfinish
+	end
+
+Move_MOONBLAST:
+	loadspritegfx ANIM_TAG_SMALL_BUBBLES
+	loadspritegfx ANIM_TAG_MOON
+	loadspritegfx ANIM_TAG_GREEN_SPARKLE
+	loadspritegfx ANIM_TAG_BLUE_STAR
+	setalpha 0, 16
+	createsprite gSimplePaletteBlendSpriteTemplate, ANIM_ATTACKER, 2, 1, 1, 0, 16, 0
+	waitforvisualfinish
+	createsprite gMoonSpriteTemplate, ANIM_ATTACKER, 2, 120, 56
+	createvisualtask AnimTask_AlphaFadeIn, 3, 0, 16, 16, 0, 1
+	panse SE_M_BARRIER, SOUND_PAN_ATTACKER, SOUND_PAN_TARGET, 3, 0
+	delay 40
+	playsewithpan SE_M_STRING_SHOT, SOUND_PAN_ATTACKER
+	createsprite gMistBallSpriteTemplate, ANIM_ATTACKER, 5, 0, 0, 0, 0, 30, 0
+	delay 30
+	loopsewithpan SE_M_SUPERSONIC, SOUND_PAN_TARGET, 5, 4
+	createvisualtask AnimTask_ShakeMon, 2, ANIM_TARGET, 5, 0, 10, 0
+	delay 4
+	createvisualtask AnimTask_MoonlightEndFade, 2
+	waitforvisualfinish
+	blendoff
 	end
