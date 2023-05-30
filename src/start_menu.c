@@ -47,6 +47,83 @@
 #include "constants/battle_frontier.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "decompress.h"
+
+#define TAG_THROBBER 0x1000
+static const u16 sThrobber_Pal[] = INCBIN_U16("graphics/text_window/throbber.gbapal");
+const u32 gThrobber_Gfx[] = INCBIN_U32("graphics/text_window/throbber.4bpp.lz");
+static u8 spriteId;
+
+static const struct OamData sOam_Throbber =
+{
+    .y = DISPLAY_HEIGHT,
+    .affineMode = ST_OAM_AFFINE_OFF,
+    .objMode = ST_OAM_OBJ_NORMAL,
+    .mosaic = FALSE,
+    .bpp = ST_OAM_4BPP,
+    .shape = SPRITE_SHAPE(32x64),
+    .x = 0,
+    .matrixNum = 0,
+    .size = SPRITE_SIZE(32x64),
+    .tileNum = 0,
+    .priority = 0,
+    .paletteNum = 0,
+    .affineParam = 0,
+};
+
+static const union AnimCmd sAnim_Throbber[] =
+{
+    ANIMCMD_FRAME(0, 4),
+    ANIMCMD_FRAME(32, 4),
+    ANIMCMD_FRAME(64, 4),
+    ANIMCMD_FRAME(96, 4),
+    ANIMCMD_FRAME(128, 4),
+    ANIMCMD_FRAME(160, 4),
+    ANIMCMD_FRAME(192, 4),
+    ANIMCMD_FRAME(224, 4),
+    ANIMCMD_JUMP(0),
+};
+
+static const union AnimCmd * const sAnims_Throbber[] = { sAnim_Throbber, };
+
+static const struct CompressedSpriteSheet sSpriteSheet_Throbber[] =
+{
+    {
+        .data = gThrobber_Gfx,
+        .size = 0x3200,
+        .tag = TAG_THROBBER
+    },
+    {}
+};
+
+static const struct SpritePalette sSpritePalettes_Throbber[] =
+{
+    {
+        .data = sThrobber_Pal,
+        .tag = TAG_THROBBER
+    },
+    {},
+};
+
+static const struct SpriteTemplate sSpriteTemplate_Throbber =
+{
+    .tileTag = TAG_THROBBER,
+    .paletteTag = TAG_THROBBER,
+    .oam = &sOam_Throbber,
+    .anims = sAnims_Throbber,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCallbackDummy
+};
+
+void ShowThrobber(void)
+{
+    LoadCompressedSpriteSheet(&sSpriteSheet_Throbber[0]);
+    LoadSpritePalettes(sSpritePalettes_Throbber);
+
+    // 217 and 123 are the x and y coordinates (in pixels)
+    spriteId = CreateSprite(&sSpriteTemplate_Throbber, 217, 123, 2);
+};
 
 // Menu actions
 enum
@@ -1111,6 +1188,7 @@ static u8 SaveOverwriteInputCallback(void)
 
 static u8 SaveSavingMessageCallback(void)
 {
+    ShowThrobber();
     ShowSaveMessage(gText_SavingDontTurnOff, SaveDoSaveCallback);
     return SAVE_IN_PROGRESS;
 }
@@ -1133,9 +1211,15 @@ static u8 SaveDoSaveCallback(void)
     }
 
     if (saveStatus == SAVE_STATUS_OK)
+    {
         ShowSaveMessage(gText_PlayerSavedGame, SaveSuccessCallback);
+        DestroySprite(&gSprites[spriteId]);
+    }
     else
+    {
         ShowSaveMessage(gText_SaveError, SaveErrorCallback);
+        DestroySprite(&gSprites[spriteId]);
+    }
 
     SaveStartTimer();
     return SAVE_IN_PROGRESS;
