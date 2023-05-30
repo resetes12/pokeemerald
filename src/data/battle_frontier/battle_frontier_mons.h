@@ -2081,7 +2081,7 @@ const struct FacilityMon gBattleFrontierMons[NUM_FRONTIER_MONS] =
     },
     [FRONTIER_MON_AZUMARILL_2] = {
         .species = SPECIES_AZUMARILL,
-        .moves = {MOVE_MEGA_KICK, MOVE_BRICK_BREAK, MOVE_IRON_TAIL, MOVE_DIG},
+        .moves = {MOVE_MEGA_KICK, MOVE_BRICK_BREAK, MOVE_PLAY_ROUGH, MOVE_DIG},
         .itemTableId = BATTLE_FRONTIER_ITEM_SHELL_BELL,
         .evSpread = F_EV_SPREAD_SP_DEFENSE | F_EV_SPREAD_HP,
         .nature = NATURE_ADAMANT
@@ -5134,7 +5134,7 @@ const struct FacilityMon gBattleFrontierMons[NUM_FRONTIER_MONS] =
     [FRONTIER_MON_MEGANIUM_4] = {
         .species = SPECIES_MEGANIUM,
         .moves = {MOVE_GIGA_DRAIN, MOVE_EARTHQUAKE, MOVE_ANCIENT_POWER, MOVE_MOONBLAST},
-        .itemTableId = BATTLE_FRONTIER_ITEM_BRIGHT_POWDER,
+        .itemTableId = BATTLE_FRONTIER_ITEM_FAIRY_GEM,
         .evSpread = F_EV_SPREAD_SP_ATTACK | F_EV_SPREAD_ATTACK | F_EV_SPREAD_HP,
         .nature = NATURE_HARDY
     },

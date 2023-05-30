@@ -868,6 +868,11 @@ static const u8 sMagnetDesc[] = _(
     "boosts ELECTRIC-\n"
     "type moves.");
 
+static const u8 sFairyGemDesc[] = _(
+    "A hold item that\n"
+    "boosts FAIRY-\n"
+    "type moves.");
+
 static const u8 sMysticWaterDesc[] = _(
     "A hold item that\n"
     "raises the power of\n"

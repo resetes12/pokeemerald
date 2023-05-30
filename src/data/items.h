@@ -1385,7 +1385,7 @@ const struct Item gItems[] =
     [ITEM_EXP_SHARE_SMALL] =
     {
         .name = _("EXP. SHARE S"),
-        .itemId = ITEM_EXP_SHARE,
+        .itemId = ITEM_EXP_SHARE_SMALL,
         .price = 6000,
         .holdEffect = HOLD_EFFECT_EXP_SHARE,
         .description = sExpShareSmallDesc,
@@ -1394,12 +1394,14 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
     },
 
-    [ITEM_071] =
+    [ITEM_FAIRY_GEM] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
-        .price = 0,
-        .description = sDummyDesc,
+        .name = _("FAIRY GEM"),
+        .itemId = ITEM_FAIRY_GEM,
+        .price = 100,
+        .holdEffect = HOLD_EFFECT_FAIRY_POWER,
+        .holdEffectParam = 10,
+        .description = sFairyGemDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,

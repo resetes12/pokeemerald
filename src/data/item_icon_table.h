@@ -127,7 +127,7 @@ const u32 *const gItemIconTable[ITEMS_COUNT + 1][2] =
     [ITEM_HEART_SCALE] = {gItemIcon_HeartScale, gItemIconPalette_HeartScale},
     // ????????
     [ITEM_EXP_SHARE_SMALL] = {gItemIcon_ExpShare, gItemIconPalette_ExpShare},
-    [ITEM_071] = {gItemIcon_QuestionMark, gItemIconPalette_QuestionMark},
+    [ITEM_FAIRY_GEM] = {gItemIcon_FairyGem, gItemIconPalette_FairyGem},
     [ITEM_072] = {gItemIcon_QuestionMark, gItemIconPalette_QuestionMark},
     [ITEM_073] = {gItemIcon_QuestionMark, gItemIconPalette_QuestionMark},
     [ITEM_074] = {gItemIcon_QuestionMark, gItemIconPalette_QuestionMark},
