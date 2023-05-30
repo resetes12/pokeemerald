@@ -729,8 +729,13 @@ static const u8 sMachoBraceDesc[] = _(
     "but reduces SPEED.");
 
 static const u8 sExpShareDesc[] = _(
+    "Turning it on\n"
+    "gives all POKéMON\n"
+    "EXP. points.");
+
+static const u8 sExpShareSmallDesc[] = _(
     "A hold item that\n"
-    "spreads experience\n"
+    "gets EXP. points\n"
     "from battles.");
 
 static const u8 sQuickClawDesc[] = _(

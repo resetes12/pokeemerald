@@ -1382,12 +1382,13 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
     },
 
-    [ITEM_070] =
+    [ITEM_EXP_SHARE_SMALL] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
-        .price = 0,
-        .description = sDummyDesc,
+        .name = _("EXP. SHARE S"),
+        .itemId = ITEM_EXP_SHARE,
+        .price = 6000,
+        .holdEffect = HOLD_EFFECT_EXP_SHARE,
+        .description = sExpShareSmallDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
@@ -2237,7 +2238,7 @@ const struct Item gItems[] =
         .name = _("EXP. SHARE"),
         .itemId = ITEM_EXP_SHARE,
         .price = 0,
-        .holdEffect = HOLD_EFFECT_EXP_SHARE,
+        //.holdEffect = HOLD_EFFECT_EXP_SHARE,
         .importance = 1,
         .registrability = TRUE,
         .description = sExpShareDesc,

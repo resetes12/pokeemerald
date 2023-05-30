@@ -16,6 +16,7 @@ SlateportCity_Mart_EventScript_Clerk2::
 	faceplayer
 	message gText_HowMayIServeYou
 	waitmessage
+	goto_if_unset FLAG_RECEIVED_EXP_SHARE, SlateportCity_Mart_EventScript_ClerkNoExp
 	pokemart SlateportCity_Mart_Pokemart
 	msgbox gText_PleaseComeAgain, MSGBOX_DEFAULT
 	release
@@ -23,6 +24,20 @@ SlateportCity_Mart_EventScript_Clerk2::
 
 	.align 2
 SlateportCity_Mart_Pokemart:
+	.2byte ITEM_HARBOR_MAIL
+	.2byte ITEM_EXP_SHARE_SMALL
+	.2byte ITEM_NONE
+	release
+	end
+
+SlateportCity_Mart_EventScript_ClerkNoExp::
+	pokemart SlateportCity_Mart_PokemartNoExp
+	msgbox gText_PleaseComeAgain, MSGBOX_DEFAULT
+	release
+	end
+
+	.align 2
+SlateportCity_Mart_PokemartNoExp:
 	.2byte ITEM_HARBOR_MAIL
 	.2byte ITEM_NONE
 	release
