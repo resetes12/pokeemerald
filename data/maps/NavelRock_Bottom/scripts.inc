@@ -12,6 +12,13 @@ NavelRock_Bottom_OnTransition:
 
 NavelRock_Bottom_EventScript_HideLugia::
 	setflag FLAG_HIDE_LUGIA
+	call_if_unset FLAG_UNLOCK_DOGS, NavelRock_Bottom_EventScript_DogsFix
+	return
+
+NavelRock_Bottom_EventScript_DogsFix::
+	clearflag FLAG_DEFEAT_SUICUNE
+	clearflag FLAG_DEFEAT_ENTEI
+	clearflag FLAG_DEFEAT_RAIKOU
 	setflag FLAG_UNLOCK_DOGS
 	return
 
