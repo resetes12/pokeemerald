@@ -25,7 +25,7 @@ NewMauville_Inside_OnTransition:
 	call_if_unset FLAG_DEFEATED_VOLTORB_2_NEW_MAUVILLE, NewMauville_Inside_EventScript_ShowVoltorb2
 	call_if_unset FLAG_DEFEATED_VOLTORB_3_NEW_MAUVILLE, NewMauville_Inside_EventScript_ShowVoltorb3
 	goto_if_set FLAG_RAIKOU, NewMauville_Inside_ShowRaikou
-	goto_if_unset FLAG_DEFEATED_LUGIA, NewMauville_Inside_NoShowRaikou
+	goto_if_unset FLAG_UNLOCK_DOGS, NewMauville_Inside_NoShowRaikou
 	end
 
 NewMauville_Inside_NoShowRaikou::

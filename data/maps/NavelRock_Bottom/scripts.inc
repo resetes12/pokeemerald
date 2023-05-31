@@ -12,6 +12,7 @@ NavelRock_Bottom_OnTransition:
 
 NavelRock_Bottom_EventScript_HideLugia::
 	setflag FLAG_HIDE_LUGIA
+	setflag FLAG_UNLOCK_DOGS
 	return
 
 NavelRock_Bottom_EventScript_TryShowLugia::
@@ -63,6 +64,7 @@ NavelRock_Bottom_EventScript_Lugia::
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, NavelRock_Bottom_EventScript_RanFromLugia
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, NavelRock_Bottom_EventScript_RanFromLugia
 	setflag FLAG_CAUGHT_LUGIA
+	setflag FLAG_UNLOCK_DOGS
 	clearflag FLAG_DEFEAT_SUICUNE
 	clearflag FLAG_DEFEAT_ENTEI
 	clearflag FLAG_DEFEAT_RAIKOU
@@ -77,6 +79,7 @@ NavelRock_Bottom_EventScript_Lugia::
 
 NavelRock_Bottom_EventScript_DefeatedLugia::
 	setflag FLAG_DEFEATED_LUGIA
+	setflag FLAG_UNLOCK_DOGS
 	clearflag FLAG_DEFEAT_SUICUNE
 	clearflag FLAG_DEFEAT_ENTEI
 	clearflag FLAG_DEFEAT_RAIKOU

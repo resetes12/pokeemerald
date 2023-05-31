@@ -4,7 +4,7 @@ MagmaHideout_3F_1R_MapScripts::
 
 MagmaHideout_3F_1R_OnTransition:
 	goto_if_set FLAG_ENTEI, MagmaHideout_3F_1R_EventScript_ShowEntei
-	goto_if_unset FLAG_DEFEATED_LUGIA, MagmaHideout_3F_1R_EventScript_NoShowEntei
+	goto_if_unset FLAG_UNLOCK_DOGS, MagmaHideout_3F_1R_EventScript_NoShowEntei
 	end
 
 MagmaHideout_3F_1R_EventScript_NoShowEntei::

@@ -7,7 +7,7 @@ ShoalCave_LowTideIceRoom_MapScripts::
 ShoalCave_LowTideIceRoom_OnTransition::
 	callnative SetTimeBasedEncounters
 	goto_if_set FLAG_SUICUNE, ShoalCave_LowTideIceRoom_Show
-	goto_if_unset FLAG_DEFEATED_LUGIA, ShoalCave_LowTideIceRoom_HideSuicune
+	goto_if_unset FLAG_UNLOCK_DOGS, ShoalCave_LowTideIceRoom_HideSuicune
 	end
 
 ShoalCave_LowTideIceRoom_HideSuicune::

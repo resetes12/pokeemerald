@@ -97,7 +97,7 @@
 #define FLAG_LEGENDARIES_IN_SOOTOPOLIS           0x53
 
 #define FLAG_LIMIT_TO_50                     0x54
-#define FLAG_UNUSED_0x55                     0x55 //Unused
+#define FLAG_UNLOCK_DOGS                     0x55
 
 #define FLAG_HIDE_CONTEST_POKE_BALL          0x56  // Always set after new game, object it hides is added directly
 #define FLAG_MET_RIVAL_MOM                   0x57

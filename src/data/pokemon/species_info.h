@@ -9656,14 +9656,14 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .noFlip = FALSE,
     },
 
-    [SPECIES_CACTURNE] = //buffed
+    [SPECIES_CACTURNE] =
     {
-        .baseHP        = 80, //+10
+        .baseHP        = 70,
         .baseAttack    = 115,
         .baseDefense   = 60,
         .baseSpeed     = 55,
         .baseSpAttack  = 115,
-        .baseSpDefense = 70, //+10
+        .baseSpDefense = 60,
         .types = { TYPE_GRASS, TYPE_DARK },
         .catchRate = 60,
         .expYield = 177,
