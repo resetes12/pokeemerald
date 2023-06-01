@@ -5768,11 +5768,11 @@ const struct SpeciesInfo gSpeciesInfo[] =
 
     [SPECIES_SUNFLORA] = //buffed
     {
-        .baseHP        = 75,
+        .baseHP        = 80, //+5
         .baseAttack    = 75,
-        .baseDefense   = 55,
+        .baseDefense   = 60, //+5
         .baseSpeed     = 50, //+20
-        .baseSpAttack  = 125, //+20
+        .baseSpAttack  = 105,
         .baseSpDefense = 85,
         .types = { TYPE_GRASS, TYPE_FIRE }, //changed
         .catchRate = 120,
