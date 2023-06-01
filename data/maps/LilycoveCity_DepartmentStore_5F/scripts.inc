@@ -107,6 +107,7 @@ LilycoveCity_DepartmentStore_5F_EventScript_ClerkFarRight::
 
 	.align 2
 LilycoveCity_DepartmentStore_5F_Pokemart_Mats:
+	.2byte DECOR_SOLID_BOARD
 	.2byte DECOR_SURF_MAT
 	.2byte DECOR_THUNDER_MAT
 	.2byte DECOR_FIRE_BLAST_MAT
