@@ -24,6 +24,7 @@
 
 enum
 {
+    MENU_FEATURES,
     MENU_RANDOMIZER,
     MENU_NUZLOCKE,
     MENU_DIFFICULTY,
@@ -32,6 +33,17 @@ enum
 };
 
 // Menu items
+
+enum
+{
+    MENUITEM_FEATURES_ALTERNATE_SPAWNS,
+    MENUITEM_FEATURES_SHINY_CHANCE,
+    MENUITEM_FEATURES_ITEM_DROP,
+    MENUITEM_FEATURES_INFINITE_TMS,
+    MENUITEM_FEATURES_NEXT,
+    MENUITEM_FEATURES_COUNT,
+};
+
 enum
 {
     MENUITEM_RANDOM_OFF_ON,
@@ -83,9 +95,6 @@ enum
 
 enum
 {
-    MENUITEM_CHALLENGES_ALTERNATE_SPAWNS,
-    MENUITEM_CHALLENGES_SHINY_CHANCE,
-    MENUITEM_CHALLENGES_ITEM_DROP,
     MENUITEM_CHALLENGES_EVO_LIMIT,
     MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE,
     MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER,
@@ -160,6 +169,7 @@ static const struct BgTemplate sOptionMenuBgTemplates[] =
 struct OptionMenu
 {
     u8 submenu;
+    u8 sel_features[MENUITEM_FEATURES_COUNT];
     u8 sel_randomizer[MENUITEM_RANDOM_COUNT];
     u8 sel_nuzlocke[MENUITEM_NUZLOCKE_COUNT];
     u8 sel_difficulty[MENUITEM_DIFFICULTY_COUNT];
@@ -252,11 +262,12 @@ static void DrawChoices_Challenges_OneTypeChallenge(int selection, int y);
 static void DrawChoices_Challenges_BaseStatEqualizer(int selection, int y);
 static void DrawChoices_Challenges_Mirror(int selection, int y);
 static void DrawChoices_Challenges_Mirror_Thief(int selection, int y);
-static void DrawChoices_Challenges_AlternateSpawns(int selection, int y);
+static void DrawChoices_Features_AlternateSpawns(int selection, int y);
 static void DrawChoices_Challenges_LimitDifficulty(int selection, int y);
 static void DrawChoices_Challenges_MaxPartyIVs(int selection, int y);
-static void DrawChoices_Challenges_ShinyChance(int selection, int y);
-static void DrawChoices_Challenges_ItemDrop(int selection, int y);
+static void DrawChoices_Features_ShinyChance(int selection, int y);
+static void DrawChoices_Features_ItemDrop(int selection, int y);
+static void DrawChoices_Features_InfiniteTMs(int selection, int y);
 
 static void PrintCurrentSelections(void);
 
@@ -282,6 +293,20 @@ static const u16 sOptionMenuText_Pal[] = INCBIN_U16("graphics/interface/option_m
 #define TEXT_COLOR_OPTIONS_GREEN_DARK_SHADOW    12
 #define TEXT_COLOR_OPTIONS_RED_DARK_FG          13
 #define TEXT_COLOR_OPTIONS_RED_DARK_SHADOW      14
+
+
+struct // MENU_FEATURES
+{
+    void (*drawChoices)(int selection, int y);
+    int (*processInput)(int selection);
+} static const sItemFunctionsFeatures[MENUITEM_FEATURES_COUNT] =
+{
+    [MENUITEM_FEATURES_ALTERNATE_SPAWNS]      = {DrawChoices_Features_AlternateSpawns,      ProcessInput_Options_Two},
+    [MENUITEM_FEATURES_SHINY_CHANCE]          = {DrawChoices_Features_ShinyChance,          ProcessInput_Options_Five},
+    [MENUITEM_FEATURES_ITEM_DROP]             = {DrawChoices_Features_ItemDrop,             ProcessInput_Options_Two},
+    [MENUITEM_FEATURES_INFINITE_TMS]          = {DrawChoices_Features_InfiniteTMs,          ProcessInput_Options_Two},
+    [MENUITEM_FEATURES_NEXT]                  = {NULL, NULL},
+};
 
 // Menu draw and input functions
 struct // MENU_RANDOMIZER
@@ -353,13 +378,24 @@ struct // MENU_CHALLENGES
     [MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]   = {DrawChoices_Challenges_BaseStatEqualizer,    ProcessInput_Options_Four},
     [MENUITEM_CHALLENGES_MIRROR]                = {DrawChoices_Challenges_Mirror,               ProcessInput_Options_Two},
     [MENUITEM_CHALLENGES_MIRROR_THIEF]          = {DrawChoices_Challenges_Mirror_Thief,         ProcessInput_Options_Two},
-    [MENUITEM_CHALLENGES_ALTERNATE_SPAWNS]      = {DrawChoices_Challenges_AlternateSpawns,      ProcessInput_Options_Two},
-    [MENUITEM_CHALLENGES_SHINY_CHANCE]          = {DrawChoices_Challenges_ShinyChance,          ProcessInput_Options_Five},
-    [MENUITEM_CHALLENGES_ITEM_DROP]             = {DrawChoices_Challenges_ItemDrop,             ProcessInput_Options_Two},
     [MENUITEM_CHALLENGES_SAVE] = {NULL, NULL},
 };
 
+static const u8 sText_AlternateSpawns[]     = _("MODERN SPAWNS");
+static const u8 sText_ShinyChance[]         = _("SHINY CHANCE");
+static const u8 sText_ItemDrop[]            = _("ITEM DROP");
+static const u8 sText_InfiniteTMs[]         = _("REUSABLE TMS");
+static const u8 sText_Next[]                = _("NEXT");
 // Menu left side option names text
+static const u8 *const sOptionMenuItemsNamesFeatures[MENUITEM_FEATURES_COUNT] =
+{
+    [MENUITEM_FEATURES_ALTERNATE_SPAWNS]          = sText_AlternateSpawns,
+    [MENUITEM_FEATURES_SHINY_CHANCE]              = sText_ShinyChance,
+    [MENUITEM_FEATURES_ITEM_DROP]                 = sText_ItemDrop,
+    [MENUITEM_FEATURES_INFINITE_TMS]              = sText_InfiniteTMs,
+    [MENUITEM_FEATURES_NEXT]                      = sText_Next,
+};
+
 static const u8 sText_Dummy[] =                     _("DUMMY");
 static const u8 sText_Randomizer[] =                _("RANDOMIZER");
 static const u8 sText_Starter[] =                   _("STARTER POKéMON");
@@ -376,7 +412,6 @@ static const u8 sText_EvolutionMethods[] =          _("EVO LINES");
 static const u8 sText_TypeEff[] =                   _("EFFECTIVENESS");
 static const u8 sText_Items[] =                     _("ITEMS");
 static const u8 sText_Chaos[] =                     _("CHAOS MODE");
-static const u8 sText_Next[] =                      _("NEXT");
 static const u8 *const sOptionMenuItemsNamesRandom[MENUITEM_RANDOM_COUNT] =
 {
     [MENUITEM_RANDOM_OFF_ON]                    = sText_Randomizer,
@@ -447,9 +482,6 @@ static const u8 sText_OneTypeChallenge[]    = _("ONE TYPE ONLY");
 static const u8 sText_BaseStatEqualizer[]   = _("STAT EQUALIZER");
 static const u8 sText_Mirror[]              = _("MIRROR MODE");
 static const u8 sText_MirrorThief[]         = _("MIRROR THIEF");
-static const u8 sText_AlternateSpawns[]     = _("MODERN SPAWNS");
-static const u8 sText_ShinyChance[]         = _("SHINY CHANCE");
-static const u8 sText_ItemDrop[]            = _("ITEM DROP");
 static const u8 sText_Save[]                = _("SAVE");
 static const u8 *const sOptionMenuItemsNamesChallenges[MENUITEM_CHALLENGES_COUNT] =
 {
@@ -458,9 +490,6 @@ static const u8 *const sOptionMenuItemsNamesChallenges[MENUITEM_CHALLENGES_COUNT
     [MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]   = sText_BaseStatEqualizer,
     [MENUITEM_CHALLENGES_MIRROR]                = sText_Mirror,
     [MENUITEM_CHALLENGES_MIRROR_THIEF]          = sText_MirrorThief,
-    [MENUITEM_CHALLENGES_ALTERNATE_SPAWNS]      = sText_AlternateSpawns,
-    [MENUITEM_CHALLENGES_SHINY_CHANCE]          = sText_ShinyChance,
-    [MENUITEM_CHALLENGES_ITEM_DROP]             = sText_ItemDrop,
     [MENUITEM_CHALLENGES_SAVE]                  = sText_Save,
 };
 
@@ -468,6 +497,7 @@ static const u8 *const OptionTextRight(u8 menuItem)
 {
     switch (sOptions->submenu)
     {
+    case MENU_FEATURES:         return sOptionMenuItemsNamesFeatures[menuItem];
     case MENU_RANDOMIZER:       return sOptionMenuItemsNamesRandom[menuItem];
     case MENU_NUZLOCKE:         return sOptionMenuItemsNamesNuzlocke[menuItem];
     case MENU_DIFFICULTY:       return sOptionMenuItemsNamesDifficulty[menuItem];
@@ -480,6 +510,11 @@ static bool8 CheckConditions(int selection)
 {
     switch (sOptions->submenu)
     {
+    case MENU_FEATURES:
+        switch(selection)
+        {
+        default:       return TRUE;;
+        }
     case MENU_RANDOMIZER:
         switch(selection)
         {
@@ -543,6 +578,27 @@ static bool8 CheckConditions(int selection)
 // Descriptions
 static const u8 sText_Empty[]               = _("");
 static const u8 sText_Description_Save[]    = _("Save choices and continue...");
+
+static const u8 sText_Description_Features_AlternateSpawns_Off[]      = _("Use vanilla-ish {PKMN} spawns.\nNo version exclusives.");
+static const u8 sText_Description_Features_AlternateSpawns_On[]       = _("Use Modern Emerald {PKMN} spawns.\nAll 423 {PKMN} available.");
+static const u8 sText_Description_Features_ItemDrop_On[]              = _("Wild {PKMN} will drop their hold item\nafter defeating them.");
+static const u8 sText_Description_Features_ItemDrop_Off[]             = _("Wild {PKMN} items will be only obtainable\nvia capture or THIEF.");
+static const u8 sText_Description_Features_ShinyChance_8192[]         = _("Very low chance of SHINY encounter.\nDefault chance from Generation III.");
+static const u8 sText_Description_Features_ShinyChance_4096[]         = _("Low chance of SHINY encounter.\nDefault chance from Generation VI+.");
+static const u8 sText_Description_Features_ShinyChance_2048[]         = _("Decent chance of SHINY encounter.");
+static const u8 sText_Description_Features_ShinyChance_1024[]         = _("High chance of SHINY encounter.");
+static const u8 sText_Description_Features_ShinyChance_512[]          = _("Very high chance of SHINY encounter.");
+static const u8 sText_Description_Features_InfiniteTMs_On[]           = _("TMs are reusable.\nModern Emerald recommended.");
+static const u8 sText_Description_Features_InfiniteTMs_Off[]          = _("TMs are not reusable.\nLike in the original.");
+static const u8 sText_Description_Features_Next[]                     = _("Continue to Randomizer options.");
+static const u8 *const sOptionMenuItemDescriptionsFeatures[MENUITEM_FEATURES_COUNT][5] =
+{
+    [MENUITEM_FEATURES_ALTERNATE_SPAWNS]      = {sText_Description_Features_AlternateSpawns_Off,    sText_Description_Features_AlternateSpawns_On,    sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_FEATURES_SHINY_CHANCE]          = {sText_Description_Features_ShinyChance_8192,       sText_Description_Features_ShinyChance_4096,      sText_Description_Features_ShinyChance_2048,      sText_Description_Features_ShinyChance_1024, sText_Description_Features_ShinyChance_512},
+    [MENUITEM_FEATURES_ITEM_DROP]             = {sText_Description_Features_ItemDrop_Off,           sText_Description_Features_ItemDrop_On,           sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_FEATURES_INFINITE_TMS]          = {sText_Description_Features_InfiniteTMs_Off,        sText_Description_Features_InfiniteTMs_On,           sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_FEATURES_NEXT]                  = {sText_Description_Features_Next,                              sText_Empty,                                        sText_Empty,                                        sText_Empty,                                        sText_Empty},
+};
 
 static const u8 sText_Description_Randomizer_Off[]                  = _("Game will not be randomized.");
 static const u8 sText_Description_Randomizer_On[]                   = _("Play the game randomized.\nSettings below!");
@@ -674,15 +730,6 @@ static const u8 sText_Description_Challenges_Mirror_Trainer[]           = _("In 
 static const u8 sText_Description_Challenges_Mirror_All[]               = _("The player gets a copy of the\nenemies party in {COLOR 7}{COLOR 8}ALL battles!");
 static const u8 sText_Description_Challenges_MirrorThief_Off[]          = _("The player gets their own party back\nafter battles.");
 static const u8 sText_Description_Challenges_MirrorThief_On[]           = _("The player keeps the enemies party\nafter battle!");
-static const u8 sText_Description_Challenges_AlternateSpawns_Off[]      = _("Use vanilla-ish {PKMN} spawns.\nNo version exclusives.");
-static const u8 sText_Description_Challenges_AlternateSpawns_On[]       = _("Use Modern Emerald {PKMN} spawns.\nAll 420 {PKMN} available.");
-static const u8 sText_Description_Challenges_ItemDrop_On[]              = _("Wild {PKMN} will drop their hold item\nafter defeating them.");
-static const u8 sText_Description_Challenges_ItemDrop_Off[]             = _("Wild {PKMN} items will be only obtainable\nvia capture or THIEF.");
-static const u8 sText_Description_Challenges_ShinyChance_8192[]         = _("Very low chance of SHINY encounter.\nDefault chance from Generation III.");
-static const u8 sText_Description_Challenges_ShinyChance_4096[]         = _("Low chance of SHINY encounter.\nDefault chance from Generation VI.");
-static const u8 sText_Description_Challenges_ShinyChance_2048[]         = _("Decent chance of SHINY encounter.");
-static const u8 sText_Description_Challenges_ShinyChance_1024[]         = _("High chance of SHINY encounter.");
-static const u8 sText_Description_Challenges_ShinyChance_512[]          = _("Very high chance of SHINY encounter.");
 static const u8 *const sOptionMenuItemDescriptionsChallenges[MENUITEM_CHALLENGES_COUNT][5] =
 {
     [MENUITEM_CHALLENGES_EVO_LIMIT]             = {sText_Description_Challenges_EvoLimit_Base,          sText_Description_Challenges_EvoLimit_First,        sText_Description_Challenges_EvoLimit_All,          sText_Empty,                                        sText_Empty},
@@ -690,13 +737,20 @@ static const u8 *const sOptionMenuItemDescriptionsChallenges[MENUITEM_CHALLENGES
     [MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]   = {sText_Description_Challenges_BaseStatEqualizer_Base, sText_Description_Challenges_BaseStatEqualizer_100, sText_Description_Challenges_BaseStatEqualizer_255, sText_Description_Challenges_BaseStatEqualizer_500, sText_Empty},
     [MENUITEM_CHALLENGES_MIRROR]                = {sText_Description_Challenges_Mirror_Off,             sText_Description_Challenges_Mirror_Trainer,        sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_CHALLENGES_MIRROR_THIEF]          = {sText_Description_Challenges_MirrorThief_Off,        sText_Description_Challenges_MirrorThief_On,        sText_Empty,                                        sText_Empty,                                        sText_Empty},
-    [MENUITEM_CHALLENGES_ALTERNATE_SPAWNS]      = {sText_Description_Challenges_AlternateSpawns_Off,    sText_Description_Challenges_AlternateSpawns_On,    sText_Empty,                                        sText_Empty,                                        sText_Empty},
-    [MENUITEM_CHALLENGES_SHINY_CHANCE]          = {sText_Description_Challenges_ShinyChance_8192,       sText_Description_Challenges_ShinyChance_4096,      sText_Description_Challenges_ShinyChance_2048,      sText_Description_Challenges_ShinyChance_1024, sText_Description_Challenges_ShinyChance_512},
     [MENUITEM_CHALLENGES_SAVE]                  = {sText_Description_Save,                              sText_Empty,                                        sText_Empty,                                        sText_Empty,                                        sText_Empty},
-    [MENUITEM_CHALLENGES_ITEM_DROP]             = {sText_Description_Challenges_ItemDrop_Off,           sText_Description_Challenges_ItemDrop_On,           sText_Empty,                                        sText_Empty,                                        sText_Empty},
 };
 
 // Disabled descriptions
+
+static const u8 *const sOptionMenuItemDescriptionsDisabledFeatures[MENUITEM_FEATURES_COUNT] =
+{
+    [MENUITEM_FEATURES_ALTERNATE_SPAWNS]      = sText_Empty,
+    [MENUITEM_FEATURES_SHINY_CHANCE]          = sText_Empty,
+    [MENUITEM_FEATURES_ITEM_DROP]             = sText_Empty,
+    [MENUITEM_FEATURES_INFINITE_TMS]          = sText_Empty,
+    [MENUITEM_FEATURES_NEXT]                  = sText_Empty,
+};
+
 static const u8 sText_Description_Disabled_Random_SimiliarEvolutionLevel[]  = _("Only usable with random starter,\nTrainer, wild or static POKéMON.");
 static const u8 sText_Description_Disabled_Random_IncludeLegendaries[]      = _("Only usable with random starter,\nTrainer, wild or static POKéMON.");
 static const u8 sText_Description_Disabled_Random_Chaos_Mode[]              = _("Only usable if other random options\nare activated.");
@@ -764,6 +818,11 @@ static const u8 *const OptionTextDescription(void)
 
     switch (sOptions->submenu)
     {
+    case MENU_FEATURES:
+        if (!CheckConditions(menuItem) && sOptionMenuItemDescriptionsDisabledFeatures[menuItem] != sText_Empty)
+            return sOptionMenuItemDescriptionsDisabledFeatures[menuItem];
+        selection = sOptions->sel_features[menuItem];  
+        return sOptionMenuItemDescriptionsFeatures[menuItem][selection];
     case MENU_RANDOMIZER:
         if (!CheckConditions(menuItem) && sOptionMenuItemDescriptionsDisabledRandomizer[menuItem] != sText_Empty)
             return sOptionMenuItemDescriptionsDisabledRandomizer[menuItem];
@@ -797,6 +856,7 @@ static u8 MenuItemCount(void)
 {
     switch (sOptions->submenu)
     {
+    case MENU_FEATURES:     return MENUITEM_FEATURES_COUNT;
     case MENU_RANDOMIZER:   return MENUITEM_RANDOM_COUNT;
     case MENU_NUZLOCKE:     return MENUITEM_NUZLOCKE_COUNT;
     case MENU_DIFFICULTY:   return MENUITEM_DIFFICULTY_COUNT;
@@ -808,6 +868,7 @@ static u8 MenuItemCountFromIndex(u8 index)
 {
     switch (index)
     {
+    case MENU_FEATURES:     return MENUITEM_FEATURES_COUNT; 
     case MENU_RANDOMIZER:   return MENUITEM_RANDOM_COUNT;
     case MENU_NUZLOCKE:     return MENUITEM_NUZLOCKE_COUNT;
     case MENU_DIFFICULTY:   return MENUITEM_DIFFICULTY_COUNT;
@@ -819,6 +880,7 @@ static u8 MenuItemCancel(void)
 {
     switch (sOptions->submenu)
     {
+    case MENU_FEATURES:     return MENUITEM_FEATURES_NEXT;
     case MENU_RANDOMIZER:   return MENUITEM_RANDOM_NEXT;
     case MENU_NUZLOCKE:     return MENUITEM_NUZLOCKE_NEXT;
     case MENU_DIFFICULTY:   return MENUITEM_DIFFICULTY_NEXT;
@@ -844,10 +906,11 @@ static void VBlankCB(void)
 
 static const u8 sText_TopBar_Left[]             = _("{L_BUTTON}PREVIOUS");
 static const u8 sText_TopBar_Right[]            = _("{R_BUTTON}NEXT");
+static const u8 sText_TopBar_Features[]         = _("FEATURES");
 static const u8 sText_TopBar_Randomizer[]       = _("RANDOMIZER");
 static const u8 sText_TopBar_Nuzlocke[]         = _("NUZLOCKE");
 static const u8 sText_TopBar_Difficulty[]       = _("DIFFICULTY");
-static const u8 sText_TopBar_Challenges[]       = _("EXTRA & CHALLENGES");
+static const u8 sText_TopBar_Challenges[]       = _("CHALLENGES");
 static void DrawTopBarText(void)
 {
     const u8 color[3] = { TEXT_DYNAMIC_COLOR_6, TEXT_COLOR_WHITE, TEXT_COLOR_OPTIONS_GRAY_FG };
@@ -857,8 +920,14 @@ static void DrawTopBarText(void)
     FillWindowPixelBuffer(WIN_TOPBAR, PIXEL_FILL(15));
     switch (sOptions->submenu)
     {
+        case MENU_FEATURES:
+            width = GetStringWidth(FONT_SMALL, sText_TopBar_Features, 0) / 2;
+            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 120-width, 1, color, 0, sText_TopBar_Features);
+            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, right, 1, color, 0, sText_TopBar_Right);
+            break;
         case MENU_RANDOMIZER:
             width = GetStringWidth(FONT_SMALL, sText_TopBar_Randomizer, 0) / 2;
+            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 5, 1, color, 0, sText_TopBar_Left);
             AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 120-width, 1, color, 0, sText_TopBar_Randomizer);
             AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, right, 1, color, 0, sText_TopBar_Right);
             break;
@@ -959,6 +1028,10 @@ static void DrawChoices(u32 id, int y) //right side draw function
 {
     switch (sOptions->submenu)
     {
+        case MENU_FEATURES:
+            if (sItemFunctionsFeatures[id].drawChoices != NULL)
+                sItemFunctionsFeatures[id].drawChoices(sOptions->sel_features[id], y);
+            break;
         case MENU_RANDOMIZER:
             if (sItemFunctionsRandom[id].drawChoices != NULL)
                 sItemFunctionsRandom[id].drawChoices(sOptions->sel_randomizer[id], y);
@@ -1040,6 +1113,11 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         break;
     case 6:
         //tx_randomizer_and_challenges
+        gSaveBlock2Ptr->optionsAlternateSpawns              = TX_FEATURES_ALTERNATE_SPAWNS;
+        gSaveBlock2Ptr->optionsShinyChance                  = TX_FEATURES_SHINY_CHANCE;
+        gSaveBlock2Ptr->optionsWildMonDropItems             = TX_FEATURES_ITEM_DROP;
+        gSaveBlock1Ptr->optionsInfiniteTMs                  = TX_FEATURES_INFINITE_TMS;
+
         gSaveBlock1Ptr->tx_Random_Starter                   = TX_RANDOM_STARTER;
         gSaveBlock1Ptr->tx_Random_WildPokemon               = TX_RANDOM_WILD_POKEMON;
         gSaveBlock1Ptr->tx_Random_Trainer                   = TX_RANDOM_TRAINER;
@@ -1081,12 +1159,16 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer     = TX_CHALLENGE_BASE_STAT_EQUALIZER;
         gSaveBlock1Ptr->tx_Challenges_Mirror                = TX_CHALLENGE_MIRROR;
         gSaveBlock1Ptr->tx_Challenges_Mirror_Thief          = TX_CHALLENGE_MIRROR_THIEF;
-        gSaveBlock2Ptr->optionsAlternateSpawns              = TX_CHALLENGE_ALTERNATE_SPAWNS;
-        gSaveBlock2Ptr->optionsShinyChance                  = TX_CHALLENGE_SHINY_CHANCE;
-        gSaveBlock2Ptr->optionsWildMonDropItems             = TX_CHALLENGE_ITEM_DROP;
                
 
         sOptions = AllocZeroed(sizeof(*sOptions));
+        //MENU FEATURES
+        sOptions->sel_features[MENUITEM_FEATURES_ALTERNATE_SPAWNS]       = gSaveBlock2Ptr->optionsAlternateSpawns;
+        sOptions->sel_features[MENUITEM_FEATURES_SHINY_CHANCE]           = gSaveBlock2Ptr->optionsShinyChance;
+        sOptions->sel_features[MENUITEM_FEATURES_ITEM_DROP]              = gSaveBlock2Ptr->optionsWildMonDropItems;
+        sOptions->sel_features[MENUITEM_FEATURES_INFINITE_TMS]           = gSaveBlock1Ptr->optionsInfiniteTMs;
+
+        //MENU RANDOMIZER
         sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON]                     = FALSE;
         sOptions->sel_randomizer[MENUITEM_RANDOM_STARTER]                    = gSaveBlock1Ptr->tx_Random_Starter;
         sOptions->sel_randomizer[MENUITEM_RANDOM_WILD_PKMN]                  = gSaveBlock1Ptr->tx_Random_WildPokemon;
@@ -1133,11 +1215,8 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         sOptions->sel_challenges[MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]    = gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer;
         sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR]                 = gSaveBlock1Ptr->tx_Challenges_Mirror;
         sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR_THIEF]           = gSaveBlock1Ptr->tx_Challenges_Mirror_Thief;
-        sOptions->sel_challenges[MENUITEM_CHALLENGES_ALTERNATE_SPAWNS]       = gSaveBlock2Ptr->optionsAlternateSpawns;
-        sOptions->sel_challenges[MENUITEM_CHALLENGES_SHINY_CHANCE]           = gSaveBlock2Ptr->optionsShinyChance;
-        sOptions->sel_challenges[MENUITEM_CHALLENGES_ITEM_DROP]              = gSaveBlock2Ptr->optionsWildMonDropItems;
 
-        sOptions->submenu = MENU_RANDOMIZER;
+        sOptions->submenu = MENU_FEATURES;
 
         gMain.state++;
         break;
@@ -1159,7 +1238,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
     case 10:
         taskId = CreateTask(Task_OptionMenuFadeIn, 0);
         
-        sOptions->arrowTaskId = AddScrollIndicatorArrowPairParameterized(SCROLL_ARROW_UP, 240 / 2, 20, 110, MENUITEM_RANDOM_COUNT - 1, 110, 110, 0);
+        sOptions->arrowTaskId = AddScrollIndicatorArrowPairParameterized(SCROLL_ARROW_UP, 240 / 2, 20, 110, MENUITEM_FEATURES_COUNT - 1, 110, 110, 0);
 
         for (i = 0; i < OPTIONS_ON_SCREEN; i++)
             DrawChoices(i, i * Y_DIFF);
@@ -1260,7 +1339,24 @@ static void Task_OptionMenuProcessInput(u8 taskId)
     }
     else if (JOY_NEW(DPAD_LEFT | DPAD_RIGHT))
     {
-        if (sOptions->submenu == MENU_RANDOMIZER)
+        if (sOptions->submenu == MENU_FEATURES)
+        {
+            int cursor = sOptions->menuCursor[sOptions->submenu];
+            u8 previousOption = sOptions->sel_features[cursor];
+            if (CheckConditions(cursor))
+            {
+                if (sItemFunctionsFeatures[cursor].processInput != NULL)
+                {
+                    sOptions->sel_features[cursor] = sItemFunctionsFeatures[cursor].processInput(previousOption);
+                    ReDrawAll();
+                    DrawDescriptionText();
+                }
+
+                if (previousOption != sOptions->sel_features[cursor])
+                    DrawChoices(cursor, sOptions->visibleCursor[sOptions->submenu] * Y_DIFF);
+            }
+        }
+        else if (sOptions->submenu == MENU_RANDOMIZER)
         {
             int cursor = sOptions->menuCursor[sOptions->submenu];
             u8 previousOption = sOptions->sel_randomizer[cursor];
@@ -1370,6 +1466,11 @@ static void Task_RandomizerChallengesMenuFadeOut(u8 taskId)
 void SaveData_TxRandomizerAndChallenges(void)
 {
     PrintCurrentSelections();
+    //MENU FEAUTRES
+    gSaveBlock2Ptr->optionsAlternateSpawns             = sOptions->sel_features[MENUITEM_FEATURES_ALTERNATE_SPAWNS]; 
+    gSaveBlock2Ptr->optionsShinyChance                 = sOptions->sel_features[MENUITEM_FEATURES_SHINY_CHANCE]; 
+    gSaveBlock2Ptr->optionsWildMonDropItems            = sOptions->sel_features[MENUITEM_FEATURES_ITEM_DROP]; 
+    gSaveBlock1Ptr->optionsInfiniteTMs                 = sOptions->sel_features[MENUITEM_FEATURES_INFINITE_TMS]; 
     // MENU_RANDOMIZER
     if (sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON] == TRUE)
     {
@@ -1460,9 +1561,6 @@ void SaveData_TxRandomizerAndChallenges(void)
     gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer    = sOptions->sel_challenges[MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER];
     gSaveBlock1Ptr->tx_Challenges_Mirror               = sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR]; 
     gSaveBlock1Ptr->tx_Challenges_Mirror_Thief         = sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR_THIEF]; 
-    gSaveBlock2Ptr->optionsAlternateSpawns             = sOptions->sel_challenges[MENUITEM_CHALLENGES_ALTERNATE_SPAWNS]; 
-    gSaveBlock2Ptr->optionsShinyChance                 = sOptions->sel_challenges[MENUITEM_CHALLENGES_SHINY_CHANCE]; 
-    gSaveBlock2Ptr->optionsWildMonDropItems             = sOptions->sel_challenges[MENUITEM_CHALLENGES_ITEM_DROP]; 
 
     PrintTXSaveData();
 
@@ -2044,9 +2142,9 @@ static void DrawChoices_Challenges_Mirror_Thief(int selection, int y)
     DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
 }
 
-static void DrawChoices_Challenges_AlternateSpawns(int selection, int y)
+static void DrawChoices_Features_AlternateSpawns(int selection, int y)
 {
-    bool8 active = CheckConditions(MENUITEM_CHALLENGES_ALTERNATE_SPAWNS);
+    bool8 active = CheckConditions(MENUITEM_FEATURES_ALTERNATE_SPAWNS);
     u8 styles[2] = {0};
     styles[selection] = 1;
 
@@ -2101,9 +2199,9 @@ static void DrawChoices_Challenges_MaxPartyIVs(int selection, int y)
     DrawOptionMenuChoice(sText_No, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
 }
 
-static void DrawChoices_Challenges_ItemDrop(int selection, int y)
+static void DrawChoices_Features_ItemDrop(int selection, int y)
 {
-    bool8 active = CheckConditions(MENUITEM_CHALLENGES_ITEM_DROP);
+    bool8 active = CheckConditions(MENUITEM_FEATURES_ITEM_DROP);
     u8 styles[2] = {0};
     styles[selection] = 1;
 
@@ -2120,15 +2218,36 @@ static void DrawChoices_Challenges_ItemDrop(int selection, int y)
     DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
 }
 
+static void DrawChoices_Features_InfiniteTMs(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_FEATURES_INFINITE_TMS);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock1Ptr->optionsInfiniteTMs = 0; //TMs are finite
+        FlagSet (FLAG_FINITE_TMS);
+    }
+    else
+    {
+        gSaveBlock1Ptr->optionsInfiniteTMs = 1; //TMs are infinite
+        FlagClear (FLAG_FINITE_TMS);
+    }
+
+    DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
+}
+
 static const u8 sText_Challenges_ShinyChance_8192[]   = _("8192");
 static const u8 sText_Challenges_ShinyChance_4096[]   = _("4096");
 static const u8 sText_Challenges_ShinyChance_2048[]   = _("2048");
 static const u8 sText_Challenges_ShinyChance_1024[]   = _("1024");
 static const u8 sText_Challenges_ShinyChance_512[]    = _("512");
 static const u8 *const sText_Challenges_ShinyChance_Strings[] = {sText_Challenges_ShinyChance_8192,  sText_Challenges_ShinyChance_4096,  sText_Challenges_ShinyChance_2048,  sText_Challenges_ShinyChance_1024,  sText_Challenges_ShinyChance_512};
-static void DrawChoices_Challenges_ShinyChance(int selection, int y)
+static void DrawChoices_Features_ShinyChance(int selection, int y)
 {
-    bool8 active = CheckConditions(MENUITEM_CHALLENGES_SHINY_CHANCE);
+    bool8 active = CheckConditions(MENUITEM_FEATURES_SHINY_CHANCE);
     DrawChoices_Options_Five(sText_Challenges_ShinyChance_Strings, selection, y, active);
     
     if (selection == 0)

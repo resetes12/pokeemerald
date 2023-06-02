@@ -10,6 +10,21 @@
 #include "constants/region_map_sections.h"
 
 // Generic functions
+bool8 AreFeaturesActivated(void)
+{
+    if (gSaveBlock2Ptr->optionsShinyChance
+        || gSaveBlock2Ptr->optionsWildMonDropItems
+        || gSaveBlock2Ptr->optionsAlternateSpawns
+        || gSaveBlock1Ptr->optionsInfiniteTMs)
+        /*|| gSaveBlock1Ptr->optionsPoisonSurvive
+        || gSaveBlock1Ptr->optionsEasierFeebas
+        || gSaveBlock1Ptr->optionsModernTrainerParties
+        || gSaveBlock1Ptr->optionsModernTypingChart)*/
+        return TRUE;
+
+    return FALSE;
+}
+
 bool8 IsRandomizerActivated(void)
 {
     if (gSaveBlock1Ptr->tx_Random_Chaos
@@ -61,10 +76,7 @@ bool8 AreAnyChallengesActive(void)
         || gSaveBlock1Ptr->tx_Challenges_Mirror
         || gSaveBlock1Ptr->tx_Challenges_Mirror_Thief
         || gSaveBlock1Ptr->MaxPartyIVs
-        || gSaveBlock2Ptr->optionsAlternateSpawns
         || gSaveBlock2Ptr->optionsLimitDifficulty
-        || gSaveBlock2Ptr->optionsShinyChance
-        || gSaveBlock2Ptr->optionsWildMonDropItems
         || IsOneTypeChallengeActive())
         return TRUE;
 

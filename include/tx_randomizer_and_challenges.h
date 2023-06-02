@@ -45,10 +45,14 @@
 #define TX_CHALLENGE_TYPE TX_CHALLENGE_TYPE_OFF //TX_CHALLENGE_TYPE_OFF for off
 #define TX_CHALLENGE_MIRROR 0
 #define TX_CHALLENGE_MIRROR_THIEF 0
-#define TX_CHALLENGE_ALTERNATE_SPAWNS 0
-#define TX_CHALLENGE_SHINY_CHANCE 0
-#define TX_CHALLENGE_ITEM_DROP 0
-#define TX_CHALLENGE_HGSS_POKEDEX 0
+#define TX_FEATURES_ALTERNATE_SPAWNS 0
+#define TX_FEATURES_SHINY_CHANCE 0
+#define TX_FEATURES_ITEM_DROP 0
+#define TX_FEATURES_INFINITE_TMS 0
+/*#define TX_FEATURES_SURVIVE_POISON 0
+#define TX_FEATURES_EASIER_FEEBAS 0
+#define TX_FEATURES_MODERN_TRAINER_PARTIES 0
+#define TX_FEATURES_MODERN_TYPINGS 0*/
 
 // randomization types
 #define TX_RANDOM_T_WILD_POKEMON    0
@@ -65,6 +69,7 @@ void SaveData_TxRandomizerAndChallenges(void);
 bool8 IsRandomizerActivated(void);
 bool8 IsOneTypeChallengeActive(void);
 bool8 AreAnyChallengesActive(void);
+bool8 AreFeaturesActivated(void);
 bool8 IsNuzlockeActive(void);
 bool8 IsNuzlockeNicknamingActive(void);
 bool8 IsPokecenterChallengeActivated(void);

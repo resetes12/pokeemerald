@@ -111,6 +111,8 @@ static void SetDefaultOptions(void)
     //gSaveBlock2Ptr->optionsShinyChance = 0; //in challenges menu
     //gSaveBlock2Ptr->optionsWildMonDropItems = 0; //in challenges menu
     gSaveBlock2Ptr->optionsFastBattle = 1;
+    //gSaveBlock1Ptr->optionsBikeMusic = 1;
+    //gSaveBlock1Ptr->optionsEvenFasterJoy = 1;
     
 }
 
@@ -166,6 +168,7 @@ void ResetMenuAndMonGlobals(void)
 void NewGameInitData(void)
 {
     bool8 HardPrev = FlagGet(FLAG_DIFFICULTY_HARD);
+    bool8 TMPrev = FlagGet(FLAG_FINITE_TMS);
 
     if (gSaveFileStatus == SAVE_STATUS_EMPTY || gSaveFileStatus == SAVE_STATUS_CORRUPT)
         RtcReset();
@@ -226,6 +229,7 @@ void NewGameInitData(void)
     ResetContestLinkResults();
 
     HardPrev ? FlagSet(FLAG_DIFFICULTY_HARD) : FlagClear(FLAG_DIFFICULTY_HARD);
+    TMPrev ? FlagSet(FLAG_FINITE_TMS) : FlagClear(FLAG_FINITE_TMS);
 
     /*if (difficultyPrev == DIFFICULTY_EASY)
         VarSet(VAR_DIFFICULTY, DIFFICULTY_EASY);
