@@ -1122,8 +1122,8 @@ struct SaveBlock1
         u8 tx_Random_Starter:1;
         u8 MaxPartyIVs:1;
         u8 optionsInfiniteTMs:1;
-        /*u8 optionsPoisonSurvive:1;
-        u8 optionsEasierEvolutions:1;
+        u8 optionsPoisonSurvive:1;
+        /*u8 optionsEasierEvolutions:1;
         u8 optionsPoisonSurvive:1;
         u8 optionsEasierFeebas:1;
         u8 optionsModernTrainerParties:1;

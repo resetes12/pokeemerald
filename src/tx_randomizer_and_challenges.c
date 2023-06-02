@@ -15,9 +15,9 @@ bool8 AreFeaturesActivated(void)
     if (gSaveBlock2Ptr->optionsShinyChance
         || gSaveBlock2Ptr->optionsWildMonDropItems
         || gSaveBlock2Ptr->optionsAlternateSpawns
-        || gSaveBlock1Ptr->optionsInfiniteTMs)
-        /*|| gSaveBlock1Ptr->optionsPoisonSurvive
-        || gSaveBlock1Ptr->optionsEasierFeebas
+        || gSaveBlock1Ptr->optionsInfiniteTMs
+        || gSaveBlock1Ptr->optionsPoisonSurvive)
+        /*|| gSaveBlock1Ptr->optionsEasierFeebas
         || gSaveBlock1Ptr->optionsModernTrainerParties
         || gSaveBlock1Ptr->optionsModernTypingChart)*/
         return TRUE;

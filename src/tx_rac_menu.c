@@ -40,6 +40,7 @@ enum
     MENUITEM_FEATURES_SHINY_CHANCE,
     MENUITEM_FEATURES_ITEM_DROP,
     MENUITEM_FEATURES_INFINITE_TMS,
+    MENUITEM_FEATURES_SURVIVE_POISON,
     MENUITEM_FEATURES_NEXT,
     MENUITEM_FEATURES_COUNT,
 };
@@ -268,6 +269,7 @@ static void DrawChoices_Challenges_MaxPartyIVs(int selection, int y);
 static void DrawChoices_Features_ShinyChance(int selection, int y);
 static void DrawChoices_Features_ItemDrop(int selection, int y);
 static void DrawChoices_Features_InfiniteTMs(int selection, int y);
+static void DrawChoices_Features_SurvivePoison(int selection, int y);
 
 static void PrintCurrentSelections(void);
 
@@ -305,6 +307,7 @@ struct // MENU_FEATURES
     [MENUITEM_FEATURES_SHINY_CHANCE]          = {DrawChoices_Features_ShinyChance,          ProcessInput_Options_Five},
     [MENUITEM_FEATURES_ITEM_DROP]             = {DrawChoices_Features_ItemDrop,             ProcessInput_Options_Two},
     [MENUITEM_FEATURES_INFINITE_TMS]          = {DrawChoices_Features_InfiniteTMs,          ProcessInput_Options_Two},
+    [MENUITEM_FEATURES_SURVIVE_POISON]        = {DrawChoices_Features_SurvivePoison,        ProcessInput_Options_Two},
     [MENUITEM_FEATURES_NEXT]                  = {NULL, NULL},
 };
 
@@ -385,6 +388,7 @@ static const u8 sText_AlternateSpawns[]     = _("MODERN SPAWNS");
 static const u8 sText_ShinyChance[]         = _("SHINY CHANCE");
 static const u8 sText_ItemDrop[]            = _("ITEM DROP");
 static const u8 sText_InfiniteTMs[]         = _("REUSABLE TMS");
+static const u8 sText_Poison[]              = _("SURVIVE POISON");
 static const u8 sText_Next[]                = _("NEXT");
 // Menu left side option names text
 static const u8 *const sOptionMenuItemsNamesFeatures[MENUITEM_FEATURES_COUNT] =
@@ -393,6 +397,7 @@ static const u8 *const sOptionMenuItemsNamesFeatures[MENUITEM_FEATURES_COUNT] =
     [MENUITEM_FEATURES_SHINY_CHANCE]              = sText_ShinyChance,
     [MENUITEM_FEATURES_ITEM_DROP]                 = sText_ItemDrop,
     [MENUITEM_FEATURES_INFINITE_TMS]              = sText_InfiniteTMs,
+    [MENUITEM_FEATURES_SURVIVE_POISON]            = sText_Poison,
     [MENUITEM_FEATURES_NEXT]                      = sText_Next,
 };
 
@@ -590,6 +595,8 @@ static const u8 sText_Description_Features_ShinyChance_1024[]         = _("High 
 static const u8 sText_Description_Features_ShinyChance_512[]          = _("Very high chance of SHINY encounter.");
 static const u8 sText_Description_Features_InfiniteTMs_On[]           = _("TMs are reusable.\nModern Emerald recommended.");
 static const u8 sText_Description_Features_InfiniteTMs_Off[]          = _("TMs are not reusable.\nLike in the original.");
+static const u8 sText_Description_Features_SurvivePoison_On[]         = _("Your {PKMN} will survive the POISON\nstatus with 1HP.");
+static const u8 sText_Description_Features_SurvivePoison_Off[]        = _("Your {PKMN} will faint if they are\nPOISONED.");
 static const u8 sText_Description_Features_Next[]                     = _("Continue to Randomizer options.");
 static const u8 *const sOptionMenuItemDescriptionsFeatures[MENUITEM_FEATURES_COUNT][5] =
 {
@@ -597,6 +604,7 @@ static const u8 *const sOptionMenuItemDescriptionsFeatures[MENUITEM_FEATURES_COU
     [MENUITEM_FEATURES_SHINY_CHANCE]          = {sText_Description_Features_ShinyChance_8192,       sText_Description_Features_ShinyChance_4096,      sText_Description_Features_ShinyChance_2048,      sText_Description_Features_ShinyChance_1024, sText_Description_Features_ShinyChance_512},
     [MENUITEM_FEATURES_ITEM_DROP]             = {sText_Description_Features_ItemDrop_Off,           sText_Description_Features_ItemDrop_On,           sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_INFINITE_TMS]          = {sText_Description_Features_InfiniteTMs_Off,        sText_Description_Features_InfiniteTMs_On,           sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_FEATURES_SURVIVE_POISON]        = {sText_Description_Features_SurvivePoison_Off,      sText_Description_Features_SurvivePoison_On,           sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_NEXT]                  = {sText_Description_Features_Next,                              sText_Empty,                                        sText_Empty,                                        sText_Empty,                                        sText_Empty},
 };
 
@@ -748,6 +756,7 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledFeatures[MENUITEM_FEAT
     [MENUITEM_FEATURES_SHINY_CHANCE]          = sText_Empty,
     [MENUITEM_FEATURES_ITEM_DROP]             = sText_Empty,
     [MENUITEM_FEATURES_INFINITE_TMS]          = sText_Empty,
+    [MENUITEM_FEATURES_SURVIVE_POISON]        = sText_Empty,
     [MENUITEM_FEATURES_NEXT]                  = sText_Empty,
 };
 
@@ -1117,6 +1126,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         gSaveBlock2Ptr->optionsShinyChance                  = TX_FEATURES_SHINY_CHANCE;
         gSaveBlock2Ptr->optionsWildMonDropItems             = TX_FEATURES_ITEM_DROP;
         gSaveBlock1Ptr->optionsInfiniteTMs                  = TX_FEATURES_INFINITE_TMS;
+        gSaveBlock1Ptr->optionsPoisonSurvive                = TX_FEATURES_SURVIVE_POISON;
 
         gSaveBlock1Ptr->tx_Random_Starter                   = TX_RANDOM_STARTER;
         gSaveBlock1Ptr->tx_Random_WildPokemon               = TX_RANDOM_WILD_POKEMON;
@@ -1167,6 +1177,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         sOptions->sel_features[MENUITEM_FEATURES_SHINY_CHANCE]           = gSaveBlock2Ptr->optionsShinyChance;
         sOptions->sel_features[MENUITEM_FEATURES_ITEM_DROP]              = gSaveBlock2Ptr->optionsWildMonDropItems;
         sOptions->sel_features[MENUITEM_FEATURES_INFINITE_TMS]           = gSaveBlock1Ptr->optionsInfiniteTMs;
+        sOptions->sel_features[MENUITEM_FEATURES_SURVIVE_POISON]         = gSaveBlock1Ptr->optionsPoisonSurvive;  
 
         //MENU RANDOMIZER
         sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON]                     = FALSE;
@@ -1471,6 +1482,7 @@ void SaveData_TxRandomizerAndChallenges(void)
     gSaveBlock2Ptr->optionsShinyChance                 = sOptions->sel_features[MENUITEM_FEATURES_SHINY_CHANCE]; 
     gSaveBlock2Ptr->optionsWildMonDropItems            = sOptions->sel_features[MENUITEM_FEATURES_ITEM_DROP]; 
     gSaveBlock1Ptr->optionsInfiniteTMs                 = sOptions->sel_features[MENUITEM_FEATURES_INFINITE_TMS]; 
+    gSaveBlock1Ptr->optionsPoisonSurvive               = sOptions->sel_features[MENUITEM_FEATURES_SURVIVE_POISON]; 
     // MENU_RANDOMIZER
     if (sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON] == TRUE)
     {
@@ -2233,6 +2245,25 @@ static void DrawChoices_Features_InfiniteTMs(int selection, int y)
     {
         gSaveBlock1Ptr->optionsInfiniteTMs = 1; //TMs are infinite
         FlagClear (FLAG_FINITE_TMS);
+    }
+
+    DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
+}
+
+static void DrawChoices_Features_SurvivePoison(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_FEATURES_SURVIVE_POISON);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock1Ptr->optionsPoisonSurvive = 0; //Poison will kill
+    }
+    else
+    {
+        gSaveBlock1Ptr->optionsPoisonSurvive = 1; //1hp survive poison
     }
 
     DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
