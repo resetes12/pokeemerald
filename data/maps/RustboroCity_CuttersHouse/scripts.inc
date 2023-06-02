@@ -42,7 +42,7 @@ RustboroCity_CuttersHouse_Text_ExplainCut:
 	.string "chop down thin trees if the TRAINER\l"
 	.string "has earned the STONE BADGE.\p"
 	.string "And the best thing is that you don't\n"
-	.string "have to teach the move.$"
+	.string "have to teach the move. It just works.$"
 
 RustboroCity_CuttersHouse_Text_DadHelpedClearLandOfTrees:
 	.string "When they were expanding the city of\n"

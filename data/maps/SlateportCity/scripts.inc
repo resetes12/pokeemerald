@@ -555,6 +555,7 @@ SlateportCity_PokemartDecor:
 	end
 
 SlateportCity_EventScript_PowerTMClerk::
+	goto_if_set FLAG_FINITE_TMS, SlateportCity_EventScript_PowerTMClerkFinite
 	lock
 	faceplayer
 	message gText_HowMayIServeYou
@@ -566,6 +567,28 @@ SlateportCity_EventScript_PowerTMClerk::
 
 	.align 2
 SlateportCity_Pokemart_PowerTMs:
+	.2byte ITEM_MOON_STONE  @ OLD Hidden Power
+	.2byte ITEM_SUN_STONE  @ OLD Secret Power
+	.2byte ITEM_SEA_INCENSE
+	.2byte ITEM_LAX_INCENSE
+	.2byte ITEM_NONE
+	release
+	end
+
+SlateportCity_EventScript_PowerTMClerkFinite::
+	lock
+	faceplayer
+	message gText_HowMayIServeYou
+	waitmessage
+	pokemart SlateportCity_Pokemart_PowerTMs2
+	msgbox gText_PleaseComeAgain, MSGBOX_DEFAULT
+	release
+	end
+
+	.align 2
+SlateportCity_Pokemart_PowerTMs2:
+	.2byte ITEM_TM10  @ Hidden Power
+	.2byte ITEM_TM43  @ Secret Power
 	.2byte ITEM_MOON_STONE  @ OLD Hidden Power
 	.2byte ITEM_SUN_STONE  @ OLD Secret Power
 	.2byte ITEM_SEA_INCENSE

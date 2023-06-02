@@ -830,6 +830,21 @@ static const u16 sRarePickupItems[] =
     ITEM_NUGGET,
 };
 
+static const u16 sRarePickupItemsFiniteTMs[] =
+{
+    ITEM_HYPER_POTION,
+    ITEM_NUGGET,
+    ITEM_KINGS_ROCK,
+    ITEM_FULL_RESTORE,
+    ITEM_ETHER,
+    ITEM_WHITE_HERB,
+    ITEM_TM44_REST,
+    ITEM_ELIXIR,
+    ITEM_TM01_FOCUS_PUNCH,
+    ITEM_LEFTOVERS,
+    ITEM_TM26_EARTHQUAKE,
+};
+
 static const u8 sPickupProbabilities[] =
 {
     30, 40, 50, 60, 70, 80, 90, 94, 98
@@ -9908,7 +9923,12 @@ static void Cmd_pickup(void)
                         SetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, &sPickupItems[lvlDivBy10 + j]);
                         break;
                     }
-                    else if (rand == 99 || rand == 98)
+                    else if ((rand == 99 || rand == 98) && (FlagGet(FLAG_FINITE_TMS) == TRUE))
+                    {
+                        SetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, &sRarePickupItemsFiniteTMs[lvlDivBy10 + (99 - rand)]);
+                        break;
+                    }
+                    else if ((rand == 99 || rand == 98) && (FlagGet(FLAG_FINITE_TMS) == FALSE))
                     {
                         SetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, &sRarePickupItems[lvlDivBy10 + (99 - rand)]);
                         break;

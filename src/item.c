@@ -963,7 +963,10 @@ const u8 *ItemId_GetDescription(u16 itemId)
 
 u8 ItemId_GetImportance(u16 itemId)
 {
-    return gItems[SanitizeItemId(itemId)].importance;
+    if ((FlagGet(FLAG_FINITE_TMS) == TRUE))
+        return gItems2[SanitizeItemId(itemId)].importance;
+    else
+        return gItems[SanitizeItemId(itemId)].importance;
 }
 
 // Unused

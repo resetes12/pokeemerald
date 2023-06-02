@@ -30,6 +30,7 @@ struct BagPocket
 };
 
 extern const struct Item gItems[];
+extern const struct Item gItems2[];
 extern struct BagPocket gBagPockets[];
 
 u16 GetBagItemQuantity(u16 *quantity);

@@ -1025,6 +1025,14 @@ static void BagMenu_ItemPrintCallback(u8 windowId, u32 itemIndex, u8 y)
             offset = GetStringRightAlignXOffset(FONT_NARROW, gStringVar4, 119);
             BagMenu_Print(windowId, FONT_NARROW, gStringVar4, offset, y, 0, 0, TEXT_SKIP_DRAW, COLORID_NORMAL);
         }
+        else if (gBagPosition.pocket == POCKET_TM_HM && ItemId_GetImportance(itemId) == FALSE && FlagGet(FLAG_FINITE_TMS) == TRUE)
+        {
+            // Print item quantity
+            ConvertIntToDecimalStringN(gStringVar1, itemQuantity, STR_CONV_MODE_RIGHT_ALIGN, BAG_ITEM_CAPACITY_DIGITS);
+            StringExpandPlaceholders(gStringVar4, gText_xVar1);
+            offset = GetStringRightAlignXOffset(FONT_NARROW, gStringVar4, 119);
+            BagMenu_Print(windowId, FONT_NARROW, gStringVar4, offset, y, 0, 0, TEXT_SKIP_DRAW, COLORID_NORMAL);
+        }
         else if (gBagPosition.pocket != KEYITEMS_POCKET && ItemId_GetImportance(itemId) == FALSE)
         {
             // Print item quantity
@@ -2220,7 +2228,13 @@ static void Task_ItemContext_Sell(u8 taskId)
 {
     s16 *data = gTasks[taskId].data;
 
-    if ((ItemId_GetPrice(gSpecialVar_ItemId) == 0) || gBagPosition.pocket == TMHM_POCKET)
+    if ((ItemId_GetPrice(gSpecialVar_ItemId) == 0) && (FlagGet(FLAG_FINITE_TMS) == TRUE))
+    {
+        CopyItemName(gSpecialVar_ItemId, gStringVar2);
+        StringExpandPlaceholders(gStringVar4, gText_CantBuyKeyItem);
+        DisplayItemMessage(taskId, FONT_NORMAL, gStringVar4, CloseItemMessage);
+    }
+    else if ((ItemId_GetPrice(gSpecialVar_ItemId) == 0) && (FlagGet(FLAG_FINITE_TMS) == FALSE) || (gBagPosition.pocket == TMHM_POCKET) && (FlagGet(FLAG_FINITE_TMS) == FALSE))
     {
         CopyItemName(gSpecialVar_ItemId, gStringVar2);
         StringExpandPlaceholders(gStringVar4, gText_CantBuyKeyItem);

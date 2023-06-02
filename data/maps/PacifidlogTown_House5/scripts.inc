@@ -35,5 +35,6 @@ PacifidlogTown_House5_Text_MirageIslandAppearDependingOnWeather:
 	.string "disappearing?\p"
 	.string ". . .\p"
 	.string "What if it's a POKéMON the one who\n"
-	.string "is making appear and dissapear the\l"
-	.string "island?$"
+	.string "is making the island appear and\l"
+	.string "dissapear?\p"
+	.string "I'm sure it's a MYTHICAL POKéMON.$"
