@@ -2,6 +2,10 @@ MoveTutor_Text_ThisMoveCanOnlyBeLearnedOnce:
 	.string "Are you ready to learn this move?\n"
 	.string "It will cost you 5.000¥.$"
 
+MoveTutor_Text_ThisMoveCanOnlyBeLearnedOnceFinite:
+	.string "This move can be learned only\n"
+	.string "once. Is that okay?$"
+
 MoveTutor_Text_SwaggerTeach:
 	.string "Heh! My POKéMON totally rules!\n"
 	.string "It's cooler than any POKéMON!\p"

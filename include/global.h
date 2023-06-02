@@ -1124,9 +1124,7 @@ struct SaveBlock1
         u8 optionsInfiniteTMs:1;
         u8 optionsPoisonSurvive:1;
         u8 optionsEasierFeebas:1;
-        /*u8 optionsModernTrainerParties:1;
-        u8 optionsModernTypingChart:1;
-        u8 optionsBikeMusic:1;
+        /*u8 optionsBikeMusic:1;
         u8 optionsEvenFasterJoy:1;*/
 };
 

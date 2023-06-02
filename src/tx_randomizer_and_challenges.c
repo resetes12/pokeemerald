@@ -18,8 +18,6 @@ bool8 AreFeaturesActivated(void)
         || gSaveBlock1Ptr->optionsInfiniteTMs
         || gSaveBlock1Ptr->optionsPoisonSurvive
         || gSaveBlock1Ptr->optionsEasierFeebas)
-        /*|| gSaveBlock1Ptr->optionsModernTrainerParties
-        || gSaveBlock1Ptr->optionsModernTypingChart)*/
         return TRUE;
 
     return FALSE;
