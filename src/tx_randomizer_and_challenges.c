@@ -16,9 +16,9 @@ bool8 AreFeaturesActivated(void)
         || gSaveBlock2Ptr->optionsWildMonDropItems
         || gSaveBlock2Ptr->optionsAlternateSpawns
         || gSaveBlock1Ptr->optionsInfiniteTMs
-        || gSaveBlock1Ptr->optionsPoisonSurvive)
-        /*|| gSaveBlock1Ptr->optionsEasierFeebas
-        || gSaveBlock1Ptr->optionsModernTrainerParties
+        || gSaveBlock1Ptr->optionsPoisonSurvive
+        || gSaveBlock1Ptr->optionsEasierFeebas)
+        /*|| gSaveBlock1Ptr->optionsModernTrainerParties
         || gSaveBlock1Ptr->optionsModernTypingChart)*/
         return TRUE;
 
