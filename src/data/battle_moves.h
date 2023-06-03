@@ -2943,7 +2943,7 @@ const struct BattleMove gBattleMoves[MOVES_COUNT] =
     [MOVE_FURY_CUTTER] =
     {
         .effect = EFFECT_FURY_CUTTER,
-        .power = 40,
+        .power = 20,
         .type = TYPE_BUG,
         .accuracy = 95,
         .pp = 20,
