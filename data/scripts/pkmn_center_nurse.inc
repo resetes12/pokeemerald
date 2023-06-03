@@ -1,6 +1,7 @@
 Common_EventScript_PkmnCenterNurse::
 	lock
 	faceplayer
+	goto_if_set FLAG_EVEN_FASTER_JOY, EventScript_PkmnCenterNurse_HealPkmnFaster
 	specialvar VAR_RESULT, IsPokecenterChallengeActivated
     goto_if_eq VAR_RESULT, TRUE, EventScript_PkmnCenterNurse_PkmnCenterChallenge_NoVisits
 	setvar VAR_0x8004, 0
@@ -125,11 +126,29 @@ Movement_PkmnCenterNurse_Bow:
 	step_end
 
 EventScript_PkmnCenterNurse_PlayerTurn::
-   closemessage
-   applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown
-   waitmovement 0
-   release
-   end
+	closemessage
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown
+	waitmovement 0
+	release
+	end
+
+EventScript_PkmnCenterNurse_HealPkmnFaster::
+	goto_if_unset FLAG_POKERUS_EXPLAINED, EventScript_PkmnCenterNurse_CheckPokerusFast
+	goto_if_set FLAG_POKERUS_EXPLAINED, EventScript_PkmnCenterNurse_PlayerTurnFast
+
+EventScript_PkmnCenterNurse_PlayerTurnFast::
+	special HealPlayerParty
+  	callnative UpdateFollowingPokemon
+	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown
+	waitmovement 0
+	release
+	end
+
+EventScript_PkmnCenterNurse_CheckPokerusFast::
+	specialvar VAR_RESULT, IsPokerusInParty
+	goto_if_eq VAR_RESULT, TRUE, EventScript_PkmnCenterNurse_ExplainPokerus
+	goto_if_eq VAR_RESULT, FALSE, EventScript_PkmnCenterNurse_PlayerTurnFast
+	end
 
 EventScript_PkmnCenterNurse_PkmnCenterChallenge_NoVisits:: @ tx_randomizer_and_challenges
     message gText_PkmnCenterChallenge_NoVisitsLeft

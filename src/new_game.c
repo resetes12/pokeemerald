@@ -111,9 +111,8 @@ static void SetDefaultOptions(void)
     //gSaveBlock2Ptr->optionsShinyChance = 0; //in challenges menu
     //gSaveBlock2Ptr->optionsWildMonDropItems = 0; //in challenges menu
     gSaveBlock2Ptr->optionsFastBattle = 1;
-    //gSaveBlock1Ptr->optionsBikeMusic = 1;
-    //gSaveBlock1Ptr->optionsEvenFasterJoy = 1;
-    
+    gSaveBlock1Ptr->optionsBikeMusic = 0;
+    gSaveBlock1Ptr->optionsEvenFasterJoy = 1;
 }
 
 static void ClearPokedexFlags(void)
