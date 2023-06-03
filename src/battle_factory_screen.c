@@ -1735,7 +1735,7 @@ static void CreateFrontierFactorySelectableMons(u8 firstMonId)
 
     gFacilityTrainerMons = gBattleFrontierMons;
     if (gSaveBlock2Ptr->frontier.lvlMode != FRONTIER_LVL_50)
-        level = 100;
+        level = 50;
     else
         level = 50;
 
@@ -1769,7 +1769,7 @@ static void CreateSlateportTentSelectableMons(u8 firstMonId)
 {
     u8 i, j;
     u8 ivs = 0;
-    u8 level = 30;
+    u8 level = 50;
     u8 friendship = 0;
     u32 otId = 0;
 
