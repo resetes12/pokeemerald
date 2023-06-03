@@ -3455,7 +3455,15 @@ static void Cmd_getexp(void)
                 gExpShareExp = calculatedExp / 2;
                 if (gExpShareExp == 0)
                     gExpShareExp = 1;
+            else if ((FlagGet(FLAG_EXP_SHARE) == TRUE) && (gSaveBlock2Ptr->optionsDifficulty == 2))
+                *exp = SAFE_DIV(calculatedExp / 2, viaSentIn);
+                if (*exp == 0)
+                    *exp = 1;
 
+                gExpShareExp = calculatedExp / 2;
+                if (gExpShareExp == 0)
+                    gExpShareExp = 1;
+            
             if (gSaveBlock1Ptr->tx_Challenges_ExpMultiplier == 3)
             {
                 if (TX_EXP_MULTIPLER_ONLY_ON_NUZLOCKE_AND_RANDOMIZER) //special for Jaizu
@@ -3687,7 +3695,10 @@ static void Cmd_getexp(void)
             gBattleStruct->expGetterMonId++;
             if (gBattleStruct->expGetterMonId < PARTY_SIZE)
                 gBattleScripting.getexpState = 2; // loop again
-            else{
+            else if (FlagGet(FLAG_EXP_SHARE) == FALSE)
+                gBattleScripting.getexpState = 6; // we're done
+            else if (FlagGet(FLAG_EXP_SHARE) == TRUE)
+            {
                 s32 totalMon = 0;
                 s32 viaSentIn = 0;
                 sentIn = gSentPokesToOpponent[(gBattlerFainted & 2) >> 1];
