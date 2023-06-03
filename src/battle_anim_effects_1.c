@@ -156,6 +156,7 @@ static void AnimTask_SkullBashPositionSet(u8);
 static void AnimTask_SkullBashPositionReset(u8);
 static void AnimTask_DoubleTeam_Step(u8);
 static void AnimDoubleTeam(struct Sprite *);
+static void AnimPoisonJabProjectile(struct Sprite *);
 
 const union AnimCmd gPowderParticlesAnimCmds[] =
 {
@@ -1651,6 +1652,35 @@ const struct SpriteTemplate gEndureEnergySpriteTemplate =
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = AnimEndureEnergy,
 };
+
+const struct SpriteTemplate gPoisonJabProjectileSpriteTemplate =
+{
+    .tileTag = ANIM_TAG_PURPLE_JAB,
+    .paletteTag = ANIM_TAG_PURPLE_JAB,
+    .oam = &gOamData_AffineDouble_ObjBlend_32x16,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = AnimPoisonJabProjectile,
+};
+
+static void AnimPoisonJabProjectile(struct Sprite *sprite)
+{
+    s16 targetXPos;
+    s16 targetYPos;
+    u16 rotation;
+
+    InitSpritePosToAnimTarget(sprite, TRUE);
+    targetXPos = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_X_2);
+    targetYPos = GetBattlerSpriteCoord(gBattleAnimTarget, BATTLER_COORD_Y_PIC_OFFSET);
+    rotation = ArcTan2Neg(targetXPos - sprite->x, targetYPos - sprite->y);
+    TrySetSpriteRotScale(sprite, FALSE, 0x100, 0x100, rotation);
+    sprite->data[0] = gBattleAnimArgs[2];
+    sprite->data[2] = targetXPos;
+    sprite->data[4] = targetYPos;
+    sprite->callback = StartAnimLinearTranslation;
+    StoreSpriteCallbackInData6(sprite, DestroyAnimSprite);
+}
 
 const union AnimCmd gSharpenSphereAnimCmds[] =
 {

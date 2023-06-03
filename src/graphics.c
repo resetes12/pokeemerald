@@ -1583,6 +1583,8 @@ const u32 gBattleAnimSpriteGfx_DragonPulse[] = INCBIN_U32("graphics/battle_anims
 const u32 gBattleAnimSpritePal_DragonPulse[] = INCBIN_U32("graphics/battle_anims/sprites/dragon_pulse.gbapal.lz");
 const u32 gBattleAnimSpriteGfx_DragonPulseRing[] = INCBIN_U32("graphics/battle_anims/sprites/dragon_pulse_ring.4bpp.lz");
 const u32 gBattleAnimSpritePal_DragonPulseRing[] = INCBIN_U32("graphics/battle_anims/sprites/dragon_pulse_ring.gbapal.lz");
+const u32 gBattleAnimSpriteGfx_PurpleJab[] = INCBIN_U32("graphics/battle_anims/sprites/purple_jab.4bpp.lz");
+const u32 gBattleAnimSpritePal_PurpleJab[] = INCBIN_U32("graphics/battle_anims/sprites/purple_jab.gbapal.lz");
 
 // random garbage at the end.
 static const u8 sEmpty3[0x54BAC] = {0};

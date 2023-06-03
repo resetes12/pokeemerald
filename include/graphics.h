@@ -5461,6 +5461,8 @@ extern const u32 gBattleAnimSpriteGfx_DragonPulse[];
 extern const u32 gBattleAnimSpritePal_DragonPulse[];
 extern const u32 gBattleAnimSpriteGfx_DragonPulseRing[];
 extern const u32 gBattleAnimSpritePal_DragonPulseRing[];
+extern const u32 gBattleAnimSpriteGfx_PurpleJab[];
+extern const u32 gBattleAnimSpritePal_PurpleJab[];
 
 extern const u8 gMonMarkingsMenu_Gfx[];
 extern const u16 gMonMarkingsMenu_Pal[];

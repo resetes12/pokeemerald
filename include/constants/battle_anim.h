@@ -301,6 +301,7 @@
 #define ANIM_TAG_POWER_GEM                  (ANIM_SPRITES_START + 291)
 #define ANIM_TAG_DRAGON_PULSE               (ANIM_SPRITES_START + 292)
 #define ANIM_TAG_DRAGON_PULSE_RING          (ANIM_SPRITES_START + 293)
+#define ANIM_TAG_PURPLE_JAB                 (ANIM_SPRITES_START + 294)
 
 // battlers
 #define ANIM_ATTACKER         0

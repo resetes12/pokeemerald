@@ -368,8 +368,9 @@
 #define MOVE_EARTH_POWER 364
 #define MOVE_PLAY_ROUGH 365
 #define MOVE_MOONBLAST 366
+#define MOVE_POISON_JAB 367
 
-#define MOVES_COUNT 367
+#define MOVES_COUNT 368
 
 // Used for checks for moves affected by Disable, Mimic, etc.
 #define MOVE_UNAVAILABLE 0xFFFF

@@ -4848,6 +4848,7 @@ static const u16 sRandomValidMoves[MOVES_COUNT-1] =
     MOVE_EARTH_POWER,
     MOVE_PLAY_ROUGH,
     MOVE_MOONBLAST,
+    MOVE_POISON_JAB,
 };
 //**********************
 
