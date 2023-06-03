@@ -18,6 +18,7 @@
 #include "graphics.h"
 #include "international_string_util.h"
 #include "item.h"
+#include "constants/layouts.h"
 #include "link.h"
 #include "m4a.h"
 #include "malloc.h"
@@ -3636,7 +3637,19 @@ static void PrintExpPointsNextLevel(void)
     x = GetStringRightAlignXOffset(FONT_NORMAL, gStringVar1, 42) + 2;
     PrintTextOnWindow(windowId, gStringVar1, x, 1, 0, 0);
 
-    if (sum->level < MAX_LEVEL)
+    if ((gMapHeader.regionMapSectionId == MAPSEC_TRAINER_HILL)
+    || (gBattleTypeFlags & BATTLE_TYPE_FRONTIER)
+    || (gMapHeader.mapLayoutId == LAYOUT_BATTLE_FRONTIER_BATTLE_PYRAMID_FLOOR)
+    || (gMapHeader.mapLayoutId == LAYOUT_BATTLE_FRONTIER_BATTLE_PIKE_ROOM_WILD_MONS)
+    || (gMapHeader.mapLayoutId == LAYOUT_BATTLE_FRONTIER_BATTLE_PIKE_CORRIDOR)
+    || (gMapHeader.mapLayoutId == LAYOUT_BATTLE_FRONTIER_BATTLE_PIKE_THREE_PATH_ROOM)
+    || (gMapHeader.mapLayoutId == LAYOUT_BATTLE_FRONTIER_BATTLE_PIKE_ROOM_NORMAL)
+    || (gMapHeader.mapLayoutId == LAYOUT_BATTLE_FRONTIER_BATTLE_PIKE_ROOM_FINAL)
+    || (gMapHeader.mapLayoutId == LAYOUT_BATTLE_TENT_BATTLE_ROOM)
+    || (gMapHeader.mapLayoutId == LAYOUT_BATTLE_TENT_CORRIDOR)
+    || (gMapHeader.mapLayoutId == LAYOUT_VERDANTURF_TOWN_BATTLE_TENT_BATTLE_ROOM))
+        expToNextLevel = 0; //set 0 exp when playing in those places
+    else if (sum->level < MAX_LEVEL)
         expToNextLevel = gExperienceTables[gSpeciesInfo[sum->species].growthRate][sum->level + 1] - sum->exp;
     else
         expToNextLevel = 0;

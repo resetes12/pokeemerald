@@ -78,7 +78,7 @@ static const u8 sCacophonyDescription[] = _("Avoids sound-based moves.");
 static const u8 sAirLockDescription[] = _("Negates weather effects.");
 static const u8 sTransistorDescription[] = _("Ups Electric-type moves.");
 static const u8 sDragonsMawDescription[] = _("Ups Dragon-type moves.");
-static const u8 sMultitypeDescription[] = _("Boosts move type to its object.");
+static const u8 sMultitypeDescription[] = _("Ups type moves with items.");
 
 const u8 gAbilityNames[ABILITIES_COUNT][ABILITY_NAME_LENGTH + 1] =
 {

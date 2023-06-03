@@ -350,7 +350,7 @@ static u16 GetRandomAlternateMove(u8 monId)
     if (PLAYER_APPRENTICE.lvlMode == APPRENTICE_LVL_MODE_50)
         level = 50;
     else // == APPRENTICE_LVL_MODE_OPEN
-        level = 60;
+        level = 100;
 
     for (j = 0; learnset[j] != LEVEL_UP_END; j++)
     {
@@ -466,7 +466,7 @@ static void GetLatestLearnedMoves(u16 species, u16 *moves)
     if (PLAYER_APPRENTICE.lvlMode == APPRENTICE_LVL_MODE_50)
         level = 50;
     else // == APPRENTICE_LVL_MODE_OPEN
-        level = 60;
+        level = 100;
 
     learnset = gLevelUpLearnsets[species];
     for (i = 0; learnset[i] != LEVEL_UP_END; i++)

@@ -7405,7 +7405,7 @@
             ]
           },
           "rock_smash_mons": {
-            "encounter_rate": 40,
+            "encounter_rate": 20,
             "mons": [
               {
                 "min_level": 10,
@@ -7504,7 +7504,7 @@
             ]
           },
           "rock_smash_mons": {
-            "encounter_rate": 40,
+            "encounter_rate": 20,
             "mons": [
               {
                 "min_level": 10,
@@ -7583,12 +7583,12 @@
               {
                 "min_level": 5,
                 "max_level": 5,
-                "species": "SPECIES_GEODUDE"
+                "species": "SPECIES_WHISMUR"
               },
               {
                 "min_level": 8,
                 "max_level": 8,
-                "species": "SPECIES_GEODUDE"
+                "species": "SPECIES_WHISMUR"
               },
               {
                 "min_level": 5,
@@ -7603,7 +7603,7 @@
             ]
           },
           "rock_smash_mons": {
-            "encounter_rate": 40,
+            "encounter_rate": 20,
             "mons": [
               {
                 "min_level": 10,
@@ -7647,7 +7647,7 @@
               {
                 "min_level": 7,
                 "max_level": 7,
-                "species": "SPECIES_GEODUDE"
+                "species": "SPECIES_WHISMUR"
               },
               {
                 "min_level": 6,
@@ -7677,12 +7677,12 @@
               {
                 "min_level": 8,
                 "max_level": 8,
-                "species": "SPECIES_GEODUDE"
+                "species": "SPECIES_WHISMUR"
               },
               {
                 "min_level": 5,
                 "max_level": 5,
-                "species": "SPECIES_GEODUDE"
+                "species": "SPECIES_WHISMUR"
               },
               {
                 "min_level": 8,
@@ -7702,7 +7702,7 @@
             ]
           },
           "rock_smash_mons": {
-            "encounter_rate": 40,
+            "encounter_rate": 20,
             "mons": [
               {
                 "min_level": 10,
