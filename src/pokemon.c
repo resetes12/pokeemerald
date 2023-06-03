@@ -6027,6 +6027,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     u8 defenderHoldEffectParam;
     u8 attackerHoldEffect;
     u8 attackerHoldEffectParam;
+    u32 moveType = gBattleMoves[gCurrentMove].type;
 
     if (!powerOverride)
         gBattleMovePower = gBattleMoves[move].power;
@@ -6119,7 +6120,96 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         defense *= 2;
     if (attackerHoldEffect == HOLD_EFFECT_THICK_CLUB && (attacker->species == SPECIES_CUBONE || attacker->species == SPECIES_MAROWAK))
         attack *= 2;
-
+    if ((attackerHoldEffect == HOLD_EFFECT_FAIRY_POWER && moveType == TYPE_FAIRY) && attacker->ability == ABILITY_MULTITYPE)
+    {
+        attack *= 1.5;
+        spAttack *= 1.5;
+    }
+    else if ((attackerHoldEffect == HOLD_EFFECT_BUG_POWER && moveType == TYPE_BUG) && attacker->ability == ABILITY_MULTITYPE)
+    {
+        attack *= 1.5;
+        spAttack *= 1.5;
+    }
+    else if ((attackerHoldEffect == HOLD_EFFECT_STEEL_POWER && moveType == TYPE_STEEL) && attacker->ability == ABILITY_MULTITYPE)
+    {
+        attack *= 1.5;
+        spAttack *= 1.5;
+    }
+    else if ((attackerHoldEffect == HOLD_EFFECT_GROUND_POWER && moveType == TYPE_GROUND) && attacker->ability == ABILITY_MULTITYPE)
+    {
+        attack *= 1.5;
+        spAttack *= 1.5;
+    }
+    else if ((attackerHoldEffect == HOLD_EFFECT_ROCK_POWER && moveType == TYPE_ROCK) && attacker->ability == ABILITY_MULTITYPE)
+    {    
+        attack *= 1.5;
+        spAttack *= 1.5;
+    }
+    else if ((attackerHoldEffect == HOLD_EFFECT_GRASS_POWER && moveType == TYPE_GRASS) && attacker->ability == ABILITY_MULTITYPE)
+    {
+        attack *= 1.5;
+        spAttack *= 1.5;
+    }
+    else if ((attackerHoldEffect == HOLD_EFFECT_DARK_POWER && moveType == TYPE_DARK) && attacker->ability == ABILITY_MULTITYPE)
+    {
+        attack *= 1.5;
+        spAttack *= 1.5;
+    }
+    else if ((attackerHoldEffect == HOLD_EFFECT_FIGHTING_POWER && moveType == TYPE_FIGHTING) && attacker->ability == ABILITY_MULTITYPE)
+    {
+        attack *= 1.5;
+        spAttack *= 1.5;
+    }
+    else if ((attackerHoldEffect == HOLD_EFFECT_ELECTRIC_POWER && moveType == TYPE_ELECTRIC) && attacker->ability == ABILITY_MULTITYPE)
+    {
+        attack *= 1.5;
+        spAttack *= 1.5;
+    }
+    else if ((attackerHoldEffect == HOLD_EFFECT_WATER_POWER && moveType == TYPE_WATER) && attacker->ability == ABILITY_MULTITYPE)
+    {
+        attack *= 1.5;
+        spAttack *= 1.5;
+    }
+    else if ((attackerHoldEffect == HOLD_EFFECT_FLYING_POWER && moveType == TYPE_FLYING) && attacker->ability == ABILITY_MULTITYPE)
+    {
+        attack *= 1.5;
+        spAttack *= 1.5;
+    }
+    else if ((attackerHoldEffect == HOLD_EFFECT_POISON_POWER && moveType == TYPE_POISON) && attacker->ability == ABILITY_MULTITYPE)
+    {
+        attack *= 1.5;
+        spAttack *= 1.5;
+    }
+    else if ((attackerHoldEffect == HOLD_EFFECT_ICE_POWER && moveType == TYPE_ICE) && attacker->ability == ABILITY_MULTITYPE)
+    {
+        attack *= 1.5;
+        spAttack *= 1.5;
+    }
+    else if ((attackerHoldEffect == HOLD_EFFECT_GHOST_POWER && moveType == TYPE_GHOST) && attacker->ability == ABILITY_MULTITYPE)
+    {
+        attack *= 1.5;
+        spAttack *= 1.5;
+    }
+    else if ((attackerHoldEffect == HOLD_EFFECT_PSYCHIC_POWER && moveType == TYPE_PSYCHIC) && attacker->ability == ABILITY_MULTITYPE)
+    {
+        attack *= 1.5;
+        spAttack *= 1.5;
+    }
+    else if ((attackerHoldEffect == HOLD_EFFECT_FIRE_POWER && moveType == TYPE_FIRE) && attacker->ability == ABILITY_MULTITYPE)
+    {
+        attack *= 1.5;
+        spAttack *= 1.5;
+    }
+    else if ((attackerHoldEffect == HOLD_EFFECT_DRAGON_POWER && moveType == TYPE_DRAGON) && attacker->ability == ABILITY_MULTITYPE)
+    {
+        attack *= 1.5;
+        spAttack *= 1.5;
+    }
+    else if ((attackerHoldEffect == HOLD_EFFECT_NORMAL_POWER && moveType == TYPE_NORMAL) && attacker->ability == ABILITY_MULTITYPE)
+    {
+        attack *= 1.5;
+        spAttack *= 1.5;
+    }
     // Apply abilities / field sports
     if (gSaveBlock2Ptr->optionStyle == 0)
         if (defender->ability == ABILITY_THICK_FAT && (type == TYPE_FIRE || type == TYPE_ICE))
@@ -6135,6 +6225,10 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         spAttack = (150 * spAttack) / 100;
     if (attacker->ability == ABILITY_GUTS && attacker->status1)
         attack = (150 * attack) / 100;
+    if (attacker->ability == ABILITY_TRANSISTOR && moveType == TYPE_ELECTRIC)
+        gBattleMovePower = (150 * gBattleMovePower) / 100;
+    if (attacker->ability == ABILITY_DRAGONS_MAW && moveType == TYPE_DRAGON)
+        gBattleMovePower = (150 * gBattleMovePower) / 100;
     if (defender->ability == ABILITY_MARVEL_SCALE && defender->status1)
         defense = (150 * defense) / 100;
     if (type == TYPE_ELECTRIC && AbilityBattleEffects(ABILITYEFFECT_FIELD_SPORT, 0, 0, ABILITYEFFECT_MUD_SPORT, 0))
