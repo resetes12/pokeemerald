@@ -1253,14 +1253,23 @@ void TryFadeOutOldMapMusic(void)
     u16 warpMusic = GetWarpDestinationMusic();
     if (FlagGet(FLAG_DONT_TRANSITION_MUSIC) != TRUE && warpMusic != GetCurrentMapMusic())
     {
-        if (currentMusic == MUS_SURF
+        if ((currentMusic == MUS_SURF
+            && gSaveBlock1Ptr->optionsSurfMusic == 0
             && VarGet(VAR_SKY_PILLAR_STATE) == 2
             && gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(SOOTOPOLIS_CITY)
             && gSaveBlock1Ptr->location.mapNum == MAP_NUM(SOOTOPOLIS_CITY)
             && sWarpDestination.mapGroup == MAP_GROUP(SOOTOPOLIS_CITY)
             && sWarpDestination.mapNum == MAP_NUM(SOOTOPOLIS_CITY)
             && sWarpDestination.x == 29
-            && sWarpDestination.y == 53)
+            && sWarpDestination.y == 53) 
+            || (gSaveBlock1Ptr->optionsSurfMusic == 1
+            && VarGet(VAR_SKY_PILLAR_STATE) == 2
+            && gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(SOOTOPOLIS_CITY)
+            && gSaveBlock1Ptr->location.mapNum == MAP_NUM(SOOTOPOLIS_CITY)
+            && sWarpDestination.mapGroup == MAP_GROUP(SOOTOPOLIS_CITY)
+            && sWarpDestination.mapNum == MAP_NUM(SOOTOPOLIS_CITY)
+            && sWarpDestination.x == 29
+            && sWarpDestination.y == 53))
             return;
         FadeOutMapMusic(GetMapMusicFadeoutSpeed());
     }
