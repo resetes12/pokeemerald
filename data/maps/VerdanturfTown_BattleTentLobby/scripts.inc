@@ -129,6 +129,7 @@ VerdanturfTown_BattleTentLobby_EventScript_TryEnterChallenge::
 	frontier_set FRONTIER_DATA_LVL_MODE, FRONTIER_LVL_TENT
 	msgbox VerdanturfTown_BattleTentLobby_Text_SelectThreeMons, MSGBOX_DEFAULT
 	fadescreen FADE_TO_BLACK
+	callnative RemoveFollowingPokemon
 	setvar VAR_0x8004, 1
 	setvar VAR_0x8005, FRONTIER_PARTY_SIZE
 	special ChoosePartyForBattleFrontier

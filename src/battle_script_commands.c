@@ -3456,7 +3456,7 @@ static void Cmd_getexp(void)
                 if (gExpShareExp == 0)
                     gExpShareExp = 1;
             else if ((FlagGet(FLAG_EXP_SHARE) == TRUE) && (gSaveBlock2Ptr->optionsDifficulty == 2))
-                *exp = SAFE_DIV(calculatedExp / 2, viaSentIn);
+                *exp = SAFE_DIV(calculatedExp / 1.5, viaSentIn);
                 if (*exp == 0)
                     *exp = 1;
 
