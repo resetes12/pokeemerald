@@ -3313,7 +3313,10 @@ u8 SetFacilityPtrsGetLevel(void)
     else
     {
         gFacilityTrainers = gBattleFrontierTrainers;
-        gFacilityTrainerMons = gBattleFrontierMons;
+        if (gSaveBlock2Ptr->optionStyle == 1) //off
+            gFacilityTrainerMons = gBattleFrontierMons;
+        else if (gSaveBlock2Ptr->optionStyle == 0) //on
+            gFacilityTrainerMons = gBattleFrontierMonsSplit;
         return GetFrontierEnemyMonLevel(gSaveBlock2Ptr->frontier.lvlMode);
     }
 }
@@ -3423,7 +3426,10 @@ static u8 SetTentPtrsGetLevel(void)
     else
     {
         gFacilityTrainers = gBattleFrontierTrainers;
-        gFacilityTrainerMons = gBattleFrontierMons;
+        if (gSaveBlock2Ptr->optionStyle == 1) //off
+            gFacilityTrainerMons = gBattleFrontierMons;
+        else if (gSaveBlock2Ptr->optionStyle == 0) //on
+            gFacilityTrainerMons = gBattleFrontierMonsSplit;
     }
 
     level = 50;

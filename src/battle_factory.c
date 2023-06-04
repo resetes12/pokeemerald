@@ -386,7 +386,10 @@ static void SetRentalsToOpponentParty(void)
     u8 i;
 
     if (gSaveBlock2Ptr->frontier.lvlMode != FRONTIER_LVL_TENT)
-        gFacilityTrainerMons = gBattleFrontierMons;
+        if (gSaveBlock2Ptr->optionStyle == 1) //off
+            gFacilityTrainerMons = gBattleFrontierMons;
+        else if (gSaveBlock2Ptr->optionStyle == 0) //on
+            gFacilityTrainerMons = gBattleFrontierMonsSplit;
     else
         gFacilityTrainerMons = gSlateportBattleTentMons;
 
@@ -418,7 +421,10 @@ static void SetPlayerAndOpponentParties(void)
     }
     else
     {
-        gFacilityTrainerMons = gBattleFrontierMons;
+        if (gSaveBlock2Ptr->optionStyle == 1) //off
+            gFacilityTrainerMons = gBattleFrontierMons;
+        else if (gSaveBlock2Ptr->optionStyle == 0) //on
+            gFacilityTrainerMons = gBattleFrontierMonsSplit;
         if (gSaveBlock2Ptr->frontier.lvlMode != FRONTIER_LVL_50)
             monLevel = FRONTIER_MAX_LEVEL_OPEN;
         else
@@ -537,7 +543,10 @@ static void GenerateInitialRentalMons(void)
     else
         factoryBattleMode = FRONTIER_MODE_SINGLES;
 
-    gFacilityTrainerMons = gBattleFrontierMons;
+    if (gSaveBlock2Ptr->optionStyle == 1) //off
+        gFacilityTrainerMons = gBattleFrontierMons;
+    else if (gSaveBlock2Ptr->optionStyle == 0) //on
+        gFacilityTrainerMons = gBattleFrontierMonsSplit;
     if (gSaveBlock2Ptr->frontier.lvlMode != FRONTIER_LVL_50)
     {
         factoryLvlMode = FRONTIER_LVL_OPEN;
@@ -610,7 +619,10 @@ static void GetOpponentMostCommonMonType(void)
     u8 typeCounts[NUMBER_OF_MON_TYPES];
     u8 mostCommonTypes[2];
 
-    gFacilityTrainerMons = gBattleFrontierMons;
+    if (gSaveBlock2Ptr->optionStyle == 1) //off
+        gFacilityTrainerMons = gBattleFrontierMons;
+    else if (gSaveBlock2Ptr->optionStyle == 0) //on
+        gFacilityTrainerMons = gBattleFrontierMonsSplit;
 
     // Count the number of times each type occurs in the opponent's party.
     for (i = TYPE_NORMAL; i < NUMBER_OF_MON_TYPES; i++)
@@ -660,7 +672,10 @@ static void GetOpponentBattleStyle(void)
     u8 stylePoints[FACTORY_NUM_STYLES];
 
     count = 0;
-    gFacilityTrainerMons = gBattleFrontierMons;
+    if (gSaveBlock2Ptr->optionStyle == 1) //off
+        gFacilityTrainerMons = gBattleFrontierMons;
+    else if (gSaveBlock2Ptr->optionStyle == 0) //on
+        gFacilityTrainerMons = gBattleFrontierMonsSplit;
     for (i = 0; i < FACTORY_NUM_STYLES; i++)
         stylePoints[i] = 0;
 

@@ -1320,11 +1320,11 @@ static void DrawChoices_Style(int selection, int y)
 
     if (selection == 0)
     {
-        gSaveBlock2Ptr->optionStyle = 0; //Modern
+        gSaveBlock2Ptr->optionStyle = 0; //Phy / sp split on
     }
     else
     {
-        gSaveBlock2Ptr->optionStyle = 1; //Classic
+        gSaveBlock2Ptr->optionStyle = 1; //Phy / sp split off
     }
 
     DrawOptionMenuChoice(gText_BattleSceneOn, 104, y, styles[0], active);
