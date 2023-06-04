@@ -1126,6 +1126,7 @@ struct SaveBlock1
         u8 optionsEasierFeebas:1;
         u8 optionsBikeMusic:1;
         u8 optionsEvenFasterJoy:1;
+        u8 optionsSurfMusic:1;
 };
 
 extern struct SaveBlock1* gSaveBlock1Ptr;

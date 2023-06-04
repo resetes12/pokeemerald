@@ -113,6 +113,7 @@ static void SetDefaultOptions(void)
     gSaveBlock2Ptr->optionsFastBattle = 1;
     gSaveBlock1Ptr->optionsBikeMusic = 0;
     gSaveBlock1Ptr->optionsEvenFasterJoy = 1;
+    gSaveBlock1Ptr->optionsSurfMusic = 0;
 }
 
 static void ClearPokedexFlags(void)
