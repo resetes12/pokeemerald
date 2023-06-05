@@ -2519,6 +2519,8 @@ void SetMoveEffect(bool8 primary, u8 certain)
             }
             if (gBattleMons[gEffectBattler].status1)
                 break;
+            if (IS_BATTLER_OF_TYPE(gEffectBattler, TYPE_ELECTRIC))
+                break;
 
             statusChanged = TRUE;
             break;
