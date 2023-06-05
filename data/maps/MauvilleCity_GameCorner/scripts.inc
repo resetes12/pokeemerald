@@ -10,8 +10,8 @@ MauvilleCity_GameCorner_MapScripts::
 	.set DOLL_COINS,  1000
 	.set DOLL2_COINS,  9000
 
-	.set COINS_PRICE_50,  1000
-	.set COINS_PRICE_500, 10000
+	.set COINS_PRICE_50,  500
+	.set COINS_PRICE_500, 5000
 
 MauvilleCity_GameCorner_EventScript_CoinsClerk::
 	lock
