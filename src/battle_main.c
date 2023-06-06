@@ -2230,7 +2230,7 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                         if (gSaveBlock2Ptr->optionsDifficulty == 2) //only in hard mode
                         {
                                 if (partyData[i].species == SPECIES_SLAKING && gTrainers[trainerNum].trainerPic == TRAINER_PIC_LEADER_NORMAN  //norman slaking code
-                                && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_LEADER)  //Set Norman's Slaking to have intimidate
+                                && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_LEADER)  //Set Norman's Slaking to have Immunity
                                     SetMonData(&party[i], MON_DATA_ABILITY_NUM, &abilityIfNormansSlaking); //Immunity
                                 if (partyData[i].species == SPECIES_MILOTIC && gTrainers[trainerNum].trainerPic == TRAINER_PIC_CHAMPION_WALLACE  
                                 && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_CHAMPION)  
