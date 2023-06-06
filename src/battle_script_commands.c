@@ -3464,11 +3464,11 @@ static void Cmd_getexp(void)
                 if (gExpShareExp == 0)
                     gExpShareExp = 1;
             else if ((FlagGet(FLAG_EXP_SHARE) == TRUE) && (gSaveBlock2Ptr->optionsDifficulty == 2))
-                *exp = SAFE_DIV(calculatedExp / 1.5, viaSentIn);
+                *exp = SAFE_DIV(calculatedExp / 2, viaSentIn);
                 if (*exp == 0)
                     *exp = 1;
 
-                gExpShareExp = calculatedExp / 2;
+                gExpShareExp = calculatedExp / 4;
                 if (gExpShareExp == 0)
                     gExpShareExp = 1;
             
@@ -3569,8 +3569,13 @@ static void Cmd_getexp(void)
                         }
                         else
                         {
-                            gBattleMoveDamage = (gBattleMoveDamage * 150) / 100;
-                            i = STRINGID_ABOOSTED;
+                            if (gSaveBlock2Ptr->optionsDifficulty != 2)
+                            {
+                                gBattleMoveDamage = (gBattleMoveDamage * 150) / 100;
+                                i = STRINGID_ABOOSTED;
+                            }
+                            else
+                                i = STRINGID_EMPTYSTRING4;
                         }
                     }
                     else
@@ -5861,6 +5866,8 @@ static void Cmd_getmoneyreward(void)
         money = GetTrainerMoneyToGive(gTrainerBattleOpponent_A);
         if (gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS)
             money += GetTrainerMoneyToGive(gTrainerBattleOpponent_B);
+        if (gSaveBlock2Ptr->optionsDifficulty == 2)
+            money *= 0.6;
         AddMoney(&gSaveBlock1Ptr->money, money);
     }
 		else

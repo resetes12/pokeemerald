@@ -6029,6 +6029,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     u8 attackerHoldEffect;
     u8 attackerHoldEffectParam;
     u32 moveType = gBattleMoves[gCurrentMove].type;
+    u8 side = GetBattlerSide(gBattlerTarget);
 
     if (!powerOverride)
         gBattleMovePower = gBattleMoves[move].power;
@@ -6218,6 +6219,39 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     if (gSaveBlock2Ptr->optionStyle == 1)
         if (defender->ability == ABILITY_THICK_FAT && (type == TYPE_FIRE || type == TYPE_ICE))
             spAttack /= 2;
+    if ((defender->ability != ABILITY_NONE) && (gSaveBlock2Ptr->optionsDifficulty == 2) && (side == B_SIDE_PLAYER)) //FlagSet(FLAG_DIFFICULTY_HARD)
+    {
+        if (FlagGet(FLAG_BADGE05_GET) == TRUE)
+        {
+            defense = (75 * defense) / 100; //+25%
+            spDefense = (75 * spDefense) / 100;
+        }
+        else if (FlagGet(FLAG_BADGE04_GET) == TRUE)
+        {
+            defense = (80 * defense) / 100; //+20%
+            spDefense = (80 * spDefense) / 100;
+        }
+        else if (FlagGet(FLAG_BADGE03_GET) == TRUE)
+        {
+            defense = (85 * defense) / 100; //+15%
+            spDefense = (85 * spDefense) / 100;
+        }
+        else if (FlagGet(FLAG_BADGE02_GET) == TRUE)
+        {
+            defense = (90 * defense) / 100; //+10%
+            spDefense = (90 * spDefense) / 100;
+        }
+        else if (FlagGet(FLAG_BADGE01_GET) == TRUE)
+        {
+            defense = (95 * defense) / 100; //+5%
+            spDefense = (95 * spDefense) / 100;
+        }
+        else
+        {
+            defense = (100 * defense) / 100; //+0%
+            spDefense = (100 * spDefense) / 100;
+        }
+    }
     if (attacker->ability == ABILITY_HUSTLE)
         attack = (150 * attack) / 100;
     if (attacker->ability == ABILITY_PLUS && ABILITY_ON_FIELD2(ABILITY_MINUS))
