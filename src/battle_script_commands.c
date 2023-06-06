@@ -1180,6 +1180,8 @@ static void Cmd_accuracycheck(void)
             calc = (calc * 130) / 100; // 1.3 compound eyes boost
         if (WEATHER_HAS_EFFECT && gBattleMons[gBattlerTarget].ability == ABILITY_SAND_VEIL && gBattleWeather & B_WEATHER_SANDSTORM)
             calc = (calc * 80) / 100; // 1.2 sand veil loss
+        if (gBattleMons[gBattlerTarget].ability == ABILITY_ILLUMINATE)
+            calc = (calc * 90) / 100; // 1.1 illuminate loss
         if (gSaveBlock2Ptr->optionStyle == 1) 
             if (gBattleMons[gBattlerAttacker].ability == ABILITY_HUSTLE && IS_TYPE_PHYSICAL(type))
                 calc = (calc * 80) / 100; // 1.2 hustle loss
@@ -1766,6 +1768,8 @@ static void Cmd_adjustnormaldamage(void)
         RecordItemEffectBattle(gBattlerTarget, holdEffect);
         gSpecialStatuses[gBattlerTarget].focusBanded = 1;
     }
+    if (gBattleMons[gBattlerTarget].ability == ABILITY_STURDY && (gBattleMons[gBattlerTarget].maxHP == gBattleMons[gBattlerTarget].hp))
+        gProtectStructs[gBattlerTarget].endured = 1;
     if (!(gBattleMons[gBattlerTarget].status2 & STATUS2_SUBSTITUTE)
      && (gBattleMoves[gCurrentMove].effect == EFFECT_FALSE_SWIPE || gProtectStructs[gBattlerTarget].endured || gSpecialStatuses[gBattlerTarget].focusBanded)
      && gBattleMons[gBattlerTarget].hp <= gBattleMoveDamage)
@@ -1809,6 +1813,8 @@ static void Cmd_adjustnormaldamage2(void)
         RecordItemEffectBattle(gBattlerTarget, holdEffect);
         gSpecialStatuses[gBattlerTarget].focusBanded = 1;
     }
+    if (gBattleMons[gBattlerTarget].ability == ABILITY_STURDY && (gBattleMons[gBattlerTarget].maxHP == gBattleMons[gBattlerTarget].hp))
+        gProtectStructs[gBattlerTarget].endured;
     if (!(gBattleMons[gBattlerTarget].status2 & STATUS2_SUBSTITUTE)
      && (gProtectStructs[gBattlerTarget].endured || gSpecialStatuses[gBattlerTarget].focusBanded)
      && gBattleMons[gBattlerTarget].hp <= gBattleMoveDamage)
@@ -3426,8 +3432,8 @@ static void Cmd_getexp(void)
             }
 
             if (gSaveBlock2Ptr->optionsDifficulty == 2) //exp decrease for hard mode
-                calculatedExp *= 0.65;
-            if (gSaveBlock2Ptr->optionsDifficulty == 0) //exp decrease for easy mode
+                calculatedExp *= 0.60;
+            if (gSaveBlock2Ptr->optionsDifficulty == 0) //exp increase for easy mode
                 calculatedExp *= 1.2;
 
             if (FlagGet(FLAG_EXP_SHARE) == FALSE)
@@ -6122,6 +6128,8 @@ static void Cmd_adjustsetdamage(void)
         RecordItemEffectBattle(gBattlerTarget, holdEffect);
         gSpecialStatuses[gBattlerTarget].focusBanded = 1;
     }
+    if (gBattleMons[gBattlerTarget].ability == ABILITY_STURDY && (gBattleMons[gBattlerTarget].maxHP == gBattleMons[gBattlerTarget].hp))
+        gProtectStructs[gBattlerTarget].endured;
     if (!(gBattleMons[gBattlerTarget].status2 & STATUS2_SUBSTITUTE)
      && (gBattleMoves[gCurrentMove].effect == EFFECT_FALSE_SWIPE || gProtectStructs[gBattlerTarget].endured || gSpecialStatuses[gBattlerTarget].focusBanded)
      && gBattleMons[gBattlerTarget].hp <= gBattleMoveDamage)

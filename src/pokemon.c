@@ -6208,8 +6208,8 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     }
     else if ((defenderHoldEffect == HOLD_EFFECT_NORMAL_POWER) && defender->ability == ABILITY_MULTITYPE)
     {
-        defense *= 1.5;
-        spDefense *= 1.5;
+        defense *= 1.25;
+        spDefense *= 1.25;
     }
     // Apply abilities / field sports
     if (gSaveBlock2Ptr->optionStyle == 0)
@@ -6230,6 +6230,8 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         gBattleMovePower = (150 * gBattleMovePower) / 100;
     if (attacker->ability == ABILITY_DRAGONS_MAW && moveType == TYPE_DRAGON)
         gBattleMovePower = (150 * gBattleMovePower) / 100;
+    if (attacker->ability == ABILITY_ILLUMINATE && moveType == TYPE_ELECTRIC)
+        gBattleMovePower = (110 * gBattleMovePower) / 100;
     if (defender->ability == ABILITY_MARVEL_SCALE && defender->status1)
         defense = (150 * defense) / 100;
     if (type == TYPE_ELECTRIC && AbilityBattleEffects(ABILITYEFFECT_FIELD_SPORT, 0, 0, ABILITYEFFECT_MUD_SPORT, 0))
