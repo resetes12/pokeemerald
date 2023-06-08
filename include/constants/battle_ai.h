@@ -44,8 +44,6 @@
 #define AI_SCRIPT_DOUBLE_BATTLE         (1 << 7)
 #define AI_SCRIPT_HP_AWARE              (1 << 8)
 #define AI_SCRIPT_TRY_SUNNY_DAY_START   (1 << 9)
-#define AI_SCRIPT_DO_NOT_SWITCH         (1 << 10)
-#define AI_SCRIPT_PRESERVE_ORDER        (1 << 11)
 // 10 - 28 are not used
 #define AI_SCRIPT_ROAMING               (1 << 29)
 #define AI_SCRIPT_SAFARI                (1 << 30)

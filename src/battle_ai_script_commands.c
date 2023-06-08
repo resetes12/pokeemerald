@@ -413,7 +413,7 @@ static u8 ChooseMoveOrAction_Singles(void)
 
     while (AI_THINKING_STRUCT->aiFlags != 0)
     {
-        if ((AI_THINKING_STRUCT->aiFlags & ~(AI_SCRIPT_DO_NOT_SWITCH | AI_SCRIPT_PRESERVE_ORDER)) && AI_THINKING_STRUCT->aiFlags & 1)
+        if (AI_THINKING_STRUCT->aiFlags & 1)
         {
             AI_THINKING_STRUCT->aiState = AIState_SettingUp;
             BattleAI_DoAIProcessing();
