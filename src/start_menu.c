@@ -363,11 +363,10 @@ static void BuildStartMenuActions(void)
     }
     else
     {
-    #if defined(TX_DEBUG_SYSTEM_ENABLE) && TX_DEBUG_SYSTEM_IN_MENU
-        BuildDebugStartMenu();
-    #else
-        BuildNormalStartMenu();
-    #endif
+        if (VarGet(VAR_DEBUG_OPTIONS) == 1)
+            BuildDebugStartMenu();
+        else
+            BuildNormalStartMenu();
     }
 }
 

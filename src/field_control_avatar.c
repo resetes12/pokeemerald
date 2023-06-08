@@ -148,13 +148,12 @@ void FieldGetPlayerInput(struct FieldInput *input, u16 newKeys, u16 heldKeys)
     else if (heldKeys & DPAD_RIGHT)
         input->dpadDirection = DIR_EAST;
 
-#if TX_DEBUG_SYSTEM_ENABLE == TRUE && TX_DEBUG_SYSTEM_IN_MENU == FALSE
-    if ((heldKeys & TX_DEBUG_SYSTEM_HELD_KEYS) && input->TX_DEBUG_SYSTEM_TRIGGER_EVENT)
-    {
-        input->input_field_1_2 = TRUE;
-        input->TX_DEBUG_SYSTEM_TRIGGER_EVENT = FALSE;
-    }
-#endif
+    if (VarGet(VAR_DEBUG_OPTIONS) == 1)
+        if ((heldKeys & TX_DEBUG_SYSTEM_HELD_KEYS) && input->TX_DEBUG_SYSTEM_TRIGGER_EVENT)
+        {
+            input->input_field_1_2 = TRUE;
+            input->TX_DEBUG_SYSTEM_TRIGGER_EVENT = FALSE;
+        }
 }
 
 int ProcessPlayerFieldInput(struct FieldInput *input)

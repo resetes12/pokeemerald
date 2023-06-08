@@ -861,6 +861,19 @@ static void Task_OptionMenuProcessInput(u8 taskId)
         HighlightOptionMenuItem();
         DrawDescriptionText();
     }
+    if (JOY_NEW(SELECT_BUTTON) && JOY_NEW(START_BUTTON))
+    {
+        if (VarGet(VAR_DEBUG_OPTIONS) == 1)
+        {
+            VarSet(VAR_DEBUG_OPTIONS, 0);
+            PlaySE(SE_PC_OFF);
+        }
+        else
+        {
+            VarSet(VAR_DEBUG_OPTIONS, 1);
+            PlaySE(SE_PC_ON);
+        }
+    }
 }
 
 static void Task_OptionMenuSave(u8 taskId)
