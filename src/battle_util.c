@@ -3335,6 +3335,7 @@ u8 ItemBattleEffects(u8 caseID, u8 battlerId, bool8 moveTurn)
                 }
                 break;
             case HOLD_EFFECT_RESTORE_PCT_HP:
+            case HOLD_EFFECT_HARD_MODE_MODIFIER_SITRUS:
                 if (gBattleMons[battlerId].hp <= gBattleMons[battlerId].maxHP / 2 && !moveTurn)
                 {
                     gBattleMoveDamage = (gBattleMons[battlerId].maxHP * battlerHoldEffectParam) / 100;
@@ -3399,6 +3400,7 @@ u8 ItemBattleEffects(u8 caseID, u8 battlerId, bool8 moveTurn)
                 }
                 break;
             case HOLD_EFFECT_LEFTOVERS:
+            case HOLD_EFFECT_HARD_MODE_MODIFIER_LEFTOVERS:
                 if (gBattleMons[battlerId].hp < gBattleMons[battlerId].maxHP && !moveTurn)
                 {
                     gBattleMoveDamage = gBattleMons[battlerId].maxHP / 16;
@@ -3428,6 +3430,7 @@ u8 ItemBattleEffects(u8 caseID, u8 battlerId, bool8 moveTurn)
                 TRY_EAT_CONFUSE_BERRY(FLAVOR_SOUR);
                 break;
             case HOLD_EFFECT_ATTACK_UP:
+            case HOLD_EFFECT_HARD_MODE_MODIFIER_LIECHI:
                 if (gBattleMons[battlerId].hp <= gBattleMons[battlerId].maxHP / battlerHoldEffectParam
                 && !moveTurn && gBattleMons[battlerId].statStages[STAT_ATK] < MAX_STAT_STAGE)
                 {
@@ -3530,6 +3533,7 @@ u8 ItemBattleEffects(u8 caseID, u8 battlerId, bool8 moveTurn)
                 }
                 break;
             case HOLD_EFFECT_CURE_SLP:
+            case HOLD_EFFECT_HARD_MODE_MODIFIER_CHESTO:
                 if (gBattleMons[battlerId].status1 & STATUS1_SLEEP)
                 {
                     gBattleMons[battlerId].status1 &= ~STATUS1_SLEEP;
@@ -3676,6 +3680,7 @@ u8 ItemBattleEffects(u8 caseID, u8 battlerId, bool8 moveTurn)
                 }
                 break;
             case HOLD_EFFECT_CURE_SLP:
+            case HOLD_EFFECT_HARD_MODE_MODIFIER_CHESTO:
                 if (gBattleMons[battlerId].status1 & STATUS1_SLEEP)
                 {
                     gBattleMons[battlerId].status1 &= ~STATUS1_SLEEP;

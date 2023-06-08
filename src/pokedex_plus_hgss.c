@@ -6034,36 +6034,8 @@ static void PrintStatsScreen_Abilities(u8 taskId)
         ability1 = sPokedexView->sPokemonStats.ability1;
         if (ability1 != ability0)
         {
-            if (ability1 == ABILITY_IMMUNITY && species == SPECIES_SLAKING) //Norman Slaking Code
-            {
-                PrintStatsScreenTextSmallWhite(WIN_STATS_ABILITIES, gAbilityNames[ABILITY_NONE], abilities_x, abilities_y + 30);
-                PrintStatsScreenTextSmall(WIN_STATS_ABILITIES, gAbilityDescriptionPointers[ABILITY_NONE], abilities_x, abilities_y + 44);
-            }
-            else if (ability1 == ABILITY_DRIZZLE && species == SPECIES_WHISCASH)
-            {
-                PrintStatsScreenTextSmallWhite(WIN_STATS_ABILITIES, gAbilityNames[ABILITY_NONE], abilities_x, abilities_y + 30);
-                PrintStatsScreenTextSmall(WIN_STATS_ABILITIES, gAbilityDescriptionPointers[ABILITY_NONE], abilities_x, abilities_y + 44);
-            }
-            else if (ability1 == ABILITY_SWIFT_SWIM && species == SPECIES_MILOTIC)
-            {
-                PrintStatsScreenTextSmallWhite(WIN_STATS_ABILITIES, gAbilityNames[ABILITY_NONE], abilities_x, abilities_y + 30);
-                PrintStatsScreenTextSmall(WIN_STATS_ABILITIES, gAbilityDescriptionPointers[ABILITY_NONE], abilities_x, abilities_y + 44);
-            }
-            else if (ability1 == ABILITY_LEVITATE && species == SPECIES_DUSKNOIR)
-            {
-                PrintStatsScreenTextSmallWhite(WIN_STATS_ABILITIES, gAbilityNames[ABILITY_NONE], abilities_x, abilities_y + 30);
-                PrintStatsScreenTextSmall(WIN_STATS_ABILITIES, gAbilityDescriptionPointers[ABILITY_NONE], abilities_x, abilities_y + 44);
-            }
-            else if (ability1 == ABILITY_DRIZZLE && species == SPECIES_KINGDRA)
-            {
-                PrintStatsScreenTextSmallWhite(WIN_STATS_ABILITIES, gAbilityNames[ABILITY_NONE], abilities_x, abilities_y + 30);
-                PrintStatsScreenTextSmall(WIN_STATS_ABILITIES, gAbilityDescriptionPointers[ABILITY_NONE], abilities_x, abilities_y + 44);
-            }
-            else
-            {
-                PrintStatsScreenTextSmallWhite(WIN_STATS_ABILITIES, gAbilityNames[ability1], abilities_x, abilities_y + 30);
-                PrintStatsScreenTextSmall(WIN_STATS_ABILITIES, gAbilityDescriptionPointers[ability1], abilities_x, abilities_y + 44);
-            }
+            PrintStatsScreenTextSmallWhite(WIN_STATS_ABILITIES, gAbilityNames[ability1], abilities_x, abilities_y + 30);
+            PrintStatsScreenTextSmall(WIN_STATS_ABILITIES, gAbilityDescriptionPointers[ability1], abilities_x, abilities_y + 44);
         }
     #ifdef POKEMON_EXPANSION
     }

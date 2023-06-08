@@ -2882,7 +2882,12 @@ void SetMoveEffect(bool8 primary, u8 certain)
                     else if (gBattleMons[gBattlerAttacker].item != ITEM_NONE
                         || gBattleMons[gBattlerTarget].item == ITEM_ENIGMA_BERRY
                         || IS_ITEM_MAIL(gBattleMons[gBattlerTarget].item)
-                        || gBattleMons[gBattlerTarget].item == ITEM_NONE)
+                        || gBattleMons[gBattlerTarget].item == ITEM_NONE
+                        || gBattleMons[gBattlerTarget].item == ITEM_072
+                        || gBattleMons[gBattlerTarget].item == ITEM_073
+                        || gBattleMons[gBattlerTarget].item == ITEM_074
+                        || gBattleMons[gBattlerTarget].item == ITEM_075
+                        || gBattleMons[gBattlerTarget].item == ITEM_076)
                     {
                         gBattlescriptCurrInstr++;
                     }

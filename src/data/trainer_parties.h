@@ -11989,7 +11989,7 @@ static const struct TrainerMonItemCustomMoves sParty_TateAndLiza5[] = {
     .lvl = 90,
     .species = SPECIES_GALLADE,
     .heldItem = ITEM_LEFTOVERS,
-    .moves = {MOVE_ICE_PUNCH, MOVE_WISH, MOVE_SWORDS_DANCE, MOVE_PROTECT}
+    .moves = {MOVE_PSYCHO_CUT, MOVE_WISH, MOVE_SWORDS_DANCE, MOVE_PROTECT}
     },
     {
     .iv = 255,
@@ -12009,7 +12009,7 @@ static const struct TrainerMonItemCustomMoves sParty_TateAndLiza5[] = {
     .iv = 255,
     .lvl = 90,
     .species = SPECIES_LUNATONE,
-    .heldItem = ITEM_CHESTO_BERRY,
+    .heldItem = ITEM_SITRUS_BERRY,
     .moves = {MOVE_HYPNOSIS, MOVE_CALM_MIND, MOVE_PSYCHIC, MOVE_ICE_BEAM}
     },
     {

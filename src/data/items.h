@@ -1409,9 +1409,10 @@ const struct Item gItems[] =
 
     [ITEM_072] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
+        .name = _("COOL PENDANT"),
+        .itemId = ITEM_072,
         .price = 0,
+        .holdEffect = HOLD_EFFECT_HARD_MODE_MODIFIER,
         .description = sDummyDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
@@ -1420,9 +1421,10 @@ const struct Item gItems[] =
 
     [ITEM_073] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
+        .name = _("SITRUS BERRY"),
+        .itemId = ITEM_073,
         .price = 0,
+        .holdEffect = HOLD_EFFECT_HARD_MODE_MODIFIER_SITRUS,
         .description = sDummyDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
@@ -1431,9 +1433,10 @@ const struct Item gItems[] =
 
     [ITEM_074] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
+        .name = _("CHESTO BERRY"),
+        .itemId = ITEM_074,
         .price = 0,
+        .holdEffect = HOLD_EFFECT_HARD_MODE_MODIFIER_CHESTO,
         .description = sDummyDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
@@ -1442,9 +1445,10 @@ const struct Item gItems[] =
 
     [ITEM_075] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
+        .name = _("LEFTOVERS"),
+        .itemId = ITEM_075,
         .price = 0,
+        .holdEffect = HOLD_EFFECT_HARD_MODE_MODIFIER_LEFTOVERS,
         .description = sDummyDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
@@ -1453,9 +1457,10 @@ const struct Item gItems[] =
 
     [ITEM_076] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
+        .name = _("LIECHI BERRY"),
+        .itemId = ITEM_076,
         .price = 0,
+        .holdEffect = HOLD_EFFECT_HARD_MODE_MODIFIER_LIECHI,
         .description = sDummyDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
@@ -6249,9 +6254,10 @@ const struct Item gItems2[] =
 
     [ITEM_072] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
+        .name = _("COOL PENDANT"),
+        .itemId = ITEM_072,
         .price = 0,
+        .holdEffect = HOLD_EFFECT_HARD_MODE_MODIFIER,
         .description = sDummyDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
@@ -6260,9 +6266,10 @@ const struct Item gItems2[] =
 
     [ITEM_073] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
+        .name = _("SITRUS BERRY"),
+        .itemId = ITEM_073,
         .price = 0,
+        .holdEffect = HOLD_EFFECT_HARD_MODE_MODIFIER_SITRUS,
         .description = sDummyDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
@@ -6271,9 +6278,10 @@ const struct Item gItems2[] =
 
     [ITEM_074] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
+        .name = _("CHESTO BERRY"),
+        .itemId = ITEM_074,
         .price = 0,
+        .holdEffect = HOLD_EFFECT_HARD_MODE_MODIFIER_CHESTO,
         .description = sDummyDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
@@ -6282,9 +6290,10 @@ const struct Item gItems2[] =
 
     [ITEM_075] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
+        .name = _("LEFTOVERS"),
+        .itemId = ITEM_075,
         .price = 0,
+        .holdEffect = HOLD_EFFECT_HARD_MODE_MODIFIER_LEFTOVERS,
         .description = sDummyDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
@@ -6293,9 +6302,10 @@ const struct Item gItems2[] =
 
     [ITEM_076] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
+        .name = _("LIECHI BERRY"),
+        .itemId = ITEM_076,
         .price = 0,
+        .holdEffect = HOLD_EFFECT_HARD_MODE_MODIFIER_LIECHI,
         .description = sDummyDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,

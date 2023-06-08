@@ -5093,7 +5093,8 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
         }
     }
 
-    if ((GetAbilityBySpecies(species, 1) != ABILITY_NONE) && (species != SPECIES_SLAKING || species != SPECIES_MILOTIC || species != SPECIES_WHISCASH || species != SPECIES_KINGDRA || species != SPECIES_DUSKNOIR)) //tx_randomizer_and_challenges + norman slaking code for hard mode
+    if ((GetAbilityBySpecies(species, 1) != ABILITY_NONE)) //tx_randomizer_and_challenges
+    //if ((GetAbilityBySpecies(species, 1) != ABILITY_NONE) && (species != SPECIES_SLAKING || species != SPECIES_MILOTIC || species != SPECIES_WHISCASH || species != SPECIES_KINGDRA || species != SPECIES_DUSKNOIR)) //tx_randomizer_and_challenges + norman slaking code for hard mode
     {
         value = personality & 1;
         SetBoxMonData(boxMon, MON_DATA_ABILITY_NUM, &value);
@@ -6258,6 +6259,103 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         spAttack = (150 * spAttack) / 100;
     if (attacker->ability == ABILITY_MINUS && ABILITY_ON_FIELD2(ABILITY_PLUS))
         spAttack = (150 * spAttack) / 100;
+    
+    if ((gSaveBlock2Ptr->optionsDifficulty == 2))
+    {
+        // Sceptile gets Thick Fat to reduce dmg from their weaknesses, and a 10% dmg increase.
+        if ((attacker->species == SPECIES_SCEPTILE) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER))
+        {
+            attacker->ability = ABILITY_THICK_FAT;
+            spAttack = (110 * spAttack) / 100;
+            attack = (110 * attack) / 100;
+        }
+        //Blaziken gets Speed Boost and has a 25% def increase
+        else if ((attacker->species == SPECIES_BLAZIKEN) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER))
+        {
+            attacker->ability = ABILITY_SPEED_BOOST;
+            defense = (125 * defense) / 100;
+            spDefense = (125 * spDefense) / 100;
+        }
+        // Swampert only gets Hustle, as he is strong, and 25% def.
+        else if ((attacker->species == SPECIES_SWAMPERT) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER))
+        {
+            attacker->ability = ABILITY_HUSTLE;
+            defense = (125 * defense) / 100;
+            spDefense = (125 * spDefense) / 100;
+        }
+
+        // Slaking gets Immunity. He does -20% damage in the first match vs Norman and does normal damage in the rematches. No sitrus berry.
+        if ((attacker->species == SPECIES_SLAKING) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER))
+        {
+            attacker->ability = ABILITY_IMMUNITY;
+            if (FlagGet(FLAG_BADGE05_GET) == FALSE)
+                {
+                    spAttack = (80 * spAttack) / 100;
+                    attack = (80 * attack) / 100;
+                }
+        }
+
+        // Altaria gets faster, and holds a Chesto for the rematches.
+        if ((attacker->species == SPECIES_ALTARIA) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER_CHESTO))
+        {
+            attacker->ability = ABILITY_SPEED_BOOST;
+        }
+        
+        // Kingdra gets Drizzle
+        if ((attacker->species == SPECIES_KINGDRA) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER_CHESTO))
+        {
+            attacker->ability = ABILITY_DRIZZLE;
+        }
+        // Kingdra gets Drizzle, and Liechi modifier for rematches
+        else if ((attacker->species == SPECIES_KINGDRA) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER_LIECHI))
+        {
+            attacker->ability = ABILITY_DRIZZLE;
+        }
+
+        // Dusknoir gets Levitate
+        if ((attacker->species == SPECIES_DUSKNOIR) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER))
+        {
+            attacker->ability = ABILITY_LEVITATE;
+        }
+        else if ((attacker->species == SPECIES_DUSKNOIR) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER_LEFTOVERS))
+        {
+            attacker->ability = ABILITY_LEVITATE;
+        }
+        
+        // Whiscash gets Drizzle, and Milotic gets Swift Swim together with Marvel Scale
+        if ((attacker->species == SPECIES_WHISCASH) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER))
+        {
+            attacker->ability = ABILITY_DRIZZLE;
+        }
+        if ((attacker->species == SPECIES_MILOTIC) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER))
+        {
+            attacker->ability = ABILITY_SWIFT_SWIM;
+            if (defender->status1)
+                defense = (150 * defense) / 100;
+        }
+        else if ((attacker->species == SPECIES_MILOTIC) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER_LEFTOVERS))
+        {
+            attacker->ability = ABILITY_SWIFT_SWIM;
+            if (defender->status1)
+                defense = (150 * defense) / 100;
+        }
+        
+        // Solrock and Lunatone get a 15% dmg boost if they are together on the field, and a Sitrus berry.
+        if (attacker->species == SPECIES_SOLROCK && ((ABILITY_ON_FIELD2(ABILITY_LEVITATE)) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER_SITRUS)))
+        {
+            attack = (115 * attack) / 100;
+        }
+        if (attacker->species == SPECIES_LUNATONE && ((ABILITY_ON_FIELD2(ABILITY_LEVITATE)) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER_SITRUS)))
+        {
+            spAttack = (115 * spAttack) / 100;
+        }
+        // Lunatone with chesto for rematches
+        else if (attacker->species == SPECIES_LUNATONE && ((ABILITY_ON_FIELD2(ABILITY_LEVITATE)) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER_CHESTO)))
+        {
+            spAttack = (115 * spAttack) / 100;
+        }
+    }
+        
     if (attacker->ability == ABILITY_GUTS && attacker->status1)
         attack = (150 * attack) / 100;
     if (attacker->ability == ABILITY_TRANSISTOR && moveType == TYPE_ELECTRIC)
