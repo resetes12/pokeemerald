@@ -1765,16 +1765,11 @@ static u8 LoadDynamicFollowerPalette(u16 species, u8 form, bool8 shiny) {
     // so that palette tags do not overlap
     const struct CompressedSpritePalette *spritePalette = &(shiny ? gMonShinyPaletteTable : gMonPaletteTable)[species];
     if ((paletteNum = IndexOfSpritePaletteTag(spritePalette->tag)) == 0xFF) { // Load compressed palette
-      LoadCompressedSpritePalette(spritePalette);
-      paletteNum = IndexOfSpritePaletteTag(spritePalette->tag); // Tag is always present
-      if (species == SPECIES_AMPHAROS) { // palette should be light-blended TODO: Add more glowing pokemon
+        LoadCompressedSpritePalette(spritePalette);
+        paletteNum = IndexOfSpritePaletteTag(spritePalette->tag); // Tag is always present
+        // TODO: Add more glowing pokemon besides Ampharos
         // CHARIZARD LINE ? CHINCHOU LANTERN FLAAFY MAREEP UMBREON VOLBEAT ?
-        u16 * palette = &gPlttBufferUnfaded[(paletteNum+16)*16];
-        palette[0] |= 0x8000;
-        if (palette[0] & 0x4000) // If color 15 is blended, use it as the alternate color
-          palette[15] |= 0x8000;
-      }
-      UpdateSpritePaletteWithWeather(paletteNum, FALSE);
+        UpdateSpritePaletteWithWeather(paletteNum, FALSE);
     }
     return paletteNum;
 }
