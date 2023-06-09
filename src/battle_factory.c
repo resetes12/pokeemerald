@@ -391,7 +391,10 @@ static void SetRentalsToOpponentParty(void)
         else if (gSaveBlock2Ptr->optionStyle == 0) //on
             gFacilityTrainerMons = gBattleFrontierMonsSplit;
     else
-        gFacilityTrainerMons = gSlateportBattleTentMons;
+        if (gSaveBlock2Ptr->optionStyle == 1) //off
+            gFacilityTrainerMons = gSlateportBattleTentMons;
+        else if (gSaveBlock2Ptr->optionStyle == 0) //on
+            gFacilityTrainerMons = gSlateportBattleTentMonsSplit;
 
     for (i = 0; i < FRONTIER_PARTY_SIZE; i++)
     {
@@ -416,7 +419,10 @@ static void SetPlayerAndOpponentParties(void)
 
     if (gSaveBlock2Ptr->frontier.lvlMode == FRONTIER_LVL_TENT)
     {
-        gFacilityTrainerMons = gSlateportBattleTentMons;
+        if (gSaveBlock2Ptr->optionStyle == 1) //off
+            gFacilityTrainerMons = gSlateportBattleTentMons;
+        else if (gSaveBlock2Ptr->optionStyle == 0) //on
+            gFacilityTrainerMons = gSlateportBattleTentMonsSplit;
         monLevel = TENT_MIN_LEVEL;
     }
     else
@@ -731,9 +737,15 @@ static void RestorePlayerPartyHeldItems(void)
     u8 i;
 
     if (gSaveBlock2Ptr->frontier.lvlMode != FRONTIER_LVL_TENT)
-        gFacilityTrainerMons = gBattleFrontierMons;
+        if (gSaveBlock2Ptr->optionStyle == 1) //off
+            gFacilityTrainerMons = gBattleFrontierMons;
+        else if (gSaveBlock2Ptr->optionStyle == 0) //on
+            gFacilityTrainerMons = gBattleFrontierMonsSplit;
     else
-        gFacilityTrainerMons = gSlateportBattleTentMons;
+        if (gSaveBlock2Ptr->optionStyle == 1) //off
+            gFacilityTrainerMons = gSlateportBattleTentMons;
+        else if (gSaveBlock2Ptr->optionStyle == 0) //on
+            gFacilityTrainerMons = gSlateportBattleTentMonsSplit;
 
     for (i = 0; i < FRONTIER_PARTY_SIZE; i++)
     {

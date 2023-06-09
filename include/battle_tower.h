@@ -42,6 +42,7 @@ extern const struct FacilityMon gBattleFrontierMons[];
 extern const struct FacilityMon gBattleFrontierMonsSplit[];
 extern const struct BattleFrontierTrainer gBattleFrontierTrainers[];
 extern const struct FacilityMon gSlateportBattleTentMons[];
+extern const struct FacilityMon gSlateportBattleTentMonsSplit[];
 extern const struct BattleFrontierTrainer gSlateportBattleTentTrainers[];
 
 // Temporary storage for monIds of the opponent team

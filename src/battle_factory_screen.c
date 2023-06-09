@@ -1776,7 +1776,11 @@ static void CreateSlateportTentSelectableMons(u8 firstMonId)
     u8 friendship = 0;
     u32 otId = 0;
 
-    gFacilityTrainerMons = gSlateportBattleTentMons;
+    if (gSaveBlock2Ptr->optionStyle == 1) //off
+        gFacilityTrainerMons = gSlateportBattleTentMons;
+    else if (gSaveBlock2Ptr->optionStyle == 0) //on
+        gFacilityTrainerMons = gSlateportBattleTentMonsSplit;
+    
     otId = T1_READ_32(gSaveBlock2Ptr->playerTrainerId);
 
     for (i = 0; i < SELECTABLE_MONS_COUNT; i++)

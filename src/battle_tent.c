@@ -304,7 +304,10 @@ static void GenerateInitialRentalMons(void)
         monIds[i] = 0;
         heldItems[i] = 0;
     }
-    gFacilityTrainerMons = gSlateportBattleTentMons;
+    if (gSaveBlock2Ptr->optionStyle == 1) //off
+        gFacilityTrainerMons = gSlateportBattleTentMons;
+    else if (gSaveBlock2Ptr->optionStyle == 0) //on
+        gFacilityTrainerMons = gSlateportBattleTentMonsSplit;
     currSpecies = SPECIES_NONE;
     i = 0;
     while (i != PARTY_SIZE)
@@ -358,7 +361,10 @@ static void GenerateOpponentMons(void)
     s32 numMons = 0;
 
     gFacilityTrainers = gSlateportBattleTentTrainers;
-    gFacilityTrainerMons = gSlateportBattleTentMons;
+    if (gSaveBlock2Ptr->optionStyle == 1) //off
+        gFacilityTrainerMons = gSlateportBattleTentMons;
+    else if (gSaveBlock2Ptr->optionStyle == 0) //on
+        gFacilityTrainerMons = gSlateportBattleTentMonsSplit;
 
     while (1)
     {
