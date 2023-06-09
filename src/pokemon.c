@@ -6220,7 +6220,10 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     if (gSaveBlock2Ptr->optionStyle == 1)
         if (defender->ability == ABILITY_THICK_FAT && (type == TYPE_FIRE || type == TYPE_ICE))
             spAttack /= 2;
-    if ((defender->ability != ABILITY_NONE) && (gSaveBlock2Ptr->optionsDifficulty == 2) && (side == B_SIDE_PLAYER)) //FlagSet(FLAG_DIFFICULTY_HARD)
+    if ((defender->ability != ABILITY_NONE) 
+    && (gSaveBlock2Ptr->optionsDifficulty == 2) 
+    && (side == B_SIDE_PLAYER) 
+    && !(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_RECORDED_LINK | BATTLE_TYPE_FRONTIER))) //FlagSet(FLAG_DIFFICULTY_HARD)
     {
         if (FlagGet(FLAG_BADGE05_GET) == TRUE)
         {
