@@ -6223,7 +6223,8 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     if ((defender->ability != ABILITY_NONE) 
     && (gSaveBlock2Ptr->optionsDifficulty == 2) 
     && (side == B_SIDE_PLAYER) 
-    && !(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_RECORDED_LINK | BATTLE_TYPE_FRONTIER))) //FlagSet(FLAG_DIFFICULTY_HARD)
+    //&& !(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_RECORDED_LINK | BATTLE_TYPE_FRONTIER))
+    ) //FlagSet(FLAG_DIFFICULTY_HARD)
     {
         if (FlagGet(FLAG_BADGE05_GET) == TRUE)
         {
@@ -6262,8 +6263,6 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         spAttack = (150 * spAttack) / 100;
     if (attacker->ability == ABILITY_MINUS && ABILITY_ON_FIELD2(ABILITY_PLUS))
         spAttack = (150 * spAttack) / 100;
-    if ((attacker->species == SPECIES_SPINDA) && ((Random() % 100) <= 2))
-        gBattleMovePower = (200 * gBattleMovePower) / 100;
     if ((gSaveBlock2Ptr->optionsDifficulty == 2))
     {
         // Sceptile gets Thick Fat to reduce dmg from their weaknesses, and a 10% dmg increase.
@@ -6273,17 +6272,25 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
             spAttack = (110 * spAttack) / 100;
             attack = (110 * attack) / 100;
         }
+
         //Blaziken gets Speed Boost and has a 25% def increase
-        else if ((attacker->species == SPECIES_BLAZIKEN) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER))
+        if ((attacker->species == SPECIES_BLAZIKEN) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER))
         {
             attacker->ability = ABILITY_SPEED_BOOST;
+        }
+        if ((defender->species == SPECIES_BLAZIKEN) && (defenderHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER))
+        {
             defense = (125 * defense) / 100;
             spDefense = (125 * spDefense) / 100;
         }
+        
         // Swampert only gets Hustle, as he is strong, and 25% def.
-        else if ((attacker->species == SPECIES_SWAMPERT) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER))
+        if ((attacker->species == SPECIES_SWAMPERT) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER))
         {
             attacker->ability = ABILITY_HUSTLE;
+        }
+        if ((defender->species == SPECIES_SWAMPERT) && (defenderHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER))
+        {
             defense = (125 * defense) / 100;
             spDefense = (125 * spDefense) / 100;
         }
@@ -6291,7 +6298,8 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         // Slaking gets Immunity. He does -20% damage in the first match vs Norman and does normal damage in the rematches. No sitrus berry.
         if ((attacker->species == SPECIES_SLAKING) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER))
         {
-            attacker->ability = ABILITY_IMMUNITY;
+            //attacker->ability = ABILITY_IMMUNITY;
+            attacker->ability = ABILITY_SPEED_BOOST;
             if (FlagGet(FLAG_BADGE05_GET) == FALSE)
                 {
                     spAttack = (80 * spAttack) / 100;
@@ -6334,12 +6342,18 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         if ((attacker->species == SPECIES_MILOTIC) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER))
         {
             attacker->ability = ABILITY_SWIFT_SWIM;
-            if (defender->status1)
-                defense = (150 * defense) / 100;
         }
         else if ((attacker->species == SPECIES_MILOTIC) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER_LEFTOVERS))
         {
             attacker->ability = ABILITY_SWIFT_SWIM;
+        }
+        if ((defender->species == SPECIES_MILOTIC) && (defenderHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER))
+        {
+            if (defender->status1)
+                defense = (150 * defense) / 100;
+        }
+        else if ((defender->species == SPECIES_MILOTIC) && (defenderHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER_LEFTOVERS))
+        {
             if (defender->status1)
                 defense = (150 * defense) / 100;
         }
@@ -6382,6 +6396,8 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         gBattleMovePower = (150 * gBattleMovePower) / 100;
     if (type == TYPE_BUG && attacker->ability == ABILITY_SWARM && attacker->hp <= (attacker->maxHP / 3))
         gBattleMovePower = (150 * gBattleMovePower) / 100;
+    if ((attacker->species == SPECIES_SPINDA) && ((Random() % 100) <= 2))
+        gBattleMovePower = (200 * gBattleMovePower) / 100;
 
     // Self-destruct / Explosion cut defense in half
     if (gBattleMoves[gCurrentMove].effect == EFFECT_EXPLOSION)

@@ -9336,141 +9336,165 @@ static const struct TrainerMonNoItemCustomMoves sParty_WallyVR5[] = {
     }
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_BrendanLilycoveMudkip[] = {
+static const struct TrainerMonItemDefaultMoves sParty_BrendanLilycoveMudkip[] = {
     {
     .iv = 150,
     .lvl = 33,
     .species = SPECIES_TROPIUS,
+    .heldItem = ITEM_NONE,
     },
     {
     .iv = 150,
     .lvl = 34,
     .species = SPECIES_MAGCARGO,
+    .heldItem = ITEM_NONE,
     },
     {
     .iv = 150,
     .lvl = 34,
     .species = SPECIES_PELIPPER,
+    .heldItem = ITEM_NONE,
     },
     {
     .iv = 200,
     .lvl = 36,
     .species = SPECIES_SCEPTILE,
+    .heldItem = ITEM_NONE,
     }
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_BrendanLilycoveTreecko[] = {
+static const struct TrainerMonItemDefaultMoves sParty_BrendanLilycoveTreecko[] = {
     {
     .iv = 150,
     .lvl = 33,
     .species = SPECIES_TROPIUS,
+    .heldItem = ITEM_NONE,
     },
     {
     .iv = 150,
     .lvl = 34,
     .species = SPECIES_PELIPPER,
+    .heldItem = ITEM_NONE,
     },
     {
     .iv = 150,
     .lvl = 34,
     .species = SPECIES_LUDICOLO,
+    .heldItem = ITEM_NONE,
     },
     {
     .iv = 200,
     .lvl = 36,
     .species = SPECIES_BLAZIKEN,
+    .heldItem = ITEM_NONE,
     }
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_BrendanLilycoveTorchic[] = {
+static const struct TrainerMonItemDefaultMoves sParty_BrendanLilycoveTorchic[] = {
     {
     .iv = 150,
     .lvl = 33,
     .species = SPECIES_TROPIUS,
+    .heldItem = ITEM_NONE,
     },
     {
     .iv = 150,
     .lvl = 34,
     .species = SPECIES_LUDICOLO,
+    .heldItem = ITEM_NONE,
     },
     {
     .iv = 150,
     .lvl = 34,
     .species = SPECIES_MAGCARGO,
+    .heldItem = ITEM_NONE,
     },
     {
     .iv = 200,
     .lvl = 36,
     .species = SPECIES_SWAMPERT,
+    .heldItem = ITEM_NONE,
     }
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_MayLilycoveMudkip[] = {
+static const struct TrainerMonItemDefaultMoves sParty_MayLilycoveMudkip[] = {
     {
     .iv = 150,
     .lvl = 33,
     .species = SPECIES_TROPIUS,
+    .heldItem = ITEM_NONE,
     },
     {
     .iv = 150,
     .lvl = 34,
     .species = SPECIES_MAGCARGO,
+    .heldItem = ITEM_NONE,
     },
     {
     .iv = 150,
     .lvl = 34,
     .species = SPECIES_PELIPPER,
+    .heldItem = ITEM_NONE,
     },
     {
     .iv = 200,
     .lvl = 36,
     .species = SPECIES_SCEPTILE,
+    .heldItem = ITEM_NONE,
     }
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_MayLilycoveTreecko[] = {
+static const struct TrainerMonItemDefaultMoves sParty_MayLilycoveTreecko[] = {
     {
     .iv = 150,
     .lvl = 33,
     .species = SPECIES_TROPIUS,
+    .heldItem = ITEM_NONE,
     },
     {
     .iv = 150,
     .lvl = 34,
     .species = SPECIES_PELIPPER,
+    .heldItem = ITEM_NONE,
     },
     {
     .iv = 150,
     .lvl = 34,
     .species = SPECIES_LUDICOLO,
+    .heldItem = ITEM_NONE,
     },
     {
     .iv = 200,
     .lvl = 36,
     .species = SPECIES_BLAZIKEN,
+    .heldItem = ITEM_NONE,
     }
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_MayLilycoveTorchic[] = {
+static const struct TrainerMonItemDefaultMoves sParty_MayLilycoveTorchic[] = {
     {
     .iv = 150,
     .lvl = 33,
     .species = SPECIES_TROPIUS,
+    .heldItem = ITEM_NONE,
     },
     {
     .iv = 150,
     .lvl = 34,
     .species = SPECIES_LUDICOLO,
+    .heldItem = ITEM_NONE,
     },
     {
     .iv = 150,
     .lvl = 34,
     .species = SPECIES_MAGCARGO,
+    .heldItem = ITEM_NONE,
     },
     {
     .iv = 200,
     .lvl = 36,
     .species = SPECIES_SWAMPERT,
+    .heldItem = ITEM_NONE,
     }
 };
 
