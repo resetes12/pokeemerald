@@ -5879,8 +5879,6 @@ static void Cmd_getmoneyreward(void)
         money = GetTrainerMoneyToGive(gTrainerBattleOpponent_A);
         if (gBattleTypeFlags & BATTLE_TYPE_TWO_OPPONENTS)
             money += GetTrainerMoneyToGive(gTrainerBattleOpponent_B);
-        if (gSaveBlock2Ptr->optionsDifficulty == 2)
-            money *= 0.6;
         AddMoney(&gSaveBlock1Ptr->money, money);
     }
 		else
