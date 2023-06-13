@@ -362,16 +362,19 @@ Route110_EventScript_EndChallenge::
 
 Route110_EventScript_RivalTrigger1::
 	setvar VAR_0x8008, 1
+	setflag FLAG_INCREASE_DIFFICULTY
 	goto Route110_EventScript_RivalScene
 	end
 
 Route110_EventScript_RivalTrigger2::
 	setvar VAR_0x8008, 2
+	setflag FLAG_INCREASE_DIFFICULTY
 	goto Route110_EventScript_RivalScene
 	end
 
 Route110_EventScript_RivalTrigger3::
 	setvar VAR_0x8008, 3
+	setflag FLAG_INCREASE_DIFFICULTY
 	goto Route110_EventScript_RivalScene
 	end
 

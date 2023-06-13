@@ -128,7 +128,7 @@
 #define FLAG_RECEIVED_HM02                   0x6E
 #define FLAG_GROUDON_AWAKENED_MAGMA_HIDEOUT  0x6F
 #define FLAG_TEAM_AQUA_ESCAPED_IN_SUBMARINE  0x70
-#define FLAG_FINITE_TMS                           0x71
+#define FLAG_FINITE_TMS                      0x71
 #define FLAG_SCOTT_CALL_BATTLE_FRONTIER      0x72 // Used in order to activate a phone call from Scott, inviting the player to the SS Tidal.
 #define FLAG_RECEIVED_METEORITE              0x73
 #define FLAG_ADVENTURE_STARTED               0x74 // RECEIVED Pokédex.
@@ -1222,8 +1222,8 @@
 #define FLAG_SUICUNE                                                0x495
 #define FLAG_ENTEI                                                  0x496
 #define FLAG_RAIKOU                                                 0x497
-#define FLAG_SNORLAX                                                0x498
-#define FLAG_OLDSAVE                                                0x499 // Unused Flag
+#define FLAG_INCREASE_DIFFICULTY                                    0x498
+#define FLAG_MOSSDEEP_CENTER_BATTLE                                 0x499
 #define FLAG_CHANSEYTRAINERS                                        0x49A // Unused Flag
 #define FLAG_LANDMARK_DRACO_CHAMBER                                 0x49B
 #define FLAG_UNUSED_0x49C                                           0x49C // Unused Flag

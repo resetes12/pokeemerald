@@ -6246,6 +6246,11 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
             defense = (90 * defense) / 100; //+10%
             spDefense = (90 * spDefense) / 100;
         }
+        else if (FlagGet(FLAG_INCREASE_DIFFICULTY) == TRUE)
+        {
+            defense = (90 * defense) / 100; //+10%, only if they skip Dewford Gym
+            spDefense = (90 * spDefense) / 100;
+        }
         else if (FlagGet(FLAG_BADGE01_GET) == TRUE)
         {
             defense = (95 * defense) / 100; //+5%
