@@ -73,7 +73,7 @@ const struct Item gItems[] =
     {
         .name = _("SAFARI BALL"),
         .itemId = ITEM_SAFARI_BALL,
-        .price = 0,
+        .price = 200,
         .description = sSafariBallDesc,
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_PARTY_MENU,
@@ -4921,7 +4921,7 @@ const struct Item gItems2[] =
     {
         .name = _("SAFARI BALL"),
         .itemId = ITEM_SAFARI_BALL,
-        .price = 0,
+        .price = 200,
         .description = sSafariBallDesc,
         .pocket = POCKET_POKE_BALLS,
         .type = ITEM_USE_PARTY_MENU,
