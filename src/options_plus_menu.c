@@ -861,7 +861,7 @@ static void Task_OptionMenuProcessInput(u8 taskId)
         HighlightOptionMenuItem();
         DrawDescriptionText();
     }
-    if (JOY_NEW(SELECT_BUTTON) && JOY_NEW(START_BUTTON))
+    if (JOY_HELD(SELECT_BUTTON) && JOY_NEW(START_BUTTON))
     {
         if (VarGet(VAR_DEBUG_OPTIONS) == 1)
         {
