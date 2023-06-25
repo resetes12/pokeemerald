@@ -416,6 +416,9 @@ SoftReset:
 	ldr r1, =0x3007f00
 	mov sp, r1
 	svc #1
+	ldr r0, =gSoftResetFlag
+	movs r1, #1
+	strb r1, [r0]
 	svc #0
 	.pool
 	thumb_func_end SoftReset
