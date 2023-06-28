@@ -40,8 +40,6 @@
 #include "tx_randomizer_and_challenges.h"
 #include "constants/flags.h"
 
-extern u8 gSoftResetFlag;
-
 /*
  * Main menu state machine
  * -----------------------
@@ -750,9 +748,16 @@ static void Task_MainMenuCheckBattery(u8 taskId)
         SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_EFFECT_DARKEN | BLDCNT_TGT1_BG0);
         SetGpuReg(REG_OFFSET_BLDALPHA, 0);
         SetGpuReg(REG_OFFSET_BLDY, 7);
-        if (gSoftResetFlag || !(RtcGetErrorStatus() & RTC_ERR_FLAG_MASK))
-            FastForwardTime(2, 4);
-        gTasks[taskId].func = Task_DisplayMainMenu;
+
+        if (!(RtcGetErrorStatus() & RTC_ERR_FLAG_MASK))
+        {
+            gTasks[taskId].func = Task_DisplayMainMenu;
+        }
+        else
+        {
+            CreateMainMenuErrorWindow(gText_BatteryRunDry);
+            gTasks[taskId].func = Task_WaitForBatteryDryErrorWindow;
+        }
     }
 }
 
