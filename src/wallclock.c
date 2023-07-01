@@ -890,6 +890,11 @@ static void Task_ViewClock_HandleInput(u8 taskId)
         ScheduleBgCopyTilemapToVram(2);
         gTasks[taskId].func = Task_SetClock_HandleInput;
     }
+    if ((VarGet(VAR_DEBUG_OPTIONS) == 1) && (JOY_HELD(SELECT_BUTTON) && JOY_NEW(L_BUTTON)))
+    {
+        PlaySE(SE_SELECT);
+        FastForwardTime(10, 4);
+    }
 }
 
 static void Task_ViewClock_FadeOut(u8 taskId)

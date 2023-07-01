@@ -4,5 +4,6 @@
 // TODO: time of day and seconds in a day defines
 
 void DoTimeBasedEvents(void);
+void FastForwardTime(s16, s16);
 
 #endif // GUARD_CLOCK_H
