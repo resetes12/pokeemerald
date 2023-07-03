@@ -1,5 +1,11 @@
 SealedChamber_InnerRoom_MapScripts::
+	map_script MAP_SCRIPT_ON_TRANSITION, SealedChamber_InnerRoom_OnTransition
 	.byte 0
+
+SealedChamber_InnerRoom_OnTransition:
+	setflag FLAG_TEMP_HIDE_FOLLOWER
+	setflag FLAG_LANDMARK_SEALED_CHAMBER
+	end
 
 SealedChamber_InnerRoom_EventScript_BrailleBackWall::
 	lockall

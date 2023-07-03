@@ -45,8 +45,8 @@ bool8 FldEff_SweetScent(void)
     taskId = CreateFieldMoveTask();
     gTasks[taskId].data[8] = (u32)StartSweetScentFieldEffect >> 16;
     gTasks[taskId].data[9] = (u32)StartSweetScentFieldEffect;
-    if (!ShouldDoBrailleDigEffect())
-        SetPlayerAvatarTransitionFlags(PLAYER_AVATAR_FLAG_ON_FOOT);
+    /*if ((!ShouldDoBrailleDigEffect()) || (gPlayerAvatar.flags & !PLAYER_AVATAR_FLAG_SURFING))
+        SetPlayerAvatarTransitionFlags(PLAYER_AVATAR_FLAG_ON_FOOT);*/
     return FALSE;
 }
 
