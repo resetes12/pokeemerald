@@ -166,7 +166,7 @@
 #define LEVEL_UP_MOVE_LV   0xFE00
 #define LEVEL_UP_END       0xFFFF
 
-#define MAX_LEVEL_UP_MOVES       25
+#define MAX_LEVEL_UP_MOVES       20
 #define MAX_LEVEL_DIFF_PRE_EV   5
 
 #define MON_MALE       0x00
