@@ -1394,12 +1394,12 @@ s32 GetTypeEffectiveness(struct Pokemon *mon, u8 moveType) {
     s32 flags = 0;
     if (GetMonAbility(mon) == ABILITY_LEVITATE && moveType == TYPE_GROUND)
         return MOVE_RESULT_NOT_VERY_EFFECTIVE;
-    while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE) {
-        if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT) {
+    while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) != TYPE_ENDTABLE) {
+        if (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) == TYPE_FORESIGHT) {
             i += 3;
             continue;
         }
-        else if (TYPE_EFFECT_ATK_TYPE(i) == moveType) {
+        else if (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) == moveType) {
             // check type1
             if (TYPE_EFFECT_DEF_TYPE(i) == type1)
                 multiplier = TYPE_EFFECT_MULTIPLIER(i);
@@ -1472,16 +1472,16 @@ static void Cmd_typecalc(void)
     }
     else
     {
-        while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE)
+        while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) != TYPE_ENDTABLE)
         {
-            if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT)
+            if (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) == TYPE_FORESIGHT)
             {
                 if (gBattleMons[gBattlerTarget].status2 & STATUS2_FORESIGHT)
                     break;
                 i += 3;
                 continue;
             }
-            else if (TYPE_EFFECT_ATK_TYPE(i) == moveType)
+            else if (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) == moveType)
             {
                 // check type1
                 if (TYPE_EFFECT_DEF_TYPE(i) == gBattleMons[gBattlerTarget].type1)
@@ -1531,16 +1531,16 @@ static void CheckWonderGuardAndLevitate(void)
         return;
     }
 
-    while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE)
+    while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) != TYPE_ENDTABLE)
     {
-        if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT)
+        if (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) == TYPE_FORESIGHT)
         {
             if (gBattleMons[gBattlerTarget].status2 & STATUS2_FORESIGHT)
                 break;
             i += 3;
             continue;
         }
-        if (TYPE_EFFECT_ATK_TYPE(i) == moveType)
+        if (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) == moveType)
         {
             // check no effect
             if (TYPE_EFFECT_DEF_TYPE(i) == gBattleMons[gBattlerTarget].type1
@@ -1646,9 +1646,9 @@ u8 TypeCalc(u16 move, u8 attacker, u8 defender)
     }
     else
     {
-        while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE)
+        while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) != TYPE_ENDTABLE)
         {
-            if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT)
+            if (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) == TYPE_FORESIGHT)
             {
                 if (gBattleMons[defender].status2 & STATUS2_FORESIGHT)
                     break;
@@ -1656,7 +1656,7 @@ u8 TypeCalc(u16 move, u8 attacker, u8 defender)
                 continue;
             }
 
-            else if (TYPE_EFFECT_ATK_TYPE(i) == moveType)
+            else if (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) == moveType)
             {
                 // check type1
                 if (TYPE_EFFECT_DEF_TYPE(i) == gBattleMons[defender].type1)
@@ -1698,14 +1698,14 @@ u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility)
     }
     else
     {
-        while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE)
+        while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) != TYPE_ENDTABLE)
         {
-            if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT)
+            if (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) == TYPE_FORESIGHT)
             {
                 i += 3;
                 continue;
             }
-            if (TYPE_EFFECT_ATK_TYPE(i) == moveType)
+            if (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) == moveType)
             {
                 // check type1
                 if (TYPE_EFFECT_DEF_TYPE(i) == type1)
@@ -4746,9 +4746,9 @@ static void Cmd_typecalc2(void)
     }
     else
     {
-        while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE)
+        while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) != TYPE_ENDTABLE)
         {
-            if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT)
+            if (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) == TYPE_FORESIGHT)
             {
                 if (gBattleMons[gBattlerTarget].status2 & STATUS2_FORESIGHT)
                 {
@@ -4761,7 +4761,7 @@ static void Cmd_typecalc2(void)
                 }
             }
 
-            if (TYPE_EFFECT_ATK_TYPE(i) == moveType)
+            if (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) == moveType)
             {
                 // check type1
                 if (TYPE_EFFECT_DEF_TYPE(i) == gBattleMons[gBattlerTarget].type1)
@@ -8334,7 +8334,7 @@ static void Cmd_settypetorandomresistance(void)
 
             i *= 3;
 
-            if (TYPE_EFFECT_ATK_TYPE(i) == gLastHitByType[gBattlerAttacker]
+            if (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) == gLastHitByType[gBattlerAttacker]
                 && TYPE_EFFECT_MULTIPLIER(i) <= TYPE_MUL_NOT_EFFECTIVE
                 && !IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_EFFECT_DEF_TYPE(i)))
             {
@@ -8348,13 +8348,13 @@ static void Cmd_settypetorandomresistance(void)
 
         for (j = 0, rands = 0; rands < sizeof(gTypeEffectiveness); j += 3, rands += 3)
         {
-            switch (TYPE_EFFECT_ATK_TYPE(j))
+            switch (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(j)))
             {
             case TYPE_ENDTABLE:
             case TYPE_FORESIGHT:
                 break;
             default:
-                if (TYPE_EFFECT_ATK_TYPE(j) == gLastHitByType[gBattlerAttacker]
+                if (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(j)) == gLastHitByType[gBattlerAttacker]
                  && TYPE_EFFECT_MULTIPLIER(j) <= 5
                  && !IS_BATTLER_OF_TYPE(gBattlerAttacker, TYPE_EFFECT_DEF_TYPE(i)))
                 {

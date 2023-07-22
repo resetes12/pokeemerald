@@ -2820,14 +2820,14 @@ static int GetTypeEffectivenessPoints(int move, int targetSpecies, int mode)
     {
         // Calculate a "type power" value to determine the benefit of using this type move against the target.
         // This value will then be used to get the number of points to assign to the move.
-        while (TYPE_EFFECT_ATK_TYPE(i) != TYPE_ENDTABLE)
+        while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) != TYPE_ENDTABLE)
         {
-            if (TYPE_EFFECT_ATK_TYPE(i) == TYPE_FORESIGHT)
+            if (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) == TYPE_FORESIGHT)
             {
                 i += 3;
                 continue;
             }
-            if (TYPE_EFFECT_ATK_TYPE(i) == moveType)
+            if (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) == moveType)
             {
                 // BUG: the value of TYPE_x2 does not exist in gTypeEffectiveness, so if defAbility is ABILITY_WONDER_GUARD, the conditional always fails
                 #ifndef BUGFIX

@@ -10755,14 +10755,7 @@ void RandomizeTypeEffectivenessListEWRAM(u16 seed)
         if (i != TYPE_MYSTERY)
             sTypeEffectivenessList[i] = stemp[i];
 
-        #ifndef NDEBUG
-            MgbaPrintf(MGBA_LOG_DEBUG, "sTypeEffectivenessList[%d]: %S => %S", i, gTypeNames[i], gTypeNames[sTypeEffectivenessList[i]] );
-        #endif
     }
-    #ifndef NDEBUG
-        MgbaPrintf(MGBA_LOG_DEBUG, "**** sTypeEffectivenessList[%d] generated ****", NELEMS(sTypeEffectivenessList));
-        MgbaPrintf(MGBA_LOG_DEBUG, "");
-    #endif
 }
 u8 GetTypeEffectivenessRandom(u8 type)
 {
