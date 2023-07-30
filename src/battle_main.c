@@ -5584,7 +5584,19 @@ static void HandleEndTurn_FinishBattle(void)
         {
             TryPutBreakingNewsOnAir();
         }
+        if (gSaveBlock1Ptr->optionsPkmnDeath)
+        {
+            if (!(gBattleTypeFlags &(BATTLE_TYPE_LINK
+                                        | BATTLE_TYPE_LINK_IN_BATTLE
+                                        | BATTLE_TYPE_FIRST_BATTLE
+                                        | BATTLE_TYPE_WALLY_TUTORIAL
+                                        | BATTLE_TYPE_INGAME_PARTNER
+                                        | BATTLE_TYPE_TOWER_LINK_MULTI
+                                        | BATTLE_TYPE_RECORDED_LINK
+                                        | BATTLE_TYPE_FRONTIER)))
+                NuzlockeDeleteFaintedPartyPokemon();
         //ty_difficulty_challenges
+        }
         if (IsNuzlockeActive())
         {
             if (!(gBattleTypeFlags &(BATTLE_TYPE_LINK

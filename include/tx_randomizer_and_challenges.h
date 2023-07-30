@@ -51,6 +51,7 @@
 #define TX_FEATURES_INFINITE_TMS 0
 #define TX_FEATURES_SURVIVE_POISON 0
 #define TX_FEATURES_EASIER_FEEBAS 0
+#define TX_FEATURES_PKMN_DEATH 1
 
 // randomization types
 #define TX_RANDOM_T_WILD_POKEMON    0
@@ -78,6 +79,7 @@ u8 NuzlockeFlagGet(u16 mapsec);
 u8 NuzlockeFlagSet(u16 mapsec);
 u8 NuzlockeFlagClear(u16 mapsec);
 void NuzlockeDeletePartyMon(u8 position);
+void NuzlockeDeletePartyMonOption(u8 position);
 void NuzlockeDeleteFaintedPartyPokemon(void);
 u8 GetMaxPartySize(void);
 u8 GetCurrentPartyLevelCap(void);

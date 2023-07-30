@@ -41,6 +41,7 @@ enum
     MENUITEM_FEATURES_ITEM_DROP,
     MENUITEM_FEATURES_INFINITE_TMS,
     MENUITEM_FEATURES_SURVIVE_POISON,
+    MENUITEM_FEATURES_PKMN_DEATH,
     MENUITEM_FEATURES_EASY_FEEBAS,
     MENUITEM_FEATURES_NEXT,
     MENUITEM_FEATURES_COUNT,
@@ -272,6 +273,7 @@ static void DrawChoices_Features_ItemDrop(int selection, int y);
 static void DrawChoices_Features_InfiniteTMs(int selection, int y);
 static void DrawChoices_Features_SurvivePoison(int selection, int y);
 static void DrawChoices_Features_EasyFeebas(int selection, int y);
+static void DrawChoices_Features_Pkmn_Death(int selection, int y);
 
 static void PrintCurrentSelections(void);
 
@@ -311,6 +313,7 @@ struct // MENU_FEATURES
     [MENUITEM_FEATURES_INFINITE_TMS]          = {DrawChoices_Features_InfiniteTMs,          ProcessInput_Options_Two},
     [MENUITEM_FEATURES_SURVIVE_POISON]        = {DrawChoices_Features_SurvivePoison,        ProcessInput_Options_Two},
     [MENUITEM_FEATURES_EASY_FEEBAS]           = {DrawChoices_Features_EasyFeebas,           ProcessInput_Options_Two},
+    [MENUITEM_FEATURES_PKMN_DEATH]            = {DrawChoices_Features_Pkmn_Death,           ProcessInput_Options_Two},
     [MENUITEM_FEATURES_NEXT]                  = {NULL, NULL},
 };
 
@@ -393,6 +396,7 @@ static const u8 sText_ItemDrop[]            = _("ITEM DROP");
 static const u8 sText_InfiniteTMs[]         = _("REUSABLE TMS");
 static const u8 sText_Poison[]              = _("SURVIVE POISON");
 static const u8 sText_EasyFeebas[]          = _("EASIER FEEBAS");
+static const u8 sText_Pkmn_Death[]          = _("PERMA FAINT");
 static const u8 sText_Next[]                = _("NEXT");
 // Menu left side option names text
 static const u8 *const sOptionMenuItemsNamesFeatures[MENUITEM_FEATURES_COUNT] =
@@ -403,6 +407,7 @@ static const u8 *const sOptionMenuItemsNamesFeatures[MENUITEM_FEATURES_COUNT] =
     [MENUITEM_FEATURES_INFINITE_TMS]              = sText_InfiniteTMs,
     [MENUITEM_FEATURES_SURVIVE_POISON]            = sText_Poison,
     [MENUITEM_FEATURES_EASY_FEEBAS]               = sText_EasyFeebas,
+    [MENUITEM_FEATURES_PKMN_DEATH]                = sText_Pkmn_Death,
     [MENUITEM_FEATURES_NEXT]                      = sText_Next,
 };
 
@@ -523,7 +528,8 @@ static bool8 CheckConditions(int selection)
     case MENU_FEATURES:
         switch(selection)
         {
-        default:       return TRUE;;
+            case MENUITEM_FEATURES_PKMN_DEATH:              return !sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NUZLOCKE];
+            default:       return TRUE;
         }
     case MENU_RANDOMIZER:
         switch(selection)
@@ -568,7 +574,7 @@ static bool8 CheckConditions(int selection)
         case MENUITEM_NUZLOCKE_SPECIES_CLAUSE:  return sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NUZLOCKE];
         case MENUITEM_NUZLOCKE_SHINY_CLAUSE:    return sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NUZLOCKE];
         case MENUITEM_NUZLOCKE_NICKNAMING:      return sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NUZLOCKE];
-        //case MENUITEM_NUZLOCKE_DELETION:        return sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NUZLOCKE];
+        case MENUITEM_NUZLOCKE_DELETION:        return sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NUZLOCKE];
         default:                                return TRUE;
         }
     case MENU_DIFFICULTY:
@@ -604,6 +610,8 @@ static const u8 sText_Description_Features_SurvivePoison_On[]         = _("Your 
 static const u8 sText_Description_Features_SurvivePoison_Off[]        = _("Your {PKMN} will faint if they are\nPOISONED.");
 static const u8 sText_Description_Features_EasyFeebas_On[]            = _("FEEBAS is easier to catch and spawns\neverywhere in ROUTE 119.");
 static const u8 sText_Description_Features_EasyFeebas_Off[]           = _("FEEBAS is encountered in random\nspots in ROUTE 119.");
+static const u8 sText_Description_Features_Pkmn_Death_On[]            = _("{COLOR 7}{COLOR 8}USE WITH CAUTION.{COLOR 1}{COLOR 2} Getting to zero {PKMN}\ncould be the end of your adventure.");
+static const u8 sText_Description_Features_Pkmn_Death_Off[]           = _("{PKMN} will recover from fainting\nas usual. Recommended.");
 static const u8 sText_Description_Features_Next[]                     = _("Continue to Randomizer options.");
 static const u8 *const sOptionMenuItemDescriptionsFeatures[MENUITEM_FEATURES_COUNT][5] =
 {
@@ -613,6 +621,7 @@ static const u8 *const sOptionMenuItemDescriptionsFeatures[MENUITEM_FEATURES_COU
     [MENUITEM_FEATURES_INFINITE_TMS]          = {sText_Description_Features_InfiniteTMs_Off,        sText_Description_Features_InfiniteTMs_On,           sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_SURVIVE_POISON]        = {sText_Description_Features_SurvivePoison_Off,      sText_Description_Features_SurvivePoison_On,           sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_EASY_FEEBAS]           = {sText_Description_Features_EasyFeebas_Off,         sText_Description_Features_EasyFeebas_On,           sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_FEATURES_PKMN_DEATH]            = {sText_Description_Features_Pkmn_Death_Off,         sText_Description_Features_Pkmn_Death_On,           sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_NEXT]                  = {sText_Description_Features_Next,                              sText_Empty,                                        sText_Empty,                                        sText_Empty,                                        sText_Empty},
 };
 
@@ -757,7 +766,7 @@ static const u8 *const sOptionMenuItemDescriptionsChallenges[MENUITEM_CHALLENGES
 };
 
 // Disabled descriptions
-
+static const u8 sText_Description_Disabled_Features_PkmnDeath[]  = _("Already enabled via\nthe Nuzlocke Challenge.");
 static const u8 *const sOptionMenuItemDescriptionsDisabledFeatures[MENUITEM_FEATURES_COUNT] =
 {
     [MENUITEM_FEATURES_ALTERNATE_SPAWNS]      = sText_Empty,
@@ -766,6 +775,7 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledFeatures[MENUITEM_FEAT
     [MENUITEM_FEATURES_INFINITE_TMS]          = sText_Empty,
     [MENUITEM_FEATURES_SURVIVE_POISON]        = sText_Empty,
     [MENUITEM_FEATURES_EASY_FEEBAS]           = sText_Empty,
+    [MENUITEM_FEATURES_PKMN_DEATH]            = sText_Description_Disabled_Features_PkmnDeath,
     [MENUITEM_FEATURES_NEXT]                  = sText_Empty,
 };
 
@@ -1137,6 +1147,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         gSaveBlock1Ptr->optionsInfiniteTMs                  = TX_FEATURES_INFINITE_TMS;
         gSaveBlock1Ptr->optionsPoisonSurvive                = TX_FEATURES_SURVIVE_POISON;
         gSaveBlock1Ptr->optionsEasierFeebas                 = TX_FEATURES_EASIER_FEEBAS;
+        gSaveBlock1Ptr->optionsPkmnDeath                    = TX_FEATURES_PKMN_DEATH;
 
         gSaveBlock1Ptr->tx_Random_Starter                   = TX_RANDOM_STARTER;
         gSaveBlock1Ptr->tx_Random_WildPokemon               = TX_RANDOM_WILD_POKEMON;
@@ -1495,6 +1506,7 @@ void SaveData_TxRandomizerAndChallenges(void)
     gSaveBlock1Ptr->optionsInfiniteTMs                 = sOptions->sel_features[MENUITEM_FEATURES_INFINITE_TMS]; 
     gSaveBlock1Ptr->optionsPoisonSurvive               = sOptions->sel_features[MENUITEM_FEATURES_SURVIVE_POISON]; 
     gSaveBlock1Ptr->optionsEasierFeebas                = sOptions->sel_features[MENUITEM_FEATURES_EASY_FEEBAS]; 
+    gSaveBlock1Ptr->optionsPkmnDeath                   = sOptions->sel_features[MENUITEM_FEATURES_PKMN_DEATH]; 
     // MENU_RANDOMIZER
     if (sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON] == TRUE)
     {
@@ -1969,7 +1981,11 @@ static void DrawChoices_Challenges_Nuzlocke(int selection, int y)
         sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_SPECIES_CLAUSE]    = !TX_NUZLOCKE_SPECIES_CLAUSE;
         sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_SHINY_CLAUSE]      = !TX_NUZLOCKE_SHINY_CLAUSE; 
         sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NICKNAMING]        = !TX_NUZLOCKE_NICKNAMING;
-        sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_DELETION]          = TX_NUZLOCKE_DELETION; 
+        sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_DELETION]          = TX_NUZLOCKE_DELETION;
+    }
+    if (selection >= 1)
+    {
+        sOptions->sel_features[MENUITEM_FEATURES_PKMN_DEATH]        = !TX_FEATURES_PKMN_DEATH;
     }
 }
 
@@ -2295,6 +2311,25 @@ static void DrawChoices_Features_EasyFeebas(int selection, int y)
     else
     {
         gSaveBlock1Ptr->optionsEasierFeebas = 1; //on
+    }
+
+    DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
+}
+
+static void DrawChoices_Features_Pkmn_Death(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_FEATURES_PKMN_DEATH);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock1Ptr->optionsPkmnDeath = 0; //off
+    }
+    else
+    {
+        gSaveBlock1Ptr->optionsPkmnDeath = 1; //on
     }
 
     DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);

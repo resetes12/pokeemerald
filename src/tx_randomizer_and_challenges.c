@@ -254,6 +254,17 @@ void NuzlockeDeletePartyMon(u8 position)
     }
     PurgeMonOrBoxMon(TOTAL_BOXES_COUNT, position);
 }
+
+void NuzlockeDeletePartyMonOption(u8 position)
+{
+    struct Pokemon *pokemon = &gPlayerParty[position];
+    u8 val[1] = {TRUE};
+        
+    SetMonData(pokemon, MON_DATA_NUZLOCKE_RIBBON, val);
+    SendMonToPC(&gPlayerParty[position]);
+    PurgeMonOrBoxMon(TOTAL_BOXES_COUNT, position);
+}
+
 void NuzlockeDeleteFaintedPartyPokemon(void) // @Kurausukun
 {
     u8 i;
@@ -274,7 +285,10 @@ void NuzlockeDeleteFaintedPartyPokemon(void) // @Kurausukun
                     AddBagItem(monItem, 1);
                     SetMonData(pokemon, MON_DATA_HELD_ITEM, ITEM_NONE);
                 }
-                NuzlockeDeletePartyMon(i);
+                if (gSaveBlock1Ptr->optionsPkmnDeath)
+                    NuzlockeDeletePartyMonOption(i);
+                else if (!gSaveBlock1Ptr->optionsPkmnDeath)
+                    NuzlockeDeletePartyMon(i);
             }
         }
     }
