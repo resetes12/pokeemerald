@@ -1235,7 +1235,7 @@ static s32 ShowGameDisplay(void)
         gPaletteFade.bufferTransferDisabled = TRUE;
         break;
     case 7:
-        LoadPalette(gBerryCrush_Crusher_Pal, 0, 0x180);
+        LoadPalette(gBerryCrush_Crusher_Pal, BG_PLTT_ID(0), 12 * PLTT_SIZE_4BPP);
         CopyToBgTilemapBuffer(1, sCrusherTop_Tilemap, 0, 0);
         CopyToBgTilemapBuffer(2, sContainerCap_Tilemap, 0, 0);
         CopyToBgTilemapBuffer(3, sBg_Tilemap, 0, 0);
@@ -1751,7 +1751,7 @@ static bool32 OpenResultsWindow(struct BerryCrushGame *game, struct BerryCrushGa
         FillWindowPixelBuffer(gfx->resultsWindowId, PIXEL_FILL(0));
         break;
     case 2:
-        LoadUserWindowBorderGfx_(gfx->resultsWindowId, 541, 208);
+        LoadUserWindowBorderGfx_(gfx->resultsWindowId, 541, BG_PLTT_ID(13));
         DrawStdFrameWithCustomTileAndPalette(gfx->resultsWindowId, FALSE, 541, 13);
         break;
     case 3:
@@ -1809,7 +1809,7 @@ static void Task_ShowRankings(u8 taskId)
         tWindowId = AddWindow(&sWindowTemplate_Rankings);
         PutWindowTilemap(tWindowId);
         FillWindowPixelBuffer(tWindowId, PIXEL_FILL(0));
-        LoadUserWindowBorderGfx_(tWindowId, 541, 208);
+        LoadUserWindowBorderGfx_(tWindowId, 541, BG_PLTT_ID(13));
         DrawStdFrameWithCustomTileAndPalette(tWindowId, FALSE, 541, 13);
         break;
     case 1:
@@ -2898,13 +2898,13 @@ static u32 Cmd_FinishGame(struct BerryCrushGame *game, u8 *args)
     case 0:
         game->gameState = STATE_FINISHED;
         PlaySE(SE_M_STRENGTH);
-        BlendPalettes(PALETTES_ALL, 8, RGB(31, 31, 0));
+        BlendPalettes(PALETTES_ALL, 8, RGB_YELLOW);
         game->gfx.counter = 2;
         break;
     case 1:
         if (--game->gfx.counter != (u8)-1)
             return 0;
-        BlendPalettes(PALETTES_ALL, 0, RGB(31, 31, 0));
+        BlendPalettes(PALETTES_ALL, 0, RGB_YELLOW);
         game->gfx.vibrationIdx = 4;
         game->gfx.counter = 0;
         game->gfx.numVibrations = sIntroOutroVibrationData[game->gfx.vibrationIdx][0];
@@ -2955,13 +2955,13 @@ static u32 Cmd_HandleTimeUp(struct BerryCrushGame *game, u8 *args)
     case 0:
         game->gameState = STATE_TIMES_UP;
         PlaySE(SE_FAILURE);
-        BlendPalettes(PALETTES_ALL, 8, RGB(31, 0, 0));
+        BlendPalettes(PALETTES_ALL, 8, RGB_RED);
         game->gfx.counter = 4;
         break;
     case 1:
         if (--game->gfx.counter != (u8)-1)
             return 0;
-        BlendPalettes(PALETTES_ALL, 0, RGB(31, 0, 0));
+        BlendPalettes(PALETTES_ALL, 0, RGB_RED);
         game->gfx.counter = 0;
         break;
     case 2:

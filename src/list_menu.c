@@ -316,7 +316,7 @@ static void ListMenuDummyTask(u8 taskId)
 
 }
 
-s32 DoMysteryGiftListMenu(const struct WindowTemplate *windowTemplate, const struct ListMenuTemplate *listMenuTemplate, u8 drawMode, u16 tileNum, u16 palNum)
+s32 DoMysteryGiftListMenu(const struct WindowTemplate *windowTemplate, const struct ListMenuTemplate *listMenuTemplate, u8 drawMode, u16 tileNum, u16 palOffset)
 {
     switch (sMysteryGiftLinkMenu.state)
     {
@@ -326,9 +326,9 @@ s32 DoMysteryGiftListMenu(const struct WindowTemplate *windowTemplate, const str
         switch (drawMode)
         {
         case 2:
-            LoadUserWindowBorderGfx(sMysteryGiftLinkMenu.windowId, tileNum, palNum);
+            LoadUserWindowBorderGfx(sMysteryGiftLinkMenu.windowId, tileNum, palOffset);
         case 1:
-            DrawTextBorderOuter(sMysteryGiftLinkMenu.windowId, tileNum, palNum / 16);
+            DrawTextBorderOuter(sMysteryGiftLinkMenu.windowId, tileNum, palOffset / 16);
             break;
         }
         gMultiuseListMenuTemplate = *listMenuTemplate;
@@ -1084,7 +1084,7 @@ u8 AddScrollIndicatorArrowPair(const struct ScrollArrowsTemplate *arrowInfo, u16
 
     if (arrowInfo->palTag == TAG_NONE)
     {
-        LoadPalette(sRedInterface_Pal, (16 * arrowInfo->palNum) + 0x100, 0x20);
+        LoadPalette(sRedInterface_Pal, OBJ_PLTT_ID(arrowInfo->palNum), PLTT_SIZE_4BPP);
     }
     else
     {
@@ -1330,7 +1330,7 @@ static u8 ListMenuAddRedOutlineCursorObject(struct CursorStruct *cursor)
 
     if (cursor->palTag == TAG_NONE)
     {
-        LoadPalette(sRedInterface_Pal, (16 * cursor->palNum) + 0x100, 0x20);
+        LoadPalette(sRedInterface_Pal, OBJ_PLTT_ID(cursor->palNum), PLTT_SIZE_4BPP);
     }
     else
     {
@@ -1415,7 +1415,7 @@ static u8 ListMenuAddRedArrowCursorObject(struct CursorStruct *cursor)
 
     if (cursor->palTag == TAG_NONE)
     {
-        LoadPalette(sRedInterface_Pal, (16 * cursor->palNum) + 0x100, 0x20);
+        LoadPalette(sRedInterface_Pal, OBJ_PLTT_ID(cursor->palNum), PLTT_SIZE_4BPP);
     }
     else
     {

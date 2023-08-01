@@ -6,8 +6,7 @@
 #define gPaletteFade_delay            (gPaletteFade.multipurpose2) // normal and hardware fade
 #define gPaletteFade_submode          (gPaletteFade.multipurpose2) // fast fade
 
-#define PLTT_BUFFER_SIZE 0x200
-#define PLTT_DECOMP_BUFFER_SIZE (PLTT_BUFFER_SIZE * 2)
+#define PLTT_BUFFER_SIZE (PLTT_SIZE / sizeof(u16))
 
 #define PALETTE_FADE_STATUS_DELAY 2
 #define PALETTE_FADE_STATUS_ACTIVE 1
@@ -17,6 +16,13 @@
 #define PALETTES_BG      0x0000FFFF
 #define PALETTES_OBJECTS 0xFFFF0000
 #define PALETTES_ALL     (PALETTES_BG | PALETTES_OBJECTS)
+
+#define PLTT_ID(n) ((n) * 16)
+#define BG_PLTT_OFFSET 0x000
+#define OBJ_PLTT_OFFSET 0x100
+#define BG_PLTT_ID(n) (BG_PLTT_OFFSET + PLTT_ID(n))
+#define OBJ_PLTT_ID(n) (OBJ_PLTT_OFFSET + PLTT_ID(n))
+#define OBJ_PLTT_ID2(n) (PLTT_ID((n) + 16))
 
 enum
 {
@@ -48,9 +54,9 @@ struct PaletteFadeControl
 
 extern struct PaletteFadeControl gPaletteFade;
 extern u32 gPlttBufferTransferPending;
-extern u8 gPaletteDecompressionBuffer[];
-extern u16 gPlttBufferUnfaded[PLTT_BUFFER_SIZE];
-extern u16 gPlttBufferFaded[PLTT_BUFFER_SIZE];
+extern u8 ALIGNED(4) gPaletteDecompressionBuffer[];
+extern u16 ALIGNED(4) gPlttBufferUnfaded[PLTT_BUFFER_SIZE];
+extern u16 ALIGNED(4) gPlttBufferFaded[PLTT_BUFFER_SIZE];
 
 void LoadCompressedPalette(const u32 *src, u16 offset, u16 size);
 void LoadPalette(const void *src, u16 offset, u16 size);
@@ -73,5 +79,15 @@ void TintPalette_GrayScale(u16 *palette, u16 count);
 void TintPalette_GrayScale2(u16 *palette, u16 count);
 void TintPalette_SepiaTone(u16 *palette, u16 count);
 void TintPalette_CustomTone(u16 *palette, u16 count, u16 rTone, u16 gTone, u16 bTone);
+
+static inline void SetBackdropFromColor(u16 color)
+{
+  FillPalette(color, 0, PLTT_SIZEOF(1));
+}
+
+static inline void SetBackdropFromPalette(const u16 *palette)
+{
+  LoadPalette(palette, 0, PLTT_SIZEOF(1));
+}
 
 #endif // GUARD_PALETTE_H

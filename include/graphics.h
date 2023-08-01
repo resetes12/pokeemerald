@@ -3893,7 +3893,7 @@ extern const u32 gIntroGroudon_Gfx[];
 extern const u32 gIntroGroudon_Tilemap[];
 extern const u32 gIntroLegendBg_Gfx[];
 extern const u32 gIntroGroudonBg_Tilemap[];
-extern const u8 gIntro3Bg_Pal[0x200];
+extern const u8 ALIGNED(2) gIntro3Bg_Pal[0x200];
 extern const u32 gIntroKyogre_Gfx[];
 extern const u32 gIntroKyogre_Tilemap[];
 extern const u32 gIntroKyogreBg_Tilemap[];
@@ -4949,9 +4949,9 @@ extern const u16 gContestResultsTitle_Tough_Tilemap[];
 extern const u16 gContestResultsTitle_Tilemap[];
 
 // Trainer Card.
-extern const u16 gHoennTrainerCard0Star_Pal[];
+extern const u16 gHoennTrainerCardGreen_Pal[];
 extern const u32 gHoennTrainerCard_Gfx[];
-extern const u16 gKantoTrainerCard0Star_Pal[];
+extern const u16 gKantoTrainerCardBlue_Pal[];
 extern const u32 gKantoTrainerCard_Gfx[];
 extern const u32 gKantoTrainerCardBg_Tilemap[];
 extern const u32 gHoennTrainerCardBack_Tilemap[];
@@ -4992,10 +4992,10 @@ extern const u32 gUsePokeblockCondition_Gfx[];
 extern const u16 gUnionRoomChat_Background_Pal[];
 extern const u32 gUnionRoomChat_Background_Gfx[];
 extern const u32 gUnionRoomChat_Background_Tilemap[];
-extern const u16 gUnionRoomChat_Window_Pal1[];
-extern const u16 gUnionRoomChat_Window_Pal2[];
-extern const u32 gUnionRoomChat_Border_Gfx[];
-extern const u32 gUnionRoomChat_Border_Tilemap[];
+extern const u16 gUnionRoomChat_InputText_Pal[];
+extern const u16 gUnionRoomChat_Keyboard_Pal[];
+extern const u32 gUnionRoomChat_Keyboard_Gfx[];
+extern const u32 gUnionRoomChat_Keyboard_Tilemap[];
 extern const u32 gUnionRoomChat_RButtonLabels[];
 
 // Use Pokeblock
@@ -5018,8 +5018,8 @@ extern const u32 gPokenavOptions_Gfx[];
 extern const u16 gPokenavOptions_Pal[];
 
 // Battle Factory Screen
-extern const u8 gFrontierFactorySelectMenu_Gfx[];
-extern const u8 gFrontierFactorySelectMenu_Tilemap[];
+extern const u16 gFrontierFactorySelectMenu_Gfx[];
+extern const u16 gFrontierFactorySelectMenu_Tilemap[];
 extern const u16 gFrontierFactorySelectMenu_Pal[];
 
 // Object event pals

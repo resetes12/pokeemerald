@@ -1247,8 +1247,8 @@ static void SlotMachineSetup_LoadGfxAndTilemaps(void)
     LoadMenuGfx();
     LoadMenuAndReelOverlayTilemaps();
     LoadSlotMachineGfx();
-    LoadMessageBoxGfx(0, 0x200, 0xF0);
-    LoadUserWindowBorderGfx(0, 0x214, 0xE0);
+    LoadMessageBoxGfx(0, 0x200, BG_PLTT_ID(15));
+    LoadUserWindowBorderGfx(0, 0x214, BG_PLTT_ID(14));
     PutWindowTilemap(0);
 }
 
@@ -1285,7 +1285,7 @@ static void Task_SlotMachine(u8 taskId)
 // SLOTTASK_UNFADE
 static bool8 SlotTask_UnfadeScreen(struct Task *task)
 {
-    BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB(0, 0, 0));
+    BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
     LoadPikaPowerMeter(sSlotMachine->pikaPowerBolts);
     sSlotMachine->state++; // SLOTTASK_WAIT_FADE
     return FALSE;
@@ -1731,7 +1731,7 @@ static bool8 SlotTask_EndGame(struct Task *task)
 {
     SetCoins(sSlotMachine->coins);
     TryPutFindThatGamerOnAir(GetCoins());
-    BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB(0, 0, 0));
+    BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
     sSlotMachine->state++; // SLOTTASK_FREE
     return FALSE;
 }
@@ -3211,12 +3211,12 @@ static void StopReelButton_Unpress(struct Task *task, u8 taskId)
 
 static void LightenMatchLine(u8 matchLineId)
 {
-    LoadPalette(sLitMatchLinePalTable[matchLineId], sMatchLinePalOffsets[matchLineId], 2);
+    LoadPalette(sLitMatchLinePalTable[matchLineId], sMatchLinePalOffsets[matchLineId], PLTT_SIZEOF(1));
 }
 
 static void DarkenMatchLine(u8 matchLineId)
 {
-    LoadPalette(sDarkMatchLinePalTable[matchLineId], sMatchLinePalOffsets[matchLineId], 2);
+    LoadPalette(sDarkMatchLinePalTable[matchLineId], sMatchLinePalOffsets[matchLineId], PLTT_SIZEOF(1));
 }
 
 // light up the match line for each bet by the player
@@ -3360,7 +3360,7 @@ static bool8 TryStopSlotMachineLights(void)
     if (gTasks[taskId].sFlashState == 0)
     {
         DestroyTask(taskId);
-        LoadPalette(sSlotMachineMenu_Pal, 0x10, 0x20);
+        LoadPalette(sSlotMachineMenu_Pal, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
         return TRUE;
     }
     return FALSE;
@@ -3376,7 +3376,7 @@ static void Task_FlashSlotMachineLights(u8 taskId)
         if (task->sFlashState == 0 || task->sFlashState == 2)
             task->sFlashDir = -task->sFlashDir;
     }
-    LoadPalette(sFlashingLightsPalTable[task->sFlashState], 0x10, 0x20);
+    LoadPalette(sFlashingLightsPalTable[task->sFlashState], BG_PLTT_ID(1), PLTT_SIZE_4BPP);
 }
 
 #undef sDelayTimer
@@ -3904,7 +3904,7 @@ static void Task_InfoBox(u8 taskId)
 
 static void InfoBox_FadeIn(struct Task *task)
 {
-    BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB(0, 0, 0));
+    BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
     task->tState++;
 }
 
@@ -3928,7 +3928,7 @@ static void InfoBox_AddText(struct Task *task)
 {
     AddTextPrinterParameterized3(1, FONT_NORMAL, 2, 5, sColors_ReeltimeHelp, 0, gText_ReelTimeHelp);
     CopyWindowToVram(1, COPYWIN_FULL);
-    BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB(0, 0, 0));
+    BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
     task->tState++;
 }
 
@@ -3940,7 +3940,7 @@ static void InfoBox_WaitInput(struct Task *task)
         ClearWindowTilemap(1);
         CopyWindowToVram(1, COPYWIN_MAP);
         RemoveWindow(1);
-        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB(0, 0, 0));
+        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
         task->tState++;
     }
 }
@@ -3961,7 +3961,7 @@ static void InfoBox_CreateDigitalDisplay(struct Task *task)
 static void InfoBox_LoadPikaPowerMeter(struct Task *task)
 {
     LoadPikaPowerMeter(sSlotMachine->pikaPowerBolts);
-    BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB(0, 0, 0));
+    BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
     task->tState++;
 }
 
@@ -4427,7 +4427,7 @@ static void SpriteCB_ReelTimePikachuAura(struct Sprite *sprite)
     u8 colors[] = {16, 0};
     if (sprite->sFlashPal && --sprite->sDelayTimer <= 0)
     {
-        MultiplyInvertedPaletteRGBComponents((IndexOfSpritePaletteTag(PALTAG_PIKA_AURA) << 4) + 0x103, colors[sprite->sColorIdx], colors[sprite->sColorIdx], colors[sprite->sColorIdx]);
+        MultiplyInvertedPaletteRGBComponents(OBJ_PLTT_ID(IndexOfSpritePaletteTag(PALTAG_PIKA_AURA)) + 3, colors[sprite->sColorIdx], colors[sprite->sColorIdx], colors[sprite->sColorIdx]);
         ++sprite->sColorIdx;
         sprite->sColorIdx &= 1;
         sprite->sDelayTimer = sprite->sDelay;
@@ -4442,7 +4442,7 @@ static void SetReelTimePikachuAuraFlashDelay(s16 delay)
 static void DestroyReelTimePikachuAuraSprites(void)
 {
     u8 i;
-    MultiplyInvertedPaletteRGBComponents((IndexOfSpritePaletteTag(PALTAG_PIKA_AURA) << 4) + 0x103, 0, 0, 0);
+    MultiplyInvertedPaletteRGBComponents(OBJ_PLTT_ID(IndexOfSpritePaletteTag(PALTAG_PIKA_AURA)) + 3, 0, 0, 0);
     for (i = 0; i < ARRAY_COUNT(sSlotMachine->reelTimePikachuAuraSpriteIds); i++)
         DestroySprite(&gSprites[sSlotMachine->reelTimePikachuAuraSpriteIds[i]]);
 }
@@ -4857,7 +4857,7 @@ static void SpriteCB_DigitalDisplay_PokeballShining(struct Sprite *sprite)
 {
     if (sprite->sCounter < 3)
     {
-        LoadPalette(sPokeballShiningPalTable[sprite->sCounter], (IndexOfSpritePaletteTag(PALTAG_DIG_DISPLAY) << 4) + 0x100, 32);
+        LoadPalette(sPokeballShiningPalTable[sprite->sCounter], OBJ_PLTT_ID(IndexOfSpritePaletteTag(PALTAG_DIG_DISPLAY)), PLTT_SIZE_4BPP);
         if (++sprite->data[2] >= 4)
         {
             sprite->data[1]++;
@@ -4866,7 +4866,7 @@ static void SpriteCB_DigitalDisplay_PokeballShining(struct Sprite *sprite)
     }
     else
     {
-        LoadPalette(sPokeballShiningPalTable[sprite->sCounter], (IndexOfSpritePaletteTag(PALTAG_DIG_DISPLAY) << 4) + 0x100, 32);
+        LoadPalette(sPokeballShiningPalTable[sprite->sCounter], OBJ_PLTT_ID(IndexOfSpritePaletteTag(PALTAG_DIG_DISPLAY)), PLTT_SIZE_4BPP);
         if (++sprite->data[2] >= 25)
         {
             sprite->sCounter = 0;
@@ -4995,7 +4995,7 @@ static void EndDigitalDisplayScene_StopReel(void)
 
 static void EndDigitalDisplayScene_Win(void)
 {
-    LoadPalette(sDigitalDisplay_Pal, (IndexOfSpritePaletteTag(PALTAG_DIG_DISPLAY) << 4) + 0x100, 0x20);
+    LoadPalette(sDigitalDisplay_Pal, OBJ_PLTT_ID(IndexOfSpritePaletteTag(PALTAG_DIG_DISPLAY)), PLTT_SIZE_4BPP);
 }
 
 static void EndDigitalDisplayScene_InsertBet(void)
@@ -5054,8 +5054,8 @@ static void LoadMenuGfx(void)
     sMenuGfx = Alloc(0x2200);
     LZDecompressWram(gSlotMachineMenu_Gfx, sMenuGfx);
     LoadBgTiles(2, sMenuGfx, 0x2200, 0);
-    LoadPalette(gSlotMachineMenu_Pal, 0, 160);
-    LoadPalette(sUnkPalette, 208, 32);
+    LoadPalette(gSlotMachineMenu_Pal, BG_PLTT_ID(0), 5 * PLTT_SIZE_4BPP);
+    LoadPalette(sUnkPalette, BG_PLTT_ID(13), PLTT_SIZE_4BPP);
 }
 
 static void LoadMenuAndReelOverlayTilemaps(void)
@@ -7853,7 +7853,7 @@ static const u16 sUnusedColors[] =
     RGB(27, 27, 27),
     RGB(8, 11, 26),
     RGB(11, 21, 13),
-    RGB(31, 31, 31),
+    RGB_WHITE,
     RGB(16, 26, 21),
     RGB(0, 22, 31),
     RGB(26, 21, 0),
@@ -7879,19 +7879,19 @@ static const u16 *const sLitMatchLinePalTable[NUM_MATCH_LINES] =
 
 static const u16 *const sDarkMatchLinePalTable[NUM_MATCH_LINES] =
 {
-    [MATCH_MIDDLE_ROW] = &gSlotMachineMenu_Pal[74],
-    [MATCH_TOP_ROW]    = &gSlotMachineMenu_Pal[75],
-    [MATCH_BOTTOM_ROW] = &gSlotMachineMenu_Pal[76],
-    [MATCH_NWSE_DIAG]  = &gSlotMachineMenu_Pal[77],
-    [MATCH_NESW_DIAG]  = &gSlotMachineMenu_Pal[78],
+    [MATCH_MIDDLE_ROW] = &gSlotMachineMenu_Pal[BG_PLTT_ID(4) + 10],
+    [MATCH_TOP_ROW]    = &gSlotMachineMenu_Pal[BG_PLTT_ID(4) + 11],
+    [MATCH_BOTTOM_ROW] = &gSlotMachineMenu_Pal[BG_PLTT_ID(4) + 12],
+    [MATCH_NWSE_DIAG]  = &gSlotMachineMenu_Pal[BG_PLTT_ID(4) + 13],
+    [MATCH_NESW_DIAG]  = &gSlotMachineMenu_Pal[BG_PLTT_ID(4) + 14],
 };
 
 static const u8 sMatchLinePalOffsets[NUM_MATCH_LINES] = {
-    [MATCH_MIDDLE_ROW] = 74,
-    [MATCH_TOP_ROW]    = 75,
-    [MATCH_BOTTOM_ROW] = 76,
-    [MATCH_NWSE_DIAG]  = 78, // Diag colors flipped for some reason
-    [MATCH_NESW_DIAG]  = 77  // Doesn't matter as both are identical
+    [MATCH_MIDDLE_ROW] = BG_PLTT_ID(4) + 10,
+    [MATCH_TOP_ROW]    = BG_PLTT_ID(4) + 11,
+    [MATCH_BOTTOM_ROW] = BG_PLTT_ID(4) + 12,
+    [MATCH_NWSE_DIAG]  = BG_PLTT_ID(4) + 14, // Diag colors flipped for some reason
+    [MATCH_NESW_DIAG]  = BG_PLTT_ID(4) + 13  // Doesn't matter as both are identical
 };
 
 static const u8 sBetToMatchLineIds[MAX_BET][2] =

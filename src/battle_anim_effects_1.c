@@ -1045,10 +1045,10 @@ const struct SpriteTemplate gSilverWindSmallSparkSpriteTemplate =
 
 const u16 gMagicalLeafBlendColors[] =
 {
-    RGB(31, 0, 0),
+    RGB_RED,
     RGB(31, 19, 0),
-    RGB(31, 31, 0),
-    RGB(0, 31, 0),
+    RGB_YELLOW,
+    RGB_GREEN,
     RGB(5, 14, 31),
     RGB(22, 10, 31),
     RGB(22, 21, 31),
@@ -1971,10 +1971,10 @@ const struct SpriteTemplate gWavyMusicNotesSpriteTemplate =
 
 const u16 gParticlesColorBlendTable[][6] =
 {
-    {ANIM_TAG_MUSIC_NOTES,     RGB(31, 31, 31), RGB(31, 26, 28), RGB(31, 22, 26), RGB(31, 17, 24), RGB(31, 13, 22)},
-    {ANIM_TAG_BENT_SPOON,      RGB(31, 31, 31), RGB(25, 31, 26), RGB(20, 31, 21), RGB(15, 31, 16), RGB(10, 31, 12)},
-    {ANIM_TAG_SPHERE_TO_CUBE,  RGB(31, 31, 31), RGB(31, 31, 24), RGB(31, 31, 17), RGB(31, 31, 10), RGB(31, 31, 3)},
-    {ANIM_TAG_LARGE_FRESH_EGG, RGB(31, 31, 31), RGB(26, 28, 31), RGB(21, 26, 31), RGB(16, 24, 31), RGB(12, 22, 31)},
+    {ANIM_TAG_MUSIC_NOTES,     RGB_WHITE, RGB(31, 26, 28), RGB(31, 22, 26), RGB(31, 17, 24), RGB(31, 13, 22)},
+    {ANIM_TAG_BENT_SPOON,      RGB_WHITE, RGB(25, 31, 26), RGB(20, 31, 21), RGB(15, 31, 16), RGB(10, 31, 12)},
+    {ANIM_TAG_SPHERE_TO_CUBE,  RGB_WHITE, RGB(31, 31, 24), RGB(31, 31, 17), RGB(31, 31, 10), RGB(31, 31, 3)},
+    {ANIM_TAG_LARGE_FRESH_EGG, RGB_WHITE, RGB(26, 28, 31), RGB(21, 26, 31), RGB(16, 24, 31), RGB(12, 22, 31)},
 };
 
 const struct SpriteTemplate gFastFlyingMusicNotesSpriteTemplate =
@@ -3641,8 +3641,8 @@ void AnimTask_CycleMagicalLeafPal(u8 taskId)
     switch (task->data[0])
     {
     case 0:
-        task->data[8] = IndexOfSpritePaletteTag(ANIM_TAG_LEAF) * 16 + 256;
-        task->data[12] = IndexOfSpritePaletteTag(ANIM_TAG_RAZOR_LEAF) * 16 + 256;
+        task->data[8] = OBJ_PLTT_ID(IndexOfSpritePaletteTag(ANIM_TAG_LEAF));
+        task->data[12] = OBJ_PLTT_ID(IndexOfSpritePaletteTag(ANIM_TAG_RAZOR_LEAF));
         task->data[0]++;
         break;
     case 1:
@@ -3963,7 +3963,7 @@ static void AnimProtect(struct Sprite *sprite)
         sprite->oam.priority = GetBattlerSpriteBGPriority(gBattleAnimAttacker);
 
     sprite->data[0] = gBattleAnimArgs[2];
-    sprite->data[2] = (IndexOfSpritePaletteTag(ANIM_TAG_PROTECT) << 4) + 0x100;
+    sprite->data[2] = OBJ_PLTT_ID(IndexOfSpritePaletteTag(ANIM_TAG_PROTECT));
     sprite->data[7] = 16;
     SetGpuReg(REG_OFFSET_BLDCNT, BLDCNT_TGT2_ALL | BLDCNT_EFFECT_BLEND);
     SetGpuReg(REG_OFFSET_BLDALPHA, BLDALPHA_BLEND(16 - sprite->data[7], sprite->data[7]));
@@ -4343,13 +4343,13 @@ static void AnimLockOnTarget_Step4(struct Sprite *sprite)
         sprite->data[1] = 0;
     }
 
-    BlendPalettes(GetBattlePalettesMask(TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE), sprite->data[1], RGB(31, 31, 31));
+    BlendPalettes(GetBattlePalettesMask(TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, FALSE), sprite->data[1], RGB_WHITE);
     if (sprite->data[1] == 16)
     {
         int pal;
         sprite->data[2]++;
         pal = sprite->oam.paletteNum;
-        LoadPalette(&gPlttBufferUnfaded[0x108 + pal * 16], pal * 16 | 0x101, 4);
+        LoadPalette(&gPlttBufferUnfaded[OBJ_PLTT_ID(pal) + 8], OBJ_PLTT_ID(pal) + 1, PLTT_SIZEOF(2));
         PlaySE12WithPanning(SE_M_LEER, BattleAnimAdjustPanning(SOUND_PAN_TARGET));
     }
     else if (sprite->data[1] == 0)
@@ -5173,12 +5173,12 @@ void AnimTask_DoubleTeam(u8 taskId)
     struct Task *task = &gTasks[taskId];
     task->data[0] = GetAnimBattlerSpriteId(ANIM_ATTACKER);
     task->data[1] = AllocSpritePalette(ANIM_TAG_BENT_SPOON);
-    r3 = (task->data[1] * 16) + 0x100;
-    r4 = (gSprites[task->data[0]].oam.paletteNum + 16) << 4;
+    r3 = OBJ_PLTT_ID(task->data[1]);
+    r4 = OBJ_PLTT_ID2(gSprites[task->data[0]].oam.paletteNum);
     for (i = 1; i < 16; i++)
         gPlttBufferUnfaded[r3 + i] = gPlttBufferUnfaded[r4 + i];
 
-    BlendPalette(r3, 16, 11, RGB(0, 0, 0));
+    BlendPalette(r3, 16, 11, RGB_BLACK);
     task->data[3] = 0;
     i = 0;
     while (i < 2 && (obj = CloneBattlerSpriteWithBlend(0)) >= 0)
@@ -5251,7 +5251,7 @@ void AnimTask_MusicNotesRainbowBlend(u8 taskId)
     index = IndexOfSpritePaletteTag(gParticlesColorBlendTable[0][0]);
     if (index != 0xFF)
     {
-        index = (index << 4) + 0x100;
+        index = OBJ_PLTT_ID(index);
         for (i = 1; i < ARRAY_COUNT(gParticlesColorBlendTable[0]); i++)
             gPlttBufferFaded[index + i] = gParticlesColorBlendTable[0][i];
     }
@@ -5261,7 +5261,7 @@ void AnimTask_MusicNotesRainbowBlend(u8 taskId)
         index = AllocSpritePalette(gParticlesColorBlendTable[j][0]);
         if (index != 0xFF)
         {
-            index = (index << 4) + 0x100;
+            index = OBJ_PLTT_ID(index);
             for (i = 1; i < ARRAY_COUNT(gParticlesColorBlendTable[0]); i++)
                 gPlttBufferFaded[index + i] = gParticlesColorBlendTable[j][i];
         }
