@@ -460,7 +460,7 @@ MauvilleCity_GameCorner_EventScript_BuyTM24Infinite::
 MauvilleCity_GameCorner_EventScript_BuyTM13Infinite::
 	checkcoins VAR_TEMP_2
 	goto_if_lt VAR_TEMP_2, TM13_COINS, MauvilleCity_GameCorner_EventScript_NotEnoughCoinsForTM
-	checkitem ITEM_TM32, 1
+	checkitem ITEM_TM13, 1
     goto_if_eq VAR_RESULT, TRUE, MauvilleCity_GameCorner_EventScript_YouAlreadyHaveThis
 	removecoins TM13_COINS
 	additem ITEM_TM13
