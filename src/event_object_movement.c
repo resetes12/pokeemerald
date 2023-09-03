@@ -1884,8 +1884,8 @@ void UpdateFollowingPokemon(void) { // Update following pokemon if any
   u16 species;
   bool8 shiny;
   u8 form;
-  // Avoid spawning large (64x64) follower pokemon inside buildings
-  if (GetFollowerInfo(&species, &form, &shiny) && !(gMapHeader.mapType == MAP_TYPE_INDOOR && SpeciesToGraphicsInfo(species, 0)->height == 64) && !FlagGet(FLAG_TEMP_HIDE_FOLLOWER)) {
+  // Avoid spawning large (>32x32) follower pokemon inside buildings
+  if (GetFollowerInfo(&species, &form, &shiny) && !(gMapHeader.mapType == MAP_TYPE_INDOOR && SpeciesToGraphicsInfo(species, 0)->height > 32) && !FlagGet(FLAG_TEMP_HIDE_FOLLOWER)) {
     if (objEvent == NULL) { // Spawn follower
       struct ObjectEventTemplate template = {
         .localId = OBJ_EVENT_ID_FOLLOWER,
@@ -5152,19 +5152,17 @@ bool8 MovementType_FollowPlayer_Shadow(struct ObjectEvent *objectEvent, struct S
 
 bool8 MovementType_FollowPlayer_Active(struct ObjectEvent *objectEvent, struct Sprite *sprite)
 {
-    if (gPlayerAvatar.tileTransitionState == T_NOT_MOVING && !gObjectEvents[gPlayerAvatar.objectEventId].heldMovementActive ) { // do nothing if player is stationary
-        return FALSE;
-    } else if (!IsFollowerVisible()) {
-      if (objectEvent->invisible) { // Return to shadowing state
-        sprite->sTypeFuncId = 0;
-        return FALSE;
-      }
-      // Animate entering pokeball
-      ClearObjectEventMovement(objectEvent, sprite);
-      ObjectEventSetSingleMovement(objectEvent, sprite, MOVEMENT_ACTION_ENTER_POKEBALL);
-      objectEvent->singleMovementActive = 1;
-      sprite->sTypeFuncId = 2; // movement action sets state to 0
-      return TRUE;
+    if (!IsFollowerVisible()) {
+        if (objectEvent->invisible) { // Return to shadowing state
+            sprite->sTypeFuncId = 0;
+            return FALSE;
+        }
+        // Animate entering pokeball
+        ClearObjectEventMovement(objectEvent, sprite);
+        ObjectEventSetSingleMovement(objectEvent, sprite, MOVEMENT_ACTION_ENTER_POKEBALL);
+        objectEvent->singleMovementActive = 1;
+        sprite->sTypeFuncId = 2; // movement action sets state to 0
+        return TRUE;
     }
     // TODO: Remove dependence on PlayerGetCopyableMovement
     return gFollowPlayerMovementFuncs[PlayerGetCopyableMovement()](objectEvent, sprite, GetPlayerMovementDirection(), NULL);
@@ -5184,23 +5182,33 @@ bool8 MovementType_FollowPlayer_Moving(struct ObjectEvent *objectEvent, struct S
         if (sprite->sTypeFuncId) { // restore nonzero state
             sprite->sTypeFuncId = 1;
         }
-    } else if (objectEvent->movementActionId != MOVEMENT_ACTION_EXIT_POKEBALL) {
+    } else if (objectEvent->movementActionId < MOVEMENT_ACTION_EXIT_POKEBALL) {
         UpdateFollowerTransformEffect(objectEvent, sprite);
+        #if OW_MON_BOBBING == TRUE
+        if ((sprite->data[5] & 7) == 2)
+            sprite->y2 ^= -1;
+        #endif
     }
     return FALSE;
 }
 
 bool8 FollowablePlayerMovement_Idle(struct ObjectEvent *objectEvent, struct Sprite *sprite, u8 playerDirection, bool8 tileCallback(u8))
 {
-    u8 direction;
-    if (!objectEvent->singleMovementActive) { // walk in place
+    if (!objectEvent->singleMovementActive)
+    { // walk in place
       ObjectEventSetSingleMovement(objectEvent, sprite, GetWalkInPlaceNormalMovementAction(objectEvent->facingDirection));
       sprite->sTypeFuncId = 1;
       objectEvent->singleMovementActive = 1;
       return TRUE;
-    } else if (ObjectEventExecSingleMovementAction(objectEvent, sprite)) { // finish movement action
+    }
+    else if (ObjectEventExecSingleMovementAction(objectEvent, sprite))
+    { // finish movement action
         objectEvent->singleMovementActive = 0;
     }
+    #if OW_MON_BOBBING == TRUE
+    else if ((sprite->data[3] & 7) == 2)
+        sprite->y2 ^= -1;
+    #endif
     UpdateFollowerTransformEffect(objectEvent, sprite);
     return FALSE;
 }
@@ -5213,7 +5221,7 @@ bool8 FollowablePlayerMovement_Step(struct ObjectEvent *objectEvent, struct Spri
     s16 targetX;
     s16 targetY;
     #ifdef MB_SIDEWAYS_STAIRS_RIGHT_SIDE
-    u8 playerAction = gObjectEvents[gPlayerAvatar.objectEventId].movementActionId;
+    u32 playerAction = gObjectEvents[gPlayerAvatar.objectEventId].movementActionId;
     #endif
 
     targetX = gObjectEvents[gPlayerAvatar.objectEventId].previousCoords.x;
@@ -5238,6 +5246,9 @@ bool8 FollowablePlayerMovement_Step(struct ObjectEvent *objectEvent, struct Spri
       ObjectEventSetSingleMovement(objectEvent, sprite, MOVEMENT_ACTION_EXIT_POKEBALL);
       objectEvent->singleMovementActive = 1;
       sprite->sTypeFuncId = 2;
+      #if OW_MON_BOBBING == TRUE
+      sprite->y2 = 0;
+      #endif
       return TRUE;
     } else if (x == targetX && y == targetY) { // don't move if already in the player's last position
       return FALSE;
@@ -5261,8 +5272,12 @@ bool8 FollowablePlayerMovement_Step(struct ObjectEvent *objectEvent, struct Spri
     } else {
         if (playerAction >= MOVEMENT_ACTION_WALK_SLOW_DOWN && playerAction <= MOVEMENT_ACTION_WALK_SLOW_RIGHT)
             ObjectEventSetSingleMovement(objectEvent, sprite, GetWalkSlowMovementAction(direction));
-        else
+        else {
             objectEvent->movementActionId = GetWalkNormalMovementAction(direction);
+            #if OW_MON_BOBBING == TRUE
+            sprite->y2 = -1;
+            #endif
+        }
     }
     sprite->sActionFuncId = 0;
     #else
@@ -5273,8 +5288,12 @@ bool8 FollowablePlayerMovement_Step(struct ObjectEvent *objectEvent, struct Spri
     // If *player* jumps, make step take twice as long
     else if (PlayerGetCopyableMovement() == COPY_MOVE_JUMP2)
         ObjectEventSetSingleMovement(objectEvent, sprite, GetWalkSlowMovementAction(direction));
-    else
+    else {
         ObjectEventSetSingleMovement(objectEvent, sprite, GetWalkNormalMovementAction(direction));
+        #if OW_MON_BOBBING == TRUE
+        sprite->y2 = -1;
+        #endif
+    }
     #endif
     objectEvent->singleMovementActive = 1;
     sprite->sTypeFuncId = 2;
@@ -6948,6 +6967,9 @@ bool8 MovementAction_EnterPokeball_Step1(struct ObjectEvent *objectEvent, struct
       LoadFillColorPalette(RGB_WHITE, OBJ_EVENT_PAL_TAG_WHITE, sprite);
       sprite->affineAnims = sAffineAnims_PokeballFollower;
       sprite->oam.affineMode = ST_OAM_AFFINE_NORMAL;
+      #if LARGE_OW_SUPPORT
+      sprite->subspriteTableNum = 1;
+      #endif
       InitSpriteAffineAnim(sprite);
       StartSpriteAffineAnim(sprite, sprite->data[6]);
     } else if (sprite->data[3] == 7) { // Free white palette and change to pokeball, disable affine
@@ -8976,7 +8998,14 @@ static void UpdateObjectEventElevationAndPriority(struct ObjectEvent *objEvent, 
     if (objEvent->fixedPriority)
         return;
 
-    ObjectEventUpdateElevation(objEvent);
+    ObjectEventUpdateElevation(objEvent, sprite);
+    #if LARGE_OW_SUPPORT
+    if (objEvent->localId == OBJ_EVENT_ID_FOLLOWER) {
+        // keep subspriteMode synced with player's
+        // so that it disappears under bridges when they do
+        sprite->subspriteMode |= gSprites[gPlayerAvatar.spriteId].subspriteMode & SUBSPRITES_IGNORE_PRIORITY;
+    }
+    #endif
 
     sprite->subspriteTableNum = sElevationToSubspriteTableNum[objEvent->previousElevation];
     sprite->oam.priority = sElevationToPriority[objEvent->previousElevation];
@@ -8993,13 +9022,23 @@ u8 ElevationToPriority(u8 elevation)
     return sElevationToPriority[elevation];
 }
 
-void ObjectEventUpdateElevation(struct ObjectEvent *objEvent)
+// Returns current elevation, or 15 for bridges
+void ObjectEventUpdateElevation(struct ObjectEvent *objEvent, struct Sprite *sprite)
 {
     u8 curElevation = MapGridGetElevationAt(objEvent->currentCoords.x, objEvent->currentCoords.y);
     u8 prevElevation = MapGridGetElevationAt(objEvent->previousCoords.x, objEvent->previousCoords.y);
 
-    if (curElevation == 15 || prevElevation == 15)
+    if (curElevation == 15 || prevElevation == 15) {
+        #if LARGE_OW_SUPPORT
+        // Ignore subsprite priorities under bridges
+        // so all subsprites will display below it
+        sprite->subspriteMode = SUBSPRITES_IGNORE_PRIORITY;
+        #endif
         return;
+    }
+    #if LARGE_OW_SUPPORT
+    sprite->subspriteMode = SUBSPRITES_ON;
+    #endif
 
     objEvent->currentElevation = curElevation;
 
