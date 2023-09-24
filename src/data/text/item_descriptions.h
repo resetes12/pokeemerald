@@ -1664,3 +1664,8 @@ static const u8 sTimidMintDesc[] = _(
     "Changes POKéMON\n"
     "nature to TIMID.\n"
     "+SPD, -ATK");
+
+static const u8 sInfiniteRepel[] = _(
+    "Repels POKéMON\n"
+    "until you\n"
+    "turn it off.");

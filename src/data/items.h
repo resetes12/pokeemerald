@@ -2799,15 +2799,16 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
     },
 
-    [ITEM_0E2] =
+    [ITEM_INFINITE_REPEL] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
+        .name = _("INFIN. REPEL"),
+        .itemId = ITEM_INFINITE_REPEL,
         .price = 0,
-        .description = sDummyDesc,
-        .pocket = POCKET_ITEMS,
+        .description = sInfiniteRepel,
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
         .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .fieldUseFunc = ItemUseOutOfBattle_InfiniteRepel,
     },
 
     [ITEM_0E3] =
@@ -7647,15 +7648,16 @@ const struct Item gItems2[] =
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
     },
 
-    [ITEM_0E2] =
+    [ITEM_INFINITE_REPEL] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
+        .name = _("INFIN. REPEL"),
+        .itemId = ITEM_INFINITE_REPEL,
         .price = 0,
-        .description = sDummyDesc,
-        .pocket = POCKET_ITEMS,
+        .description = sInfiniteRepel,
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
         .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .fieldUseFunc = ItemUseOutOfBattle_InfiniteRepel,
     },
 
     [ITEM_0E3] =
