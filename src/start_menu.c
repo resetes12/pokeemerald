@@ -122,7 +122,8 @@ void ShowThrobber(void)
     LoadSpritePalettes(sSpritePalettes_Throbber);
 
     // 217 and 123 are the x and y coordinates (in pixels)
-    spriteId = CreateSprite(&sSpriteTemplate_Throbber, 217, 123, 2);
+    if (!gMapHeader.cave)
+        spriteId = CreateSprite(&sSpriteTemplate_Throbber, 217, 123, 2);
 };
 
 // Menu actions
@@ -1212,12 +1213,14 @@ static u8 SaveDoSaveCallback(void)
     if (saveStatus == SAVE_STATUS_OK)
     {
         ShowSaveMessage(gText_PlayerSavedGame, SaveSuccessCallback);
-        DestroySprite(&gSprites[spriteId]);
+        if (!gMapHeader.cave)
+            DestroySprite(&gSprites[spriteId]);
     }
     else
     {
         ShowSaveMessage(gText_SaveError, SaveErrorCallback);
-        DestroySprite(&gSprites[spriteId]);
+        if (!gMapHeader.cave)
+            DestroySprite(&gSprites[spriteId]);
     }
 
     SaveStartTimer();
