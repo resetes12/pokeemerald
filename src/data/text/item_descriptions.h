@@ -1669,3 +1669,8 @@ static const u8 sInfiniteRepel[] = _(
     "Repels POKéMON\n"
     "until you\n"
     "turn it off.");
+
+static const u8 sInfiniteRareCandy[] = _(
+    "Gives 999 RARE\n"
+    "CANDIES for your\n"
+    "personal uses.");

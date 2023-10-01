@@ -2811,15 +2811,16 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_InfiniteRepel,
     },
 
-    [ITEM_0E3] =
+    [ITEM_INFINITE_RARE_CANDIES] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
+        .name = _("INFIN. CANDY"),
+        .itemId = ITEM_INFINITE_RARE_CANDIES,
         .price = 0,
-        .description = sDummyDesc,
-        .pocket = POCKET_ITEMS,
+        .description = sInfiniteRareCandy,
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
         .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .fieldUseFunc = ItemUseOutOfBattle_InfiniteRareCandies,
     },
 
     [ITEM_0E4] =
@@ -7660,15 +7661,16 @@ const struct Item gItems2[] =
         .fieldUseFunc = ItemUseOutOfBattle_InfiniteRepel,
     },
 
-    [ITEM_0E3] =
+    [ITEM_INFINITE_RARE_CANDIES] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
+        .name = _("INFIN. CANDY"),
+        .itemId = ITEM_INFINITE_RARE_CANDIES,
         .price = 0,
-        .description = sDummyDesc,
-        .pocket = POCKET_ITEMS,
+        .description = sInfiniteRareCandy,
+        .importance = 1,
+        .pocket = POCKET_KEY_ITEMS,
         .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .fieldUseFunc = ItemUseOutOfBattle_InfiniteRareCandies,
     },
 
     [ITEM_0E4] =

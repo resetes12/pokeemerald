@@ -709,6 +709,21 @@ void ItemUseOutOfBattle_InfiniteRepel(u8 taskId)
     }
 }
 
+void ItemUseOutOfBattle_InfiniteRareCandies(u8 taskId)
+{
+    PlaySE(MUS_OBTAIN_ITEM);
+    AddBagItem(ITEM_RARE_CANDY, 999);
+    if (gTasks[taskId].tUsingRegisteredKeyItem) // to account for pressing select in the overworld
+    {
+        DisplayItemMessageOnField(taskId, gText_infiniteCandies, Task_CloseCantUseKeyItemMessage);
+    }
+    else
+    {
+        DisplayItemMessage(taskId, 1, gText_infiniteCandies, CloseItemMessage);
+        UpdatePocketItemList(ITEMS_POCKET);
+    }
+}
+
 void ItemUseOutOfBattle_PowderJar(u8 taskId)
 {
     ConvertIntToDecimalStringN(gStringVar1, GetBerryPowder(), STR_CONV_MODE_LEFT_ALIGN, 5);

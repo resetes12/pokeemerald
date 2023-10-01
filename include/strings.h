@@ -3182,6 +3182,7 @@ extern const u8 gText_ExpShareOff[];
 //Infinite Repel
 extern const u8 gText_infiniteRepelOn[];
 extern const u8 gText_infiniteRepelOff[];
+extern const u8 gText_infiniteCandies[];
 
 //tx_randomizer_and_challenges
 extern const u8 gText_NuzlockeCantThrowPokeBallRoute[];
