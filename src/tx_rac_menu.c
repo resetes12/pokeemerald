@@ -396,7 +396,7 @@ static const u8 sText_ItemDrop[]            = _("ITEM DROP");
 static const u8 sText_InfiniteTMs[]         = _("REUSABLE TMS");
 static const u8 sText_Poison[]              = _("SURVIVE POISON");
 static const u8 sText_EasyFeebas[]          = _("EASIER FEEBAS");
-static const u8 sText_Pkmn_Death[]          = _("PERMA FAINT");
+static const u8 sText_Pkmn_Death[]          = _("{COLOR 7}{COLOR 8}POKÉMON FAINT");
 static const u8 sText_Next[]                = _("NEXT");
 // Menu left side option names text
 static const u8 *const sOptionMenuItemsNamesFeatures[MENUITEM_FEATURES_COUNT] =
@@ -610,8 +610,8 @@ static const u8 sText_Description_Features_SurvivePoison_On[]         = _("Your 
 static const u8 sText_Description_Features_SurvivePoison_Off[]        = _("Your {PKMN} will faint if they are\nPOISONED.");
 static const u8 sText_Description_Features_EasyFeebas_On[]            = _("FEEBAS is easier to catch and spawns\neverywhere in ROUTE 119.");
 static const u8 sText_Description_Features_EasyFeebas_Off[]           = _("FEEBAS is encountered in random\nspots in ROUTE 119.");
-static const u8 sText_Description_Features_Pkmn_Death_On[]            = _("{COLOR 7}{COLOR 8}USE WITH CAUTION.{COLOR 1}{COLOR 2} Getting to zero {PKMN}\ncould be the end of your adventure.");
-static const u8 sText_Description_Features_Pkmn_Death_Off[]           = _("{PKMN} will recover from fainting\nas usual. Recommended.");
+static const u8 sText_Description_Features_Pkmn_Death_On[]            = _("{COLOR 7}{COLOR 8}YOUR {PKMN} WILL DIE!! Getting to zero\n{PKMN} could be the end of your save."); //{COLOR 1}{COLOR 2} 
+static const u8 sText_Description_Features_Pkmn_Death_Off[]           = _("{PKMN} will not die from fainting.\nRecommended.");
 static const u8 sText_Description_Features_Next[]                     = _("Continue to Randomizer options.");
 static const u8 *const sOptionMenuItemDescriptionsFeatures[MENUITEM_FEATURES_COUNT][5] =
 {
