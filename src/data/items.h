@@ -2813,7 +2813,7 @@ const struct Item gItems[] =
 
     [ITEM_INFINITE_RARE_CANDIES] =
     {
-        .name = _("INFIN. CANDY"),
+        .name = _("RARECANDY BOX"),
         .itemId = ITEM_INFINITE_RARE_CANDIES,
         .price = 0,
         .description = sInfiniteRareCandy,
@@ -7663,7 +7663,7 @@ const struct Item gItems2[] =
 
     [ITEM_INFINITE_RARE_CANDIES] =
     {
-        .name = _("INFIN. CANDY"),
+        .name = _("RARECANDY BOX"),
         .itemId = ITEM_INFINITE_RARE_CANDIES,
         .price = 0,
         .description = sInfiniteRareCandy,

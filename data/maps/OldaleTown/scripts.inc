@@ -37,6 +37,44 @@ OldaleTown_EventScript_Girl::
 	msgbox OldaleTown_Text_SavingMyProgress, MSGBOX_NPC
 	end
 
+OldaleTown_EventScript_InfiniteItems1::
+	faceplayer
+	goto_if_set FLAG_INFINITE_STUFF, OldaleTown_EventScript_InfiniteItems5
+	playbgm MUS_RG_FOLLOW_ME, FALSE
+	msgbox OldaleTown_Text_InfiniteItems1, MSGBOX_YESNO
+	call_if_eq VAR_RESULT, YES, OldaleTown_EventScript_InfiniteItems2
+	call_if_eq VAR_RESULT, NO, OldaleTown_EventScript_InfiniteItemsNo
+	end
+
+OldaleTown_EventScript_InfiniteItems2::
+	msgbox OldaleTown_Text_InfiniteItems2, MSGBOX_YESNO
+	call_if_eq VAR_RESULT, YES, OldaleTown_EventScript_InfiniteItems3
+	call_if_eq VAR_RESULT, NO, OldaleTown_EventScript_InfiniteItemsNo
+	end
+
+OldaleTown_EventScript_InfiniteItems3::
+	msgbox OldaleTown_Text_InfiniteItems3, MSGBOX_YESNO
+	call_if_eq VAR_RESULT, YES, OldaleTown_EventScript_InfiniteItems4
+	call_if_eq VAR_RESULT, NO, OldaleTown_EventScript_InfiniteItemsNo
+	end
+
+OldaleTown_EventScript_InfiniteItems4::
+	giveitem ITEM_INFINITE_REPEL
+	giveitem ITEM_INFINITE_RARE_CANDIES
+	msgbox OldaleTown_Text_InfiniteItems4, MSGBOX_NPC
+	setflag FLAG_INFINITE_STUFF
+	fadedefaultbgm
+	end
+
+OldaleTown_EventScript_InfiniteItems5::
+	msgbox OldaleTown_Text_InfiniteItems4, MSGBOX_NPC
+	end
+
+OldaleTown_EventScript_InfiniteItemsNo::
+	msgbox OldaleTown_Text_InfiniteItemsNo, MSGBOX_NPC
+	fadedefaultbgm
+	end
+
 OldaleTown_EventScript_MartEmployee::
 	lock
 	faceplayer
@@ -399,3 +437,25 @@ OldaleTown_Text_TownSign:
 	.string "OLDALE TOWN\n"
 	.string "“Where things start off scarce.”$"
 
+OldaleTown_Text_InfiniteItems1:
+	.string "Hey! I got some really good items from\n"
+	.string "a strange guy. They are...\p"
+	.string "An INFINITE REPEL and a BOX filled with\n"
+	.string "RARE CANDIES! Cool, right?\p"
+	.string "Are you interested in them?$"
+
+OldaleTown_Text_InfiniteItems2:
+	.string "Hmm... Obtaining and using these items\n"
+	.string "is considered cheating...\p"
+	.string "Are you sure you want them?$"
+
+OldaleTown_Text_InfiniteItems3:
+	.string "Do you really want them?\n"
+	.string "Just making sure...\p"
+	.string "You can not throw them away.$"
+
+OldaleTown_Text_InfiniteItems4:
+	.string "Cheat at your own responsability!$"
+
+OldaleTown_Text_InfiniteItemsNo:
+	.string "Okay!$"
