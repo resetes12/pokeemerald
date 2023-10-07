@@ -6303,8 +6303,8 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         // Slaking gets Immunity. He does -20% damage in the first match vs Norman and does normal damage in the rematches. No sitrus berry.
         if ((attacker->species == SPECIES_SLAKING) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER))
         {
-            //attacker->ability = ABILITY_IMMUNITY;
-            attacker->ability = ABILITY_SPEED_BOOST;
+            attacker->ability = ABILITY_IMMUNITY;
+            //attacker->ability = ABILITY_SPEED_BOOST;
             if (FlagGet(FLAG_BADGE05_GET) == FALSE)
                 {
                     spAttack = (80 * spAttack) / 100;
