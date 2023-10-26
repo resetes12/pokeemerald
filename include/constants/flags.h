@@ -456,7 +456,7 @@
 #define FLAG_REMATCH_WALLACE                 0x1A9
 
 #define FLAG_DIFFICULTY_HARD                 0x1AA
-#define FLAG_UNUSED_0x1AB                    0x1AB //Unused
+#define FLAG_NO_SHINY                        0x1AB
 
 #define FLAG_DEFEATED_DEOXYS                 0x1AC
 #define FLAG_BATTLED_DEOXYS                  0x1AD

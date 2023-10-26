@@ -4927,7 +4927,13 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
     if (otIdType == OT_ID_RANDOM_NO_SHINY)
     {
         u32 shinyValue;
-        if (gSaveBlock2Ptr->optionsShinyChance == 0) // 1/8192
+        if (FlagGet(FLAG_NO_SHINY) == TRUE) // No shiny
+            do
+            {
+                value = Random32();
+                shinyValue = GET_SHINY_VALUE(value, personality);
+            } while (shinyValue = 0);
+        else if (gSaveBlock2Ptr->optionsShinyChance == 0) // 1/8192
             do
             {
                 // Choose random OT IDs until one that results in a non-shiny Pokémon

@@ -46,10 +46,12 @@ BattleFrontier_Lounge9_EV_HP_Yes::
 	waitmessage
 	setflag FLAG_SYS_NO_CATCHING
 	setflag FLAG_SYS_SET_BATTLE_BGM
+	setflag FLAG_NO_SHINY
 	setvar VAR_TEMP_F, MUS_RG_VS_WILD
 	setwildbattle SPECIES_WAILORD, 1, ITEM_NONE
 	dowildbattle
 	clearflag FLAG_SYS_NO_CATCHING
+	clearflag FLAG_NO_SHINY
 	release
 	end
 	
@@ -69,10 +71,12 @@ BattleFrontier_Lounge9_EV_ATK_Yes::
 	waitmessage
 	setflag FLAG_SYS_NO_CATCHING
 	setflag FLAG_SYS_SET_BATTLE_BGM
+	setflag FLAG_NO_SHINY
 	setvar VAR_TEMP_F, MUS_RG_VS_WILD
 	setwildbattle SPECIES_GALLADE, 1, ITEM_NONE
 	dowildbattle
 	clearflag FLAG_SYS_NO_CATCHING
+	clearflag FLAG_NO_SHINY
 	release
 	end
 
@@ -92,10 +96,12 @@ BattleFrontier_Lounge9_EV_SATK_Yes::
 	waitmessage
 	setflag FLAG_SYS_NO_CATCHING
 	setflag FLAG_SYS_SET_BATTLE_BGM
+	setflag FLAG_NO_SHINY
 	setvar VAR_TEMP_F, MUS_RG_VS_WILD
 	setwildbattle SPECIES_GARDEVOIR, 1, ITEM_NONE
 	dowildbattle
 	clearflag FLAG_SYS_NO_CATCHING
+	clearflag FLAG_NO_SHINY
 	release
 	end
 
@@ -115,10 +121,12 @@ BattleFrontier_Lounge9_EV_DEF_Yes::
 	waitmessage
 	setflag FLAG_SYS_NO_CATCHING
 	setflag FLAG_SYS_SET_BATTLE_BGM
+	setflag FLAG_NO_SHINY
 	setvar VAR_TEMP_F, MUS_RG_VS_WILD
 	setwildbattle SPECIES_AGGRON, 1, ITEM_NONE
 	dowildbattle
 	clearflag FLAG_SYS_NO_CATCHING
+	clearflag FLAG_NO_SHINY
 	release
 	end
 
@@ -138,10 +146,12 @@ BattleFrontier_Lounge9_EV_SDEF_Yes::
 	waitmessage
 	setflag FLAG_SYS_NO_CATCHING
 	setflag FLAG_SYS_SET_BATTLE_BGM
+	setflag FLAG_NO_SHINY
 	setvar VAR_TEMP_F, MUS_RG_VS_WILD
 	setwildbattle SPECIES_LUDICOLO, 1, ITEM_NONE
 	dowildbattle
 	clearflag FLAG_SYS_NO_CATCHING
+	clearflag FLAG_NO_SHINY
 	release
 	end
 
@@ -161,10 +171,12 @@ BattleFrontier_Lounge9_EV_SPD_Yes::
 	waitmessage
 	setflag FLAG_SYS_NO_CATCHING
 	setflag FLAG_SYS_SET_BATTLE_BGM
+	setflag FLAG_NO_SHINY
 	setvar VAR_TEMP_F, MUS_RG_VS_WILD
 	setwildbattle SPECIES_SCEPTILE, 1, ITEM_NONE
 	dowildbattle
 	clearflag FLAG_SYS_NO_CATCHING
+	clearflag FLAG_NO_SHINY
 	release
 	end
 
