@@ -892,8 +892,10 @@ static void LoadTilesetPalette(struct Tileset const *tileset, u16 destOffset, u1
         }
         else if (tileset->isSecondary == TRUE)
         {
+            // (void*) is to silence 'source potentially unaligned' error
+            // All 'gTilesetPalettes_' arrays should have ALIGNED(4) in them
             if (skipFaded)
-                CpuFastCopy(tileset->palettes[NUM_PALS_IN_PRIMARY], &gPlttBufferUnfaded[destOffset], size);
+                CpuFastCopy((void*)tileset->palettes[NUM_PALS_IN_PRIMARY], &gPlttBufferUnfaded[destOffset], size);
             else
                 LoadPaletteFast(tileset->palettes[NUM_PALS_IN_PRIMARY], destOffset, size);
             low = NUM_PALS_IN_PRIMARY;

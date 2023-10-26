@@ -1227,7 +1227,8 @@ void AvgPaletteWeighted(u16 *src0, u16 *src1, u16 *dst, u16 weight0) {
         r0 = r1 + (((r0 - r1) * weight0) >> 8);
         g0 = g1 + (((g0 - g1) * weight0) >> 8);
         b0 = b1 + (((b0 - b1) * weight0) >> 8);
-        *dst++ = (*dst & RGB_ALPHA) | RGB2(r0, g0, b0);  // preserve high bit of dst
+        *dst = (*dst & RGB_ALPHA) | RGB2(r0, g0, b0);  // preserve high bit of dst
+        dst++;
     }
 }
 
