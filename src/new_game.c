@@ -103,13 +103,9 @@ static void SetDefaultOptions(void)
     gSaveBlock2Ptr->optionsautoRun = 1;
     gSaveBlock2Ptr->optionsDisableMatchCall = 0;
     gSaveBlock2Ptr->optionStyle = 0;
-    gSaveBlock2Ptr->optionTypeEffective = 1;
+    gSaveBlock2Ptr->optionTypeEffective = 0;
     gSaveBlock2Ptr->optionsFishing = 1;
     gSaveBlock2Ptr->optionsFastIntro = 1;
-    //gSaveBlock2Ptr->optionsLimitDifficulty = 0; //in challenges menu
-    //gSaveBlock2Ptr->optionsAlternateSpawns = 0; //in challenges menu
-    //gSaveBlock2Ptr->optionsShinyChance = 0; //in challenges menu
-    //gSaveBlock2Ptr->optionsWildMonDropItems = 0; //in challenges menu
     gSaveBlock2Ptr->optionsFastBattle = 1;
     gSaveBlock1Ptr->optionsBikeMusic = 0;
     gSaveBlock1Ptr->optionsEvenFasterJoy = 1;
