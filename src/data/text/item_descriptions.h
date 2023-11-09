@@ -1593,7 +1593,7 @@ static const u8 sGentleMintDesc[] = _(
 static const u8 sHastyMintDesc[] = _(
     "Changes POKéMON\n"
     "nature to HASTY.\n"
-    "+SPD, -ATK");
+    "+SPD, -DEF");
 
 static const u8 sImpishMintDesc[] = _(
     "Changes POKéMON\n"
