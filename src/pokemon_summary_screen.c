@@ -4077,9 +4077,9 @@ static void SetMoveTypeIcons(void)
                      | ((GetMonData(mon, MON_DATA_SPATK_IV) & 1) << 4)
                      | ((GetMonData(mon, MON_DATA_SPDEF_IV) & 1) << 5);
 
-                u8 type = (15 * typeBits) / 63 + 1;
-                if (type >= TYPE_MYSTERY)
-                    type++;
+                u8 type = ((NUMBER_OF_MON_TYPES - 2) * typeBits) / 63 + 1;
+                if (type == TYPE_MYSTERY)
+                    type = TYPE_FAIRY;
                 type |= 0xC0;
                 SetTypeSpritePosAndPal(type & 0x3F, 85, 32 + (i * 16), i + SPRITE_ARR_ID_TYPE);
             } else {
@@ -4124,9 +4124,9 @@ static void SetNewMoveTypeIcon(void)
                      | ((GetMonData(mon, MON_DATA_SPATK_IV) & 1) << 4)
                      | ((GetMonData(mon, MON_DATA_SPDEF_IV) & 1) << 5);
 
-                u8 type = (15 * typeBits) / 63 + 1;
-                if (type >= TYPE_MYSTERY)
-                    type++;
+                u8 type = ((NUMBER_OF_MON_TYPES - 2) * typeBits) / 63 + 1;
+                if (type == TYPE_MYSTERY)
+                    type = TYPE_FAIRY;
                 type |= 0xC0;
                 SetTypeSpritePosAndPal(type & 0x3F, 85, 96, SPRITE_ARR_ID_TYPE + 4);
             } else {
