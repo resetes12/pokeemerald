@@ -14,7 +14,10 @@
 #include "international_string_util.h"
 #include "item.h"
 #include "item_icon.h"
+#include "party_menu.h"
 #include "item_menu.h"
+#include "constants/battle.h"
+#include "constants/party_menu.h"
 #include "mail.h"
 #include "main.h"
 #include "menu.h"
@@ -6439,16 +6442,109 @@ static void SetMovingMonData(u8 boxId, u8 position)
     sMovingMonOrigBoxPos = position;
 }
 
+static u8 GetBoxHPFromHP(struct Pokemon *mon)
+{
+    u8 hp_box;
+    u16 hp_curr = GetMonData(mon, MON_DATA_HP);
+    u16 hp_max = GetMonData(mon, MON_DATA_MAX_HP);
+    if (hp_max <= 0xFF)  // If the HP is small enough to fully fit into a u8, put in the precise value
+        hp_box = hp_curr;
+    else  // Otherwise, round
+        hp_box = SAFE_DIV(0xFF * hp_curr, hp_max);
+    if(hp_curr != 0 && hp_box == 0)  // to stop accidental fainting
+        hp_box = 1;
+    return hp_box;
+}
+
+u16 GetHPFromBoxHP(struct Pokemon *mon)
+{
+    u16 hp_curr;
+    u8 hp_box = GetMonData(mon, MON_DATA_BOX_HP);
+    u16 hp_max = GetMonData(mon, MON_DATA_MAX_HP);
+    if (hp_max <= 0xFF)
+        hp_curr = hp_box;
+    else
+        hp_curr = SAFE_DIV(hp_max * hp_box, 0xFF);
+    return hp_curr; 
+}
+
+static u8 GetBoxStatusFromStatus(struct Pokemon *mon)
+{
+    u32 status = GetMonData(mon, MON_DATA_STATUS);
+    u8 ailment = GetAilmentFromStatus(status); 
+    if (ailment > 7)  //Chops off anything above what 3 bits can hold
+        ailment = 0;
+    return ailment;
+}
+
+u32 GetStatusFromBoxStatus(struct Pokemon *mon)
+{
+    u8 boxStatus = GetMonData(mon, MON_DATA_BOX_AILMENT);
+    u32 status;
+    switch (boxStatus)
+    {
+    case AILMENT_PSN:
+        status = STATUS1_POISON;
+        break;
+    case AILMENT_PRZ:
+        status = STATUS1_PARALYSIS;
+        break;
+    case AILMENT_SLP:
+        status = STATUS1_SLEEP_TURN(3);
+        break;
+    case AILMENT_FRZ:
+        status = STATUS1_FREEZE;
+        break;
+    case AILMENT_BRN:
+        status = STATUS1_BURN;
+        break;
+    default:
+        status = STATUS1_NONE;
+        break;
+    }
+    return status;
+}
+
 static void SetPlacedMonData(u8 boxId, u8 position)
 {
+    u32 hp;
+    u32 status;
+    u8 value;
     if (boxId == TOTAL_BOXES_COUNT)
     {
+        if (((gSaveBlock1Ptr->tx_Challenges_PkmnCenter) == 1) || ((gSaveBlock1Ptr->tx_Challenges_PCHeal) == 1))
+        {
+            if(GetMonData(&sStorage->movingMon, MON_DATA_IN_PC))
+            {
+                hp = GetHPFromBoxHP(&sStorage->movingMon);
+                status = GetStatusFromBoxStatus(&sStorage->movingMon);
+                SetMonData(&sStorage->movingMon, MON_DATA_HP, &hp);
+                SetMonData(&sStorage->movingMon, MON_DATA_STATUS, &status);
+            }
+            else
+                MonRestorePP(&sStorage->movingMon);
+            value = 0;
+            SetBoxMonData(&sStorage->movingMon.box, MON_DATA_IN_PC, &value);
+            SetBoxMonData(&sStorage->movingMon.box, MON_DATA_BOX_HP, &value);
+            SetBoxMonData(&sStorage->movingMon.box, MON_DATA_BOX_AILMENT, &value);
+        }
         gPlayerParty[position] = sStorage->movingMon;
     }
     else
     {
-        if (!gSaveBlock1Ptr->tx_Challenges_PkmnCenter)
-            BoxMonRestorePP(&sStorage->movingMon.box);
+        if (((gSaveBlock1Ptr->tx_Challenges_PkmnCenter) == 1) || ((gSaveBlock1Ptr->tx_Challenges_PCHeal) == 1))
+            {
+                value = TRUE;
+                hp = GetBoxHPFromHP(&sStorage->movingMon);
+                status = GetBoxStatusFromStatus(&sStorage->movingMon);
+                SetBoxMonData(&sStorage->movingMon.box, MON_DATA_IN_PC, &value);
+                SetBoxMonData(&sStorage->movingMon.box, MON_DATA_BOX_HP, &hp);
+                SetBoxMonData(&sStorage->movingMon.box, MON_DATA_BOX_AILMENT, &status);
+            }
+        else
+            {
+                BoxMonRestorePP(&sStorage->movingMon.box);
+            }
         SetBoxMonAt(boxId, position, &sStorage->movingMon.box);
     }
 }
@@ -6777,10 +6873,25 @@ static void LoadSavedMovingMon(void)
 
 static void InitSummaryScreenData(void)
 {
+    u16 hp;
+    u32 status;
     if (sIsMonBeingMoved)
     {
         SaveMovingMon();
         sStorage->summaryMon.mon = &sSavedMovingMon;
+        if (((gSaveBlock1Ptr->tx_Challenges_PkmnCenter) == 1) || ((gSaveBlock1Ptr->tx_Challenges_PCHeal) == 1))
+        {
+            if (GetMonData(&sStorage->movingMon, MON_DATA_IN_PC) && sMovingMonOrigBoxId != TOTAL_BOXES_COUNT)
+            // If it did not come from the party
+            {
+                hp = GetHPFromBoxHP(&sStorage->movingMon);
+                status = GetStatusFromBoxStatus(&sStorage->movingMon);
+                SetMonData(sStorage->summaryMon.mon, MON_DATA_HP, &hp);
+                SetMonData(sStorage->summaryMon.mon, MON_DATA_STATUS, &status);
+            }
+            else
+                MonRestorePP(sStorage->summaryMon.mon);
+        }
         sStorage->summaryStartPos = 0;
         sStorage->summaryMaxPos = 0;
         sStorage->summaryScreenMode = SUMMARY_MODE_NORMAL;

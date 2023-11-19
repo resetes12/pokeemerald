@@ -1468,6 +1468,18 @@ static void CopyMonToSummaryStruct(struct Pokemon *mon)
     {
         struct BoxPokemon *boxMon = sMonSummaryScreen->monList.boxMons;
         BoxMonToMon(&boxMon[sMonSummaryScreen->curMonIndex], mon);
+        if (((gSaveBlock1Ptr->tx_Challenges_PkmnCenter) == 1) || ((gSaveBlock1Ptr->tx_Challenges_PCHeal) == 1))
+        {
+            if (GetMonData(mon, MON_DATA_IN_PC))  // If the Pokemon's summary is coming from the PC as a BoxMon
+            {
+                u16 hp = GetHPFromBoxHP(mon);
+                u32 status = GetStatusFromBoxStatus(mon);
+                SetMonData(mon, MON_DATA_HP, &hp);
+                SetMonData(mon, MON_DATA_STATUS, &status);
+            }
+            else
+                MonRestorePP(mon);
+        }
     }
 }
 

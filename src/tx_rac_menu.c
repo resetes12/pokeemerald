@@ -91,13 +91,14 @@ enum
     MENUITEM_DIFFICULTY_SCALING_IVS,
     MENUITEM_DIFFICULTY_NO_EVS,
     MENUITEM_DIFFICULTY_SCALING_EVS,
-    MENUITEM_DIFFICULTY_POKECENTER,
     MENUITEM_DIFFICULTY_NEXT,
     MENUITEM_DIFFICULTY_COUNT,
 };
 
 enum
 {
+    MENUITEM_DIFFICULTY_POKECENTER,
+    MENUITEM_CHALLENGES_PCHEAL,
     MENUITEM_CHALLENGES_EVO_LIMIT,
     MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE,
     MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER,
@@ -274,6 +275,7 @@ static void DrawChoices_Features_InfiniteTMs(int selection, int y);
 static void DrawChoices_Features_SurvivePoison(int selection, int y);
 static void DrawChoices_Features_EasyFeebas(int selection, int y);
 static void DrawChoices_Features_Pkmn_Death(int selection, int y);
+static void DrawChoices_Challenges_PCHeal(int selection, int y);
 
 static void PrintCurrentSelections(void);
 
@@ -370,7 +372,6 @@ struct // MENU_DIFFICULTY
     [MENUITEM_DIFFICULTY_NO_EVS]                = {DrawChoices_Challenges_NoEVs,            ProcessInput_Options_Two},
     [MENUITEM_DIFFICULTY_SCALING_IVS]           = {DrawChoices_Challenges_ScalingIVs,       ProcessInput_Options_Three},
     [MENUITEM_DIFFICULTY_SCALING_EVS]           = {DrawChoices_Challenges_ScalingEVs,       ProcessInput_Options_Four},
-    [MENUITEM_DIFFICULTY_POKECENTER]            = {DrawChoices_Challenges_Pokecenters,      ProcessInput_Options_Two},
     [MENUITEM_DIFFICULTY_LIMIT_DIFFICULTY]      = {DrawChoices_Challenges_LimitDifficulty,  ProcessInput_Options_Two},
     [MENUITEM_DIFFICULTY_MAX_PARTY_IVS]         = {DrawChoices_Challenges_MaxPartyIVs,      ProcessInput_Options_Two},
     [MENUITEM_DIFFICULTY_NEXT] = {NULL, NULL},
@@ -382,6 +383,8 @@ struct // MENU_CHALLENGES
     int (*processInput)(int selection);
 } static const sItemFunctionsChallenges[MENUITEM_CHALLENGES_COUNT] =
 {
+    [MENUITEM_DIFFICULTY_POKECENTER]            = {DrawChoices_Challenges_Pokecenters,          ProcessInput_Options_Two},
+    [MENUITEM_CHALLENGES_PCHEAL]                = {DrawChoices_Challenges_PCHeal,               ProcessInput_Options_Two},
     [MENUITEM_CHALLENGES_EVO_LIMIT]             = {DrawChoices_Challenges_EvoLimit,             ProcessInput_Options_Three},
     [MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]    = {DrawChoices_Challenges_OneTypeChallenge,     ProcessInput_Options_OneTypeChallenge},
     [MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]   = {DrawChoices_Challenges_BaseStatEqualizer,    ProcessInput_Options_Four},
@@ -472,7 +475,6 @@ static const u8 sText_Items_Trainer[]       = _("TRAINER ITEMS");
 static const u8 sText_NoEVs[]               = _("PLAYER EVs");
 static const u8 sText_ScalingIVs[]          = _("TRAINER IVs");
 static const u8 sText_ScalingEVs[]          = _("TRAINER EVs");
-static const u8 sText_Pokecenter[]          = _("POKéCENTER");
 static const u8 sText_LimitDifficulty[]     = _("LOCK DIFFICULTY");
 static const u8 sText_MaxPartyIvs[]         = _("PLAYER IVs");
 static const u8 *const sOptionMenuItemsNamesDifficulty[MENUITEM_DIFFICULTY_COUNT] =
@@ -485,13 +487,14 @@ static const u8 *const sOptionMenuItemsNamesDifficulty[MENUITEM_DIFFICULTY_COUNT
     [MENUITEM_DIFFICULTY_NO_EVS]                = sText_NoEVs,
     [MENUITEM_DIFFICULTY_SCALING_IVS]           = sText_ScalingIVs,
     [MENUITEM_DIFFICULTY_SCALING_EVS]           = sText_ScalingEVs,
-    [MENUITEM_DIFFICULTY_POKECENTER]            = sText_Pokecenter,
     [MENUITEM_DIFFICULTY_LIMIT_DIFFICULTY]      = sText_LimitDifficulty,
     [MENUITEM_DIFFICULTY_MAX_PARTY_IVS]         = sText_MaxPartyIvs,
     [MENUITEM_DIFFICULTY_NEXT]                  = sText_Next,
 };
 
 // MENU_CHALLENGES
+static const u8 sText_Pokecenter[]          = _("POKéCENTER");
+static const u8 sText_PCHeal[]              = _("PC HEALS {PKMN}");
 static const u8 sText_EvoLimit[]            = _("EVO LIMIT");
 static const u8 sText_OneTypeChallenge[]    = _("ONE TYPE ONLY");
 static const u8 sText_BaseStatEqualizer[]   = _("STAT EQUALIZER");
@@ -500,6 +503,8 @@ static const u8 sText_MirrorThief[]         = _("MIRROR THIEF");
 static const u8 sText_Save[]                = _("SAVE");
 static const u8 *const sOptionMenuItemsNamesChallenges[MENUITEM_CHALLENGES_COUNT] =
 {
+    [MENUITEM_DIFFICULTY_POKECENTER]            = sText_Pokecenter,
+    [MENUITEM_CHALLENGES_PCHEAL]                = sText_PCHeal,
     [MENUITEM_CHALLENGES_EVO_LIMIT]             = sText_EvoLimit,
     [MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]    = sText_OneTypeChallenge,
     [MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]   = sText_BaseStatEqualizer,
@@ -580,11 +585,12 @@ static bool8 CheckConditions(int selection)
     case MENU_DIFFICULTY:
         switch(selection)
         {
-        default:       return TRUE;;
+        default:       return TRUE;
         }
     case MENU_CHALLENGES:
         switch(selection)
         {
+        case MENUITEM_CHALLENGES_PCHEAL:        return !sOptions->sel_challenges[MENUITEM_DIFFICULTY_POKECENTER];
         case MENUITEM_CHALLENGES_MIRROR_THIEF:  return sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR];
         default:                                return TRUE;
         }
@@ -710,8 +716,6 @@ static const u8 sText_Description_Difficulty_Items_Player_Yes[]         = _("The
 static const u8 sText_Description_Difficulty_Items_Player_No[]          = _("The player can {COLOR 7}{COLOR 8}NOT use battle items.\nHold items are allowed!");
 static const u8 sText_Description_Difficulty_Items_Trainer_Yes[]        = _("Enemy trainer can use battle items.");
 static const u8 sText_Description_Difficulty_Items_Trainer_No[]         = _("Enemy trainer can {COLOR 7}{COLOR 8}NOT use battle\nitems.");
-static const u8 sText_Description_Difficulty_Pokecenter_Yes[]           = _("The player can visit Pokécenters and\nother locations to heal their party.");
-static const u8 sText_Description_Difficulty_Pokecenter_No[]            = _("The player {COLOR 7}{COLOR 8}CAN'T visit Pokécenters or\nother locations to heal their party.");
 static const u8 sText_Description_Difficulty_NoEVs_Off[]                = _("The players POKéMON gain effort\nvalues as expected.");
 static const u8 sText_Description_Difficulty_NoEVs_On[]                 = _("The players POKéMON do {COLOR 7}{COLOR 8}NOT{COLOR 1}{COLOR 2} gain\nany effort values!");
 static const u8 sText_Description_Difficulty_ScalingIVs_Off[]           = _("The POKéMON of enemy Trainer have\nthe expected IVs.");
@@ -736,12 +740,15 @@ static const u8 *const sOptionMenuItemDescriptionsDifficulty[MENUITEM_DIFFICULTY
     [MENUITEM_DIFFICULTY_NO_EVS]                = {sText_Description_Difficulty_NoEVs_Off,          sText_Description_Difficulty_NoEVs_On,              sText_Empty,                                    sText_Empty},
     [MENUITEM_DIFFICULTY_SCALING_IVS]           = {sText_Description_Difficulty_ScalingIVs_Off,     sText_Description_Difficulty_ScalingIVs_Scaling,    sText_Description_Difficulty_ScalingIVs_Hard,   sText_Empty},
     [MENUITEM_DIFFICULTY_SCALING_EVS]           = {sText_Description_Difficulty_ScalingEVs_Off,     sText_Description_Difficulty_ScalingEVs_Scaling,    sText_Description_Difficulty_ScalingEVs_Hard,   sText_Description_Difficulty_ScalingEVs_Extreme},
-    [MENUITEM_DIFFICULTY_POKECENTER]            = {sText_Description_Difficulty_Pokecenter_Yes,     sText_Description_Difficulty_Pokecenter_No,         sText_Empty,                                    sText_Empty},
     [MENUITEM_DIFFICULTY_NEXT]                  = {sText_Description_Difficulty_Next,               sText_Empty,                                        sText_Empty,                                    sText_Empty},
     [MENUITEM_DIFFICULTY_LIMIT_DIFFICULTY]      = {sText_Description_Challenges_LimitDifficulty_Off,    sText_Description_Challenges_LimitDifficulty_On,    sText_Empty,                                        sText_Empty},
     [MENUITEM_DIFFICULTY_MAX_PARTY_IVS]         = {sText_Description_Difficulty_MaxPartyIvs_Off,    sText_Description_Difficulty_MaxPartyIvs_On,    sText_Empty,                                        sText_Empty},
 };  
 
+static const u8 sText_Description_Difficulty_Pokecenter_Yes[]           = _("The player can visit Pokécenters and\nother locations to heal their party.");
+static const u8 sText_Description_Difficulty_Pokecenter_No[]            = _("The player {COLOR 7}{COLOR 8}CAN'T visit Pokécenters or\nother locations to heal their party.");
+static const u8 sText_Description_Challenges_PCHeal_Yes[]               = _("POKéMON deposited to the PC\nwill be healed as usual.");
+static const u8 sText_Description_Challenges_PCHeal_No[]                = _("POKéMON deposited to the PC\nwill not be healed.");
 static const u8 sText_Description_Challenges_EvoLimit_Base[]            = _("POKéMON evolve as expected.");
 static const u8 sText_Description_Challenges_EvoLimit_First[]           = _("POKéMON can only evolve into\ntheir first evolution.");
 static const u8 sText_Description_Challenges_EvoLimit_All[]             = _("POKéMON can {COLOR 7}{COLOR 8}NOT evolve at all!");
@@ -757,6 +764,8 @@ static const u8 sText_Description_Challenges_MirrorThief_Off[]          = _("The
 static const u8 sText_Description_Challenges_MirrorThief_On[]           = _("The player keeps the enemies party\nafter battle!");
 static const u8 *const sOptionMenuItemDescriptionsChallenges[MENUITEM_CHALLENGES_COUNT][5] =
 {
+    [MENUITEM_DIFFICULTY_POKECENTER]            = {sText_Description_Difficulty_Pokecenter_Yes,         sText_Description_Difficulty_Pokecenter_No,         sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_CHALLENGES_PCHEAL]                = {sText_Description_Challenges_PCHeal_Yes,             sText_Description_Challenges_PCHeal_No,             sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_CHALLENGES_EVO_LIMIT]             = {sText_Description_Challenges_EvoLimit_Base,          sText_Description_Challenges_EvoLimit_First,        sText_Description_Challenges_EvoLimit_All,          sText_Empty,                                        sText_Empty},
     [MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]    = {sText_Description_Challenges_OneTypeChallenge,       sText_Empty,                                        sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]   = {sText_Description_Challenges_BaseStatEqualizer_Base, sText_Description_Challenges_BaseStatEqualizer_100, sText_Description_Challenges_BaseStatEqualizer_255, sText_Description_Challenges_BaseStatEqualizer_500, sText_Empty},
@@ -823,13 +832,15 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledDifficulty[MENUITEM_DI
     [MENUITEM_DIFFICULTY_NO_EVS]                = sText_Empty,
     [MENUITEM_DIFFICULTY_SCALING_IVS]           = sText_Empty,
     [MENUITEM_DIFFICULTY_SCALING_EVS]           = sText_Empty,
-    [MENUITEM_DIFFICULTY_POKECENTER]            = sText_Empty,
     [MENUITEM_DIFFICULTY_NEXT]                  = sText_Empty,
 };  
 
 static const u8 sText_Description_Disabled_Challenges_MirrorThief[]    = _("Only usable with Mirror Mode!");
+static const u8 sText_Description_Disabled_Features_PCHeal[]  = _("Always disabled with POKéCENTER\nChallenge.");
 static const u8 *const sOptionMenuItemDescriptionsDisabledChallenges[MENUITEM_CHALLENGES_COUNT] =
 {
+    [MENUITEM_DIFFICULTY_POKECENTER]            = sText_Empty,
+    [MENUITEM_CHALLENGES_PCHEAL]                = sText_Description_Disabled_Features_PCHeal,
     [MENUITEM_CHALLENGES_EVO_LIMIT]             = sText_Empty,
     [MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]    = sText_Empty,
     [MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]   = sText_Empty,
@@ -1185,6 +1196,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         gSaveBlock2Ptr->optionsLimitDifficulty              = TX_DIFFICULTY_LIMIT_DIFFICULTY;
         gSaveBlock1Ptr->MaxPartyIVs                         = TX_DIFFICULTY_MAX_PARTY_IVS;
 
+        gSaveBlock1Ptr->tx_Challenges_PCHeal                = TX_CHALLENGE_PCHEAL;
         gSaveBlock1Ptr->tx_Challenges_EvoLimit              = TX_CHALLENGE_EVO_LIMIT;
         gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge      = TX_CHALLENGE_TYPE;
         gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer     = TX_CHALLENGE_BASE_STAT_EQUALIZER;
@@ -1238,11 +1250,12 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         sOptions->sel_difficulty[MENUITEM_DIFFICULTY_ITEM_TRAINER]   = gSaveBlock1Ptr->tx_Challenges_NoItemTrainer;
         sOptions->sel_difficulty[MENUITEM_DIFFICULTY_NO_EVS]         = gSaveBlock1Ptr->tx_Challenges_NoEVs;
         sOptions->sel_difficulty[MENUITEM_DIFFICULTY_SCALING_IVS]    = gSaveBlock1Ptr->tx_Challenges_TrainerScalingIVs;
-        sOptions->sel_difficulty[MENUITEM_DIFFICULTY_SCALING_EVS]    = gSaveBlock1Ptr->tx_Challenges_TrainerScalingEVs;
-        sOptions->sel_difficulty[MENUITEM_DIFFICULTY_POKECENTER]     = gSaveBlock1Ptr->tx_Challenges_PkmnCenter;
+        sOptions->sel_difficulty[MENUITEM_DIFFICULTY_SCALING_EVS]    = gSaveBlock1Ptr->tx_Challenges_TrainerScalingEVs; 
         sOptions->sel_difficulty[MENUITEM_DIFFICULTY_LIMIT_DIFFICULTY]       = gSaveBlock2Ptr->optionsLimitDifficulty;
         sOptions->sel_difficulty[MENUITEM_DIFFICULTY_MAX_PARTY_IVS]       = gSaveBlock1Ptr->MaxPartyIVs;
         // MENU_CHALLENGES
+        sOptions->sel_challenges[MENUITEM_DIFFICULTY_POKECENTER]             = gSaveBlock1Ptr->tx_Challenges_PkmnCenter;
+        sOptions->sel_challenges[MENUITEM_CHALLENGES_PCHEAL]                 = gSaveBlock1Ptr->tx_Challenges_PCHeal;
         sOptions->sel_challenges[MENUITEM_CHALLENGES_EVO_LIMIT]              = gSaveBlock1Ptr->tx_Challenges_EvoLimit;
         sOptions->sel_challenges[MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]     = gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge;
         sOptions->sel_challenges[MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]    = gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer;
@@ -1581,7 +1594,6 @@ void SaveData_TxRandomizerAndChallenges(void)
     gSaveBlock1Ptr->tx_Challenges_NoEVs                 = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_NO_EVS];
     gSaveBlock1Ptr->tx_Challenges_TrainerScalingIVs     = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_SCALING_IVS];
     gSaveBlock1Ptr->tx_Challenges_TrainerScalingEVs     = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_SCALING_EVS];
-    gSaveBlock1Ptr->tx_Challenges_PkmnCenter            = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_POKECENTER];
     gSaveBlock2Ptr->optionsLimitDifficulty              = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_LIMIT_DIFFICULTY];
     gSaveBlock1Ptr->MaxPartyIVs                         = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_MAX_PARTY_IVS];
     // MENU_CHALLENGES
@@ -1597,6 +1609,8 @@ void SaveData_TxRandomizerAndChallenges(void)
     gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer    = sOptions->sel_challenges[MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER];
     gSaveBlock1Ptr->tx_Challenges_Mirror               = sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR]; 
     gSaveBlock1Ptr->tx_Challenges_Mirror_Thief         = sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR_THIEF]; 
+    gSaveBlock1Ptr->tx_Challenges_PCHeal               = sOptions->sel_challenges[MENUITEM_CHALLENGES_PCHEAL]; 
+    gSaveBlock1Ptr->tx_Challenges_PkmnCenter           = sOptions->sel_challenges[MENUITEM_DIFFICULTY_POKECENTER];
 
     PrintTXSaveData();
 
@@ -2334,6 +2348,25 @@ static void DrawChoices_Features_Pkmn_Death(int selection, int y)
 
     DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
     DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
+}
+
+static void DrawChoices_Challenges_PCHeal(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_CHALLENGES_PCHEAL);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock1Ptr->tx_Challenges_PCHeal = 0; //PC heal enabled
+    }
+    else
+    {
+        gSaveBlock1Ptr->tx_Challenges_PCHeal = 1; //PC heal disabled
+    }
+
+    DrawOptionMenuChoice(sText_Yes, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_No, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
 }
 
 static const u8 sText_Challenges_ShinyChance_8192[]   = _("8192");

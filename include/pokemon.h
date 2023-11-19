@@ -13,6 +13,7 @@ enum {
     MON_DATA_SANITY_IS_BAD_EGG,
     MON_DATA_SANITY_HAS_SPECIES,
     MON_DATA_SANITY_IS_EGG,
+    MON_DATA_IN_PC,
     MON_DATA_OT_NAME,
     MON_DATA_MARKINGS,
     MON_DATA_CHECKSUM,
@@ -97,6 +98,8 @@ enum {
     MON_DATA_SPDEF2,
     MON_DATA_NUZLOCKE_RIBBON,
     MON_DATA_HIDDEN_NATURE,
+    MON_DATA_BOX_HP,
+    MON_DATA_BOX_AILMENT,
 };
 
 struct PokemonSubstruct0
@@ -107,8 +110,8 @@ struct PokemonSubstruct0
     u8 ppBonuses;
     u8 friendship;
     u8 hiddenNature:5;
-    u8 free_sub0:3;
-    u8 free_sub0_b;
+    u8 box_ailment:3; //Set to zero unless pokemon is in the box
+    u8 box_hp; //Set to zero unless pokemon is in the box, then it's set to the HP is maxHP is <256 o/w currHP/maxHP * 255
 };
 
 struct PokemonSubstruct1
@@ -208,7 +211,8 @@ struct BoxPokemon
     u8 isBadEgg:1;
     u8 hasSpecies:1;
     u8 isEgg:1;
-    u8 unused:5;
+    u8 unused:4;
+    u8 inPC:1;
     u8 otName[PLAYER_NAME_LENGTH];
     u8 markings;
     u16 checksum;

@@ -1128,6 +1128,7 @@ struct SaveBlock1
         u8 optionsEvenFasterJoy:1;
         u8 optionsSurfMusic:1;
         u8 optionsPkmnDeath:1;
+        u8 tx_Challenges_PCHeal:1;
 };
 
 extern struct SaveBlock1* gSaveBlock1Ptr;
