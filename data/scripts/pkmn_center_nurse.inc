@@ -3,9 +3,9 @@ Common_EventScript_PkmnCenterNurse::
 	faceplayer
 	goto_if_set FLAG_BADGE05_GET, EventScript_PkmnCenterNurse_WTHasBeenEnabled
 Common_EventScript_PkmnCenterNurseContinue::
-	goto_if_set FLAG_EVEN_FASTER_JOY, EventScript_PkmnCenterNurse_HealPkmnFaster
 	specialvar VAR_RESULT, IsPokecenterChallengeActivated
     goto_if_eq VAR_RESULT, TRUE, EventScript_PkmnCenterNurse_PkmnCenterChallenge_NoVisits
+	goto_if_set FLAG_EVEN_FASTER_JOY, EventScript_PkmnCenterNurse_HealPkmnFaster
 	setvar VAR_0x8004, 0
 	specialvar VAR_RESULT, CountPlayerTrainerStars
 	goto_if_eq VAR_RESULT, 4, EventScript_PkmnCenterNurse_GoldCard
@@ -17,10 +17,11 @@ EventScript_PkmnCenterNurse_WTHasBeenEnabled::
 	goto Common_EventScript_PkmnCenterNurseContinue
 
 EventScript_PkmnCenterNurse_WTHasBeenEnabledExplain::
-	msgbox EventScript_PkmnCenterNurse_WTHasBeenEnabledExplain_Text, MSGBOX_NPC
+	msgbox EventScript_PkmnCenterNurse_WTHasBeenEnabledExplain_Text, MSGBOX_DEFAULT
 	closemessage
 	setflag FLAG_WT_ENABLED
-	return
+	releaseall
+	end
 
 EventScript_PkmnCenterNurse_WTHasBeenEnabledExplain_Text:
 	.string "Hello, and welcome to\n"
