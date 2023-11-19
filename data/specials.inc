@@ -557,3 +557,5 @@ gSpecials::
 	def_special TryChangeDeoxysForm
 	def_special CheckPkm
 	def_special ChooseItemFromBag
+	def_special ForceSaveGame
+	def_special CheckIfChallengesAreActive

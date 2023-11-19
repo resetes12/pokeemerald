@@ -222,6 +222,102 @@ static const u16 sIsValidSpecies[] =
     SPECIES_MUNCHLAX,
 };
 
+static const u16 sIsValidSpeciesVanilla[] =
+{
+    SPECIES_SANDSHREW,
+    SPECIES_VULPIX,
+    SPECIES_ZUBAT,
+    SPECIES_ODDISH,
+    SPECIES_PSYDUCK,
+    SPECIES_ABRA,
+    SPECIES_MACHOP,
+    SPECIES_TENTACOOL,
+    SPECIES_GEODUDE,
+    SPECIES_MAGNEMITE,
+    SPECIES_DODUO,
+    SPECIES_GRIMER,
+    SPECIES_VOLTORB,
+    SPECIES_KOFFING,
+    SPECIES_RHYHORN,
+    SPECIES_HORSEA,
+    SPECIES_GOLDEEN,
+    SPECIES_STARYU,
+    SPECIES_MAGIKARP,
+    SPECIES_CHINCHOU,
+    SPECIES_PICHU,
+    SPECIES_IGGLYBUFF,
+    SPECIES_NATU,
+    SPECIES_GIRAFARIG,
+    SPECIES_HERACROSS,
+    SPECIES_SLUGMA,
+    SPECIES_CORSOLA,
+    SPECIES_SKARMORY,
+    SPECIES_PHANPY,
+    SPECIES_TREECKO,
+    SPECIES_TORCHIC,
+    SPECIES_MUDKIP,
+    SPECIES_POOCHYENA,
+    SPECIES_ZIGZAGOON,
+    SPECIES_WURMPLE,
+    SPECIES_LOTAD,
+    SPECIES_SEEDOT,
+    SPECIES_NINCADA,
+    SPECIES_TAILLOW,
+    SPECIES_SHROOMISH,
+    SPECIES_SPINDA,
+    SPECIES_WINGULL,
+    SPECIES_SURSKIT,
+    SPECIES_WAILMER,
+    SPECIES_SKITTY,
+    SPECIES_KECLEON,
+    SPECIES_BALTOY,
+    SPECIES_NOSEPASS,
+    SPECIES_TORKOAL,
+    SPECIES_SABLEYE,
+    SPECIES_BARBOACH,
+    SPECIES_LUVDISC,
+    SPECIES_CORPHISH,
+    SPECIES_FEEBAS,
+    SPECIES_CARVANHA,
+    SPECIES_TRAPINCH,
+    SPECIES_MAKUHITA,
+    SPECIES_ELECTRIKE,
+    SPECIES_NUMEL,
+    SPECIES_SPHEAL,
+    SPECIES_CACNEA,
+    SPECIES_SNORUNT,
+    SPECIES_LUNATONE,
+    SPECIES_SOLROCK,
+    SPECIES_AZURILL,
+    SPECIES_SPOINK,
+    SPECIES_PLUSLE,
+    SPECIES_MINUN,
+    SPECIES_MAWILE,
+    SPECIES_MEDITITE,
+    SPECIES_SWABLU,
+    SPECIES_WYNAUT,
+    SPECIES_DUSKULL,
+    SPECIES_SLAKOTH,
+    SPECIES_GULPIN,
+    SPECIES_TROPIUS,
+    SPECIES_WHISMUR,
+    SPECIES_CLAMPERL,
+    SPECIES_SHUPPET,
+    SPECIES_SEVIPER,
+    SPECIES_ZANGOOSE,
+    SPECIES_ARON,
+    SPECIES_CASTFORM,
+    SPECIES_VOLBEAT,
+    SPECIES_ILLUMISE,
+    SPECIES_LILEEP,
+    SPECIES_ANORITH,
+    SPECIES_RALTS,
+    SPECIES_BAGON,
+    SPECIES_BELDUM,
+    SPECIES_BUDEW,
+    SPECIES_CHINGLING,
+};
+
 static u16 PickRandomSpecies(void);
 void CreateWonderTradePokemon(u8 whichPlayerMon);
 u16 determineEvolution(struct Pokemon *);
@@ -231,7 +327,13 @@ u16 GetValidWonderTradeItem(u16 item);
 static u16 PickRandomSpecies() // picks only base forms
 {
     u16 species = sIsValidSpecies[Random() % NELEMS(sIsValidSpecies)];
-    return species;
+    u16 speciesVanilla = sIsValidSpeciesVanilla[Random() % NELEMS(sIsValidSpeciesVanilla)];
+    if (gSaveBlock2Ptr->optionsAlternateSpawns == 1)
+        return species;
+    if ((gSaveBlock2Ptr->optionsAlternateSpawns == 0) && (FlagGet(FLAG_SYS_GAME_CLEAR) == TRUE))
+        return species;
+    else if (gSaveBlock2Ptr->optionsAlternateSpawns == 0)
+        return speciesVanilla;
 }
 
 u8 getWonderTradeOT(u8 *name)
@@ -404,12 +506,12 @@ u16 determineEvolution(struct Pokemon *mon)
                 targetSpecies = SPECIES_ESPEON;
             else if (eeveelution == 4)
                 targetSpecies = SPECIES_UMBREON;
-            /*else if (eeveelution == 5)
+            else if (eeveelution == 5)
                 targetSpecies = SPECIES_LEAFEON;
             else if (eeveelution == 6)
                 targetSpecies = SPECIES_GLACEON;
             else if (eeveelution == 7)
-                targetSpecies = SPECIES_SYLVEON;*/
+                targetSpecies = SPECIES_SYLVEON;
             return targetSpecies;
         }
     }

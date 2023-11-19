@@ -210,6 +210,7 @@ static u8 SaveReturnErrorCallback(void);
 static u8 BattlePyramidConfirmRetireCallback(void);
 static u8 BattlePyramidRetireYesNoCallback(void);
 static u8 BattlePyramidRetireInputCallback(void);
+static u8 SaveForceSavingMessageCallback(void);
 
 // Task callbacks
 static void StartMenuTask(u8 taskId);
@@ -1008,6 +1009,13 @@ void SaveGame(void)
     CreateTask(SaveGameTask, 0x50);
 }
 
+void ForceSaveGame(void) // Called from scripts
+{
+    InitSave();
+    sSaveDialogCallback = SaveForceSavingMessageCallback;
+    CreateTask(SaveGameTask, 0x50);
+}
+
 static void ShowSaveMessage(const u8 *message, u8 (*saveCallback)(void))
 {
     StringExpandPlaceholders(gStringVar4, message);
@@ -1310,6 +1318,13 @@ static u8 BattlePyramidRetireInputCallback(void)
         return SAVE_SUCCESS;
     }
 
+    return SAVE_IN_PROGRESS;
+}
+
+static u8 SaveForceSavingMessageCallback(void)
+{
+    ShowSaveInfoWindow();
+    ShowSaveMessage(gText_SavingDontTurnOff, SaveDoSaveCallback);
     return SAVE_IN_PROGRESS;
 }
 

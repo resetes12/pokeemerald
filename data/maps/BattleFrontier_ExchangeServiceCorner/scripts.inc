@@ -434,6 +434,15 @@ BattleFrontier_ExchangeServiceCorner_EventScript_Girl::
 	msgbox BattleFrontier_ExchangeServiceCorner_Text_MoreBattlePointsForRecord, MSGBOX_NPC
 	end
 
+BattleFrontier_ExchangeServiceCorner_EventScript_OldWTMan::
+	msgbox BattleFrontier_ExchangeServiceCorner_EventScript_OldWTMan_Text, MSGBOX_NPC
+	end
+
+BattleFrontier_ExchangeServiceCorner_EventScript_OldWTMan_Text:
+	.string "Hi! If you are looking for the\n"
+	.string "WONDERTRADE, they're now located in\l"
+	.string "every POKéMON CENTER. Have fun!$"
+
 BattleFrontier_ExchangeServiceCorner_Text_WelcomePleaseChoosePrize:
 	.string "Hello, this is the EXCHANGE SERVICE\n"
 	.string "CORNER.\p"
@@ -726,18 +735,77 @@ BattleFrontier_ExchangeServiceCorner_Text_ScopeLensDesc::
 
 EventScript_DoWonderTrade::
 	goto_if_unset FLAG_WONDERTRADE_FIRSTIME, EventScript_FirstTimeWonder
-	@goto_if_unset FLAG_WONDERTRADE_EVENT, EventScript_WonderEventActivation
+	goto_if_unset FLAG_BADGE05_GET, EventScript_WTNotActiveYet
 	msgbox EventScript_DoWonderTrade_Text_Welcome, MSGBOX_DEFAULT
 	closemessage
+	special CheckIfChallengesAreActive
 	goto_if_set FLAG_WONDERTRADE3, EventScript_NoMoreForToday
-	special ChoosePartyMon
-	waitstate
-	goto_if_unset FLAG_WONDERTRADE1, EventScript_DoWonderTrade2
-	goto_if_unset FLAG_WONDERTRADE2, EventScript_DoWonderTrade2
-	goto_if_unset FLAG_WONDERTRADE3, EventScript_DoWonderTrade2
+	goto_if_set FLAG_NO_WT_BECAUSE_CHALLENGE, EventScript_WTChallenges
+	goto_if_unset FLAG_WONDERTRADE1, EventScript_DoWonderTradeFirstTrade	
+	goto_if_unset FLAG_WONDERTRADE2, EventScript_DoWonderTradeSecondTrade
+	goto_if_unset FLAG_WONDERTRADE3, EventScript_DoWonderTradeThirdTrade
 	end
 
-EventScript_DoWonderTrade2::
+EventScript_WTChallenges::
+	goto_if_unset FLAG_SYS_GAME_CLEAR, EventScript_WTChallengesCancel
+	goto_if_unset FLAG_WONDERTRADE1, EventScript_DoWonderTradeFirstTrade	
+	goto_if_unset FLAG_WONDERTRADE2, EventScript_DoWonderTradeSecondTrade
+	goto_if_unset FLAG_WONDERTRADE3, EventScript_DoWonderTradeThirdTrade
+	end
+
+EventScript_WTChallengesCancel::
+	msgbox EventScript_DoWonderTrade_Text_Challenges, MSGBOX_DEFAULT
+	closemessage
+	end
+
+EventScript_WTNotActiveYet::
+	msgbox EventScript_DoWonderTrade_Text_FiveBadges, MSGBOX_DEFAULT
+	closemessage
+	end
+
+EventScript_DoWonderTradeFirstTrade::
+	setflag FLAG_WONDERTRADE1
+	call Common_EventScript_SaveGame
+	goto_if_eq VAR_RESULT, 0, EventScript_DoWonderTradeCancelSaveFirstTrade
+	special ChoosePartyMon
+	waitstate
+	goto EventScript_DoWonderTradeTrade
+
+EventScript_DoWonderTradeCancelSaveFirstTrade::
+	clearflag FLAG_WONDERTRADE1
+	msgbox EventScript_DoWonderTrade_Text_Done, MSGBOX_DEFAULT
+	closemessage
+	end
+
+EventScript_DoWonderTradeSecondTrade::
+	setflag FLAG_WONDERTRADE2
+	call Common_EventScript_SaveGame
+	goto_if_eq VAR_RESULT, 0, EventScript_DoWonderTradeCancelSaveSecondTrade
+	special ChoosePartyMon
+	waitstate
+	goto EventScript_DoWonderTradeTrade
+
+EventScript_DoWonderTradeCancelSaveSecondTrade::
+	clearflag FLAG_WONDERTRADE2
+	msgbox EventScript_DoWonderTrade_Text_Done, MSGBOX_DEFAULT
+	closemessage
+	end
+
+EventScript_DoWonderTradeThirdTrade::
+	setflag FLAG_WONDERTRADE3
+	call Common_EventScript_SaveGame
+	goto_if_eq VAR_RESULT, 0, EventScript_DoWonderTradeCancelSaveThirdTrade
+	special ChoosePartyMon
+	waitstate
+	goto EventScript_DoWonderTradeTrade
+
+EventScript_DoWonderTradeCancelSaveThirdTrade::
+	clearflag FLAG_WONDERTRADE3
+	msgbox EventScript_DoWonderTrade_Text_Done, MSGBOX_DEFAULT
+	closemessage
+	end
+
+EventScript_DoWonderTradeTrade::
 	compare VAR_0x8004, PARTY_SIZE
 	goto_if_ge EventScript_End
 	copyvar VAR_0x8005, VAR_0x8004
@@ -746,22 +814,14 @@ EventScript_DoWonderTrade2::
 	waitstate
 	msgbox EventScript_DoWonderTrade_Text_Done, MSGBOX_DEFAULT
 	closemessage
-	goto_if_unset FLAG_WONDERTRADE1, EventScript_DoWonderTrade21
-	goto_if_unset FLAG_WONDERTRADE2, EventScript_DoWonderTrade22
-	goto_if_unset FLAG_WONDERTRADE3, EventScript_DoWonderTrade23
+	goto EventScript_SaveGameWT
 	end
 
-EventScript_DoWonderTrade23::
-	setflag FLAG_WONDERTRADE3
-	end
-
-EventScript_DoWonderTrade22::
-	setflag FLAG_WONDERTRADE2
-	end
-
-EventScript_DoWonderTrade21::
-	setflag FLAG_WONDERTRADE1
-	end
+EventScript_SaveGameWT::
+	special ForceSaveGame
+	waitstate
+	goto_if_eq VAR_RESULT, 0, EventScript_SaveGameWT
+	return
 
 EventScript_NoMoreForToday::
 	msgbox EventScript_NoMoreForToday_Text, MSGBOX_DEFAULT
@@ -771,6 +831,7 @@ EventScript_NoMoreForToday::
 EventScript_FirstTimeWonder::
 	msgbox EventScript_FirstTimeWonder_Text, MSGBOX_DEFAULT
 	setflag FLAG_WONDERTRADE_FIRSTIME
+	goto_if_unset FLAG_BADGE05_GET, EventScript_WTNotActiveYet
 	closemessage
 	end
 
@@ -779,13 +840,13 @@ EventScript_End::
 
 EventScript_DoWonderTrade_Text_Welcome:
 	.string "Welcome to the WONDERTRADE\n"
-	.string "STATION of BATTLEFRONTIER!\p"
+	.string "STATION of the POKéCENTER!\p"
 	.string "Please select the POKéMON that\n"
 	.string "is going to get WONDERTRADED.$"
 
 EventScript_NoMoreForToday_Text:
 	.string "Oh! Seems that you have\n"
-	.string "used all 3 DAILY tries!\p"
+	.string "used all 3 DAILY TRADES.\p"
 	.string "Come back tomorrow!$"
 
 EventScript_FirstTimeWonder_Text:
@@ -809,3 +870,13 @@ EventScript_FirstTimeWonder_Text:
 EventScript_DoWonderTrade_Text_Done:
 	.string "We hope you had a good\n"
 	.string "WONDERTRADE!$"
+
+EventScript_DoWonderTrade_Text_Challenges:
+	.string "Looks like you have challenges\n"
+	.string "activated. Please come back\l"
+	.string "again after the POKéMON LEAGUE.$"
+
+EventScript_DoWonderTrade_Text_FiveBadges:
+	.string "Sadly, the WONDERTRADE SYSTEM is\n"
+	.string "not active yet. Please do come\l"
+	.string "back later.$"

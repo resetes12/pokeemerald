@@ -1,6 +1,8 @@
 Common_EventScript_PkmnCenterNurse::
 	lock
 	faceplayer
+	goto_if_set FLAG_BADGE05_GET, EventScript_PkmnCenterNurse_WTHasBeenEnabled
+Common_EventScript_PkmnCenterNurseContinue::
 	goto_if_set FLAG_EVEN_FASTER_JOY, EventScript_PkmnCenterNurse_HealPkmnFaster
 	specialvar VAR_RESULT, IsPokecenterChallengeActivated
     goto_if_eq VAR_RESULT, TRUE, EventScript_PkmnCenterNurse_PkmnCenterChallenge_NoVisits
@@ -9,6 +11,25 @@ Common_EventScript_PkmnCenterNurse::
 	goto_if_eq VAR_RESULT, 4, EventScript_PkmnCenterNurse_GoldCard
 	goto EventScript_PkmnCenterNurse_HealPkmn
 	end
+
+EventScript_PkmnCenterNurse_WTHasBeenEnabled::
+	goto_if_unset FLAG_WT_ENABLED, EventScript_PkmnCenterNurse_WTHasBeenEnabledExplain
+	goto Common_EventScript_PkmnCenterNurseContinue
+
+EventScript_PkmnCenterNurse_WTHasBeenEnabledExplain::
+	msgbox EventScript_PkmnCenterNurse_WTHasBeenEnabledExplain_Text, MSGBOX_NPC
+	closemessage
+	setflag FLAG_WT_ENABLED
+	return
+
+EventScript_PkmnCenterNurse_WTHasBeenEnabledExplain_Text:
+	.string "Hello, and welcome to\n"
+	.string "the POKéMON CENTER.\p"
+	.string "We are proud to announce that\n"
+	.string "the WONDERTRADE SYSTEM is now\l"
+	.string "operational.\p"
+	.string "Please be sure to visit the\n"
+	.string "second floor of the POKéCENTER!$"
 
 EventScript_PkmnCenterNurse_Goodbye::
 	message gText_WeHopeToSeeYouAgain

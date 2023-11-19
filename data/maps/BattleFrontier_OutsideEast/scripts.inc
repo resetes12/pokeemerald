@@ -256,8 +256,7 @@ BattleFrontier_OutsideEast_Text_RankingHallSign:
 
 BattleFrontier_OutsideEast_Text_ExchangeCornerSign:
 	.string "BATTLE POINT EXCHANGE SERVICE CORNER\n"
-	.string "AND WONDERTRADE STATION.\p"
-	.string "Exchange your Battle Points and\n"
+	.string "Exchange your Battle Points and\l"
 	.string "trade with other TRAINERS!$"
 
 BattleFrontier_OutsideEast_Text_BattleTowerFeelsSpecial:

@@ -54,7 +54,7 @@
 #define FLAG_PHOEBE_REMATCH    0x2A //Elite Four Rematch 2
 #define FLAG_SYS_SET_BATTLE_BGM    0x2B // Changes BGM
 #define FLAG_WONDERTRADE_FIRSTIME       0x2C 
-#define FLAG_WONDERTRADE_EVENT      0x2D 
+#define FLAG_NO_WT_BECAUSE_CHALLENGE      0x2D 
 #define FLAG_GLACIA_REMATCH  0x2E //Elite Four Rematch 3
 #define FLAG_DOME_FOSSIL_ALTERING_CAVE      0x2F 
 #define FLAG_CAVE_MOONSTONE  0x30 
@@ -505,7 +505,7 @@
 #define FLAG_ENABLE_TATE_AND_LIZA_MATCH_CALL 0x1D8
 #define FLAG_ENABLE_JUAN_MATCH_CALL          0x1D9
 
-#define FLAG_UNUSED_0x1DA                    0x1DA // Unused Flag
+#define FLAG_WT_ENABLED                      0x1DA // Unused Flag
 
 #define FLAG_SHOWN_MYSTIC_TICKET             0x1DB
 #define FLAG_DEFEATED_HO_OH                  0x1DC
