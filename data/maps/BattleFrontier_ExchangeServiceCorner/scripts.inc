@@ -812,16 +812,11 @@ EventScript_DoWonderTradeTrade::
 	special CreateWonderTradePokemon
 	special DoInGameTradeScene
 	waitstate
-	msgbox EventScript_DoWonderTrade_Text_Done, MSGBOX_DEFAULT
-	closemessage
-	goto EventScript_SaveGameWT
-	end
-
-EventScript_SaveGameWT::
 	special ForceSaveGame
 	waitstate
-	goto_if_eq VAR_RESULT, 0, EventScript_SaveGameWT
-	return
+	msgbox EventScript_DoWonderTrade_Text_Done, MSGBOX_DEFAULT
+	closemessage
+	end
 
 EventScript_NoMoreForToday::
 	msgbox EventScript_NoMoreForToday_Text, MSGBOX_DEFAULT
