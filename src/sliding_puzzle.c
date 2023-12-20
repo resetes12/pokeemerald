@@ -454,6 +454,7 @@ static void CB2_LoadSlidingPuzzle(void)
         ResetSpriteData();
         FreeAllSpritePalettes();
         ResetPaletteFade();
+        CpuFill32(0, (void *)VRAM, VRAM_SIZE);
         ResetBgsAndClearDma3BusyFlags(0);
         break;
     case 2:
