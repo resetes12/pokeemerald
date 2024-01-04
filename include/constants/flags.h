@@ -505,7 +505,7 @@
 #define FLAG_ENABLE_TATE_AND_LIZA_MATCH_CALL 0x1D8
 #define FLAG_ENABLE_JUAN_MATCH_CALL          0x1D9
 
-#define FLAG_WT_ENABLED                      0x1DA // Unused Flag
+#define FLAG_WT_ENABLED                      0x1DA
 
 #define FLAG_SHOWN_MYSTIC_TICKET             0x1DB
 #define FLAG_DEFEATED_HO_OH                  0x1DC
@@ -513,7 +513,7 @@
 
 #define FLAG_INFINITE_STUFF                  0x1DE
 #define FLAG_INFINITE_STUFF_GIRL             0x1DF
-#define FLAG_UNUSED_0x1E0                    0x1E0 // Unused Flag
+#define FLAG_WT_ENABLED_RANDOMIZER           0x1E0
 #define FLAG_UNUSED_0x1E1                    0x1E1 // Unused Flag
 #define FLAG_UNUSED_0x1E2                    0x1E2 // Unused Flag
 #define FLAG_UNUSED_0x1E3                    0x1E3 // Unused Flag
