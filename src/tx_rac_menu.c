@@ -10,6 +10,7 @@
 #include "bg.h"
 #include "gpu_regs.h"
 #include "window.h"
+#include "overworld.h"
 #include "text.h"
 #include "text_window.h"
 #include "international_string_util.h"
@@ -1305,6 +1306,13 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         SetMainCallback2(MainCB2);
         return;
     }
+}
+
+void Task_ChooseChallenge_NoNewGame(u8 taskId)
+{
+    gMain.savedCallback = CB2_ReturnToField_SaveChallengesData;
+    SetMainCallback2(CB2_InitTxRandomizerChallengesMenu);
+    DestroyTask(taskId);
 }
 
 static void Task_OptionMenuFadeIn(u8 taskId)

@@ -43,27 +43,44 @@ Debug_CheatStart::
 	end
 
 Debug_Script_1::
-	special SavePlayerParty
+	msgbox Debug_Script_1_Text, MSGBOX_YESNO
+	switch VAR_RESULT
+	case NO, Debug_Script_1_Closemessage
+	case MULTI_B_PRESSED, Debug_Script_1_Closemessage
+	msgbox Debug_Script_1_Text2, MSGBOX_DEFAULT
+	closemessage
+	callnative Task_ChooseChallenge_NoNewGame
 	end
 
+Debug_Script_1_Closemessage::
+	closemessage
+	end
+
+Debug_Script_1_Text:
+	.string "WARNING! ENTERING THE CHALLENGES\n"
+	.string "MENU COULD MESS YOUR SAVE DATA.\p"
+	.string "SOME OPTIONS MAY NOT WORK UNLESS A\n"
+	.string "NEW GAME IS STARTED. PLEASE BACKUP\p"
+	.string "YOUR DATA BEFORE PRESSING YES.$"
+
+Debug_Script_1_Text2:
+	.string "ALL OPTIONS YOU CHOSE AT THE START\n"
+	.string "OF THE GAME WILL RESET AND YOU\l"
+	.string "WILL HAVE TO ENABLE THEM AGAIN.$"
+
 Debug_Script_2::
-	setflag FLAG_LIMIT_TO_50
 	end
 
 Debug_Script_3::
-	calculatemonstats
 	end
 
 Debug_Script_4::
-	special LoadPlayerParty
 	end
 
 Debug_Script_5::
-	clearflag FLAG_LIMIT_TO_50
 	end
 
 Debug_Script_6::
-	deleteparty
 	end
 
 Debug_Script_7::

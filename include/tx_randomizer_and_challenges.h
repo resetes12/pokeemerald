@@ -64,6 +64,7 @@
 #define TX_RANDOM_T_STATIC          6
 
 void CB2_InitTxRandomizerChallengesMenu(void);
+void Task_ChooseChallenge_NoNewGame(u8 taskId);
 void SaveData_TxRandomizerAndChallenges(void);
 
 bool8 IsRandomizerActivated(void);
