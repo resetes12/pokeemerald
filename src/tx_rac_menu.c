@@ -601,8 +601,8 @@ static bool8 CheckConditions(int selection)
 static const u8 sText_Empty[]               = _("");
 static const u8 sText_Description_Save[]    = _("Save choices and continue...");
 
-static const u8 sText_Description_Features_AlternateSpawns_Off[]      = _("Use vanilla-ish {PKMN} spawns.\nNo version exclusives.");
-static const u8 sText_Description_Features_AlternateSpawns_On[]       = _("Use Modern Emerald {PKMN} spawns.\nAll 423 {PKMN} available.");
+static const u8 sText_Description_Features_AlternateSpawns_Off[]      = _("Use vanilla-ish wild encounters,\nwithout version exclusives.");
+static const u8 sText_Description_Features_AlternateSpawns_On[]       = _("Use Modern Emerald wild encounters.\nAll 423 {PKMN} available.");
 static const u8 sText_Description_Features_ItemDrop_On[]              = _("Wild {PKMN} will drop their hold item\nafter defeating them.");
 static const u8 sText_Description_Features_ItemDrop_Off[]             = _("Wild {PKMN} items will be only obtainable\nvia capture or THIEF.");
 static const u8 sText_Description_Features_ShinyChance_8192[]         = _("Very low chance of SHINY encounter.\nDefault chance from Generation III.");
