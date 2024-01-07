@@ -24,6 +24,8 @@ static u8 CalcBerryYieldInternal(u16 max, u16 min, u8 water);
 static u8 CalcBerryYield(struct BerryTree *tree);
 static u8 GetBerryCountByBerryTreeId(u8 id);
 static u16 GetStageDurationByBerryType(u8);
+void DebugAction_BerryFunctions_Ready(u8 taskId);
+
 
 //.rodata
 static const u8 sBerryDescriptionPart1_Cheri[] = _("Blooms with delicate pretty flowers.");
@@ -1357,6 +1359,25 @@ void SetBerryTreesSeen(void)
             cam_top = gObjectEvents[i].currentCoords.y;
             if (left <= cam_left && cam_left <= right && top <= cam_top && cam_top <= bottom)
                 AllowBerryTreeGrowth(gObjectEvents[i].trainerRange_berryTreeId);
+        }
+    }
+}
+
+void DebugAction_BerryFunctions_Ready(u8 taskId)
+{
+    u8 i;
+    struct BerryTree *tree;
+
+    for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
+    {
+        if (gObjectEvents[i].movementType == MOVEMENT_TYPE_BERRY_TREE_GROWTH)
+        {
+            tree = &gSaveBlock1Ptr->berryTrees[GetObjectEventBerryTreeId(i)];
+            if (tree->stage != BERRY_STAGE_NO_BERRY)
+            {
+                tree->stage = BERRY_STAGE_FLOWERING;
+                BerryTreeGrow(tree);
+            }
         }
     }
 }
