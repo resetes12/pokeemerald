@@ -153,6 +153,14 @@ BerryTree_EventScript_WaterBerry::
 	releaseall
 	end
 
+BerryTree_EventScript_BerryTree::
+	message BerryTree_Text_BerryTreeSprouted
+	waitmessage
+	callnative Berry_Ready
+	waitbuttonpress
+	release
+	end
+
 BerryTree_EventScript_PlantBerry::
 	special ObjectEventInteractionPlantBerryTree
 	incrementgamestat GAME_STAT_PLANTED_BERRIES
@@ -196,3 +204,6 @@ BerryTree_Text_BerryPocketFull:
 
 BerryTree_Text_ExclamationPoint:
 	.string "!$"
+
+BerryTree_Text_BerryTreeSprouted:
+	.string "The berry tree suddenly sprouted!$"

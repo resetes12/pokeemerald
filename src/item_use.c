@@ -74,6 +74,7 @@ static void Task_UseRepel(u8);
 static void Task_CloseCantUseKeyItemMessage(u8);
 static void SetDistanceOfClosestHiddenItem(u8, s16, s16);
 static void CB2_OpenPokeblockFromBag(void);
+static void ItemUseOnFieldCB_Fertilizer(u8);
 
 // EWRAM variables
 EWRAM_DATA static void(*sItemUseOnFieldCB)(u8 taskId) = NULL;
@@ -1222,6 +1223,22 @@ void ItemUseInBattle_EnigmaBerry(u8 taskId)
     default:
         ItemUseOutOfBattle_CannotUse(taskId);
         break;
+    }
+}
+
+void ItemUseOutOfBattle_Fertilizer(u8 taskId)
+{  
+    if (TryToWaterBerryTree() == TRUE)
+    {
+        RemoveUsedItem();
+        FadeInFromBlack();
+        CB2_ReturnToField();
+        LockPlayerFieldControls();
+        ScriptContext_SetupScript(BerryTree_EventScript_BerryTree);
+    }
+    else
+    {
+        DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].tUsingRegisteredKeyItem);
     }
 }
 

@@ -69,7 +69,7 @@ Debug_Script_1_Text2:
 	.string "WILL HAVE TO ENABLE THEM AGAIN.$"
 
 Debug_Script_2::
-	callnative DebugAction_BerryFunctions_Ready
+	callnative Berry_Ready
 	end
 
 Debug_Script_3::

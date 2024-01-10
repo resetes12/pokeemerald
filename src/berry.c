@@ -10,6 +10,7 @@
 #include "main.h"
 #include "random.h"
 #include "string_util.h"
+#include "strings.h"
 #include "text.h"
 #include "constants/event_object_movement.h"
 #include "constants/items.h"
@@ -24,7 +25,7 @@ static u8 CalcBerryYieldInternal(u16 max, u16 min, u8 water);
 static u8 CalcBerryYield(struct BerryTree *tree);
 static u8 GetBerryCountByBerryTreeId(u8 id);
 static u16 GetStageDurationByBerryType(u8);
-void DebugAction_BerryFunctions_Ready(u8 taskId);
+void Berry_Ready(u8 taskId);
 
 
 //.rodata
@@ -1046,7 +1047,7 @@ void ClearBerryTrees(void)
         gSaveBlock1Ptr->berryTrees[i] = gBlankBerryTree;
 }
 
-static bool32 BerryTreeGrow(struct BerryTree *tree)
+bool32 BerryTreeGrow(struct BerryTree *tree)
 {
     if (tree->stopGrowth)
         return FALSE;
@@ -1363,7 +1364,7 @@ void SetBerryTreesSeen(void)
     }
 }
 
-void DebugAction_BerryFunctions_Ready(u8 taskId)
+void Berry_Ready(u8 taskId)
 {
     u8 i;
     struct BerryTree *tree;

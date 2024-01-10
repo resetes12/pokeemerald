@@ -95,6 +95,11 @@ Route123_BerryMastersHouse_Text_YoureDeservingOfBerry:
 	.string "and hand them out to everyone.\p"
 	.string "You're deserving of one!$"
 
+Route123_BerryMastersHouse_Text_YoureDeservingOfMulch:
+	.string "GROWTH MULCH can be used to grow any\n"
+	.string "BERRY tree instantly. Try using it\l"
+	.string "on today's BERRY!$"
+
 Route123_BerryMastersHouse_Text_WhyBeStingyTakeAnother:
 	.string "Why be stingy?\n"
 	.string "Take another!$"
