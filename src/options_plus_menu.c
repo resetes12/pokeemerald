@@ -7,6 +7,7 @@
 #include "sprite.h"
 #include "task.h"
 #include "malloc.h"
+#include "rtc.h"
 #include "bg.h"
 #include "gpu_regs.h"
 #include "window.h"
@@ -37,6 +38,7 @@ enum
     MENUITEM_MAIN_SOUND,
     MENUITEM_MAIN_BUTTONMODE,
     MENUITEM_MAIN_FRAMETYPE,
+    //MENUITEM_MAIN_RTCTYPE,
     MENUITEM_MAIN_CANCEL,
     MENUITEM_MAIN_COUNT,
 };
@@ -187,6 +189,7 @@ static void DrawChoices_FastBattles(int selection, int y);
 static void DrawChoices_BikeMusic(int selection, int y);
 static void DrawChoices_EvenFasterJoy(int selection, int y);
 static void DrawChoices_SurfMusic(int selection, int y);
+//static void DrawChoices_RTCType(int selection, int y);
 static void DrawBgWindowFrames(void);
 
 // EWRAM vars
@@ -226,6 +229,7 @@ struct // MENU_MAIN
     [MENUITEM_MAIN_SOUND]        = {DrawChoices_Sound,       ProcessInput_Options_Two},
     [MENUITEM_MAIN_BUTTONMODE]   = {DrawChoices_ButtonMode,  ProcessInput_Options_Three},
     [MENUITEM_MAIN_FRAMETYPE]    = {DrawChoices_FrameType,   ProcessInput_FrameType},
+    //[MENUITEM_MAIN_RTCTYPE]      = {DrawChoices_RTCType,     ProcessInput_Options_Two},
     [MENUITEM_MAIN_CANCEL]       = {NULL, NULL},
 };
 
@@ -259,6 +263,7 @@ static const u8 sText_OptionFastBattles[]         = _("FAST BATTLES");
 static const u8 sText_OptionBikeMusic[]           = _("BIKE MUSIC");
 static const u8 sText_OptionEvenFasterJoy[]       = _("EVEN FASTER JOY");
 static const u8 sText_OptionSurfMusic[]           = _("SURF MUSIC");
+//static const u8 sText_OptionRTCType[]             = _("CLOCK TYPE");
 static const u8 *const sOptionMenuItemsNamesMain[MENUITEM_MAIN_COUNT] =
 {
     [MENUITEM_MAIN_TEXTSPEED]   = gText_TextSpeed,
@@ -268,6 +273,7 @@ static const u8 *const sOptionMenuItemsNamesMain[MENUITEM_MAIN_COUNT] =
     [MENUITEM_MAIN_SOUND]       = gText_Sound,
     [MENUITEM_MAIN_BUTTONMODE]  = gText_ButtonMode,
     [MENUITEM_MAIN_FRAMETYPE]   = gText_Frame,
+    //[MENUITEM_MAIN_RTCTYPE]     = sText_OptionRTCType,
     [MENUITEM_MAIN_CANCEL]      = gText_OptionMenuSave,
 };
 
@@ -312,6 +318,7 @@ static bool8 CheckConditions(int selection)
         case MENUITEM_MAIN_SOUND:           return TRUE;
         case MENUITEM_MAIN_BUTTONMODE:      return TRUE;
         case MENUITEM_MAIN_FRAMETYPE:       return TRUE;
+        //case MENUITEM_MAIN_RTCTYPE:         return TRUE;
         case MENUITEM_MAIN_CANCEL:          return TRUE;
         case MENUITEM_MAIN_COUNT:           return TRUE;
         }
@@ -353,6 +360,8 @@ static const u8 sText_Desc_ButtonMode[]         = _("All buttons work as normal.
 static const u8 sText_Desc_ButtonMode_LR[]      = _("On some screens the L and R buttons\nact as left and right.");
 static const u8 sText_Desc_ButtonMode_LA[]      = _("The L button acts as another A\nbutton for one-handed play.");
 static const u8 sText_Desc_FrameType[]          = _("Choose the frame surrounding the\nwindows.");
+//static const u8 sText_Desc_RTCType_Realtime[]   = _("The clock runs at real time.\nCurrently recommended.");
+//static const u8 sText_Desc_RTCType_Fake[]       = _("BETA!! Days are 24min long.\nDaily events still use real RTC.");
 static const u8 *const sOptionMenuItemDescriptionsMain[MENUITEM_MAIN_COUNT][3] =
 {
     [MENUITEM_MAIN_TEXTSPEED]   = {sText_Desc_TextSpeed,            sText_Empty,                sText_Empty},
@@ -362,6 +371,7 @@ static const u8 *const sOptionMenuItemDescriptionsMain[MENUITEM_MAIN_COUNT][3] =
     [MENUITEM_MAIN_SOUND]       = {sText_Desc_SoundMono,            sText_Desc_SoundStereo,     sText_Empty},
     [MENUITEM_MAIN_BUTTONMODE]  = {sText_Desc_ButtonMode,           sText_Desc_ButtonMode_LR,   sText_Desc_ButtonMode_LA},
     [MENUITEM_MAIN_FRAMETYPE]   = {sText_Desc_FrameType,            sText_Empty,                sText_Empty},
+    //[MENUITEM_MAIN_RTCTYPE]     = {sText_Desc_RTCType_Realtime,     sText_Desc_RTCType_Fake,    sText_Empty},
     [MENUITEM_MAIN_CANCEL]      = {sText_Desc_Save,                 sText_Empty,                sText_Empty},
 };
 
@@ -418,6 +428,7 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledMain[MENUITEM_MAIN_COU
     [MENUITEM_MAIN_SOUND]       = sText_Empty,
     [MENUITEM_MAIN_BUTTONMODE]  = sText_Empty,
     [MENUITEM_MAIN_FRAMETYPE]   = sText_Empty,
+    //[MENUITEM_MAIN_RTCTYPE]     = sText_Empty,
     [MENUITEM_MAIN_CANCEL]      = sText_Empty,
 };
 
@@ -675,6 +686,7 @@ void CB2_InitOptionPlusMenu(void)
         sOptions->sel[MENUITEM_MAIN_SOUND]       = gSaveBlock2Ptr->optionsSound;
         sOptions->sel[MENUITEM_MAIN_BUTTONMODE]  = gSaveBlock2Ptr->optionsButtonMode;
         sOptions->sel[MENUITEM_MAIN_FRAMETYPE]   = gSaveBlock2Ptr->optionsWindowFrameType;
+        //sOptions->sel[MENUITEM_MAIN_RTCTYPE]     = gSaveBlock1Ptr->optionsRTCType;
         
         sOptions->sel_custom[MENUITEM_CUSTOM_FOLLOWER]    = gSaveBlock2Ptr->optionsfollowerEnable;
         sOptions->sel_custom[MENUITEM_CUSTOM_LARGE_FOLLOWER]    = gSaveBlock2Ptr->optionsfollowerLargeEnable;
@@ -885,6 +897,7 @@ static void Task_OptionMenuSave(u8 taskId)
     gSaveBlock2Ptr->optionsSound            = sOptions->sel[MENUITEM_MAIN_SOUND];
     gSaveBlock2Ptr->optionsButtonMode       = sOptions->sel[MENUITEM_MAIN_BUTTONMODE];
     gSaveBlock2Ptr->optionsWindowFrameType  = sOptions->sel[MENUITEM_MAIN_FRAMETYPE];
+    //gSaveBlock1Ptr->optionsRTCType          = sOptions->sel[MENUITEM_MAIN_RTCTYPE];
 
     gSaveBlock2Ptr->optionsfollowerEnable   = sOptions->sel_custom[MENUITEM_CUSTOM_FOLLOWER];
     gSaveBlock2Ptr->optionsfollowerLargeEnable   = sOptions->sel_custom[MENUITEM_CUSTOM_LARGE_FOLLOWER];
@@ -1482,6 +1495,27 @@ static void DrawChoices_SurfMusic(int selection, int y)
     DrawOptionMenuChoice(gText_BattleSceneOn, 104, y, styles[0], active);
     DrawOptionMenuChoice(gText_BattleSceneOff, GetStringRightAlignXOffset(1, gText_BattleSceneOff, 198), y, styles[1], active);
 }
+
+/*static const u8 sText_Real[]  = _("REAL");
+static const u8 sText_Fake[]  = _("FAKE");
+static void DrawChoices_RTCType(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_MAIN_RTCTYPE);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock1Ptr->optionsRTCType = 0; //Real RTC
+    }
+    else
+    {
+        gSaveBlock1Ptr->optionsRTCType = 1; //Fake RTC
+    }
+
+    DrawOptionMenuChoice(sText_Real, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_Fake, GetStringRightAlignXOffset(1, sText_Fake, 198), y, styles[1], active);
+}*/
 
 // Background tilemap
 #define TILE_TOP_CORNER_L 0x1A2 // 418
