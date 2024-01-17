@@ -3179,7 +3179,15 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
                 }
             }
             break;
+        case ABILITYEFFECT_MOVE_TYPECHANGE: // 20
+            case ABILITYEFFECT_PIXILATE:
+               if (moveType == TYPE_NORMAL)
+               {
+
+               }
+            break;
         }
+
 
         if (effect && caseID < ABILITYEFFECT_CHECK_OTHER_SIDE && gLastUsedAbility != 0xFF)
             RecordAbilityBattle(battler, gLastUsedAbility);
