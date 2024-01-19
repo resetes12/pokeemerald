@@ -1632,13 +1632,7 @@ u8 TypeCalc(u16 move, u8 attacker, u8 defender)
     if (move == MOVE_STRUGGLE)
         return 0;
 
-    // check for ability pixilate
-    if (gBattleMons[attacker].ability == ABILITY_PIXILATE
-        && moveType == TYPE_NORMAL
-        && gBattleMoves[move].category != MOVE_CATEGORY_STATUS)
-        moveType = TYPE_FAIRY;
-    else
-        moveType = gBattleMoves[move].type;
+    moveType = gBattleMoves[move].type;
 
     // check stab
     if (IS_BATTLER_OF_TYPE(attacker, moveType))
