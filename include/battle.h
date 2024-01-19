@@ -451,7 +451,7 @@ struct BattleStruct
 {                                                                         \
     if (gBattleStruct->dynamicMoveType)                                   \
             typeArg = gBattleStruct->dynamicMoveType & DYNAMIC_TYPE_MASK; \
-    elif (gBattlerMons[battlerId].ability = ABILITY_PIXILATE              \
+    else if (gBattlerMons[battlerId].ability = ABILITY_PIXILATE           \
           && gBattleMoves[move].type == TYPE_NORMAL                       \
           && gBattleMoves[move].category != MOVE_CATEGORY_STATUS)         \
             typeArg = TYPE_FAIRY;                                         \
