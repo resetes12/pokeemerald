@@ -447,21 +447,22 @@ struct BattleStruct
 #define F_DYNAMIC_TYPE_2 (1 << 7)
 #define DYNAMIC_TYPE_MASK (F_DYNAMIC_TYPE_1 - 1)
 
-#define CHECK_PIXILATE(move, typeArg)
-{
-   if (gBattleMons[battlerId].ability == ABILITY_PIXILATE
-       && gBattleMoves[move].type == TYPE_NORMAL
-       && gBattleMoves[move].category != MOVE_CATEGORY_STATUS)
-         typeArg = TYPE_FAIRY;
+#define GET_MOVE_TYPE(move, typeArg)                                  \
+{                                                                     \
+    if (gBattleStruct->dynamicMoveType)                               \
+        typeArg = gBattleStruct->dynamicMoveType & DYNAMIC_TYPE_MASK; \
+    else                                                              \
+        typeArg = gBattleMoves[move].type;                            \
 }
 
-#define GET_MOVE_TYPE(move, typeArg)
-{
-    if (gBattleStruct->dynamicMoveType)
-         typeArg = gBattleStruct->dynamicMoveType & DYNAMIC_TYPE_MASK;                                       \
-    else
-         typeArg = gBattleMoves[move].type;
-}
+// #define CHECK_PIXILATE(battlerId, move, typeArg)               \
+// {                                                              \
+//    if (gBattleMons[battlerId].ability == ABILITY_PIXILATE      \
+//        && gBattleMoves[move].type == TYPE_NORMAL               \
+//        && gBattleMoves[move].category != MOVE_CATEGORY_STATUS  \
+//        typeArg = TYPE_FAIRY;                                   \
+//    else                                                        \
+// }
 
 #define IS_MOVE_PHYSICAL(move)(gBattleMoves[move].category == MOVE_CATEGORY_PHYSICAL)
 #define IS_MOVE_SPECIAL(move)(gBattleMoves[move].category == MOVE_CATEGORY_SPECIAL)
