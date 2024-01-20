@@ -1147,6 +1147,11 @@ static void Cmd_accuracycheck(void)
             move = gCurrentMove;
 
         GET_MOVE_TYPE(move, type);
+        //  check for pixilate ability and set normal-type to fairy-type
+        if (gLastUsedAbility == ABILITY_PIXILATE
+            && type == TYPE_NORMAL
+            && gBattleMoves[move].category != MOVE_CATEGORY_STATUS)
+            type = TYPE_FAIRY;
 
         if (JumpIfMoveAffectedByProtect(move))
             return;
@@ -1454,7 +1459,11 @@ static void Cmd_typecalc(void)
     }
 
     GET_MOVE_TYPE(gCurrentMove, moveType);
-
+//  check for pixilate ability and set normal-type to fairy-type
+    if (gLastUsedAbility == ABILITY_PIXILATE
+        && moveType == TYPE_NORMAL
+        && gBattleMoves[gCurrentMove].category != MOVE_CATEGORY_STATUS)
+        moveType = TYPE_FAIRY;
     // check stab
     if (IS_BATTLER_OF_TYPE(gBattlerAttacker, moveType))
     {
@@ -1523,6 +1532,11 @@ static void CheckWonderGuardAndLevitate(void)
         return;
 
     GET_MOVE_TYPE(gCurrentMove, moveType);
+//  check for pixilate ability and set normal-type to fairy-type
+    if (gLastUsedAbility == ABILITY_PIXILATE
+        && moveType == TYPE_NORMAL
+        && gBattleMoves[gCurrentMove].category != MOVE_CATEGORY_STATUS)
+        moveType = TYPE_FAIRY;
 
     if (gBattleMons[gBattlerTarget].ability == ABILITY_LEVITATE && moveType == TYPE_GROUND)
     {
@@ -4469,6 +4483,11 @@ static void Cmd_moveend(void)
 
     choicedMoveAtk = &gBattleStruct->choicedMove[gBattlerAttacker];
     GET_MOVE_TYPE(gCurrentMove, moveType);
+    //  check for pixilate ability and set normal-type to fairy-type
+    if (gLastUsedAbility == ABILITY_PIXILATE
+        && moveType == TYPE_NORMAL
+        && gBattleMoves[gCurrentMove].category != MOVE_CATEGORY_STATUS)
+        moveType = TYPE_FAIRY;
 
     do
     {

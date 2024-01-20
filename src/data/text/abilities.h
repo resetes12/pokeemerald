@@ -1,3 +1,4 @@
+#include "constants/abilities.h"
 static const u8 sNoneDescription[] = _("");
 static const u8 sStenchDescription[] = _("Helps repel wild POKéMON.");
 static const u8 sDrizzleDescription[] = _("Summons rain in battle.");
@@ -79,7 +80,7 @@ static const u8 sAirLockDescription[] = _("Negates weather effects.");
 static const u8 sTransistorDescription[] = _("Ups Electric-type moves.");
 static const u8 sDragonsMawDescription[] = _("Ups Dragon-type moves.");
 static const u8 sMultitypeDescription[] = _("Ups type moves with items.");
-static const u8 sPixilateDescription[] = _("Normal-type moves become Fairy-type moves.");
+static const u8 sPixilateDescription[] = _("NORMAL moves are now FAIRY.");
 
 const u8 gAbilityNames[ABILITIES_COUNT][ABILITY_NAME_LENGTH + 1] =
 {
@@ -164,6 +165,7 @@ const u8 gAbilityNames[ABILITIES_COUNT][ABILITY_NAME_LENGTH + 1] =
     [ABILITY_TRANSISTOR] = _("TRANSISTOR"),
     [ABILITY_DRAGONS_MAW] = _("DRAGON'S MAW"),
     [ABILITY_MULTITYPE] = _("MULTITYPE"),
+    [ABILITY_PIXILATE] = _("PIXILATE"),
 };
 
 const u8 *const gAbilityDescriptionPointers[ABILITIES_COUNT] =
