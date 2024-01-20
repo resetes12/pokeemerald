@@ -1147,6 +1147,7 @@ static void Cmd_accuracycheck(void)
             move = gCurrentMove;
 
         GET_MOVE_TYPE(move, type);
+        CHECK_PIXILATE(move, type);
 
         if (JumpIfMoveAffectedByProtect(move))
             return;

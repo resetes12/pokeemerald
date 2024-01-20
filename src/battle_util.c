@@ -2461,6 +2461,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             move = gCurrentMove;
 
         GET_MOVE_TYPE(move, moveType);
+        CHECK_PIXILATE(move, moveType);
 
         switch (caseID)
         {
