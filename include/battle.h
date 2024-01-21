@@ -11,9 +11,7 @@
 #include "battle_gfx_sfx_util.h"
 #include "battle_util2.h"
 #include "battle_bg.h"
-#include "constants/pokemon.h"
 #include "pokeball.h"
-#include "pokemon.h"
 
 #define GET_BATTLER_SIDE(battler)         (GetBattlerPosition(battler) & BIT_SIDE)
 #define GET_BATTLER_SIDE2(battler)        (gBattlerPositions[battler] & BIT_SIDE)
@@ -454,15 +452,6 @@ struct BattleStruct
     else                                                              \
         typeArg = gBattleMoves[move].type;                            \
 }
-
-// #define CHECK_PIXILATE(battlerId, move, typeArg)               \
-// {                                                              \
-//    if (gBattleMons[battlerId].ability == ABILITY_PIXILATE      \
-//        && gBattleMoves[move].type == TYPE_NORMAL               \
-//        && gBattleMoves[move].category != MOVE_CATEGORY_STATUS  \
-//        typeArg = TYPE_FAIRY;                                   \
-//    else                                                        \
-// }
 
 #define IS_MOVE_PHYSICAL(move)(gBattleMoves[move].category == MOVE_CATEGORY_PHYSICAL)
 #define IS_MOVE_SPECIAL(move)(gBattleMoves[move].category == MOVE_CATEGORY_SPECIAL)
