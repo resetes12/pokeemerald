@@ -46,3 +46,4 @@ prefabs.json
 agbcc/
 /*.zip
 .nova
+.gitignore
