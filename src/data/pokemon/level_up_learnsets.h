@@ -1856,7 +1856,7 @@ static const u16 sHitmonchanLevelUpLearnset[] = {
 };
 
 static const u16 sLickitungLevelUpLearnset[] = {
-    LEVEL_UP_MOVE( 1, MOVE_LICK),  
+    LEVEL_UP_MOVE( 1, MOVE_LICK),
     LEVEL_UP_MOVE( 7, MOVE_SUPERSONIC),
     LEVEL_UP_MOVE(12, MOVE_DEFENSE_CURL),
     LEVEL_UP_MOVE(18, MOVE_KNOCK_OFF),
@@ -4631,6 +4631,7 @@ static const u16 sSceptileLevelUpLearnset[] = {
 static const u16 sTorchicLevelUpLearnset[] = {
     LEVEL_UP_MOVE( 1, MOVE_SCRATCH),
     LEVEL_UP_MOVE( 1, MOVE_GROWL),
+    LEVEL_UP_MOVE( 1, MOVE_HIDDEN_POWER),
     LEVEL_UP_MOVE( 7, MOVE_FOCUS_ENERGY),
     LEVEL_UP_MOVE(10, MOVE_EMBER),
     LEVEL_UP_MOVE(16, MOVE_PECK),
@@ -7525,7 +7526,7 @@ static const u16 sMismagiusLevelUpLearnset[] = {
 static const u16 sMimeJrLevelUpLearnset[] = {
     LEVEL_UP_MOVE( 1, MOVE_BARRIER),
     LEVEL_UP_MOVE( 1, MOVE_TICKLE),
-    LEVEL_UP_MOVE( 1, MOVE_CONFUSION), 
+    LEVEL_UP_MOVE( 1, MOVE_CONFUSION),
     LEVEL_UP_MOVE( 8, MOVE_MEDITATE),
     LEVEL_UP_MOVE(11, MOVE_ENCORE),
     LEVEL_UP_MOVE(15, MOVE_DOUBLE_SLAP),
