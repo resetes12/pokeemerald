@@ -734,6 +734,18 @@ BattleFrontier_ExchangeServiceCorner_Text_ScopeLensDesc::
 	.string "critical-hit rate.$"
 
 EventScript_DoWonderTrade::
+	goto_if_unset FLAG_WONDERTRADE_FIRSTIME, EventScript_FirstTimeWonderRandomizer
+	special CheckIfRandomizerIsActive
+	goto_if_unset FLAG_WT_ENABLED_RANDOMIZER, EventScript_DoWonderTradeStart
+	special CheckIfChallengesAreActive
+	goto_if_set FLAG_WONDERTRADE3, EventScript_NoMoreForToday
+	goto_if_set FLAG_NO_WT_BECAUSE_CHALLENGE, EventScript_WTChallenges
+	goto_if_unset FLAG_WONDERTRADE1, EventScript_DoWonderTradeFirstTrade	
+	goto_if_unset FLAG_WONDERTRADE2, EventScript_DoWonderTradeSecondTrade
+	goto_if_unset FLAG_WONDERTRADE3, EventScript_DoWonderTradeThirdTrade
+	end
+
+EventScript_DoWonderTradeStart:
 	goto_if_unset FLAG_WONDERTRADE_FIRSTIME, EventScript_FirstTimeWonder
 	goto_if_unset FLAG_BADGE05_GET, EventScript_WTNotActiveYet
 	msgbox EventScript_DoWonderTrade_Text_Welcome, MSGBOX_DEFAULT
@@ -812,19 +824,20 @@ EventScript_DoWonderTradeTrade::
 	special CreateWonderTradePokemon
 	special DoInGameTradeScene
 	waitstate
-	msgbox EventScript_DoWonderTrade_Text_Done, MSGBOX_DEFAULT
-	closemessage
-	goto EventScript_SaveGameWT
-	end
-
-EventScript_SaveGameWT::
 	special ForceSaveGame
 	waitstate
-	goto_if_eq VAR_RESULT, 0, EventScript_SaveGameWT
-	return
+	msgbox EventScript_DoWonderTrade_Text_Done, MSGBOX_DEFAULT
+	closemessage
+	end
 
 EventScript_NoMoreForToday::
 	msgbox EventScript_NoMoreForToday_Text, MSGBOX_DEFAULT
+	closemessage
+	end
+
+EventScript_FirstTimeWonderRandomizer::
+	msgbox EventScript_FirstTimeWonder_Text, MSGBOX_DEFAULT
+	setflag FLAG_WONDERTRADE_FIRSTIME
 	closemessage
 	end
 

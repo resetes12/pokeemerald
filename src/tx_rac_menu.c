@@ -10,6 +10,7 @@
 #include "bg.h"
 #include "gpu_regs.h"
 #include "window.h"
+#include "overworld.h"
 #include "text.h"
 #include "text_window.h"
 #include "international_string_util.h"
@@ -559,7 +560,7 @@ static bool8 CheckConditions(int selection)
             case MENUITEM_RANDOM_ABILITIES:                 return sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON];
             case MENUITEM_RANDOM_EVOLUTIONS:                return sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON];
             case MENUITEM_RANDOM_EVOLUTIONS_METHODS:        return sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON];
-            case MENUITEM_RANDOM_TYPE_EFFEC:                return sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON];
+            case MENUITEM_RANDOM_TYPE_EFFEC:                return sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON] && !sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON];
             case MENUITEM_RANDOM_ITEMS:                     return sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON];
             case MENUITEM_RANDOM_CHAOS:                     return sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON] && (sOptions->sel_randomizer[MENUITEM_RANDOM_WILD_PKMN]
                                                                 || sOptions->sel_randomizer[MENUITEM_RANDOM_STARTER]
@@ -601,8 +602,8 @@ static bool8 CheckConditions(int selection)
 static const u8 sText_Empty[]               = _("");
 static const u8 sText_Description_Save[]    = _("Save choices and continue...");
 
-static const u8 sText_Description_Features_AlternateSpawns_Off[]      = _("Use vanilla-ish {PKMN} spawns.\nNo version exclusives.");
-static const u8 sText_Description_Features_AlternateSpawns_On[]       = _("Use Modern Emerald {PKMN} spawns.\nAll 423 {PKMN} available.");
+static const u8 sText_Description_Features_AlternateSpawns_Off[]      = _("Use vanilla-ish wild encounters,\nwithout version exclusives.");
+static const u8 sText_Description_Features_AlternateSpawns_On[]       = _("Use Modern Emerald wild encounters.\nAll 423 {PKMN} available.");
 static const u8 sText_Description_Features_ItemDrop_On[]              = _("Wild {PKMN} will drop their hold item\nafter defeating them.");
 static const u8 sText_Description_Features_ItemDrop_Off[]             = _("Wild {PKMN} items will be only obtainable\nvia capture or THIEF.");
 static const u8 sText_Description_Features_ShinyChance_8192[]         = _("Very low chance of SHINY encounter.\nDefault chance from Generation III.");
@@ -791,6 +792,7 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledFeatures[MENUITEM_FEAT
 static const u8 sText_Description_Disabled_Random_SimiliarEvolutionLevel[]  = _("Only usable with random starter,\nTrainer, wild or static POKéMON.");
 static const u8 sText_Description_Disabled_Random_IncludeLegendaries[]      = _("Only usable with random starter,\nTrainer, wild or static POKéMON.");
 static const u8 sText_Description_Disabled_Random_Chaos_Mode[]              = _("Only usable if other random options\nare activated.");
+static const u8 sText_Description_Disabled_Random_Type_Effectiveness[]      = _("Currently not available.");
 static const u8 *const sOptionMenuItemDescriptionsDisabledRandomizer[MENUITEM_RANDOM_COUNT] =
 {
     [MENUITEM_RANDOM_OFF_ON]                    = sText_Empty,
@@ -805,7 +807,7 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledRandomizer[MENUITEM_RA
     [MENUITEM_RANDOM_ABILITIES]                 = sText_Empty,
     [MENUITEM_RANDOM_EVOLUTIONS]                = sText_Empty,
     [MENUITEM_RANDOM_EVOLUTIONS_METHODS]        = sText_Empty,
-    [MENUITEM_RANDOM_TYPE_EFFEC]                = sText_Empty,
+    [MENUITEM_RANDOM_TYPE_EFFEC]                = sText_Description_Disabled_Random_Type_Effectiveness,
     [MENUITEM_RANDOM_ITEMS]                     = sText_Empty,
     [MENUITEM_RANDOM_CHAOS]                     = sText_Description_Disabled_Random_Chaos_Mode,
     [MENUITEM_RANDOM_NEXT]                      = sText_Empty,
@@ -1304,6 +1306,13 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         SetMainCallback2(MainCB2);
         return;
     }
+}
+
+void Task_ChooseChallenge_NoNewGame(u8 taskId)
+{
+    gMain.savedCallback = CB2_ReturnToField_SaveChallengesData;
+    SetMainCallback2(CB2_InitTxRandomizerChallengesMenu);
+    DestroyTask(taskId);
 }
 
 static void Task_OptionMenuFadeIn(u8 taskId)

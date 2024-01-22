@@ -559,3 +559,4 @@ gSpecials::
 	def_special ChooseItemFromBag
 	def_special ForceSaveGame
 	def_special CheckIfChallengesAreActive
+	def_special CheckIfRandomizerIsActive

@@ -1062,6 +1062,7 @@ static const u16 sRandomValidItems[] =
     ITEM_BLUE_SHARD,
     ITEM_YELLOW_SHARD,
     ITEM_GREEN_SHARD,
+    ITEM_FERTILIZER,
     ITEM_HP_UP,
     ITEM_PROTEIN,
     ITEM_IRON,
