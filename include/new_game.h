@@ -13,5 +13,6 @@ void NewGameInitData(void);
 void ResetMenuAndMonGlobals(void);
 void Sav2_ClearSetDefault(void);
 void CheckIfChallengesAreActive(void);
+void CheckIfRandomizerIsActive(void);
 
 #endif // GUARD_NEW_GAME_H

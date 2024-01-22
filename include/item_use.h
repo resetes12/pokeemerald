@@ -11,6 +11,7 @@ void ItemUseOutOfBattle_InfiniteRepel(u8);
 void ItemUseOutOfBattle_PowderJar(u8);
 void ItemUseOutOfBattle_SSTicket(u8);
 void ItemUseOutOfBattle_WailmerPail(u8);
+void ItemUseOutOfBattle_Fertilizer(u8);
 void ItemUseOutOfBattle_Medicine(u8);
 void ItemUseOutOfBattle_ReduceEV(u8);
 void ItemUseOutOfBattle_SacredAsh(u8);
@@ -41,5 +42,6 @@ void ItemUseOutOfBattle_PokeBall(u8);
 void ItemUseOutOfBattle_SootSack(u8);
 u16 GetAshCount(void);
 void ItemUseOutOfBattle_Mints(u8 taskId);
+void ItemUseOutOfBattle_Fertilizer(u8 taskId);
 
 #endif // GUARD_ITEM_USE_H

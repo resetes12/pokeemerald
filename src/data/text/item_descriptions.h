@@ -251,6 +251,11 @@ static const u8 sGreenShardDesc[] = _(
     "ancient item. Can\n"
     "be sold cheaply.");
 
+static const u8 sFertilizerDesc[] = _(
+    "Used to instantly\n"
+    "grow berry trees.\n"
+    "Has a funny smell.");
+
 // Vitamins
 static const u8 sHPUpDesc[] = _(
     "Raises the base HP\n"

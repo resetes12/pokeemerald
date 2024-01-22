@@ -247,6 +247,25 @@ void CheckIfChallengesAreActive(void)
         FlagSet(FLAG_NO_WT_BECAUSE_CHALLENGE);       
 }
 
+void CheckIfRandomizerIsActive(void)
+{
+    if (((gSaveBlock1Ptr->tx_Random_Chaos == 1)
+        || (gSaveBlock1Ptr->tx_Random_WildPokemon == 1)
+        || (gSaveBlock1Ptr->tx_Random_Similar == 1)
+        || (gSaveBlock1Ptr->tx_Random_MapBased == 1)
+        || (gSaveBlock1Ptr->tx_Random_IncludeLegendaries == 1)
+        || (gSaveBlock1Ptr->tx_Random_Type == 1)
+        || (gSaveBlock1Ptr->tx_Random_TypeEffectiveness == 1)
+        || (gSaveBlock1Ptr->tx_Random_Abilities == 1)
+        || (gSaveBlock1Ptr->tx_Random_Moves == 1)
+        || (gSaveBlock1Ptr->tx_Random_Trainer == 1)
+        || (gSaveBlock1Ptr->tx_Random_Evolutions == 1)
+        || (gSaveBlock1Ptr->tx_Random_EvolutionMethods == 1)
+        || (gSaveBlock1Ptr->tx_Random_OneForOne == 1)
+        || (gSaveBlock1Ptr->tx_Random_Items == 1)))
+            FlagSet(FLAG_WT_ENABLED_RANDOMIZER);
+}
+
 static void ResetMiniGamesRecords(void)
 {
     CpuFill16(0, &gSaveBlock2Ptr->berryCrush, sizeof(struct BerryCrush));

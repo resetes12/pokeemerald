@@ -419,14 +419,14 @@ static const u8 sDebugText_Sound[] =            _("Sound…{CLEAR_TO 110}{RIGHT_
 static const u8 sDebugText_AccessPC[] =         _("Access PC…{CLEAR_TO 110}{RIGHT_ARROW}");
 static const u8 sDebugText_Cancel[] =           _("Cancel");
 // Script menu
-static const u8 sDebugText_Util_Script_1[] =               _("Script 1");
-static const u8 sDebugText_Util_Script_2[] =               _("Script 2");
-static const u8 sDebugText_Util_Script_3[] =               _("Script 3");
-static const u8 sDebugText_Util_Script_4[] =               _("Script 4");
-static const u8 sDebugText_Util_Script_5[] =               _("Script 5");
-static const u8 sDebugText_Util_Script_6[] =               _("Script 6");
-static const u8 sDebugText_Util_Script_7[] =               _("Script 7");
-static const u8 sDebugText_Util_Script_8[] =               _("Script 8");
+static const u8 sDebugText_Util_Script_1[] =               _("Open Challenges Menu");
+static const u8 sDebugText_Util_Script_2[] =               _("Grow Berry Tree");
+static const u8 sDebugText_Util_Script_3[] =               _("Script 3 (Empty)");
+static const u8 sDebugText_Util_Script_4[] =               _("Script 4 (Empty)");
+static const u8 sDebugText_Util_Script_5[] =               _("Script 5 (Empty)");
+static const u8 sDebugText_Util_Script_6[] =               _("Script 6 (Empty)");
+static const u8 sDebugText_Util_Script_7[] =               _("Script 7 (Empty)");
+static const u8 sDebugText_Util_Script_8[] =               _("Script 8 (Empty)");
 // Util Menu
 static const u8 sDebugText_Util_HealParty[] =               _("Heal Party");
 static const u8 sDebugText_Util_Fly[] =                     _("Fly to map…{CLEAR_TO 110}{RIGHT_ARROW}");

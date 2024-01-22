@@ -289,8 +289,16 @@ void RtcCalcTimeDifference(struct SiiRtcInfo *rtc, struct Time *result, struct T
 
 void RtcCalcLocalTime(void)
 {
-    RtcGetInfo(&sRtc);
-    RtcCalcTimeDifference(&sRtc, &gLocalTime, &gSaveBlock2Ptr->localTimeOffset);
+    /*if (gSaveBlock1Ptr->optionsRTCType == 1)
+    {
+        RtcGetInfoFake(&sRtc);
+        RtcCalcTimeDifferenceFake(&sRtc, &gLocalTime, &gSaveBlock2Ptr->localTimeOffset);
+    }
+    else
+    {*/
+        RtcGetInfo(&sRtc);
+        RtcCalcTimeDifference(&sRtc, &gLocalTime, &gSaveBlock2Ptr->localTimeOffset);
+    //}
 }
 
 void RtcInitLocalTimeOffset(s32 hour, s32 minute)
@@ -304,8 +312,17 @@ void RtcCalcLocalTimeOffset(s32 days, s32 hours, s32 minutes, s32 seconds)
     gLocalTime.hours = hours;
     gLocalTime.minutes = minutes;
     gLocalTime.seconds = seconds;
-    RtcGetInfo(&sRtc);
-    RtcCalcTimeDifference(&sRtc, &gSaveBlock2Ptr->localTimeOffset, &gLocalTime);
+    /*if (gSaveBlock1Ptr->optionsRTCType == 1)
+    {
+        RtcGetInfoFake(&sRtc);
+        RtcCalcTimeDifferenceFake(&sRtc, &gSaveBlock2Ptr->localTimeOffset, &gLocalTime);
+    }
+    else
+    {*/
+        RtcGetInfo(&sRtc);
+        RtcCalcTimeDifference(&sRtc, &gSaveBlock2Ptr->localTimeOffset, &gLocalTime);
+    //}
+    
 }
 
 void CalcTimeDifference(struct Time *result, struct Time *t1, struct Time *t2)
@@ -344,3 +361,119 @@ u32 RtcGetLocalDayCount(void)
 {
     return RtcGetDayCount(&sRtc);
 }
+
+/*struct Time* GetFakeRtc(void)
+{
+    return &gSaveBlock2Ptr->fakeRTC;
+}
+
+u16 ConvertDateToDayCountFake(u8 year, u8 month, u8 day)
+{
+    return &gSaveBlock2Ptr->fakeRTC;
+}
+
+u16 RtcGetDayCountFake(struct SiiRtcInfo *rtc)
+{
+    return rtc->day;
+}
+
+void RtcInitFake(void)
+{
+
+}
+
+u16 RtcGetErrorStatusFake(void)
+{
+    return 0;
+}
+
+void RtcGetInfoFake(struct SiiRtcInfo *rtc)
+{
+    struct Time* time = GetFakeRtc();
+    rtc->second = time->seconds;
+    rtc->minute = time->minutes;
+    rtc->hour = time->hours;
+    rtc->day = time->days;
+}
+
+u16 RtcCheckInfoFake(struct SiiRtcInfo *rtc)
+{
+    return 0;
+}
+
+void RtcResetFake(void)
+{
+    memset(GetFakeRtc(), 0, sizeof(struct Time));
+}
+
+void RtcCalcTimeDifferenceFake(struct SiiRtcInfo *rtc, struct Time *result, struct Time *t)
+{
+    u16 days = RtcGetDayCountFake(rtc);
+    result->seconds = rtc->second - t->seconds;
+    result->minutes = rtc->minute - t->minutes;
+    result->hours = rtc->hour - t->hours;
+    result->days = days - t->days;
+
+    if (result->seconds < 0)
+    {
+        result->seconds += 60;
+        --result->minutes;
+    }
+
+    if (result->minutes < 0)
+    {
+        result->minutes += 60;
+        --result->hours;
+    }
+
+    if (result->hours < 0)
+    {
+        result->hours += 24;
+        --result->days;
+    }
+}
+
+void RtcAdvanceTime(u32 hours, u32 minutes, u32 seconds) //fake rtc
+{
+    struct Time* time = GetFakeRtc();
+    seconds += time->seconds;
+    minutes += time->minutes;
+    hours += time->hours;
+
+    while(seconds >= 60)
+    {
+	    minutes++;
+	    seconds -= 60;	
+    }
+
+    while(minutes >= 60)
+    {
+	    hours++;
+	    minutes -= 60;
+    }
+
+    while(hours >= 24)
+    {
+	    time->days++;
+	    hours -= 24;
+    }
+
+    time->seconds = seconds;
+    time->minutes = minutes;
+    time->hours = hours;
+}
+
+void RtcAdvanceTimeTo(u32 hour, u32 minute, u32 second) //fake rtc
+{
+    struct Time diff, target;
+    RtcCalcLocalTime();
+    
+    target.hours = hour;
+    target.minutes = minute;
+    target.seconds = second;
+    target.days = gLocalTime.days;
+    
+    CalcTimeDifference(&diff, &gLocalTime, &target);
+    RtcAdvanceTime(diff.hours, diff.minutes, diff.seconds);
+}
+*/

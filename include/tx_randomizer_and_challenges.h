@@ -46,7 +46,7 @@
 #define TX_CHALLENGE_MIRROR 0
 #define TX_CHALLENGE_PCHEAL 0
 #define TX_CHALLENGE_MIRROR_THIEF 0
-#define TX_FEATURES_ALTERNATE_SPAWNS 0
+#define TX_FEATURES_ALTERNATE_SPAWNS 1
 #define TX_FEATURES_SHINY_CHANCE 0
 #define TX_FEATURES_ITEM_DROP 0
 #define TX_FEATURES_INFINITE_TMS 0
@@ -64,6 +64,7 @@
 #define TX_RANDOM_T_STATIC          6
 
 void CB2_InitTxRandomizerChallengesMenu(void);
+void Task_ChooseChallenge_NoNewGame(u8 taskId);
 void SaveData_TxRandomizerAndChallenges(void);
 
 bool8 IsRandomizerActivated(void);

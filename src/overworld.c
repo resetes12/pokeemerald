@@ -1851,6 +1851,21 @@ void CB2_ReturnToField(void)
     }
 }
 
+void CB2_ReturnToField_SaveChallengesData(void)
+{
+    if (IsOverworldLinkActive() == TRUE)
+    {
+        SetMainCallback2(CB2_ReturnToFieldLink);
+        SaveData_TxRandomizerAndChallenges();
+    }
+    else
+    {
+        FieldClearVBlankHBlankCallbacks();
+        SetMainCallback2(CB2_ReturnToFieldLocal);
+        SaveData_TxRandomizerAndChallenges();
+    }
+}
+
 static void CB2_ReturnToFieldLocal(void)
 {
     if (ReturnToFieldLocal(&gMain.state))

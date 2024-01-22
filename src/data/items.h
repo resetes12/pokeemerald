@@ -691,15 +691,15 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
     },
 
-    [ITEM_034] =
+    [ITEM_FERTILIZER] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
-        .price = 0,
-        .description = sDummyDesc,
+        .name = _("GROWTH MULCH"),
+        .itemId = ITEM_FERTILIZER,
+        .price = 2500,
+        .description = sFertilizerDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .fieldUseFunc = ItemUseOutOfBattle_Fertilizer,
     },
 
     [ITEM_035] =
@@ -5541,15 +5541,15 @@ const struct Item gItems2[] =
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
     },
 
-    [ITEM_034] =
+    [ITEM_FERTILIZER] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
-        .price = 0,
-        .description = sDummyDesc,
+        .name = _("GROWTH MULCH"),
+        .itemId = ITEM_FERTILIZER,
+        .price = 2500,
+        .description = sFertilizerDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .fieldUseFunc = ItemUseOutOfBattle_Fertilizer,
     },
 
     [ITEM_035] =
