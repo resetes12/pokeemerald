@@ -1148,7 +1148,7 @@ static void Cmd_accuracycheck(void)
 
         GET_MOVE_TYPE(move, type);
         //  check for pixilate ability and set normal-type to fairy-type
-        if (gLastUsedAbility == ABILITY_PIXILATE
+        if (gBattleMons[gBattlerAttacker].ability == ABILITY_PIXILATE
             && type == TYPE_NORMAL
             && gBattleMoves[move].category != MOVE_CATEGORY_STATUS)
             type = TYPE_FAIRY;
@@ -1460,7 +1460,7 @@ static void Cmd_typecalc(void)
 
     GET_MOVE_TYPE(gCurrentMove, moveType);
 //  check for pixilate ability and set normal-type to fairy-type
-    if (gLastUsedAbility == ABILITY_PIXILATE
+    if (gBattleMons[gBattlerAttacker].ability == ABILITY_PIXILATE
         && moveType == TYPE_NORMAL
         && gBattleMoves[gCurrentMove].category != MOVE_CATEGORY_STATUS)
         moveType = TYPE_FAIRY;
@@ -1533,7 +1533,7 @@ static void CheckWonderGuardAndLevitate(void)
 
     GET_MOVE_TYPE(gCurrentMove, moveType);
 //  check for pixilate ability and set normal-type to fairy-type
-    if (gLastUsedAbility == ABILITY_PIXILATE
+    if (gBattleMons[gBattlerAttacker].ability == ABILITY_PIXILATE
         && moveType == TYPE_NORMAL
         && gBattleMoves[gCurrentMove].category != MOVE_CATEGORY_STATUS)
         moveType = TYPE_FAIRY;
@@ -1716,6 +1716,9 @@ u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility)
         && moveType == TYPE_NORMAL
         && gBattleMoves[move].category != MOVE_CATEGORY_STATUS)
         moveType = TYPE_FAIRY;
+
+    // check hidden power type
+
 
     if (targetAbility == ABILITY_LEVITATE && moveType == TYPE_GROUND)
     {
@@ -4494,7 +4497,7 @@ static void Cmd_moveend(void)
     choicedMoveAtk = &gBattleStruct->choicedMove[gBattlerAttacker];
     GET_MOVE_TYPE(gCurrentMove, moveType);
     //  check for pixilate ability and set normal-type to fairy-type
-    if (gLastUsedAbility == ABILITY_PIXILATE
+    if (gBattleMons[gBattlerAttacker].ability == ABILITY_PIXILATE
         && moveType == TYPE_NORMAL
         && gBattleMoves[gCurrentMove].category != MOVE_CATEGORY_STATUS)
         moveType = TYPE_FAIRY;

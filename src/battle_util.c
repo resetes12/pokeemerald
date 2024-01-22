@@ -2464,7 +2464,7 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
         GET_MOVE_TYPE(move, moveType);
 
 //  check for pixilate ability and set normal-type to fairy-type
-        if (gLastUsedAbility == ABILITY_PIXILATE
+        if (gBattleMons[gBattlerAttacker].ability == ABILITY_PIXILATE
             && moveType == TYPE_NORMAL
             && gBattleMoves[move].category != MOVE_CATEGORY_STATUS)
             moveType = TYPE_FAIRY;
