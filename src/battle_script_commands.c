@@ -1,3 +1,4 @@
+#include "constants/pokemon.h"
 #include "global.h"
 #include "battle.h"
 #include "battle_message.h"
@@ -1146,6 +1147,11 @@ static void Cmd_accuracycheck(void)
             move = gCurrentMove;
 
         GET_MOVE_TYPE(move, type);
+        //  check for pixilate ability and set normal-type to fairy-type
+        if (gBattleMons[gBattlerAttacker].ability == ABILITY_PIXILATE
+            && type == TYPE_NORMAL
+            && gBattleMoves[move].category != MOVE_CATEGORY_STATUS)
+            type = TYPE_FAIRY;
 
         if (JumpIfMoveAffectedByProtect(move))
             return;
@@ -1467,7 +1473,11 @@ static void Cmd_typecalc(void)
             if (moveType == TYPE_MYSTERY)
                 moveType = TYPE_FAIRY;
         }
-
+    //  check for pixilate ability and set normal-type to fairy-type
+    if (gBattleMons[gBattlerAttacker].ability == ABILITY_PIXILATE
+        && moveType == TYPE_NORMAL
+        && gBattleMoves[gCurrentMove].category != MOVE_CATEGORY_STATUS)
+        moveType = TYPE_FAIRY;
     // check stab
     if (IS_BATTLER_OF_TYPE(gBattlerAttacker, moveType))
     {
@@ -1536,6 +1546,11 @@ static void CheckWonderGuardAndLevitate(void)
         return;
 
     GET_MOVE_TYPE(gCurrentMove, moveType);
+//  check for pixilate ability and set normal-type to fairy-type
+    if (gBattleMons[gBattlerAttacker].ability == ABILITY_PIXILATE
+        && moveType == TYPE_NORMAL
+        && gBattleMoves[gCurrentMove].category != MOVE_CATEGORY_STATUS)
+        moveType = TYPE_FAIRY;
 
     if (gBattleMons[gBattlerTarget].ability == ABILITY_LEVITATE && moveType == TYPE_GROUND)
     {
@@ -1646,6 +1661,7 @@ u8 TypeCalc(u16 move, u8 attacker, u8 defender)
         return 0;
 
     moveType = gBattleMoves[move].type;
+    // check hidden power type
     if (move == MOVE_HIDDEN_POWER)
     {
         u8 typeBits  = ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_HP_IV) & 1) << 0)
@@ -1659,6 +1675,12 @@ u8 TypeCalc(u16 move, u8 attacker, u8 defender)
         if (moveType == TYPE_MYSTERY)
             moveType = TYPE_FAIRY;
     }
+
+    // check pixilate
+    if (gBattleMons[attacker].ability == ABILITY_PIXILATE
+        && moveType == TYPE_NORMAL
+        && gBattleMoves[move].category != MOVE_CATEGORY_STATUS)
+        moveType = TYPE_FAIRY;
 
     // check stab
     if (IS_BATTLER_OF_TYPE(attacker, moveType))
@@ -1732,6 +1754,15 @@ u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility)
             if (moveType == TYPE_MYSTERY)
                 moveType = TYPE_FAIRY;
         }
+
+    // check pixilate
+    if (gBattleMons[gBattlerAttacker].ability == ABILITY_PIXILATE
+        && moveType == TYPE_NORMAL
+        && gBattleMoves[move].category != MOVE_CATEGORY_STATUS)
+        moveType = TYPE_FAIRY;
+
+    // check hidden power type
+
 
     if (targetAbility == ABILITY_LEVITATE && moveType == TYPE_GROUND)
     {
@@ -4509,6 +4540,11 @@ static void Cmd_moveend(void)
 
     choicedMoveAtk = &gBattleStruct->choicedMove[gBattlerAttacker];
     GET_MOVE_TYPE(gCurrentMove, moveType);
+    //  check for pixilate ability and set normal-type to fairy-type
+    if (gBattleMons[gBattlerAttacker].ability == ABILITY_PIXILATE
+        && moveType == TYPE_NORMAL
+        && gBattleMoves[gCurrentMove].category != MOVE_CATEGORY_STATUS)
+        moveType = TYPE_FAIRY;
 
     do
     {

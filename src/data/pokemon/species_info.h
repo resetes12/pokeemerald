@@ -1419,9 +1419,9 @@ const struct SpeciesInfo gSpeciesInfo[] =
     [SPECIES_PARASECT] = //buffed
     {
         .baseHP        = 90, //+30
-        .baseAttack    = 95, 
+        .baseAttack    = 95,
         .baseDefense   = 80,
-        .baseSpeed     = 30, 
+        .baseSpeed     = 30,
         .baseSpAttack  = 60,
         .baseSpDefense = 80,
         .types = { TYPE_BUG, TYPE_GHOST }, //changed
@@ -4270,7 +4270,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
     {
         .baseHP        = 80,
         .baseAttack    = 105,
-        .baseDefense   = 65, 
+        .baseDefense   = 65,
         .baseSpeed     = 130,
         .baseSpAttack  = 60,
         .baseSpDefense = 75,
@@ -5532,7 +5532,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseAttack    = 50,
         .baseDefense   = 80,
         .baseSpeed     = 50,
-        .baseSpAttack  = 60, //+10 
+        .baseSpAttack  = 60, //+10
         .baseSpDefense = 80,
         .types = { TYPE_WATER, TYPE_FAIRY },
         .catchRate = 75,
@@ -6366,14 +6366,14 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .noFlip = FALSE,
     },
 
-    [SPECIES_SCIZOR] = 
+    [SPECIES_SCIZOR] =
     {
         .baseHP        = 70,
         .baseAttack    = 130,
         .baseDefense   = 100,
         .baseSpeed     = 65,
         .baseSpAttack  = 55,
-        .baseSpDefense = 80, 
+        .baseSpDefense = 80,
         .types = { TYPE_BUG, TYPE_STEEL },
         .catchRate = 25,
         .expYield = 200,
@@ -12593,7 +12593,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .friendship = 70,
         .growthRate = GROWTH_MEDIUM_FAST,
         .eggGroups = { EGG_GROUP_FIELD, EGG_GROUP_FIELD},
-        .abilities = {ABILITY_CUTE_CHARM, ABILITY_NONE},
+        .abilities = {ABILITY_PIXILATE, ABILITY_NONE},
         .bodyColor = BODY_COLOR_PINK,
         .noFlip = TRUE,
     },
