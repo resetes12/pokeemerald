@@ -1453,6 +1453,20 @@ static void Cmd_typecalc(void)
     }
 
     GET_MOVE_TYPE(gCurrentMove, moveType);
+    // hidden power type check
+    if (gCurrentMove == MOVE_HIDDEN_POWER)
+        {
+            u8 typeBits  = ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_HP_IV) & 1) << 0)
+                         | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_ATK_IV) & 1) << 1)
+                         | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_DEF_IV) & 1) << 2)
+                         | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_SPEED_IV) & 1) << 3)
+                         | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_SPATK_IV) & 1) << 4)
+                         | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_SPDEF_IV) & 1) << 5);
+
+            moveType = ((NUMBER_OF_MON_TYPES - 2) * typeBits) / 63 + 1;
+            if (moveType == TYPE_MYSTERY)
+                moveType = TYPE_FAIRY;
+        }
 
     // check stab
     if (IS_BATTLER_OF_TYPE(gBattlerAttacker, moveType))
@@ -1632,6 +1646,19 @@ u8 TypeCalc(u16 move, u8 attacker, u8 defender)
         return 0;
 
     moveType = gBattleMoves[move].type;
+    if (move == MOVE_HIDDEN_POWER)
+    {
+        u8 typeBits  = ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_HP_IV) & 1) << 0)
+                     | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_ATK_IV) & 1) << 1)
+                     | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_DEF_IV) & 1) << 2)
+                     | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_SPEED_IV) & 1) << 3)
+                     | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_SPATK_IV) & 1) << 4)
+                     | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_SPDEF_IV) & 1) << 5);
+
+        moveType = ((NUMBER_OF_MON_TYPES - 2) * typeBits) / 63 + 1;
+        if (moveType == TYPE_MYSTERY)
+            moveType = TYPE_FAIRY;
+    }
 
     // check stab
     if (IS_BATTLER_OF_TYPE(attacker, moveType))
@@ -1690,6 +1717,7 @@ u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility)
     if (move == MOVE_STRUGGLE)
         return 0;
 
+    moveType = gBattleMoves[move].type;
     // hidden power type check
     if (move == MOVE_HIDDEN_POWER)
         {
@@ -1703,11 +1731,6 @@ u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility)
             moveType = ((NUMBER_OF_MON_TYPES - 2) * typeBits) / 63 + 1;
             if (moveType == TYPE_MYSTERY)
                 moveType = TYPE_FAIRY;
-            moveType |= 0xC0;
-        }
-    else
-        {
-        moveType = gBattleMoves[move].type;
         }
 
     if (targetAbility == ABILITY_LEVITATE && moveType == TYPE_GROUND)
