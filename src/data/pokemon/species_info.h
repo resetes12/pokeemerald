@@ -1,6 +1,5 @@
 // Maximum value for a female Pokémon is 254 (MON_FEMALE) which is 100% female.
 // 255 (MON_GENDERLESS) is reserved for genderless Pokémon.
-#include "constants/pokemon.h"
 #define PERCENT_FEMALE(percent) min(254, ((percent * 255) / 100))
 
 #define OLD_UNOWN_SPECIES_INFO                                              \
@@ -1420,9 +1419,9 @@ const struct SpeciesInfo gSpeciesInfo[] =
     [SPECIES_PARASECT] = //buffed
     {
         .baseHP        = 90, //+30
-        .baseAttack    = 95,
+        .baseAttack    = 95, 
         .baseDefense   = 80,
-        .baseSpeed     = 30,
+        .baseSpeed     = 30, 
         .baseSpAttack  = 60,
         .baseSpDefense = 80,
         .types = { TYPE_BUG, TYPE_GHOST }, //changed
@@ -4271,7 +4270,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
     {
         .baseHP        = 80,
         .baseAttack    = 105,
-        .baseDefense   = 65,
+        .baseDefense   = 65, 
         .baseSpeed     = 130,
         .baseSpAttack  = 60,
         .baseSpDefense = 75,
@@ -5533,7 +5532,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseAttack    = 50,
         .baseDefense   = 80,
         .baseSpeed     = 50,
-        .baseSpAttack  = 60, //+10
+        .baseSpAttack  = 60, //+10 
         .baseSpDefense = 80,
         .types = { TYPE_WATER, TYPE_FAIRY },
         .catchRate = 75,
@@ -6367,14 +6366,14 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .noFlip = FALSE,
     },
 
-    [SPECIES_SCIZOR] =
+    [SPECIES_SCIZOR] = 
     {
         .baseHP        = 70,
         .baseAttack    = 130,
         .baseDefense   = 100,
         .baseSpeed     = 65,
         .baseSpAttack  = 55,
-        .baseSpDefense = 80,
+        .baseSpDefense = 80, 
         .types = { TYPE_BUG, TYPE_STEEL },
         .catchRate = 25,
         .expYield = 200,
@@ -7955,7 +7954,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseSpeed     = 60,
         .baseSpAttack  = 30,
         .baseSpDefense = 41,
-        .types = { TYPE_GHOST, TYPE_GHOST },
+        .types = { TYPE_NORMAL, TYPE_NORMAL },
         .catchRate = 255,
         .expYield = 60,
         .evYield_HP        = 0,
