@@ -1,5 +1,6 @@
 #include "global.h"
 #include "battle.h"
+#include "battle_main.h"
 #include "battle_message.h"
 #include "battle_anim.h"
 #include "battle_ai_script_commands.h"
@@ -1686,6 +1687,7 @@ u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility)
     u8 flags = 0;
     u8 type1 = GetTypeBySpecies(targetSpecies, 1), type2 = GetTypeBySpecies(targetSpecies, 2);
     u8 moveType;
+    u8 typeBits;
 
     if (move == MOVE_STRUGGLE)
         return 0;
