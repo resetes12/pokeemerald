@@ -1,4 +1,3 @@
-#include "constants/pokemon.h"
 #include "global.h"
 #include "battle.h"
 #include "battle_message.h"
@@ -49,6 +48,7 @@
 #include "constants/map_types.h"
 #include "constants/moves.h"
 #include "constants/party_menu.h"
+#include "constants/pokemon.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
 #include "constants/trainers.h"
