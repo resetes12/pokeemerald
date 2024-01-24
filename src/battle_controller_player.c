@@ -1611,6 +1611,11 @@ u8 TypeEffectiveness(u8 targetId)
     if (IS_MOVE_STATUS(move) == TRUE && gBattleMoves[move].type != TYPE_ELECTRIC) {
         return 10; // return non-electric status moves as normal effectiveness
     }
+    else if (IS_MOVE_STATUS(move) == TRUE && gBattleMoves[move].type == TYPE_ELECTRIC) {
+        if (gBattleMons[targetId].type1 || gBattleMons[targetId].type2 == TYPE_GROUND) {
+            return 26; // ground is immune to electric status moves
+        }
+    }
 
     if (moveFlags & MOVE_RESULT_NO_EFFECT) {
         return 26;  // 26 - no effect
