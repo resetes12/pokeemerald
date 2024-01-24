@@ -1,3 +1,4 @@
+#include "constants/pokemon.h"
 #include "global.h"
 #include "battle.h"
 #include "battle_anim.h"
@@ -1598,7 +1599,7 @@ u8 TypeEffectiveness(u8 targetId)
 {
     u8 moveFlags;
     u16 move;
-    
+
     if (gSaveBlock2Ptr->optionTypeEffective == 1)
         return 10;
 
@@ -1606,6 +1607,10 @@ u8 TypeEffectiveness(u8 targetId)
     move = moveInfo->moves[gMoveSelectionCursor[gActiveBattler]];
     move = gBattleMons[gActiveBattler].moves[gMoveSelectionCursor[gActiveBattler]];
     moveFlags = AI_TypeCalc(move, gBattleMons[targetId].species, gBattleMons[targetId].ability);
+
+    if (IS_MOVE_STATUS(move) == TRUE && gBattleMoves[move].type != TYPE_ELECTRIC) {
+        return 10; // return non-electric status moves as normal effectiveness
+    }
 
     if (moveFlags & MOVE_RESULT_NO_EFFECT) {
         return 26;  // 26 - no effect
@@ -1615,7 +1620,7 @@ u8 TypeEffectiveness(u8 targetId)
     }
     else if (moveFlags & MOVE_RESULT_SUPER_EFFECTIVE) {
         return 24; // 24 - super effective
-    } 
+    }
     else
         return 10; // 10 - normal effectiveness
 }
@@ -1635,7 +1640,10 @@ static void MoveSelectionDisplayMoveTypeDoubles(u8 targetId)
 	txtPtr++;
 
 	StringCopy(txtPtr, gTypeNames[gBattleMoves[moveInfo->moves[gMoveSelectionCursor[gActiveBattler]]].type]);
-	BattlePutTextOnWindow(gDisplayedStringBattle, TypeEffectiveness(targetId));
+    if (gBattleMoves[moveInfo->moves[gMoveSelectionCursor[gActiveBattler]]].category == MOVE_CATEGORY_STATUS)
+        BattlePutTextOnWindow(gDisplayedStringBattle, 10);
+    else
+        BattlePutTextOnWindow(gDisplayedStringBattle, TypeEffectiveness(targetId));
 }
 
 static void MoveSelectionDisplayMoveType(void)
@@ -1669,9 +1677,9 @@ static void MoveSelectionDisplayMoveType(void)
     {
         StringCopy(txtPtr, gTypeNames[gBattleMoves[moveInfo->moves[gMoveSelectionCursor[gActiveBattler]]].type]);
     }
-    
+
     BattlePutTextOnWindow(gDisplayedStringBattle, typeColor);
-    
+
     MoveSelectionDisplaySplitIcon();
 }
 
