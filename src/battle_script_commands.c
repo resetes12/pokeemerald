@@ -1182,10 +1182,10 @@ static void Cmd_accuracycheck(void)
             calc = (calc * 80) / 100; // 1.2 sand veil loss
         if (gBattleMons[gBattlerTarget].ability == ABILITY_ILLUMINATE)
             calc = (calc * 90) / 100; // 1.1 illuminate loss
-        if (gSaveBlock2Ptr->optionStyle == 1)
+        if (gSaveBlock2Ptr->optionStyle == 1) 
             if (gBattleMons[gBattlerAttacker].ability == ABILITY_HUSTLE && IS_TYPE_PHYSICAL(type))
                 calc = (calc * 80) / 100; // 1.2 hustle loss
-        if (gSaveBlock2Ptr->optionStyle == 0)
+        if (gSaveBlock2Ptr->optionStyle == 0) 
             if (gBattleMons[gBattlerAttacker].ability == ABILITY_HUSTLE && IS_MOVE_PHYSICAL(move))
                 calc = (calc * 80) / 100; // 1.2 hustle loss
 
@@ -1453,20 +1453,6 @@ static void Cmd_typecalc(void)
     }
 
     GET_MOVE_TYPE(gCurrentMove, moveType);
-    // hidden power type check
-    if (gCurrentMove == MOVE_HIDDEN_POWER)
-        {
-            u8 typeBits  = ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_HP_IV) & 1) << 0)
-                         | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_ATK_IV) & 1) << 1)
-                         | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_DEF_IV) & 1) << 2)
-                         | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_SPEED_IV) & 1) << 3)
-                         | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_SPATK_IV) & 1) << 4)
-                         | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_SPDEF_IV) & 1) << 5);
-
-            moveType = ((NUMBER_OF_MON_TYPES - 2) * typeBits) / 63 + 1;
-            if (moveType == TYPE_MYSTERY)
-                moveType = TYPE_FAIRY;
-        }
 
     // check stab
     if (IS_BATTLER_OF_TYPE(gBattlerAttacker, moveType))
@@ -1646,19 +1632,6 @@ u8 TypeCalc(u16 move, u8 attacker, u8 defender)
         return 0;
 
     moveType = gBattleMoves[move].type;
-    if (move == MOVE_HIDDEN_POWER)
-    {
-        u8 typeBits  = ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_HP_IV) & 1) << 0)
-                     | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_ATK_IV) & 1) << 1)
-                     | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_DEF_IV) & 1) << 2)
-                     | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_SPEED_IV) & 1) << 3)
-                     | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_SPATK_IV) & 1) << 4)
-                     | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_SPDEF_IV) & 1) << 5);
-
-        moveType = ((NUMBER_OF_MON_TYPES - 2) * typeBits) / 63 + 1;
-        if (moveType == TYPE_MYSTERY)
-            moveType = TYPE_FAIRY;
-    }
 
     // check stab
     if (IS_BATTLER_OF_TYPE(attacker, moveType))
@@ -1718,20 +1691,6 @@ u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility)
         return 0;
 
     moveType = gBattleMoves[move].type;
-    // hidden power type check
-    if (move == MOVE_HIDDEN_POWER)
-        {
-            u8 typeBits  = ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_HP_IV) & 1) << 0)
-                         | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_ATK_IV) & 1) << 1)
-                         | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_DEF_IV) & 1) << 2)
-                         | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_SPEED_IV) & 1) << 3)
-                         | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_SPATK_IV) & 1) << 4)
-                         | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_SPDEF_IV) & 1) << 5);
-
-            moveType = ((NUMBER_OF_MON_TYPES - 2) * typeBits) / 63 + 1;
-            if (moveType == TYPE_MYSTERY)
-                moveType = TYPE_FAIRY;
-        }
 
     if (targetAbility == ABILITY_LEVITATE && moveType == TYPE_GROUND)
     {
@@ -3525,7 +3484,7 @@ static void Cmd_getexp(void)
                 gExpShareExp = calculatedExp / 2;
                 if (gExpShareExp == 0)
                     gExpShareExp = 1;
-
+            
             if (gSaveBlock1Ptr->tx_Challenges_ExpMultiplier == 3)
             {
                 if (TX_EXP_MULTIPLER_ONLY_ON_NUZLOCKE_AND_RANDOMIZER) //special for Jaizu
@@ -3586,7 +3545,7 @@ static void Cmd_getexp(void)
                 // music change in wild battle after fainting a poke
                 if (!(gBattleTypeFlags & BATTLE_TYPE_TRAINER) && gBattleMons[0].hp != 0 && !gBattleStruct->wildVictorySong)
                 {
-                    if (GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL) == ITEM_NONE)
+                    if (GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL) == ITEM_NONE) 
                     {
                         BattleStopLowHpSound();
                         PlayBGM(MUS_VICTORY_WILD);
@@ -3603,7 +3562,7 @@ static void Cmd_getexp(void)
                             gBattleMoveDamage += gExpShareExp;
                         else
                             gBattleMoveDamage = 0;
-
+                        
                     if (FlagGet(FLAG_EXP_SHARE) == FALSE)
                         if (gBattleStruct->sentInPokes & 1)
                             gBattleMoveDamage = *exp;
@@ -3665,13 +3624,13 @@ static void Cmd_getexp(void)
 
                     if (FlagGet(FLAG_EXP_SHARE) == FALSE)
                         PrepareStringBattle(STRINGID_PKMNGAINEDEXP, gBattleStruct->expGetterBattlerId);
-
+                    
                     if (FlagGet(FLAG_EXP_SHARE) == TRUE)
                         if (gBattleStruct->sentInPokes & (1 << gBattleStruct->expGetterMonId))
                             PrepareStringBattle(STRINGID_PKMNGAINEDEXP, gBattleStruct->expGetterBattlerId);
                     MonGainEVs(&gPlayerParty[gBattleStruct->expGetterMonId], gBattleMons[gBattlerFainted].species);
                 }
-                if ((FlagGet(FLAG_EXP_SHARE) == FALSE))
+                if ((FlagGet(FLAG_EXP_SHARE) == FALSE)) 
                     gBattleStruct->sentInPokes >>= 1;
                 gBattleScripting.getexpState++;
             }
@@ -6809,7 +6768,7 @@ static void Cmd_various(void)
     case VARIOUS_GIVE_DROPPED_ITEMS:
         {
         u8 i;
-        u8 battlers[] = {GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT),
+        u8 battlers[] = {GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT), 
                          GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT)};
         for (i = 0; i < 1 + IsDoubleBattle(); i++)
         {
@@ -10619,7 +10578,7 @@ static void Cmd_trygivecaughtmonnick(void)
         if (CalculatePlayerPartyCount() == GetMaxPartySize()) //tx_randomizer_and_challenges
             gBattlescriptCurrInstr += 5;
         else if (typeChallenge != TX_CHALLENGE_TYPE_OFF && //tx_randomizer_and_challenges
-                            GetTypeBySpecies(GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_SPECIES), 1) != typeChallenge &&
+                            GetTypeBySpecies(GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_SPECIES), 1) != typeChallenge && 
                             GetTypeBySpecies(GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_SPECIES), 2) != typeChallenge)
             gBattlescriptCurrInstr += 5;
         else
