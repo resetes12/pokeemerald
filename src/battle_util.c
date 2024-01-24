@@ -1,4 +1,3 @@
-#include "constants/pokemon.h"
 #include "global.h"
 #include "battle.h"
 #include "battle_anim.h"
@@ -2463,12 +2462,6 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
 
         GET_MOVE_TYPE(move, moveType);
 
-//  check for pixilate ability and set normal-type to fairy-type
-        if (gBattleMons[gBattlerAttacker].ability == ABILITY_PIXILATE
-            && moveType == TYPE_NORMAL
-            && gBattleMoves[move].category != MOVE_CATEGORY_STATUS)
-            moveType = TYPE_FAIRY;
-
         switch (caseID)
         {
         case ABILITYEFFECT_ON_SWITCHIN: // 0
@@ -3187,7 +3180,6 @@ u8 AbilityBattleEffects(u8 caseID, u8 battler, u8 ability, u8 special, u16 moveA
             }
             break;
         }
-
 
         if (effect && caseID < ABILITYEFFECT_CHECK_OTHER_SIDE && gLastUsedAbility != 0xFF)
             RecordAbilityBattle(battler, gLastUsedAbility);
