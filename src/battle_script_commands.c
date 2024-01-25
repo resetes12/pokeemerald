@@ -1700,6 +1700,23 @@ u8 TypeCalc(u16 move, u8 attacker, u8 defender)
     return flags;
 }
 
+u8 getHiddenPowerType(void)     // calculate hidden power type for checking effectiveness
+{
+    u8 typeBits  = ((gBattleMons[gBattlerAttacker].hpIV & 1) << 0)
+                 | ((gBattleMons[gBattlerAttacker].attackIV & 1) << 1)
+                 | ((gBattleMons[gBattlerAttacker].defenseIV & 1) << 2)
+                 | ((gBattleMons[gBattlerAttacker].speedIV & 1) << 3)
+                 | ((gBattleMons[gBattlerAttacker].spAttackIV & 1) << 4)
+                 | ((gBattleMons[gBattlerAttacker].spDefenseIV & 1) << 5);
+
+    // Subtract 3 instead of 1 below because 2 types are excluded (TYPE_NORMAL and TYPE_MYSTERY)
+    // The final + 1 skips past Normal, and the following conditional skips TYPE_MYSTERY
+    u8 type = ((NUMBER_OF_MON_TYPES - 2) * typeBits) / 63 + 1;
+    if (type == TYPE_MYSTERY)
+        type = TYPE_FAIRY;
+    return type;
+}
+
 u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility)
 {
     s32 i = 0;
@@ -1710,7 +1727,11 @@ u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility)
     if (move == MOVE_STRUGGLE)
         return 0;
 
-    moveType = gBattleMoves[move].type;
+    if (move == MOVE_HIDDEN_POWER)
+        moveType = getHiddenPowerType();
+    else
+        moveType = gBattleMoves[move].type;
+
     // check pixilate
     if (gBattleMons[gBattlerAttacker].ability == ABILITY_PIXILATE
         && moveType == TYPE_NORMAL
