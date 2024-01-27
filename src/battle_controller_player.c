@@ -1607,6 +1607,15 @@ u8 TypeEffectiveness(u8 targetId)
     move = gBattleMons[gActiveBattler].moves[gMoveSelectionCursor[gActiveBattler]];
     moveFlags = AI_TypeCalc(move, gBattleMons[targetId].species, gBattleMons[targetId].ability);
 
+    if (IS_MOVE_STATUS(move) == TRUE && gBattleMoves[move].type != TYPE_ELECTRIC) {
+        return 10; // return non-electric status moves as normal effectiveness
+    }
+    else if (IS_MOVE_STATUS(move) == TRUE && gBattleMoves[move].type == TYPE_ELECTRIC) {
+        if (gBattleMons[targetId].type1 || gBattleMons[targetId].type2 == TYPE_GROUND) {
+            return 26; // ground is immune to electric status moves
+        }
+    }
+
     if (moveFlags & MOVE_RESULT_NO_EFFECT) {
         return 26;  // 26 - no effect
     }
@@ -1635,7 +1644,10 @@ static void MoveSelectionDisplayMoveTypeDoubles(u8 targetId)
 	txtPtr++;
 
 	StringCopy(txtPtr, gTypeNames[gBattleMoves[moveInfo->moves[gMoveSelectionCursor[gActiveBattler]]].type]);
-	BattlePutTextOnWindow(gDisplayedStringBattle, TypeEffectiveness(targetId));
+	if (gBattleMoves[moveInfo->moves[gMoveSelectionCursor[gActiveBattler]]].category == MOVE_CATEGORY_STATUS)
+        BattlePutTextOnWindow(gDisplayedStringBattle, 10);
+    else
+        BattlePutTextOnWindow(gDisplayedStringBattle, TypeEffectiveness(targetId));
 }
 
 static void MoveSelectionDisplayMoveType(void)
