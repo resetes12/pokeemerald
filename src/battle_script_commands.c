@@ -1710,10 +1710,7 @@ u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility)
     if (move == MOVE_STRUGGLE)
         return 0;
 
-    if (move == MOVE_HIDDEN_POWER)
-        moveType = getHiddenPowerType();
-    else
-        moveType = gBattleMoves[move].type;
+    moveType = gBattleMoves[move].type;
 
     // check pixilate
     if (gBattleMons[gBattlerAttacker].ability == ABILITY_PIXILATE
