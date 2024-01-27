@@ -48,6 +48,7 @@
 #include "constants/map_types.h"
 #include "constants/moves.h"
 #include "constants/party_menu.h"
+#include "constants/pokemon.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
 #include "constants/trainers.h"
@@ -1146,6 +1147,11 @@ static void Cmd_accuracycheck(void)
             move = gCurrentMove;
 
         GET_MOVE_TYPE(move, type);
+        //  check for pixilate ability and set normal-type to fairy-type
+        if (gBattleMons[gBattlerAttacker].ability == ABILITY_PIXILATE
+            && type == TYPE_NORMAL
+            && gBattleMoves[move].category != MOVE_CATEGORY_STATUS)
+            type = TYPE_FAIRY;
 
         if (JumpIfMoveAffectedByProtect(move))
             return;
@@ -1182,10 +1188,10 @@ static void Cmd_accuracycheck(void)
             calc = (calc * 80) / 100; // 1.2 sand veil loss
         if (gBattleMons[gBattlerTarget].ability == ABILITY_ILLUMINATE)
             calc = (calc * 90) / 100; // 1.1 illuminate loss
-        if (gSaveBlock2Ptr->optionStyle == 1) 
+        if (gSaveBlock2Ptr->optionStyle == 1)
             if (gBattleMons[gBattlerAttacker].ability == ABILITY_HUSTLE && IS_TYPE_PHYSICAL(type))
                 calc = (calc * 80) / 100; // 1.2 hustle loss
-        if (gSaveBlock2Ptr->optionStyle == 0) 
+        if (gSaveBlock2Ptr->optionStyle == 0)
             if (gBattleMons[gBattlerAttacker].ability == ABILITY_HUSTLE && IS_MOVE_PHYSICAL(move))
                 calc = (calc * 80) / 100; // 1.2 hustle loss
 
@@ -1453,7 +1459,11 @@ static void Cmd_typecalc(void)
     }
 
     GET_MOVE_TYPE(gCurrentMove, moveType);
-
+//  check for pixilate ability and set normal-type to fairy-type
+    if (gBattleMons[gBattlerAttacker].ability == ABILITY_PIXILATE
+        && moveType == TYPE_NORMAL
+        && gBattleMoves[gCurrentMove].category != MOVE_CATEGORY_STATUS)
+        moveType = TYPE_FAIRY;
     // check stab
     if (IS_BATTLER_OF_TYPE(gBattlerAttacker, moveType))
     {
@@ -1522,6 +1532,11 @@ static void CheckWonderGuardAndLevitate(void)
         return;
 
     GET_MOVE_TYPE(gCurrentMove, moveType);
+//  check for pixilate ability and set normal-type to fairy-type
+    if (gBattleMons[gBattlerAttacker].ability == ABILITY_PIXILATE
+        && moveType == TYPE_NORMAL
+        && gBattleMoves[gCurrentMove].category != MOVE_CATEGORY_STATUS)
+        moveType = TYPE_FAIRY;
 
     if (gBattleMons[gBattlerTarget].ability == ABILITY_LEVITATE && moveType == TYPE_GROUND)
     {
@@ -1632,6 +1647,11 @@ u8 TypeCalc(u16 move, u8 attacker, u8 defender)
         return 0;
 
     moveType = gBattleMoves[move].type;
+    // check pixilate
+    if (gBattleMons[attacker].ability == ABILITY_PIXILATE
+        && moveType == TYPE_NORMAL
+        && gBattleMoves[move].category != MOVE_CATEGORY_STATUS)
+        moveType = TYPE_FAIRY;
 
     // check stab
     if (IS_BATTLER_OF_TYPE(attacker, moveType))
@@ -1680,6 +1700,23 @@ u8 TypeCalc(u16 move, u8 attacker, u8 defender)
     return flags;
 }
 
+u8 getHiddenPowerType(void)     // calculate hidden power type for checking effectiveness
+{
+    u8 typeBits  = ((gBattleMons[gBattlerAttacker].hpIV & 1) << 0)
+                 | ((gBattleMons[gBattlerAttacker].attackIV & 1) << 1)
+                 | ((gBattleMons[gBattlerAttacker].defenseIV & 1) << 2)
+                 | ((gBattleMons[gBattlerAttacker].speedIV & 1) << 3)
+                 | ((gBattleMons[gBattlerAttacker].spAttackIV & 1) << 4)
+                 | ((gBattleMons[gBattlerAttacker].spDefenseIV & 1) << 5);
+
+    // Subtract 3 instead of 1 below because 2 types are excluded (TYPE_NORMAL and TYPE_MYSTERY)
+    // The final + 1 skips past Normal, and the following conditional skips TYPE_MYSTERY
+    u8 type = ((NUMBER_OF_MON_TYPES - 2) * typeBits) / 63 + 1;
+    if (type == TYPE_MYSTERY)
+        type = TYPE_FAIRY;
+    return type;
+}
+
 u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility)
 {
     s32 i = 0;
@@ -1690,7 +1727,19 @@ u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility)
     if (move == MOVE_STRUGGLE)
         return 0;
 
-    moveType = gBattleMoves[move].type;
+    if (move == MOVE_HIDDEN_POWER)
+        moveType = getHiddenPowerType();
+    else
+        moveType = gBattleMoves[move].type;
+
+    // check pixilate
+    if (gBattleMons[gBattlerAttacker].ability == ABILITY_PIXILATE
+        && moveType == TYPE_NORMAL
+        && gBattleMoves[move].category != MOVE_CATEGORY_STATUS)
+        moveType = TYPE_FAIRY;
+
+    // check hidden power type
+
 
     if (targetAbility == ABILITY_LEVITATE && moveType == TYPE_GROUND)
     {
@@ -3484,7 +3533,7 @@ static void Cmd_getexp(void)
                 gExpShareExp = calculatedExp / 2;
                 if (gExpShareExp == 0)
                     gExpShareExp = 1;
-            
+
             if (gSaveBlock1Ptr->tx_Challenges_ExpMultiplier == 3)
             {
                 if (TX_EXP_MULTIPLER_ONLY_ON_NUZLOCKE_AND_RANDOMIZER) //special for Jaizu
@@ -3545,7 +3594,7 @@ static void Cmd_getexp(void)
                 // music change in wild battle after fainting a poke
                 if (!(gBattleTypeFlags & BATTLE_TYPE_TRAINER) && gBattleMons[0].hp != 0 && !gBattleStruct->wildVictorySong)
                 {
-                    if (GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL) == ITEM_NONE) 
+                    if (GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL) == ITEM_NONE)
                     {
                         BattleStopLowHpSound();
                         PlayBGM(MUS_VICTORY_WILD);
@@ -3562,7 +3611,7 @@ static void Cmd_getexp(void)
                             gBattleMoveDamage += gExpShareExp;
                         else
                             gBattleMoveDamage = 0;
-                        
+
                     if (FlagGet(FLAG_EXP_SHARE) == FALSE)
                         if (gBattleStruct->sentInPokes & 1)
                             gBattleMoveDamage = *exp;
@@ -3624,13 +3673,13 @@ static void Cmd_getexp(void)
 
                     if (FlagGet(FLAG_EXP_SHARE) == FALSE)
                         PrepareStringBattle(STRINGID_PKMNGAINEDEXP, gBattleStruct->expGetterBattlerId);
-                    
+
                     if (FlagGet(FLAG_EXP_SHARE) == TRUE)
                         if (gBattleStruct->sentInPokes & (1 << gBattleStruct->expGetterMonId))
                             PrepareStringBattle(STRINGID_PKMNGAINEDEXP, gBattleStruct->expGetterBattlerId);
                     MonGainEVs(&gPlayerParty[gBattleStruct->expGetterMonId], gBattleMons[gBattlerFainted].species);
                 }
-                if ((FlagGet(FLAG_EXP_SHARE) == FALSE)) 
+                if ((FlagGet(FLAG_EXP_SHARE) == FALSE))
                     gBattleStruct->sentInPokes >>= 1;
                 gBattleScripting.getexpState++;
             }
@@ -4468,6 +4517,11 @@ static void Cmd_moveend(void)
 
     choicedMoveAtk = &gBattleStruct->choicedMove[gBattlerAttacker];
     GET_MOVE_TYPE(gCurrentMove, moveType);
+    //  check for pixilate ability and set normal-type to fairy-type
+    if (gBattleMons[gBattlerAttacker].ability == ABILITY_PIXILATE
+        && moveType == TYPE_NORMAL
+        && gBattleMoves[gCurrentMove].category != MOVE_CATEGORY_STATUS)
+        moveType = TYPE_FAIRY;
 
     do
     {
@@ -6768,7 +6822,7 @@ static void Cmd_various(void)
     case VARIOUS_GIVE_DROPPED_ITEMS:
         {
         u8 i;
-        u8 battlers[] = {GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT), 
+        u8 battlers[] = {GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT),
                          GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT)};
         for (i = 0; i < 1 + IsDoubleBattle(); i++)
         {
@@ -10578,7 +10632,7 @@ static void Cmd_trygivecaughtmonnick(void)
         if (CalculatePlayerPartyCount() == GetMaxPartySize()) //tx_randomizer_and_challenges
             gBattlescriptCurrInstr += 5;
         else if (typeChallenge != TX_CHALLENGE_TYPE_OFF && //tx_randomizer_and_challenges
-                            GetTypeBySpecies(GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_SPECIES), 1) != typeChallenge && 
+                            GetTypeBySpecies(GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_SPECIES), 1) != typeChallenge &&
                             GetTypeBySpecies(GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerAttacker ^ BIT_SIDE]], MON_DATA_SPECIES), 2) != typeChallenge)
             gBattlescriptCurrInstr += 5;
         else
