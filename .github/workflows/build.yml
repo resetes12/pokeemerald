@@ -22,4 +22,4 @@ jobs:
           ./install.sh ../pokeemerald
       - name: Build ROM
         run: |
-          make
+          make modern
