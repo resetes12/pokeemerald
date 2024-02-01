@@ -1608,7 +1608,7 @@ u8 TypeEffectiveness(u8 targetId)
     move = gBattleMons[gActiveBattler].moves[gMoveSelectionCursor[gActiveBattler]];
     moveFlags = AI_TypeCalc(move, gBattleMons[targetId].species, gBattleMons[targetId].ability);
 
-    if (IS_MOVE_STATUS(move) == TRUE && gBattleMoves[move].type != TYPE_ELECTRIC) {
+    if (IS_MOVE_STATUS(move) == TRUE && gBattleMoves[move].type != TYPE_ELECTRIC || TYPE_GROUND) {
         return 10; // return non-electric status moves as normal effectiveness
     }
     else if (IS_MOVE_STATUS(move) == TRUE && gBattleMoves[move].type == TYPE_ELECTRIC) {
@@ -1616,6 +1616,12 @@ u8 TypeEffectiveness(u8 targetId)
             return 26; // ground is immune to electric status moves
         }
     }
+    else if (IS_MOVE_STATUS(move) == TRUE && gBattleMoves[move].type == TYPE_GROUND) {
+        if (gBattleMons[targetId].type1 || gBattleMons[targetId].type2 == TYPE_FLYING) {
+            return 26; // flying is immune to ground status moves
+        }
+    }
+
 
     if (moveFlags & MOVE_RESULT_NO_EFFECT) {
         return 26;  // 26 - no effect
