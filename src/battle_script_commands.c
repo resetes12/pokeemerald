@@ -1708,21 +1708,16 @@ u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility)
     if (move == MOVE_STRUGGLE)
         return 0;
 
-<<<<<<< HEAD
     if (move == MOVE_HIDDEN_POWER)
         moveType = getHiddenPowerType();
     else
         moveType = gBattleMoves[move].type;
-
-=======
-    moveType = gBattleMoves[move].type;
 
     // check pixilate
     if (gBattleMons[gBattlerAttacker].ability == ABILITY_PIXILATE
         && moveType == TYPE_NORMAL
         && gBattleMoves[move].category != MOVE_CATEGORY_STATUS)
         moveType = TYPE_FAIRY;
->>>>>>> upstream/master
 
     if (targetAbility == ABILITY_LEVITATE && moveType == TYPE_GROUND)
     {
