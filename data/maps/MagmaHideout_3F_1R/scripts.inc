@@ -26,7 +26,7 @@ MagmaHideout_3F_1R_EventScript_Entei::
 	waitmoncry
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	setflag FLAG_SYS_SET_BATTLE_BGM
-	setvar VAR_TEMP_F, MUS_RG_VS_LEGEND
+	setvar VAR_TEMP_F, MUS_C_VS_LEGEND_BEAST
 	dowildbattle
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, MagmaHideout_3F_1R_EventScript_EnteiWon
