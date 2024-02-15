@@ -22,6 +22,11 @@
       "map": "MAP_SAFARI_ZONE_NORTHEAST",
       "offset": 0,
       "direction": "up"
+    },
+    {
+      "map": "MAP_AQUA_HIDEOUT_UNUSED_RUBY_MAP3",
+      "offset": 26,
+      "direction": "down"
     }
   ],
   "object_events": [

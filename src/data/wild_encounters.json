@@ -31351,282 +31351,6 @@
           }
         },
         {
-          "map": "MAP_BATTLE_FRONTIER_OUTSIDE_WEST",
-          "base_label": "gBattleFrontier_OutsideWest0",
-          "land_mons": {
-            "encounter_rate": 3,
-            "mons": [
-              {
-                "min_level": 1,
-                "max_level": 55,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 20,
-                "max_level": 50,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 30,
-                "max_level": 50,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 40,
-                "max_level": 50,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 45,
-                "max_level": 50,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 45,
-                "max_level": 50,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 20,
-                "max_level": 55,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 20,
-                "max_level": 50,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 20,
-                "max_level": 50,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 20,
-                "max_level": 50,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 20,
-                "max_level": 50,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 30,
-                "max_level": 50,
-                "species": "SPECIES_SMEARGLE"
-              }
-            ]
-          }
-        },
-        {
-          "map": "MAP_BATTLE_FRONTIER_OUTSIDE_WEST",
-          "base_label": "gBattleFrontier_OutsideWest_Night",
-          "land_mons": {
-            "encounter_rate": 3,
-            "mons": [
-              {
-                "min_level": 1,
-                "max_level": 55,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 20,
-                "max_level": 50,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 30,
-                "max_level": 50,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 40,
-                "max_level": 50,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 45,
-                "max_level": 50,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 45,
-                "max_level": 50,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 50,
-                "max_level": 55,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 20,
-                "max_level": 20,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 30,
-                "max_level": 45,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 30,
-                "max_level": 30,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 20,
-                "max_level": 20,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 22,
-                "max_level": 30,
-                "species": "SPECIES_SMEARGLE"
-              }
-            ]
-          }
-        },
-        {
-          "map": "MAP_BATTLE_FRONTIER_OUTSIDE_WEST",
-          "base_label": "gBattleFrontier_OutsideWest_CDay",
-          "land_mons": {
-            "encounter_rate": 3,
-            "mons": [
-              {
-                "min_level": 1,
-                "max_level": 55,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 20,
-                "max_level": 50,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 30,
-                "max_level": 50,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 40,
-                "max_level": 50,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 45,
-                "max_level": 50,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 45,
-                "max_level": 50,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 50,
-                "max_level": 55,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 1,
-                "max_level": 5,
-                "species": "SPECIES_MUDKIP"
-              },
-              {
-                "min_level": 1,
-                "max_level": 5,
-                "species": "SPECIES_TREECKO"
-              },
-              {
-                "min_level": 1,
-                "max_level": 5,
-                "species": "SPECIES_TORCHIC"
-              },
-              {
-                "min_level": 1,
-                "max_level": 5,
-                "species": "SPECIES_TREECKO"
-              },
-              {
-                "min_level": 1,
-                "max_level": 5,
-                "species": "SPECIES_TORCHIC"
-              }
-            ]
-          }
-        },
-        {
-          "map": "MAP_BATTLE_FRONTIER_OUTSIDE_WEST",
-          "base_label": "gBattleFrontier_OutsideWest_CNight",
-          "land_mons": {
-            "encounter_rate": 3,
-            "mons": [
-              {
-                "min_level": 1,
-                "max_level": 55,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 20,
-                "max_level": 50,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 30,
-                "max_level": 50,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 40,
-                "max_level": 50,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 45,
-                "max_level": 50,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 45,
-                "max_level": 50,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 50,
-                "max_level": 55,
-                "species": "SPECIES_SMEARGLE"
-              },
-              {
-                "min_level": 1,
-                "max_level": 5,
-                "species": "SPECIES_MUDKIP"
-              },
-              {
-                "min_level": 1,
-                "max_level": 5,
-                "species": "SPECIES_TREECKO"
-              },
-              {
-                "min_level": 1,
-                "max_level": 5,
-                "species": "SPECIES_TORCHIC"
-              },
-              {
-                "min_level": 1,
-                "max_level": 5,
-                "species": "SPECIES_TREECKO"
-              },
-              {
-                "min_level": 1,
-                "max_level": 5,
-                "species": "SPECIES_TORCHIC"
-              }
-            ]
-          }
-        },
-        {
           "map": "MAP_ABANDONED_SHIP_CORRIDORS_1F",
           "base_label": "gAbandonedShip_Corridors_1F0",
           "land_mons": {
@@ -33554,6 +33278,75 @@
                 "min_level": 35,
                 "max_level": 35,
                 "species": "SPECIES_HAUNTER"
+              }
+            ]
+          }
+        },
+        {
+          "map": "MAP_AQUA_HIDEOUT_UNUSED_RUBY_MAP3",
+          "base_label": "gAquaHideout_UnusedRubyMap30",
+          "land_mons": {
+            "encounter_rate": 10,
+            "mons": [
+              {
+                "min_level": 33,
+                "max_level": 33,
+                "species": "SPECIES_GIRAFARIG"
+              },
+              {
+                "min_level": 32,
+                "max_level": 33,
+                "species": "SPECIES_PIKACHU"
+              },
+              {
+                "min_level": 33,
+                "max_level": 36,
+                "species": "SPECIES_GIRAFARIG"
+              },
+              {
+                "min_level": 31,
+                "max_level": 32,
+                "species": "SPECIES_NATU"
+              },
+              {
+                "min_level": 29,
+                "max_level": 32,
+                "species": "SPECIES_NATU"
+              },
+              {
+                "min_level": 29,
+                "max_level": 32,
+                "species": "SPECIES_AIPOM"
+              },
+              {
+                "min_level": 33,
+                "max_level": 33,
+                "species": "SPECIES_NONE"
+              },
+              {
+                "min_level": 33,
+                "max_level": 33,
+                "species": "SPECIES_TREECKO"
+              },
+              {
+                "min_level": 33,
+                "max_level": 33,
+                "species": "SPECIES_TORCHIC"
+              },
+              {
+                "min_level": 33,
+                "max_level": 36,
+                "species": "SPECIES_MUDKIP"
+              },
+              {
+                "min_level": 33,
+                "max_level": 36,
+                "species": "SPECIES_TORCHIC"
+              },
+              {
+                "min_level": 33,
+                "max_level": 36,
+                "species": "SPECIES_MUDKIP"
               }
             ]
           }
