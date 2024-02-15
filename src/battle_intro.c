@@ -194,7 +194,7 @@ static void BattleIntroNoSlide(u8 taskId)
         }
         break;
     case 2:
-        gBattle_WIN0V -= 0xFF * 2;
+        gBattle_WIN0V -= 0xFF * 5;
         if ((gBattle_WIN0V & 0xFF00) == 0)
         {
             gTasks[taskId].tState++;
