@@ -450,7 +450,7 @@ struct BattleStruct
     if (gBattleStruct->dynamicMoveType)                               \
         typeArg = gBattleStruct->dynamicMoveType & DYNAMIC_TYPE_MASK; \
     else                                                              \
-        typeArg = CheckAbilityChangeMoveType(move);                   \
+        typeArg = gBattleMoves[move].type;                            \
 }
 
 #define IS_MOVE_PHYSICAL(move)(gBattleMoves[move].category == MOVE_CATEGORY_PHYSICAL)

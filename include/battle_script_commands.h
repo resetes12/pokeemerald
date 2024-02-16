@@ -2,7 +2,6 @@
 #define GUARD_BATTLE_SCRIPT_COMMANDS_H
 
 #include "constants/battle_script_commands.h"
-#include "pokemon.h"
 
 // Arguments for 'flags' in HandleBattleWindow
 #define WINDOW_CLEAR (1 << 0)
@@ -11,7 +10,6 @@
 // Arguments for 'xStart, yStart, xEnd, yEnd' in HandleBattleWindow
 #define YESNOBOX_X_Y 24, 8, 29, 13
 
-u8 CheckAbilityChangeMoveType(u16 move);
 void AI_CalcDmg(u8 battlerIdAtk, u8 battlerIdDef);
 s32 GetTypeEffectiveness(struct Pokemon *mon, u8 moveType);
 u8 TypeCalc(u16 move, u8 battlerIdAtk, u8 battlerIdDef);

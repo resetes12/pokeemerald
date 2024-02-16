@@ -1337,28 +1337,6 @@ static void Cmd_damagecalc(void)
     gBattlescriptCurrInstr++;
 }
 
-u8 CheckAbilityChangeMoveType(u16 move)
-{
-    u8 moveType = gBattleMoves[move].type;
-    u8 ability  = gBattleMons[gActiveBattler].ability;
-
-    if (moveType == TYPE_NORMAL && gBattleMoves[move].power != 0)
-        switch (ability)
-        {
-        case ABILITY_PIXILATE:
-        {
-            moveType = TYPE_FAIRY;
-        break;
-        }
-        case ABILITY_REFRIGERATE:
-        {
-            moveType = TYPE_ICE;
-        break;
-        }
-    }
-    return moveType;
-}
-
 void AI_CalcDmg(u8 attacker, u8 defender)
 {
     u16 sideStatus = gSideStatuses[GET_BATTLER_SIDE(defender)];
@@ -1654,7 +1632,7 @@ u8 TypeCalc(u16 move, u8 attacker, u8 defender)
     if (move == MOVE_STRUGGLE)
         return 0;
 
-    moveType = CheckAbilityChangeMoveType(move);
+    moveType = gBattleMoves[move].type;
 
     // check stab
     if (IS_BATTLER_OF_TYPE(attacker, moveType))
@@ -1730,11 +1708,16 @@ u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility)
     if (move == MOVE_STRUGGLE)
         return 0;
 
-    moveType = CheckAbilityChangeMoveType(move);
-
     if (move == MOVE_HIDDEN_POWER)
         moveType = getHiddenPowerType();
+    else
+        moveType = gBattleMoves[move].type;
 
+    // check pixilate
+    if (gBattleMons[gBattlerAttacker].ability == ABILITY_PIXILATE
+        && moveType == TYPE_NORMAL
+        && gBattleMoves[move].category != MOVE_CATEGORY_STATUS)
+        moveType = TYPE_FAIRY;
 
     if (targetAbility == ABILITY_LEVITATE && moveType == TYPE_GROUND)
     {
