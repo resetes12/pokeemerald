@@ -306,8 +306,8 @@ BattleFrontier_Lounge9_IV_ManNoChampion::
 	end
 
 BattleFrontier_Lounge9_IV_TextNoChampion:
-	.string "Who are you? You seem... Weak?\n"
-	.string "Kinda...\p"
+	.string "Who are you? You seem… Weak?\n"
+	.string "Kinda…\p"
 	.string "Meh. Come back if you get stronger.$"
 
 BattleFrontier_Lounge9_IV_First_Time::
@@ -399,15 +399,15 @@ BattleFrontier_Lounge9_IV_SetMax::
 BattleFrontier_Lounge9_IV_TextFirstTime:
 	.string "Hey! It's you! Nice to\n"
 	.string "see you around here!\p"
-	.string "Wait... You don't know me?\p"
+	.string "Wait… You don't know me?\p"
 	.string ". . .\p"
 	.string ". . .\p"
-	.string "Oh... Of course! I saw you on\n"
+	.string "Oh… Of course! I saw you on\n"
 	.string "the TV a short while ago!\p"
 	.string "I'm IVAN, but you can call me IV-MAN!\p"
 	.string "I'm the brother of EV-MAN,\n"
 	.string "to no one's surprise.\p"
-	.string "And you...\p"
+	.string "And you…\p"
 	.string "You are {PLAYER} and you recently\n"
 	.string "won the POKéMON LEAGUE, right?\p"
 	.string "Your last combat was quite amazing.\p"
@@ -419,7 +419,7 @@ BattleFrontier_Lounge9_IV_TextFirstTime:
 	.string "For POKéMON, of course!\n"
 	.string "If you want we can train together to\l"
 	.string "maximize the potential of your POKéMON.\p"
-	.string "But... to maximize that potential, the\n"
+	.string "But… to maximize that potential, the\n"
 	.string "POKéMON needs to be ready for it.\p"
 	.string "Only POKéMON who have reached its\n"
 	.string "maximum LEVEL can whitstand\l"
@@ -439,14 +439,14 @@ BattleFrontier_Lounge9_IV_Continue_Text:
 	.string "POKéMON?$"
 
 BattleFrontier_Lounge9_IV_Text_No:
-	.string "Oh... Well, see you another time.$"
+	.string "Oh… Well, see you another time.$"
 
 BattleFrontier_Lounge9_IV_Text_NoLevel:
 	.string "I don't think your POKéMON has reached\n"
-	.string "its maximum LEVEL...$"
+	.string "its maximum LEVEL…$"
 
 BattleFrontier_Lounge9_IV_Finish:
-	.string "Phew... I'm exhausted...\n"
+	.string "Phew… I'm exhausted…\n"
 	.string "What about your POKéMON?\p"
 	.string "You should REST a bit\n"
 	.string "before going.\p"
@@ -551,7 +551,7 @@ BattleFrontier_Lounge9_EV_SDEF_TEXT2:
 	.string "Go LUDICOLO!$"
 
 BattleFrontier_Lounge9_EV_SPD_TEXT:
-	.string "Hmph... I can train your\n"
+	.string "Hmph… I can train your\n"
 	.string "POKéMON in SPEED.\p"
 	.string "Are you ready?$"
 
@@ -600,7 +600,7 @@ BattleFrontier_Lounge9_Chansey5Intro:
 	.string "My BLISSEY are ready for it!$"
 
 BattleFrontier_Lounge9_Chansey5Defeat:
-	.string "Oh no... BLISSEY, use SOFT-BOILED!$"
+	.string "Oh no… BLISSEY, use SOFT-BOILED!$"
 
 BattleFrontier_Lounge9_Chansey5Repeat:
 	.string "We can battle again if you want!$"

@@ -956,7 +956,7 @@ LittlerootTown_ProfessorBirchsLab_Text_IHadDoneThat:
 	.string "PROF. BIRCH: Wait, what do you mean\n"
 	.string "you have the NATIONAL POKéDEX?\p"
 	.string "I had already upgraded it?\n"
-	.string "Oh well... Doesn't matter.$"
+	.string "Oh well… Doesn't matter.$"
 
 LittlerootTown_ProfessorBirchsLab_Text_PokedexUpgradedToNational:
 	.string "{PLAYER}'s POKéDEX was upgraded\n"

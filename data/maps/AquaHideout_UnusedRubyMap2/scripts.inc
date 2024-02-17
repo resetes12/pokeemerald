@@ -95,7 +95,7 @@ AquaHideout_UnusedRubyMap2_EventScript_CloseBrailleMsgText2::
 	.string "into the hole!$"
 
 AquaHideout_UnusedRubyMap2_EventScript_CloseBrailleMsgText3::
-	.string "Hmmm...\p"
+	.string "Hmmm…\p"
 	.string "Nope, that's not it.$"
 
 AquaHideout_UnusedRubyMap2_EventScript_Regieleki::

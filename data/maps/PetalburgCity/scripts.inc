@@ -58,7 +58,7 @@ PetalburgCity_GalladeEvo_Text2:
 	.string "useful for a new trainer like you.$"
 
 PetalburgCity_GalladeEvo_Text3:
-	.string "Oh... Okay...$"
+	.string "Oh… Okay…$"
 
 PetalburgCity_EventScript_MoveGymBoyToWestEntrance::
 	setobjectxyperm LOCALID_GYM_BOY, 5, 11

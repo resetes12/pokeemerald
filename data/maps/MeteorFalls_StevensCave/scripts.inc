@@ -80,7 +80,7 @@ MeteorFalls_StevensCave_EventScript_StevenArceusEventToPC::
 	end
 
 MeteorFalls_StevensCave_Text_ArceusEvent1:
-	.string "And... I would like to give you\n"
+	.string "And… I would like to give you\n"
 	.string "something I found while digging\l"
 	.string "around. It's a strange egg.\p"
 	.string "I've been carrying it for many\n"
@@ -90,9 +90,9 @@ MeteorFalls_StevensCave_Text_ArceusEvent1:
 
 MeteorFalls_StevensCave_Text_ArceusEvent2:
 	.string "I wonder which POKéMON lays its\n"
-	.string "eggs between rocks and goes away...\p"
+	.string "eggs between rocks and goes away…\p"
 	.string "Maybe it's an ancient POKéMON?\p"
-	.string "Fufufu... who knows...$"
+	.string "Fufufu… who knows…$"
 
 MeteorFalls_StevensCave_Text_ShouldKnowHowGoodIAmExpectWorst:
 	.string "STEVEN: Oh, wow, {PLAYER}{KUN}.\n"

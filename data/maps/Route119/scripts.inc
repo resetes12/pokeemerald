@@ -94,7 +94,7 @@ Route119_EventScript_SapphireKecleon_Text1:
 
 Route119_EventScript_SapphireKecleon_Text2:
 	.string "The invisible KECLEON\n"
-	.string "is still here...$"
+	.string "is still here…$"
 
 Route119_EventScript_RivalTrigger1::
 	setvar VAR_TEMP_1, 1

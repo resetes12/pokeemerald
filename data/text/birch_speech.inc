@@ -36,8 +36,8 @@ gText_Birch_BoyOrGirl::
 	.string "Or are you a girl?$"
 
 gText_Birch_Difficulty::
-	.string "Aha...\p"
-	.string "And... How do you think this\n"
+	.string "Aha…\p"
+	.string "And… How do you think this\n"
 	.string "adventure is going to be?$"
 
 gText_Birch_LockDifficulty::
@@ -51,7 +51,7 @@ gText_Birch_LockDifficulty::
 
 gText_Birch_Challenge::
 	.string "Oh, is that so?\p"
-	.string "All right, with that clear...\n"
+	.string "All right, with that clear…\n"
 	.string "Do you expect any CHALLENGE\l"
 	.string "in your journey?\p"
 	.string "And what's your name?$"
