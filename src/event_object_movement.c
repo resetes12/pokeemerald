@@ -2272,9 +2272,8 @@ bool32 CheckMsgCondition(const struct MsgCondition *cond, struct Pokemon *mon, u
         return (multi == cond->data.bytes[0] || multi == cond->data.bytes[1]);
     case MSG_COND_MUSIC:
         return (cond->data.raw == GetCurrentMapMusic());
-    // Added on `lighting` branch
-    // case MSG_COND_TIME_OF_DAY:
-    //     break;
+    case MSG_COND_TIME_OF_DAY:
+        return (cond->data.raw == gTimeOfDay);
     case MSG_COND_NEAR_MB:
         multi = FindMetatileBehaviorWithinRange(
                     obj->currentCoords.x, obj->currentCoords.y, 
