@@ -455,7 +455,7 @@ OldaleTown_Text_InfiniteItems3:
 	.string "You can not throw them away.$"
 
 OldaleTown_Text_InfiniteItems4:
-	.string "Cheat at your own responsability!$"
+	.string "Cheat at your own responsibility!$"
 
 OldaleTown_Text_InfiniteItemsNo:
 	.string "Okay!$"
