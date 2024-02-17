@@ -45,6 +45,7 @@
 #include "constants/layouts.h"
 #include "constants/moves.h"
 #include "constants/songs.h"
+#include "constants/species.h"
 #include "constants/trainers.h"
 #include "constants/union_room.h"
 #include "wild_encounter.h"
