@@ -483,7 +483,7 @@ static u8 UpdateTimeOfDayPaletteFade(void)
         return PALETTE_FADE_STATUS_DONE;
 
     if (IsSoftwarePaletteFadeFinishing())
-      return gPaletteFade.active ? PALETTE_FADE_STATUS_ACTIVE : PALETTE_FADE_STATUS_DONE;
+        return gPaletteFade.active ? PALETTE_FADE_STATUS_ACTIVE : PALETTE_FADE_STATUS_DONE;
 
     if (!gPaletteFade.objPaletteToggle)
     {
@@ -512,15 +512,14 @@ static u8 UpdateTimeOfDayPaletteFade(void)
 
     // First pply TOD blend to relevant subset of palettes
     if (gPaletteFade.objPaletteToggle) { // Sprite palettes, don't blend those with tags
-      u8 i;
-      u16 j = 1;
-      for (i = 0; i < 16; i++, j <<= 1) { // Mask out palettes that should not be light blended
-        if ((selectedPalettes & j) && !(GetSpritePaletteTagByPaletteNum(i) >> 15))
-          timePalettes |= j;
-      }
-
+        u32 i;
+        u32 j = 1;
+        for (i = 0; i < 16; i++, j <<= 1) { // Mask out palettes that should not be light blended
+            if ((selectedPalettes & j) && !(GetSpritePaletteTagByPaletteNum(i) >> 15))
+            timePalettes |= j;
+        }
     } else { // tile palettes, don't blend [13, 15]
-      timePalettes = selectedPalettes & 0x1FFF;
+        timePalettes = selectedPalettes & 0x1FFF;
     }
     TimeMixPalettes(timePalettes, src, dst, gPaletteFade.bld0, gPaletteFade.bld1, gPaletteFade.weight);
 
