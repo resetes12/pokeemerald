@@ -948,8 +948,8 @@
 #define HG_MUSIC_END                      MUS_HG_WIN_MINIGAME
 
 #define SONGS_END                         HG_MUSIC_END
-#define END_SE                      SE_SUDOWOODO_SHAKE
-#define END_MUS                     MUS_RG_TEACHY_TV_MENU
+#define END_SE                            PH_NURSE_SOLO
+#define END_MUS                           MUS_HG_WIN_MINIGAME
 
 #define MUS_ROUTE118                      0x7FFF  // Map is split into 2 music sections. controlled by GetCurrLocationDefaultMusic().
 
