@@ -503,4 +503,4 @@ BattleFrontier_MoneyText2:
 
 BattleFrontier_MoneyText3:
 	.string "Maybe he will come\n"
-	.string "back tomorrow...$"
+	.string "back tomorrow…$"

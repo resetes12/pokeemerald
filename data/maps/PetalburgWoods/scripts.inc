@@ -134,8 +134,8 @@ PetalburgWoods_EventScript_CelebiMoves2:
 Text_PetalburgWoods_Celebi0:
 	.string "The tree is rattling.\p"
 	.string "You also feel that someone or\n"
-	.string "something is observing you...\p"
-	.string "But... you cannot see any POKéMON...$"
+	.string "something is observing you…\p"
+	.string "But… you cannot see any POKéMON…$"
 
 Text_PetalburgWoods_Celebi1:
 	.string ". . . \p"
@@ -143,7 +143,7 @@ Text_PetalburgWoods_Celebi1:
 	.string "You can hear a dim voice.\p"
 	.string "S..w .. ..e . . .ER . K. ON\p"
 	.string ". . . \p"
-	.string "S..w me the THUND.R PO..MON...$"
+	.string "S..w me the THUND.R PO..MON…$"
 
 Text_PetalburgWoods_Celebi2:
 	.string ". . . \p"
@@ -153,17 +153,17 @@ Text_PetalburgWoods_Celebi2:
 Text_PetalburgWoods_Celebi3:
 	.string ". . . \p"
 	.string ". . . \p"
-	.string "Sho.. me t.. AU.ORA ...éMON.$"
+	.string "Sho.. me t.. AU.ORA …éMON.$"
 
 Text_PetalburgWoods_Celebi4:
 	.string ". . . \p"
-	.string "Something is approaching...\p"
+	.string "Something is approaching…\p"
 	.string ". . . $"
 
 Text_PetalburgWoods_Celebi_Donthave:
 	.string ". . . \p"
-	.string "..u d..'t h... i....\p"
-	.string "You don't have it...$"
+	.string "..u d..'t h… i….\p"
+	.string "You don't have it…$"
 
 Movement_PetalburgWoods_Celebi1:
 	emote_exclamation_mark
@@ -218,7 +218,7 @@ Text_PetalburgWoods_Celebi_Sign:
 	.string "going?$"
 
 Text_PetalburgWoods_Celebi_SignFirstTime:
-	.string "Oh, a youngster...\p"
+	.string "Oh, a youngster…\p"
 	.string "What are you doing here in these\n"
 	.string "dark, shady woods?\p"
 	.string ". . .\p"
@@ -237,13 +237,13 @@ Text_PetalburgWoods_Celebi_SignFirstTime:
 	.string "And I can assure you that this story\n"
 	.string "is as real as the air we breath.\l"
 	.string "The FOREST GUARDIAN is small, GREEN,\l"
-	.string "and just gazing at it feels...\p"
+	.string "and just gazing at it feels…\p"
 	.string "Like I am watching a spirit from the\n"
 	.string "forest. Sadly, last time I saw it\l" 
-	.string "was many, many years ago...\p"
+	.string "was many, many years ago…\p"
 	.string "Where could the GUARDIAN be?\p"
 	.string "Maybe I need to be STRONGER to make\n"
-	.string "it appear...\p"
+	.string "it appear…\p"
 	.string "It really makes me unhappy how weak\n"
 	.string "I have become with the years.\p"
 	.string "Anyway, I will continue my deeds.\n"
@@ -264,12 +264,12 @@ Text_PetalburgWoods_Celebi_SignEventChampion:
 	.string "I have been hearing a small muttering\n"
 	.string "around it for many hours.\p"
 	.string "Something about a THUNDER, VOLCANO\n"
-	.string "and AURORA POKéMON...\p"
-	.string "Wait... I know those descriptions...\n"
-	.string "Something about three beasts? But...\p"
-	.string "Not from this region...? Where were\n"
+	.string "and AURORA POKéMON…\p"
+	.string "Wait… I know those descriptions…\n"
+	.string "Something about three beasts? But…\p"
+	.string "Not from this region…? Where were\n"
 	.string "they from? GIOTO? HOJO? JONO? JOHTO?\p"
-	.string "And if they are here, in HOENN...\n"
+	.string "And if they are here, in HOENN…\n"
 	.string "Maybe they are hiding in places related\l"
 	.string "to their descriptions?\p"
 	.string "If you have time, maybe you could have\n"

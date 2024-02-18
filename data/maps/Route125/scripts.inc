@@ -28,7 +28,7 @@ Route125_FroslassEvo::
 
 Route125_FroslassEvo_Text:
 	.string "What happened to my cute little baby?\p"
-	.string "My SNORUNT evolved into...\n"
+	.string "My SNORUNT evolved into…\n"
 	.string "Something I didn't expect!\p"
 	.string "I wanted a GLALIE, yet I got a\n"
 	.string "FROSLASS. How? SHE just evolved out\l"

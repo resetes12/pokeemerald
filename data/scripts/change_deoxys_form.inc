@@ -55,8 +55,8 @@ ChangeDeoxysForm_Text_End2:
 	.string "I should get going.$"
 
 ChangeDeoxysForm_Text_Select:
-	.string "...\p"
-	.string "...\p"
+	.string "…\p"
+	.string "…\p"
 	.string "The surface has a rough feeling.\p"
 	.string "Should I let any of my POKéMON\n"
 	.string "touch this meteorite?$"

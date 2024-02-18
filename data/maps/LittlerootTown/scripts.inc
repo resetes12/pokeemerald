@@ -990,10 +990,10 @@ LittlerootTown_Text_CanUsePCToStoreItems:
 	.string "RED is a boosted stat, and BLUE\p"
 	.string "is the opposite.\p"
 	.string "AND I HAVEN'T FINISHED YET!\p"
-	.string "If you hold the L and R Button...\p"
-	.string "While encountering a wild POKéMON...\p"
+	.string "If you hold the L and R Button…\p"
+	.string "While encountering a wild POKéMON…\p"
 	.string "You will instantly run away!\p"
-	.string "I'm... I'm out of breath...\p"
+	.string "I'm… I'm out of breath…\p"
 	.string ". . . . . . \p"
 	.string "You don't know what EV or IV are??$"
 
