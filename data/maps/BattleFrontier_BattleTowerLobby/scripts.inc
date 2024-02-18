@@ -41,11 +41,11 @@ BattleFrontier_BattleTowerLobby_EventScript_PlayerFaceNorth::
 	end
 
 BattleFrontier_BattleTowerLobby_OnFrame:
-	map_script_2 VAR_TEMP_0, 0, BattleFrontier_BattleTowerLobby_EventScript_GetChallengeStatus
-	map_script_2 VAR_TEMP_0, CHALLENGE_STATUS_SAVING, BattleFrontier_BattleTowerLobby_EventScript_QuitWithoutSaving
-	map_script_2 VAR_TEMP_0, CHALLENGE_STATUS_PAUSED, BattleFrontier_BattleTowerLobby_EventScript_ResumeChallenge
-	map_script_2 VAR_TEMP_0, CHALLENGE_STATUS_WON, BattleFrontier_BattleTowerLobby_EventScript_WonChallenge
-	map_script_2 VAR_TEMP_0, CHALLENGE_STATUS_LOST, BattleFrontier_BattleTowerLobby_EventScript_LostChallenge
+	map_script_2 VAR_TEMP_CHALLENGE_STATUS, 0, BattleFrontier_BattleTowerLobby_EventScript_GetChallengeStatus
+	map_script_2 VAR_TEMP_CHALLENGE_STATUS, CHALLENGE_STATUS_SAVING, BattleFrontier_BattleTowerLobby_EventScript_QuitWithoutSaving
+	map_script_2 VAR_TEMP_CHALLENGE_STATUS, CHALLENGE_STATUS_PAUSED, BattleFrontier_BattleTowerLobby_EventScript_ResumeChallenge
+	map_script_2 VAR_TEMP_CHALLENGE_STATUS, CHALLENGE_STATUS_WON, BattleFrontier_BattleTowerLobby_EventScript_WonChallenge
+	map_script_2 VAR_TEMP_CHALLENGE_STATUS, CHALLENGE_STATUS_LOST, BattleFrontier_BattleTowerLobby_EventScript_LostChallenge
 	.2byte 0
 
 BattleFrontier_BattleTowerLobby_EventScript_GetChallengeStatus::
@@ -60,7 +60,7 @@ BattleFrontier_BattleTowerLobby_EventScript_QuitWithoutSaving::
 	tower_set TOWER_DATA_WIN_STREAK, 0
 	tower_set TOWER_DATA_WIN_STREAK_ACTIVE, FALSE
 	frontier_set FRONTIER_DATA_CHALLENGE_STATUS, 0
-	setvar VAR_TEMP_0, 255
+	setvar VAR_TEMP_CHALLENGE_STATUS, 255
 	release
 	end
 
@@ -94,8 +94,8 @@ BattleFrontier_BattleTowerLobby_EventScript_GiveBattlePoints::
 BattleFrontier_BattleTowerLobby_EventScript_LookForwardToChallenge::
 	msgbox BattleFrontier_BattleTowerLobby_Text_LookForwardToAnotherChallenge, MSGBOX_DEFAULT
 	closemessage
-	setvar VAR_TEMP_0, 255
-  callnative UpdateFollowingPokemon
+	setvar VAR_TEMP_CHALLENGE_STATUS, 255
+	callnative UpdateFollowingPokemon
 	release
 	end
 
@@ -114,8 +114,8 @@ BattleFrontier_BattleTowerLobby_EventScript_LostThanksForPlaying::
 	call BattleFrontier_BattleTowerLobby_EventScript_AskSaveBattle
 	msgbox BattleFrontier_BattleTowerLobby_Text_LookForwardToAnotherChallenge, MSGBOX_DEFAULT
 	closemessage
-	setvar VAR_TEMP_0, 255
-  callnative UpdateFollowingPokemon
+	setvar VAR_TEMP_CHALLENGE_STATUS, 255
+	callnative UpdateFollowingPokemon
 	release
 	end
 
@@ -202,7 +202,7 @@ BattleFrontier_BattleTowerLobby_EventScript_TryEnterSinglesChallenge::
 	frontier_set FRONTIER_DATA_LVL_MODE, VAR_RESULT
 	msgbox BattleFrontier_BattleTowerLobby_Text_SelectThreeMons, MSGBOX_DEFAULT
 	fadescreen FADE_TO_BLACK
-  callnative RemoveFollowingPokemon
+	callnative RemoveFollowingPokemon
 	call BattleFrontier_EventScript_GetLvlMode
 	copyvar VAR_0x8004, VAR_RESULT
 	setvar VAR_0x8005, FRONTIER_PARTY_SIZE
@@ -217,7 +217,7 @@ BattleFrontier_BattleTowerLobby_EventScript_TryEnterSinglesChallenge::
 
 BattleFrontier_BattleTowerLobby_EventScript_SaveBeforeSinglesChallenge::
 	frontier_set FRONTIER_DATA_SELECTED_MON_ORDER
-	setvar VAR_TEMP_0, 0
+	setvar VAR_TEMP_CHALLENGE_STATUS, 0
 	tower_init
 	tower_set TOWER_DATA_WIN_STREAK_ACTIVE, TRUE
 	frontier_set FRONTIER_DATA_PAUSED, FALSE
@@ -225,7 +225,7 @@ BattleFrontier_BattleTowerLobby_EventScript_SaveBeforeSinglesChallenge::
 	closemessage
 	delay 2
 	call Common_EventScript_SaveGame
-	setvar VAR_TEMP_0, 255
+	setvar VAR_TEMP_CHALLENGE_STATUS, 255
 	goto_if_eq VAR_RESULT, 0, BattleFrontier_BattleTowerLobby_EventScript_CancelChallengeSaveFailed
 	incrementgamestat GAME_STAT_ENTERED_BATTLE_TOWER
 	setvar VAR_BRAVO_TRAINER_BATTLE_TOWER_ON, TRUE
@@ -266,7 +266,7 @@ BattleFrontier_BattleTowerLobby_EventScript_TryEnterDoublesChallenge::
 	frontier_set FRONTIER_DATA_LVL_MODE, VAR_RESULT
 	msgbox BattleFrontier_BattleTowerLobby_Text_PleaseSelectFourMons, MSGBOX_DEFAULT
 	fadescreen FADE_TO_BLACK
-  callnative RemoveFollowingPokemon
+	callnative RemoveFollowingPokemon
 	call BattleFrontier_EventScript_GetLvlMode
 	copyvar VAR_0x8004, VAR_RESULT
 	setvar VAR_0x8005, FRONTIER_DOUBLES_PARTY_SIZE
@@ -281,7 +281,7 @@ BattleFrontier_BattleTowerLobby_EventScript_TryEnterDoublesChallenge::
 
 BattleFrontier_BattleTowerLobby_EventScript_SaveBeforeDoublesChallenge::
 	frontier_set FRONTIER_DATA_SELECTED_MON_ORDER
-	setvar VAR_TEMP_0, 0
+	setvar VAR_TEMP_CHALLENGE_STATUS, 0
 	tower_init
 	tower_set TOWER_DATA_WIN_STREAK_ACTIVE, TRUE
 	frontier_set FRONTIER_DATA_PAUSED, FALSE
@@ -289,7 +289,7 @@ BattleFrontier_BattleTowerLobby_EventScript_SaveBeforeDoublesChallenge::
 	closemessage
 	delay 2
 	call Common_EventScript_SaveGame
-	setvar VAR_TEMP_0, 255
+	setvar VAR_TEMP_CHALLENGE_STATUS, 255
 	goto_if_eq VAR_RESULT, 0, BattleFrontier_BattleTowerLobby_EventScript_CancelChallengeSaveFailed
 	incrementgamestat GAME_STAT_ENTERED_BATTLE_TOWER
 	setvar VAR_BRAVO_TRAINER_BATTLE_TOWER_ON, FALSE
@@ -331,7 +331,7 @@ BattleFrontier_BattleTowerLobby_EventScript_TryEnterMultisChallenge::
 	frontier_set FRONTIER_DATA_LVL_MODE, VAR_RESULT
 	msgbox BattleFrontier_BattleTowerLobby_Text_PleaseSelectTwoMons, MSGBOX_DEFAULT
 	fadescreen FADE_TO_BLACK
-  callnative RemoveFollowingPokemon
+	callnative RemoveFollowingPokemon
 	call BattleFrontier_EventScript_GetLvlMode
 	copyvar VAR_0x8004, VAR_RESULT
 	setvar VAR_0x8005, FRONTIER_MULTI_PARTY_SIZE
@@ -346,7 +346,7 @@ BattleFrontier_BattleTowerLobby_EventScript_TryEnterMultisChallenge::
 
 BattleFrontier_BattleTowerLobby_EventScript_SaveBeforeMultisChallenge::
 	frontier_set FRONTIER_DATA_SELECTED_MON_ORDER
-	setvar VAR_TEMP_0, 0
+	setvar VAR_TEMP_CHALLENGE_STATUS, 0
 	tower_init
 	tower_set TOWER_DATA_WIN_STREAK_ACTIVE, TRUE
 	frontier_set FRONTIER_DATA_PAUSED, FALSE
@@ -354,7 +354,7 @@ BattleFrontier_BattleTowerLobby_EventScript_SaveBeforeMultisChallenge::
 	closemessage
 	delay 2
 	call Common_EventScript_SaveGame
-	setvar VAR_TEMP_0, 255
+	setvar VAR_TEMP_CHALLENGE_STATUS, 255
 	goto_if_eq VAR_RESULT, 0, BattleFrontier_BattleTowerLobby_EventScript_CancelChallengeSaveFailed
 	incrementgamestat GAME_STAT_ENTERED_BATTLE_TOWER
 	setvar VAR_BRAVO_TRAINER_BATTLE_TOWER_ON, FALSE
@@ -395,7 +395,7 @@ BattleFrontier_BattleTowerLobby_EventScript_TryEnterLinkMultisChallenge::
 	frontier_set FRONTIER_DATA_LVL_MODE, VAR_RESULT
 	msgbox BattleFrontier_BattleTowerLobby_Text_PleaseSelectTwoMons2, MSGBOX_DEFAULT
 	fadescreen FADE_TO_BLACK
-  callnative RemoveFollowingPokemon
+	callnative RemoveFollowingPokemon
 	call BattleFrontier_EventScript_GetLvlMode
 	copyvar VAR_0x8004, VAR_RESULT
 	setvar VAR_0x8005, FRONTIER_MULTI_PARTY_SIZE
@@ -410,7 +410,7 @@ BattleFrontier_BattleTowerLobby_EventScript_TryEnterLinkMultisChallenge::
 
 BattleFrontier_BattleTowerLobby_EventScript_SaveBeforeLinkMultisChallenge::
 	frontier_set FRONTIER_DATA_SELECTED_MON_ORDER
-	setvar VAR_TEMP_0, 0
+	setvar VAR_TEMP_CHALLENGE_STATUS, 0
 	tower_init
 	tower_set TOWER_DATA_WIN_STREAK_ACTIVE, TRUE
 	frontier_set FRONTIER_DATA_PAUSED, FALSE
@@ -421,13 +421,18 @@ BattleFrontier_BattleTowerLobby_EventScript_SaveBeforeLinkMultisChallenge::
 @ to the flash, but not data in PokemonStorage. The SaveGame script that follows asks the player to do a full save,
 @ which they can opt out of. As a result the player can save their party and quit without having saved the PC.
 @ This allows players to clone pokemon and their held items by withdrawing them (or erase them by despositing).
-.ifndef BUGFIX
+#ifndef BUGFIX
 	tower_save 0
-.endif
+#endif
 	call Common_EventScript_SaveGame
-	setvar VAR_TEMP_0, 255
+	setvar VAR_TEMP_CHALLENGE_STATUS, 255
 	goto_if_eq VAR_RESULT, 0, BattleFrontier_BattleTowerLobby_EventScript_CancelChallengeSaveFailed
+@ GAME_STAT_ENTERED_BATTLE_TOWER should not be incremented here, for two reasons:
+@ 1. It is incremented again in BattleFrontier_BattleTowerLobby_EventScript_CableLinkSuccessful or BattleFrontier_BattleTowerLobby_EventScript_WirelessLinkSuccessful
+@ 2. If the player tries to connect, but fails, the counter will still be incremented even if the player never enters the tower.
+#ifndef BUGFIX
 	incrementgamestat GAME_STAT_ENTERED_BATTLE_TOWER
+#endif
 	specialvar VAR_RESULT, IsWirelessAdapterConnected
 	goto_if_eq VAR_RESULT, TRUE, BattleFrontier_BattleTowerLobby_EventScript_TryWirelessLink
 	goto BattleFrontier_BattleTowerLobby_EventScript_TryCableLink
@@ -583,7 +588,7 @@ BattleFrontier_BattleTowerLobby_EventScript_CancelChallengeSaveFailed::
 
 BattleFrontier_BattleTowerLobby_EventScript_LoadPartyCancelChallenge::
 	special LoadPlayerParty
-  callnative UpdateFollowingPokemon
+	callnative UpdateFollowingPokemon
 BattleFrontier_BattleTowerLobby_EventScript_CancelChallenge::
 	special CloseLink
 	msgbox BattleFrontier_BattleTowerLobby_Text_LookForwardToAnotherChallenge, MSGBOX_DEFAULT
@@ -604,7 +609,7 @@ BattleFrontier_BattleTowerLobby_EventScript_WaitForLinkOpponentLoad::
 	call BattleFrontier_BattleTowerLobby_EventScript_ShowYouToBattleRoom
 	clearflag FLAG_CANCEL_BATTLE_ROOM_CHALLENGE
 	warp MAP_BATTLE_FRONTIER_BATTLE_TOWER_ELEVATOR, 1, 6
-	setvar VAR_TEMP_0, 0
+	setvar VAR_TEMP_CHALLENGE_STATUS, 0
 	waitstate
 	end
 

@@ -171,6 +171,11 @@ enum
     CANNOT_LEARN_MOVE_IS_EGG
 };
 
+enum {
+    // Window ids 0-5 are implicitly assigned to each party Pokémon in InitPartyMenuBoxes
+    WIN_MSG = PARTY_SIZE,
+};
+
 struct PartyMenuBoxInfoRects
 {
     void (*blitFunc)(u8, u8, u8, u8, u8, bool8);
@@ -774,11 +779,11 @@ static bool8 AllocPartyMenuBgGfx(void)
     return FALSE;
 }
 
-static void PartyPaletteBufferCopy(u8 offset)
+static void PartyPaletteBufferCopy(u8 palNum)
 {
-    offset *= 16;
-    CpuCopy16(&gPlttBufferUnfaded[0x30], &gPlttBufferUnfaded[offset], 32);
-    CpuCopy16(&gPlttBufferUnfaded[0x30], &gPlttBufferFaded[offset], 32);
+    u8 offset = PLTT_ID(palNum);
+    CpuCopy16(&gPlttBufferUnfaded[BG_PLTT_ID(3)], &gPlttBufferUnfaded[offset], PLTT_SIZE_4BPP);
+    CpuCopy16(&gPlttBufferUnfaded[BG_PLTT_ID(3)], &gPlttBufferFaded[offset], PLTT_SIZE_4BPP);
 }
 
 static void FreePartyPointers(void)
@@ -1968,7 +1973,7 @@ u8 GetMonAilment(struct Pokemon *mon)
 
 static void SetPartyMonsAllowedInMinigame(void)
 {
-    u16 *ptr;
+    s16 *ptr;
 
     if (gPartyMenu.menuType == PARTY_MENU_TYPE_MINIGAME)
     {
@@ -2226,16 +2231,16 @@ static void DrawEmptySlot(u8 windowId)
     BlitBitmapToPartyWindow(windowId, sSlotTilemap_WideEmpty, 18, 0, 0, 18, 3);
 }
 
-#define LOAD_PARTY_BOX_PAL(paletteIds, paletteOffsets)                                    \
-{                                                                                         \
-    LoadPalette(GetPartyMenuPalBufferPtr(paletteIds[0]), paletteOffsets[0] + palNum, PLTT_SIZEOF(1));  \
-    LoadPalette(GetPartyMenuPalBufferPtr(paletteIds[1]), paletteOffsets[1] + palNum, PLTT_SIZEOF(1));  \
-    LoadPalette(GetPartyMenuPalBufferPtr(paletteIds[2]), paletteOffsets[2] + palNum, PLTT_SIZEOF(1));  \
+#define LOAD_PARTY_BOX_PAL(paletteIds, paletteOffsets)                                                    \
+{                                                                                                         \
+    LoadPalette(GetPartyMenuPalBufferPtr(paletteIds[0]), paletteOffsets[0] + palOffset, PLTT_SIZEOF(1));  \
+    LoadPalette(GetPartyMenuPalBufferPtr(paletteIds[1]), paletteOffsets[1] + palOffset, PLTT_SIZEOF(1));  \
+    LoadPalette(GetPartyMenuPalBufferPtr(paletteIds[2]), paletteOffsets[2] + palOffset, PLTT_SIZEOF(1));  \
 }
 
 static void LoadPartyBoxPalette(struct PartyMenuBox *menuBox, u8 palFlags)
 {
-    u8 palNum = GetWindowAttribute(menuBox->windowId, WINDOW_PALETTE_NUM) * 16;
+    u8 palOffset = BG_PLTT_ID(GetWindowAttribute(menuBox->windowId, WINDOW_PALETTE_NUM));
 
     if (palFlags & PARTY_PAL_NO_MON)
     {
@@ -2363,7 +2368,7 @@ static void DisplayPartyPokemonGenderNidoranCheck(struct Pokemon *mon, struct Pa
 
 static void DisplayPartyPokemonGender(u8 gender, u16 species, u8 *nickname, struct PartyMenuBox *menuBox)
 {
-    u8 palNum = GetWindowAttribute(menuBox->windowId, WINDOW_PALETTE_NUM) * 16;
+    u8 palOffset = BG_PLTT_ID(GetWindowAttribute(menuBox->windowId, WINDOW_PALETTE_NUM));
 
     if (species == SPECIES_NONE)
         return;
@@ -2372,13 +2377,13 @@ static void DisplayPartyPokemonGender(u8 gender, u16 species, u8 *nickname, stru
     switch (gender)
     {
     case MON_MALE:
-        LoadPalette(GetPartyMenuPalBufferPtr(sGenderMalePalIds[0]), sGenderPalOffsets[0] + palNum, PLTT_SIZEOF(1));
-        LoadPalette(GetPartyMenuPalBufferPtr(sGenderMalePalIds[1]), sGenderPalOffsets[1] + palNum, PLTT_SIZEOF(1));
+        LoadPalette(GetPartyMenuPalBufferPtr(sGenderMalePalIds[0]), sGenderPalOffsets[0] + palOffset, PLTT_SIZEOF(1));
+        LoadPalette(GetPartyMenuPalBufferPtr(sGenderMalePalIds[1]), sGenderPalOffsets[1] + palOffset, PLTT_SIZEOF(1));
         DisplayPartyPokemonBarDetail(menuBox->windowId, gText_MaleSymbol, 2, &menuBox->infoRects->dimensions[8]);
         break;
     case MON_FEMALE:
-        LoadPalette(GetPartyMenuPalBufferPtr(sGenderFemalePalIds[0]), sGenderPalOffsets[0] + palNum, PLTT_SIZEOF(1));
-        LoadPalette(GetPartyMenuPalBufferPtr(sGenderFemalePalIds[1]), sGenderPalOffsets[1] + palNum, PLTT_SIZEOF(1));
+        LoadPalette(GetPartyMenuPalBufferPtr(sGenderFemalePalIds[0]), sGenderPalOffsets[0] + palOffset, PLTT_SIZEOF(1));
+        LoadPalette(GetPartyMenuPalBufferPtr(sGenderFemalePalIds[1]), sGenderPalOffsets[1] + palOffset, PLTT_SIZEOF(1));
         DisplayPartyPokemonBarDetail(menuBox->windowId, gText_FemaleSymbol, 2, &menuBox->infoRects->dimensions[8]);
         break;
     }
@@ -2432,23 +2437,23 @@ static void DisplayPartyPokemonHPBarCheck(struct Pokemon *mon, struct PartyMenuB
 
 static void DisplayPartyPokemonHPBar(u16 hp, u16 maxhp, struct PartyMenuBox *menuBox)
 {
-    u8 palNum = GetWindowAttribute(menuBox->windowId, WINDOW_PALETTE_NUM) * 16;
+    u8 palOffset = BG_PLTT_ID(GetWindowAttribute(menuBox->windowId, WINDOW_PALETTE_NUM));
     u8 hpFraction;
 
     switch (GetHPBarLevel(hp, maxhp))
     {
     case HP_BAR_GREEN:
     case HP_BAR_FULL:
-        LoadPalette(GetPartyMenuPalBufferPtr(sHPBarGreenPalIds[0]), sHPBarPalOffsets[0] + palNum, PLTT_SIZEOF(1));
-        LoadPalette(GetPartyMenuPalBufferPtr(sHPBarGreenPalIds[1]), sHPBarPalOffsets[1] + palNum, PLTT_SIZEOF(1));
+        LoadPalette(GetPartyMenuPalBufferPtr(sHPBarGreenPalIds[0]), sHPBarPalOffsets[0] + palOffset, PLTT_SIZEOF(1));
+        LoadPalette(GetPartyMenuPalBufferPtr(sHPBarGreenPalIds[1]), sHPBarPalOffsets[1] + palOffset, PLTT_SIZEOF(1));
         break;
     case HP_BAR_YELLOW:
-        LoadPalette(GetPartyMenuPalBufferPtr(sHPBarYellowPalIds[0]), sHPBarPalOffsets[0] + palNum, PLTT_SIZEOF(1));
-        LoadPalette(GetPartyMenuPalBufferPtr(sHPBarYellowPalIds[1]), sHPBarPalOffsets[1] + palNum, PLTT_SIZEOF(1));
+        LoadPalette(GetPartyMenuPalBufferPtr(sHPBarYellowPalIds[0]), sHPBarPalOffsets[0] + palOffset, PLTT_SIZEOF(1));
+        LoadPalette(GetPartyMenuPalBufferPtr(sHPBarYellowPalIds[1]), sHPBarPalOffsets[1] + palOffset, PLTT_SIZEOF(1));
         break;
     default:
-        LoadPalette(GetPartyMenuPalBufferPtr(sHPBarRedPalIds[0]), sHPBarPalOffsets[0] + palNum, PLTT_SIZEOF(1));
-        LoadPalette(GetPartyMenuPalBufferPtr(sHPBarRedPalIds[1]), sHPBarPalOffsets[1] + palNum, PLTT_SIZEOF(1));
+        LoadPalette(GetPartyMenuPalBufferPtr(sHPBarRedPalIds[0]), sHPBarPalOffsets[0] + palOffset, PLTT_SIZEOF(1));
+        LoadPalette(GetPartyMenuPalBufferPtr(sHPBarRedPalIds[1]), sHPBarPalOffsets[1] + palOffset, PLTT_SIZEOF(1));
         break;
     }
 
@@ -2670,23 +2675,23 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
                     hasFlashAlready = TRUE;
                 if (sFieldMoves[j] == MOVE_FLY)
                     hasFlyAlread = TRUE;
-                if (sFieldMoves[j] != MOVE_FLY || !CheckBagHasItem(ITEM_HM02_FLY, 1)) // If Mon already knows FLY, prevent it from being added to action list
-                    if (sFieldMoves[j] != MOVE_FLASH || !CheckBagHasItem(ITEM_HM05_FLASH, 1)) // If Mon already knows FLASH, prevent it from being added to action list
+                if (sFieldMoves[j] != MOVE_FLY || !CheckBagHasItem(ITEM_HM02, 1)) // If Mon already knows FLY, prevent it from being added to action list
+                    if (sFieldMoves[j] != MOVE_FLASH || !CheckBagHasItem(ITEM_HM05, 1)) // If Mon already knows FLASH, prevent it from being added to action list
                         AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, j + MENU_FIELD_MOVES);
                         break;
             }
         }
     }
 
-    if (sPartyMenuInternal->numActions < 5 && CanMonLearnTMHM(&mons[slotId], ITEM_HM02 - ITEM_TM01) && CheckBagHasItem(ITEM_HM02_FLY, 1)) // If Mon can learn HM02 and action list consists of < 4 moves, add FLY to action list
+    if (sPartyMenuInternal->numActions < 5 && CanMonLearnTMHM(&mons[slotId], ITEM_HM02 - ITEM_TM01) && CheckBagHasItem(ITEM_HM02, 1)) // If Mon can learn HM02 and action list consists of < 4 moves, add FLY to action list
         AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 5 + MENU_FIELD_MOVES);
-    if (sPartyMenuInternal->numActions < 5 && CanMonLearnTMHM(&mons[slotId], ITEM_HM05 - ITEM_TM01) && CheckBagHasItem(ITEM_HM05_FLASH, 1)) // If Mon can learn HM05 and action list consists of < 4 moves, add FLASH to action list
+    if (sPartyMenuInternal->numActions < 5 && CanMonLearnTMHM(&mons[slotId], ITEM_HM05 - ITEM_TM01) && CheckBagHasItem(ITEM_HM05, 1)) // If Mon can learn HM05 and action list consists of < 4 moves, add FLASH to action list
         AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 1 + MENU_FIELD_MOVES);
     if (HMsOverwriteOptionActive() && slotId == 0) //tx_randomizer_and_challenges
     {
-        if (CheckBagHasItem(ITEM_HM05_FLASH, 1) && !hasFlashAlready)
+        if (CheckBagHasItem(ITEM_HM05, 1) && !hasFlashAlready)
             AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 1 + MENU_FIELD_MOVES);
-        if (CheckBagHasItem(ITEM_HM02_FLY, 1) && !hasFlyAlread)
+        if (CheckBagHasItem(ITEM_HM02, 1) && !hasFlyAlread)
             AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 5 + MENU_FIELD_MOVES);
     }
     if (!InBattlePike())
@@ -4224,9 +4229,9 @@ static void PartyMenuStartSpriteAnim(u8 spriteId, u8 animNum)
     StartSpriteAnim(&gSprites[spriteId], animNum);
 }
 
-// Unused. Might explain the large blank section in gPartyMenuPokeballSmall_Gfx
+// Might explain the large blank section in gPartyMenuPokeballSmall_Gfx
 // At the very least this is how the unused anim cmds for sSpriteAnimTable_MenuPokeballSmall were meant to be accessed
-static void SpriteCB_BounceConfirmCancelButton(u8 spriteId, u8 spriteId2, u8 animNum)
+static void UNUSED SpriteCB_BounceConfirmCancelButton(u8 spriteId, u8 spriteId2, u8 animNum)
 {
     if (animNum == 0)
     {
@@ -4914,7 +4919,7 @@ static void Task_LearnedMove(u8 taskId)
     if (move[1] == 0)
     {
         AdjustFriendship(mon, FRIENDSHIP_EVENT_LEARN_TMHM);
-        if ((item < ITEM_HM01_CUT) && (FlagGet(FLAG_FINITE_TMS) == TRUE))
+        if ((item < ITEM_HM01) && (FlagGet(FLAG_FINITE_TMS) == TRUE))
             RemoveBagItem(item, 1);
     }
     GetMonNickname(mon, gStringVar1);
@@ -5970,7 +5975,7 @@ static bool8 TrySwitchInPokemon(void)
     u8 newSlot;
     u8 i;
 
-    // In a multi battle, slots 1, 4, and 5 are the partner's pokemon
+    // In a multi battle, slots 1, 4, and 5 are the partner's Pokémon
     if (IsMultiBattle() == TRUE && (slot == 1 || slot == 4 || slot == 5))
     {
         StringCopy(gStringVar1, GetTrainerPartnerName());
@@ -6264,8 +6269,7 @@ static void UpdatePartyToFieldOrder(void)
     Free(partyBuffer);
 }
 
-// Unused
-static void SwitchAliveMonIntoLeadSlot(void)
+static void UNUSED SwitchAliveMonIntoLeadSlot(void)
 {
     u8 i;
     struct Pokemon *mon;
@@ -6367,8 +6371,7 @@ void ChooseMonForDaycare(void)
     InitPartyMenu(PARTY_MENU_TYPE_DAYCARE, PARTY_LAYOUT_SINGLE, PARTY_ACTION_CHOOSE_MON, FALSE, PARTY_MSG_CHOOSE_MON_2, Task_HandleChooseMonInput, BufferMonSelection);
 }
 
-// Unused
-static void ChoosePartyMonByMenuType(u8 menuType)
+static void UNUSED ChoosePartyMonByMenuType(u8 menuType)
 {
     gFieldCallback2 = CB2_FadeFromPartyMenu;
     InitPartyMenu(menuType, PARTY_LAYOUT_SINGLE, PARTY_ACTION_CHOOSE_AND_CLOSE, FALSE, PARTY_MSG_CHOOSE_MON, Task_HandleChooseMonInput, CB2_ReturnToField);

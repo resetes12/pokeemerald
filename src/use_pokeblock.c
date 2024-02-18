@@ -73,10 +73,10 @@ struct UsePokeblockSession
     u8 natureText[34];
 };
 
-// This struct is identical to PokenavMonListItem, the struct used for managing lists of pokemon in the pokenav
+// This struct is identical to PokenavMonListItem, the struct used for managing lists of Pokémon in the PokéNav
 // Given that this screen is essentially duplicated in the poknav, this struct was probably the same one with
 // a more general name/purpose
-// TODO: Once the pokenav conditions screens are documented, resolve the above
+// TODO: Once the PokéNav conditions screens are documented, resolve the above
 struct UsePokeblockMenuPokemon
 {
     u8 boxId; // Because this screen is never used for the PC this is always set to TOTAL_BOXES_COUNT to refer to party
@@ -173,8 +173,8 @@ static EWRAM_DATA struct UsePokeblockMenu *sMenu = NULL;
 
 static const u32 sMonFrame_Pal[] = INCBIN_U32("graphics/pokeblock/use_screen/mon_frame_pal.bin");
 static const u32 sMonFrame_Gfx[] = INCBIN_U32("graphics/pokeblock/use_screen/mon_frame.4bpp");
-static const u32 sMonFrame_Tilemap[] = INCBIN_U32("graphics/pokeblock/use_screen/mon_frame.bin");
-static const u32 sGraphData_Tilemap[] = INCBIN_U32("graphics/pokeblock/use_screen/graph_data.bin");
+static const u32 sMonFrame_Tilemap[] = INCBIN_U32("graphics/pokeblock/use_screen/mon_frame.bin.lz");
+static const u32 sGraphData_Tilemap[] = INCBIN_U32("graphics/pokeblock/use_screen/graph_data.bin.lz");
 
 // The condition/flavors aren't listed in their normal order in this file, they're listed as shown on the graph going counter-clockwise
 // Normally they would go Cool/Spicy, Beauty/Dry, Cute/Sweet, Smart/Bitter, Tough/Sour (also graph order, but clockwise)
@@ -1101,15 +1101,14 @@ static u8 GetSelectionIdFromPartyId(u8 partyId)
     return partyId - numEggs;
 }
 
-// Unused
-static u8 GetPartyIdFromSelectionId_(u8 selectionId)
+static u8 UNUSED GetPartyIdFromSelectionId_(u8 selectionId)
 {
     return GetPartyIdFromSelectionId(selectionId);
 }
 
 static void LoadAndCreateUpDownSprites(void)
 {
-    u16 i, spriteId;
+    u16 i;
 
     LoadSpriteSheet(&sSpriteSheet_UpDown);
     LoadSpritePalette(&sSpritePalette_UpDown);
@@ -1119,7 +1118,7 @@ static void LoadAndCreateUpDownSprites(void)
     {
         if (sInfo->enhancements[i] != 0)
         {
-            spriteId = CreateSprite(&sSpriteTemplate_UpDown, sUpDownCoordsOnGraph[i][0], sUpDownCoordsOnGraph[i][1], 0);
+            u16 spriteId = CreateSprite(&sSpriteTemplate_UpDown, sUpDownCoordsOnGraph[i][0], sUpDownCoordsOnGraph[i][1], 0);
             if (spriteId != MAX_SPRITES)
             {
                 if (sInfo->enhancements[i] != 0) // Always true here
@@ -1130,19 +1129,23 @@ static void LoadAndCreateUpDownSprites(void)
     }
 }
 
+#define tTimer data[0]
+
 static void SpriteCB_UpDown(struct Sprite *sprite)
 {
-    if (sprite->data[0] < 6)
+    if (sprite->tTimer < 6)
         sprite->y2 -= 2;
-    else if (sprite->data[0] < 12)
+    else if (sprite->tTimer < 12)
         sprite->y2 += 2;
 
-    if (++sprite->data[0] > 60)
+    if (++sprite->tTimer > 60)
     {
         DestroySprite(sprite);
         sInfo->numEnhancements--;
     }
 }
+
+#undef tTimer
 
 static void LoadPartyInfo(void)
 {
@@ -1249,7 +1252,7 @@ static void LoadAndCreateSelectionIcons(void)
     LoadSpriteSheets(spriteSheets);
     LoadSpritePalettes(spritePals);
 
-    // Fill pokeball selection icons up to number in party
+    // Fill Poké Ball selection icons up to number in party
     for (i = 0; i < sMenu->info.numSelections - 1; i++)
     {
         spriteId = CreateSprite(&spriteTemplate, 226, (i * 20) + 8, 0);
@@ -1479,7 +1482,7 @@ static bool8 LoadNewSelection_CancelToMon(void)
     case 2:
         if (!ConditionMenu_UpdateMonEnter(&sMenu->graph, &sMenu->curMonXOffset))
         {
-            // Load the new adjacent pokemon (not the one being shown)
+            // Load the new adjacent Pokémon (not the one being shown)
             LoadMonInfo(sMenu->toLoadSelection, sMenu->toLoadId);
             sMenu->info.helperState++;
         }
@@ -1542,7 +1545,7 @@ static bool8 LoadNewSelection_MonToMon(void)
     case 2:
         if (!ConditionMenu_UpdateMonEnter(&sMenu->graph, &sMenu->curMonXOffset))
         {
-            // Load the new adjacent pokemon (not the one being shown)
+            // Load the new adjacent Pokémon (not the one being shown)
             LoadMonInfo(sMenu->toLoadSelection, sMenu->toLoadId);
             sMenu->info.helperState++;
         }
@@ -1583,8 +1586,8 @@ static void SpriteCB_SelectionIconCancel(struct Sprite *sprite)
         sprite->oam.paletteNum = IndexOfSpritePaletteTag(TAG_CONDITION_CANCEL);
 }
 
-// Calculate the max id for sparkles/stars that appear around the pokemon on the condition screen
-// All pokemon start with 1 sparkle (added by CreateConditionSparkleSprites), so the number here +1
+// Calculate the max id for sparkles/stars that appear around the Pokémon on the condition screen
+// All Pokémon start with 1 sparkle (added by CreateConditionSparkleSprites), so the number here +1
 // is the total number of sparkles that appear
 static void CalculateNumAdditionalSparkles(u8 monIndex)
 {
@@ -1605,12 +1608,15 @@ static void LoadConditionGfx(void)
     LoadSpritePalette(&spritePalette);
 }
 
+#define sSpeed   data[0]
+#define sTargetX data[1]
+
 static void CreateConditionSprite(void)
 {
     u16 i;
     s16 xDiff, xStart;
     int yStart = 17;
-    int var = 8;
+    int speed = 8;
     struct Sprite **sprites = sMenu->condition;
     const struct SpriteTemplate *template = &sSpriteTemplate_Condition;
 
@@ -1619,9 +1625,9 @@ static void CreateConditionSprite(void)
         u8 spriteId = CreateSprite(template, i * xDiff + xStart, yStart, 0);
         if (spriteId != MAX_SPRITES)
         {
-            gSprites[spriteId].data[0] = var;
-            gSprites[spriteId].data[1] = (i * xDiff) | 0x20;
-            gSprites[spriteId].data[2] = i;
+            gSprites[spriteId].sSpeed = speed;
+            gSprites[spriteId].sTargetX = (i * xDiff) | 0x20;
+            gSprites[spriteId].data[2] = i; // Unused
             StartSpriteAnim(&gSprites[spriteId], i);
             sprites[i] = &gSprites[spriteId];
         }
@@ -1650,11 +1656,15 @@ static void SpriteCB_Condition(struct Sprite *sprite)
 {
     s16 prevX = sprite->x;
 
-    sprite->x += sprite->data[0];
-    if ((prevX <= sprite->data[1] && sprite->x >= sprite->data[1])
-     || (prevX >= sprite->data[1] && sprite->x <= sprite->data[1]))
+    // Slide onscreen
+    sprite->x += sprite->sSpeed;
+
+    // Check if target position has been reached/surpassed
+    if ((prevX <= sprite->sTargetX && sprite->x >= sprite->sTargetX)
+     || (prevX >= sprite->sTargetX && sprite->x <= sprite->sTargetX))
     {
-        sprite->x = sprite->data[1];
+        // End slide onscreen, become static sprite.
+        sprite->x = sprite->sTargetX;
         sprite->callback = SpriteCallbackDummy;
     }
 }

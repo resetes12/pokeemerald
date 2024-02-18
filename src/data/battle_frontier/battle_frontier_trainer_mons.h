@@ -4641,7 +4641,7 @@
     FRONTIER_MON_ANNIHILAPE_1,\
     -1
 
-// The strong Psychic M/F trainers all use the below pokemon
+// The strong Psychic M/F trainers all use the below Pokémon
 // Additionally they use 1 of 3 legendary trios, and Latios or Latias depending on gender
 #define FRONTIER_MONS_PSYCHIC_2(lati, legend1, legend2, legend3) \
     FRONTIER_MON_WOBBUFFET_1,   \

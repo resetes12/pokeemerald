@@ -226,10 +226,22 @@ static void DoQuizQuestionEasyChatScreen(void);
 static void DoQuizSetAnswerEasyChatScreen(void);
 static void DoQuizSetQuestionEasyChatScreen(void);
 
-#define PALTAG_TRIANGLE_CURSOR 0
-#define PALTAG_RECTANGLE_CURSOR 1
-#define PALTAG_MISC_UI 2
-#define PALTAG_RS_INTERVIEW_FRAME 3
+enum {
+    PALTAG_TRIANGLE_CURSOR,
+    PALTAG_RECTANGLE_CURSOR,
+    PALTAG_MISC_UI,
+    PALTAG_RS_INTERVIEW_FRAME,
+};
+
+enum {
+    GFXTAG_TRIANGLE_CURSOR,
+    GFXTAG_RECTANGLE_CURSOR,
+    GFXTAG_SCROLL_INDICATOR,
+    GFXTAG_START_SELECT_BUTTONS,
+    GFXTAG_MODE_WINDOW,
+    GFXTAG_RS_INTERVIEW_FRAME,
+    GFXTAG_BUTTON_WINDOW,
+};
 
 #define GFXTAG_TRIANGLE_CURSOR 0
 #define GFXTAG_RECTANGLE_CURSOR 1
@@ -2746,7 +2758,7 @@ static void GetEasyChatConfirmDeletionText(const u8 **str1, const u8 **str2)
     *str2 = gText_BeDeletedThatOkay;
 }
 
-static void GetKeyboardCursorColAndRow(u8 *column, u8 *row)
+static void GetKeyboardCursorColAndRow(s8 *column, s8 *row)
 {
     *column = sEasyChatScreen->keyboardColumn;
     *row = sEasyChatScreen->keyboardRow;
@@ -2762,7 +2774,7 @@ static u8 GetKeyboardScrollOffset(void)
     return sEasyChatScreen->keyboardScrollOffset;
 }
 
-static void GetWordSelectColAndRow(u8 *column, u8 *row)
+static void GetWordSelectColAndRow(s8 *column, s8 *row)
 {
     *column = sEasyChatScreen->wordSelectColumn;
     *row = sEasyChatScreen->wordSelectRow;
@@ -2778,7 +2790,7 @@ static u8 GetWordSelectLastRow(void)
     return sEasyChatScreen->wordSelectLastRow;
 }
 
-static u8 UnusedDummy(void)
+static u8 UNUSED UnusedDummy(void)
 {
     return FALSE;
 }
@@ -3918,12 +3930,12 @@ static void LoadEasyChatPalettes(void)
 {
     ResetPaletteFade();
     LoadPalette(gEasyChatMode_Pal, BG_PLTT_ID(0), PLTT_SIZE_4BPP);
-    LoadPalette(sTextInputFrameOrange_Pal, BG_PLTT_ID(1), PLTT_SIZE_4BPP);
-    LoadPalette(sTextInputFrameGreen_Pal, BG_PLTT_ID(4), PLTT_SIZE_4BPP);
-    LoadPalette(sTitleText_Pal, BG_PLTT_ID(10), PLTT_SIZEOF(4));
-    LoadPalette(sText_Pal, BG_PLTT_ID(11), PLTT_SIZEOF(6));
-    LoadPalette(sText_Pal, BG_PLTT_ID(15), PLTT_SIZEOF(6));
-    LoadPalette(sText_Pal, BG_PLTT_ID(3), PLTT_SIZEOF(6));
+    LoadPalette(sTextInputFrameOrange_Pal, BG_PLTT_ID(1), sizeof(sTextInputFrameOrange_Pal));
+    LoadPalette(sTextInputFrameGreen_Pal, BG_PLTT_ID(4), sizeof(sTextInputFrameGreen_Pal));
+    LoadPalette(sTitleText_Pal, BG_PLTT_ID(10), sizeof(sTitleText_Pal));
+    LoadPalette(sText_Pal, BG_PLTT_ID(11), sizeof(sText_Pal));
+    LoadPalette(sText_Pal, BG_PLTT_ID(15), sizeof(sText_Pal));
+    LoadPalette(sText_Pal, BG_PLTT_ID(3), sizeof(sText_Pal));
 }
 
 static void PrintTitle(void)
@@ -5252,7 +5264,7 @@ u8 *ConvertEasyChatWordsToString(u8 *dest, const u16 *src, u16 columns, u16 rows
     return dest;
 }
 
-static u8 *UnusedConvertEasyChatWordsToString(u8 *dest, const u16 *src, u16 columns, u16 rows)
+static u8 UNUSED *UnusedConvertEasyChatWordsToString(u8 *dest, const u16 *src, u16 columns, u16 rows)
 {
     u16 i, j, k;
     u16 numColumns;
@@ -5491,8 +5503,7 @@ u16 UnlockRandomTrendySaying(void)
     return EC_EMPTY_WORD;
 }
 
-// Unused
-static u16 GetRandomUnlockedTrendySaying(void)
+static u16 UNUSED GetRandomUnlockedTrendySaying(void)
 {
     u16 i;
     u16 n = GetNumTrendySayingsUnlocked();
@@ -5638,8 +5649,7 @@ static u8 GetUnlockedEasyChatGroupId(u8 index)
         return sWordData->unlockedGroupIds[index];
 }
 
-// Unused
-static u8 *BufferEasyChatWordGroupName(u8 *dest, u8 groupId, u16 totalChars)
+static u8 UNUSED *BufferEasyChatWordGroupName(u8 *dest, u8 groupId, u16 totalChars)
 {
     u16 i;
     u8 *str = StringCopy(dest, sEasyChatGroupNamePointers[groupId]);

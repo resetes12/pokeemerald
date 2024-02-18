@@ -1362,7 +1362,7 @@ static void DestroyFogHorizontalSprites(void);
 // Updates just the color of shadows to match special weather blending
 u8 UpdateShadowColor(u16 color) {
   u8 paletteNum = IndexOfSpritePaletteTag(TAG_WEATHER_START);
-  u16 tempBuffer[16];
+  u16 ALIGNED(4) tempBuffer[16];
   u16 blendedColor;
   if (paletteNum != 0xFF) {
     u16 index = (paletteNum+16)*16+SHADOW_COLOR_INDEX;
@@ -2458,8 +2458,7 @@ static void UpdateBubbleSprite(struct Sprite *sprite)
 
 //------------------------------------------------------------------------------
 
-// Unused function.
-static void UnusedSetCurrentAbnormalWeather(u32 weather, u32 unknown)
+static void UNUSED UnusedSetCurrentAbnormalWeather(u32 weather, u32 unknown)
 {
     sCurrentAbnormalWeather = weather;
     sUnusedWeatherRelated = unknown;

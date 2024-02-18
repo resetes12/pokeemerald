@@ -63,7 +63,7 @@ static void None_Main(void);
 static u8 None_Finish(void);
 
 EWRAM_DATA struct Weather gWeather = {0};
-EWRAM_DATA static u8 sFieldEffectPaletteColorMapTypes[32] = {0};
+EWRAM_DATA static u8 ALIGNED(2) sFieldEffectPaletteColorMapTypes[32] = {0};
 
 static const u8 *sPaletteColorMapTypes;
 
@@ -113,7 +113,7 @@ void (*const gWeatherPalStateFuncs[])(void) =
 
 // This table specifies which of the color maps should be
 // applied to each of the background and sprite palettes.
-static const u8 sBasePaletteColorMapTypes[32] =
+static const u8 ALIGNED(2) sBasePaletteColorMapTypes[32] =
 {
     // background palettes
     COLOR_MAP_DARK_CONTRAST,
@@ -151,14 +151,14 @@ static const u8 sBasePaletteColorMapTypes[32] =
     COLOR_MAP_DARK_CONTRAST,
 };
 
-const u16 gFogPalette[] = INCBIN_U16("graphics/weather/fog.gbapal");
+const u16 ALIGNED(4) gFogPalette[] = INCBIN_U16("graphics/weather/fog.gbapal");
 
 void StartWeather(void)
 {
     if (!FuncIsActiveTask(Task_WeatherMain))
     {
         u8 index = AllocSpritePalette(PALTAG_WEATHER);
-        CpuCopy32(gFogPalette, &gPlttBufferUnfaded[0x100 + index * 16], 32);
+        CpuCopy32(gFogPalette, &gPlttBufferUnfaded[OBJ_PLTT_ID(index)], PLTT_SIZE_4BPP);
         BuildColorMaps();
         gWeatherPtr->contrastColorMapSpritePalIndex = index;
         gWeatherPtr->weatherPicSpritePalIndex = 0xFF; // defer allocation until needed
@@ -482,13 +482,13 @@ static void ApplyColorMap(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex)
         palettes = (palettes << (32-numPalettes)) >> (32-numPalettes);
         numPalettes -= startPalIndex;
         colorMapIndex--;
-        palOffset = startPalIndex * 16;
+        palOffset = PLTT_ID(startPalIndex);
         UpdateAltBgPalettes(palettes & PALETTES_BG);
         // Thunder gamma-shift looks bad on night-blended palettes, so ignore time blending in some situations
         if (!(colorMapIndex > 3) && MapHasNaturalLight(gMapHeader.mapType))
           UpdatePalettesWithTime(palettes);
         else
-          CpuFastCopy(gPlttBufferUnfaded + palOffset, gPlttBufferFaded + palOffset, 32 * numPalettes);
+          CpuFastCopy(gPlttBufferUnfaded + palOffset, gPlttBufferFaded + palOffset, PLTT_SIZE_4BPP * numPalettes);
         numPalettes += startPalIndex;
         curPalIndex = startPalIndex;
 
@@ -529,7 +529,7 @@ static void ApplyColorMap(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex)
     {
         // A negative gammIndex value means that the blending will come from the special Drought weather's palette tables.
         colorMapIndex = -colorMapIndex - 1;
-        palOffset = startPalIndex * 16;
+        palOffset = PLTT_ID(startPalIndex);
         numPalettes += startPalIndex;
         curPalIndex = startPalIndex;
 
@@ -538,7 +538,7 @@ static void ApplyColorMap(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex)
             if (sPaletteColorMapTypes[curPalIndex] == COLOR_MAP_NONE)
             {
                 // No palette change.
-                CpuFastCopy(gPlttBufferUnfaded + palOffset, gPlttBufferFaded + palOffset, 16 * sizeof(u16));
+                CpuFastCopy(&gPlttBufferUnfaded[palOffset], &gPlttBufferFaded[palOffset], PLTT_SIZE_4BPP);
                 palOffset += 16;
             }
             else
@@ -560,7 +560,7 @@ static void ApplyColorMap(u8 startPalIndex, u8 numPalettes, s8 colorMapIndex)
             UpdateAltBgPalettes(palettes & PALETTES_BG);
             UpdatePalettesWithTime(palettes);
         } else { // copy
-            CpuFastCopy(gPlttBufferUnfaded + startPalIndex * 16, gPlttBufferFaded + startPalIndex * 16, numPalettes * 16 * sizeof(u16));
+            CpuFastCopy(&gPlttBufferUnfaded[PLTT_ID(startPalIndex)], &gPlttBufferFaded[PLTT_ID(startPalIndex)], numPalettes * PLTT_SIZE_4BPP);
         }
     }
 }
@@ -575,7 +575,7 @@ static void ApplyColorMapWithBlend(u8 startPalIndex, u8 numPalettes, s8 colorMap
     u8 gBlend = color.g;
     u8 bBlend = color.b;
 
-    palOffset = BG_PLTT_ID(startPalIndex);
+    palOffset = PLTT_ID(startPalIndex);
     numPalettes += startPalIndex;
     colorMapIndex--;
     curPalIndex = startPalIndex;
@@ -840,14 +840,14 @@ void UpdateSpritePaletteWithWeather(u8 spritePaletteIndex, bool8 allowFog)
         {
             if (gWeatherPtr->currWeather == WEATHER_FOG_HORIZONTAL)
                 MarkFogSpritePalToLighten(paletteIndex);
-            paletteIndex *= 16;
+            paletteIndex = PLTT_ID(paletteIndex);
             for (i = 0; i < 16; i++)
                 gPlttBufferFaded[paletteIndex + i] = gWeatherPtr->fadeDestColor;
         }
         break;
     case WEATHER_PAL_STATE_SCREEN_FADING_OUT:
         paletteIndex = PLTT_ID(paletteIndex);
-        CpuFastCopy(gPlttBufferFaded + paletteIndex, gPlttBufferUnfaded + paletteIndex, PLTT_SIZE_4BPP);
+        CpuFastCopy(&gPlttBufferFaded[paletteIndex], &gPlttBufferUnfaded[paletteIndex], PLTT_SIZE_4BPP);
         BlendPalette(paletteIndex, 16, gPaletteFade.y, gPaletteFade.blendColor);
         break;
     // WEATHER_PAL_STATE_CHANGING_WEATHER
@@ -884,8 +884,7 @@ void ApplyWeatherColorMapToPals(u8 startPalIndex, u8 numPalettes) {
     ApplyColorMap(startPalIndex, numPalettes, gWeatherPtr->colorMapIndex);
 }
 
-// Unused
-static bool8 IsFirstFrameOfWeatherFadeIn(void)
+static bool8 UNUSED IsFirstFrameOfWeatherFadeIn(void)
 {
     if (gWeatherPtr->palProcessingState == WEATHER_PAL_STATE_SCREEN_FADING_IN)
         return gWeatherPtr->fadeInFirstFrame;
@@ -1029,8 +1028,8 @@ bool8 Weather_UpdateBlend(void)
     return FALSE;
 }
 
-// Unused. Uses the same numbering scheme as the coord events
-static void SetFieldWeather(u8 weather)
+// Uses the same numbering scheme as the coord events
+static void UNUSED SetFieldWeather(u8 weather)
 {
     switch (weather)
     {

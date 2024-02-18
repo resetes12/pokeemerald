@@ -5262,9 +5262,9 @@ static bool8 CalculateMoves(void)
     {
         if (CanSpeciesLearnTMHM(species, j))
         {
-            sStatsMoves[movesTotal] = ItemIdToBattleMoveId(ITEM_TM01_FOCUS_PUNCH + j);
+            sStatsMoves[movesTotal] = ItemIdToBattleMoveId(ITEM_TM01 + j);
             movesTotal++;
-            sStatsMovesTMHM_ID[numTMHMMoves] = (ITEM_TM01_FOCUS_PUNCH + j);
+            sStatsMovesTMHM_ID[numTMHMMoves] = (ITEM_TM01 + j);
             numTMHMMoves++;
         }
     }
@@ -5860,7 +5860,7 @@ static void PrintStatsScreen_Left(u8 taskId)
         base_i++;
 
         //Egg cycles
-        if (sPokedexView->sPokemonStats.eggGroup1 == EGG_GROUP_UNDISCOVERED || sPokedexView->sPokemonStats.eggGroup2 == EGG_GROUP_UNDISCOVERED) //Species without eggs (legendaries etc)
+        if (sPokedexView->sPokemonStats.eggGroup1 == EGG_GROUP_NO_EGGS_DISCOVERED || sPokedexView->sPokemonStats.eggGroup2 == EGG_GROUP_NO_EGGS_DISCOVERED) //Species without eggs (legendaries etc)
         {
             PrintStatsScreenTextSmall(WIN_STATS_LEFT, gText_Stats_EggCycles, base_x, base_y + base_y_offset*base_i);
             PrintStatsScreenTextSmall(WIN_STATS_LEFT, gText_ThreeDashes, 78, base_y + base_y_offset*base_i);
@@ -5937,7 +5937,7 @@ static void PrintStatsScreen_Left(u8 taskId)
         case EGG_GROUP_DRAGON      :
             StringCopy(gStringVar1, gText_Stats_eggGroup_DRAGON);
             break;
-        case EGG_GROUP_UNDISCOVERED:
+        case EGG_GROUP_NO_EGGS_DISCOVERED:
             StringCopy(gStringVar1, gText_Stats_eggGroup_UNDISCOVERED);
             break;
         }
@@ -5988,7 +5988,7 @@ static void PrintStatsScreen_Left(u8 taskId)
             case EGG_GROUP_DRAGON      :
                 StringCopy(gStringVar2, gText_Stats_eggGroup_DRAGON);
                 break;
-            case EGG_GROUP_UNDISCOVERED:
+            case EGG_GROUP_NO_EGGS_DISCOVERED:
                 StringCopy(gStringVar2, gText_Stats_eggGroup_UNDISCOVERED);
                 break;
             }

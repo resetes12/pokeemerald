@@ -61,8 +61,8 @@ static void StartSweetScentFieldEffect(void)
     }
     else
     {
-        CpuFastSet(gPlttBufferUnfaded, gPaletteDecompressionBuffer, 0x100);
-        CpuFastSet(gPlttBufferFaded, gPlttBufferUnfaded, 0x100);
+        CpuFastCopy(gPlttBufferUnfaded, gPaletteDecompressionBuffer, PLTT_SIZE);
+        CpuFastCopy(gPlttBufferFaded, gPlttBufferUnfaded, PLTT_SIZE);
         BeginNormalPaletteFade(~(1 << (gSprites[GetPlayerAvatarSpriteId()].oam.paletteNum + 16)), 4, 0, 8, RGB_RED);
         taskId = CreateTask(TrySweetScentEncounter, 0);
         gTasks[taskId].data[0] = 0;
@@ -101,7 +101,7 @@ static void FailSweetScentEncounter(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
-        CpuFastSet(gPaletteDecompressionBuffer, gPlttBufferUnfaded, 0x100);
+        CpuFastCopy(gPaletteDecompressionBuffer, gPlttBufferUnfaded, PLTT_SIZE);
         SetWeatherPalStateIdle();
         ScriptContext_SetupScript(EventScript_FailSweetScent);
         DestroyTask(taskId);

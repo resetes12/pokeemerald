@@ -1170,8 +1170,7 @@ u16 GetRandomScaledFrontierTrainerId(u8 challengeNum, u8 battleNum)
     return trainerId;
 }
 
-// Unused
-static void GetRandomScaledFrontierTrainerIdRange(u8 challengeNum, u8 battleNum, u16 *trainerIdPtr, u8 *rangePtr)
+static void UNUSED GetRandomScaledFrontierTrainerIdRange(u8 challengeNum, u8 battleNum, u16 *trainerIdPtr, u8 *rangePtr)
 {
     u16 trainerId, range;
 
@@ -1723,8 +1722,8 @@ static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
     }
 
     // Regular battle frontier trainer.
-    // Attempt to fill the trainer's party with random Pokemon until 3 have been
-    // successfully chosen. The trainer's party may not have duplicate pokemon species
+    // Attempt to fill the trainer's party with random Pokémon until 3 have been
+    // successfully chosen. The trainer's party may not have duplicate Pokémon species
     // or duplicate held items.
     for (bfMonCount = 0; monSet[bfMonCount] != 0xFFFF; bfMonCount++)
         ;
@@ -1734,12 +1733,12 @@ static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
     {
         u16 monId = monSet[Random() % bfMonCount];
 
-        // "High tier" pokemon are only allowed on open level mode
+        // "High tier" Pokémon are only allowed on open level mode
         // 20 is not a possible value for level here
         if (lvlMode == FRONTIER_LVL_OPEN && monId > FRONTIER_MONS_HIGH_TIER)
             continue;
 
-        // Ensure this pokemon species isn't a duplicate.
+        // Ensure this Pokémon species isn't a duplicate.
         for (j = 0; j < i + firstMonId; j++)
         {
             if (GetMonData(&gEnemyParty[j], MON_DATA_SPECIES, NULL) == gFacilityTrainerMons[monId].species)
@@ -1758,7 +1757,7 @@ static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
         if (j != i + firstMonId)
             continue;
 
-        // Ensure this exact pokemon index isn't a duplicate. This check doesn't seem necessary
+        // Ensure this exact Pokémon index isn't a duplicate. This check doesn't seem necessary
         // because the species and held items were already checked directly above.
         for (j = 0; j < i; j++)
         {
@@ -1770,7 +1769,7 @@ static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
 
         chosenMonIndices[i] = monId;
 
-        // Place the chosen pokemon into the trainer's party.
+        // Place the chosen Pokémon into the trainer's party.
         CreateMonWithEVSpreadNatureOTID(&gEnemyParty[i + firstMonId],
                                              gFacilityTrainerMons[monId].species,
                                              level,
@@ -1780,7 +1779,7 @@ static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
                                              otID);
 
         friendship = MAX_FRIENDSHIP;
-        // Give the chosen pokemon its specified moves.
+        // Give the chosen Pokémon its specified moves.
         for (j = 0; j < MAX_MON_MOVES; j++)
         {
             SetMonMoveSlot(&gEnemyParty[i + firstMonId], gFacilityTrainerMons[monId].moves[j], j);
@@ -1791,14 +1790,14 @@ static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
         SetMonData(&gEnemyParty[i + firstMonId], MON_DATA_FRIENDSHIP, &friendship);
         SetMonData(&gEnemyParty[i + firstMonId], MON_DATA_HELD_ITEM, &gBattleFrontierHeldItems[gFacilityTrainerMons[monId].itemTableId]);
 
-        // The pokemon was successfully added to the trainer's party, so it's safe to move on to
+        // The Pokémon was successfully added to the trainer's party, so it's safe to move on to
         // the next party slot.
         i++;
     }
 }
 
 // Probably an early draft before the 'CreateApprenticeMon' was written.
-static void Unused_CreateApprenticeMons(u16 trainerId, u8 firstMonId)
+static void UNUSED Unused_CreateApprenticeMons(u16 trainerId, u8 firstMonId)
 {
     s32 i, j;
     u8 friendship = MAX_FRIENDSHIP;
@@ -1848,7 +1847,7 @@ u16 GetRandomFrontierMonFromSet(u16 trainerId)
 
     do
     {
-        // "High tier" pokemon are only allowed on open level mode
+        // "High tier" Pokémon are only allowed on open level mode
         // 20 is not a possible value for level here
         monId = monSet[Random() % numMons];
     } while(lvlMode == FRONTIER_LVL_OPEN && monId > FRONTIER_MONS_HIGH_TIER);
@@ -1875,12 +1874,14 @@ static void FillFactoryFrontierTrainerParty(u16 trainerId, u8 firstMonId)
 
     if (trainerId < FRONTIER_TRAINERS_COUNT)
     {
-        u8 lvlMode = gSaveBlock2Ptr->frontier.lvlMode;
-        u8 battleMode = VarGet(VAR_FRONTIER_BATTLE_MODE);
     // By mistake Battle Tower's Level 50 challenge number is used to determine the IVs for Battle Factory.
     #ifdef BUGFIX
+        u8 lvlMode = gSaveBlock2Ptr->frontier.lvlMode;
+        u8 battleMode = VarGet(VAR_FRONTIER_BATTLE_MODE);
         u8 challengeNum = gSaveBlock2Ptr->frontier.factoryWinStreaks[battleMode][lvlMode] / FRONTIER_STAGES_PER_CHALLENGE;
     #else
+        u8 UNUSED lvlMode = gSaveBlock2Ptr->frontier.lvlMode;
+        u8 battleMode = VarGet(VAR_FRONTIER_BATTLE_MODE);
         u8 challengeNum = gSaveBlock2Ptr->frontier.towerWinStreaks[battleMode][FRONTIER_LVL_50] / FRONTIER_STAGES_PER_CHALLENGE;
     #endif
         if (gSaveBlock2Ptr->frontier.curChallengeBattleNum < FRONTIER_STAGES_PER_CHALLENGE - 1)
@@ -2275,7 +2276,7 @@ static void SaveTowerChallenge(void)
         SaveBattleTowerRecord();
 
     gSaveBlock2Ptr->frontier.challengeStatus = gSpecialVar_0x8005;
-    VarSet(VAR_TEMP_0, 0);
+    VarSet(VAR_TEMP_CHALLENGE_STATUS, 0);
     gSaveBlock2Ptr->frontier.challengePaused = TRUE;
     SaveGameFrontier();
 }
@@ -2353,7 +2354,7 @@ static void LoadMultiPartnerCandidatesData(void)
     u32 lvlMode, battleMode;
     s32 challengeNum;
     u32 species1, species2;
-    u32 level;
+    u32 UNUSED level;
     struct ObjectEventTemplate *objEventTemplates;
 
     objEventTemplates = gSaveBlock1Ptr->objectEventTemplates;
@@ -2528,15 +2529,15 @@ static void GetPotentialPartnerMoveAndSpecies(u16 trainerId, u16 monId)
 // These partners can be an NPC or a former/record-mixed Apprentice
 // When talked to, their response consists of:
 // PARTNER_MSGID_INTRO - A greeting
-// PARTNER_MSGID_MON1 - Naming one pokemon on their team, and a move it has
-// PARTNER_MSGID_MON2_ASK - Naming a second pokemon on their team, a move it has, and asking if they'd like to be their partner
+// PARTNER_MSGID_MON1 - Naming one Pokémon on their team, and a move it has
+// PARTNER_MSGID_MON2_ASK - Naming a second Pokémon on their team, a move it has, and asking if they'd like to be their partner
 // PARTNER_MSGID_ACCEPT - If the player agrees to be their partner
 // PARTNER_MSGID_REJECT - If the player declines to be their partner
 static void ShowPartnerCandidateMessage(void)
 {
     s32 i, j, partnerId;
     s32 monId;
-    s32 level = SetFacilityPtrsGetLevel();
+    s32 UNUSED level = SetFacilityPtrsGetLevel();
     u16 winStreak = GetCurrentFacilityWinStreak();
     s32 challengeNum = winStreak / FRONTIER_STAGES_PER_CHALLENGE;
     s32 k = gSpecialVar_LastTalked - 2;
@@ -2847,7 +2848,7 @@ static void AwardBattleTowerRibbons(void)
 #ifdef BUGFIX
     struct RibbonCounter ribbons[MAX_FRONTIER_PARTY_SIZE];
 #else
-    struct RibbonCounter ribbons[3]; // BUG: 4 Pokemon can receive ribbons in a double battle mode.
+    struct RibbonCounter ribbons[3]; // BUG: 4 Pokémon can receive ribbons in a double battle mode.
 #endif
     u8 ribbonType = 0;
     u8 lvlMode = gSaveBlock2Ptr->frontier.lvlMode;
@@ -2898,7 +2899,7 @@ static void AwardBattleTowerRibbons(void)
 
 // This is a leftover debugging function that is used to populate the E-Reader
 // trainer with the player's current data.
-static void FillEReaderTrainerWithPlayerData(void)
+static void UNUSED FillEReaderTrainerWithPlayerData(void)
 {
     struct BattleTowerEReaderTrainer *ereaderTrainer = &gSaveBlock2Ptr->frontier.ereaderTrainer;
     s32 i, j;
@@ -3056,7 +3057,7 @@ static void FillPartnerParty(u16 trainerId)
                       #ifdef BUGFIX
                       j,
                       #else
-                      i, // BUG: personality was stored in the 'j' variable. As a result, Steven's pokemon do not have the intended natures.
+                      i, // BUG: personality was stored in the 'j' variable. As a result, Steven's Pokémon do not have the intended natures.
                       #endif
                       OT_ID_PRESET, STEVEN_OTID);
             for (j = 0; j < PARTY_SIZE; j++)
@@ -3250,7 +3251,7 @@ void CalcApprenticeChecksum(struct Apprentice *apprentice)
     s32 i;
 
     apprentice->checksum = 0;
-    for (i = 0; i < (sizeof(struct Apprentice) - 4) / 4; i++)
+    for (i = 0; i < offsetof(struct Apprentice, checksum) / sizeof(u32); i++)
         apprentice->checksum += ((u32 *)apprentice)[i];
 }
 
@@ -3258,7 +3259,7 @@ static void ClearApprentice(struct Apprentice *apprentice)
 {
     s32 i;
 
-    for (i = 0; i < (sizeof(struct Apprentice)) / 4; i++)
+    for (i = 0; i < sizeof(struct Apprentice) / sizeof(u32); i++)
         ((u32 *)apprentice)[i] = 0;
     ResetApprenticeStruct(apprentice);
 }
@@ -3271,7 +3272,7 @@ static void ValidateApprenticesChecksums(void)
     {
         u32 *data = (u32 *) &gSaveBlock2Ptr->apprentices[i];
         u32 checksum = 0;
-        for (j = 0; j < (sizeof(struct Apprentice) - 4) / 4; j++)
+        for (j = 0; j < offsetof(struct Apprentice, checksum) / sizeof(u32); j++)
             checksum += data[j];
         if (gSaveBlock2Ptr->apprentices[i].checksum != checksum)
             ClearApprentice(&gSaveBlock2Ptr->apprentices[i]);
@@ -3500,7 +3501,7 @@ static void FillTentTrainerParty_(u16 trainerId, u8 firstMonId, u8 monCount)
     {
         u16 monId = monSet[Random() % bfMonCount];
 
-        // Ensure this pokemon species isn't a duplicate.
+        // Ensure this Pokémon species isn't a duplicate.
         for (j = 0; j < i + firstMonId; j++)
         {
             if (GetMonData(&gEnemyParty[j], MON_DATA_SPECIES, NULL) == gFacilityTrainerMons[monId].species)
@@ -3519,7 +3520,7 @@ static void FillTentTrainerParty_(u16 trainerId, u8 firstMonId, u8 monCount)
         if (j != i + firstMonId)
             continue;
 
-        // Ensure this exact pokemon index isn't a duplicate. This check doesn't seem necessary
+        // Ensure this exact Pokémon index isn't a duplicate. This check doesn't seem necessary
         // because the species and held items were already checked directly above.
         for (j = 0; j < i; j++)
         {
@@ -3531,7 +3532,7 @@ static void FillTentTrainerParty_(u16 trainerId, u8 firstMonId, u8 monCount)
 
         chosenMonIndices[i] = monId;
 
-        // Place the chosen pokemon into the trainer's party.
+        // Place the chosen Pokémon into the trainer's party.
         CreateMonWithEVSpreadNatureOTID(&gEnemyParty[i + firstMonId],
                                              gFacilityTrainerMons[monId].species,
                                              level,
@@ -3541,7 +3542,7 @@ static void FillTentTrainerParty_(u16 trainerId, u8 firstMonId, u8 monCount)
                                              otID);
 
         friendship = MAX_FRIENDSHIP;
-        // Give the chosen pokemon its specified moves.
+        // Give the chosen Pokémon its specified moves.
         for (j = 0; j < MAX_MON_MOVES; j++)
         {
             SetMonMoveSlot(&gEnemyParty[i + firstMonId], gFacilityTrainerMons[monId].moves[j], j);
@@ -3552,7 +3553,7 @@ static void FillTentTrainerParty_(u16 trainerId, u8 firstMonId, u8 monCount)
         SetMonData(&gEnemyParty[i + firstMonId], MON_DATA_FRIENDSHIP, &friendship);
         SetMonData(&gEnemyParty[i + firstMonId], MON_DATA_HELD_ITEM, &gBattleFrontierHeldItems[gFacilityTrainerMons[monId].itemTableId]);
 
-        // The pokemon was successfully added to the trainer's party, so it's safe to move on to
+        // The Pokémon was successfully added to the trainer's party, so it's safe to move on to
         // the next party slot.
         i++;
     }
@@ -3598,7 +3599,7 @@ bool32 ValidateBattleTowerRecord(u8 recordId) // unused
     u32 *record = (u32 *)(&gSaveBlock2Ptr->frontier.towerRecords[recordId]);
     u32 checksum = 0;
     u32 hasData = 0;
-    for (i = 0; i < (sizeof(struct EmeraldBattleTowerRecord) - 4) / 4; i++) // - 4, because of the last fjeld bejng the checksum jtself.
+    for (i = 0; i < offsetof(struct EmeraldBattleTowerRecord, checksum) / sizeof(u32); i++)
     {
         checksum += record[i];
         hasData |= record[i];

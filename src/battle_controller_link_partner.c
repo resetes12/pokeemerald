@@ -423,7 +423,7 @@ static void CompleteOnFinishedBattleAnimation(void)
 
 static void LinkPartnerHandleGetMonData(void)
 {
-    u8 monData[sizeof(struct Pokemon) * 2 + 56]; // this allows to get full data of two pokemon, trying to get more will result in overwriting data
+    u8 monData[sizeof(struct Pokemon) * 2 + 56]; // this allows to get full data of two Pokémon, trying to get more will result in overwriting data
     u32 size = 0;
     u8 monToCheck;
     s32 i;
@@ -450,7 +450,7 @@ static u32 CopyLinkPartnerMonData(u8 monId, u8 *dst)
 {
     struct BattlePokemon battleMon;
     struct MovePpInfo moveData;
-    u8 nickname[20];
+    u8 nickname[POKEMON_NAME_BUFFER_SIZE];
     u8 *src;
     s16 data16;
     u32 data32;

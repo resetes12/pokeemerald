@@ -28,7 +28,7 @@ LD := $(PREFIX)ld
 # note: the makefile must be set up so MODERNCC is never called
 # if MODERN=0
 MODERNCC := $(PREFIX)gcc
-PATH_MODERNCC := PATH=$(TOOLCHAIN)/bin:PATH $(MODERNCC)
+PATH_MODERNCC := PATH="$(PATH)" $(MODERNCC)
 
 ifeq ($(OS),Windows_NT)
 EXE := .exe
@@ -234,8 +234,7 @@ clean-tools:
 	@$(foreach tooldir,$(TOOLDIRS),$(MAKE) clean -C $(tooldir);)
 
 mostlyclean: tidynonmodern tidymodern
-	rm -f $(SAMPLE_SUBDIR)/*.bin
-	rm -f $(CRY_SUBDIR)/*.bin
+	find sound -iname '*.bin' -exec rm {} +
 	rm -f $(MID_SUBDIR)/*.s
 	find . \( -iname '*.1bpp' -o -iname '*.4bpp' -o -iname '*.8bpp' -o -iname '*.gbapal' -o -iname '*.lz' -o -iname '*.rl' -o -iname '*.latfont' -o -iname '*.hwjpnfont' -o -iname '*.fwjpnfont' \) -exec rm {} +
 	rm -f $(DATA_ASM_SUBDIR)/layouts/layouts.inc $(DATA_ASM_SUBDIR)/layouts/layouts_table.inc

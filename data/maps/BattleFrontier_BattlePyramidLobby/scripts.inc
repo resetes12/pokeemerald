@@ -17,11 +17,11 @@ BattleFrontier_BattlePyramidLobby_EventScript_TurnPlayerNorth:
 	end
 
 BattleFrontier_BattlePyramidLobby_OnFrame:
-	map_script_2 VAR_TEMP_0, 0, BattleFrontier_BattlePyramidLobby_EventScript_GetChallengeStatus
-	map_script_2 VAR_TEMP_0, CHALLENGE_STATUS_SAVING, BattleFrontier_BattlePyramidLobby_EventScript_QuitWithoutSaving
-	map_script_2 VAR_TEMP_0, CHALLENGE_STATUS_PAUSED, BattleFrontier_BattlePyramidLobby_EventScript_ResumeChallenge
-	map_script_2 VAR_TEMP_0, CHALLENGE_STATUS_WON, BattleFrontier_BattlePyramidLobby_EventScript_WonChallenge
-	map_script_2 VAR_TEMP_0, CHALLENGE_STATUS_LOST, BattleFrontier_BattlePyramidLobby_EventScript_LostChallenge
+	map_script_2 VAR_TEMP_CHALLENGE_STATUS, 0, BattleFrontier_BattlePyramidLobby_EventScript_GetChallengeStatus
+	map_script_2 VAR_TEMP_CHALLENGE_STATUS, CHALLENGE_STATUS_SAVING, BattleFrontier_BattlePyramidLobby_EventScript_QuitWithoutSaving
+	map_script_2 VAR_TEMP_CHALLENGE_STATUS, CHALLENGE_STATUS_PAUSED, BattleFrontier_BattlePyramidLobby_EventScript_ResumeChallenge
+	map_script_2 VAR_TEMP_CHALLENGE_STATUS, CHALLENGE_STATUS_WON, BattleFrontier_BattlePyramidLobby_EventScript_WonChallenge
+	map_script_2 VAR_TEMP_CHALLENGE_STATUS, CHALLENGE_STATUS_LOST, BattleFrontier_BattlePyramidLobby_EventScript_LostChallenge
 	.2byte 0
 
 BattleFrontier_BattlePyramidLobby_EventScript_GetChallengeStatus::
@@ -38,7 +38,7 @@ BattleFrontier_BattlePyramidLobby_EventScript_QuitWithoutSaving::
 	pyramid_set PYRAMID_DATA_WIN_STREAK, 0
 	pyramid_set PYRAMID_DATA_WIN_STREAK_ACTIVE, FALSE
 	frontier_set FRONTIER_DATA_CHALLENGE_STATUS, 0
-	setvar VAR_TEMP_0, 255
+	setvar VAR_TEMP_CHALLENGE_STATUS, 255
 	releaseall
 	end
 
@@ -59,7 +59,7 @@ BattleFrontier_BattlePyramidLobby_EventScript_GiveBattlePoints::
 	special LoadPlayerParty
 	pyramid_clearhelditems
 	special HealPlayerParty
-  callnative UpdateFollowingPokemon
+	callnative UpdateFollowingPokemon
 	message BattleFrontier_BattlePyramidLobby_Text_UsedBattleBagWillBeKept
 	waitmessage
 	playse SE_EXP_MAX
@@ -75,7 +75,7 @@ BattleFrontier_BattlePyramidLobby_EventScript_GiveBattlePoints::
 	waitse
 	msgbox BattleFrontier_BattlePyramidLobby_Text_LookForwardToNextChallenge, MSGBOX_DEFAULT
 	closemessage
-	setvar VAR_TEMP_0, 255
+	setvar VAR_TEMP_CHALLENGE_STATUS, 255
 	releaseall
 	end
 
@@ -84,7 +84,7 @@ BattleFrontier_BattlePyramidLobby_EventScript_LostChallenge::
 	special LoadPlayerParty
 	pyramid_clearhelditems
 	special HealPlayerParty
-  callnative UpdateFollowingPokemon
+	callnative UpdateFollowingPokemon
 	lockall
 	message BattleFrontier_BattlePyramidLobby_Text_DisappointingHereIsBag
 	waitmessage
@@ -98,7 +98,7 @@ BattleFrontier_BattlePyramidLobby_EventScript_LostChallenge::
 	waitse
 	msgbox BattleFrontier_BattlePyramidLobby_Text_LookForwardToNextChallenge, MSGBOX_DEFAULT
 	closemessage
-	setvar VAR_TEMP_0, 255
+	setvar VAR_TEMP_CHALLENGE_STATUS, 255
 	releaseall
 	end
 
@@ -134,7 +134,7 @@ BattleFrontier_BattlePyramidLobby_EventScript_TryEnterChallenge::
 	frontier_set FRONTIER_DATA_LVL_MODE, VAR_RESULT
 	msgbox BattleFrontier_BattlePyramidLobby_Text_SelectThreeMons, MSGBOX_DEFAULT
 	fadescreen FADE_TO_BLACK
-  callnative RemoveFollowingPokemon
+	callnative RemoveFollowingPokemon
 	call BattleFrontier_EventScript_GetLvlMode
 	copyvar VAR_0x8004, VAR_RESULT
 	setvar VAR_0x8005, FRONTIER_PARTY_SIZE
@@ -148,7 +148,7 @@ BattleFrontier_BattlePyramidLobby_EventScript_TryEnterChallenge::
 	case MULTI_B_PRESSED, BattleFrontier_BattlePyramidLobby_EventScript_LoadPartyAndCancelChallenge
 
 BattleFrontier_BattlePyramidLobby_EventScript_SaveBeforeChallenge::
-	setvar VAR_TEMP_0, 0
+	setvar VAR_TEMP_CHALLENGE_STATUS, 0
 	frontier_set FRONTIER_DATA_SELECTED_MON_ORDER
 	pyramid_init
 	pyramid_set PYRAMID_DATA_WIN_STREAK_ACTIVE, TRUE
@@ -160,7 +160,7 @@ BattleFrontier_BattlePyramidLobby_EventScript_SaveBeforeChallenge::
 	closemessage
 	delay 2
 	call Common_EventScript_SaveGame
-	setvar VAR_TEMP_0, 255
+	setvar VAR_TEMP_CHALLENGE_STATUS, 255
 	goto_if_eq VAR_RESULT, 0, BattleFrontier_BattlePyramidLobby_EventScript_CancelChallengeSaveFailed
 BattleFrontier_BattlePyramidLobby_EventScript_EnterChallenge::
 	special SavePlayerParty
@@ -172,7 +172,7 @@ BattleFrontier_BattlePyramidLobby_EventScript_EnterChallenge::
 	setvar VAR_RESULT, 0
 	special HealPlayerParty
 	warp MAP_BATTLE_FRONTIER_BATTLE_PYRAMID_FLOOR, 1, 1
-	setvar VAR_TEMP_0, 0
+	setvar VAR_TEMP_CHALLENGE_STATUS, 0
 	waitstate
 	end
 
@@ -199,7 +199,7 @@ BattleFrontier_BattlePyramidLobby_EventScript_CancelChallengeSaveFailed::
 
 BattleFrontier_BattlePyramidLobby_EventScript_LoadPartyAndCancelChallenge::
 	special LoadPlayerParty
-  callnative UpdateFollowingPokemon
+	callnative UpdateFollowingPokemon
 BattleFrontier_BattlePyramidLobby_EventScript_CancelChallenge::
 	msgbox BattleFrontier_BattlePyramidLobby_Text_AwaitFutureChallenge, MSGBOX_DEFAULT
 BattleFrontier_BattlePyramidLobby_EventScript_EndCancelChallenge::
@@ -904,3 +904,4 @@ BattleFrontier_BattlePyramidLobby_Text_ExplainBagRules:
 	.string "of ten kinds of items.\p"
 	.string "The contents of the BATTLE BAG are\n"
 	.string "lost if you fail in your quest.$"
+
