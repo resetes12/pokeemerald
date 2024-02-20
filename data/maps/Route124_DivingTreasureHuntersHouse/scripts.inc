@@ -14,7 +14,7 @@ Route124_DivingTreasureHuntersHouse_TogekissEvo_Text:
 	.string "There's one POKéMON that evolves\n"
 	.string "HOLDING a HEART SCALE during the day.\p"
 	.string "That POKéMON is TOGETIC!\n" 
-	.string "I wish I had one...$"
+	.string "I wish I had one…$"
 
 Route124_DivingTreasureHuntersHouse_EventScript_TreasureHunter::
 	lock

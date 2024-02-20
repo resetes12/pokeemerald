@@ -94,7 +94,7 @@ Route119_EventScript_SapphireKecleon_Text1:
 
 Route119_EventScript_SapphireKecleon_Text2:
 	.string "The invisible KECLEON\n"
-	.string "is still here...$"
+	.string "is still here…$"
 
 Route119_EventScript_RivalTrigger1::
 	setvar VAR_TEMP_1, 1
@@ -198,8 +198,8 @@ Route119_EventScript_DefeatedBrendan::
 	end
 
 Route119_EventScript_GiveFlyHM::
-	giveitem ITEM_HM02
-	setflag FLAG_RECEIVED_HM02
+	giveitem ITEM_HM_FLY
+	setflag FLAG_RECEIVED_HM_FLY
 	return
 
 Route119_EventScript_RivalExitScottArrive::

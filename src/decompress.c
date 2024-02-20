@@ -19,6 +19,24 @@ void LZDecompressVram(const u32 *src, void *dest)
     LZ77UnCompVram(src, dest);
 }
 
+// Checks if `ptr` is likely LZ77 data
+// Checks word-alignment, min/max size, and header byte
+bool32 IsLZ77Data(const void *ptr, u32 minSize, u32 maxSize) {
+    const u8 *data = ptr;
+    u32 size;
+    // Compressed data must be word aligned
+    if (((u32)ptr) & 3)
+        return FALSE;
+    // Check LZ77 header byte
+    // See https://problemkaputt.de/gbatek.htm#biosdecompressionfunctions
+    if (data[0] != 0x10)
+        return FALSE;
+
+    // Read 24-bit uncompressed size
+    size = data[1] | (data[2] << 8) | (data[3] << 16);
+    return (size >= minSize && size <= maxSize);
+}
+
 u16 LoadCompressedSpriteSheet(const struct CompressedSpriteSheet *src)
 {
     struct SpriteSheet dest;
@@ -28,6 +46,35 @@ u16 LoadCompressedSpriteSheet(const struct CompressedSpriteSheet *src)
     dest.size = src->size;
     dest.tag = src->tag;
     return LoadSpriteSheet(&dest);
+}
+
+// This can be used for either compressed or uncompressed sprite sheets
+u16 LoadCompressedSpriteSheetByTemplate(const struct SpriteTemplate *template, s32 offset) {
+    struct SpriteTemplate myTemplate;
+    struct SpriteFrameImage myImage;
+    const u8 *data = template->images->data;
+    u32 size;
+
+    // (Heuristic) Check for LZ77 header
+    // See https://problemkaputt.de/gbatek.htm#biosdecompressionfunctions
+    // data[3] could be nonzero; but this would mean data >= 65536 bytes,
+    // which is 2048 tiles, far too big in practice
+    if (data[0] != 0x10 || data[3] != 0) // not compressed
+        return LoadSpriteSheetByTemplate(template, 0, offset);
+
+    // read uncompressed size from header
+    size = T1_READ_16(&data[1]);
+    // too big for compression buffer, so probably not compressed
+    if (size >= ARRAY_COUNT(gDecompressionBuffer))
+        return LoadSpriteSheetByTemplate(template, 0, offset);
+
+    LZ77UnCompWram(template->images->data, gDecompressionBuffer);
+    myImage.data = gDecompressionBuffer;
+    myImage.size = size + offset;
+    myTemplate.images = &myImage;
+    myTemplate.tileTag = template->tileTag;
+
+    return LoadSpriteSheetByTemplate(&myTemplate, 0, offset);
 }
 
 void LoadCompressedSpriteSheetOverrideBuffer(const struct CompressedSpriteSheet *src, void *buffer)
@@ -113,7 +160,7 @@ void Unused_LZDecompressWramIndirect(const void **src, void *dest)
     LZ77UnCompWram(*src, dest);
 }
 
-static void StitchObjectsOn8x8Canvas(s32 object_size, s32 object_count, u8 *src_tiles, u8 *dest_tiles)
+static void UNUSED StitchObjectsOn8x8Canvas(s32 object_size, s32 object_count, u8 *src_tiles, u8 *dest_tiles)
 {
     /*
       This function appears to emulate behaviour found in the GB(C) versions regarding how the Pokemon images

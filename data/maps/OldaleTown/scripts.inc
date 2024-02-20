@@ -439,23 +439,23 @@ OldaleTown_Text_TownSign:
 
 OldaleTown_Text_InfiniteItems1:
 	.string "Hey! I got some really good items from\n"
-	.string "a strange guy. They are...\p"
+	.string "a strange guy. They are…\p"
 	.string "An INFINITE REPEL and a BOX filled with\n"
 	.string "RARE CANDIES! Cool, right?\p"
 	.string "Are you interested in them?$"
 
 OldaleTown_Text_InfiniteItems2:
-	.string "Hmm... Obtaining and using these items\n"
-	.string "is considered cheating...\p"
+	.string "Hmm… Obtaining and using these items\n"
+	.string "is considered cheating…\p"
 	.string "Are you sure you want them?$"
 
 OldaleTown_Text_InfiniteItems3:
 	.string "Do you really want them?\n"
-	.string "Just making sure...\p"
+	.string "Just making sure…\p"
 	.string "You can not throw them away.$"
 
 OldaleTown_Text_InfiniteItems4:
-	.string "Cheat at your own responsability!$"
+	.string "Cheat at your own responsibility!$"
 
 OldaleTown_Text_InfiniteItemsNo:
 	.string "Okay!$"

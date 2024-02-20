@@ -16,7 +16,7 @@ AquaHideout_UnusedRubyMap3_BonslyMunchEvo_Text:
 	.string "It's a POKéMON that disguises itself\n"
 	.string "as a small tree.\p"
 	.string "And there's also BONSLY, which does\n"
-	.string "the same... but doesn't look as\l"
+	.string "the same… but doesn't look as\l"
 	.string "realistic, or so I think.\p"
 	.string "Speaking of which, I've seen them evolve\n"
 	.string "while trying to imitate other SUDOWOODO.\p"

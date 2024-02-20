@@ -91,7 +91,7 @@ EverGrandeCity_PhoebesRoom_Text_Defeat:
 	.string "I've gone and lost.$"
 
 EverGrandeCity_PhoebesRoom_Text_Defeat2:
-	.string "Oh, darn...\n"
+	.string "Oh, darn…\n"
 	.string "It happened again.$"
 
 EverGrandeCity_PhoebesRoom_Text_PostBattleSpeech:

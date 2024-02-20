@@ -687,7 +687,7 @@ BattleFrontier_ExchangeServiceCorner_Text_IronDesc::
 	.string "you to an abandoned island.$"
 
 BattleFrontier_ExchangeServiceCorner_Text_ZincDesc::
-	.string "An... old map? Maybe\n"
+	.string "An… old map? Maybe\n"
 	.string "it will get you somewhere.$"
 
 BattleFrontier_ExchangeServiceCorner_Text_CarbosDesc::

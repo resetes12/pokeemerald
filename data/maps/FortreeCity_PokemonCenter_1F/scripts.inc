@@ -17,9 +17,9 @@ FortreeCity_PokemonCenter_1F_RhyperiorEvo_Text:
 	.string "RHYDON evolves by trading.\n"
 	.string "But only if it is traded with an object.\p"
 	.string "Which object, you might ask?\p"
-	.string "Well... My memory is not as good as it\n"
-	.string "was thirty years ago... It was a...\l"
-	.string "HARD... HARD... Ah.\p"
+	.string "Well… My memory is not as good as it\n"
+	.string "was thirty years ago… It was a…\l"
+	.string "HARD… HARD… Ah.\p"
 	.string "I can't remember it. Sorry.$"
 
 FortreeCity_PokemonCenter_1F_EventScript_Nurse::

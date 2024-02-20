@@ -135,11 +135,11 @@ static const struct SpriteFrameImage sSpriteImageTable_ExclamationQuestionMark[]
 {
     {
         .data = sEmotion_ExclamationMarkGfx,
-        .size = 0x80
+        .size = sizeof(sEmotion_ExclamationMarkGfx)
     },
     {
         .data = sEmotion_QuestionMarkGfx,
-        .size = 0x80
+        .size = sizeof(sEmotion_QuestionMarkGfx)
     }
 };
 
@@ -147,107 +147,118 @@ static const struct SpriteFrameImage sSpriteImageTable_HeartIcon[] =
 {
     {
         .data = sEmotion_HeartGfx,
-        .size = 0x80
+        .size = sizeof(sEmotion_HeartGfx)
     }
 };
 
 static const struct SpriteFrameImage sSpriteImageTable_Emotes[] =
 {
-  { .data = (u8 *)sEmotion_Gfx+0*0x80, .size = 0x80}, // FOLLOWER_EMOTION_HAPPY
-  { .data = (u8 *)sEmotion_Gfx+1*0x80, .size = 0x80}, // FOLLOWER_EMOTION_HAPPY
-  { .data = (u8 *)sEmotion_Gfx+2*0x80, .size = 0x80}, // FOLLOWER_EMOTION_NEUTRAL
-  { .data = (u8 *)sEmotion_Gfx+3*0x80, .size = 0x80}, // FOLLOWER_EMOTION_NEUTRAL
-  { .data = (u8 *)sEmotion_Gfx+4*0x80, .size = 0x80}, // FOLLOWER_EMOTION_SAD
-  { .data = (u8 *)sEmotion_Gfx+5*0x80, .size = 0x80}, // FOLLOWER_EMOTION_SAD
-  { .data = (u8 *)sEmotion_Gfx+6*0x80, .size = 0x80}, // FOLLOWER_EMOTION_UPSET
-  { .data = (u8 *)sEmotion_Gfx+7*0x80, .size = 0x80}, // FOLLOWER_EMOTION_UPSET
-  { .data = (u8 *)sEmotion_Gfx+8*0x80, .size = 0x80}, // FOLLOWER_EMOTION_ANGRY
-  { .data = (u8 *)sEmotion_Gfx+9*0x80, .size = 0x80}, // FOLLOWER_EMOTION_ANGRY
-  { .data = (u8 *)sEmotion_Gfx+10*0x80, .size = 0x80}, // FOLLOWER_EMOTION_PENSIVE
-  { .data = (u8 *)sEmotion_Gfx+11*0x80, .size = 0x80}, // FOLLOWER_EMOTION_PENSIVE
-  { .data = (u8 *)sEmotion_Gfx+12*0x80, .size = 0x80}, // FOLLOWER_EMOTION_LOVE
-  { .data = (u8 *)sEmotion_Gfx+13*0x80, .size = 0x80}, // FOLLOWER_EMOTION_LOVE
-  { .data = (u8 *)sEmotion_Gfx+14*0x80, .size = 0x80}, // FOLLOWER_EMOTION_SURPRISE
-  { .data = (u8 *)sEmotion_Gfx+15*0x80, .size = 0x80}, // FOLLOWER_EMOTION_SURPRISE
-  { .data = (u8 *)sEmotion_Gfx+16*0x80, .size = 0x80}, // FOLLOWER_EMOTION_CURIOUS
-  { .data = (u8 *)sEmotion_Gfx+17*0x80, .size = 0x80}, // FOLLOWER_EMOTION_CURIOUS
-  { .data = (u8 *)sEmotion_Gfx+18*0x80, .size = 0x80}, // FOLLOWER_EMOTION_MUSIC
-  { .data = (u8 *)sEmotion_Gfx+19*0x80, .size = 0x80}, // FOLLOWER_EMOTION_MUSIC
-  { .data = (u8 *)sEmotion_Gfx+20*0x80, .size = 0x80}, // FOLLOWER_EMOTION_POISONED
-  { .data = (u8 *)sEmotion_Gfx+21*0x80, .size = 0x80}, // FOLLOWER_EMOTION_POISONED
+    overworld_frame(sEmotion_Gfx, 2, 2, 0), // FOLLOWER_EMOTION_HAPPY
+    overworld_frame(sEmotion_Gfx, 2, 2, 1), // FOLLOWER_EMOTION_HAPPY
+    overworld_frame(sEmotion_Gfx, 2, 2, 2), // FOLLOWER_EMOTION_NEUTRAL
+    overworld_frame(sEmotion_Gfx, 2, 2, 3), // FOLLOWER_EMOTION_NEUTRAL
+    overworld_frame(sEmotion_Gfx, 2, 2, 4), // FOLLOWER_EMOTION_SAD
+    overworld_frame(sEmotion_Gfx, 2, 2, 5), // FOLLOWER_EMOTION_SAD
+    overworld_frame(sEmotion_Gfx, 2, 2, 6), // FOLLOWER_EMOTION_UPSET
+    overworld_frame(sEmotion_Gfx, 2, 2, 7), // FOLLOWER_EMOTION_UPSET
+    overworld_frame(sEmotion_Gfx, 2, 2, 8), // FOLLOWER_EMOTION_ANGRY
+    overworld_frame(sEmotion_Gfx, 2, 2, 9), // FOLLOWER_EMOTION_ANGRY
+    overworld_frame(sEmotion_Gfx, 2, 2, 10), // FOLLOWER_EMOTION_PENSIVE
+    overworld_frame(sEmotion_Gfx, 2, 2, 11), // FOLLOWER_EMOTION_PENSIVE
+    overworld_frame(sEmotion_Gfx, 2, 2, 12), // FOLLOWER_EMOTION_LOVE
+    overworld_frame(sEmotion_Gfx, 2, 2, 13), // FOLLOWER_EMOTION_LOVE
+    overworld_frame(sEmotion_Gfx, 2, 2, 14), // FOLLOWER_EMOTION_SURPRISE
+    overworld_frame(sEmotion_Gfx, 2, 2, 15), // FOLLOWER_EMOTION_SURPRISE
+    overworld_frame(sEmotion_Gfx, 2, 2, 16), // FOLLOWER_EMOTION_CURIOUS
+    overworld_frame(sEmotion_Gfx, 2, 2, 17), // FOLLOWER_EMOTION_CURIOUS
+    overworld_frame(sEmotion_Gfx, 2, 2, 18), // FOLLOWER_EMOTION_MUSIC
+    overworld_frame(sEmotion_Gfx, 2, 2, 19), // FOLLOWER_EMOTION_MUSIC
+    overworld_frame(sEmotion_Gfx, 2, 2, 20), // FOLLOWER_EMOTION_POISONED
+    overworld_frame(sEmotion_Gfx, 2, 2, 21), // FOLLOWER_EMOTION_POISONED
 };
 
-static const union AnimCmd sSpriteAnim_Emotes0[] = {
+static const union AnimCmd sSpriteAnim_Emotes0[] =
+{
     ANIMCMD_FRAME(0*2, 30),
     ANIMCMD_FRAME(0*2+1, 25),
     ANIMCMD_FRAME(0*2, 30),
     ANIMCMD_END
 };
 
-static const union AnimCmd sSpriteAnim_Emotes1[] = {
+static const union AnimCmd sSpriteAnim_Emotes1[] =
+{
     ANIMCMD_FRAME(1*2, 30),
     ANIMCMD_FRAME(1*2+1, 25),
     ANIMCMD_FRAME(1*2, 30),
     ANIMCMD_END
 };
 
-static const union AnimCmd sSpriteAnim_Emotes2[] = {
+static const union AnimCmd sSpriteAnim_Emotes2[] =
+{
     ANIMCMD_FRAME(2*2, 30),
     ANIMCMD_FRAME(2*2+1, 25),
     ANIMCMD_FRAME(2*2, 30),
     ANIMCMD_END
 };
 
-static const union AnimCmd sSpriteAnim_Emotes3[] = {
+static const union AnimCmd sSpriteAnim_Emotes3[] =
+{
     ANIMCMD_FRAME(3*2, 30),
     ANIMCMD_FRAME(3*2+1, 25),
     ANIMCMD_FRAME(3*2, 30),
     ANIMCMD_END
 };
 
-static const union AnimCmd sSpriteAnim_Emotes4[] = {
+static const union AnimCmd sSpriteAnim_Emotes4[] =
+{
     ANIMCMD_FRAME(4*2, 30),
     ANIMCMD_FRAME(4*2+1, 25),
     ANIMCMD_FRAME(4*2, 30),
     ANIMCMD_END
 };
 
-static const union AnimCmd sSpriteAnim_Emotes5[] = {
+static const union AnimCmd sSpriteAnim_Emotes5[] =
+{
     ANIMCMD_FRAME(5*2, 30),
     ANIMCMD_FRAME(5*2+1, 25),
     ANIMCMD_FRAME(5*2, 30),
     ANIMCMD_END
 };
 
-static const union AnimCmd sSpriteAnim_Emotes6[] = {
+static const union AnimCmd sSpriteAnim_Emotes6[] =
+{
     ANIMCMD_FRAME(6*2, 30),
     ANIMCMD_FRAME(6*2+1, 25),
     ANIMCMD_FRAME(6*2, 30),
     ANIMCMD_END
 };
 
-static const union AnimCmd sSpriteAnim_Emotes7[] = {
+static const union AnimCmd sSpriteAnim_Emotes7[] =
+{
     ANIMCMD_FRAME(7*2, 30),
     ANIMCMD_FRAME(7*2+1, 25),
     ANIMCMD_FRAME(7*2, 30),
     ANIMCMD_END
 };
 
-static const union AnimCmd sSpriteAnim_Emotes8[] = {
+static const union AnimCmd sSpriteAnim_Emotes8[] =
+{
     ANIMCMD_FRAME(8*2, 30),
     ANIMCMD_FRAME(8*2+1, 25),
     ANIMCMD_FRAME(8*2, 30),
     ANIMCMD_END
 };
 
-static const union AnimCmd sSpriteAnim_Emotes9[] = {
+static const union AnimCmd sSpriteAnim_Emotes9[] =
+{
     ANIMCMD_FRAME(9*2, 30),
     ANIMCMD_FRAME(9*2+1, 25),
     ANIMCMD_FRAME(9*2, 30),
     ANIMCMD_END
 };
 
-static const union AnimCmd sSpriteAnim_Emotes10[] = {
+static const union AnimCmd sSpriteAnim_Emotes10[] =
+{
     ANIMCMD_FRAME(10*2, 30),
     ANIMCMD_FRAME(10*2+1, 25),
     ANIMCMD_FRAME(10*2, 30),
@@ -272,7 +283,8 @@ static const union AnimCmd *const sSpriteAnimTable_Icons[] =
     sSpriteAnim_Icons2
 };
 
-static const union AnimCmd *const sSpriteAnimTable_Emotes[] = {
+static const union AnimCmd *const sSpriteAnimTable_Emotes[] =
+{
     sSpriteAnim_Emotes0,
     sSpriteAnim_Emotes1,
     sSpriteAnim_Emotes2,
@@ -312,8 +324,9 @@ static const struct SpriteTemplate sSpriteTemplate_HeartIcon =
     .callback = SpriteCB_TrainerIcons
 };
 
-static const struct SpriteTemplate sSpriteTemplate_Emote = {
-    .tileTag = 0xffff,
+static const struct SpriteTemplate sSpriteTemplate_Emote =
+{
+    .tileTag = TAG_NONE,
     .paletteTag = OBJ_EVENT_PAL_TAG_EMOTES,
     .oam = &sOamData_Icons,
     .anims = sSpriteAnimTable_Emotes,
@@ -767,7 +780,7 @@ static void Task_SetBuriedTrainerMovement(u8 taskId)
     struct Task *task = &gTasks[taskId];
     struct ObjectEvent *objEvent;
 
-    LoadWordFromTwoHalfwords(&task->tObjEvent, (u32 *)&objEvent);
+    LoadWordFromTwoHalfwords((u16*) &task->tObjEvent, (u32 *)&objEvent);
     if (!task->data[7])
     {
         ObjectEventClearHeldMovement(objEvent);
@@ -789,7 +802,7 @@ static void Task_SetBuriedTrainerMovement(u8 taskId)
 // Called when a buried Trainer has the reveal_trainer movement applied, from direct interaction
 void SetBuriedTrainerMovement(struct ObjectEvent *objEvent)
 {
-    StoreWordInTwoHalfwords(&gTasks[CreateTask(Task_SetBuriedTrainerMovement, 0)].tObjEvent, (u32)objEvent);
+    StoreWordInTwoHalfwords((u16*) &gTasks[CreateTask(Task_SetBuriedTrainerMovement, 0)].tObjEvent, (u32)objEvent);
 }
 
 void DoTrainerApproach(void)
@@ -848,7 +861,8 @@ u8 FldEff_ExclamationMarkIcon(void)
 u8 FldEff_QuestionMarkIcon(void)
 {
     u8 spriteId;
-    if (gFieldEffectArguments[7] >= 0) { // Use follower emotes
+    if (gFieldEffectArguments[7] >= 0) {
+        // Use follower emotes
       u8 emotion = gFieldEffectArguments[7];
       spriteId = CreateSpriteAtEnd(&sSpriteTemplate_Emote, 0, 0, 0x52);
       if (spriteId == MAX_SPRITES)

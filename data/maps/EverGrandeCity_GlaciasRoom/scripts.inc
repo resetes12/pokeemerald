@@ -85,7 +85,7 @@ EverGrandeCity_GlaciasRoom_Text_IntroSpeech2:
 	.string "Have your skills honed?\p"
 	.string "It would please me to no end if I could\n"
 	.string "go all out against you!\p"
-	.string "But this time... I will win!$"
+	.string "But this time… I will win!$"
 
 EverGrandeCity_GlaciasRoom_Text_Defeat:
 	.string "You and your POKéMON…\n"
@@ -96,7 +96,7 @@ EverGrandeCity_GlaciasRoom_Text_Defeat:
 
 EverGrandeCity_GlaciasRoom_Text_Defeat2:
 	.string "Your spirit is still burning! But\p"
-	.string "I got left in the cold again...$"
+	.string "I got left in the cold again…$"
 
 EverGrandeCity_GlaciasRoom_Text_PostBattleSpeech:
 	.string "Advance to the next room.\p"

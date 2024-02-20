@@ -1,7 +1,10 @@
+#ifndef GUARD_CONSTANTS_M4A_CONSTANTS_INC
+#define GUARD_CONSTANTS_M4A_CONSTANTS_INC
+
 	.equiv ID_NUMBER, 0x68736d53
 
 	.equiv PCM_DMA_BUF_SIZE, 1584
-	.equiv MAX_DIRECTSOUND_CHANNELS, 12
+	.equiv MAX_DIRECTSOUND_CHANNELS, 15
 
 	.equiv C_V, 0x40
 
@@ -250,3 +253,5 @@
 	struct_field o_CgbChannel_nextChannelPointer, 4
 	struct_field o_CgbChannel_dummy4, 8
 	struct_field CgbChannel_size, 0
+
+#endif  @ GUARD_CONSTANTS_M4A_CONSTANTS_INC

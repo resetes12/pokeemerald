@@ -158,7 +158,7 @@ struct InGameTrade {
     u32 personality;
     u16 heldItem;
     u8 mailNum;
-    u8 otName[11];
+    u8 otName[TRAINER_NAME_LENGTH + 1];
     u8 otGender;
     u8 sheen;
     u16 requestedSpecies;
@@ -169,7 +169,7 @@ static EWRAM_DATA u8 *sMenuTextTileBuffer = NULL;
 // Bytes 0-2 are used for the player's name text
 // Bytes 3-5 are used for the partner's name text
 // Bytes 6-7 are used for the Cancel text
-// Bytes 8-13 are used for the Choose a Pokemon text
+// Bytes 8-13 are used for the Choose a Pokémon text
 // See the corresponding GFXTAGs in src/data/trade.h
 static EWRAM_DATA u8 *sMenuTextTileBuffers[NUM_MENU_TEXT_SPRITES] = {NULL};
 
@@ -1011,25 +1011,25 @@ static void SetActiveMenuOptions(void)
     {
         if (i < sTradeMenu->partyCounts[TRADE_PLAYER])
         {
-            // Present player pokemon
+            // Present player Pokémon
             gSprites[sTradeMenu->partySpriteIds[TRADE_PLAYER][i]].invisible = FALSE;
             sTradeMenu->optionsActive[i] = TRUE;
         }
         else
         {
-            // Absent player pokemon
+            // Absent player Pokémon
             sTradeMenu->optionsActive[i] = FALSE;
         }
 
         if (i < sTradeMenu->partyCounts[TRADE_PARTNER])
         {
-            // Present partner pokemon
+            // Present partner Pokémon
             gSprites[sTradeMenu->partySpriteIds[TRADE_PARTNER][i]].invisible = FALSE;
             sTradeMenu->optionsActive[i + PARTY_SIZE] = TRUE;
         }
         else
         {
-            // Absent partner pokemon
+            // Absent partner Pokémon
             sTradeMenu->optionsActive[i + PARTY_SIZE] = FALSE;
         }
     }
@@ -1286,7 +1286,7 @@ static void Leader_HandleCommunication(void)
         if (sTradeMenu->playerSelectStatus == STATUS_READY
          && sTradeMenu->partnerSelectStatus == STATUS_READY)
         {
-            // Both players have selected a pokemon to trade 
+            // Both players have selected a Pokémon to trade
             sTradeMenu->callbackId = CB_SET_SELECTED_MONS;
             sTradeMenu->linkData[0] = LINKCMD_SET_MONS_TO_TRADE;
             sTradeMenu->linkData[1] = sTradeMenu->cursorPosition;
@@ -1296,7 +1296,7 @@ static void Leader_HandleCommunication(void)
         else if (sTradeMenu->playerSelectStatus == STATUS_READY
               && sTradeMenu->partnerSelectStatus == STATUS_CANCEL)
         {
-            // The player has selected a pokemon to trade,
+            // The player has selected a Pokémon to trade,
             // but the partner has selected Cancel
             PrintTradeMessage(MSG_CANCELED);
             sTradeMenu->linkData[0] = LINKCMD_PARTNER_CANCEL_TRADE;
@@ -1309,7 +1309,7 @@ static void Leader_HandleCommunication(void)
         else if (sTradeMenu->playerSelectStatus == STATUS_CANCEL
               && sTradeMenu->partnerSelectStatus == STATUS_READY)
         {
-            // The partner has selected a pokemon to trade,
+            // The partner has selected a Pokémon to trade,
             // but the player has selected cancel
             PrintTradeMessage(MSG_FRIEND_WANTS_TO_TRADE);
             sTradeMenu->linkData[0] = LINKCMD_PLAYER_CANCEL_TRADE;
@@ -1466,7 +1466,7 @@ static void CB_ProcessMenuInput(void)
 
         if (sTradeMenu->cursorPosition < PARTY_SIZE)
         {
-            // Selected pokemon in player's party
+            // Selected Pokémon in player's party
             DrawTextBorderOuter(1, 1, 14);
             FillWindowPixelBuffer(1, PIXEL_FILL(1));
             PrintMenuTable(1, ARRAY_COUNT(sSelectTradeMonActions), sSelectTradeMonActions);
@@ -1477,7 +1477,7 @@ static void CB_ProcessMenuInput(void)
         }
         else if (sTradeMenu->cursorPosition < PARTY_SIZE * 2)
         {
-            // Selected pokemon in partner's party
+            // Selected Pokémon in partner's party
             BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
             sTradeMenu->callbackId = CB_SHOW_MON_SUMMARY;
         }
@@ -1856,7 +1856,7 @@ static void SetSelectedMon(u8 cursorPosition)
     if (sTradeMenu->drawSelectedMonState[whichParty] == 0)
     {
         // Start the animation to display just the selected
-        // pokemon in the middle of the screen
+        // Pokémon in the middle of the screen
         sTradeMenu->drawSelectedMonState[whichParty] = 1;
         sTradeMenu->selectedMonIdx[whichParty] = cursorPosition;
     }
@@ -1865,7 +1865,7 @@ static void SetSelectedMon(u8 cursorPosition)
 static void DrawSelectedMonScreen(u8 whichParty)
 {
     s8 nameStringWidth;
-    u8 nickname[20];
+    u8 nickname[POKEMON_NAME_BUFFER_SIZE];
     u8 movesString[56];
     u8 i;
     u8 partyIdx;
@@ -1890,10 +1890,10 @@ static void DrawSelectedMonScreen(u8 whichParty)
         for (i = 0; i < PARTY_SIZE; i++)
             ClearWindowTilemap(i + (whichParty * PARTY_SIZE + 2));
 
-        // Re-display the selected pokemon
+        // Re-display the selected Pokémon
         gSprites[sTradeMenu->partySpriteIds[selectedMonParty][partyIdx]].invisible = FALSE;
 
-        // Move the selected pokemon to the center
+        // Move the selected Pokémon to the center
         gSprites[sTradeMenu->partySpriteIds[selectedMonParty][partyIdx]].data[0] = 20;
         gSprites[sTradeMenu->partySpriteIds[selectedMonParty][partyIdx]].data[2] = (sTradeMonSpriteCoords[selectedMonParty * PARTY_SIZE][0]
                                                                                   + sTradeMonSpriteCoords[selectedMonParty * PARTY_SIZE + 1][0]) / 2 * 8 + 14;
@@ -1901,7 +1901,7 @@ static void DrawSelectedMonScreen(u8 whichParty)
         StoreSpriteCallbackInData6(&gSprites[sTradeMenu->partySpriteIds[selectedMonParty][partyIdx]], SpriteCB_MonIcon);
         sTradeMenu->drawSelectedMonState[whichParty]++;
         Trade_MoveSelectedMonToTarget(&gSprites[sTradeMenu->partySpriteIds[selectedMonParty][partyIdx]]);
-        
+
         CopyToBgTilemapBufferRect_ChangePalette(1, sTradePartyBoxTilemap, whichParty * 15, 0, 15, 17, 0);
         CopyBgTilemapBufferToVram(1);
         CopyBgTilemapBufferToVram(0);
@@ -1951,7 +1951,7 @@ static void DrawSelectedMonScreen(u8 whichParty)
 
 static u8 GetMonNicknameWidth(u8 *str, u8 whichParty, u8 partyIdx)
 {
-    u8 nickname[POKEMON_NAME_LENGTH];
+    u8 nickname[POKEMON_NAME_LENGTH + 1];
 
     if (whichParty == TRADE_PLAYER)
         GetMonData(&gPlayerParty[partyIdx], MON_DATA_NICKNAME, nickname);
@@ -2007,8 +2007,8 @@ static void PrintPartyMonNickname(u8 whichParty, u8 windowId, u8 *nickname)
 static void PrintPartyNicknames(u8 whichParty)
 {
     u8 i;
-    u8 nickname[20];
-    u8 str[32];
+    u8 nickname[POKEMON_NAME_BUFFER_SIZE];
+    u8 str[max(32, POKEMON_NAME_BUFFER_SIZE)];
     struct Pokemon *party = (whichParty == TRADE_PLAYER) ? gPlayerParty : gEnemyParty;
 
     for (i = 0; i < sTradeMenu->partyCounts[whichParty]; i++)
@@ -2024,7 +2024,7 @@ static void PrintLevelAndGender(u8 whichParty, u8 monIdx, u8 x, u8 y, u8 width, 
     u8 level;
     u32 symbolTile;
     u8 gender;
-    u8 nickname[POKEMON_NAME_LENGTH];
+    u8 nickname[POKEMON_NAME_LENGTH + 1];
 
     CopyToBgTilemapBufferRect_ChangePalette(1, gTradeMenuMonBox_Tilemap, width, height, 6, 3, 0);
     CopyBgTilemapBufferToVram(1);
@@ -3094,7 +3094,7 @@ static void UpdatePokedexForReceivedMon(u8 partyIdx)
 // Functionally nop after commented code
 static void TryEnableNationalDexFromLinkPartner(void)
 {
-    u8 mpId = GetMultiplayerId();
+    u8 UNUSED mpId = GetMultiplayerId();
     // Originally in Ruby but commented out
     /*if (gLinkPlayers[mpId ^ 1].lp_field_2 == 0x8000)
         EnableNationalPokedex();*/
@@ -3110,13 +3110,13 @@ static void TradeMons(u8 playerPartyIdx, u8 partnerPartyIdx)
     struct Pokemon *partnerMon = &gEnemyParty[partnerPartyIdx];
     u16 partnerMail = GetMonData(partnerMon, MON_DATA_MAIL);
 
-    // The mail attached to the sent Pokemon no longer exists in your file.
+    // The mail attached to the sent Pokémon no longer exists in your file.
     if (playerMail != MAIL_NONE)
         ClearMail(&gSaveBlock1Ptr->mail[playerMail]);
 
     SWAP(*playerMon, *partnerMon, sTradeAnim->tempMon);
 
-    // By default, a Pokemon received from a trade will have 70 Friendship.
+    // By default, a Pokémon received from a trade will have 70 Friendship.
     // Eggs use Friendship to track egg cycles, so don't set this on Eggs.
     friendship = 70;
     if (!GetMonData(playerMon, MON_DATA_IS_EGG))
@@ -3331,7 +3331,7 @@ static void LoadTradeSequenceSpriteSheetsAndPalettes(void)
 static void BufferTradeSceneStrings(void)
 {
     u8 mpId;
-    u8 name[20];
+    u8 name[POKEMON_NAME_BUFFER_SIZE];
     const struct InGameTrade *ingameTrade;
 
     if (sTradeAnim->isLinkTrade)
@@ -4540,7 +4540,7 @@ u16 GetInGameTradeSpeciesInfo(void)
 
 static void BufferInGameTradeMonName(void)
 {
-    u8 nickname[32];
+    u8 nickname[max(32, POKEMON_NAME_BUFFER_SIZE)];
     const struct InGameTrade *inGameTrade = &sIngameTrades[gSpecialVar_0x8004];
     GetMonData(&gPlayerParty[gSpecialVar_0x8005], MON_DATA_NICKNAME, nickname);
     StringCopy_Nickname(gStringVar1, nickname);
