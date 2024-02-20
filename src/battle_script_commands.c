@@ -1337,6 +1337,54 @@ static void Cmd_damagecalc(void)
     gBattlescriptCurrInstr++;
 }
 
+u8 CheckAbilityChangeMoveType(u16 move) // handles move type change
+{
+    u8 moveType = gBattleMoves[move].type;
+    u8 ability  = gBattleMons[gBattlerAttacker].ability;
+
+    if (moveType == TYPE_NORMAL && gBattleMoves[move].power != 0)
+        switch (ability)
+        {
+        case ABILITY_PIXILATE:
+        {
+            moveType = TYPE_FAIRY;
+        break;
+        }
+        case ABILITY_REFRIGERATE:
+        {
+            moveType = TYPE_ICE;
+        break;
+        }
+    }
+    return moveType;
+}
+
+// needs to be separate functions because using gBattlerAttacker modifies the damage output
+// where gActiveBattler will modify the displayed type properly,
+// but doesn't effect the damage output when switching to a mon with the same ability for some reason
+// see also AI_TypeDisplay below AI_TypeCalc
+u8 DisplayMoveTypeChange(u16 move)
+{
+    u8 moveType = gBattleMoves[move].type;
+    u8 ability  = gBattleMons[gActiveBattler].ability;
+
+    if (moveType == TYPE_NORMAL && gBattleMoves[move].power != 0)
+        switch (ability)
+        {
+        case ABILITY_PIXILATE:
+        {
+            moveType = TYPE_FAIRY;
+        break;
+        }
+        case ABILITY_REFRIGERATE:
+        {
+            moveType = TYPE_ICE;
+        break;
+        }
+    }
+    return moveType;
+}
+
 void AI_CalcDmg(u8 attacker, u8 defender)
 {
     u16 sideStatus = gSideStatuses[GET_BATTLER_SIDE(defender)];
@@ -1711,13 +1759,57 @@ u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility)
     if (move == MOVE_HIDDEN_POWER)
         moveType = getHiddenPowerType();
     else
-        moveType = gBattleMoves[move].type;
+        moveType = CheckAbilityChangeMoveType(move);
 
-    // check pixilate
-    if (gBattleMons[gBattlerAttacker].ability == ABILITY_PIXILATE
-        && moveType == TYPE_NORMAL
-        && gBattleMoves[move].category != MOVE_CATEGORY_STATUS)
-        moveType = TYPE_FAIRY;
+
+    if (targetAbility == ABILITY_LEVITATE && moveType == TYPE_GROUND)
+    {
+        flags = MOVE_RESULT_MISSED | MOVE_RESULT_DOESNT_AFFECT_FOE;
+    }
+    else
+    {
+        while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) != TYPE_ENDTABLE)
+        {
+            if (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) == TYPE_FORESIGHT)
+            {
+                i += 3;
+                continue;
+            }
+            if (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) == moveType)
+            {
+                // check type1
+                if (TYPE_EFFECT_DEF_TYPE(i) == type1)
+                    ModulateDmgByType2(TYPE_EFFECT_MULTIPLIER(i), move, &flags);
+                // check type2
+                if (TYPE_EFFECT_DEF_TYPE(i) == type2 && type1 != type2)
+                    ModulateDmgByType2(TYPE_EFFECT_MULTIPLIER(i), move, &flags);
+            }
+            i += 3;
+        }
+    }
+    if (targetAbility == ABILITY_WONDER_GUARD
+     && (!(flags & MOVE_RESULT_SUPER_EFFECTIVE) || ((flags & (MOVE_RESULT_SUPER_EFFECTIVE | MOVE_RESULT_NOT_VERY_EFFECTIVE)) == (MOVE_RESULT_SUPER_EFFECTIVE | MOVE_RESULT_NOT_VERY_EFFECTIVE)))
+     && gBattleMoves[move].power)
+        flags |= MOVE_RESULT_DOESNT_AFFECT_FOE;
+    return flags;
+}
+
+// used to properly display type effectiveness on battle menu ui without breaking existing functions of AI_TypeCalc
+u8 AI_TypeDisplay(u16 move, u16 targetSpecies, u8 targetAbility)
+{
+    s32 i = 0;
+    u8 flags = 0;
+    u8 type1 = GetTypeBySpecies(targetSpecies, 1), type2 = GetTypeBySpecies(targetSpecies, 2);
+    u8 moveType;
+
+    if (move == MOVE_STRUGGLE)
+        return 0;
+
+    if (move == MOVE_HIDDEN_POWER)
+        moveType = getHiddenPowerType();
+    else
+        moveType = DisplayMoveTypeChange(move);
+
 
     if (targetAbility == ABILITY_LEVITATE && moveType == TYPE_GROUND)
     {
@@ -4509,6 +4601,7 @@ static void Cmd_moveend(void)
 
     choicedMoveAtk = &gBattleStruct->choicedMove[gBattlerAttacker];
     GET_MOVE_TYPE(gCurrentMove, moveType);
+    moveType = CheckAbilityChangeMoveType(gCurrentMove);
 
     do
     {

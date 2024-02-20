@@ -1606,9 +1606,9 @@ u8 TypeEffectiveness(u8 targetId)
     struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct *)(&gBattleBufferA[gActiveBattler][4]);
     move = moveInfo->moves[gMoveSelectionCursor[gActiveBattler]];
     move = gBattleMons[gActiveBattler].moves[gMoveSelectionCursor[gActiveBattler]];
-    moveFlags = AI_TypeCalc(move, gBattleMons[targetId].species, gBattleMons[targetId].ability);
+    moveFlags = AI_TypeDisplay(move, gBattleMons[targetId].species, gBattleMons[targetId].ability);
 
-    if (IS_MOVE_STATUS(move) == TRUE && gBattleMoves[move].type != TYPE_ELECTRIC | TYPE_GROUND) {
+    if (IS_MOVE_STATUS(move) == TRUE && gBattleMoves[move].type != (TYPE_ELECTRIC | TYPE_GROUND)) {
         return 10; // return non-electric status moves as normal effectiveness
     }
     else if (IS_MOVE_STATUS(move) == TRUE && gBattleMoves[move].type == TYPE_ELECTRIC) {
@@ -1621,7 +1621,6 @@ u8 TypeEffectiveness(u8 targetId)
             return 26; // flying is immune to ground status moves
         }
     }
-
 
     if (moveFlags & MOVE_RESULT_NO_EFFECT) {
         return 26;  // 26 - no effect
@@ -1642,6 +1641,7 @@ static void MoveSelectionDisplayMoveTypeDoubles(u8 targetId)
     u8 typeColor = IsDoubleBattle() ? B_WIN_MOVE_TYPE : TypeEffectiveness(GetBattlerAtPosition(BATTLE_OPPOSITE(GetBattlerPosition(gActiveBattler))));
 	struct ChooseMoveStruct *moveInfo = (struct ChooseMoveStruct*)(&gBattleBufferA[gActiveBattler][4]);
 
+
 	txtPtr = StringCopy(gDisplayedStringBattle, gText_MoveInterfaceType);
 	txtPtr[0] = EXT_CTRL_CODE_BEGIN;
 	txtPtr++;
@@ -1650,7 +1650,7 @@ static void MoveSelectionDisplayMoveTypeDoubles(u8 targetId)
 	txtPtr[0] = 1;
 	txtPtr++;
 
-	StringCopy(txtPtr, gTypeNames[gBattleMoves[moveInfo->moves[gMoveSelectionCursor[gActiveBattler]]].type]);
+	StringCopy(txtPtr, gTypeNames[DisplayMoveTypeChange(moveInfo->moves[gMoveSelectionCursor[gActiveBattler]])]);
     if (gBattleMoves[moveInfo->moves[gMoveSelectionCursor[gActiveBattler]]].category == MOVE_CATEGORY_STATUS)
         BattlePutTextOnWindow(gDisplayedStringBattle, 10);
     else
@@ -1669,6 +1669,8 @@ static void MoveSelectionDisplayMoveType(void)
     *(txtPtr)++ = EXT_CTRL_CODE_FONT;
     *(txtPtr)++ = FONT_NORMAL;
 
+    StringCopy(txtPtr, gTypeNames[DisplayMoveTypeChange(moveInfo->moves[gMoveSelectionCursor[gActiveBattler]])]);
+
     if (moveInfo->moves[gMoveSelectionCursor[gActiveBattler]] == MOVE_HIDDEN_POWER)
     {
         u8 typeBits  = ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_HP_IV) & 1) << 0)
@@ -1683,10 +1685,6 @@ static void MoveSelectionDisplayMoveType(void)
             type = TYPE_FAIRY;
         type |= 0xC0;
         StringCopy(txtPtr, gTypeNames[type & 0x3F]);
-    }
-    else
-    {
-        StringCopy(txtPtr, gTypeNames[gBattleMoves[moveInfo->moves[gMoveSelectionCursor[gActiveBattler]]].type]);
     }
 
     BattlePutTextOnWindow(gDisplayedStringBattle, typeColor);
