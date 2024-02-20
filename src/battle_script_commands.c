@@ -1502,6 +1502,7 @@ static void Cmd_typecalc(void)
     }
 
     GET_MOVE_TYPE(gCurrentMove, moveType);
+    moveType = CheckAbilityChangeMoveType(gCurrentMove);
 
     // check stab
     if (IS_BATTLER_OF_TYPE(gBattlerAttacker, moveType))
@@ -1680,7 +1681,7 @@ u8 TypeCalc(u16 move, u8 attacker, u8 defender)
     if (move == MOVE_STRUGGLE)
         return 0;
 
-    moveType = gBattleMoves[move].type;
+    moveType = CheckAbilityChangeMoveType(move);
 
     // check stab
     if (IS_BATTLER_OF_TYPE(attacker, moveType))
@@ -4871,7 +4872,7 @@ static void Cmd_typecalc2(void)
 {
     u8 flags = 0;
     s32 i = 0;
-    u8 moveType = gBattleMoves[gCurrentMove].type;
+    u8 moveType = CheckAbilityChangeMoveType(gCurrentMove);
 
     if (gBattleMons[gBattlerTarget].ability == ABILITY_LEVITATE && moveType == TYPE_GROUND)
     {
