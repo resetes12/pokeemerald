@@ -1350,11 +1350,6 @@ u8 CheckAbilityChangeMoveType(u16 move) // handles move type change
             moveType = TYPE_FAIRY;
         break;
         }
-        case ABILITY_REFRIGERATE:
-        {
-            moveType = TYPE_ICE;
-        break;
-        }
     }
     return moveType;
 }
@@ -1374,11 +1369,6 @@ u8 DisplayMoveTypeChange(u16 move)
         case ABILITY_PIXILATE:
         {
             moveType = TYPE_FAIRY;
-        break;
-        }
-        case ABILITY_REFRIGERATE:
-        {
-            moveType = TYPE_ICE;
         break;
         }
     }

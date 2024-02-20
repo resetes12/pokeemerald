@@ -81,7 +81,6 @@ static const u8 sTransistorDescription[] = _("Ups Electric-type moves.");
 static const u8 sDragonsMawDescription[] = _("Ups Dragon-type moves.");
 static const u8 sMultitypeDescription[] = _("Ups type moves with items.");
 static const u8 sPixilateDescription[] = _("NORMAL moves become FAIRY.");
-static const u8 sRefrigerateDescription[] = _("NORMAL moves become ICE.");
 
 const u8 gAbilityNames[ABILITIES_COUNT][ABILITY_NAME_LENGTH + 1] =
 {
@@ -167,7 +166,6 @@ const u8 gAbilityNames[ABILITIES_COUNT][ABILITY_NAME_LENGTH + 1] =
     [ABILITY_DRAGONS_MAW] = _("DRAGON'S MAW"),
     [ABILITY_MULTITYPE] = _("MULTITYPE"),
     [ABILITY_PIXILATE] = _("PIXILATE"),
-    [ABILITY_REFRIGERATE] = _("REFRIGERATE"),
 };
 
 const u8 *const gAbilityDescriptionPointers[ABILITIES_COUNT] =
@@ -254,5 +252,4 @@ const u8 *const gAbilityDescriptionPointers[ABILITIES_COUNT] =
     [ABILITY_DRAGONS_MAW] = sDragonsMawDescription,
     [ABILITY_MULTITYPE] = sMultitypeDescription,
     [ABILITY_PIXILATE] = sPixilateDescription,
-    [ABILITY_REFRIGERATE] = sRefrigerateDescription,
 };
