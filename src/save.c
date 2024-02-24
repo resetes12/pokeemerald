@@ -168,15 +168,11 @@ static u8 WriteSaveSectorOrSlot(u16 sectorId, const struct SaveSectorLocation *l
         gSaveCounter++;
         status = SAVE_STATUS_OK;
 
-        if (!gMapHeader.cave)
-        {
-            prevVblankCB = gMain.vblankCallback;
-            SetVBlankCallback(VBlankCB_Saving);
-        }
+        prevVblankCB = gMain.vblankCallback;
+        SetVBlankCallback(VBlankCB_Saving);
         for (i = 0; i < NUM_SECTORS_PER_SLOT; i++)
             HandleWriteSector(i, locations);
-        if (!gMapHeader.cave)
-            SetVBlankCallback(prevVblankCB);
+        SetVBlankCallback(prevVblankCB);
 
         if (gDamagedSaveSectors)
         {
