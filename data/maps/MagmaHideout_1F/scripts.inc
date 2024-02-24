@@ -4,6 +4,16 @@ MagmaHideout_1F_MapScripts::
 
 MagmaHideout_1F_OnTransition:
 	setvar VAR_JAGGED_PASS_ASH_WEATHER, 0
+	goto_if_set FLAG_DEFEATED_ENTEI, MagmaHideout_End
+	goto_if_set FLAG_UNLOCK_DOGS, MagmaHideout_Entei_CryFaint
+	end
+
+MagmaHideout_Entei_CryFaint::
+	playmoncry SPECIES_ENTEI, CRY_MODE_FAINT
+	release
+	end
+
+MagmaHideout_End::
 	end
 
 MagmaHideout_1F_EventScript_Grunt1::

@@ -4410,6 +4410,66 @@
       "secondary_tileset": "gTileset_MysteryEventsHouse",
       "border_filepath": "data/layouts/SootopolisCity_MysteryEventsHouse_1F_StairsUnblocked/border.bin",
       "blockdata_filepath": "data/layouts/SootopolisCity_MysteryEventsHouse_1F_StairsUnblocked/map.bin"
+    },
+    {
+      "id": "LAYOUT_SHOAL_CAVE_LOW_TIDE_ICE_ROOM_SUICUNE",
+      "name": "ShoalCave_LowTideIceRoom_Suicune_Layout",
+      "width": 40,
+      "height": 40,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Cave",
+      "border_filepath": "data/layouts/ShoalCave_LowTideIceRoom_Suicune/border.bin",
+      "blockdata_filepath": "data/layouts/ShoalCave_LowTideIceRoom_Suicune/map.bin"
+    },
+    {
+      "id": "LAYOUT_NEW_MAUVILLE_INSIDE_RAIKOU",
+      "name": "NewMauville_Inside_Raikou_Layout",
+      "width": 52,
+      "height": 33,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_BikeShop",
+      "border_filepath": "data/layouts/NewMauville_Inside_Raikou/border.bin",
+      "blockdata_filepath": "data/layouts/NewMauville_Inside_Raikou/map.bin"
+    },
+    {
+      "id": "LAYOUT_MAGMA_HIDEOUT_3F_1R_ENTEI",
+      "name": "MagmaHideout_3F_1R_Entei_Layout",
+      "width": 44,
+      "height": 24,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Lavaridge",
+      "border_filepath": "data/layouts/MagmaHideout_3F_1R_Entei/border.bin",
+      "blockdata_filepath": "data/layouts/MagmaHideout_3F_1R_Entei/map.bin"
+    },
+    {
+      "id": "LAYOUT_SHOAL_CAVE_LOW_TIDE_ICE_ROOM_MODERN",
+      "name": "ShoalCave_LowTideIceRoom_Modern_Layout",
+      "width": 20,
+      "height": 30,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Cave",
+      "border_filepath": "data/layouts/ShoalCave_LowTideIceRoom_Modern/border.bin",
+      "blockdata_filepath": "data/layouts/ShoalCave_LowTideIceRoom_Modern/map.bin"
+    },
+    {
+      "id": "LAYOUT_NEW_MAUVILLE_INSIDE_MODERN",
+      "name": "NewMauville_Inside_Modern_Layout",
+      "width": 41,
+      "height": 41,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_BikeShop",
+      "border_filepath": "data/layouts/NewMauville_Inside_Modern/border.bin",
+      "blockdata_filepath": "data/layouts/NewMauville_Inside_Modern/map.bin"
+    },
+    {
+      "id": "LAYOUT_MAGMA_HIDEOUT_3F_1R_MODERN",
+      "name": "MagmaHideout_3F_1R_Modern_Layout",
+      "width": 28,
+      "height": 24,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Lavaridge",
+      "border_filepath": "data/layouts/MagmaHideout_3F_1R_Modern/border.bin",
+      "blockdata_filepath": "data/layouts/MagmaHideout_3F_1R_Modern/map.bin"
     }
   ]
 }

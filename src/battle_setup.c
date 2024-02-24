@@ -596,6 +596,15 @@ void BattleSetup_StartLegendaryBattle(void)
     case SPECIES_DEOXYS:
         CreateBattleStartTask(B_TRANSITION_BLUR, MUS_RG_VS_DEOXYS);
         break;
+    case SPECIES_RAIKOU:
+        CreateBattleStartTask(B_TRANSITION_BLACKHOLE, MUS_HG_VS_RAIKOU);
+        break;
+    case SPECIES_ENTEI:
+        CreateBattleStartTask(B_TRANSITION_BLACKHOLE, MUS_HG_VS_ENTEI);
+        break;
+    case SPECIES_SUICUNE:
+        CreateBattleStartTask(B_TRANSITION_BLACKHOLE, MUS_HG_VS_SUICUNE);
+        break;
     case SPECIES_LUGIA:
     case SPECIES_HO_OH:
     case SPECIES_ARTICUNO:

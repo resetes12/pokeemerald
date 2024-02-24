@@ -19,9 +19,9 @@ PetalburgWoods_NoCelebiEvent::
 	end
 
 PetalburgWoods_YesCelebiEvent::
-	checkflag FLAG_DEFEAT_CELEBI
-	call_if_set FLAG_DEFEAT_CELEBI, PetalburgWoods_CelebiEvent_End
-	call_if_unset FLAG_DEFEAT_CELEBI, PetalburgWoods_YesCelebiEvent2
+	checkflag FLAG_DEFEATEDCELEBI
+	call_if_set FLAG_DEFEATEDCELEBI, PetalburgWoods_CelebiEvent_End
+	call_if_unset FLAG_DEFEATEDCELEBI, PetalburgWoods_YesCelebiEvent2
 	end
 
 PetalburgWoods_YesCelebiEvent2::
@@ -105,7 +105,7 @@ PetalburgWoods_CelebiEvent_Won::
 	delay 100
 	applymovement LOCALID_CELEBI, PetalburgWoods_EventScript_CelebiMoves2
 	waitmovement 0
-	setflag FLAG_DEFEAT_CELEBI
+	setflag FLAG_DEFEATEDCELEBI
 	clearflag FLAG_CELEBI_EVENT
 	fadescreen 0x0
 	end
@@ -189,7 +189,7 @@ PetalburgWoods_Text_Dusclops:
 PetalburgWoods_Celebi_Sign::
 	faceplayer
 	goto_if_unset FLAG_ROBERTO1, PetalburgWoods_Celebi_SignFirstTime
-	goto_if_set FLAG_DEFEAT_CELEBI, PetalburgWoods_Celebi_SignEventFinished
+	goto_if_set FLAG_DEFEATEDCELEBI, PetalburgWoods_Celebi_SignEventFinished
 	goto_if_set FLAG_IS_CHAMPION, PetalburgWoods_Celebi_SignChampion
 	msgbox Text_PetalburgWoods_Celebi_Sign, MSGBOX_NPC
 	end

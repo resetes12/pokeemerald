@@ -429,7 +429,13 @@
     "TerraCave_Entrance",
     "TerraCave_End",
     "AlteringCave",
-    "MeteorFalls_StevensCave"
+    "MeteorFalls_StevensCave",
+    "ShoalCave_LowTideIceRoom_Suicune",
+    "NewMauville_Inside_Raikou",
+    "MagmaHideout_3F_1R_Entei",
+    "ShoalCave_LowTideIceRoom_Modern",
+    "NewMauville_Inside_Modern",
+    "MagmaHideout_3F_1R_Modern"
   ],
   "gMapGroup_IndoorDynamic": [
     "SecretBase_RedCave1",

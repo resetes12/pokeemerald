@@ -3,47 +3,18 @@ MagmaHideout_3F_1R_MapScripts::
 	.byte 0
 
 MagmaHideout_3F_1R_OnTransition:
-	goto_if_set FLAG_ENTEI, MagmaHideout_3F_1R_EventScript_ShowEntei
-	goto_if_unset FLAG_UNLOCK_DOGS, MagmaHideout_3F_1R_EventScript_NoShowEntei
+	goto_if_set FLAG_UNLOCK_DOGS, MagmaHideout_3F_1R_SwitchToModern
 	end
 
-MagmaHideout_3F_1R_EventScript_NoShowEntei::
-	@playmoncry SPECIES_ENTEI, CRY_MODE_ENCOUNTER
-	setflag FLAG_DEFEAT_ENTEI
-	setflag FLAG_ENTEI
+MagmaHideout_3F_1R_SwitchToModern::
+	setmaplayoutindex LAYOUT_MAGMA_HIDEOUT_3F_1R_MODERN
+	goto_if_set FLAG_DEFEATED_ENTEI, MagmaHideout_End
+	goto MagmaHideout_Entei_CryStrong
 	end
 
-MagmaHideout_3F_1R_EventScript_ShowEntei::
-	end
-
-MagmaHideout_3F_1R_EventScript_Entei::
-	lock
-	faceplayer
-	setwildbattle SPECIES_ENTEI, 50
-	waitse
+MagmaHideout_Entei_CryStrong::
 	playmoncry SPECIES_ENTEI, CRY_MODE_ENCOUNTER
-	delay 40
-	waitmoncry
-	setflag FLAG_SYS_CTRL_OBJ_DELETE
-	setflag FLAG_SYS_SET_BATTLE_BGM
-	setvar VAR_TEMP_F, MUS_C_VS_LEGEND_BEAST
-	dowildbattle
-	specialvar VAR_RESULT, GetBattleOutcome
-	goto_if_eq VAR_RESULT, B_OUTCOME_WON, MagmaHideout_3F_1R_EventScript_EnteiWon
-	goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, MagmaHideout_3F_1R_EventScript_EnteiWon
-	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, MagmaHideout_3F_1R_EventScript_EnteiRan
-	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, MagmaHideout_3F_1R_EventScript_EnteiRan
 	release
-	end
-
-MagmaHideout_3F_1R_EventScript_EnteiWon::
-	setflag FLAG_DEFEAT_ENTEI
-	goto Common_EventScript_RemoveStaticPokemon
-	clearflag FLAG_SYS_CTRL_OBJ_DELETE
-	end
-
-MagmaHideout_3F_1R_EventScript_EnteiRan::
-	clearflag FLAG_SYS_CTRL_OBJ_DELETE
 	end
 
 MagmaHideout_3F_1R_EventScript_Grunt9::

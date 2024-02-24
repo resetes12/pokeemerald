@@ -1,0 +1,120 @@
+{
+  "id": "MAP_MAGMA_HIDEOUT_3F_1R_ENTEI",
+  "name": "MagmaHideout_3F_1R_Entei",
+  "layout": "LAYOUT_MAGMA_HIDEOUT_3F_1R_ENTEI",
+  "music": "MUS_DP_MT_CORONET",
+  "region_map_section": "MAPSEC_MAGMA_HIDEOUT",
+  "requires_flash": false,
+  "weather": "WEATHER_NONE",
+  "map_type": "MAP_TYPE_UNDERGROUND",
+  "allow_cycling": true,
+  "allow_escaping": true,
+  "allow_running": true,
+  "show_map_name": true,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": 0,
+  "object_events": [
+    {
+      "graphics_id": "OBJ_EVENT_GFX_MON_BASE+SPECIES_ENTEI",
+      "x": 32,
+      "y": 5,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "MagmaHideout_3F_1R_Entei_EnteiFinalBattle",
+      "flag": "FLAG_DEFEATED_ENTEI"
+    },
+    {
+      "graphics_id": "OBJ_EVENT_GFX_MON_BASE+SPECIES_ENTEI",
+      "x": 27,
+      "y": 12,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "MagmaHideout_3F_1R_Entei_EnteiBattle3",
+      "flag": "FLAG_ENTEI_BATTLE_3"
+    },
+    {
+      "graphics_id": "OBJ_EVENT_GFX_MON_BASE+SPECIES_ENTEI",
+      "x": 15,
+      "y": 12,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "MagmaHideout_3F_1R_Entei_EnteiBattle2",
+      "flag": "FLAG_ENTEI_BATTLE_2"
+    },
+    {
+      "graphics_id": "OBJ_EVENT_GFX_MON_BASE+SPECIES_ENTEI",
+      "x": 11,
+      "y": 5,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "MagmaHideout_3F_1R_Entei_EnteiBattle1",
+      "flag": "FLAG_ENTEI_BATTLE_1"
+    }
+  ],
+  "warp_events": [
+    {
+      "x": 5,
+      "y": 3,
+      "elevation": 0,
+      "dest_map": "MAP_MAGMA_HIDEOUT_3F_1R",
+      "dest_warp_id": "3"
+    }
+  ],
+  "coord_events": [
+    {
+      "type": "trigger",
+      "x": 22,
+      "y": 13,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "0",
+      "script": "MagmaHideout_3F_1R_DroughtTrigger"
+    },
+    {
+      "type": "trigger",
+      "x": 21,
+      "y": 13,
+      "elevation": 0,
+      "var": "VAR_TEMP_0",
+      "var_value": "1",
+      "script": "MagmaHideout_3F_1R_NormalWeatherTrigger"
+    },
+    {
+      "type": "trigger",
+      "x": 9,
+      "y": 5,
+      "elevation": 0,
+      "var": "VAR_ENTEI_EVENT",
+      "var_value": "0",
+      "script": "MagmaHideout_3F_1R_EntranceTrigger"
+    },
+    {
+      "type": "trigger",
+      "x": 9,
+      "y": 4,
+      "elevation": 0,
+      "var": "VAR_ENTEI_EVENT",
+      "var_value": "0",
+      "script": "MagmaHideout_3F_1R_EntranceTrigger"
+    }
+  ],
+  "bg_events": [
+
+  ]
+}

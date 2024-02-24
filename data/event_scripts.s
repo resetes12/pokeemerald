@@ -1069,3 +1069,15 @@ Common_EventScript_LegendaryFlewAway::
 	.include "data/text/save.inc"
 	.include "data/text/birch_speech.inc"
 	.include "data/scripts/change_deoxys_form.inc"
+
+	.include "data/maps/ShoalCave_LowTideIceRoom_Suicune/scripts.inc"
+
+	.include "data/maps/NewMauville_Inside_Raikou/scripts.inc"
+
+	.include "data/maps/MagmaHideout_3F_1R_Entei/scripts.inc"
+
+	.include "data/maps/ShoalCave_LowTideIceRoom_Modern/scripts.inc"
+
+	.include "data/maps/NewMauville_Inside_Modern/scripts.inc"
+
+	.include "data/maps/MagmaHideout_3F_1R_Modern/scripts.inc"

@@ -16,9 +16,9 @@ NavelRock_Bottom_EventScript_HideLugia::
 	return
 
 NavelRock_Bottom_EventScript_DogsFix::
-	clearflag FLAG_DEFEAT_SUICUNE
-	clearflag FLAG_DEFEAT_ENTEI
-	clearflag FLAG_DEFEAT_RAIKOU
+	clearflag FLAG_DEFEATED_SUICUNE
+	clearflag FLAG_DEFEATED_ENTEI
+	clearflag FLAG_DEFEATED_RAIKOU
 	setflag FLAG_UNLOCK_DOGS
 	return
 
@@ -72,9 +72,9 @@ NavelRock_Bottom_EventScript_Lugia::
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, NavelRock_Bottom_EventScript_RanFromLugia
 	setflag FLAG_CAUGHT_LUGIA
 	setflag FLAG_UNLOCK_DOGS
-	clearflag FLAG_DEFEAT_SUICUNE
-	clearflag FLAG_DEFEAT_ENTEI
-	clearflag FLAG_DEFEAT_RAIKOU
+	clearflag FLAG_DEFEATED_SUICUNE
+	clearflag FLAG_DEFEATED_ENTEI
+	clearflag FLAG_DEFEATED_RAIKOU
 	playmoncry SPECIES_SUICUNE, CRY_MODE_NORMAL
 	waitmoncry
 	playmoncry SPECIES_ENTEI, CRY_MODE_NORMAL
@@ -87,9 +87,9 @@ NavelRock_Bottom_EventScript_Lugia::
 NavelRock_Bottom_EventScript_DefeatedLugia::
 	setflag FLAG_DEFEATED_LUGIA
 	setflag FLAG_UNLOCK_DOGS
-	clearflag FLAG_DEFEAT_SUICUNE
-	clearflag FLAG_DEFEAT_ENTEI
-	clearflag FLAG_DEFEAT_RAIKOU
+	clearflag FLAG_DEFEATED_SUICUNE
+	clearflag FLAG_DEFEATED_ENTEI
+	clearflag FLAG_DEFEATED_RAIKOU
 	playmoncry SPECIES_SUICUNE, CRY_MODE_NORMAL
 	waitmoncry
 	playmoncry SPECIES_ENTEI, CRY_MODE_NORMAL

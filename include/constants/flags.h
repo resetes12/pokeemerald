@@ -1171,10 +1171,10 @@
 #define FLAG_ITEM_NEW_MAUVILLE_FULL_HEAL                            0x462
 #define FLAG_ITEM_NEW_MAUVILLE_PARALYZE_HEAL                        0x463
 #define FLAG_ITEM_AQUA_HIDEOUT_B1F_MASTER_BALL                      0x464
-#define FLAG_DEFEAT_ENTEI                                           0x465
-#define FLAG_DEFEAT_RAIKOU                                          0x466
-#define FLAG_DEFEAT_SUICUNE                                         0x467
-#define FLAG_DEFEAT_CELEBI                                          0x468
+#define FLAG_DEFEATED_ENTEI                                         0x465
+#define FLAG_DEFEATED_RAIKOU                                        0x466
+#define FLAG_DEFEATED_SUICUNE                                       0x467
+#define FLAG_DEFEATEDCELEBI                                         0x468
 #define FLAG_ITEM_MT_PYRE_2F_ULTRA_BALL                             0x469
 #define FLAG_ITEM_MT_PYRE_4F_SEA_INCENSE                            0x46A
 #define FLAG_ITEM_SAFARI_ZONE_SOUTH_WEST_MAX_REVIVE                 0x46B
@@ -1220,16 +1220,16 @@
 
 #define FLAG_JIRACHI                                                0x493
 #define FLAG_ROBERTO1                                               0x494
-#define FLAG_SUICUNE                                                0x495
-#define FLAG_ENTEI                                                  0x496
-#define FLAG_RAIKOU                                                 0x497
+#define FLAG_ENTEI_BATTLE_1                                         0x495
+#define FLAG_ENTEI_BATTLE_2                                         0x496
+#define FLAG_ENTEI_BATTLE_3                                         0x497
 #define FLAG_INCREASE_DIFFICULTY                                    0x498
 #define FLAG_MOSSDEEP_CENTER_BATTLE                                 0x499
-#define FLAG_CHANSEYTRAINERS                                        0x49A // Unused Flag
+#define FLAG_RAIKOU_BATTLE_1                                        0x49A
 #define FLAG_LANDMARK_DRACO_CHAMBER                                 0x49B
-#define FLAG_UNUSED_0x49C                                           0x49C // Unused Flag
-#define FLAG_UNUSED_0x49D                                           0x49D // Unused Flag
-#define FLAG_UNUSED_0x49E                                           0x49E // Unused Flag
+#define FLAG_RAIKOU_BATTLE_2                                        0x49C
+#define FLAG_SUICUNE_BATTLE_1                                       0x49D
+#define FLAG_SUICUNE_BATTLE_2                                       0x49E
 #define FLAG_UNUSED_0x49F                                           0x49F // Unused Flag
 #define FLAG_UNUSED_0x4A0                                           0x4A0 // Unused Flag
 #define FLAG_UNUSED_0x4A1                                           0x4A1 // Unused Flag

@@ -18,23 +18,20 @@ NewMauville_Inside_EventScript_TryRemoveVoltorb::
 	return
 
 NewMauville_Inside_OnTransition:
+	goto_if_set FLAG_UNLOCK_DOGS, NewMauville_Inside_SwitchToModern
 	setvar VAR_TEMP_1, 0
 	setvar VAR_TEMP_2, 0
 	callnative SetTimeBasedEncounters
 	call_if_unset FLAG_DEFEATED_VOLTORB_1_NEW_MAUVILLE, NewMauville_Inside_EventScript_ShowVoltorb1
 	call_if_unset FLAG_DEFEATED_VOLTORB_2_NEW_MAUVILLE, NewMauville_Inside_EventScript_ShowVoltorb2
 	call_if_unset FLAG_DEFEATED_VOLTORB_3_NEW_MAUVILLE, NewMauville_Inside_EventScript_ShowVoltorb3
-	goto_if_set FLAG_RAIKOU, NewMauville_Inside_ShowRaikou
-	goto_if_unset FLAG_UNLOCK_DOGS, NewMauville_Inside_NoShowRaikou
 	end
 
-NewMauville_Inside_NoShowRaikou::
-	@playmoncry SPECIES_RAIKOU, CRY_MODE_ENCOUNTER
-	setflag FLAG_DEFEAT_RAIKOU
-	setflag FLAG_RAIKOU
-	end
-
-NewMauville_Inside_ShowRaikou::
+NewMauville_Inside_SwitchToModern::
+	setmaplayoutindex LAYOUT_NEW_MAUVILLE_INSIDE_MODERN
+	goto_if_set FLAG_DEFEATED_RAIKOU, MagmaHideout_End
+	playmoncry SPECIES_RAIKOU, CRY_MODE_FAINT
+	release
 	end
 
 NewMauville_Inside_EventScript_ShowVoltorb1::
@@ -256,36 +253,6 @@ NewMauville_Inside_EventScript_Voltorb3::
 NewMauville_Inside_EventScript_DefeatedVoltorb3::
 	setflag FLAG_DEFEATED_VOLTORB_3_NEW_MAUVILLE
 	goto Common_EventScript_RemoveStaticPokemon
-	end
-
-NewMauville_Inside_Raikou::
-	lock
-	faceplayer
-	setwildbattle SPECIES_RAIKOU, 50
-	waitse
-	playmoncry SPECIES_RAIKOU, CRY_MODE_ENCOUNTER
-	delay 40
-	waitmoncry
-	setflag FLAG_SYS_CTRL_OBJ_DELETE
-	setflag FLAG_SYS_SET_BATTLE_BGM
-	setvar VAR_TEMP_F, MUS_C_VS_LEGEND_BEAST
-	dowildbattle
-	specialvar VAR_RESULT, GetBattleOutcome
-	goto_if_eq VAR_RESULT, B_OUTCOME_WON, NewMauville_Inside_Raikou_Won
-	goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, NewMauville_Inside_Raikou_Won
-	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, NewMauville_Inside_Raikou_Ran
-	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, NewMauville_Inside_Raikou_Ran
-	release
-	end
-
-NewMauville_Inside_Raikou_Won::
-	setflag FLAG_DEFEAT_RAIKOU
-	goto Common_EventScript_RemoveStaticPokemon
-	clearflag FLAG_SYS_CTRL_OBJ_DELETE
-	end
-
-NewMauville_Inside_Raikou_Ran::
-	clearflag FLAG_SYS_CTRL_OBJ_DELETE
 	end
 
 NewMauville_Inside_Text_GeneratorRadiatingHeat:

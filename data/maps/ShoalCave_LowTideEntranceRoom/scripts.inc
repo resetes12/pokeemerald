@@ -9,10 +9,19 @@ ShoalCave_LowTideEntranceRoom_OnTransition:
 
 ShoalCave_LowTideEntranceRoom_EventScript_SetHighTide::
 	setmaplayoutindex LAYOUT_SHOAL_CAVE_HIGH_TIDE_ENTRANCE_ROOM
+	goto_if_set FLAG_DEFEATED_SUICUNE, MagmaHideout_End
+	goto_if_set FLAG_UNLOCK_DOGS, ShoalCave_LowTideEntranceRoom_Suicune_CryFaint
+	end
+
+ShoalCave_LowTideEntranceRoom_Suicune_CryFaint::
+	playmoncry SPECIES_ENTEI, CRY_MODE_FAINT
+	release
 	end
 
 ShoalCave_LowTideEntranceRoom_EventScript_SetLowTide::
 	setmaplayoutindex LAYOUT_SHOAL_CAVE_LOW_TIDE_ENTRANCE_ROOM
+	goto_if_set FLAG_DEFEATED_SUICUNE, MagmaHideout_End
+	goto_if_set FLAG_UNLOCK_DOGS, ShoalCave_LowTideEntranceRoom_Suicune_CryFaint
 	end
 
 ShoalCave_LowTideEntranceRoom_EventScript_ShellBellExpert::

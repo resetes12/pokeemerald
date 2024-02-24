@@ -42,8 +42,8 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
-      "x": 6,
-      "y": 14,
+      "x": 9,
+      "y": 17,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
       "movement_range_x": 1,
@@ -52,19 +52,6 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "MagmaHideout_3F_1R_EventScript_ItemNugget",
       "flag": "FLAG_ITEM_MAGMA_HIDEOUT_3F_1R_NUGGET"
-    },
-    {
-      "graphics_id": "OBJ_EVENT_GFX_MON_BASE+SPECIES_ENTEI",
-      "x": 9,
-      "y": 17,
-      "elevation": 0,
-      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
-      "movement_range_x": 0,
-      "movement_range_y": 0,
-      "trainer_type": "TRAINER_TYPE_NONE",
-      "trainer_sight_or_berry_tree_id": "0",
-      "script": "MagmaHideout_3F_1R_EventScript_Entei",
-      "flag": "FLAG_DEFEAT_ENTEI"
     }
   ],
   "warp_events": [
@@ -88,6 +75,13 @@
       "elevation": 0,
       "dest_map": "MAP_MAGMA_HIDEOUT_2F_1R",
       "dest_warp_id": "2"
+    },
+    {
+      "x": 6,
+      "y": 13,
+      "elevation": 0,
+      "dest_map": "MAP_MAGMA_HIDEOUT_3F_1R_ENTEI",
+      "dest_warp_id": "0"
     }
   ],
   "coord_events": [
