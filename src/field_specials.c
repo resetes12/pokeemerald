@@ -4461,3 +4461,46 @@ void ChooseItemFromBag(void)
         break;
     }
 }
+
+// Sets the HP Stat of the Pokémon according to the current value of var 0x8000 
+void SetHpStat(void)
+{
+    u16 HpStat = gSpecialVar_0x8000;
+    SetMonData(&gEnemyParty[0], MON_DATA_HP, &HpStat);
+    SetMonData(&gEnemyParty[0], MON_DATA_MAX_HP, &HpStat);
+}
+
+// Sets the Atk Stat of the Pokémon according to the current value of var 0x8001
+void SetAtkStat(void)
+{
+    u16 AtkStat = gSpecialVar_0x8001;
+    SetMonData(&gEnemyParty[0], MON_DATA_ATK, &AtkStat);
+}
+
+// Sets the Def Stat of the Pokémon according to the current value of var 0x8002
+void SetDefStat(void)
+{
+    u16 DefStat = gSpecialVar_0x8002;
+    SetMonData(&gEnemyParty[0], MON_DATA_DEF, &DefStat);
+}
+
+// Sets the Spd Stat of the Pokémon according to the current value of var 0x8003
+void SetSpdStat(void)
+{
+    u16 SpdStat = gSpecialVar_0x8003;
+    SetMonData(&gEnemyParty[0], MON_DATA_SPEED, &SpdStat);
+}
+
+// Sets the SpAtk Stat of the Pokémon according to the current value of var 0x8005
+void SetSpAtkStat(void)
+{
+    u16 SpAtkStat = gSpecialVar_0x8005;
+    SetMonData(&gEnemyParty[0], MON_DATA_SPATK, &SpAtkStat);
+}
+
+// Sets the SpDef Stat of the Pokémon according to the current value of var 0x8006
+void SetSpDefStat(void)
+{
+    u16 SpDefStat = gSpecialVar_0x8006;
+    SetMonData(&gEnemyParty[0], MON_DATA_SPDEF, &SpDefStat);
+}

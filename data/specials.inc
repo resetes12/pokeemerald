@@ -560,3 +560,9 @@ gSpecials::
 	def_special ForceSaveGame
 	def_special CheckIfChallengesAreActive
 	def_special CheckIfRandomizerIsActive
+	def_special SetHpStat
+	def_special SetAtkStat
+	def_special SetDefStat
+	def_special SetSpdStat
+	def_special SetSpAtkStat
+	def_special SetSpDefStat
