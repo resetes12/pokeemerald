@@ -80,7 +80,7 @@ static const u8 sAirLockDescription[] = _("Negates weather effects.");
 static const u8 sTransistorDescription[] = _("Ups Electric-type moves.");
 static const u8 sDragonsMawDescription[] = _("Ups Dragon-type moves.");
 static const u8 sMultitypeDescription[] = _("Ups type moves with items.");
-static const u8 sPixilateDescription[] = _("NORMAL moves are now FAIRY.");
+static const u8 sPixilateDescription[] = _("NORMAL moves become FAIRY.");
 
 const u8 gAbilityNames[ABILITIES_COUNT][ABILITY_NAME_LENGTH + 1] =
 {

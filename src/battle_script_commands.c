@@ -1147,11 +1147,6 @@ static void Cmd_accuracycheck(void)
             move = gCurrentMove;
 
         GET_MOVE_TYPE(move, type);
-        //  check for pixilate ability and set normal-type to fairy-type
-        if (gBattleMons[gBattlerAttacker].ability == ABILITY_PIXILATE
-            && type == TYPE_NORMAL
-            && gBattleMoves[move].category != MOVE_CATEGORY_STATUS)
-            type = TYPE_FAIRY;
 
         if (JumpIfMoveAffectedByProtect(move))
             return;
@@ -1342,6 +1337,44 @@ static void Cmd_damagecalc(void)
     gBattlescriptCurrInstr++;
 }
 
+u8 CheckAbilityChangeMoveType(u16 move) // handles move type change
+{
+    u8 moveType = gBattleMoves[move].type;
+    u8 ability  = gBattleMons[gBattlerAttacker].ability;
+
+    if (moveType == TYPE_NORMAL && gBattleMoves[move].power != 0)
+        switch (ability)
+        {
+        case ABILITY_PIXILATE:
+        {
+            moveType = TYPE_FAIRY;
+        break;
+        }
+    }
+    return moveType;
+}
+
+// needs to be separate functions because using gBattlerAttacker modifies the damage output
+// where gActiveBattler will modify the displayed type properly,
+// but doesn't effect the damage output when switching to a mon with the same ability for some reason
+// see also AI_TypeDisplay below AI_TypeCalc
+u8 DisplayMoveTypeChange(u16 move)
+{
+    u8 moveType = gBattleMoves[move].type;
+    u8 ability  = gBattleMons[gActiveBattler].ability;
+
+    if (moveType == TYPE_NORMAL && gBattleMoves[move].power != 0)
+        switch (ability)
+        {
+        case ABILITY_PIXILATE:
+        {
+            moveType = TYPE_FAIRY;
+        break;
+        }
+    }
+    return moveType;
+}
+
 void AI_CalcDmg(u8 attacker, u8 defender)
 {
     u16 sideStatus = gSideStatuses[GET_BATTLER_SIDE(defender)];
@@ -1459,11 +1492,8 @@ static void Cmd_typecalc(void)
     }
 
     GET_MOVE_TYPE(gCurrentMove, moveType);
-//  check for pixilate ability and set normal-type to fairy-type
-    if (gBattleMons[gBattlerAttacker].ability == ABILITY_PIXILATE
-        && moveType == TYPE_NORMAL
-        && gBattleMoves[gCurrentMove].category != MOVE_CATEGORY_STATUS)
-        moveType = TYPE_FAIRY;
+    moveType = CheckAbilityChangeMoveType(gCurrentMove);
+
     // check stab
     if (IS_BATTLER_OF_TYPE(gBattlerAttacker, moveType))
     {
@@ -1532,11 +1562,6 @@ static void CheckWonderGuardAndLevitate(void)
         return;
 
     GET_MOVE_TYPE(gCurrentMove, moveType);
-//  check for pixilate ability and set normal-type to fairy-type
-    if (gBattleMons[gBattlerAttacker].ability == ABILITY_PIXILATE
-        && moveType == TYPE_NORMAL
-        && gBattleMoves[gCurrentMove].category != MOVE_CATEGORY_STATUS)
-        moveType = TYPE_FAIRY;
 
     if (gBattleMons[gBattlerTarget].ability == ABILITY_LEVITATE && moveType == TYPE_GROUND)
     {
@@ -1646,12 +1671,7 @@ u8 TypeCalc(u16 move, u8 attacker, u8 defender)
     if (move == MOVE_STRUGGLE)
         return 0;
 
-    moveType = gBattleMoves[move].type;
-    // check pixilate
-    if (gBattleMons[attacker].ability == ABILITY_PIXILATE
-        && moveType == TYPE_NORMAL
-        && gBattleMoves[move].category != MOVE_CATEGORY_STATUS)
-        moveType = TYPE_FAIRY;
+    moveType = CheckAbilityChangeMoveType(move);
 
     // check stab
     if (IS_BATTLER_OF_TYPE(attacker, moveType))
@@ -1700,6 +1720,23 @@ u8 TypeCalc(u16 move, u8 attacker, u8 defender)
     return flags;
 }
 
+u8 getHiddenPowerType(void)
+{
+    u8 typeBits  = ((gBattleMons[gBattlerAttacker].hpIV & 1) << 0)
+                 | ((gBattleMons[gBattlerAttacker].attackIV & 1) << 1)
+                 | ((gBattleMons[gBattlerAttacker].defenseIV & 1) << 2)
+                 | ((gBattleMons[gBattlerAttacker].speedIV & 1) << 3)
+                 | ((gBattleMons[gBattlerAttacker].spAttackIV & 1) << 4)
+                 | ((gBattleMons[gBattlerAttacker].spDefenseIV & 1) << 5);
+
+    // Subtract 3 instead of 1 below because 2 types are excluded (TYPE_NORMAL and TYPE_MYSTERY)
+    // The final + 1 skips past Normal, and the following conditional skips TYPE_MYSTERY
+    u8 type = ((NUMBER_OF_MON_TYPES - 2) * typeBits) / 63 + 1;
+    if (type == TYPE_MYSTERY)
+        type = TYPE_FAIRY;
+    return type;
+}
+
 u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility)
 {
     s32 i = 0;
@@ -1710,13 +1747,60 @@ u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility)
     if (move == MOVE_STRUGGLE)
         return 0;
 
-    moveType = gBattleMoves[move].type;
+    if (move == MOVE_HIDDEN_POWER)
+        moveType = getHiddenPowerType();
+    else
+        moveType = CheckAbilityChangeMoveType(move);
 
-    // check pixilate
-    if (gBattleMons[gBattlerAttacker].ability == ABILITY_PIXILATE
-        && moveType == TYPE_NORMAL
-        && gBattleMoves[move].category != MOVE_CATEGORY_STATUS)
-        moveType = TYPE_FAIRY;
+
+    if (targetAbility == ABILITY_LEVITATE && moveType == TYPE_GROUND)
+    {
+        flags = MOVE_RESULT_MISSED | MOVE_RESULT_DOESNT_AFFECT_FOE;
+    }
+    else
+    {
+        while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) != TYPE_ENDTABLE)
+        {
+            if (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) == TYPE_FORESIGHT)
+            {
+                i += 3;
+                continue;
+            }
+            if (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) == moveType)
+            {
+                // check type1
+                if (TYPE_EFFECT_DEF_TYPE(i) == type1)
+                    ModulateDmgByType2(TYPE_EFFECT_MULTIPLIER(i), move, &flags);
+                // check type2
+                if (TYPE_EFFECT_DEF_TYPE(i) == type2 && type1 != type2)
+                    ModulateDmgByType2(TYPE_EFFECT_MULTIPLIER(i), move, &flags);
+            }
+            i += 3;
+        }
+    }
+    if (targetAbility == ABILITY_WONDER_GUARD
+     && (!(flags & MOVE_RESULT_SUPER_EFFECTIVE) || ((flags & (MOVE_RESULT_SUPER_EFFECTIVE | MOVE_RESULT_NOT_VERY_EFFECTIVE)) == (MOVE_RESULT_SUPER_EFFECTIVE | MOVE_RESULT_NOT_VERY_EFFECTIVE)))
+     && gBattleMoves[move].power)
+        flags |= MOVE_RESULT_DOESNT_AFFECT_FOE;
+    return flags;
+}
+
+// used to properly display type effectiveness on battle menu ui without breaking existing functions of AI_TypeCalc
+u8 AI_TypeDisplay(u16 move, u16 targetSpecies, u8 targetAbility)
+{
+    s32 i = 0;
+    u8 flags = 0;
+    u8 type1 = GetTypeBySpecies(targetSpecies, 1), type2 = GetTypeBySpecies(targetSpecies, 2);
+    u8 moveType;
+
+    if (move == MOVE_STRUGGLE)
+        return 0;
+
+    if (move == MOVE_HIDDEN_POWER)
+        moveType = getHiddenPowerType();
+    else
+        moveType = DisplayMoveTypeChange(move);
+
 
     if (targetAbility == ABILITY_LEVITATE && moveType == TYPE_GROUND)
     {
@@ -4508,11 +4592,7 @@ static void Cmd_moveend(void)
 
     choicedMoveAtk = &gBattleStruct->choicedMove[gBattlerAttacker];
     GET_MOVE_TYPE(gCurrentMove, moveType);
-    //  check for pixilate ability and set normal-type to fairy-type
-    if (gBattleMons[gBattlerAttacker].ability == ABILITY_PIXILATE
-        && moveType == TYPE_NORMAL
-        && gBattleMoves[gCurrentMove].category != MOVE_CATEGORY_STATUS)
-        moveType = TYPE_FAIRY;
+    moveType = CheckAbilityChangeMoveType(gCurrentMove);
 
     do
     {
@@ -4782,7 +4862,7 @@ static void Cmd_typecalc2(void)
 {
     u8 flags = 0;
     s32 i = 0;
-    u8 moveType = gBattleMoves[gCurrentMove].type;
+    u8 moveType = CheckAbilityChangeMoveType(gCurrentMove);
 
     if (gBattleMons[gBattlerTarget].ability == ABILITY_LEVITATE && moveType == TYPE_GROUND)
     {
