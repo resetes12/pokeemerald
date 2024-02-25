@@ -245,6 +245,11 @@
 #define MOVEMENT_ACTION_FLY_DOWN                        0x9D
 #define MOVEMENT_ACTION_EXIT_POKEBALL                   0x9E
 #define MOVEMENT_ACTION_ENTER_POKEBALL                  0x9F
+// slow running
+#define MOVEMENT_ACTION_RUN_DOWN_SLOW                   0xA0
+#define MOVEMENT_ACTION_RUN_UP_SLOW                     0xA1
+#define MOVEMENT_ACTION_RUN_LEFT_SLOW                   0xA2
+#define MOVEMENT_ACTION_RUN_RIGHT_SLOW                  0xA3
 
 #define MOVEMENT_ACTION_STEP_END 0xFE
 #define MOVEMENT_ACTION_NONE     0xFF
