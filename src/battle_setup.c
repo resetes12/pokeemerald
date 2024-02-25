@@ -591,7 +591,7 @@ void BattleSetup_StartLegendaryBattle(void)
         break;
     case SPECIES_RAYQUAZA:
         gBattleTypeFlags |= BATTLE_TYPE_RAYQUAZA;
-        CreateBattleStartTask(B_TRANSITION_RAYQUAZA, MUS_VS_RAYQUAZA);
+        CreateBattleStartTask(B_TRANSITION_RAYQUAZA, MUS_HG_VS_KYOGRE_GROUDON);
         break;
     case SPECIES_DEOXYS:
         CreateBattleStartTask(B_TRANSITION_BLUR, MUS_RG_VS_DEOXYS);
@@ -606,23 +606,30 @@ void BattleSetup_StartLegendaryBattle(void)
         CreateBattleStartTask(B_TRANSITION_BLACKHOLE, MUS_HG_VS_SUICUNE);
         break;
     case SPECIES_LUGIA:
+        CreateBattleStartTask(B_TRANSITION_RECTANGULAR_SPIRAL, MUS_HG_VS_LUGIA);
+        break;
     case SPECIES_HO_OH:
+        CreateBattleStartTask(B_TRANSITION_RECTANGULAR_SPIRAL, MUS_HG_VS_HO_OH);
+        break;
     case SPECIES_ARTICUNO:
     case SPECIES_ZAPDOS:
     case SPECIES_MOLTRES:
         CreateBattleStartTask(B_TRANSITION_BLUR, MUS_RG_VS_LEGEND);
         break;
     case SPECIES_REGIGIGAS:
-        CreateBattleStartTask(B_TRANSITION_BLUR, MUS_VS_RAYQUAZA);
+        CreateBattleStartTask(B_TRANSITION_BLUR, MUS_DP_VS_LEGEND);
         break;
     case SPECIES_MEW:
     case SPECIES_MEWTWO:
-    case SPECIES_CELEBI:
         CreateBattleStartTask(B_TRANSITION_GRID_SQUARES, MUS_VS_MEW);
+        break;
+    case SPECIES_CELEBI:
+    case SPECIES_JIRACHI:
+        CreateBattleStartTask(B_TRANSITION_GRID_SQUARES, MUS_DP_VS_UXIE_MESPRIT_AZELF);
         break;
     case SPECIES_LATIOS:
     case SPECIES_LATIAS:
-        CreateBattleStartTask(B_TRANSITION_GRID_SQUARES, MUS_VS_KYOGRE_GROUDON);
+        CreateBattleStartTask(B_TRANSITION_GRID_SQUARES, MUS_RG_VS_LEGEND);
         break;
     }
 
@@ -651,30 +658,28 @@ void StartGroudonKyogreBattle(void)
 
 void StartRegiBattle(void)
 {
-    u8 transitionId;
-    u16 species;
-
     LockPlayerFieldControls();
     gMain.savedCallback = CB2_EndScriptedWildBattle;
     gBattleTypeFlags = BATTLE_TYPE_LEGENDARY | BATTLE_TYPE_REGI;
 
-    species = GetMonData(&gEnemyParty[0], MON_DATA_SPECIES);
-    switch (species)
+    switch (GetMonData(&gEnemyParty[0], MON_DATA_SPECIES, NULL))
     {
     case SPECIES_REGIROCK:
-        transitionId = B_TRANSITION_REGIROCK;
+        CreateBattleStartTask(B_TRANSITION_REGIROCK, MUS_VS_REGI);
         break;
     case SPECIES_REGICE:
-        transitionId = B_TRANSITION_REGICE;
+        CreateBattleStartTask(B_TRANSITION_REGICE, MUS_VS_REGI);
         break;
     case SPECIES_REGISTEEL:
-        transitionId = B_TRANSITION_REGISTEEL;
+        CreateBattleStartTask(B_TRANSITION_REGISTEEL, MUS_VS_REGI);
         break;
-    default:
-        transitionId = B_TRANSITION_GRID_SQUARES;
+    case SPECIES_REGIELEKI:
+        CreateBattleStartTask(B_TRANSITION_SHRED_SPLIT, MUS_PL_VS_REGI);
+        break;
+    case SPECIES_REGIDRAGO:
+        CreateBattleStartTask(B_TRANSITION_SHRED_SPLIT, MUS_PL_VS_REGI);
         break;
     }
-    CreateBattleStartTask(transitionId, MUS_VS_REGI);
 
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
     IncrementGameStat(GAME_STAT_WILD_BATTLES);
