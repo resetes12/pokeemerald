@@ -20,7 +20,7 @@ GraniteCave_B2F_RegigigasStart::
 	braillemessage Regigigas_Braille_Text
 	waitbuttonpress
 	closebraillemessage
-	goto_if_set FLAG_IS_CHAMPION, GraniteCave_B2F_RegigigasCheck0
+	goto_if_set FLAG_SYS_GAME_CLEAR, GraniteCave_B2F_RegigigasCheck0
 	end
 
 GraniteCave_B2F_EventScript_BigHoleInWall::

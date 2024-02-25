@@ -9,8 +9,8 @@ PetalburgWoods_MapScripts::
 
 PetalburgWoods_OnTransition::
 	callnative SetTimeBasedEncounters
-	call_if_unset FLAG_IS_CHAMPION, PetalburgWoods_NoCelebiEvent
-	call_if_set FLAG_IS_CHAMPION, PetalburgWoods_YesCelebiEvent
+	call_if_unset FLAG_SYS_GAME_CLEAR, PetalburgWoods_NoCelebiEvent
+	call_if_set FLAG_SYS_GAME_CLEAR, PetalburgWoods_YesCelebiEvent
 	end
 
 PetalburgWoods_NoCelebiEvent::
@@ -89,9 +89,7 @@ PetalburgWoods_CelebiBattle::
 	applymovement LOCALID_CELEBI, PetalburgWoods_EventScript_CelebiMoves
 	waitmovement 0
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
-	setflag FLAG_SYS_SET_BATTLE_BGM
-	setvar VAR_TEMP_F, MUS_VS_MEW
-	dowildbattle
+	special BattleSetup_StartLegendaryBattle
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, PetalburgWoods_CelebiEvent_Won
 	goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, PetalburgWoods_CelebiEvent_Won
@@ -190,7 +188,7 @@ PetalburgWoods_Celebi_Sign::
 	faceplayer
 	goto_if_unset FLAG_ROBERTO1, PetalburgWoods_Celebi_SignFirstTime
 	goto_if_set FLAG_DEFEATEDCELEBI, PetalburgWoods_Celebi_SignEventFinished
-	goto_if_set FLAG_IS_CHAMPION, PetalburgWoods_Celebi_SignChampion
+	goto_if_set FLAG_SYS_GAME_CLEAR, PetalburgWoods_Celebi_SignChampion
 	msgbox Text_PetalburgWoods_Celebi_Sign, MSGBOX_NPC
 	end
 

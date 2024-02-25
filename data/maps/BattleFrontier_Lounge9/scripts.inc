@@ -290,7 +290,7 @@ BattleFrontier_Lounge9_IV_Man::
 	checkflag FLAG_IV_SETTER
 	lockall
 	faceplayer
-	goto_if_unset FLAG_IS_CHAMPION, BattleFrontier_Lounge9_IV_ManNoChampion
+	goto_if_unset FLAG_SYS_GAME_CLEAR, BattleFrontier_Lounge9_IV_ManNoChampion
 	call_if_unset FLAG_IV_SETTER, BattleFrontier_Lounge9_IV_First_Time
 	msgbox BattleFrontier_Lounge9_IV_Text1, MSGBOX_YESNO
 	waitmessage
@@ -563,7 +563,7 @@ BattleFrontier_Lounge9_EV_No_TEXT:
 
 BattleFrontier_Lounge9_Chansey5::
 	faceplayer
-	goto_if_unset FLAG_IS_CHAMPION, BattleFrontier_Lounge9_Chansey5Champion
+	goto_if_unset FLAG_SYS_GAME_CLEAR, BattleFrontier_Lounge9_Chansey5Champion
 	msgbox BattleFrontier_Lounge9_Chansey5Repeat2, MSGBOX_YESNO
 	switch VAR_RESULT
 	case NO, BattleFrontier_Lounge9_Chansey1End
