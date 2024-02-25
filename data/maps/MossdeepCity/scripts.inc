@@ -99,32 +99,35 @@ MossdeepCity_EventScript_Woman2::
 
 MossdeepCity_EventScript_WhiteRock::
 	msgbox MossdeepCity_Text_ItsAWhiteRock, MSGBOX_SIGN
+	closemessage
 	goto_if_set FLAG_JIRACHI, MossdeepCity_EventScript_WhiteRockEnd
-	goto_if_set FLAG_IS_CHAMPION, MossdeepCity_EventScript_Jirachi
+	goto_if_set FLAG_SYS_GAME_CLEAR, MossdeepCity_EventScript_Jirachi
 	end
 
 MossdeepCity_EventScript_WhiteRockEnd::
 	end
 
 MossdeepCity_EventScript_Jirachi::
+	lockall
 	playse SE_PIN
 	applymovement OBJ_EVENT_ID_PLAYER, MossdeepCity_EventScript_JirachiMoves
 	applymovement LOCALID_WOMAN, MossdeepCity_EventScript_JirachiMoves2
 	waitmovement 0
 	msgbox MossdeepCity_Text_ItsAWhiteRock2, MSGBOX_DEFAULT
 	waitmessage
-	setwildbattle SPECIES_JIRACHI, 50
 	waitse
 	playmoncry SPECIES_JIRACHI, CRY_MODE_ENCOUNTER
 	delay 40
 	waitmoncry
+	setwildbattle SPECIES_JIRACHI, 50
+	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	applymovement LOCALID_JIRACHI, MossdeepCity_EventScript_JirachiMoves3
 	waitmovement 0
 	msgbox MossdeepCity_Text_ItsAWhiteRock3, MSGBOX_DEFAULT
 	closemessage
-	setflag FLAG_SYS_SET_BATTLE_BGM
-	setvar VAR_TEMP_F, MUS_VS_MEW
-	dowildbattle
+	special BattleSetup_StartLegendaryBattle
+	waitstate
+	clearflag FLAG_SYS_CTRL_OBJ_DELETE
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, MossdeepCity_EventScript_JirachiWon
 	goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, MossdeepCity_EventScript_JirachiWon
@@ -134,20 +137,18 @@ MossdeepCity_EventScript_Jirachi::
 	end
 
 MossdeepCity_EventScript_JirachiWon::
-	fadescreen 0x1
-	delay 100
-	applymovement LOCALID_JIRACHI, MossdeepCity_EventScript_JirachiMoves4
-	waitmovement 0
 	setflag FLAG_JIRACHI
-	fadescreen 0x0
+	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	callnative UpdateFollowingPokemon
+	goto Common_EventScript_RemoveStaticPokemon
+	releaseall
 	end
 
 MossdeepCity_EventScript_JirachiRan::
-	fadescreen 0x1
-	delay 100
+	clearflag FLAG_SYS_CTRL_OBJ_DELETE
 	applymovement LOCALID_JIRACHI, MossdeepCity_EventScript_JirachiMoves4
 	waitmovement 0
-	fadescreen 0x0
+	releaseall
 	end
 
 MossdeepCity_EventScript_JirachiMoves:
