@@ -606,9 +606,11 @@ void BattleSetup_StartLegendaryBattle(void)
         CreateBattleStartTask(B_TRANSITION_BLACKHOLE, MUS_HG_VS_SUICUNE);
         break;
     case SPECIES_LUGIA:
+        gBattleTypeFlags |= BATTLE_TYPE_KYOGRE;
         CreateBattleStartTask(B_TRANSITION_RECTANGULAR_SPIRAL, MUS_HG_VS_LUGIA);
         break;
     case SPECIES_HO_OH:
+        gBattleTypeFlags |= BATTLE_TYPE_RAYQUAZA;
         CreateBattleStartTask(B_TRANSITION_RECTANGULAR_SPIRAL, MUS_HG_VS_HO_OH);
         break;
     case SPECIES_ARTICUNO:
