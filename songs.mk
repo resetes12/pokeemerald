@@ -1783,7 +1783,7 @@ $(MID_SUBDIR)/mus_pl_victory_frontier_brain.s: %.s: %.mid
 	$(MID) $< $@ -E -R0 -G191 -V108
 
 $(MID_SUBDIR)/mus_pl_vs_regi.s: %.s: %.mid
-	$(MID) $< $@ -E -R0 -G191 -V105
+	$(MID) $< $@ -E -R0 -G191 -V90
 
 $(MID_SUBDIR)/mus_pl_contest_cool.s: %.s: %.mid
 	$(MID) $< $@ -E -R0 -G191 -V100
