@@ -37,6 +37,7 @@ enum
 
 enum
 {
+    MENUITEM_FEATURES_RTC_TYPE,
     MENUITEM_FEATURES_ALTERNATE_SPAWNS,
     MENUITEM_FEATURES_SHINY_CHANCE,
     MENUITEM_FEATURES_ITEM_DROP,
@@ -267,16 +268,18 @@ static void DrawChoices_Challenges_OneTypeChallenge(int selection, int y);
 static void DrawChoices_Challenges_BaseStatEqualizer(int selection, int y);
 static void DrawChoices_Challenges_Mirror(int selection, int y);
 static void DrawChoices_Challenges_Mirror_Thief(int selection, int y);
-static void DrawChoices_Features_AlternateSpawns(int selection, int y);
 static void DrawChoices_Challenges_LimitDifficulty(int selection, int y);
 static void DrawChoices_Challenges_MaxPartyIVs(int selection, int y);
+static void DrawChoices_Challenges_PCHeal(int selection, int y);
+
+static void DrawChoices_Features_AlternateSpawns(int selection, int y);
 static void DrawChoices_Features_ShinyChance(int selection, int y);
 static void DrawChoices_Features_ItemDrop(int selection, int y);
 static void DrawChoices_Features_InfiniteTMs(int selection, int y);
 static void DrawChoices_Features_SurvivePoison(int selection, int y);
 static void DrawChoices_Features_EasyFeebas(int selection, int y);
 static void DrawChoices_Features_Pkmn_Death(int selection, int y);
-static void DrawChoices_Challenges_PCHeal(int selection, int y);
+static void DrawChoices_Features_Rtc_Type(int selection, int y);
 
 static void PrintCurrentSelections(void);
 
@@ -310,6 +313,7 @@ struct // MENU_FEATURES
     int (*processInput)(int selection);
 } static const sItemFunctionsFeatures[MENUITEM_FEATURES_COUNT] =
 {
+    [MENUITEM_FEATURES_RTC_TYPE]              = {DrawChoices_Features_Rtc_Type,             ProcessInput_Options_Two},
     [MENUITEM_FEATURES_ALTERNATE_SPAWNS]      = {DrawChoices_Features_AlternateSpawns,      ProcessInput_Options_Two},
     [MENUITEM_FEATURES_SHINY_CHANCE]          = {DrawChoices_Features_ShinyChance,          ProcessInput_Options_Five},
     [MENUITEM_FEATURES_ITEM_DROP]             = {DrawChoices_Features_ItemDrop,             ProcessInput_Options_Two},
@@ -394,6 +398,7 @@ struct // MENU_CHALLENGES
     [MENUITEM_CHALLENGES_SAVE] = {NULL, NULL},
 };
 
+static const u8 sText_RTC_Type[]            = _("CLOCK TYPE");
 static const u8 sText_AlternateSpawns[]     = _("MODERN SPAWNS");
 static const u8 sText_ShinyChance[]         = _("SHINY CHANCE");
 static const u8 sText_ItemDrop[]            = _("ITEM DROP");
@@ -405,6 +410,7 @@ static const u8 sText_Next[]                = _("NEXT");
 // Menu left side option names text
 static const u8 *const sOptionMenuItemsNamesFeatures[MENUITEM_FEATURES_COUNT] =
 {
+    [MENUITEM_FEATURES_RTC_TYPE]                  = sText_RTC_Type,
     [MENUITEM_FEATURES_ALTERNATE_SPAWNS]          = sText_AlternateSpawns,
     [MENUITEM_FEATURES_SHINY_CHANCE]              = sText_ShinyChance,
     [MENUITEM_FEATURES_ITEM_DROP]                 = sText_ItemDrop,
@@ -602,6 +608,8 @@ static bool8 CheckConditions(int selection)
 static const u8 sText_Empty[]               = _("");
 static const u8 sText_Description_Save[]    = _("Save choices and continue...");
 
+static const u8 sText_Description_Features_RTC_Type_RTC[]             = _("Use vanilla Real Time Clock.");
+static const u8 sText_Description_Features_RTC_Type_FakeRTC[]         = _("Use a fake Real Time Clock.\n1h in real life = 1 day in-game.");
 static const u8 sText_Description_Features_AlternateSpawns_Off[]      = _("Use vanilla-ish wild encounters,\nwithout version exclusives.");
 static const u8 sText_Description_Features_AlternateSpawns_On[]       = _("Use Modern Emerald wild encounters.\nAll 423 {PKMN} available.");
 static const u8 sText_Description_Features_ItemDrop_On[]              = _("Wild {PKMN} will drop their hold item\nafter defeating them.");
@@ -622,14 +630,15 @@ static const u8 sText_Description_Features_Pkmn_Death_Off[]           = _("{PKMN
 static const u8 sText_Description_Features_Next[]                     = _("Continue to Randomizer options.");
 static const u8 *const sOptionMenuItemDescriptionsFeatures[MENUITEM_FEATURES_COUNT][5] =
 {
+    [MENUITEM_FEATURES_RTC_TYPE]              = {sText_Description_Features_RTC_Type_RTC,           sText_Description_Features_RTC_Type_FakeRTC,      sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_ALTERNATE_SPAWNS]      = {sText_Description_Features_AlternateSpawns_Off,    sText_Description_Features_AlternateSpawns_On,    sText_Empty,                                        sText_Empty,                                        sText_Empty},
-    [MENUITEM_FEATURES_SHINY_CHANCE]          = {sText_Description_Features_ShinyChance_8192,       sText_Description_Features_ShinyChance_4096,      sText_Description_Features_ShinyChance_2048,      sText_Description_Features_ShinyChance_1024, sText_Description_Features_ShinyChance_512},
+    [MENUITEM_FEATURES_SHINY_CHANCE]          = {sText_Description_Features_ShinyChance_8192,       sText_Description_Features_ShinyChance_4096,      sText_Description_Features_ShinyChance_2048,        sText_Description_Features_ShinyChance_1024,        sText_Description_Features_ShinyChance_512},
     [MENUITEM_FEATURES_ITEM_DROP]             = {sText_Description_Features_ItemDrop_Off,           sText_Description_Features_ItemDrop_On,           sText_Empty,                                        sText_Empty,                                        sText_Empty},
-    [MENUITEM_FEATURES_INFINITE_TMS]          = {sText_Description_Features_InfiniteTMs_Off,        sText_Description_Features_InfiniteTMs_On,           sText_Empty,                                        sText_Empty,                                        sText_Empty},
-    [MENUITEM_FEATURES_SURVIVE_POISON]        = {sText_Description_Features_SurvivePoison_Off,      sText_Description_Features_SurvivePoison_On,           sText_Empty,                                        sText_Empty,                                        sText_Empty},
-    [MENUITEM_FEATURES_EASY_FEEBAS]           = {sText_Description_Features_EasyFeebas_Off,         sText_Description_Features_EasyFeebas_On,           sText_Empty,                                        sText_Empty,                                        sText_Empty},
-    [MENUITEM_FEATURES_PKMN_DEATH]            = {sText_Description_Features_Pkmn_Death_Off,         sText_Description_Features_Pkmn_Death_On,           sText_Empty,                                        sText_Empty,                                        sText_Empty},
-    [MENUITEM_FEATURES_NEXT]                  = {sText_Description_Features_Next,                              sText_Empty,                                        sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_FEATURES_INFINITE_TMS]          = {sText_Description_Features_InfiniteTMs_Off,        sText_Description_Features_InfiniteTMs_On,        sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_FEATURES_SURVIVE_POISON]        = {sText_Description_Features_SurvivePoison_Off,      sText_Description_Features_SurvivePoison_On,      sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_FEATURES_EASY_FEEBAS]           = {sText_Description_Features_EasyFeebas_Off,         sText_Description_Features_EasyFeebas_On,         sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_FEATURES_PKMN_DEATH]            = {sText_Description_Features_Pkmn_Death_Off,         sText_Description_Features_Pkmn_Death_On,         sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_FEATURES_NEXT]                  = {sText_Description_Features_Next,                   sText_Empty,                                      sText_Empty,                                        sText_Empty,                                        sText_Empty},
 };
 
 static const u8 sText_Description_Randomizer_Off[]                  = _("Game will not be randomized.");
@@ -779,6 +788,7 @@ static const u8 *const sOptionMenuItemDescriptionsChallenges[MENUITEM_CHALLENGES
 static const u8 sText_Description_Disabled_Features_PkmnDeath[]  = _("Already enabled via\nthe Nuzlocke Challenge.");
 static const u8 *const sOptionMenuItemDescriptionsDisabledFeatures[MENUITEM_FEATURES_COUNT] =
 {
+    [MENUITEM_FEATURES_RTC_TYPE]              = sText_Empty,
     [MENUITEM_FEATURES_ALTERNATE_SPAWNS]      = sText_Empty,
     [MENUITEM_FEATURES_SHINY_CHANCE]          = sText_Empty,
     [MENUITEM_FEATURES_ITEM_DROP]             = sText_Empty,
@@ -1154,6 +1164,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         break;
     case 6:
         //tx_randomizer_and_challenges
+        gSaveBlock1Ptr->optionsRTCType                      = TX_FEATURES_RTC_TYPE;
         gSaveBlock2Ptr->optionsAlternateSpawns              = TX_FEATURES_ALTERNATE_SPAWNS;
         gSaveBlock2Ptr->optionsShinyChance                  = TX_FEATURES_SHINY_CHANCE;
         gSaveBlock2Ptr->optionsWildMonDropItems             = TX_FEATURES_ITEM_DROP;
@@ -1208,6 +1219,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
 
         sOptions = AllocZeroed(sizeof(*sOptions));
         //MENU FEATURES
+        sOptions->sel_features[MENUITEM_FEATURES_RTC_TYPE]               = gSaveBlock1Ptr->optionsRTCType;
         sOptions->sel_features[MENUITEM_FEATURES_ALTERNATE_SPAWNS]       = gSaveBlock2Ptr->optionsAlternateSpawns;
         sOptions->sel_features[MENUITEM_FEATURES_SHINY_CHANCE]           = gSaveBlock2Ptr->optionsShinyChance;
         sOptions->sel_features[MENUITEM_FEATURES_ITEM_DROP]              = gSaveBlock2Ptr->optionsWildMonDropItems;
@@ -1522,6 +1534,7 @@ void SaveData_TxRandomizerAndChallenges(void)
 {
     PrintCurrentSelections();
     //MENU FEAUTRES
+    gSaveBlock1Ptr->optionsRTCType                     = sOptions->sel_features[MENUITEM_FEATURES_RTC_TYPE]; 
     gSaveBlock2Ptr->optionsAlternateSpawns             = sOptions->sel_features[MENUITEM_FEATURES_ALTERNATE_SPAWNS]; 
     gSaveBlock2Ptr->optionsShinyChance                 = sOptions->sel_features[MENUITEM_FEATURES_SHINY_CHANCE]; 
     gSaveBlock2Ptr->optionsWildMonDropItems            = sOptions->sel_features[MENUITEM_FEATURES_ITEM_DROP]; 
@@ -2203,6 +2216,27 @@ static void DrawChoices_Challenges_Mirror_Thief(int selection, int y)
 
     DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
     DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
+}
+
+static const u8 sText_Features_RTC_RTC[]   = _("RTC");
+static const u8 sText_Features_RTC_Fake_RTC[]   = _("FAKE RTC");
+static void DrawChoices_Features_Rtc_Type(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_FEATURES_RTC_TYPE);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock1Ptr->optionsRTCType = 0; //Off, RTC
+    }
+    else
+    {
+        gSaveBlock1Ptr->optionsRTCType = 1; //On, Fake RTC
+    }
+
+    DrawOptionMenuChoice(sText_Features_RTC_RTC, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_Features_RTC_Fake_RTC, GetStringRightAlignXOffset(1, sText_Features_RTC_Fake_RTC, 198), y, styles[1], active);
 }
 
 static void DrawChoices_Features_AlternateSpawns(int selection, int y)

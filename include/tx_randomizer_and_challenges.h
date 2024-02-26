@@ -53,6 +53,7 @@
 #define TX_FEATURES_SURVIVE_POISON 0
 #define TX_FEATURES_EASIER_FEEBAS 0
 #define TX_FEATURES_PKMN_DEATH 1
+#define TX_FEATURES_RTC_TYPE 0
 
 // randomization types
 #define TX_RANDOM_T_WILD_POKEMON    0

@@ -46,8 +46,8 @@ void PlayTimeCounter_Update(void)
     gSaveBlock2Ptr->playTimeVBlanks = 0;
     gSaveBlock2Ptr->playTimeSeconds++;
 
-    /*if (gSaveBlock1Ptr->optionsRTCType == 1)
-        RtcAdvanceTime(0, 1, 0); //Advance "rtc" by 0 hours, 1 minutes, 0 seconds*/
+    if (gSaveBlock1Ptr->optionsRTCType == 1)
+        RtcAdvanceTime(0, 0, 24); //Every 1 second in real life, advance "rtc" by 0 hours, 0 minutes, 24 seconds
 
     if (gSaveBlock2Ptr->playTimeSeconds < 60)
         return;
