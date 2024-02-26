@@ -25,6 +25,7 @@ enum
 {
     MENU_MAIN,
     MENU_CUSTOM,
+    MENU_SOUND,
     MENU_COUNT,
 };
 
@@ -35,13 +36,12 @@ enum
     MENUITEM_MAIN_BATTLESCENE,
     MENUITEM_MAIN_DIFFICULTY,
     MENUITEM_MAIN_BATTLESTYLE,
-    MENUITEM_MAIN_SOUND,
     MENUITEM_MAIN_BUTTONMODE,
     MENUITEM_MAIN_FRAMETYPE,
-    MENUITEM_MAIN_CANCEL,
     MENUITEM_MAIN_COUNT,
 };
 
+//Menu options 2
 enum
 {
     MENUITEM_CUSTOM_FOLLOWER,
@@ -53,11 +53,17 @@ enum
     MENUITEM_CUSTOM_STYLE,
     MENUITEM_CUSTOM_TYPE_EFFECTIVE,
     MENUITEM_CUSTOM_FISHING,
-    MENUITEM_CUSTOM_BIKE_MUSIC,
-    MENUITEM_CUSTOM_SURF_MUSIC,
     MENUITEM_CUSTOM_EVEN_FASTER_JOY,
-    MENUITEM_CUSTOM_CANCEL,
     MENUITEM_CUSTOM_COUNT,
+};
+
+// Menu sounds
+enum
+{
+    MENUITEM_SOUND_SOUND,
+    MENUITEM_SOUND_BIKE_MUSIC,
+    MENUITEM_SOUND_SURF_MUSIC,
+    MENUITEM_SOUND_COUNT,
 };
 
 // Window Ids
@@ -127,6 +133,7 @@ struct OptionMenu
     u8 submenu;
     u8 sel[MENUITEM_MAIN_COUNT];
     u8 sel_custom[MENUITEM_CUSTOM_COUNT];
+    u8 sel_sound[MENUITEM_SOUND_COUNT];
     int menuCursor[MENU_COUNT];
     int visibleCursor[MENU_COUNT];
     u8 arrowTaskId;
@@ -164,7 +171,6 @@ static int ProcessInput_Difficulty(int selection);
 static const u8 *const OptionTextDescription(void);
 static const u8 *const OptionTextRight(u8 menuItem);
 static u8 MenuItemCount(void);
-static u8 MenuItemCancel(void);
 static void DrawDescriptionText(void);
 static void DrawOptionMenuChoice(const u8 *text, u8 x, u8 y, u8 style, bool8 active);
 static void DrawChoices_Options_Four(const u8 *const *const strings, int selection, int y, bool8 active);
@@ -224,10 +230,8 @@ struct // MENU_MAIN
     [MENUITEM_MAIN_BATTLESCENE]  = {DrawChoices_BattleScene, ProcessInput_Options_Two},
     [MENUITEM_MAIN_DIFFICULTY]   = {DrawChoices_Difficulty,  ProcessInput_Difficulty},
     [MENUITEM_MAIN_BATTLESTYLE]  = {DrawChoices_BattleStyle, ProcessInput_BattleStyle},
-    [MENUITEM_MAIN_SOUND]        = {DrawChoices_Sound,       ProcessInput_Options_Two},
     [MENUITEM_MAIN_BUTTONMODE]   = {DrawChoices_ButtonMode,  ProcessInput_Options_Three},
     [MENUITEM_MAIN_FRAMETYPE]    = {DrawChoices_FrameType,   ProcessInput_FrameType},
-    [MENUITEM_MAIN_CANCEL]       = {NULL, NULL},
 };
 
 struct // MENU_CUSTOM
@@ -245,10 +249,18 @@ struct // MENU_CUSTOM
     [MENUITEM_CUSTOM_TYPE_EFFECTIVE] = {DrawChoices_TypeEffective,     ProcessInput_Options_Two},
     [MENUITEM_CUSTOM_FISHING]      = {DrawChoices_Fishing,       ProcessInput_Options_Two},
     [MENUITEM_CUSTOM_FAST_BATTLES] = {DrawChoices_FastBattles,     ProcessInput_Options_Two},
-    [MENUITEM_CUSTOM_BIKE_MUSIC]   = {DrawChoices_BikeMusic,     ProcessInput_Options_Two},
     [MENUITEM_CUSTOM_EVEN_FASTER_JOY] = {DrawChoices_EvenFasterJoy,     ProcessInput_Options_Two},
-    [MENUITEM_CUSTOM_SURF_MUSIC]   = {DrawChoices_SurfMusic,     ProcessInput_Options_Two},
-    [MENUITEM_CUSTOM_CANCEL]       = {NULL, NULL},
+};
+
+struct // MENU_SOUND
+{
+    void (*drawChoices)(int selection, int y);
+    int (*processInput)(int selection);
+} static const sItemFunctionsSound[MENUITEM_SOUND_COUNT] =
+{
+    [MENUITEM_SOUND_SOUND]          = {DrawChoices_Sound,         ProcessInput_Options_Two},
+    [MENUITEM_SOUND_BIKE_MUSIC]     = {DrawChoices_BikeMusic,     ProcessInput_Options_Two},
+    [MENUITEM_SOUND_SURF_MUSIC]     = {DrawChoices_SurfMusic,     ProcessInput_Options_Two},
 };
 
 // Menu left side option names text
@@ -266,10 +278,8 @@ static const u8 *const sOptionMenuItemsNamesMain[MENUITEM_MAIN_COUNT] =
     [MENUITEM_MAIN_BATTLESCENE] = gText_BattleScene,
     [MENUITEM_MAIN_DIFFICULTY]  = gText_OptionDifficulty,
     [MENUITEM_MAIN_BATTLESTYLE] = gText_BattleStyle,
-    [MENUITEM_MAIN_SOUND]       = gText_Sound,
     [MENUITEM_MAIN_BUTTONMODE]  = gText_ButtonMode,
     [MENUITEM_MAIN_FRAMETYPE]   = gText_Frame,
-    [MENUITEM_MAIN_CANCEL]      = gText_OptionMenuSave,
 };
 
 static const u8 *const sOptionMenuItemsNamesCustom[MENUITEM_CUSTOM_COUNT] =
@@ -283,10 +293,14 @@ static const u8 *const sOptionMenuItemsNamesCustom[MENUITEM_CUSTOM_COUNT] =
     [MENUITEM_CUSTOM_TYPE_EFFECTIVE] = sText_OptionTypeEffective,
     [MENUITEM_CUSTOM_FISHING]     = sText_OptionFishing,
     [MENUITEM_CUSTOM_FAST_BATTLES]     = sText_OptionFastBattles,
-    [MENUITEM_CUSTOM_BIKE_MUSIC]     = sText_OptionBikeMusic,
     [MENUITEM_CUSTOM_EVEN_FASTER_JOY]     = sText_OptionEvenFasterJoy,
-    [MENUITEM_CUSTOM_SURF_MUSIC]  = sText_OptionSurfMusic,
-    [MENUITEM_CUSTOM_CANCEL]      = gText_OptionMenuSave,
+};
+
+static const u8 *const sOptionMenuItemsNamesSound[MENUITEM_SOUND_COUNT] =
+{
+    [MENUITEM_SOUND_SOUND]            = gText_Sound,
+    [MENUITEM_SOUND_BIKE_MUSIC]       = sText_OptionBikeMusic,
+    [MENUITEM_SOUND_SURF_MUSIC]       = sText_OptionSurfMusic,
 };
 
 static const u8 *const OptionTextRight(u8 menuItem)
@@ -295,6 +309,7 @@ static const u8 *const OptionTextRight(u8 menuItem)
     {
     case MENU_MAIN:     return sOptionMenuItemsNamesMain[menuItem];
     case MENU_CUSTOM:   return sOptionMenuItemsNamesCustom[menuItem];
+    case MENU_SOUND:    return sOptionMenuItemsNamesSound[menuItem];
     }
 }
 
@@ -310,10 +325,8 @@ static bool8 CheckConditions(int selection)
         case MENUITEM_MAIN_BATTLESCENE:     return TRUE;
         case MENUITEM_MAIN_DIFFICULTY:      return TRUE;
         case MENUITEM_MAIN_BATTLESTYLE:     return TRUE;
-        case MENUITEM_MAIN_SOUND:           return TRUE;
         case MENUITEM_MAIN_BUTTONMODE:      return TRUE;
         case MENUITEM_MAIN_FRAMETYPE:       return TRUE;
-        case MENUITEM_MAIN_CANCEL:          return TRUE;
         case MENUITEM_MAIN_COUNT:           return TRUE;
         }
     case MENU_CUSTOM:
@@ -328,11 +341,15 @@ static bool8 CheckConditions(int selection)
         case MENUITEM_CUSTOM_TYPE_EFFECTIVE:  return TRUE;
         case MENUITEM_CUSTOM_FAST_BATTLES:    return TRUE;
         case MENUITEM_CUSTOM_FISHING:         return TRUE;
-        case MENUITEM_CUSTOM_BIKE_MUSIC:      return TRUE;
         case MENUITEM_CUSTOM_EVEN_FASTER_JOY: return TRUE;
-        case MENUITEM_CUSTOM_SURF_MUSIC:      return TRUE;
-        case MENUITEM_CUSTOM_CANCEL:          return TRUE;
         case MENUITEM_CUSTOM_COUNT:           return TRUE;
+        }
+    case MENU_SOUND:
+        switch(selection)
+        {
+        case MENUITEM_SOUND_SOUND:             return TRUE;
+        case MENUITEM_SOUND_SURF_MUSIC:        return TRUE;
+        case MENUITEM_SOUND_BIKE_MUSIC:        return TRUE;
         }
     }
 }
@@ -348,8 +365,6 @@ static const u8 sText_Desc_Difficulty_Normal[]  = _("Change the difficulty to NO
 static const u8 sText_Desc_Difficulty_Hard[]    = _("Change the difficulty to HARD.\nIncludes extra challenges.");
 static const u8 sText_Desc_BattleStyle_Shift[]  = _("Get the option to switch your\nPOKéMON after the enemies faints.");
 static const u8 sText_Desc_BattleStyle_Set[]    = _("No free switch after fainting the\nenemies POKéMON.");
-static const u8 sText_Desc_SoundMono[]          = _("Sound is the same in all speakers.\nRecommended for original hardware.");
-static const u8 sText_Desc_SoundStereo[]        = _("Play the left and right audio channel\nseperatly. Great with headphones.");
 static const u8 sText_Desc_ButtonMode[]         = _("All buttons work as normal.");
 static const u8 sText_Desc_ButtonMode_LR[]      = _("On some screens the L and R buttons\nact as left and right.");
 static const u8 sText_Desc_ButtonMode_LA[]      = _("The L button acts as another A\nbutton for one-handed play.");
@@ -360,10 +375,8 @@ static const u8 *const sOptionMenuItemDescriptionsMain[MENUITEM_MAIN_COUNT][3] =
     [MENUITEM_MAIN_BATTLESCENE] = {sText_Desc_BattleScene_On,       sText_Desc_BattleScene_Off, sText_Empty},
     [MENUITEM_MAIN_DIFFICULTY]  = {sText_Desc_Difficulty_Easy,      sText_Desc_Difficulty_Normal, sText_Desc_Difficulty_Hard},
     [MENUITEM_MAIN_BATTLESTYLE] = {sText_Desc_BattleStyle_Shift,    sText_Desc_BattleStyle_Set, sText_Empty},
-    [MENUITEM_MAIN_SOUND]       = {sText_Desc_SoundMono,            sText_Desc_SoundStereo,     sText_Empty},
     [MENUITEM_MAIN_BUTTONMODE]  = {sText_Desc_ButtonMode,           sText_Desc_ButtonMode_LR,   sText_Desc_ButtonMode_LA},
     [MENUITEM_MAIN_FRAMETYPE]   = {sText_Desc_FrameType,            sText_Empty,                sText_Empty},
-    [MENUITEM_MAIN_CANCEL]      = {sText_Desc_Save,                 sText_Empty,                sText_Empty},
 };
 
 // Custom {PKMN}
@@ -385,12 +398,8 @@ static const u8 sText_Desc_FastIntroOn[]           = _("Skip the sliding animati
 static const u8 sText_Desc_FastIntroOff[]          = _("Battles load at the usual speed.");
 static const u8 sText_Desc_FastBattleOn[]          = _("Skips all delays in battles, which\nmakes them faster.");
 static const u8 sText_Desc_FastBattleOff[]         = _("Manual delay skipping. You can\npress A or B to skip delays.");
-static const u8 sText_Desc_BikeMusicOn[]           = _("Enables BIKE music.");
-static const u8 sText_Desc_BikeMusicOff[]          = _("Disables BIKE music.");
 static const u8 sText_Desc_EvenFasterJoyOn[]       = _("NURSE JOY heals you extremely fast.\nFor those who cannot wait.");
 static const u8 sText_Desc_EvenFasterJoyOff[]      = _("NURSE JOY heals you fast, but\nwith the usual animation.");
-static const u8 sText_Desc_SurfMusicOn[]           = _("Enables SURF music.");
-static const u8 sText_Desc_SurfMusicOff[]          = _("Disables SURF music.");
 static const u8 *const sOptionMenuItemDescriptionsCustom[MENUITEM_CUSTOM_COUNT][2] =
 {
     [MENUITEM_CUSTOM_FOLLOWER]    = {sText_Desc_FollowerOn,           sText_Desc_FollowerOff},
@@ -402,10 +411,20 @@ static const u8 *const sOptionMenuItemDescriptionsCustom[MENUITEM_CUSTOM_COUNT][
     [MENUITEM_CUSTOM_STYLE]       = {sText_Desc_StyleOn,              sText_Desc_StyleOff},
     [MENUITEM_CUSTOM_TYPE_EFFECTIVE]       = {sText_Desc_TypeEffectiveOn,              sText_Desc_TypeEffectiveOff},
     [MENUITEM_CUSTOM_FISHING]     = {sText_Desc_FishingOn,            sText_Desc_FishingOff},
-    [MENUITEM_CUSTOM_BIKE_MUSIC]     = {sText_Desc_BikeMusicOn,            sText_Desc_BikeMusicOff},
     [MENUITEM_CUSTOM_EVEN_FASTER_JOY]     = {sText_Desc_EvenFasterJoyOn,            sText_Desc_EvenFasterJoyOff},
-    [MENUITEM_CUSTOM_SURF_MUSIC]     = {sText_Desc_SurfMusicOn,            sText_Desc_SurfMusicOff},
-    [MENUITEM_CUSTOM_CANCEL]      = {sText_Desc_Save,                 sText_Empty},
+};
+
+static const u8 sText_Desc_SoundMono[]             = _("Sound is the same in all speakers.\nRecommended for original hardware.");
+static const u8 sText_Desc_SoundStereo[]           = _("Play the left and right audio channel\nseperatly. Great with headphones.");
+static const u8 sText_Desc_BikeMusicOn[]           = _("Enables BIKE music.");
+static const u8 sText_Desc_BikeMusicOff[]          = _("Disables BIKE music.");
+static const u8 sText_Desc_SurfMusicOn[]           = _("Enables SURF music.");
+static const u8 sText_Desc_SurfMusicOff[]          = _("Disables SURF music.");
+static const u8 *const sOptionMenuItemDescriptionsSound[MENUITEM_SOUND_COUNT][2] =
+{
+    [MENUITEM_SOUND_SOUND]           = {sText_Desc_SoundMono,              sText_Desc_SoundStereo},
+    [MENUITEM_SOUND_BIKE_MUSIC]     = {sText_Desc_BikeMusicOn,            sText_Desc_BikeMusicOff},
+    [MENUITEM_SOUND_SURF_MUSIC]     = {sText_Desc_SurfMusicOn,            sText_Desc_SurfMusicOff},
 };
 
 // Disabled Descriptions
@@ -416,10 +435,8 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledMain[MENUITEM_MAIN_COU
     [MENUITEM_MAIN_BATTLESCENE] = sText_Empty,
     [MENUITEM_MAIN_DIFFICULTY]  = sText_Empty,
     [MENUITEM_MAIN_BATTLESTYLE] = sText_Empty,
-    [MENUITEM_MAIN_SOUND]       = sText_Empty,
     [MENUITEM_MAIN_BUTTONMODE]  = sText_Empty,
     [MENUITEM_MAIN_FRAMETYPE]   = sText_Empty,
-    [MENUITEM_MAIN_CANCEL]      = sText_Empty,
 };
 
 // Disabled Custom
@@ -435,10 +452,14 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledCustom[MENUITEM_CUSTOM
     [MENUITEM_CUSTOM_STYLE]       = sText_Empty,
     [MENUITEM_CUSTOM_TYPE_EFFECTIVE]       = sText_Empty,
     [MENUITEM_CUSTOM_FISHING]     = sText_Empty,
-    [MENUITEM_CUSTOM_BIKE_MUSIC]     = sText_Empty,
     [MENUITEM_CUSTOM_EVEN_FASTER_JOY]     = sText_Empty,
-    [MENUITEM_CUSTOM_SURF_MUSIC]     = sText_Empty,
-    [MENUITEM_CUSTOM_CANCEL]      = sText_Empty,
+};
+
+static const u8 *const sOptionMenuItemDescriptionsDisabledSound[MENUITEM_SOUND_COUNT] =
+{
+    [MENUITEM_SOUND_SOUND]          = sText_Empty,
+    [MENUITEM_SOUND_BIKE_MUSIC]     = sText_Empty,
+    [MENUITEM_SOUND_SURF_MUSIC]     = sText_Empty,
 };
 
 static const u8 *const OptionTextDescription(void)
@@ -460,6 +481,11 @@ static const u8 *const OptionTextDescription(void)
             return sOptionMenuItemDescriptionsDisabledMain[menuItem];
         selection = sOptions->sel_custom[menuItem];
         return sOptionMenuItemDescriptionsCustom[menuItem][selection];
+    case MENU_SOUND:
+        if (!CheckConditions(menuItem))
+            return sOptionMenuItemDescriptionsDisabledSound[menuItem];
+        selection = sOptions->sel_sound[menuItem];
+        return sOptionMenuItemDescriptionsSound[menuItem][selection];
     }
 }
 
@@ -469,15 +495,7 @@ static u8 MenuItemCount(void)
     {
     case MENU_MAIN:     return MENUITEM_MAIN_COUNT;
     case MENU_CUSTOM:   return MENUITEM_CUSTOM_COUNT;
-    }
-}
-
-static u8 MenuItemCancel(void)
-{
-    switch (sOptions->submenu)
-    {
-    case MENU_MAIN:     return MENUITEM_MAIN_CANCEL;
-    case MENU_CUSTOM:   return MENUITEM_CUSTOM_CANCEL;
+    case MENU_SOUND:    return MENUITEM_SOUND_COUNT;
     }
 }
 
@@ -497,10 +515,11 @@ static void VBlankCB(void)
     TransferPlttBuffer();
 }
 
-static const u8 sText_TopBar_Main[]         = _("PAGE 1");
+static const u8 sText_TopBar_Main[]         = _("OPTIONS");
 static const u8 sText_TopBar_Main_Right[]   = _("{R_BUTTON}");
-static const u8 sText_TopBar_Custom[]       = _("PAGE 2");
+static const u8 sText_TopBar_Custom[]       = _("EXTRA OPTIONS");
 static const u8 sText_TopBar_Custom_Left[]  = _("{L_BUTTON}");
+static const u8 sText_TopBar_Sound[]        = _("SOUND");
 static void DrawTopBarText(void)
 {
     const u8 color[3] = { TEXT_DYNAMIC_COLOR_6, TEXT_COLOR_WHITE, TEXT_COLOR_OPTIONS_GRAY_FG };
@@ -510,10 +529,15 @@ static void DrawTopBarText(void)
     {
         case MENU_MAIN:
             AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 105, 1, color, 0, sText_TopBar_Main);
-            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 190, 1, color, 0, sText_TopBar_Main_Right);
+            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 222, 1, color, 0, sText_TopBar_Main_Right);
             break;
         case MENU_CUSTOM:
-            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 105, 1, color, 0, sText_TopBar_Custom);
+            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 94, 1, color, 0, sText_TopBar_Custom);
+            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 2, 1, color, 0, sText_TopBar_Custom_Left);
+            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 222, 1, color, 0, sText_TopBar_Main_Right);
+            break;
+        case MENU_SOUND:
+            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 106, 1, color, 0, sText_TopBar_Sound);
             AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 2, 1, color, 0, sText_TopBar_Custom_Left);
             break;
     }
@@ -604,6 +628,10 @@ static void DrawChoices(u32 id, int y) //right side draw function
             if (sItemFunctionsCustom[id].drawChoices != NULL)
                 sItemFunctionsCustom[id].drawChoices(sOptions->sel_custom[id], y);
             break;
+        case MENU_SOUND:
+            if (sItemFunctionsCustom[id].drawChoices != NULL)
+                sItemFunctionsCustom[id].drawChoices(sOptions->sel_sound[id], y);
+            break;
     }
 }
 
@@ -673,22 +701,23 @@ void CB2_InitOptionPlusMenu(void)
         sOptions->sel[MENUITEM_MAIN_BATTLESCENE] = gSaveBlock2Ptr->optionsBattleSceneOff;
         sOptions->sel[MENUITEM_MAIN_DIFFICULTY]  = gSaveBlock2Ptr->optionsDifficulty;
         sOptions->sel[MENUITEM_MAIN_BATTLESTYLE] = gSaveBlock2Ptr->optionsBattleStyle;
-        sOptions->sel[MENUITEM_MAIN_SOUND]       = gSaveBlock2Ptr->optionsSound;
         sOptions->sel[MENUITEM_MAIN_BUTTONMODE]  = gSaveBlock2Ptr->optionsButtonMode;
         sOptions->sel[MENUITEM_MAIN_FRAMETYPE]   = gSaveBlock2Ptr->optionsWindowFrameType;
         
-        sOptions->sel_custom[MENUITEM_CUSTOM_FOLLOWER]    = gSaveBlock2Ptr->optionsfollowerEnable;
+        sOptions->sel_custom[MENUITEM_CUSTOM_FOLLOWER]          = gSaveBlock2Ptr->optionsfollowerEnable;
         sOptions->sel_custom[MENUITEM_CUSTOM_LARGE_FOLLOWER]    = gSaveBlock2Ptr->optionsfollowerLargeEnable;
-        sOptions->sel_custom[MENUITEM_CUSTOM_AUTORUN]     = gSaveBlock2Ptr->optionsautoRun;
-        sOptions->sel_custom[MENUITEM_CUSTOM_FAST_INTRO]  = gSaveBlock2Ptr->optionsFastIntro;
-        sOptions->sel_custom[MENUITEM_CUSTOM_FAST_BATTLES]     = gSaveBlock2Ptr->optionsFastBattle;
-        sOptions->sel_custom[MENUITEM_CUSTOM_MATCHCALL]   = gSaveBlock2Ptr->optionsDisableMatchCall;
-        sOptions->sel_custom[MENUITEM_CUSTOM_STYLE]       = gSaveBlock2Ptr->optionStyle;
-        sOptions->sel_custom[MENUITEM_CUSTOM_TYPE_EFFECTIVE]       = gSaveBlock2Ptr->optionTypeEffective;
-        sOptions->sel_custom[MENUITEM_CUSTOM_FISHING]     = gSaveBlock2Ptr->optionsFishing;
-        sOptions->sel_custom[MENUITEM_CUSTOM_BIKE_MUSIC]   = gSaveBlock1Ptr->optionsBikeMusic;
-        sOptions->sel_custom[MENUITEM_CUSTOM_EVEN_FASTER_JOY] = gSaveBlock1Ptr->optionsEvenFasterJoy;
-        sOptions->sel_custom[MENUITEM_CUSTOM_SURF_MUSIC] = gSaveBlock1Ptr->optionsSurfMusic;
+        sOptions->sel_custom[MENUITEM_CUSTOM_AUTORUN]           = gSaveBlock2Ptr->optionsautoRun;
+        sOptions->sel_custom[MENUITEM_CUSTOM_FAST_INTRO]        = gSaveBlock2Ptr->optionsFastIntro;
+        sOptions->sel_custom[MENUITEM_CUSTOM_FAST_BATTLES]      = gSaveBlock2Ptr->optionsFastBattle;
+        sOptions->sel_custom[MENUITEM_CUSTOM_MATCHCALL]         = gSaveBlock2Ptr->optionsDisableMatchCall;
+        sOptions->sel_custom[MENUITEM_CUSTOM_STYLE]             = gSaveBlock2Ptr->optionStyle;
+        sOptions->sel_custom[MENUITEM_CUSTOM_TYPE_EFFECTIVE]    = gSaveBlock2Ptr->optionTypeEffective;
+        sOptions->sel_custom[MENUITEM_CUSTOM_FISHING]           = gSaveBlock2Ptr->optionsFishing;
+        sOptions->sel_custom[MENUITEM_CUSTOM_EVEN_FASTER_JOY]   = gSaveBlock1Ptr->optionsEvenFasterJoy;
+
+        sOptions->sel_sound[MENUITEM_SOUND_SOUND]              = gSaveBlock2Ptr->optionsSound;
+        sOptions->sel_sound[MENUITEM_SOUND_BIKE_MUSIC]         = gSaveBlock1Ptr->optionsBikeMusic;
+        sOptions->sel_sound[MENUITEM_SOUND_SURF_MUSIC]         = gSaveBlock1Ptr->optionsSurfMusic;
 
         sOptions->submenu = MENU_MAIN;
 
@@ -744,12 +773,7 @@ static void Task_OptionMenuProcessInput(u8 taskId)
 {
     int i = 0;
     u8 optionsToDraw = min(OPTIONS_ON_SCREEN , MenuItemCount());
-    if (JOY_NEW(A_BUTTON))
-    {
-        if (sOptions->menuCursor[sOptions->submenu] == MenuItemCancel())
-            gTasks[taskId].func = Task_OptionMenuSave;
-    }
-    else if (JOY_NEW(B_BUTTON))
+    if (JOY_NEW(B_BUTTON))
     {
         gTasks[taskId].func = Task_OptionMenuSave;
     }
@@ -841,10 +865,27 @@ static void Task_OptionMenuProcessInput(u8 taskId)
                     DrawChoices(cursor, sOptions->visibleCursor[sOptions->submenu] * Y_DIFF);
             }
         }
+        else if (sOptions->submenu == MENU_SOUND)
+        {
+            int cursor = sOptions->menuCursor[sOptions->submenu];
+            u8 previousOption = sOptions->sel_sound[cursor];
+            if (CheckConditions(cursor))
+            {
+                if (sItemFunctionsSound[cursor].processInput != NULL)
+                {
+                    sOptions->sel_sound[cursor] = sItemFunctionsSound[cursor].processInput(previousOption);
+                    ReDrawAll();
+                    DrawDescriptionText();
+                }
+
+                if (previousOption != sOptions->sel_sound[cursor])
+                    DrawChoices(cursor, sOptions->visibleCursor[sOptions->submenu] * Y_DIFF);
+            }
+        }
     }
     else if (JOY_NEW(R_BUTTON))
     {
-        if (sOptions->submenu != MENU_CUSTOM)
+        if (sOptions->submenu != MENU_SOUND)
             sOptions->submenu++;
 
         DrawTopBarText();
@@ -882,8 +923,7 @@ static void Task_OptionMenuSave(u8 taskId)
     gSaveBlock2Ptr->optionsTextSpeed        = sOptions->sel[MENUITEM_MAIN_TEXTSPEED];
     gSaveBlock2Ptr->optionsBattleSceneOff   = sOptions->sel[MENUITEM_MAIN_BATTLESCENE];
     gSaveBlock2Ptr->optionsDifficulty       = sOptions->sel[MENUITEM_MAIN_DIFFICULTY];
-    gSaveBlock2Ptr->optionsBattleStyle      = sOptions->sel[MENUITEM_MAIN_BATTLESTYLE];
-    gSaveBlock2Ptr->optionsSound            = sOptions->sel[MENUITEM_MAIN_SOUND];
+    gSaveBlock2Ptr->optionsBattleStyle      = sOptions->sel[MENUITEM_MAIN_BATTLESTYLE]; 
     gSaveBlock2Ptr->optionsButtonMode       = sOptions->sel[MENUITEM_MAIN_BUTTONMODE];
     gSaveBlock2Ptr->optionsWindowFrameType  = sOptions->sel[MENUITEM_MAIN_FRAMETYPE];
 
@@ -896,9 +936,11 @@ static void Task_OptionMenuSave(u8 taskId)
     gSaveBlock2Ptr->optionStyle             = sOptions->sel_custom[MENUITEM_CUSTOM_STYLE];
     gSaveBlock2Ptr->optionTypeEffective     = sOptions->sel_custom[MENUITEM_CUSTOM_TYPE_EFFECTIVE];
     gSaveBlock2Ptr->optionsFishing          = sOptions->sel_custom[MENUITEM_CUSTOM_FISHING];
-    gSaveBlock1Ptr->optionsBikeMusic        = sOptions->sel_custom[MENUITEM_CUSTOM_BIKE_MUSIC];
     gSaveBlock1Ptr->optionsEvenFasterJoy    = sOptions->sel_custom[MENUITEM_CUSTOM_EVEN_FASTER_JOY];
-    gSaveBlock1Ptr->optionsSurfMusic        = sOptions->sel_custom[MENUITEM_CUSTOM_SURF_MUSIC];
+    
+    gSaveBlock2Ptr->optionsSound            = sOptions->sel_sound[MENUITEM_SOUND_SOUND];
+    gSaveBlock1Ptr->optionsBikeMusic        = sOptions->sel_sound[MENUITEM_SOUND_BIKE_MUSIC];
+    gSaveBlock1Ptr->optionsSurfMusic        = sOptions->sel_sound[MENUITEM_SOUND_SURF_MUSIC];
 
     BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);
     gTasks[taskId].func = Task_OptionMenuFadeOut;
@@ -1219,7 +1261,7 @@ static void DrawChoices_BattleStyle(int selection, int y)
 
 static void DrawChoices_Sound(int selection, int y)
 {
-    bool8 active = CheckConditions(MENUITEM_MAIN_SOUND);
+    bool8 active = CheckConditions(MENUITEM_SOUND_SOUND);
     u8 styles[2] = {0};
     styles[selection] = 1;
 
@@ -1427,7 +1469,7 @@ static void DrawChoices_FastBattles(int selection, int y)
 
 static void DrawChoices_BikeMusic(int selection, int y)
 {
-    bool8 active = CheckConditions(MENUITEM_CUSTOM_BIKE_MUSIC);
+    bool8 active = CheckConditions(MENUITEM_SOUND_BIKE_MUSIC);
     u8 styles[2] = {0};
     styles[selection] = 1;
 
@@ -1467,7 +1509,7 @@ static void DrawChoices_EvenFasterJoy(int selection, int y)
 
 static void DrawChoices_SurfMusic(int selection, int y)
 {
-    bool8 active = CheckConditions(MENUITEM_CUSTOM_SURF_MUSIC);
+    bool8 active = CheckConditions(MENUITEM_SOUND_SURF_MUSIC);
     u8 styles[2] = {0};
     styles[selection] = 1;
 
