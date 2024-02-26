@@ -81,7 +81,7 @@ PetalburgWoods_CelebiBattle::
 	applymovement OBJ_EVENT_ID_PLAYER, Movement_PetalburgWoods_Celebi1
 	waitmovement 0
 	msgbox Text_PetalburgWoods_Celebi4, MSGBOX_DEFAULT
-	setwildbattle SPECIES_CELEBI, 60
+	setwildbattle SPECIES_CELEBI, 50
 	waitse
 	playmoncry SPECIES_CELEBI, CRY_MODE_ENCOUNTER
 	delay 40
@@ -90,6 +90,7 @@ PetalburgWoods_CelebiBattle::
 	waitmovement 0
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	special BattleSetup_StartLegendaryBattle
+	waitstate
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, PetalburgWoods_CelebiEvent_Won
 	goto_if_eq VAR_RESULT, B_OUTCOME_CAUGHT, PetalburgWoods_CelebiEvent_Won
@@ -99,21 +100,15 @@ PetalburgWoods_CelebiBattle::
 	end
 
 PetalburgWoods_CelebiEvent_Won::
-	fadescreen 0x1
-	delay 100
 	applymovement LOCALID_CELEBI, PetalburgWoods_EventScript_CelebiMoves2
 	waitmovement 0
 	setflag FLAG_DEFEATEDCELEBI
 	clearflag FLAG_CELEBI_EVENT
-	fadescreen 0x0
 	end
 
 PetalburgWoods_CelebiEvent_Ran::
-	fadescreen 0x1
-	delay 100
 	applymovement LOCALID_CELEBI, PetalburgWoods_EventScript_CelebiMoves2
 	waitmovement 0
-	fadescreen 0x0
 	end
 
 PetalburgWoods_EventScript_CelebiMoves:
