@@ -63,10 +63,15 @@ DesertRuins_EventScript_Regirock::
 	delay 40
 	waitmoncry
 	setwildbattle SPECIES_REGIROCK, 40
+	setvar VAR_0x8000, 500 @HP
+	setvar VAR_0x8002, 999 @DEF
+	special SetHpStat
+	special SetDefStat
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	special StartRegiBattle
 	waitstate
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	calculatemonstats
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, DesertRuins_EventScript_DefeatedRegirock
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, DesertRuins_EventScript_RanFromRegirock

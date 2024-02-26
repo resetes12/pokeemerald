@@ -64,9 +64,14 @@ AncientTomb_EventScript_Registeel::
 	waitmoncry
 	setwildbattle SPECIES_REGISTEEL, 40
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
+	setvar VAR_0x8002, 350 @DEF
+	setvar VAR_0x8006, 350 @SP.DEF
+	special SetDefStat
+	special SetSpDefStat
 	special StartRegiBattle
 	waitstate
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	calculatemonstats
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, AncientTomb_EventScript_DefeatedRegisteel
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, AncientTomb_EventScript_RanFromRegisteel

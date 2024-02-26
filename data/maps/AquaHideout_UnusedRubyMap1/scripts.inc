@@ -87,9 +87,12 @@ AquaHideout_UnusedRubyMap1_EventScript_Regidrago::
 	waitmoncry
 	setwildbattle SPECIES_REGIDRAGO, 40
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
+	setvar VAR_0x8000, 999 @HP
+	special SetHpStat
 	special StartRegiBattle
 	waitstate
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	calculatemonstats
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, AquaHideout_UnusedRubyMap1_EventScript_DefeatedRegidrago
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, AquaHideout_UnusedRubyMap1_EventScript_RanFromRegidrago

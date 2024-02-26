@@ -96,10 +96,15 @@ IslandCave_EventScript_Regice::
 	delay 40
 	waitmoncry
 	setwildbattle SPECIES_REGICE, 40
+	setvar VAR_0x8000, 500 @HP
+	setvar VAR_0x8006, 999 @SP.DEF
+	special SetHpStat
+	special SetSpDefStat
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	special StartRegiBattle
 	waitstate
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	calculatemonstats
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, IslandCave_EventScript_DefeatedRegice
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, IslandCave_EventScript_RanFromRegice

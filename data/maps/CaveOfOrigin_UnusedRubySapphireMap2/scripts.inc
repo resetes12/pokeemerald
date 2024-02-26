@@ -30,9 +30,14 @@ CaveOfOrigin_UnusedRubySapphireMap2_EventScript_Regigigas::
 	waitmoncry
 	setwildbattle SPECIES_REGIGIGAS, 70
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
+	setvar VAR_0x8000, 600 @HP
+	setvar VAR_0x8001, 464 @ATK
+	special SetHpStat
+	special SetAtkStat
 	special BattleSetup_StartLegendaryBattle
 	waitstate
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	calculatemonstats
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, CaveOfOrigin_UnusedRubySapphireMap2_EventScript_DefeatedRegigigas
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, CaveOfOrigin_UnusedRubySapphireMap2_EventScript_RanFromRegigigas

@@ -107,9 +107,14 @@ AquaHideout_UnusedRubyMap2_EventScript_Regieleki::
 	waitmoncry
 	setwildbattle SPECIES_REGIELEKI, 40
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
+	setvar VAR_0x8000, 500 @HP
+	setvar VAR_0x8003, 999 @SPD
+	special SetHpStat
+	special SetSpdStat
 	special StartRegiBattle
 	waitstate
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	calculatemonstats
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, AquaHideout_UnusedRubyMap2_EventScript_DefeatedRegieleki
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, AquaHideout_UnusedRubyMap2_EventScript_RanFromRegieleki
