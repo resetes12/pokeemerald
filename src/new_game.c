@@ -114,6 +114,7 @@ static void SetDefaultOptions(void)
     gSaveBlock2Ptr->optionsTrainerBattleMusic = 0;
     gSaveBlock2Ptr->optionsFrontierTrainerBattleMusic = 0;
     gSaveBlock2Ptr->optionsSoundEffects = 0;
+    gSaveBlock2Ptr->optionsSkipIntro = 1;
 }
 
 static void ClearPokedexFlags(void)

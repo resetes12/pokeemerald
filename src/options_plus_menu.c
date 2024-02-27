@@ -54,6 +54,7 @@ enum
     MENUITEM_CUSTOM_TYPE_EFFECTIVE,
     MENUITEM_CUSTOM_FISHING,
     MENUITEM_CUSTOM_EVEN_FASTER_JOY,
+    MENUITEM_CUSTOM_SKIP_INTRO,
     MENUITEM_CUSTOM_COUNT,
 };
 
@@ -204,6 +205,7 @@ static void DrawChoices_Wild_Battle_Music(int selection, int y);
 static void DrawChoices_Trainer_Battle_Music(int selection, int y);
 static void DrawChoices_Frontier_Trainer_Battle_Music(int selection, int y);
 static void DrawChoices_Sound_Effects(int selection, int y);
+static void DrawChoices_Skip_Intro(int selection, int y);
 static void DrawBgWindowFrames(void);
 
 // EWRAM vars
@@ -260,6 +262,7 @@ struct // MENU_CUSTOM
     [MENUITEM_CUSTOM_FISHING]      = {DrawChoices_Fishing,       ProcessInput_Options_Two},
     [MENUITEM_CUSTOM_FAST_BATTLES] = {DrawChoices_FastBattles,     ProcessInput_Options_Two},
     [MENUITEM_CUSTOM_EVEN_FASTER_JOY] = {DrawChoices_EvenFasterJoy,     ProcessInput_Options_Two},
+    [MENUITEM_CUSTOM_SKIP_INTRO]   = {DrawChoices_Skip_Intro,     ProcessInput_Options_Two},
 };
 
 struct // MENU_SOUND
@@ -284,6 +287,7 @@ static const u8 sText_OptionFastIntro[]           = _("FAST INTRO");
 static const u8 sText_OptionLargeFollower[]       = _("BIG FOLLOWERS");
 static const u8 sText_OptionFastBattles[]         = _("FAST BATTLES");
 static const u8 sText_OptionEvenFasterJoy[]       = _("EVEN FASTER JOY");
+static const u8 sText_OptionSkipIntro[]           = _("SKIP INTRO");
 static const u8 *const sOptionMenuItemsNamesMain[MENUITEM_MAIN_COUNT] =
 {
     [MENUITEM_MAIN_TEXTSPEED]   = gText_TextSpeed,
@@ -306,6 +310,7 @@ static const u8 *const sOptionMenuItemsNamesCustom[MENUITEM_CUSTOM_COUNT] =
     [MENUITEM_CUSTOM_FISHING]     = sText_OptionFishing,
     [MENUITEM_CUSTOM_FAST_BATTLES]     = sText_OptionFastBattles,
     [MENUITEM_CUSTOM_EVEN_FASTER_JOY]     = sText_OptionEvenFasterJoy,
+    [MENUITEM_CUSTOM_SKIP_INTRO]     = sText_OptionSkipIntro,
 };
 
 static const u8 sText_OptionSurfMusic[]              = _("SURF MUSIC");
@@ -364,6 +369,7 @@ static bool8 CheckConditions(int selection)
         case MENUITEM_CUSTOM_FAST_BATTLES:    return TRUE;
         case MENUITEM_CUSTOM_FISHING:         return TRUE;
         case MENUITEM_CUSTOM_EVEN_FASTER_JOY: return TRUE;
+        case MENUITEM_CUSTOM_SKIP_INTRO:      return TRUE;
         case MENUITEM_CUSTOM_COUNT:           return TRUE;
         }
     case MENU_SOUND:
@@ -426,6 +432,8 @@ static const u8 sText_Desc_FastBattleOn[]          = _("Skips all delays in batt
 static const u8 sText_Desc_FastBattleOff[]         = _("Manual delay skipping. You can\npress A or B to skip delays.");
 static const u8 sText_Desc_EvenFasterJoyOn[]       = _("NURSE JOY heals you extremely fast.\nFor those who cannot wait.");
 static const u8 sText_Desc_EvenFasterJoyOff[]      = _("NURSE JOY heals you fast, but\nwith the usual animation.");
+static const u8 sText_Desc_SkipIntroOn[]           = _("Skips the Copyright screen and\nintro. Applies to soft-resets.");
+static const u8 sText_Desc_SkipIntroOff[]          = _("Shows the Copyright screen and \nthe game's introduction.");
 static const u8 *const sOptionMenuItemDescriptionsCustom[MENUITEM_CUSTOM_COUNT][2] =
 {
     [MENUITEM_CUSTOM_FOLLOWER]    = {sText_Desc_FollowerOn,           sText_Desc_FollowerOff},
@@ -438,6 +446,7 @@ static const u8 *const sOptionMenuItemDescriptionsCustom[MENUITEM_CUSTOM_COUNT][
     [MENUITEM_CUSTOM_TYPE_EFFECTIVE]       = {sText_Desc_TypeEffectiveOn,              sText_Desc_TypeEffectiveOff},
     [MENUITEM_CUSTOM_FISHING]     = {sText_Desc_FishingOn,            sText_Desc_FishingOff},
     [MENUITEM_CUSTOM_EVEN_FASTER_JOY]     = {sText_Desc_EvenFasterJoyOn,            sText_Desc_EvenFasterJoyOff},
+    [MENUITEM_CUSTOM_SKIP_INTRO]     = {sText_Desc_SkipIntroOn,            sText_Desc_SkipIntroOff},
 };
 
 static const u8 sText_Desc_SoundMono[]             = _("Sound is the same in all speakers.\nRecommended for original hardware.");
@@ -493,6 +502,7 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledCustom[MENUITEM_CUSTOM
     [MENUITEM_CUSTOM_TYPE_EFFECTIVE]       = sText_Empty,
     [MENUITEM_CUSTOM_FISHING]     = sText_Empty,
     [MENUITEM_CUSTOM_EVEN_FASTER_JOY]     = sText_Empty,
+    [MENUITEM_CUSTOM_SKIP_INTRO]     = sText_Empty,
 };
 
 static const u8 *const sOptionMenuItemDescriptionsDisabledSound[MENUITEM_SOUND_COUNT] =
@@ -758,6 +768,7 @@ void CB2_InitOptionPlusMenu(void)
         sOptions->sel_custom[MENUITEM_CUSTOM_TYPE_EFFECTIVE]    = gSaveBlock2Ptr->optionTypeEffective;
         sOptions->sel_custom[MENUITEM_CUSTOM_FISHING]           = gSaveBlock2Ptr->optionsFishing;
         sOptions->sel_custom[MENUITEM_CUSTOM_EVEN_FASTER_JOY]   = gSaveBlock2Ptr->optionsEvenFasterJoy;
+        sOptions->sel_custom[MENUITEM_CUSTOM_SKIP_INTRO]        = gSaveBlock2Ptr->optionsSkipIntro;
 
         sOptions->sel_sound[MENUITEM_SOUND_SOUND]              = gSaveBlock2Ptr->optionsSound;
         sOptions->sel_sound[MENUITEM_SOUND_BIKE_MUSIC]         = gSaveBlock2Ptr->optionsBikeMusic;
@@ -985,6 +996,7 @@ static void Task_OptionMenuSave(u8 taskId)
     gSaveBlock2Ptr->optionTypeEffective     = sOptions->sel_custom[MENUITEM_CUSTOM_TYPE_EFFECTIVE];
     gSaveBlock2Ptr->optionsFishing          = sOptions->sel_custom[MENUITEM_CUSTOM_FISHING];
     gSaveBlock2Ptr->optionsEvenFasterJoy    = sOptions->sel_custom[MENUITEM_CUSTOM_EVEN_FASTER_JOY];
+    gSaveBlock2Ptr->optionsSkipIntro        = sOptions->sel_custom[MENUITEM_CUSTOM_SKIP_INTRO];
     
     gSaveBlock2Ptr->optionsSound            = sOptions->sel_sound[MENUITEM_SOUND_SOUND];
     gSaveBlock2Ptr->optionsBikeMusic        = sOptions->sel_sound[MENUITEM_SOUND_BIKE_MUSIC];
@@ -1727,6 +1739,24 @@ static void DrawChoices_SurfMusic(int selection, int y)
         gSaveBlock2Ptr->optionsSurfMusic = 1; //music off
     }
 
+    DrawOptionMenuChoice(gText_BattleSceneOn, 104, y, styles[0], active);
+    DrawOptionMenuChoice(gText_BattleSceneOff, GetStringRightAlignXOffset(1, gText_BattleSceneOff, 198), y, styles[1], active);
+}
+
+static void DrawChoices_Skip_Intro(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_CUSTOM_SKIP_INTRO);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock2Ptr->optionsSkipIntro = 0; //Skips intro
+    }
+    else
+    {
+        gSaveBlock2Ptr->optionsSkipIntro = 1; //Doesn't skip intro
+    }
     DrawOptionMenuChoice(gText_BattleSceneOn, 104, y, styles[0], active);
     DrawOptionMenuChoice(gText_BattleSceneOff, GetStringRightAlignXOffset(1, gText_BattleSceneOff, 198), y, styles[1], active);
 }
