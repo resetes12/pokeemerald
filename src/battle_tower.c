@@ -79,6 +79,95 @@ static void FillPartnerParty(u16 trainerId);
 static void SetEReaderTrainerChecksum(struct BattleTowerEReaderTrainer *ereaderTrainer);
 static u8 SetTentPtrsGetLevel(void);
 
+struct TrainerBallBF
+{
+    u8 classId;
+    u8 Ball; // make this a u16 if needed
+};
+
+const struct TrainerBallBF gTrainerBallTableBF[] = {
+    {FACILITY_CLASS_AQUA_GRUNT_M, ITEM_NET_BALL},
+    {FACILITY_CLASS_AQUA_GRUNT_F, ITEM_NET_BALL},
+    {FACILITY_CLASS_AROMA_LADY, ITEM_LUXURY_BALL},
+    {FACILITY_CLASS_RUIN_MANIAC, ITEM_GREAT_BALL},
+    {FACILITY_CLASS_INTERVIEWER, ITEM_REPEAT_BALL},
+    {FACILITY_CLASS_TUBER_F, ITEM_DIVE_BALL},
+    {FACILITY_CLASS_TUBER_M, ITEM_DIVE_BALL},
+    {FACILITY_CLASS_SIS_AND_BRO, ITEM_POKE_BALL},
+    {FACILITY_CLASS_COOLTRAINER_M, ITEM_ULTRA_BALL},
+    {FACILITY_CLASS_COOLTRAINER_F, ITEM_ULTRA_BALL},
+    {FACILITY_CLASS_HEX_MANIAC, ITEM_GREAT_BALL},
+    {FACILITY_CLASS_LADY, ITEM_LUXURY_BALL},
+    {FACILITY_CLASS_BEAUTY, ITEM_GREAT_BALL},
+    {FACILITY_CLASS_RICH_BOY, ITEM_LUXURY_BALL},
+    {FACILITY_CLASS_POKEMANIAC, ITEM_PREMIER_BALL},
+    {FACILITY_CLASS_SWIMMER_M, ITEM_DIVE_BALL},
+    {FACILITY_CLASS_BLACK_BELT, ITEM_GREAT_BALL},
+    {FACILITY_CLASS_GUITARIST, ITEM_TIMER_BALL},
+    {FACILITY_CLASS_KINDLER, ITEM_POKE_BALL},
+    {FACILITY_CLASS_CAMPER, ITEM_NEST_BALL},
+    {FACILITY_CLASS_OLD_COUPLE, ITEM_POKE_BALL},
+    {FACILITY_CLASS_BUG_MANIAC, ITEM_NET_BALL},
+    {FACILITY_CLASS_PSYCHIC_M, ITEM_POKE_BALL},
+    {FACILITY_CLASS_PSYCHIC_F, ITEM_POKE_BALL},
+    {FACILITY_CLASS_GENTLEMAN, ITEM_LUXURY_BALL},
+    {FACILITY_CLASS_ELITE_FOUR_SIDNEY, ITEM_ULTRA_BALL},
+    {FACILITY_CLASS_ELITE_FOUR_PHOEBE, ITEM_ULTRA_BALL},
+    {FACILITY_CLASS_LEADER_ROXANNE, ITEM_ULTRA_BALL},
+    {FACILITY_CLASS_LEADER_BRAWLY, ITEM_ULTRA_BALL},
+    {FACILITY_CLASS_LEADER_TATE, ITEM_ULTRA_BALL},
+    {FACILITY_CLASS_LEADER_WATTSON, ITEM_ULTRA_BALL},
+    {FACILITY_CLASS_LEADER_FLANNERY, ITEM_ULTRA_BALL},
+    {FACILITY_CLASS_LEADER_NORMAN, ITEM_ULTRA_BALL},
+    {FACILITY_CLASS_LEADER_WINONA, ITEM_ULTRA_BALL},
+    {FACILITY_CLASS_LEADER_LIZA, ITEM_ULTRA_BALL},
+    {FACILITY_CLASS_LEADER_JUAN, ITEM_ULTRA_BALL},
+    {FACILITY_CLASS_ELITE_FOUR_GLACIA, ITEM_ULTRA_BALL},
+    {FACILITY_CLASS_ELITE_FOUR_DRAKE, ITEM_ULTRA_BALL},
+    {FACILITY_CLASS_SCHOOL_KID_M, ITEM_POKE_BALL},
+    {FACILITY_CLASS_SCHOOL_KID_F, ITEM_POKE_BALL},
+    {FACILITY_CLASS_SR_AND_JR, ITEM_POKE_BALL},
+    {FACILITY_CLASS_POKEFAN_M, ITEM_POKE_BALL},
+    {FACILITY_CLASS_POKEFAN_F, ITEM_POKE_BALL},
+    {FACILITY_CLASS_EXPERT_M, ITEM_ULTRA_BALL},
+    {FACILITY_CLASS_EXPERT_F, ITEM_ULTRA_BALL},
+    {FACILITY_CLASS_YOUNGSTER, ITEM_POKE_BALL},
+    {FACILITY_CLASS_FISHERMAN, ITEM_DIVE_BALL},
+    {FACILITY_CLASS_CYCLING_TRIATHLETE_M, ITEM_REPEAT_BALL},
+    {FACILITY_CLASS_CYCLING_TRIATHLETE_F, ITEM_REPEAT_BALL},
+    {FACILITY_CLASS_RUNNING_TRIATHLETE_M, ITEM_REPEAT_BALL},
+    {FACILITY_CLASS_RUNNING_TRIATHLETE_F, ITEM_REPEAT_BALL},
+    {FACILITY_CLASS_SWIMMING_TRIATHLETE_M, ITEM_REPEAT_BALL},
+    {FACILITY_CLASS_SWIMMING_TRIATHLETE_F, ITEM_REPEAT_BALL},
+    {FACILITY_CLASS_DRAGON_TAMER, ITEM_ULTRA_BALL},
+    {FACILITY_CLASS_BIRD_KEEPER, ITEM_REPEAT_BALL},
+    {FACILITY_CLASS_NINJA_BOY, ITEM_ULTRA_BALL},
+    {FACILITY_CLASS_BATTLE_GIRL, ITEM_GREAT_BALL},
+    {FACILITY_CLASS_PARASOL_LADY, ITEM_POKE_BALL},
+    {FACILITY_CLASS_SWIMMER_F, ITEM_DIVE_BALL},
+    {FACILITY_CLASS_PICNICKER, ITEM_SAFARI_BALL},
+    {FACILITY_CLASS_TWINS, ITEM_POKE_BALL},
+    {FACILITY_CLASS_SAILOR, ITEM_DIVE_BALL},
+    {FACILITY_CLASS_COLLECTOR, ITEM_REPEAT_BALL},
+    {FACILITY_CLASS_WALLY, ITEM_PREMIER_BALL},
+    {FACILITY_CLASS_RED, ITEM_PREMIER_BALL},
+    {FACILITY_CLASS_LEAF, ITEM_PREMIER_BALL},
+    {FACILITY_CLASS_PKMN_BREEDER_F, ITEM_TIMER_BALL},
+    {FACILITY_CLASS_PKMN_BREEDER_M, ITEM_SAFARI_BALL},
+    {FACILITY_CLASS_PKMN_BREEDER_F, ITEM_SAFARI_BALL},
+    {FACILITY_CLASS_MAGMA_GRUNT_M, ITEM_NEST_BALL},
+    {FACILITY_CLASS_MAGMA_GRUNT_F, ITEM_NEST_BALL},
+    {FACILITY_CLASS_MAGMA_LEADER_MAXIE, ITEM_MASTER_BALL},
+    {FACILITY_CLASS_AQUA_LEADER_ARCHIE, ITEM_MASTER_BALL},
+    {FACILITY_CLASS_CHAMPION_WALLACE, ITEM_MASTER_BALL},
+    {FACILITY_CLASS_CHAMPION_STEVEN, ITEM_MASTER_BALL},
+    {FACILITY_CLASS_LASS, ITEM_POKE_BALL},
+    {FACILITY_CLASS_BUG_CATCHER, ITEM_NET_BALL},
+    {FACILITY_CLASS_HIKER, ITEM_GREAT_BALL},
+    {FACILITY_CLASS_YOUNG_COUPLE, ITEM_REPEAT_BALL},
+    {0xFF, ITEM_POKE_BALL},
+};
+
 const u16 gBattleFrontierHeldItems[] =
 {
     [BATTLE_FRONTIER_ITEM_NONE]           = ITEM_NONE,
@@ -1786,6 +1875,12 @@ static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
             if (gFacilityTrainerMons[monId].moves[j] == MOVE_FRUSTRATION)
                 friendship = 0;  // Frustration is more powerful the lower the pokemon's friendship is.
         }
+        for (j = 0; gTrainerBallTableBF[j].classId != 0xFF; j++)
+            {
+                if (gTrainerBallTableBF[j].classId == gBattleFrontierTrainers[trainerId].facilityClass)
+                    break;
+            }
+            SetMonData(&gEnemyParty[i + firstMonId], MON_DATA_POKEBALL, &gTrainerBallTableBF[j].Ball);
 
         SetMonData(&gEnemyParty[i + firstMonId], MON_DATA_FRIENDSHIP, &friendship);
         SetMonData(&gEnemyParty[i + firstMonId], MON_DATA_HELD_ITEM, &gBattleFrontierHeldItems[gFacilityTrainerMons[monId].itemTableId]);
@@ -1921,7 +2016,13 @@ static void FillFactoryFrontierTrainerParty(u16 trainerId, u8 firstMonId)
         friendship = 0;
         for (j = 0; j < MAX_MON_MOVES; j++)
             SetMonMoveAvoidReturn(&gEnemyParty[firstMonId + i], gFacilityTrainerMons[monId].moves[j], j);
-
+        
+        for (j = 0; gTrainerBallTableBF[j].classId != 0xFF; j++)
+            {
+                if (gTrainerBallTableBF[j].classId == gBattleFrontierTrainers[trainerId].facilityClass)
+                    break;
+            }
+        SetMonData(&gEnemyParty[i + firstMonId], MON_DATA_POKEBALL, &gTrainerBallTableBF[j].Ball);
         SetMonData(&gEnemyParty[firstMonId + i], MON_DATA_FRIENDSHIP, &friendship);
         SetMonData(&gEnemyParty[firstMonId + i], MON_DATA_HELD_ITEM, &gBattleFrontierHeldItems[gFacilityTrainerMons[monId].itemTableId]);
     }
@@ -1953,6 +2054,12 @@ static void FillFactoryTentTrainerParty(u16 trainerId, u8 firstMonId)
             if (gFacilityTrainerMons[monId].moves[j] == MOVE_FRUSTRATION)
                 friendship = 0;
         }
+        for (j = 0; gTrainerBallTableBF[j].classId != 0xFF; j++)
+            {
+                if (gTrainerBallTableBF[j].classId == gBattleFrontierTrainers[trainerId].facilityClass)
+                    break;
+            }
+        SetMonData(&gEnemyParty[i + firstMonId], MON_DATA_POKEBALL, &gTrainerBallTableBF[j].Ball);
 
         SetMonData(&gEnemyParty[firstMonId + i], MON_DATA_FRIENDSHIP, &friendship);
         SetMonData(&gEnemyParty[firstMonId + i], MON_DATA_HELD_ITEM, &gBattleFrontierHeldItems[gFacilityTrainerMons[monId].itemTableId]);
@@ -3549,6 +3656,12 @@ static void FillTentTrainerParty_(u16 trainerId, u8 firstMonId, u8 monCount)
             if (gFacilityTrainerMons[monId].moves[j] == MOVE_FRUSTRATION)
                 friendship = 0;  // Frustration is more powerful the lower the pokemon's friendship is.
         }
+        for (j = 0; gTrainerBallTableBF[j].classId != 0xFF; j++)
+            {
+                if (gTrainerBallTableBF[j].classId == gBattleFrontierTrainers[trainerId].facilityClass)
+                    break;
+            }
+        SetMonData(&gEnemyParty[i + firstMonId], MON_DATA_POKEBALL, &gTrainerBallTableBF[j].Ball);
 
         SetMonData(&gEnemyParty[i + firstMonId], MON_DATA_FRIENDSHIP, &friendship);
         SetMonData(&gEnemyParty[i + firstMonId], MON_DATA_HELD_ITEM, &gBattleFrontierHeldItems[gFacilityTrainerMons[monId].itemTableId]);
