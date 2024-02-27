@@ -15,7 +15,7 @@ bool8 AreFeaturesActivated(void)
     if (gSaveBlock2Ptr->optionsShinyChance
         || gSaveBlock2Ptr->optionsWildMonDropItems
         || gSaveBlock2Ptr->optionsAlternateSpawns
-        || gSaveBlock1Ptr->optionsInfiniteTMs
+        || gSaveBlock1Ptr->tx_Features_InfiniteTMs
         || gSaveBlock1Ptr->optionsPoisonSurvive
         || gSaveBlock1Ptr->optionsEasierFeebas)
         return TRUE;
@@ -73,7 +73,7 @@ bool8 AreAnyChallengesActive(void)
         || gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer
         || gSaveBlock1Ptr->tx_Challenges_Mirror
         || gSaveBlock1Ptr->tx_Challenges_Mirror_Thief
-        || gSaveBlock1Ptr->MaxPartyIVs
+        || gSaveBlock1Ptr->tx_Challenges_MaxPartyIVs
         || gSaveBlock2Ptr->optionsLimitDifficulty
         || IsOneTypeChallengeActive())
         return TRUE;
@@ -285,9 +285,9 @@ void NuzlockeDeleteFaintedPartyPokemon(void) // @Kurausukun
                     AddBagItem(monItem, 1);
                     SetMonData(pokemon, MON_DATA_HELD_ITEM, ITEM_NONE);
                 }
-                if (gSaveBlock1Ptr->optionsPkmnDeath)
+                if (gSaveBlock1Ptr->tx_Features_PkmnDeath)
                     NuzlockeDeletePartyMonOption(i);
-                else if (!gSaveBlock1Ptr->optionsPkmnDeath)
+                else if (!gSaveBlock1Ptr->tx_Features_PkmnDeath)
                     NuzlockeDeletePartyMon(i);
             }
         }

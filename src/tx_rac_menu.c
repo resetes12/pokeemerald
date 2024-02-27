@@ -1164,14 +1164,14 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         break;
     case 6:
         //tx_randomizer_and_challenges
-        gSaveBlock1Ptr->optionsRTCType                      = TX_FEATURES_RTC_TYPE;
+        gSaveBlock1Ptr->tx_Features_RTCType                      = TX_FEATURES_RTC_TYPE;
         gSaveBlock2Ptr->optionsAlternateSpawns              = TX_FEATURES_ALTERNATE_SPAWNS;
         gSaveBlock2Ptr->optionsShinyChance                  = TX_FEATURES_SHINY_CHANCE;
         gSaveBlock2Ptr->optionsWildMonDropItems             = TX_FEATURES_ITEM_DROP;
-        gSaveBlock1Ptr->optionsInfiniteTMs                  = TX_FEATURES_INFINITE_TMS;
+        gSaveBlock1Ptr->tx_Features_InfiniteTMs                  = TX_FEATURES_INFINITE_TMS;
         gSaveBlock1Ptr->optionsPoisonSurvive                = TX_FEATURES_SURVIVE_POISON;
         gSaveBlock1Ptr->optionsEasierFeebas                 = TX_FEATURES_EASIER_FEEBAS;
-        gSaveBlock1Ptr->optionsPkmnDeath                    = TX_FEATURES_PKMN_DEATH;
+        gSaveBlock1Ptr->tx_Features_PkmnDeath                    = TX_FEATURES_PKMN_DEATH;
 
         gSaveBlock1Ptr->tx_Random_Starter                   = TX_RANDOM_STARTER;
         gSaveBlock1Ptr->tx_Random_WildPokemon               = TX_RANDOM_WILD_POKEMON;
@@ -1207,7 +1207,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         gSaveBlock1Ptr->tx_Challenges_TrainerScalingEVs     = TX_DIFFICULTY_SCALING_EVS;
         gSaveBlock1Ptr->tx_Challenges_PkmnCenter            = TX_DIFFICULTY_PKMN_CENTER;
         gSaveBlock2Ptr->optionsLimitDifficulty              = TX_DIFFICULTY_LIMIT_DIFFICULTY;
-        gSaveBlock1Ptr->MaxPartyIVs                         = TX_DIFFICULTY_MAX_PARTY_IVS;
+        gSaveBlock1Ptr->tx_Challenges_MaxPartyIVs                         = TX_DIFFICULTY_MAX_PARTY_IVS;
 
         gSaveBlock1Ptr->tx_Challenges_PCHeal                = TX_CHALLENGE_PCHEAL;
         gSaveBlock1Ptr->tx_Challenges_EvoLimit              = TX_CHALLENGE_EVO_LIMIT;
@@ -1219,11 +1219,11 @@ void CB2_InitTxRandomizerChallengesMenu(void)
 
         sOptions = AllocZeroed(sizeof(*sOptions));
         //MENU FEATURES
-        sOptions->sel_features[MENUITEM_FEATURES_RTC_TYPE]               = gSaveBlock1Ptr->optionsRTCType;
+        sOptions->sel_features[MENUITEM_FEATURES_RTC_TYPE]               = gSaveBlock1Ptr->tx_Features_RTCType;
         sOptions->sel_features[MENUITEM_FEATURES_ALTERNATE_SPAWNS]       = gSaveBlock2Ptr->optionsAlternateSpawns;
         sOptions->sel_features[MENUITEM_FEATURES_SHINY_CHANCE]           = gSaveBlock2Ptr->optionsShinyChance;
         sOptions->sel_features[MENUITEM_FEATURES_ITEM_DROP]              = gSaveBlock2Ptr->optionsWildMonDropItems;
-        sOptions->sel_features[MENUITEM_FEATURES_INFINITE_TMS]           = gSaveBlock1Ptr->optionsInfiniteTMs;
+        sOptions->sel_features[MENUITEM_FEATURES_INFINITE_TMS]           = gSaveBlock1Ptr->tx_Features_InfiniteTMs;
         sOptions->sel_features[MENUITEM_FEATURES_SURVIVE_POISON]         = gSaveBlock1Ptr->optionsPoisonSurvive;  
         sOptions->sel_features[MENUITEM_FEATURES_EASY_FEEBAS]            = gSaveBlock1Ptr->optionsEasierFeebas;
         
@@ -1266,7 +1266,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         sOptions->sel_difficulty[MENUITEM_DIFFICULTY_SCALING_IVS]    = gSaveBlock1Ptr->tx_Challenges_TrainerScalingIVs;
         sOptions->sel_difficulty[MENUITEM_DIFFICULTY_SCALING_EVS]    = gSaveBlock1Ptr->tx_Challenges_TrainerScalingEVs; 
         sOptions->sel_difficulty[MENUITEM_DIFFICULTY_LIMIT_DIFFICULTY]       = gSaveBlock2Ptr->optionsLimitDifficulty;
-        sOptions->sel_difficulty[MENUITEM_DIFFICULTY_MAX_PARTY_IVS]       = gSaveBlock1Ptr->MaxPartyIVs;
+        sOptions->sel_difficulty[MENUITEM_DIFFICULTY_MAX_PARTY_IVS]       = gSaveBlock1Ptr->tx_Challenges_MaxPartyIVs;
         // MENU_CHALLENGES
         sOptions->sel_challenges[MENUITEM_DIFFICULTY_POKECENTER]             = gSaveBlock1Ptr->tx_Challenges_PkmnCenter;
         sOptions->sel_challenges[MENUITEM_CHALLENGES_PCHEAL]                 = gSaveBlock1Ptr->tx_Challenges_PCHeal;
@@ -1534,14 +1534,14 @@ void SaveData_TxRandomizerAndChallenges(void)
 {
     PrintCurrentSelections();
     //MENU FEAUTRES
-    gSaveBlock1Ptr->optionsRTCType                     = sOptions->sel_features[MENUITEM_FEATURES_RTC_TYPE]; 
+    gSaveBlock1Ptr->tx_Features_RTCType                     = sOptions->sel_features[MENUITEM_FEATURES_RTC_TYPE]; 
     gSaveBlock2Ptr->optionsAlternateSpawns             = sOptions->sel_features[MENUITEM_FEATURES_ALTERNATE_SPAWNS]; 
     gSaveBlock2Ptr->optionsShinyChance                 = sOptions->sel_features[MENUITEM_FEATURES_SHINY_CHANCE]; 
     gSaveBlock2Ptr->optionsWildMonDropItems            = sOptions->sel_features[MENUITEM_FEATURES_ITEM_DROP]; 
-    gSaveBlock1Ptr->optionsInfiniteTMs                 = sOptions->sel_features[MENUITEM_FEATURES_INFINITE_TMS]; 
+    gSaveBlock1Ptr->tx_Features_InfiniteTMs                 = sOptions->sel_features[MENUITEM_FEATURES_INFINITE_TMS]; 
     gSaveBlock1Ptr->optionsPoisonSurvive               = sOptions->sel_features[MENUITEM_FEATURES_SURVIVE_POISON]; 
     gSaveBlock1Ptr->optionsEasierFeebas                = sOptions->sel_features[MENUITEM_FEATURES_EASY_FEEBAS]; 
-    gSaveBlock1Ptr->optionsPkmnDeath                   = sOptions->sel_features[MENUITEM_FEATURES_PKMN_DEATH]; 
+    gSaveBlock1Ptr->tx_Features_PkmnDeath                   = sOptions->sel_features[MENUITEM_FEATURES_PKMN_DEATH]; 
     // MENU_RANDOMIZER
     if (sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON] == TRUE)
     {
@@ -1617,7 +1617,7 @@ void SaveData_TxRandomizerAndChallenges(void)
     gSaveBlock1Ptr->tx_Challenges_TrainerScalingIVs     = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_SCALING_IVS];
     gSaveBlock1Ptr->tx_Challenges_TrainerScalingEVs     = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_SCALING_EVS];
     gSaveBlock2Ptr->optionsLimitDifficulty              = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_LIMIT_DIFFICULTY];
-    gSaveBlock1Ptr->MaxPartyIVs                         = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_MAX_PARTY_IVS];
+    gSaveBlock1Ptr->tx_Challenges_MaxPartyIVs                         = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_MAX_PARTY_IVS];
     // MENU_CHALLENGES
     gSaveBlock1Ptr->tx_Challenges_EvoLimit             = sOptions->sel_challenges[MENUITEM_CHALLENGES_EVO_LIMIT];
     if (sOptions->sel_challenges[MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE] > NUMBER_OF_MON_TYPES-1)
@@ -2228,11 +2228,11 @@ static void DrawChoices_Features_Rtc_Type(int selection, int y)
 
     if (selection == 0)
     {
-        gSaveBlock1Ptr->optionsRTCType = 0; //Off, RTC
+        gSaveBlock1Ptr->tx_Features_RTCType = 0; //Off, RTC
     }
     else
     {
-        gSaveBlock1Ptr->optionsRTCType = 1; //On, Fake RTC
+        gSaveBlock1Ptr->tx_Features_RTCType = 1; //On, Fake RTC
     }
 
     DrawOptionMenuChoice(sText_Features_RTC_RTC, 104, y, styles[0], active);
@@ -2285,11 +2285,11 @@ static void DrawChoices_Challenges_MaxPartyIVs(int selection, int y)
 
     if (selection == 0)
     {
-        gSaveBlock1Ptr->MaxPartyIVs = 0; //Ivs set to normal
+        gSaveBlock1Ptr->tx_Challenges_MaxPartyIVs = 0; //Ivs set to normal
     }
     else
     {
-        gSaveBlock1Ptr->MaxPartyIVs = 1; //Ivs are always 31
+        gSaveBlock1Ptr->tx_Challenges_MaxPartyIVs = 1; //Ivs are always 31
     }
 
     DrawOptionMenuChoice(sText_Yes, 104, y, styles[0], active);
@@ -2323,12 +2323,12 @@ static void DrawChoices_Features_InfiniteTMs(int selection, int y)
 
     if (selection == 0)
     {
-        gSaveBlock1Ptr->optionsInfiniteTMs = 0; //TMs are finite
+        gSaveBlock1Ptr->tx_Features_InfiniteTMs = 0; //TMs are finite
         FlagSet (FLAG_FINITE_TMS);
     }
     else
     {
-        gSaveBlock1Ptr->optionsInfiniteTMs = 1; //TMs are infinite
+        gSaveBlock1Ptr->tx_Features_InfiniteTMs = 1; //TMs are infinite
         FlagClear (FLAG_FINITE_TMS);
     }
 
@@ -2382,11 +2382,11 @@ static void DrawChoices_Features_Pkmn_Death(int selection, int y)
 
     if (selection == 0)
     {
-        gSaveBlock1Ptr->optionsPkmnDeath = 0; //off
+        gSaveBlock1Ptr->tx_Features_PkmnDeath = 0; //off
     }
     else
     {
-        gSaveBlock1Ptr->optionsPkmnDeath = 1; //on
+        gSaveBlock1Ptr->tx_Features_PkmnDeath = 1; //on
     }
 
     DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);

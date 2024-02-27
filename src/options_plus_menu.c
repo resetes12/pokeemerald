@@ -757,15 +757,15 @@ void CB2_InitOptionPlusMenu(void)
         sOptions->sel_custom[MENUITEM_CUSTOM_STYLE]             = gSaveBlock2Ptr->optionStyle;
         sOptions->sel_custom[MENUITEM_CUSTOM_TYPE_EFFECTIVE]    = gSaveBlock2Ptr->optionTypeEffective;
         sOptions->sel_custom[MENUITEM_CUSTOM_FISHING]           = gSaveBlock2Ptr->optionsFishing;
-        sOptions->sel_custom[MENUITEM_CUSTOM_EVEN_FASTER_JOY]   = gSaveBlock1Ptr->optionsEvenFasterJoy;
+        sOptions->sel_custom[MENUITEM_CUSTOM_EVEN_FASTER_JOY]   = gSaveBlock2Ptr->optionsEvenFasterJoy;
 
         sOptions->sel_sound[MENUITEM_SOUND_SOUND]              = gSaveBlock2Ptr->optionsSound;
-        sOptions->sel_sound[MENUITEM_SOUND_BIKE_MUSIC]         = gSaveBlock1Ptr->optionsBikeMusic;
-        sOptions->sel_sound[MENUITEM_SOUND_SURF_MUSIC]         = gSaveBlock1Ptr->optionsSurfMusic;
-        sOptions->sel_sound[MENUITEM_SOUND_WILD_MON_MUSIC]     = gSaveBlock1Ptr->optionsWildBattleMusic;
-        sOptions->sel_sound[MENUITEM_SOUND_BATTLE_TRAINER_MUSIC]     = gSaveBlock1Ptr->optionsTrainerBattleMusic;
-        sOptions->sel_sound[MENUITEM_SOUND_BATTLE_FRONTIER_TRAINER_MUSIC]     = gSaveBlock1Ptr->optionsFrontierTrainerBattleMusic;
-        sOptions->sel_sound[MENUITEM_SOUND_EFFECTS]            = gSaveBlock1Ptr->optionsSoundEffects;
+        sOptions->sel_sound[MENUITEM_SOUND_BIKE_MUSIC]         = gSaveBlock2Ptr->optionsBikeMusic;
+        sOptions->sel_sound[MENUITEM_SOUND_SURF_MUSIC]         = gSaveBlock2Ptr->optionsSurfMusic;
+        sOptions->sel_sound[MENUITEM_SOUND_WILD_MON_MUSIC]     = gSaveBlock2Ptr->optionsWildBattleMusic;
+        sOptions->sel_sound[MENUITEM_SOUND_BATTLE_TRAINER_MUSIC]     = gSaveBlock2Ptr->optionsTrainerBattleMusic;
+        sOptions->sel_sound[MENUITEM_SOUND_BATTLE_FRONTIER_TRAINER_MUSIC]     = gSaveBlock2Ptr->optionsFrontierTrainerBattleMusic;
+        sOptions->sel_sound[MENUITEM_SOUND_EFFECTS]            = gSaveBlock2Ptr->optionsSoundEffects;
 
         sOptions->submenu = MENU_MAIN;
 
@@ -984,15 +984,15 @@ static void Task_OptionMenuSave(u8 taskId)
     gSaveBlock2Ptr->optionStyle             = sOptions->sel_custom[MENUITEM_CUSTOM_STYLE];
     gSaveBlock2Ptr->optionTypeEffective     = sOptions->sel_custom[MENUITEM_CUSTOM_TYPE_EFFECTIVE];
     gSaveBlock2Ptr->optionsFishing          = sOptions->sel_custom[MENUITEM_CUSTOM_FISHING];
-    gSaveBlock1Ptr->optionsEvenFasterJoy    = sOptions->sel_custom[MENUITEM_CUSTOM_EVEN_FASTER_JOY];
+    gSaveBlock2Ptr->optionsEvenFasterJoy    = sOptions->sel_custom[MENUITEM_CUSTOM_EVEN_FASTER_JOY];
     
     gSaveBlock2Ptr->optionsSound            = sOptions->sel_sound[MENUITEM_SOUND_SOUND];
-    gSaveBlock1Ptr->optionsBikeMusic        = sOptions->sel_sound[MENUITEM_SOUND_BIKE_MUSIC];
-    gSaveBlock1Ptr->optionsSurfMusic        = sOptions->sel_sound[MENUITEM_SOUND_SURF_MUSIC];
-    gSaveBlock1Ptr->optionsWildBattleMusic  = sOptions->sel_sound[MENUITEM_SOUND_WILD_MON_MUSIC];
-    gSaveBlock1Ptr->optionsTrainerBattleMusic  = sOptions->sel_sound[MENUITEM_SOUND_BATTLE_TRAINER_MUSIC];
-    gSaveBlock1Ptr->optionsFrontierTrainerBattleMusic  = sOptions->sel_sound[MENUITEM_SOUND_BATTLE_FRONTIER_TRAINER_MUSIC];
-    gSaveBlock1Ptr->optionsSoundEffects  = sOptions->sel_sound[MENUITEM_SOUND_EFFECTS];
+    gSaveBlock2Ptr->optionsBikeMusic        = sOptions->sel_sound[MENUITEM_SOUND_BIKE_MUSIC];
+    gSaveBlock2Ptr->optionsSurfMusic        = sOptions->sel_sound[MENUITEM_SOUND_SURF_MUSIC];
+    gSaveBlock2Ptr->optionsWildBattleMusic  = sOptions->sel_sound[MENUITEM_SOUND_WILD_MON_MUSIC];
+    gSaveBlock2Ptr->optionsTrainerBattleMusic  = sOptions->sel_sound[MENUITEM_SOUND_BATTLE_TRAINER_MUSIC];
+    gSaveBlock2Ptr->optionsFrontierTrainerBattleMusic  = sOptions->sel_sound[MENUITEM_SOUND_BATTLE_FRONTIER_TRAINER_MUSIC];
+    gSaveBlock2Ptr->optionsSoundEffects  = sOptions->sel_sound[MENUITEM_SOUND_EFFECTS];
 
     BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);
     gTasks[taskId].func = Task_OptionMenuFadeOut;
@@ -1339,27 +1339,27 @@ static void DrawChoices_Wild_Battle_Music(int selection, int y)
     
     if (selection == 0)
     {
-        gSaveBlock1Ptr->optionsWildBattleMusic = 0; // Hoenn
+        gSaveBlock2Ptr->optionsWildBattleMusic = 0; // Hoenn
     }
     else if (selection == 1)
     {
-        gSaveBlock1Ptr->optionsWildBattleMusic = 1; // Kanto1
+        gSaveBlock2Ptr->optionsWildBattleMusic = 1; // Kanto1
     }
     else if (selection == 2)
     {
-        gSaveBlock1Ptr->optionsWildBattleMusic = 2; // Sinnoh
+        gSaveBlock2Ptr->optionsWildBattleMusic = 2; // Sinnoh
     }
     else if (selection == 3)
     {
-        gSaveBlock1Ptr->optionsWildBattleMusic = 3; // Johto
+        gSaveBlock2Ptr->optionsWildBattleMusic = 3; // Johto
     }
     else if (selection == 4)
     {
-        gSaveBlock1Ptr->optionsWildBattleMusic = 4; // Kanto 2
+        gSaveBlock2Ptr->optionsWildBattleMusic = 4; // Kanto 2
     }
     else //(selection == 5)
     {
-        gSaveBlock1Ptr->optionsWildBattleMusic = 5; // Random
+        gSaveBlock2Ptr->optionsWildBattleMusic = 5; // Random
     }
 }
 
@@ -1370,27 +1370,27 @@ static void DrawChoices_Trainer_Battle_Music(int selection, int y)
     
     if (selection == 0)
     {
-        gSaveBlock1Ptr->optionsTrainerBattleMusic = 0; // Hoenn
+        gSaveBlock2Ptr->optionsTrainerBattleMusic = 0; // Hoenn
     }
     else if (selection == 1)
     {
-        gSaveBlock1Ptr->optionsTrainerBattleMusic = 1; // Kanto1
+        gSaveBlock2Ptr->optionsTrainerBattleMusic = 1; // Kanto1
     }
     else if (selection == 2)
     {
-        gSaveBlock1Ptr->optionsTrainerBattleMusic = 2; // Sinnoh
+        gSaveBlock2Ptr->optionsTrainerBattleMusic = 2; // Sinnoh
     }
     else if (selection == 3)
     {
-        gSaveBlock1Ptr->optionsTrainerBattleMusic = 3; // Johto
+        gSaveBlock2Ptr->optionsTrainerBattleMusic = 3; // Johto
     }
     else if (selection == 4)
     {
-        gSaveBlock1Ptr->optionsTrainerBattleMusic = 4; // Kanto 2
+        gSaveBlock2Ptr->optionsTrainerBattleMusic = 4; // Kanto 2
     }
     else //(selection == 5)
     {
-        gSaveBlock1Ptr->optionsTrainerBattleMusic = 5; // Random
+        gSaveBlock2Ptr->optionsTrainerBattleMusic = 5; // Random
     }
 }
 
@@ -1401,27 +1401,27 @@ static void DrawChoices_Frontier_Trainer_Battle_Music(int selection, int y)
     
     if (selection == 0)
     {
-        gSaveBlock1Ptr->optionsFrontierTrainerBattleMusic = 0; // Hoenn
+        gSaveBlock2Ptr->optionsFrontierTrainerBattleMusic = 0; // Hoenn
     }
     else if (selection == 1)
     {
-        gSaveBlock1Ptr->optionsFrontierTrainerBattleMusic = 1; // Kanto1
+        gSaveBlock2Ptr->optionsFrontierTrainerBattleMusic = 1; // Kanto1
     }
     else if (selection == 2)
     {
-        gSaveBlock1Ptr->optionsFrontierTrainerBattleMusic = 2; // Sinnoh
+        gSaveBlock2Ptr->optionsFrontierTrainerBattleMusic = 2; // Sinnoh
     }
     else if (selection == 3)
     {
-        gSaveBlock1Ptr->optionsFrontierTrainerBattleMusic = 3; // Johto
+        gSaveBlock2Ptr->optionsFrontierTrainerBattleMusic = 3; // Johto
     }
     else if (selection == 4)
     {
-        gSaveBlock1Ptr->optionsFrontierTrainerBattleMusic = 4; // Kanto 2
+        gSaveBlock2Ptr->optionsFrontierTrainerBattleMusic = 4; // Kanto 2
     }
     else //(selection == 5)
     {
-        gSaveBlock1Ptr->optionsFrontierTrainerBattleMusic = 5; // Random
+        gSaveBlock2Ptr->optionsFrontierTrainerBattleMusic = 5; // Random
     }
 }
 
@@ -1438,15 +1438,15 @@ static void DrawChoices_Sound_Effects(int selection, int y)
 
     if (selection == 0)
     {
-        gSaveBlock1Ptr->optionsSoundEffects = 0; //Gen 3
+        gSaveBlock2Ptr->optionsSoundEffects = 0; //Gen 3
     }
     else if (selection == 1)
     {
-        gSaveBlock1Ptr->optionsSoundEffects = 1; //DPL
+        gSaveBlock2Ptr->optionsSoundEffects = 1; //DPL
     }
     else
     {
-        gSaveBlock1Ptr->optionsSoundEffects = 2; //HGSS
+        gSaveBlock2Ptr->optionsSoundEffects = 2; //HGSS
     }
 
     DrawOptionMenuChoice(sText_Sound_Effects_Gen3, 104, y, styles[0], active);
@@ -1680,11 +1680,11 @@ static void DrawChoices_BikeMusic(int selection, int y)
 
     if (selection == 0)
     {
-        gSaveBlock1Ptr->optionsBikeMusic = 0; //music on
+        gSaveBlock2Ptr->optionsBikeMusic = 0; //music on
     }
     else
     {
-        gSaveBlock1Ptr->optionsBikeMusic = 1; //music off
+        gSaveBlock2Ptr->optionsBikeMusic = 1; //music off
     }
 
     DrawOptionMenuChoice(gText_BattleSceneOn, 104, y, styles[0], active);
@@ -1699,12 +1699,12 @@ static void DrawChoices_EvenFasterJoy(int selection, int y)
 
     if (selection == 0)
     {
-        gSaveBlock1Ptr->optionsEvenFasterJoy = 0; //extremely fast joy
+        gSaveBlock2Ptr->optionsEvenFasterJoy = 0; //extremely fast joy
         FlagSet(FLAG_EVEN_FASTER_JOY);
     }
     else
     {
-        gSaveBlock1Ptr->optionsEvenFasterJoy = 1; //normal joy
+        gSaveBlock2Ptr->optionsEvenFasterJoy = 1; //normal joy
         FlagClear(FLAG_EVEN_FASTER_JOY);
     }
 
@@ -1720,11 +1720,11 @@ static void DrawChoices_SurfMusic(int selection, int y)
 
     if (selection == 0)
     {
-        gSaveBlock1Ptr->optionsSurfMusic = 0; //music on
+        gSaveBlock2Ptr->optionsSurfMusic = 0; //music on
     }
     else
     {
-        gSaveBlock1Ptr->optionsSurfMusic = 1; //music off
+        gSaveBlock2Ptr->optionsSurfMusic = 1; //music off
     }
 
     DrawOptionMenuChoice(gText_BattleSceneOn, 104, y, styles[0], active);

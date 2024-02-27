@@ -289,7 +289,7 @@ void RtcCalcTimeDifference(struct SiiRtcInfo *rtc, struct Time *result, struct T
 
 void RtcCalcLocalTime(void)
 {
-    if (gSaveBlock1Ptr->optionsRTCType == 1)
+    if (gSaveBlock1Ptr->tx_Features_RTCType == 1)
     {
         RtcGetInfoFake(&sRtc);
         RtcCalcTimeDifferenceFake(&sRtc, &gLocalTime, &gSaveBlock2Ptr->localTimeOffset);
@@ -312,7 +312,7 @@ void RtcCalcLocalTimeOffset(s32 days, s32 hours, s32 minutes, s32 seconds)
     gLocalTime.hours = hours;
     gLocalTime.minutes = minutes;
     gLocalTime.seconds = seconds;
-    if (gSaveBlock1Ptr->optionsRTCType == 1)
+    if (gSaveBlock1Ptr->tx_Features_RTCType == 1)
     {
         RtcGetInfoFake(&sRtc);
         RtcCalcTimeDifferenceFake(&sRtc, &gSaveBlock2Ptr->localTimeOffset, &gLocalTime);

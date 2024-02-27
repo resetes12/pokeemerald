@@ -4559,7 +4559,7 @@ static void CreateInGameTradePokemonInternal(u8 whichPlayerMon, u8 whichInGameTr
 
     CreateMon(pokemon, inGameTrade->species, level, USE_RANDOM_IVS, TRUE, inGameTrade->personality, OT_ID_PRESET, inGameTrade->otId);
 
-    if (gSaveBlock1Ptr->MaxPartyIVs == 1)
+    if (gSaveBlock1Ptr->tx_Challenges_MaxPartyIVs == 1)
         {
         SetMonData(pokemon, MON_DATA_HP_IV, &inGameTrade->ivs31[0]);
         SetMonData(pokemon, MON_DATA_ATK_IV, &inGameTrade->ivs31[1]);
@@ -4568,7 +4568,7 @@ static void CreateInGameTradePokemonInternal(u8 whichPlayerMon, u8 whichInGameTr
         SetMonData(pokemon, MON_DATA_SPATK_IV, &inGameTrade->ivs31[4]);
         SetMonData(pokemon, MON_DATA_SPDEF_IV, &inGameTrade->ivs31[5]);
         }
-    else if (gSaveBlock1Ptr->MaxPartyIVs == 0)
+    else if (gSaveBlock1Ptr->tx_Challenges_MaxPartyIVs == 0)
         {
         SetMonData(pokemon, MON_DATA_HP_IV, &inGameTrade->ivs[0]);
         SetMonData(pokemon, MON_DATA_ATK_IV, &inGameTrade->ivs[1]);

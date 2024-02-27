@@ -540,6 +540,13 @@ struct SaveBlock2
              u16 optionsfollowerLargeEnable:1;
              u16 optionsWildMonDropItems:1; //in the challenge menu
              u16 optionsFastBattle:1;
+             u16 optionsEvenFasterJoy:1;
+             u16 optionsBikeMusic:1;
+             u16 optionsSurfMusic:1;
+             u16 optionsWildBattleMusic:5;
+             u16 optionsTrainerBattleMusic:5;
+             u16 optionsFrontierTrainerBattleMusic:5;
+             u16 optionsSoundEffects:2;
     /*0x18*/ struct Pokedex pokedex;
     /*0x90*/ u8 filler_90[0x8];
     /*0x98*/ struct Time localTimeOffset;
@@ -1135,20 +1142,13 @@ struct SaveBlock1
         u8 tx_Challenges_TrainerScalingEVs:2;
         u8 tx_Nuzlocke_Deletion:1;
         u8 tx_Random_Starter:1;
-        u8 MaxPartyIVs:1;
-        u8 optionsInfiniteTMs:1;
-        u8 optionsPoisonSurvive:1;
-        u8 optionsEasierFeebas:1;
-        u8 optionsBikeMusic:1;
-        u8 optionsEvenFasterJoy:1;
-        u8 optionsSurfMusic:1;
-        u8 optionsPkmnDeath:1;
+        u8 tx_Challenges_MaxPartyIVs:1;
+        u8 tx_Features_InfiniteTMs:1;
+        u8 optionsPoisonSurvive:1; //will be deleted
+        u8 optionsEasierFeebas:1; //will be deleted
+        u8 tx_Features_PkmnDeath:1;
         u8 tx_Challenges_PCHeal:1;
-        u8 optionsRTCType:1;
-        u8 optionsWildBattleMusic:5;
-        u8 optionsTrainerBattleMusic:5;
-        u8 optionsFrontierTrainerBattleMusic:5;
-        u8 optionsSoundEffects:2;
+        u8 tx_Features_RTCType:1;
 };
 
 extern struct SaveBlock1* gSaveBlock1Ptr;

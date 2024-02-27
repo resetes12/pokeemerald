@@ -283,17 +283,17 @@ void PlayFanfareByFanfareNum(u8 fanfareNum)
 {
     u16 songNum;
     m4aMPlayStop(&gMPlayInfo_BGM);
-    if (gSaveBlock1Ptr->optionsSoundEffects == 0)
+    if (gSaveBlock2Ptr->optionsSoundEffects == 0)
     {
         songNum = sFanfares[fanfareNum].songNum;
         sFanfareCounter = sFanfares[fanfareNum].duration;
     }
-    else if (gSaveBlock1Ptr->optionsSoundEffects == 1)
+    else if (gSaveBlock2Ptr->optionsSoundEffects == 1)
     {
         songNum = sFanfaresDPL[fanfareNum].songNum;
         sFanfareCounter = sFanfaresDPL[fanfareNum].duration;
     }
-    else if (gSaveBlock1Ptr->optionsSoundEffects == 2)
+    else if (gSaveBlock2Ptr->optionsSoundEffects == 2)
     {
         songNum = sFanfaresHGSS[fanfareNum].songNum;
         sFanfareCounter = sFanfaresHGSS[fanfareNum].duration;
@@ -322,15 +322,15 @@ bool8 WaitFanfare(bool8 stop)
 // Unused
 void StopFanfareByFanfareNum(u8 fanfareNum)
 {
-    if (gSaveBlock1Ptr->optionsSoundEffects == 0)
+    if (gSaveBlock2Ptr->optionsSoundEffects == 0)
     {
         m4aSongNumStop(sFanfares[fanfareNum].songNum);
     }
-    else if (gSaveBlock1Ptr->optionsSoundEffects == 1)
+    else if (gSaveBlock2Ptr->optionsSoundEffects == 1)
     {
         m4aSongNumStop(sFanfaresDPL[fanfareNum].songNum);
     }
-    else if (gSaveBlock1Ptr->optionsSoundEffects == 2)
+    else if (gSaveBlock2Ptr->optionsSoundEffects == 2)
     {
         m4aSongNumStop(sFanfaresHGSS[fanfareNum].songNum);
     }
@@ -341,7 +341,7 @@ void PlayFanfare(u16 songNum)
     s32 i;
     for (i = 0; (u32)i < ARRAY_COUNT(sFanfares); i++)
     {
-        if (gSaveBlock1Ptr->optionsSoundEffects == 0)
+        if (gSaveBlock2Ptr->optionsSoundEffects == 0)
         {
             if (sFanfares[i].songNum == songNum)
             {
@@ -350,7 +350,7 @@ void PlayFanfare(u16 songNum)
                 return;
             }
         }
-        else if (gSaveBlock1Ptr->optionsSoundEffects == 1)
+        else if (gSaveBlock2Ptr->optionsSoundEffects == 1)
         {
             if (sFanfaresDPL[i].songNum == songNum)
             {
@@ -359,7 +359,7 @@ void PlayFanfare(u16 songNum)
                 return;
             }
         }
-        else if (gSaveBlock1Ptr->optionsSoundEffects == 2)
+        else if (gSaveBlock2Ptr->optionsSoundEffects == 2)
         {
             if (sFanfaresHGSS[i].songNum == songNum)
             {

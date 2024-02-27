@@ -1179,7 +1179,7 @@ void Overworld_PlaySpecialMapMusic(void)
             music = gSaveBlock1Ptr->savedMusic;
         else if (GetCurrentMapType() == MAP_TYPE_UNDERWATER)
             music = MUS_UNDERWATER;
-        else if ((TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING)) && (gSaveBlock1Ptr->optionsSurfMusic == 0))
+        else if ((TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING)) && (gSaveBlock2Ptr->optionsSurfMusic == 0))
             music = MUS_SURF;
     }
 
@@ -1205,9 +1205,9 @@ static void TransitionMapMusic(void)
         u16 currentMusic = GetCurrentMapMusic();
         if (newMusic != MUS_ABNORMAL_WEATHER && newMusic != MUS_NONE)
         {
-            if (currentMusic == MUS_UNDERWATER || (currentMusic == MUS_SURF && (gSaveBlock1Ptr->optionsSurfMusic == 0)))
+            if (currentMusic == MUS_UNDERWATER || (currentMusic == MUS_SURF && (gSaveBlock2Ptr->optionsSurfMusic == 0)))
                 return;
-            if ((TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING)) && (gSaveBlock1Ptr->optionsSurfMusic == 0))
+            if ((TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING)) && (gSaveBlock2Ptr->optionsSurfMusic == 0))
                 newMusic = MUS_SURF;
         }
         if (newMusic != currentMusic)
@@ -1250,7 +1250,7 @@ void TryFadeOutOldMapMusic(void)
     if (FlagGet(FLAG_DONT_TRANSITION_MUSIC) != TRUE && warpMusic != GetCurrentMapMusic())
     {
         if ((currentMusic == MUS_SURF
-            && gSaveBlock1Ptr->optionsSurfMusic == 0
+            && gSaveBlock2Ptr->optionsSurfMusic == 0
             && VarGet(VAR_SKY_PILLAR_STATE) == 2
             && gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(SOOTOPOLIS_CITY)
             && gSaveBlock1Ptr->location.mapNum == MAP_NUM(SOOTOPOLIS_CITY)
@@ -1258,7 +1258,7 @@ void TryFadeOutOldMapMusic(void)
             && sWarpDestination.mapNum == MAP_NUM(SOOTOPOLIS_CITY)
             && sWarpDestination.x == 29
             && sWarpDestination.y == 53) 
-            || (gSaveBlock1Ptr->optionsSurfMusic == 1
+            || (gSaveBlock2Ptr->optionsSurfMusic == 1
             && VarGet(VAR_SKY_PILLAR_STATE) == 2
             && gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(SOOTOPOLIS_CITY)
             && gSaveBlock1Ptr->location.mapNum == MAP_NUM(SOOTOPOLIS_CITY)

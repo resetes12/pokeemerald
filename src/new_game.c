@@ -107,9 +107,13 @@ static void SetDefaultOptions(void)
     gSaveBlock2Ptr->optionsFishing = 1;
     gSaveBlock2Ptr->optionsFastIntro = 1;
     gSaveBlock2Ptr->optionsFastBattle = 1;
-    gSaveBlock1Ptr->optionsBikeMusic = 0;
-    gSaveBlock1Ptr->optionsEvenFasterJoy = 1;
-    gSaveBlock1Ptr->optionsSurfMusic = 0;
+    gSaveBlock2Ptr->optionsBikeMusic = 0;
+    gSaveBlock2Ptr->optionsEvenFasterJoy = 1;
+    gSaveBlock2Ptr->optionsSurfMusic = 0;
+    gSaveBlock2Ptr->optionsWildBattleMusic = 0;
+    gSaveBlock2Ptr->optionsTrainerBattleMusic = 0;
+    gSaveBlock2Ptr->optionsFrontierTrainerBattleMusic = 0;
+    gSaveBlock2Ptr->optionsSoundEffects = 0;
 }
 
 static void ClearPokedexFlags(void)
