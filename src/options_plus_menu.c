@@ -63,6 +63,10 @@ enum
     MENUITEM_SOUND_SOUND,
     MENUITEM_SOUND_BIKE_MUSIC,
     MENUITEM_SOUND_SURF_MUSIC,
+    MENUITEM_SOUND_WILD_MON_MUSIC,
+    MENUITEM_SOUND_BATTLE_TRAINER_MUSIC,
+    MENUITEM_SOUND_BATTLE_FRONTIER_TRAINER_MUSIC,
+    MENUITEM_SOUND_EFFECTS,
     MENUITEM_SOUND_COUNT,
 };
 
@@ -163,6 +167,7 @@ static int XOptions_ProcessInput(int x, int selection);
 static int ProcessInput_Options_Two(int selection);
 static int ProcessInput_Options_Three(int selection);
 static int ProcessInput_Options_Four(int selection);
+static int ProcessInput_Options_Six(int selection);
 static int ProcessInput_Options_Eleven(int selection);
 static int ProcessInput_Sound(int selection);
 static int ProcessInput_FrameType(int selection);
@@ -174,6 +179,7 @@ static u8 MenuItemCount(void);
 static void DrawDescriptionText(void);
 static void DrawOptionMenuChoice(const u8 *text, u8 x, u8 y, u8 style, bool8 active);
 static void DrawChoices_Options_Four(const u8 *const *const strings, int selection, int y, bool8 active);
+static void DrawChoices_Options_Six(const u8 *const *const strings, int selection, int y, bool8 active);
 static void ReDrawAll(void);
 static void DrawChoices_TextSpeed(int selection, int y);
 static void DrawChoices_Difficulty(int selection, int y);
@@ -194,6 +200,10 @@ static void DrawChoices_FastBattles(int selection, int y);
 static void DrawChoices_BikeMusic(int selection, int y);
 static void DrawChoices_EvenFasterJoy(int selection, int y);
 static void DrawChoices_SurfMusic(int selection, int y);
+static void DrawChoices_Wild_Battle_Music(int selection, int y);
+static void DrawChoices_Trainer_Battle_Music(int selection, int y);
+static void DrawChoices_Frontier_Trainer_Battle_Music(int selection, int y);
+static void DrawChoices_Sound_Effects(int selection, int y);
 static void DrawBgWindowFrames(void);
 
 // EWRAM vars
@@ -261,6 +271,10 @@ struct // MENU_SOUND
     [MENUITEM_SOUND_SOUND]          = {DrawChoices_Sound,         ProcessInput_Options_Two},
     [MENUITEM_SOUND_BIKE_MUSIC]     = {DrawChoices_BikeMusic,     ProcessInput_Options_Two},
     [MENUITEM_SOUND_SURF_MUSIC]     = {DrawChoices_SurfMusic,     ProcessInput_Options_Two},
+    [MENUITEM_SOUND_WILD_MON_MUSIC]       = {DrawChoices_Wild_Battle_Music,            ProcessInput_Options_Six},
+    [MENUITEM_SOUND_BATTLE_TRAINER_MUSIC] = {DrawChoices_Trainer_Battle_Music,         ProcessInput_Options_Six},
+    [MENUITEM_SOUND_BATTLE_FRONTIER_TRAINER_MUSIC] = {DrawChoices_Frontier_Trainer_Battle_Music,         ProcessInput_Options_Six},
+    [MENUITEM_SOUND_EFFECTS] = {DrawChoices_Sound_Effects,         ProcessInput_Options_Three},
 };
 
 // Menu left side option names text
@@ -269,9 +283,7 @@ static const u8 sText_OptionFishing[]             = _("EASIER FISHING");
 static const u8 sText_OptionFastIntro[]           = _("FAST INTRO");
 static const u8 sText_OptionLargeFollower[]       = _("BIG FOLLOWERS");
 static const u8 sText_OptionFastBattles[]         = _("FAST BATTLES");
-static const u8 sText_OptionBikeMusic[]           = _("BIKE MUSIC");
 static const u8 sText_OptionEvenFasterJoy[]       = _("EVEN FASTER JOY");
-static const u8 sText_OptionSurfMusic[]           = _("SURF MUSIC");
 static const u8 *const sOptionMenuItemsNamesMain[MENUITEM_MAIN_COUNT] =
 {
     [MENUITEM_MAIN_TEXTSPEED]   = gText_TextSpeed,
@@ -296,11 +308,21 @@ static const u8 *const sOptionMenuItemsNamesCustom[MENUITEM_CUSTOM_COUNT] =
     [MENUITEM_CUSTOM_EVEN_FASTER_JOY]     = sText_OptionEvenFasterJoy,
 };
 
+static const u8 sText_OptionSurfMusic[]              = _("SURF MUSIC");
+static const u8 sText_OptionBikeMusic[]              = _("BIKE MUSIC");
+static const u8 sText_OptionWildMonMusic[]           = _("WILD MUSIC");
+static const u8 sText_OptionTrainerBattleMusic[]     = _("TRAINER MUSIC");
+static const u8 sText_OptionFrontierTrainerBattleMusic[]     = _("FRONTIER MUSIC");
+static const u8 sText_OptionSoundEffects[]           = _("SOUND EFFECTS");
 static const u8 *const sOptionMenuItemsNamesSound[MENUITEM_SOUND_COUNT] =
 {
     [MENUITEM_SOUND_SOUND]            = gText_Sound,
     [MENUITEM_SOUND_BIKE_MUSIC]       = sText_OptionBikeMusic,
     [MENUITEM_SOUND_SURF_MUSIC]       = sText_OptionSurfMusic,
+    [MENUITEM_SOUND_WILD_MON_MUSIC]   = sText_OptionWildMonMusic,
+    [MENUITEM_SOUND_BATTLE_TRAINER_MUSIC]   = sText_OptionTrainerBattleMusic,
+    [MENUITEM_SOUND_BATTLE_FRONTIER_TRAINER_MUSIC]   = sText_OptionFrontierTrainerBattleMusic,
+    [MENUITEM_SOUND_EFFECTS]   = sText_OptionSoundEffects,
 };
 
 static const u8 *const OptionTextRight(u8 menuItem)
@@ -350,6 +372,10 @@ static bool8 CheckConditions(int selection)
         case MENUITEM_SOUND_SOUND:             return TRUE;
         case MENUITEM_SOUND_SURF_MUSIC:        return TRUE;
         case MENUITEM_SOUND_BIKE_MUSIC:        return TRUE;
+        case MENUITEM_SOUND_WILD_MON_MUSIC:    return TRUE;
+        case MENUITEM_SOUND_BATTLE_TRAINER_MUSIC:    return TRUE;
+        case MENUITEM_SOUND_BATTLE_FRONTIER_TRAINER_MUSIC:    return TRUE;
+        case MENUITEM_SOUND_EFFECTS:           return TRUE;
         }
     }
 }
@@ -420,11 +446,25 @@ static const u8 sText_Desc_BikeMusicOn[]           = _("Enables BIKE music.");
 static const u8 sText_Desc_BikeMusicOff[]          = _("Disables BIKE music.");
 static const u8 sText_Desc_SurfMusicOn[]           = _("Enables SURF music.");
 static const u8 sText_Desc_SurfMusicOff[]          = _("Disables SURF music.");
-static const u8 *const sOptionMenuItemDescriptionsSound[MENUITEM_SOUND_COUNT][2] =
+static const u8 sText_Desc_WildMonMusic_Hoenn[]              = _("Default music from Hoenn.");
+static const u8 sText_Desc_WildMonMusic_Kanto_Old[]          = _("Music from Fire Red and Leaf Green.");
+static const u8 sText_Desc_WildMonMusic_Sinnoh[]             = _("Music from Diamond, Pearl and\nPlatinum.");
+static const u8 sText_Desc_WildMonMusic_Johto[]              = _("Music from Heart Gold and Soul Silver,\nbut from Johto.");
+static const u8 sText_Desc_WildMonMusic_Kanto_New[]          = _("Music from Heart Gold and Soul Silver,\nbut from Kanto.");
+static const u8 sText_Desc_WildMonMusic_Random[]             = _("Randomizes music from all available\ngames.");
+static const u8 sText_Desc_SoundEffects_Gen3[]               = _("Default sound effects from GEN III.");
+static const u8 sText_Desc_SoundEffects_DP[]                 = _("Sound effects from Diamond, Pearl\nand Platinum.");
+static const u8 sText_Desc_SoundEffects_HGSS[]               = _("Sound effects from Heart Gold and\nSoul Silver.");
+
+static const u8 *const sOptionMenuItemDescriptionsSound[MENUITEM_SOUND_COUNT][6] =
 {
-    [MENUITEM_SOUND_SOUND]           = {sText_Desc_SoundMono,              sText_Desc_SoundStereo},
-    [MENUITEM_SOUND_BIKE_MUSIC]     = {sText_Desc_BikeMusicOn,            sText_Desc_BikeMusicOff},
-    [MENUITEM_SOUND_SURF_MUSIC]     = {sText_Desc_SurfMusicOn,            sText_Desc_SurfMusicOff},
+    [MENUITEM_SOUND_SOUND]          = {sText_Desc_SoundMono,              sText_Desc_SoundStereo,                 sText_Empty,                         sText_Empty,                       sText_Empty,                           sText_Empty},
+    [MENUITEM_SOUND_BIKE_MUSIC]     = {sText_Desc_BikeMusicOn,            sText_Desc_BikeMusicOff,                sText_Empty,                         sText_Empty,                       sText_Empty,                           sText_Empty},
+    [MENUITEM_SOUND_SURF_MUSIC]     = {sText_Desc_SurfMusicOn,            sText_Desc_SurfMusicOff,                sText_Empty,                         sText_Empty,                       sText_Empty,                           sText_Empty},
+    [MENUITEM_SOUND_WILD_MON_MUSIC] = {sText_Desc_WildMonMusic_Hoenn,     sText_Desc_WildMonMusic_Kanto_Old,      sText_Desc_WildMonMusic_Sinnoh,      sText_Desc_WildMonMusic_Johto,     sText_Desc_WildMonMusic_Kanto_New,     sText_Desc_WildMonMusic_Random},
+    [MENUITEM_SOUND_BATTLE_TRAINER_MUSIC] = {sText_Desc_WildMonMusic_Hoenn,     sText_Desc_WildMonMusic_Kanto_Old,      sText_Desc_WildMonMusic_Sinnoh,      sText_Desc_WildMonMusic_Johto,     sText_Desc_WildMonMusic_Kanto_New,     sText_Desc_WildMonMusic_Random},
+    [MENUITEM_SOUND_BATTLE_FRONTIER_TRAINER_MUSIC] = {sText_Desc_WildMonMusic_Hoenn,     sText_Desc_WildMonMusic_Kanto_Old,      sText_Desc_WildMonMusic_Sinnoh,      sText_Desc_WildMonMusic_Johto,     sText_Desc_WildMonMusic_Kanto_New,     sText_Desc_WildMonMusic_Random},
+    [MENUITEM_SOUND_EFFECTS]        = {sText_Desc_SoundEffects_Gen3,     sText_Desc_SoundEffects_DP,      sText_Desc_SoundEffects_HGSS,      sText_Empty,     sText_Empty,     sText_Empty},
 };
 
 // Disabled Descriptions
@@ -460,6 +500,10 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledSound[MENUITEM_SOUND_C
     [MENUITEM_SOUND_SOUND]          = sText_Empty,
     [MENUITEM_SOUND_BIKE_MUSIC]     = sText_Empty,
     [MENUITEM_SOUND_SURF_MUSIC]     = sText_Empty,
+    [MENUITEM_SOUND_WILD_MON_MUSIC] = sText_Empty,
+    [MENUITEM_SOUND_BATTLE_TRAINER_MUSIC] = sText_Empty,
+    [MENUITEM_SOUND_BATTLE_FRONTIER_TRAINER_MUSIC] = sText_Empty,
+    [MENUITEM_SOUND_EFFECTS]        = sText_Empty,
 };
 
 static const u8 *const OptionTextDescription(void)
@@ -629,8 +673,8 @@ static void DrawChoices(u32 id, int y) //right side draw function
                 sItemFunctionsCustom[id].drawChoices(sOptions->sel_custom[id], y);
             break;
         case MENU_SOUND:
-            if (sItemFunctionsCustom[id].drawChoices != NULL)
-                sItemFunctionsCustom[id].drawChoices(sOptions->sel_sound[id], y);
+            if (sItemFunctionsSound[id].drawChoices != NULL)
+                sItemFunctionsSound[id].drawChoices(sOptions->sel_sound[id], y);
             break;
     }
 }
@@ -718,6 +762,10 @@ void CB2_InitOptionPlusMenu(void)
         sOptions->sel_sound[MENUITEM_SOUND_SOUND]              = gSaveBlock2Ptr->optionsSound;
         sOptions->sel_sound[MENUITEM_SOUND_BIKE_MUSIC]         = gSaveBlock1Ptr->optionsBikeMusic;
         sOptions->sel_sound[MENUITEM_SOUND_SURF_MUSIC]         = gSaveBlock1Ptr->optionsSurfMusic;
+        sOptions->sel_sound[MENUITEM_SOUND_WILD_MON_MUSIC]     = gSaveBlock1Ptr->optionsWildBattleMusic;
+        sOptions->sel_sound[MENUITEM_SOUND_BATTLE_TRAINER_MUSIC]     = gSaveBlock1Ptr->optionsTrainerBattleMusic;
+        sOptions->sel_sound[MENUITEM_SOUND_BATTLE_FRONTIER_TRAINER_MUSIC]     = gSaveBlock1Ptr->optionsFrontierTrainerBattleMusic;
+        sOptions->sel_sound[MENUITEM_SOUND_EFFECTS]            = gSaveBlock1Ptr->optionsSoundEffects;
 
         sOptions->submenu = MENU_MAIN;
 
@@ -941,6 +989,10 @@ static void Task_OptionMenuSave(u8 taskId)
     gSaveBlock2Ptr->optionsSound            = sOptions->sel_sound[MENUITEM_SOUND_SOUND];
     gSaveBlock1Ptr->optionsBikeMusic        = sOptions->sel_sound[MENUITEM_SOUND_BIKE_MUSIC];
     gSaveBlock1Ptr->optionsSurfMusic        = sOptions->sel_sound[MENUITEM_SOUND_SURF_MUSIC];
+    gSaveBlock1Ptr->optionsWildBattleMusic  = sOptions->sel_sound[MENUITEM_SOUND_WILD_MON_MUSIC];
+    gSaveBlock1Ptr->optionsTrainerBattleMusic  = sOptions->sel_sound[MENUITEM_SOUND_BATTLE_TRAINER_MUSIC];
+    gSaveBlock1Ptr->optionsFrontierTrainerBattleMusic  = sOptions->sel_sound[MENUITEM_SOUND_BATTLE_FRONTIER_TRAINER_MUSIC];
+    gSaveBlock1Ptr->optionsSoundEffects  = sOptions->sel_sound[MENUITEM_SOUND_EFFECTS];
 
     BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 0x10, RGB_BLACK);
     gTasks[taskId].func = Task_OptionMenuFadeOut;
@@ -1060,6 +1112,11 @@ static int ProcessInput_Options_Four(int selection)
     return XOptions_ProcessInput(4, selection);
 }
 
+static int ProcessInput_Options_Six(int selection)
+{
+    return XOptions_ProcessInput(6, selection);
+}
+
 static int ProcessInput_Options_Eleven(int selection)
 {
     return XOptions_ProcessInput(11, selection);
@@ -1171,6 +1228,25 @@ static void DrawChoices_Options_Four(const u8 *const *const strings, int selecti
     DrawOptionMenuChoice(strings[order[2]], GetStringRightAlignXOffset(1, strings[order[2]], 198), y, styles[order[2]], active);
 }
 
+static void DrawChoices_Options_Six(const u8 *const *const strings, int selection, int y, bool8 active)
+{
+    static const u8 choiceOrders[][2] =
+    {
+        {0, 1},
+        {1, 2},
+        {2, 3},
+        {3, 4},
+        {4, 5},
+        {5, 0},
+    };
+    u8 styles[6] = {0};
+    const u8 *order = choiceOrders[selection];
+    styles[selection] = 1;
+
+    DrawOptionMenuChoice(strings[order[0]], 104, y, styles[order[0]], active);
+    DrawOptionMenuChoice(strings[order[1]], GetStringRightAlignXOffset(1, strings[order[1]], 198), y, styles[order[1]], active);
+}
+
 static void ReDrawAll(void)
 {
     u8 menuItem = sOptions->menuCursor[sOptions->submenu] - sOptions->visibleCursor[sOptions->submenu];
@@ -1247,6 +1323,135 @@ static void DrawChoices_Difficulty(int selection, int y)
     DrawOptionMenuChoice(gText_Easy, 104, y, styles[0], active);
     DrawOptionMenuChoice(gText_ButtonTypeNormal, xMid, y, styles[1], active);
     DrawOptionMenuChoice(gText_Hard, GetStringRightAlignXOffset(1, gText_ButtonTypeLEqualsA, 198), y, styles[2], active);
+}
+static const u8 sText_Sound_WildMon_Hoenn[]       = _("HOENN");
+static const u8 sText_Sound_WildMon_Kanto_Old[]   = _("KANTO 1");
+static const u8 sText_Sound_WildMon_Sinnoh[]      = _("SINNOH");
+static const u8 sText_Sound_WildMon_Johto[]       = _("JOHTO");
+static const u8 sText_Sound_WildMon_Kanto_New[]   = _("KANTO 2");
+static const u8 sText_Sound_WildMon_Random[]      = _("RANDOM");
+
+static const u8 *const sText_Sound_WildMonBattleMusic_Strings[] = {sText_Sound_WildMon_Hoenn,  sText_Sound_WildMon_Kanto_Old,  sText_Sound_WildMon_Sinnoh,  sText_Sound_WildMon_Johto,  sText_Sound_WildMon_Kanto_New,   sText_Sound_WildMon_Random};
+static void DrawChoices_Wild_Battle_Music(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_SOUND_WILD_MON_MUSIC);
+    DrawChoices_Options_Six(sText_Sound_WildMonBattleMusic_Strings, selection, y, active);
+    
+    if (selection == 0)
+    {
+        gSaveBlock1Ptr->optionsWildBattleMusic = 0; // Hoenn
+    }
+    else if (selection == 1)
+    {
+        gSaveBlock1Ptr->optionsWildBattleMusic = 1; // Kanto1
+    }
+    else if (selection == 2)
+    {
+        gSaveBlock1Ptr->optionsWildBattleMusic = 2; // Sinnoh
+    }
+    else if (selection == 3)
+    {
+        gSaveBlock1Ptr->optionsWildBattleMusic = 3; // Johto
+    }
+    else if (selection == 4)
+    {
+        gSaveBlock1Ptr->optionsWildBattleMusic = 4; // Kanto 2
+    }
+    else //(selection == 5)
+    {
+        gSaveBlock1Ptr->optionsWildBattleMusic = 5; // Random
+    }
+}
+
+static void DrawChoices_Trainer_Battle_Music(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_SOUND_BATTLE_TRAINER_MUSIC);
+    DrawChoices_Options_Six(sText_Sound_WildMonBattleMusic_Strings, selection, y, active);
+    
+    if (selection == 0)
+    {
+        gSaveBlock1Ptr->optionsTrainerBattleMusic = 0; // Hoenn
+    }
+    else if (selection == 1)
+    {
+        gSaveBlock1Ptr->optionsTrainerBattleMusic = 1; // Kanto1
+    }
+    else if (selection == 2)
+    {
+        gSaveBlock1Ptr->optionsTrainerBattleMusic = 2; // Sinnoh
+    }
+    else if (selection == 3)
+    {
+        gSaveBlock1Ptr->optionsTrainerBattleMusic = 3; // Johto
+    }
+    else if (selection == 4)
+    {
+        gSaveBlock1Ptr->optionsTrainerBattleMusic = 4; // Kanto 2
+    }
+    else //(selection == 5)
+    {
+        gSaveBlock1Ptr->optionsTrainerBattleMusic = 5; // Random
+    }
+}
+
+static void DrawChoices_Frontier_Trainer_Battle_Music(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_SOUND_BATTLE_FRONTIER_TRAINER_MUSIC);
+    DrawChoices_Options_Six(sText_Sound_WildMonBattleMusic_Strings, selection, y, active);
+    
+    if (selection == 0)
+    {
+        gSaveBlock1Ptr->optionsFrontierTrainerBattleMusic = 0; // Hoenn
+    }
+    else if (selection == 1)
+    {
+        gSaveBlock1Ptr->optionsFrontierTrainerBattleMusic = 1; // Kanto1
+    }
+    else if (selection == 2)
+    {
+        gSaveBlock1Ptr->optionsFrontierTrainerBattleMusic = 2; // Sinnoh
+    }
+    else if (selection == 3)
+    {
+        gSaveBlock1Ptr->optionsFrontierTrainerBattleMusic = 3; // Johto
+    }
+    else if (selection == 4)
+    {
+        gSaveBlock1Ptr->optionsFrontierTrainerBattleMusic = 4; // Kanto 2
+    }
+    else //(selection == 5)
+    {
+        gSaveBlock1Ptr->optionsFrontierTrainerBattleMusic = 5; // Random
+    }
+}
+
+static const u8 sText_Sound_Effects_Gen3[]      = _("GEN 3");
+static const u8 sText_Sound_Effects_DP[]        = _("DPL");
+static const u8 sText_Sound_Effects_HGSS[]      = _("HGSS");
+
+static void DrawChoices_Sound_Effects(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_SOUND_EFFECTS);
+    u8 styles[3] = {0};
+    int xMid = GetMiddleX(sText_Sound_Effects_Gen3, sText_Sound_Effects_DP, sText_Sound_Effects_HGSS);
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock1Ptr->optionsSoundEffects = 0; //Gen 3
+    }
+    else if (selection == 1)
+    {
+        gSaveBlock1Ptr->optionsSoundEffects = 1; //DPL
+    }
+    else
+    {
+        gSaveBlock1Ptr->optionsSoundEffects = 2; //HGSS
+    }
+
+    DrawOptionMenuChoice(sText_Sound_Effects_Gen3, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_Sound_Effects_DP, xMid, y, styles[1], active);
+    DrawOptionMenuChoice(sText_Sound_Effects_HGSS, GetStringRightAlignXOffset(1, sText_Sound_Effects_DP, 198), y, styles[2], active);
 }
 
 static void DrawChoices_BattleStyle(int selection, int y)

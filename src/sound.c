@@ -107,6 +107,56 @@ static const struct Fanfare sFanfares[] = {
     [FANFARE_HG_PARTNER]               = { MUS_HG_LETS_GO_TOGETHER     , 180 },
 };
 
+static const struct Fanfare sFanfaresDPL[] = {
+    [FANFARE_LEVEL_UP]                 = { MUS_DP_LEVEL_UP             ,  80 },
+    [FANFARE_HEAL]                     = { MUS_DP_HEAL                 , 160 },
+    [FANFARE_OBTAIN_BADGE]             = { MUS_DP_OBTAIN_BADGE         , 340 },
+    [FANFARE_OBTAIN_ITEM]              = { MUS_DP_OBTAIN_ITEM          , 160 },
+    [FANFARE_EVOLVED]                  = { MUS_DP_EVOLVED              , 220 },
+    [FANFARE_OBTAIN_TMHM]              = { MUS_DP_OBTAIN_TMHM          , 220 },
+    [FANFARE_EVOLUTION_INTRO]          = { MUS_EVOLUTION_INTRO         ,  60 },
+    [FANFARE_MOVE_DELETED]             = { MUS_DP_MOVE_DELETED         , 180 },
+    [FANFARE_OBTAIN_BERRY]             = { MUS_DP_OBTAIN_BERRY         , 120 },
+    [FANFARE_AWAKEN_LEGEND]            = { MUS_AWAKEN_LEGEND           , 710 },
+    [FANFARE_SLOTS_JACKPOT]            = { MUS_SLOTS_JACKPOT           , 250 },
+    [FANFARE_SLOTS_WIN]                = { MUS_SLOTS_WIN               , 150 },
+    [FANFARE_TOO_BAD]                  = { MUS_TOO_BAD                 , 160 },
+    [FANFARE_RG_JIGGLYPUFF]            = { MUS_RG_JIGGLYPUFF           , 400 },
+    [FANFARE_RG_DEX_RATING]            = { MUS_RG_DEX_RATING           , 196 },
+    [FANFARE_RG_OBTAIN_KEY_ITEM]       = { MUS_RG_OBTAIN_KEY_ITEM      , 170 },
+    [FANFARE_RG_CAUGHT_INTRO]          = { MUS_RG_CAUGHT_INTRO         , 231 },
+    [FANFARE_RG_PHOTO]                 = { MUS_RG_PHOTO                ,  90 },
+    [FANFARE_RG_POKE_FLUTE]            = { MUS_RG_POKE_FLUTE           , 450 },
+    [FANFARE_OBTAIN_B_POINTS]          = { MUS_OBTAIN_B_POINTS         , 313 },
+    [FANFARE_REGISTER_MATCH_CALL]      = { MUS_REGISTER_MATCH_CALL     , 135 },
+    [FANFARE_OBTAIN_SYMBOL]            = { MUS_OBTAIN_SYMBOL           , 318 },
+};
+
+static const struct Fanfare sFanfaresHGSS[] = {
+    [FANFARE_LEVEL_UP]                 = { MUS_HG_LEVEL_UP             ,  80 },
+    [FANFARE_HEAL]                     = { MUS_HG_HEAL                 , 160 },
+    [FANFARE_OBTAIN_BADGE]             = { MUS_HG_OBTAIN_BADGE         , 340 },
+    [FANFARE_OBTAIN_ITEM]              = { MUS_HG_OBTAIN_ITEM          , 160 },
+    [FANFARE_EVOLVED]                  = { MUS_HG_EVOLVED              , 220 },
+    [FANFARE_OBTAIN_TMHM]              = { MUS_HG_OBTAIN_TMHM          , 220 },
+    [FANFARE_EVOLUTION_INTRO]          = { MUS_EVOLUTION_INTRO         ,  60 },
+    [FANFARE_MOVE_DELETED]             = { MUS_HG_MOVE_DELETED         , 180 },
+    [FANFARE_OBTAIN_BERRY]             = { MUS_HG_OBTAIN_BERRY         , 120 },
+    [FANFARE_AWAKEN_LEGEND]            = { MUS_AWAKEN_LEGEND           , 710 },
+    [FANFARE_SLOTS_JACKPOT]            = { MUS_SLOTS_JACKPOT           , 250 },
+    [FANFARE_SLOTS_WIN]                = { MUS_SLOTS_WIN               , 150 },
+    [FANFARE_TOO_BAD]                  = { MUS_TOO_BAD                 , 160 },
+    [FANFARE_RG_JIGGLYPUFF]            = { MUS_RG_JIGGLYPUFF           , 400 },
+    [FANFARE_RG_DEX_RATING]            = { MUS_RG_DEX_RATING           , 196 },
+    [FANFARE_RG_OBTAIN_KEY_ITEM]       = { MUS_RG_OBTAIN_KEY_ITEM      , 170 },
+    [FANFARE_RG_CAUGHT_INTRO]          = { MUS_RG_CAUGHT_INTRO         , 231 },
+    [FANFARE_RG_PHOTO]                 = { MUS_RG_PHOTO                ,  90 },
+    [FANFARE_RG_POKE_FLUTE]            = { MUS_RG_POKE_FLUTE           , 450 },
+    [FANFARE_OBTAIN_B_POINTS]          = { MUS_OBTAIN_B_POINTS         , 313 },
+    [FANFARE_REGISTER_MATCH_CALL]      = { MUS_REGISTER_MATCH_CALL     , 135 },
+    [FANFARE_OBTAIN_SYMBOL]            = { MUS_OBTAIN_SYMBOL           , 318 },
+};
+
 void InitMapMusic(void)
 {
     gDisableMusic = FALSE;
@@ -233,8 +283,21 @@ void PlayFanfareByFanfareNum(u8 fanfareNum)
 {
     u16 songNum;
     m4aMPlayStop(&gMPlayInfo_BGM);
-    songNum = sFanfares[fanfareNum].songNum;
-    sFanfareCounter = sFanfares[fanfareNum].duration;
+    if (gSaveBlock1Ptr->optionsSoundEffects == 0)
+    {
+        songNum = sFanfares[fanfareNum].songNum;
+        sFanfareCounter = sFanfares[fanfareNum].duration;
+    }
+    else if (gSaveBlock1Ptr->optionsSoundEffects == 1)
+    {
+        songNum = sFanfaresDPL[fanfareNum].songNum;
+        sFanfareCounter = sFanfaresDPL[fanfareNum].duration;
+    }
+    else if (gSaveBlock1Ptr->optionsSoundEffects == 2)
+    {
+        songNum = sFanfaresHGSS[fanfareNum].songNum;
+        sFanfareCounter = sFanfaresHGSS[fanfareNum].duration;
+    }
     m4aSongNumStart(songNum);
 }
 
@@ -259,7 +322,18 @@ bool8 WaitFanfare(bool8 stop)
 // Unused
 void StopFanfareByFanfareNum(u8 fanfareNum)
 {
-    m4aSongNumStop(sFanfares[fanfareNum].songNum);
+    if (gSaveBlock1Ptr->optionsSoundEffects == 0)
+    {
+        m4aSongNumStop(sFanfares[fanfareNum].songNum);
+    }
+    else if (gSaveBlock1Ptr->optionsSoundEffects == 1)
+    {
+        m4aSongNumStop(sFanfaresDPL[fanfareNum].songNum);
+    }
+    else if (gSaveBlock1Ptr->optionsSoundEffects == 2)
+    {
+        m4aSongNumStop(sFanfaresHGSS[fanfareNum].songNum);
+    }
 }
 
 void PlayFanfare(u16 songNum)
@@ -267,12 +341,34 @@ void PlayFanfare(u16 songNum)
     s32 i;
     for (i = 0; (u32)i < ARRAY_COUNT(sFanfares); i++)
     {
-        if (sFanfares[i].songNum == songNum)
+        if (gSaveBlock1Ptr->optionsSoundEffects == 0)
         {
-            PlayFanfareByFanfareNum(i);
-            CreateFanfareTask();
-            return;
+            if (sFanfares[i].songNum == songNum)
+            {
+                PlayFanfareByFanfareNum(i);
+                CreateFanfareTask();
+                return;
+            }
         }
+        else if (gSaveBlock1Ptr->optionsSoundEffects == 1)
+        {
+            if (sFanfaresDPL[i].songNum == songNum)
+            {
+                PlayFanfareByFanfareNum(i);
+                CreateFanfareTask();
+                return;
+            }
+        }
+        else if (gSaveBlock1Ptr->optionsSoundEffects == 2)
+        {
+            if (sFanfaresHGSS[i].songNum == songNum)
+            {
+                PlayFanfareByFanfareNum(i);
+                CreateFanfareTask();
+                return;
+            }
+        }
+        
     }
 
     // songNum is not in sFanfares

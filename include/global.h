@@ -1145,6 +1145,10 @@ struct SaveBlock1
         u8 optionsPkmnDeath:1;
         u8 tx_Challenges_PCHeal:1;
         u8 optionsRTCType:1;
+        u8 optionsWildBattleMusic:5;
+        u8 optionsTrainerBattleMusic:5;
+        u8 optionsFrontierTrainerBattleMusic:5;
+        u8 optionsSoundEffects:2;
 };
 
 extern struct SaveBlock1* gSaveBlock1Ptr;
