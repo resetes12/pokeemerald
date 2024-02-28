@@ -40,7 +40,7 @@ MeteorFalls_StevensCave_EventScript_StevenRematch::
 	waitmovement 0
 	msgbox MeteorFalls_StevensCave_Text_ShouldKnowHowGoodIAmExpectWorst2, MSGBOX_DEFAULT
 	setflag FLAG_SYS_SET_BATTLE_BGM
-	setvar VAR_TEMP_F, MUS_RG_VS_CHAMPION
+	setvar VAR_TEMP_F, MUS_HG_VS_CHAMPION
 	trainerbattle_no_intro TRAINER_STEVEN2, MeteorFalls_StevensCave_Text_StevenDefeat2
 	msgbox MeteorFalls_StevensCave_Text_MyPredictionCameTrue2, MSGBOX_DEFAULT
 	clearflag FLAG_STEVEN_REMATCH
