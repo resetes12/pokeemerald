@@ -174,6 +174,7 @@ enum { // Give
     DEBUG_GIVE_MENU_ITEM_MAX_COINS,
     DEBUG_GIVE_MENU_ITEM_MAX_BATTLE_POINTS,
     DEBUG_GIVE_MENU_ITEM_DAYCARE_EGG,
+    DEBUG_GIVE_MENU_ITEM_HATCH_AN_EGG,
 };
 enum {
     DEBUG_PKM_CREATOR_MENU_ITEM_PARTY_ADD,               // Add to party
@@ -399,6 +400,8 @@ static void DebugAction_Sound_SE_SelectId(u8 taskId);
 static void DebugAction_Sound_MUS(u8 taskId);
 static void DebugAction_Sound_MUS_SelectId(u8 taskId);
 
+static void DebugAction_HatchAnEgg(u8 taskId);
+
 extern u8 Debug_Script_1[];
 extern u8 Debug_Script_2[];
 extern u8 Debug_Script_3[];
@@ -408,6 +411,7 @@ extern u8 Debug_Script_6[];
 extern u8 Debug_Script_7[];
 extern u8 Debug_Script_8[];
 extern const u8 Debug_CheckSaveBlock[];
+extern const u8 Debug_HatchAnEgg[];
 
 extern u8 Debug_ShowFieldMessageStringVar4[];
 extern u8 Debug_CheatStart[];
@@ -594,6 +598,8 @@ static const u8 sDebugText_Sound_SE_ID[] =              _("Sound Id: {STR_VAR_3}
 static const u8 sDebugText_Sound_MUS[] =                _("Music…{CLEAR_TO 110}{RIGHT_ARROW}");
 static const u8 sDebugText_Sound_MUS_ID[] =             _("Music Id: {STR_VAR_3}\n{STR_VAR_1}    \n{STR_VAR_2}");
 
+static const u8 sDebugText_PartyBoxes_HatchAnEgg[] =         _("Hatch an Egg");
+
 static const u8 digitInidicator_1[] =               _("{LEFT_ARROW}+1{RIGHT_ARROW}        ");
 static const u8 digitInidicator_10[] =              _("{LEFT_ARROW}+10{RIGHT_ARROW}       ");
 static const u8 digitInidicator_100[] =             _("{LEFT_ARROW}+100{RIGHT_ARROW}      ");
@@ -745,6 +751,7 @@ static const struct ListMenuItem sDebugMenu_Items_Give[] =
     [DEBUG_GIVE_MENU_ITEM_MAX_COINS]         = {sDebugText_Give_MaxCoins,           DEBUG_GIVE_MENU_ITEM_MAX_COINS},
     [DEBUG_GIVE_MENU_ITEM_MAX_BATTLE_POINTS] = {sDebugText_Give_BattlePoints,       DEBUG_GIVE_MENU_ITEM_MAX_BATTLE_POINTS},
     [DEBUG_GIVE_MENU_ITEM_DAYCARE_EGG]       = {sDebugText_Give_DaycareEgg,         DEBUG_GIVE_MENU_ITEM_DAYCARE_EGG},
+    [DEBUG_GIVE_MENU_ITEM_HATCH_AN_EGG]      = {sDebugText_PartyBoxes_HatchAnEgg,   DEBUG_GIVE_MENU_ITEM_HATCH_AN_EGG},
 };
 static const struct ListMenuItem sDebugMenu_Items_PkmCreator[] =
 {
@@ -847,6 +854,7 @@ static void (*const sDebugMenu_Actions_Give[])(u8) =
     [DEBUG_GIVE_MENU_ITEM_MAX_COINS]         = DebugAction_Give_MaxCoins,
     [DEBUG_GIVE_MENU_ITEM_MAX_BATTLE_POINTS] = DebugAction_Give_MaxBattlePoints,
     [DEBUG_GIVE_MENU_ITEM_DAYCARE_EGG]       = DebugAction_Give_DayCareEgg,
+    [DEBUG_GIVE_MENU_ITEM_HATCH_AN_EGG]      = DebugAction_HatchAnEgg,
 };
 static void (*const sDebugMenu_Actions_PkmCreator[])(u8) =
 {
@@ -4929,6 +4937,11 @@ static void Task_WaitFadeAccessPC(u8 taskId)
 static void DebugAction_AccessPC(u8 taskId)
 {
     Debug_DestroyMenu_Full_Script(taskId, EventScript_PC);
+}
+
+static void DebugAction_HatchAnEgg(u8 taskId)
+{
+    Debug_DestroyMenu_Full_Script(taskId, Debug_HatchAnEgg);
 }
 
 #endif
