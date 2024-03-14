@@ -3548,7 +3548,7 @@ static void Cmd_getexp(void)
                     holdEffect = gSaveBlock1Ptr->enigmaBerry.holdEffect;
                 else
                     holdEffect = ItemId_GetHoldEffect(item);
-                if ((holdEffect == HOLD_EFFECT_EXP_SHARE) || (FlagGet(FLAG_EXP_SHARE) == TRUE))
+                if ((holdEffect == HOLD_EFFECT_EXP_SHARE) && (FlagGet(FLAG_EXP_SHARE) == FALSE))
                     viaExpShare++;
             }
 
@@ -3604,7 +3604,7 @@ static void Cmd_getexp(void)
                 if (*exp == 0)
                     *exp = 1;
 
-                gExpShareExp = calculatedExp / viaExpShare;
+                gExpShareExp = calculatedExp / 2;
                 if (gExpShareExp == 0)
                     gExpShareExp = 1;
             else if ((FlagGet(FLAG_EXP_SHARE) == TRUE) && (gSaveBlock2Ptr->optionsDifficulty == 2))
@@ -3612,7 +3612,7 @@ static void Cmd_getexp(void)
                 if (*exp == 0)
                     *exp = 1;
 
-                gExpShareExp = calculatedExp / 2 / viaExpShare;
+                gExpShareExp = calculatedExp / 2;
                 if (gExpShareExp == 0)
                     gExpShareExp = 1;
 
