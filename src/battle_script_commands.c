@@ -3581,6 +3581,7 @@ static void Cmd_getexp(void)
                 calculatedExp *= 1.2;
 
             if (FlagGet(FLAG_EXP_SHARE) == FALSE)
+            {
                 if (viaExpShare) // at least one mon is getting exp via exp share
                 {
                     *exp = SAFE_DIV(calculatedExp / 2, viaSentIn);
@@ -3598,8 +3599,9 @@ static void Cmd_getexp(void)
                         *exp = 1;
                     gExpShareExp = 0;
                 }
-
-            if (FlagGet(FLAG_EXP_SHARE) == TRUE)
+            }
+            else if ((FlagGet(FLAG_EXP_SHARE) == TRUE) && (gSaveBlock2Ptr->optionsDifficulty != 2))
+            {
                 *exp = SAFE_DIV(calculatedExp, viaSentIn);
                 if (*exp == 0)
                     *exp = 1;
@@ -3607,14 +3609,29 @@ static void Cmd_getexp(void)
                 gExpShareExp = calculatedExp / 2;
                 if (gExpShareExp == 0)
                     gExpShareExp = 1;
+            }
             else if ((FlagGet(FLAG_EXP_SHARE) == TRUE) && (gSaveBlock2Ptr->optionsDifficulty == 2))
-                *exp = SAFE_DIV(calculatedExp / 2, viaSentIn);
-                if (*exp == 0)
-                    *exp = 1;
-
-                gExpShareExp = calculatedExp / 2;
-                if (gExpShareExp == 0)
-                    gExpShareExp = 1;
+            {
+                if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
+                {
+                    *exp = SAFE_DIV(calculatedExp / 2, viaSentIn);
+                    if (*exp == 0)
+                        *exp = 1;
+                    gExpShareExp = calculatedExp / 4;
+                    if (gExpShareExp == 0)
+                        gExpShareExp = 1;
+                }
+                else
+                {
+                    *exp = SAFE_DIV(calculatedExp / 2, viaSentIn);
+                    if (*exp == 0)
+                        *exp = 1;
+                    gExpShareExp = calculatedExp / 2;
+                    if (gExpShareExp == 0)
+                        gExpShareExp = 1;
+                }
+                
+            }
 
             if (gSaveBlock1Ptr->tx_Challenges_ExpMultiplier == 3)
             {
