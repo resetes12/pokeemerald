@@ -1144,7 +1144,7 @@ struct SaveBlock1
         u8 tx_Challenges_TrainerScalingEVs:2;
         u8 tx_Nuzlocke_Deletion:1;
         u8 tx_Random_Starter:1;
-        u8 tx_Challenges_MaxPartyIVs:1;
+        u8 tx_Challenges_MaxPartyIVs:2;
         u8 tx_Features_InfiniteTMs:1;
         u8 optionsPoisonSurvive:1; //will be deleted
         u8 optionsEasierFeebas:1; //will be deleted

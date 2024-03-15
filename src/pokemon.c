@@ -5069,6 +5069,57 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
             SetBoxMonData(boxMon, MON_DATA_SPATK_IV, &iv);
             SetBoxMonData(boxMon, MON_DATA_SPDEF_IV, &iv);
         }
+        else if (gSaveBlock1Ptr->tx_Challenges_MaxPartyIVs == 2)
+        {
+            //Ugly, but it works. Can get improved.
+            u32 iv30;
+            u32 iv31;
+            int ivRand;
+
+            iv30 = 30;
+            iv31 = 31;
+            ivRand = (Random() % 2);
+            
+            if (ivRand == 1)
+                SetBoxMonData(boxMon, MON_DATA_HP_IV, &iv30);
+            else if (ivRand == 0)
+                SetBoxMonData(boxMon, MON_DATA_HP_IV, &iv31);
+
+            ivRand = (Random() % 2);
+
+            if (ivRand == 1)
+                SetBoxMonData(boxMon, MON_DATA_ATK_IV, &iv30);
+            else if (ivRand == 0)
+                SetBoxMonData(boxMon, MON_DATA_ATK_IV, &iv31);
+            
+            ivRand = (Random() % 2);
+
+            if (ivRand == 1)
+                SetBoxMonData(boxMon, MON_DATA_DEF_IV, &iv30);
+            else if (ivRand == 0)
+                SetBoxMonData(boxMon, MON_DATA_DEF_IV, &iv31);
+            
+            ivRand = (Random() % 2);
+
+            if (ivRand == 1)
+                SetBoxMonData(boxMon, MON_DATA_SPEED_IV, &iv30);
+            else if (ivRand == 0)
+                SetBoxMonData(boxMon, MON_DATA_SPEED_IV, &iv31);
+            
+            ivRand = (Random() % 2);
+
+            if (ivRand == 1)
+                SetBoxMonData(boxMon, MON_DATA_SPATK_IV, &iv30);
+            else if (ivRand == 0)
+                SetBoxMonData(boxMon, MON_DATA_SPATK_IV, &iv31);
+            
+            ivRand = (Random() % 2);
+
+            if (ivRand == 1)
+                SetBoxMonData(boxMon, MON_DATA_SPDEF_IV, &iv30);
+            else if (ivRand == 0)
+                SetBoxMonData(boxMon, MON_DATA_SPDEF_IV, &iv31);
+        }
     }
     else
     {
@@ -5104,6 +5155,57 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
             SetBoxMonData(boxMon, MON_DATA_SPEED_IV, &iv);
             SetBoxMonData(boxMon, MON_DATA_SPATK_IV, &iv);
             SetBoxMonData(boxMon, MON_DATA_SPDEF_IV, &iv);
+        }
+        else if (gSaveBlock1Ptr->tx_Challenges_MaxPartyIVs == 2)
+        {
+            //Ugly, but it works. Can get improved.
+            u32 iv30;
+            u32 iv31;
+            int ivRand;
+
+            iv30 = 30;
+            iv31 = 31;
+            ivRand = (Random() % 2);
+            
+            if (ivRand == 1)
+                SetBoxMonData(boxMon, MON_DATA_HP_IV, &iv30);
+            else if (ivRand == 0)
+                SetBoxMonData(boxMon, MON_DATA_HP_IV, &iv31);
+
+            ivRand = (Random() % 2);
+
+            if (ivRand == 1)
+                SetBoxMonData(boxMon, MON_DATA_ATK_IV, &iv30);
+            else if (ivRand == 0)
+                SetBoxMonData(boxMon, MON_DATA_ATK_IV, &iv31);
+
+            ivRand = (Random() % 2);
+
+            if (ivRand == 1)
+                SetBoxMonData(boxMon, MON_DATA_DEF_IV, &iv30);
+            else if (ivRand == 0)
+                SetBoxMonData(boxMon, MON_DATA_DEF_IV, &iv31);
+
+            ivRand = (Random() % 2);
+
+            if (ivRand == 1)
+                SetBoxMonData(boxMon, MON_DATA_SPEED_IV, &iv30);
+            else if (ivRand == 0)
+                SetBoxMonData(boxMon, MON_DATA_SPEED_IV, &iv31);
+
+            ivRand = (Random() % 2);
+
+            if (ivRand == 1)
+                SetBoxMonData(boxMon, MON_DATA_SPATK_IV, &iv30);
+            else if (ivRand == 0)
+                SetBoxMonData(boxMon, MON_DATA_SPATK_IV, &iv31);
+
+            ivRand = (Random() % 2);
+
+            if (ivRand == 1)
+                SetBoxMonData(boxMon, MON_DATA_SPDEF_IV, &iv30);
+            else if (ivRand == 0)
+                SetBoxMonData(boxMon, MON_DATA_SPDEF_IV, &iv31);
         }
     }
 
