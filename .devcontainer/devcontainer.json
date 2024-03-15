@@ -1,0 +1,13 @@
+{
+    "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+    "features": {
+        "ghcr.io/wxw-matt/devcontainer-features/apt:latest": {
+			      "packages": "gdebi-core build-essential binutils-arm-none-eabi git libpng-dev"
+        },
+        "ghcr.io/wxw-matt/devcontainer-features/command_runner:latest": {
+              "command1" : "wget https://apt.devkitpro.org/install-devkitpro-pacman",
+              "command2" : "chmod +x ./install-devkitpro-pacman",
+              "command3" : "sudo ./install-devkitpro-pacman"
+        }
+    }
+}
