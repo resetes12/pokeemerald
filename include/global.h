@@ -548,6 +548,7 @@ struct SaveBlock2
              u16 optionsFrontierTrainerBattleMusic:5;
              u16 optionsSoundEffects:2;
              u16 optionsSkipIntro:1;
+             u16 optionsLRtoRun:1;
     /*0x18*/ struct Pokedex pokedex;
     /*0x90*/ u8 filler_90[0x8];
     /*0x98*/ struct Time localTimeOffset;
@@ -1143,7 +1144,7 @@ struct SaveBlock1
         u8 tx_Challenges_TrainerScalingEVs:2;
         u8 tx_Nuzlocke_Deletion:1;
         u8 tx_Random_Starter:1;
-        u8 tx_Challenges_MaxPartyIVs:1;
+        u8 tx_Challenges_MaxPartyIVs:2;
         u8 tx_Features_InfiniteTMs:1;
         u8 optionsPoisonSurvive:1; //will be deleted
         u8 optionsEasierFeebas:1; //will be deleted

@@ -348,30 +348,30 @@ static const u8 sLevelCapTable_Hard[] =
     [LEVEL_CAP_BADGE_8]     = 55,
 };
 
-static const u8 sLevelCapTable_NormalHard[] =
+static const u8 sLevelCapTable_Normal_Caps_And_Hard_Mode[] =
 {
-    [LEVEL_CAP_NO_BADGES]   = 15,
-    [LEVEL_CAP_BADGE_1]     = 19,
-    [LEVEL_CAP_BADGE_2]     = 26,
-    [LEVEL_CAP_BADGE_3]     = 31,
-    [LEVEL_CAP_BADGE_4]     = 34,
-    [LEVEL_CAP_BADGE_5]     = 37,
-    [LEVEL_CAP_BADGE_6]     = 45,
-    [LEVEL_CAP_BADGE_7]     = 52,
-    [LEVEL_CAP_BADGE_8]     = 64,
+    [LEVEL_CAP_NO_BADGES]   = 16, //+1
+    [LEVEL_CAP_BADGE_1]     = 21, //+2
+    [LEVEL_CAP_BADGE_2]     = 26, //+2
+    [LEVEL_CAP_BADGE_3]     = 32, //+3
+    [LEVEL_CAP_BADGE_4]     = 34, //+3
+    [LEVEL_CAP_BADGE_5]     = 36, //+3
+    [LEVEL_CAP_BADGE_6]     = 48, //+6
+    [LEVEL_CAP_BADGE_7]     = 52, //+6
+    [LEVEL_CAP_BADGE_8]     = 64, //+6
 };
 
-static const u8 sLevelCapTable_HardHard[] =
+static const u8 sLevelCapTable_Hard_Caps_And_Hard_Mode[] =
 {
-    [LEVEL_CAP_NO_BADGES]   = 12,
-    [LEVEL_CAP_BADGE_1]     = 16,
-    [LEVEL_CAP_BADGE_2]     = 23,
-    [LEVEL_CAP_BADGE_3]     = 27,
-    [LEVEL_CAP_BADGE_4]     = 30,
-    [LEVEL_CAP_BADGE_5]     = 32,
-    [LEVEL_CAP_BADGE_6]     = 44,
-    [LEVEL_CAP_BADGE_7]     = 47,
-    [LEVEL_CAP_BADGE_8]     = 61,
+    [LEVEL_CAP_NO_BADGES]   = 13, //+1
+    [LEVEL_CAP_BADGE_1]     = 18, //+2
+    [LEVEL_CAP_BADGE_2]     = 22, //+2
+    [LEVEL_CAP_BADGE_3]     = 27, //+3
+    [LEVEL_CAP_BADGE_4]     = 30, //+3
+    [LEVEL_CAP_BADGE_5]     = 32, //+3
+    [LEVEL_CAP_BADGE_6]     = 47, //+6
+    [LEVEL_CAP_BADGE_7]     = 47, //+6
+    [LEVEL_CAP_BADGE_8]     = 61, //+6
 };
 #define TX_CHALLENGE_LEVEL_CAP_DEBUG 0
 u8 GetCurrentPartyLevelCap(void)
@@ -385,14 +385,14 @@ u8 GetCurrentPartyLevelCap(void)
         return MAX_LEVEL;
     
     if (gSaveBlock1Ptr->tx_Challenges_LevelCap == 1) //normal level cap
-        if (gSaveBlock2Ptr->optionsDifficulty == 2)
-            return sLevelCapTable_NormalHard[badgeCount];
+        if (gSaveBlock2Ptr->optionsDifficulty == 2) //hard difficulty
+            return sLevelCapTable_Normal_Caps_And_Hard_Mode[badgeCount];
         else
             return sLevelCapTable_Normal[badgeCount];
 
     if (gSaveBlock1Ptr->tx_Challenges_LevelCap == 2) //hard level cap
-        if (gSaveBlock2Ptr->optionsDifficulty == 2)
-            return sLevelCapTable_HardHard[badgeCount];
+        if (gSaveBlock2Ptr->optionsDifficulty == 2) //hard difficulty
+            return sLevelCapTable_Hard_Caps_And_Hard_Mode[badgeCount];
         else
             return sLevelCapTable_Hard[badgeCount];
 
