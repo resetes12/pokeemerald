@@ -549,6 +549,7 @@ struct SaveBlock2
              u16 optionsSoundEffects:2;
              u16 optionsSkipIntro:1;
              u16 optionsLRtoRun:1;
+             u16 optionsBallPrompt:1;
     /*0x18*/ struct Pokedex pokedex;
     /*0x90*/ u8 filler_90[0x8];
     /*0x98*/ struct Time localTimeOffset;

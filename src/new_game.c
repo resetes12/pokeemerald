@@ -116,6 +116,7 @@ static void SetDefaultOptions(void)
     gSaveBlock2Ptr->optionsSoundEffects = 0;
     gSaveBlock2Ptr->optionsSkipIntro = 1;
     gSaveBlock2Ptr->optionsLRtoRun = 0;
+    gSaveBlock2Ptr->optionsBallPrompt = 1;
 }
 
 static void ClearPokedexFlags(void)

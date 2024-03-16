@@ -54,6 +54,7 @@ enum
     MENUITEM_BATTLE_SPLIT,
     MENUITEM_BATTLE_FAST_INTRO,
     MENUITEM_BATTLE_FAST_BATTLES,
+    MENUITEM_BATTLE_BALL_PROMPT,
     MENUITEM_BATTLE_TYPE_EFFECTIVE, //will be removed
     MENUITEM_BATTLE_LR_RUN,
     MENUITEM_BATTLE_COUNT,
@@ -138,7 +139,7 @@ struct OptionMenu
 {
     u8 submenu;
     u8 sel[MENUITEM_MAIN_COUNT];
-    u8 sel_custom[MENUITEM_BATTLE_COUNT];
+    u8 sel_battle[MENUITEM_BATTLE_COUNT];
     u8 sel_sound[MENUITEM_SOUND_COUNT];
     int menuCursor[MENU_COUNT];
     int visibleCursor[MENU_COUNT];
@@ -208,6 +209,7 @@ static void DrawChoices_Frontier_Trainer_Battle_Music(int selection, int y);
 static void DrawChoices_Sound_Effects(int selection, int y);
 static void DrawChoices_Skip_Intro(int selection, int y);
 static void DrawChoices_LR_Run(int selection, int y);
+static void DrawChoices_Ball_Prompt(int selection, int y);
 static void DrawBgWindowFrames(void);
 
 // EWRAM vars
@@ -267,6 +269,7 @@ struct // MENU_CUSTOM
     [MENUITEM_BATTLE_TYPE_EFFECTIVE]   = {DrawChoices_TypeEffective,      ProcessInput_Options_Two},
     [MENUITEM_BATTLE_FAST_BATTLES]     = {DrawChoices_FastBattles,        ProcessInput_Options_Two},
     [MENUITEM_BATTLE_LR_RUN]           = {DrawChoices_LR_Run,             ProcessInput_Options_Two},
+    [MENUITEM_BATTLE_BALL_PROMPT]      = {DrawChoices_Ball_Prompt,        ProcessInput_Options_Two},
 };
 
 struct // MENU_SOUND
@@ -293,6 +296,7 @@ static const u8 sText_OptionFastBattles[]         = _("FAST BATTLES");
 static const u8 sText_OptionEvenFasterJoy[]       = _("EVEN FASTER JOY");
 static const u8 sText_OptionSkipIntro[]           = _("SKIP INTRO");
 static const u8 sText_OptionLR_Run[]              = _("RUN PROMPT");
+static const u8 sText_OptionBallPrompt[]          = _("BALL PROMPT");
 static const u8 *const sOptionMenuItemsNamesMain[MENUITEM_MAIN_COUNT] =
 {
     [MENUITEM_MAIN_TEXTSPEED]           = gText_TextSpeed,
@@ -317,6 +321,7 @@ static const u8 *const sOptionMenuItemsNamesCustom[MENUITEM_BATTLE_COUNT] =
     [MENUITEM_BATTLE_TYPE_EFFECTIVE]   = sText_OptionTypeEffective,
     [MENUITEM_BATTLE_FAST_BATTLES]     = sText_OptionFastBattles,
     [MENUITEM_BATTLE_LR_RUN]           = sText_OptionLR_Run,
+    [MENUITEM_BATTLE_BALL_PROMPT]      = sText_OptionBallPrompt,
 };
 
 static const u8 sText_OptionSurfMusic[]              = _("SURF MUSIC");
@@ -377,6 +382,7 @@ static bool8 CheckConditions(int selection)
         case MENUITEM_BATTLE_TYPE_EFFECTIVE:  return TRUE;
         case MENUITEM_BATTLE_FAST_BATTLES:    return TRUE;
         case MENUITEM_BATTLE_LR_RUN:          return TRUE;
+        case MENUITEM_BATTLE_BALL_PROMPT:     return TRUE;
         case MENUITEM_BATTLE_COUNT:           return TRUE;
         }
     case MENU_SOUND:
@@ -450,6 +456,8 @@ static const u8 sText_Desc_FastBattleOn[]          = _("Skips all delays in batt
 static const u8 sText_Desc_FastBattleOff[]         = _("Manual delay skipping. You can\npress A or B to skip delays.");
 static const u8 sText_Desc_LR_Run_On[]             = _("Enables a prompt to show that you\ncan run away from battles.");
 static const u8 sText_Desc_LR_Run_Off[]            = _("Disables said prompt to flee.\nButton combo still works.");
+static const u8 sText_Desc_Ball_Prompt_On[]        = _("Use POKéBALLS pressing {R_BUTTON} in battle.\n Hold {L_BUTTON}/{R_BUTTON} to swap POKéBALLS.");
+static const u8 sText_Desc_Ball_Prompt_Off[]       = _("Disables the prompt to use\nPOKéBALLS quickly.");
 static const u8 *const sOptionMenuItemDescriptionsCustom[MENUITEM_BATTLE_COUNT][2] =
 {
 
@@ -458,6 +466,7 @@ static const u8 *const sOptionMenuItemDescriptionsCustom[MENUITEM_BATTLE_COUNT][
     [MENUITEM_BATTLE_SPLIT]       = {sText_Desc_StyleOn,              sText_Desc_StyleOff},
     [MENUITEM_BATTLE_TYPE_EFFECTIVE]       = {sText_Desc_TypeEffectiveOn,              sText_Desc_TypeEffectiveOff},
     [MENUITEM_BATTLE_LR_RUN]     = {sText_Desc_LR_Run_On,            sText_Desc_LR_Run_Off},
+    [MENUITEM_BATTLE_BALL_PROMPT]     = {sText_Desc_Ball_Prompt_On,            sText_Desc_Ball_Prompt_Off},
 };
 
 static const u8 sText_Desc_SoundMono[]                       = _("Sound is the same in all speakers.\nRecommended for original hardware.");
@@ -515,6 +524,7 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledCustom[MENUITEM_BATTLE
     [MENUITEM_BATTLE_SPLIT]       = sText_Empty,
     [MENUITEM_BATTLE_TYPE_EFFECTIVE]       = sText_Empty,
     [MENUITEM_BATTLE_LR_RUN]     = sText_Empty,
+    [MENUITEM_BATTLE_BALL_PROMPT]     = sText_Empty,
 };
 
 static const u8 *const sOptionMenuItemDescriptionsDisabledSound[MENUITEM_SOUND_COUNT] =
@@ -545,7 +555,7 @@ static const u8 *const OptionTextDescription(void)
     case MENU_CUSTOM:
         if (!CheckConditions(menuItem))
             return sOptionMenuItemDescriptionsDisabledMain[menuItem];
-        selection = sOptions->sel_custom[menuItem];
+        selection = sOptions->sel_battle[menuItem];
         return sOptionMenuItemDescriptionsCustom[menuItem][selection];
     case MENU_SOUND:
         if (!CheckConditions(menuItem))
@@ -692,7 +702,7 @@ static void DrawChoices(u32 id, int y) //right side draw function
             break;
         case MENU_CUSTOM:
             if (sItemFunctionsCustom[id].drawChoices != NULL)
-                sItemFunctionsCustom[id].drawChoices(sOptions->sel_custom[id], y);
+                sItemFunctionsCustom[id].drawChoices(sOptions->sel_battle[id], y);
             break;
         case MENU_SOUND:
             if (sItemFunctionsSound[id].drawChoices != NULL)
@@ -777,11 +787,12 @@ void CB2_InitOptionPlusMenu(void)
         sOptions->sel[MENUITEM_MAIN_EVEN_FASTER_JOY]     = gSaveBlock2Ptr->optionsEvenFasterJoy;
         sOptions->sel[MENUITEM_MAIN_SKIP_INTRO]          = gSaveBlock2Ptr->optionsSkipIntro;
 
-        sOptions->sel_custom[MENUITEM_BATTLE_FAST_INTRO]        = gSaveBlock2Ptr->optionsFastIntro;
-        sOptions->sel_custom[MENUITEM_BATTLE_FAST_BATTLES]      = gSaveBlock2Ptr->optionsFastBattle;
-        sOptions->sel_custom[MENUITEM_BATTLE_SPLIT]             = gSaveBlock2Ptr->optionStyle;
-        sOptions->sel_custom[MENUITEM_BATTLE_TYPE_EFFECTIVE]    = gSaveBlock2Ptr->optionTypeEffective;
-        sOptions->sel_custom[MENUITEM_BATTLE_LR_RUN]            = gSaveBlock2Ptr->optionsLRtoRun;
+        sOptions->sel_battle[MENUITEM_BATTLE_FAST_INTRO]        = gSaveBlock2Ptr->optionsFastIntro;
+        sOptions->sel_battle[MENUITEM_BATTLE_FAST_BATTLES]      = gSaveBlock2Ptr->optionsFastBattle;
+        sOptions->sel_battle[MENUITEM_BATTLE_SPLIT]             = gSaveBlock2Ptr->optionStyle;
+        sOptions->sel_battle[MENUITEM_BATTLE_TYPE_EFFECTIVE]    = gSaveBlock2Ptr->optionTypeEffective;
+        sOptions->sel_battle[MENUITEM_BATTLE_LR_RUN]            = gSaveBlock2Ptr->optionsLRtoRun;
+        sOptions->sel_battle[MENUITEM_BATTLE_BALL_PROMPT]       = gSaveBlock2Ptr->optionsBallPrompt;
 
         sOptions->sel_sound[MENUITEM_SOUND_SOUND]                             = gSaveBlock2Ptr->optionsSound;
         sOptions->sel_sound[MENUITEM_SOUND_BIKE_MUSIC]                        = gSaveBlock2Ptr->optionsBikeMusic;
@@ -923,17 +934,17 @@ static void Task_OptionMenuProcessInput(u8 taskId)
         else if (sOptions->submenu == MENU_CUSTOM)
         {
             int cursor = sOptions->menuCursor[sOptions->submenu];
-            u8 previousOption = sOptions->sel_custom[cursor];
+            u8 previousOption = sOptions->sel_battle[cursor];
             if (CheckConditions(cursor))
             {
                 if (sItemFunctionsCustom[cursor].processInput != NULL)
                 {
-                    sOptions->sel_custom[cursor] = sItemFunctionsCustom[cursor].processInput(previousOption);
+                    sOptions->sel_battle[cursor] = sItemFunctionsCustom[cursor].processInput(previousOption);
                     ReDrawAll();
                     DrawDescriptionText();
                 }
 
-                if (previousOption != sOptions->sel_custom[cursor])
+                if (previousOption != sOptions->sel_battle[cursor])
                     DrawChoices(cursor, sOptions->visibleCursor[sOptions->submenu] * Y_DIFF);
             }
         }
@@ -1006,11 +1017,12 @@ static void Task_OptionMenuSave(u8 taskId)
     gSaveBlock2Ptr->optionsEvenFasterJoy         = sOptions->sel[MENUITEM_MAIN_EVEN_FASTER_JOY];
     gSaveBlock2Ptr->optionsSkipIntro             = sOptions->sel[MENUITEM_MAIN_SKIP_INTRO];
 
-    gSaveBlock2Ptr->optionsFastIntro        = sOptions->sel_custom[MENUITEM_BATTLE_FAST_INTRO];
-    gSaveBlock2Ptr->optionsFastBattle       = sOptions->sel_custom[MENUITEM_BATTLE_FAST_BATTLES];
-    gSaveBlock2Ptr->optionStyle             = sOptions->sel_custom[MENUITEM_BATTLE_SPLIT];
-    gSaveBlock2Ptr->optionTypeEffective     = sOptions->sel_custom[MENUITEM_BATTLE_TYPE_EFFECTIVE];
-    gSaveBlock2Ptr->optionsLRtoRun          = sOptions->sel_custom[MENUITEM_BATTLE_LR_RUN];
+    gSaveBlock2Ptr->optionsFastIntro        = sOptions->sel_battle[MENUITEM_BATTLE_FAST_INTRO];
+    gSaveBlock2Ptr->optionsFastBattle       = sOptions->sel_battle[MENUITEM_BATTLE_FAST_BATTLES];
+    gSaveBlock2Ptr->optionStyle             = sOptions->sel_battle[MENUITEM_BATTLE_SPLIT];
+    gSaveBlock2Ptr->optionTypeEffective     = sOptions->sel_battle[MENUITEM_BATTLE_TYPE_EFFECTIVE];
+    gSaveBlock2Ptr->optionsLRtoRun          = sOptions->sel_battle[MENUITEM_BATTLE_LR_RUN];
+    gSaveBlock2Ptr->optionsBallPrompt       = sOptions->sel_battle[MENUITEM_BATTLE_BALL_PROMPT];
     
     gSaveBlock2Ptr->optionsSound            = sOptions->sel_sound[MENUITEM_SOUND_SOUND];
     gSaveBlock2Ptr->optionsBikeMusic        = sOptions->sel_sound[MENUITEM_SOUND_BIKE_MUSIC];
@@ -1788,6 +1800,24 @@ static void DrawChoices_LR_Run(int selection, int y)
     else
     {
         gSaveBlock2Ptr->optionsLRtoRun = 1; //Doesn't show prompt
+    }
+    DrawOptionMenuChoice(gText_BattleSceneOn, 104, y, styles[0], active);
+    DrawOptionMenuChoice(gText_BattleSceneOff, GetStringRightAlignXOffset(1, gText_BattleSceneOff, 198), y, styles[1], active);
+}
+
+static void DrawChoices_Ball_Prompt(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_BATTLE_BALL_PROMPT);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock2Ptr->optionsBallPrompt = 0; //Shows PKBALL prompt
+    }
+    else
+    {
+        gSaveBlock2Ptr->optionsBallPrompt = 1; //Doesn't show PKBALL prompt
     }
     DrawOptionMenuChoice(gText_BattleSceneOn, 104, y, styles[0], active);
     DrawOptionMenuChoice(gText_BattleSceneOff, GetStringRightAlignXOffset(1, gText_BattleSceneOff, 198), y, styles[1], active);
