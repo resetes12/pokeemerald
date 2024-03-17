@@ -2503,12 +2503,12 @@ static void DrawChoices_Features_Unlimited_WT(int selection, int y)
     if (selection == 0)
     {
         gSaveBlock1Ptr->tx_Features_Unlimited_WT = 0; //WTs are capped to 3 daily
-        FlagSet (FLAG_UNLIMITIED_WONDERTRADE);
+        FlagClear (FLAG_UNLIMITIED_WONDERTRADE);
     }
     else
     {
         gSaveBlock1Ptr->tx_Features_Unlimited_WT = 1; //WTs are uncapped
-        FlagClear (FLAG_UNLIMITIED_WONDERTRADE);
+        FlagSet (FLAG_UNLIMITIED_WONDERTRADE);
     }
 
     DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
