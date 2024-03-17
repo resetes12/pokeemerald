@@ -55,6 +55,7 @@
 #define TX_FEATURES_PKMN_DEATH 0
 #define TX_FEATURES_RTC_TYPE 0
 #define TX_FEATURES_UNLIMITED_WT 0
+#define TX_FEATURES_SYNCHRONIZE 0
 
 // randomization types
 #define TX_RANDOM_T_WILD_POKEMON    0
