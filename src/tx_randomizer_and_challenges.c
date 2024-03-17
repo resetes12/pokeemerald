@@ -12,11 +12,11 @@
 // Generic functions
 bool8 AreFeaturesActivated(void)
 {
-    if (gSaveBlock2Ptr->optionsShinyChance
-        || gSaveBlock2Ptr->optionsWildMonDropItems
-        || gSaveBlock2Ptr->optionsAlternateSpawns
+    if (gSaveBlock1Ptr->tx_Features_ShinyChance
+        || gSaveBlock1Ptr->tx_Features_WildMonDropItems
+        || gSaveBlock1Ptr->tx_Features_AlternateSpawns
         || gSaveBlock1Ptr->tx_Features_InfiniteTMs
-        || gSaveBlock1Ptr->optionsPoisonSurvive
+        || gSaveBlock1Ptr->tx_Features_PoisonSurvive
         || gSaveBlock1Ptr->optionsEasierFeebas)
         return TRUE;
 
@@ -74,7 +74,7 @@ bool8 AreAnyChallengesActive(void)
         || gSaveBlock1Ptr->tx_Challenges_Mirror
         || gSaveBlock1Ptr->tx_Challenges_Mirror_Thief
         || gSaveBlock1Ptr->tx_Challenges_MaxPartyIVs
-        || gSaveBlock2Ptr->optionsLimitDifficulty
+        || gSaveBlock1Ptr->tx_Features_LimitDifficulty
         || IsOneTypeChallengeActive())
         return TRUE;
 

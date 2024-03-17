@@ -734,6 +734,7 @@ BattleFrontier_ExchangeServiceCorner_Text_ScopeLensDesc::
 	.string "critical-hit rate.$"
 
 EventScript_DoWonderTrade::
+	goto_if_set FLAG_UNLIMITIED_WONDERTRADE, EventScript_DoWonderTradeStartNoLimit
 	goto_if_unset FLAG_WONDERTRADE_FIRSTIME, EventScript_FirstTimeWonderRandomizer
 	special CheckIfRandomizerIsActive
 	goto_if_unset FLAG_WT_ENABLED_RANDOMIZER, EventScript_DoWonderTradeStart
@@ -746,7 +747,6 @@ EventScript_DoWonderTrade::
 	end
 
 EventScript_DoWonderTradeStart:
-	goto_if_unset FLAG_WONDERTRADE_FIRSTIME, EventScript_FirstTimeWonder
 	goto_if_unset FLAG_BADGE05_GET, EventScript_WTNotActiveYet
 	msgbox EventScript_DoWonderTrade_Text_Welcome, MSGBOX_DEFAULT
 	closemessage
@@ -817,6 +817,21 @@ EventScript_DoWonderTradeCancelSaveThirdTrade::
 	closemessage
 	end
 
+EventScript_DoWonderTradeStartNoLimit::
+	goto_if_unset FLAG_WONDERTRADE_FIRSTIME, EventScript_FirstTimeWonderUnlimited
+	goto_if_unset FLAG_BADGE05_GET, EventScript_WTNotActiveYet
+	special CheckIfChallengesAreActive
+	goto_if_set FLAG_NO_WT_BECAUSE_CHALLENGE, EventScript_WTChallengesUnlimited
+	call Common_EventScript_SaveGame
+	goto_if_eq VAR_RESULT, 0, EventScript_DoWonderTradeCancelSaveThirdTrade
+	special ChoosePartyMon
+	waitstate
+	goto EventScript_DoWonderTradeTrade
+
+EventScript_WTChallengesUnlimited::
+	goto_if_unset FLAG_SYS_GAME_CLEAR, EventScript_WTChallengesCancel
+	return
+
 EventScript_DoWonderTradeTrade::
 	compare VAR_0x8004, PARTY_SIZE
 	goto_if_ge EventScript_End
@@ -841,10 +856,9 @@ EventScript_FirstTimeWonderRandomizer::
 	closemessage
 	end
 
-EventScript_FirstTimeWonder::
+EventScript_FirstTimeWonderUnlimited::
 	msgbox EventScript_FirstTimeWonder_Text, MSGBOX_DEFAULT
 	setflag FLAG_WONDERTRADE_FIRSTIME
-	goto_if_unset FLAG_BADGE05_GET, EventScript_WTNotActiveYet
 	closemessage
 	end
 

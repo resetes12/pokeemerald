@@ -172,6 +172,7 @@ void NewGameInitData(void)
 {
     bool8 HardPrev = FlagGet(FLAG_DIFFICULTY_HARD);
     bool8 TMPrev = FlagGet(FLAG_FINITE_TMS);
+    bool8 UnlimitedWT = FlagGet(FLAG_UNLIMITIED_WONDERTRADE);
 
     if (gSaveFileStatus == SAVE_STATUS_EMPTY || gSaveFileStatus == SAVE_STATUS_CORRUPT)
         RtcReset();
@@ -233,6 +234,7 @@ void NewGameInitData(void)
 
     HardPrev ? FlagSet(FLAG_DIFFICULTY_HARD) : FlagClear(FLAG_DIFFICULTY_HARD);
     TMPrev ? FlagSet(FLAG_FINITE_TMS) : FlagClear(FLAG_FINITE_TMS);
+    UnlimitedWT ? FlagSet(FLAG_UNLIMITIED_WONDERTRADE) : FlagClear(FLAG_UNLIMITIED_WONDERTRADE);
 
     /*if (difficultyPrev == DIFFICULTY_EASY)
         VarSet(VAR_DIFFICULTY, DIFFICULTY_EASY);

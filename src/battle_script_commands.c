@@ -6928,7 +6928,7 @@ static void Cmd_various(void)
         {
             gLastUsedItem = gBattleResources->battleHistory->heldItem[battlers[i]];
             gBattleResources->battleHistory->heldItem[battlers[i]] = ITEM_NONE;
-            if ((gSaveBlock2Ptr->optionsWildMonDropItems == 1) && gLastUsedItem && !(gBattleTypeFlags & (BATTLE_TYPE_TRAINER | BATTLE_TYPE_FIRST_BATTLE | BATTLE_TYPE_WALLY_TUTORIAL)))
+            if ((gSaveBlock1Ptr->tx_Features_WildMonDropItems == 1) && gLastUsedItem && !(gBattleTypeFlags & (BATTLE_TYPE_TRAINER | BATTLE_TYPE_FIRST_BATTLE | BATTLE_TYPE_WALLY_TUTORIAL)))
             {
                 if(AddBagItem(gLastUsedItem, 1))
                     gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_ITEM_DROPPED;

@@ -657,31 +657,31 @@ static u8 CreatePokemonFrontSprite(u16 species, u8 x, u8 y)
 {
     u8 spriteId;
 
-    if (gSaveBlock2Ptr->optionsShinyChance == 0) // 1/8192
+    if (gSaveBlock1Ptr->tx_Features_ShinyChance == 0) // 1/8192
     {
         spriteId = CreateMonPicSprite_Affine(species, SHINY_ODDS, 0, MON_PIC_AFFINE_FRONT, x, y, 14, TAG_NONE);
         gSprites[spriteId].oam.priority = 0;
         return spriteId;
     }
-    else if (gSaveBlock2Ptr->optionsShinyChance == 1) // 1/4096
+    else if (gSaveBlock1Ptr->tx_Features_ShinyChance == 1) // 1/4096
     {
         spriteId = CreateMonPicSprite_Affine(species, 16, 0, MON_PIC_AFFINE_FRONT, x, y, 14, TAG_NONE);
         gSprites[spriteId].oam.priority = 0;
         return spriteId;
     }
-    else if (gSaveBlock2Ptr->optionsShinyChance == 2) // 1/2048
+    else if (gSaveBlock1Ptr->tx_Features_ShinyChance == 2) // 1/2048
     {
         spriteId = CreateMonPicSprite_Affine(species, 32, 0, MON_PIC_AFFINE_FRONT, x, y, 14, TAG_NONE);
         gSprites[spriteId].oam.priority = 0;
         return spriteId;
     }
-    else if (gSaveBlock2Ptr->optionsShinyChance == 3) // 1/1024
+    else if (gSaveBlock1Ptr->tx_Features_ShinyChance == 3) // 1/1024
     {
         spriteId = CreateMonPicSprite_Affine(species, 64, 0, MON_PIC_AFFINE_FRONT, x, y, 14, TAG_NONE);
         gSprites[spriteId].oam.priority = 0;
         return spriteId;
     }
-    else if (gSaveBlock2Ptr->optionsShinyChance == 4) // 1/512
+    else if (gSaveBlock1Ptr->tx_Features_ShinyChance == 4) // 1/512
     {
         spriteId = CreateMonPicSprite_Affine(species, 128, 0, MON_PIC_AFFINE_FRONT, x, y, 14, TAG_NONE);
         gSprites[spriteId].oam.priority = 0;

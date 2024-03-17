@@ -43,8 +43,9 @@ enum
     MENUITEM_FEATURES_ITEM_DROP,
     MENUITEM_FEATURES_INFINITE_TMS,
     MENUITEM_FEATURES_SURVIVE_POISON,
+    MENUITEM_FEATURES_UNLIMITED_WT,
     MENUITEM_FEATURES_PKMN_DEATH,
-    MENUITEM_FEATURES_EASY_FEEBAS,
+    MENUITEM_FEATURES_EASY_FEEBAS, //will be deleted
     MENUITEM_FEATURES_NEXT,
     MENUITEM_FEATURES_COUNT,
 };
@@ -280,6 +281,7 @@ static void DrawChoices_Features_SurvivePoison(int selection, int y);
 static void DrawChoices_Features_EasyFeebas(int selection, int y);
 static void DrawChoices_Features_Pkmn_Death(int selection, int y);
 static void DrawChoices_Features_Rtc_Type(int selection, int y);
+static void DrawChoices_Features_Unlimited_WT(int selection, int y);
 
 static void PrintCurrentSelections(void);
 
@@ -321,6 +323,7 @@ struct // MENU_FEATURES
     [MENUITEM_FEATURES_SURVIVE_POISON]        = {DrawChoices_Features_SurvivePoison,        ProcessInput_Options_Two},
     [MENUITEM_FEATURES_EASY_FEEBAS]           = {DrawChoices_Features_EasyFeebas,           ProcessInput_Options_Two},
     [MENUITEM_FEATURES_PKMN_DEATH]            = {DrawChoices_Features_Pkmn_Death,           ProcessInput_Options_Two},
+    [MENUITEM_FEATURES_UNLIMITED_WT]          = {DrawChoices_Features_Unlimited_WT,         ProcessInput_Options_Two},
     [MENUITEM_FEATURES_NEXT]                  = {NULL, NULL},
 };
 
@@ -406,6 +409,7 @@ static const u8 sText_InfiniteTMs[]         = _("REUSABLE TMS");
 static const u8 sText_Poison[]              = _("SURVIVE POISON");
 static const u8 sText_EasyFeebas[]          = _("EASIER FEEBAS");
 static const u8 sText_Pkmn_Death[]          = _("{COLOR 7}{COLOR 8}POKÉMON FAINT");
+static const u8 sText_Unlimited_WT[]          = _("UNLIMITED WT");
 static const u8 sText_Next[]                = _("NEXT");
 // Menu left side option names text
 static const u8 *const sOptionMenuItemsNamesFeatures[MENUITEM_FEATURES_COUNT] =
@@ -418,6 +422,7 @@ static const u8 *const sOptionMenuItemsNamesFeatures[MENUITEM_FEATURES_COUNT] =
     [MENUITEM_FEATURES_SURVIVE_POISON]            = sText_Poison,
     [MENUITEM_FEATURES_EASY_FEEBAS]               = sText_EasyFeebas,
     [MENUITEM_FEATURES_PKMN_DEATH]                = sText_Pkmn_Death,
+    [MENUITEM_FEATURES_UNLIMITED_WT]              = sText_Unlimited_WT,
     [MENUITEM_FEATURES_NEXT]                      = sText_Next,
 };
 
@@ -627,6 +632,8 @@ static const u8 sText_Description_Features_EasyFeebas_On[]            = _("FEEBA
 static const u8 sText_Description_Features_EasyFeebas_Off[]           = _("FEEBAS is encountered in random\nspots in ROUTE 119.");
 static const u8 sText_Description_Features_Pkmn_Death_On[]            = _("{COLOR 7}{COLOR 8}YOUR {PKMN} WILL DIE!! Getting to zero\n{PKMN} could be the end of your save."); //{COLOR 1}{COLOR 2} 
 static const u8 sText_Description_Features_Pkmn_Death_Off[]           = _("{PKMN} will not die from fainting.\nRecommended.");
+static const u8 sText_Description_Features_Unlimited_WT_On[]          = _("Enables a daily limit of 3\nWonderTrades. Recommended.");
+static const u8 sText_Description_Features_Unlimited_WT_Off[]         = _("WonderTrades have no daily limit.");
 static const u8 sText_Description_Features_Next[]                     = _("Continue to Randomizer options.");
 static const u8 *const sOptionMenuItemDescriptionsFeatures[MENUITEM_FEATURES_COUNT][5] =
 {
@@ -638,6 +645,7 @@ static const u8 *const sOptionMenuItemDescriptionsFeatures[MENUITEM_FEATURES_COU
     [MENUITEM_FEATURES_SURVIVE_POISON]        = {sText_Description_Features_SurvivePoison_Off,      sText_Description_Features_SurvivePoison_On,      sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_EASY_FEEBAS]           = {sText_Description_Features_EasyFeebas_Off,         sText_Description_Features_EasyFeebas_On,         sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_PKMN_DEATH]            = {sText_Description_Features_Pkmn_Death_Off,         sText_Description_Features_Pkmn_Death_On,         sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_FEATURES_UNLIMITED_WT]          = {sText_Description_Features_Unlimited_WT_On,        sText_Description_Features_Unlimited_WT_Off,      sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_NEXT]                  = {sText_Description_Features_Next,                   sText_Empty,                                      sText_Empty,                                        sText_Empty,                                        sText_Empty},
 };
 
@@ -797,6 +805,7 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledFeatures[MENUITEM_FEAT
     [MENUITEM_FEATURES_SURVIVE_POISON]        = sText_Empty,
     [MENUITEM_FEATURES_EASY_FEEBAS]           = sText_Empty,
     [MENUITEM_FEATURES_PKMN_DEATH]            = sText_Description_Disabled_Features_PkmnDeath,
+    [MENUITEM_FEATURES_UNLIMITED_WT]          = sText_Empty,
     [MENUITEM_FEATURES_NEXT]                  = sText_Empty,
 };
 
@@ -1165,14 +1174,15 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         break;
     case 6:
         //tx_randomizer_and_challenges
-        gSaveBlock1Ptr->tx_Features_RTCType                      = TX_FEATURES_RTC_TYPE;
-        gSaveBlock2Ptr->optionsAlternateSpawns              = TX_FEATURES_ALTERNATE_SPAWNS;
-        gSaveBlock2Ptr->optionsShinyChance                  = TX_FEATURES_SHINY_CHANCE;
-        gSaveBlock2Ptr->optionsWildMonDropItems             = TX_FEATURES_ITEM_DROP;
-        gSaveBlock1Ptr->tx_Features_InfiniteTMs                  = TX_FEATURES_INFINITE_TMS;
-        gSaveBlock1Ptr->optionsPoisonSurvive                = TX_FEATURES_SURVIVE_POISON;
+        gSaveBlock1Ptr->tx_Features_RTCType                 = TX_FEATURES_RTC_TYPE;
+        gSaveBlock1Ptr->tx_Features_AlternateSpawns         = TX_FEATURES_ALTERNATE_SPAWNS;
+        gSaveBlock1Ptr->tx_Features_ShinyChance             = TX_FEATURES_SHINY_CHANCE;
+        gSaveBlock1Ptr->tx_Features_WildMonDropItems        = TX_FEATURES_ITEM_DROP;
+        gSaveBlock1Ptr->tx_Features_InfiniteTMs             = TX_FEATURES_INFINITE_TMS;
+        gSaveBlock1Ptr->tx_Features_PoisonSurvive           = TX_FEATURES_SURVIVE_POISON;
         gSaveBlock1Ptr->optionsEasierFeebas                 = TX_FEATURES_EASIER_FEEBAS;
-        gSaveBlock1Ptr->tx_Features_PkmnDeath                    = TX_FEATURES_PKMN_DEATH;
+        gSaveBlock1Ptr->tx_Features_PkmnDeath               = TX_FEATURES_PKMN_DEATH;
+        gSaveBlock1Ptr->tx_Features_Unlimited_WT            = TX_FEATURES_UNLIMITED_WT;
 
         gSaveBlock1Ptr->tx_Random_Starter                   = TX_RANDOM_STARTER;
         gSaveBlock1Ptr->tx_Random_WildPokemon               = TX_RANDOM_WILD_POKEMON;
@@ -1207,8 +1217,8 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         gSaveBlock1Ptr->tx_Challenges_TrainerScalingIVs     = TX_DIFFICULTY_SCALING_IVS;
         gSaveBlock1Ptr->tx_Challenges_TrainerScalingEVs     = TX_DIFFICULTY_SCALING_EVS;
         gSaveBlock1Ptr->tx_Challenges_PkmnCenter            = TX_DIFFICULTY_PKMN_CENTER;
-        gSaveBlock2Ptr->optionsLimitDifficulty              = TX_DIFFICULTY_LIMIT_DIFFICULTY;
-        gSaveBlock1Ptr->tx_Challenges_MaxPartyIVs                         = TX_DIFFICULTY_MAX_PARTY_IVS;
+        gSaveBlock1Ptr->tx_Features_LimitDifficulty         = TX_DIFFICULTY_LIMIT_DIFFICULTY;
+        gSaveBlock1Ptr->tx_Challenges_MaxPartyIVs           = TX_DIFFICULTY_MAX_PARTY_IVS;
 
         gSaveBlock1Ptr->tx_Challenges_PCHeal                = TX_CHALLENGE_PCHEAL;
         gSaveBlock1Ptr->tx_Challenges_EvoLimit              = TX_CHALLENGE_EVO_LIMIT;
@@ -1221,12 +1231,14 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         sOptions = AllocZeroed(sizeof(*sOptions));
         //MENU FEATURES
         sOptions->sel_features[MENUITEM_FEATURES_RTC_TYPE]               = gSaveBlock1Ptr->tx_Features_RTCType;
-        sOptions->sel_features[MENUITEM_FEATURES_ALTERNATE_SPAWNS]       = gSaveBlock2Ptr->optionsAlternateSpawns;
-        sOptions->sel_features[MENUITEM_FEATURES_SHINY_CHANCE]           = gSaveBlock2Ptr->optionsShinyChance;
-        sOptions->sel_features[MENUITEM_FEATURES_ITEM_DROP]              = gSaveBlock2Ptr->optionsWildMonDropItems;
+        sOptions->sel_features[MENUITEM_FEATURES_ALTERNATE_SPAWNS]       = gSaveBlock1Ptr->tx_Features_AlternateSpawns;
+        sOptions->sel_features[MENUITEM_FEATURES_SHINY_CHANCE]           = gSaveBlock1Ptr->tx_Features_ShinyChance;
+        sOptions->sel_features[MENUITEM_FEATURES_ITEM_DROP]              = gSaveBlock1Ptr->tx_Features_WildMonDropItems;
         sOptions->sel_features[MENUITEM_FEATURES_INFINITE_TMS]           = gSaveBlock1Ptr->tx_Features_InfiniteTMs;
-        sOptions->sel_features[MENUITEM_FEATURES_SURVIVE_POISON]         = gSaveBlock1Ptr->optionsPoisonSurvive;  
+        sOptions->sel_features[MENUITEM_FEATURES_SURVIVE_POISON]         = gSaveBlock1Ptr->tx_Features_PoisonSurvive;  
         sOptions->sel_features[MENUITEM_FEATURES_EASY_FEEBAS]            = gSaveBlock1Ptr->optionsEasierFeebas;
+        sOptions->sel_features[MENUITEM_FEATURES_PKMN_DEATH]             = gSaveBlock1Ptr->tx_Features_PkmnDeath;
+        sOptions->sel_features[MENUITEM_FEATURES_UNLIMITED_WT]           = gSaveBlock1Ptr->tx_Features_Unlimited_WT;
         
         //MENU RANDOMIZER
         sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON]                     = FALSE;
@@ -1266,7 +1278,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         sOptions->sel_difficulty[MENUITEM_DIFFICULTY_NO_EVS]         = gSaveBlock1Ptr->tx_Challenges_NoEVs;
         sOptions->sel_difficulty[MENUITEM_DIFFICULTY_SCALING_IVS]    = gSaveBlock1Ptr->tx_Challenges_TrainerScalingIVs;
         sOptions->sel_difficulty[MENUITEM_DIFFICULTY_SCALING_EVS]    = gSaveBlock1Ptr->tx_Challenges_TrainerScalingEVs; 
-        sOptions->sel_difficulty[MENUITEM_DIFFICULTY_LIMIT_DIFFICULTY]       = gSaveBlock2Ptr->optionsLimitDifficulty;
+        sOptions->sel_difficulty[MENUITEM_DIFFICULTY_LIMIT_DIFFICULTY]       = gSaveBlock1Ptr->tx_Features_LimitDifficulty;
         sOptions->sel_difficulty[MENUITEM_DIFFICULTY_MAX_PARTY_IVS]       = gSaveBlock1Ptr->tx_Challenges_MaxPartyIVs;
         // MENU_CHALLENGES
         sOptions->sel_challenges[MENUITEM_DIFFICULTY_POKECENTER]             = gSaveBlock1Ptr->tx_Challenges_PkmnCenter;
@@ -1536,13 +1548,14 @@ void SaveData_TxRandomizerAndChallenges(void)
     PrintCurrentSelections();
     //MENU FEAUTRES
     gSaveBlock1Ptr->tx_Features_RTCType                     = sOptions->sel_features[MENUITEM_FEATURES_RTC_TYPE]; 
-    gSaveBlock2Ptr->optionsAlternateSpawns             = sOptions->sel_features[MENUITEM_FEATURES_ALTERNATE_SPAWNS]; 
-    gSaveBlock2Ptr->optionsShinyChance                 = sOptions->sel_features[MENUITEM_FEATURES_SHINY_CHANCE]; 
-    gSaveBlock2Ptr->optionsWildMonDropItems            = sOptions->sel_features[MENUITEM_FEATURES_ITEM_DROP]; 
+    gSaveBlock1Ptr->tx_Features_AlternateSpawns             = sOptions->sel_features[MENUITEM_FEATURES_ALTERNATE_SPAWNS]; 
+    gSaveBlock1Ptr->tx_Features_ShinyChance                 = sOptions->sel_features[MENUITEM_FEATURES_SHINY_CHANCE]; 
+    gSaveBlock1Ptr->tx_Features_WildMonDropItems            = sOptions->sel_features[MENUITEM_FEATURES_ITEM_DROP]; 
     gSaveBlock1Ptr->tx_Features_InfiniteTMs                 = sOptions->sel_features[MENUITEM_FEATURES_INFINITE_TMS]; 
-    gSaveBlock1Ptr->optionsPoisonSurvive               = sOptions->sel_features[MENUITEM_FEATURES_SURVIVE_POISON]; 
-    gSaveBlock1Ptr->optionsEasierFeebas                = sOptions->sel_features[MENUITEM_FEATURES_EASY_FEEBAS]; 
+    gSaveBlock1Ptr->tx_Features_PoisonSurvive               = sOptions->sel_features[MENUITEM_FEATURES_SURVIVE_POISON]; 
+    gSaveBlock1Ptr->optionsEasierFeebas                     = sOptions->sel_features[MENUITEM_FEATURES_EASY_FEEBAS]; 
     gSaveBlock1Ptr->tx_Features_PkmnDeath                   = sOptions->sel_features[MENUITEM_FEATURES_PKMN_DEATH]; 
+    gSaveBlock1Ptr->tx_Features_Unlimited_WT                = sOptions->sel_features[MENUITEM_FEATURES_UNLIMITED_WT]; 
     // MENU_RANDOMIZER
     if (sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON] == TRUE)
     {
@@ -1617,7 +1630,7 @@ void SaveData_TxRandomizerAndChallenges(void)
     gSaveBlock1Ptr->tx_Challenges_NoEVs                 = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_NO_EVS];
     gSaveBlock1Ptr->tx_Challenges_TrainerScalingIVs     = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_SCALING_IVS];
     gSaveBlock1Ptr->tx_Challenges_TrainerScalingEVs     = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_SCALING_EVS];
-    gSaveBlock2Ptr->optionsLimitDifficulty              = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_LIMIT_DIFFICULTY];
+    gSaveBlock1Ptr->tx_Features_LimitDifficulty              = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_LIMIT_DIFFICULTY];
     gSaveBlock1Ptr->tx_Challenges_MaxPartyIVs                         = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_MAX_PARTY_IVS];
     // MENU_CHALLENGES
     gSaveBlock1Ptr->tx_Challenges_EvoLimit             = sOptions->sel_challenges[MENUITEM_CHALLENGES_EVO_LIMIT];
@@ -2248,11 +2261,11 @@ static void DrawChoices_Features_AlternateSpawns(int selection, int y)
 
     if (selection == 0)
     {
-        gSaveBlock2Ptr->optionsAlternateSpawns = 0; //Off, no spawns
+        gSaveBlock1Ptr->tx_Features_AlternateSpawns = 0; //Off, no spawns
     }
     else
     {
-        gSaveBlock2Ptr->optionsAlternateSpawns = 1; //On, new spawns
+        gSaveBlock1Ptr->tx_Features_AlternateSpawns = 1; //On, new spawns
     }
 
     DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
@@ -2267,11 +2280,11 @@ static void DrawChoices_Challenges_LimitDifficulty(int selection, int y)
 
     if (selection == 0)
     {
-        gSaveBlock2Ptr->optionsLimitDifficulty = 0; //Don't limit difficulty
+        gSaveBlock1Ptr->tx_Features_LimitDifficulty = 0; //Don't limit difficulty
     }
     else
     {
-        gSaveBlock2Ptr->optionsLimitDifficulty = 1; //limit difficulty
+        gSaveBlock1Ptr->tx_Features_LimitDifficulty = 1; //limit difficulty
     }
 
     DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
@@ -2315,11 +2328,11 @@ static void DrawChoices_Features_ItemDrop(int selection, int y)
 
     if (selection == 0)
     {
-        gSaveBlock2Ptr->optionsWildMonDropItems = 0; //items don't drop
+        gSaveBlock1Ptr->tx_Features_WildMonDropItems = 0; //items don't drop
     }
     else
     {
-        gSaveBlock2Ptr->optionsWildMonDropItems = 1; //items do drop
+        gSaveBlock1Ptr->tx_Features_WildMonDropItems = 1; //items do drop
     }
 
     DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
@@ -2355,11 +2368,11 @@ static void DrawChoices_Features_SurvivePoison(int selection, int y)
 
     if (selection == 0)
     {
-        gSaveBlock1Ptr->optionsPoisonSurvive = 0; //Poison will kill
+        gSaveBlock1Ptr->tx_Features_PoisonSurvive = 0; //Poison will kill
     }
     else
     {
-        gSaveBlock1Ptr->optionsPoisonSurvive = 1; //1hp survive poison
+        gSaveBlock1Ptr->tx_Features_PoisonSurvive = 1; //1hp survive poison
     }
 
     DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
@@ -2436,24 +2449,45 @@ static void DrawChoices_Features_ShinyChance(int selection, int y)
     
     if (selection == 0)
     {
-        gSaveBlock2Ptr->optionsShinyChance = 0; // 1/8192
+        gSaveBlock1Ptr->tx_Features_ShinyChance = 0; // 1/8192
     }
     else if (selection == 1)
     {
-        gSaveBlock2Ptr->optionsShinyChance = 1; // 1/4096 -> Gen VI
+        gSaveBlock1Ptr->tx_Features_ShinyChance = 1; // 1/4096 -> Gen VI
     }
     else if (selection == 2)
     {
-        gSaveBlock2Ptr->optionsShinyChance = 2; // 1/2048
+        gSaveBlock1Ptr->tx_Features_ShinyChance = 2; // 1/2048
     }
     else if (selection == 3)
     {
-        gSaveBlock2Ptr->optionsShinyChance = 3; // 1/1024
+        gSaveBlock1Ptr->tx_Features_ShinyChance = 3; // 1/1024
     }
     else //(selection == 4)
     {
-        gSaveBlock2Ptr->optionsShinyChance = 4; // 1/512
+        gSaveBlock1Ptr->tx_Features_ShinyChance = 4; // 1/512
     }
+}
+
+static void DrawChoices_Features_Unlimited_WT(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_FEATURES_UNLIMITED_WT);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock1Ptr->tx_Features_Unlimited_WT = 0; //WTs are capped to 3 daily
+        FlagSet (FLAG_UNLIMITIED_WONDERTRADE);
+    }
+    else
+    {
+        gSaveBlock1Ptr->tx_Features_Unlimited_WT = 1; //WTs are uncapped
+        FlagClear (FLAG_UNLIMITIED_WONDERTRADE);
+    }
+
+    DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
 }
 
 // Background tilemap
