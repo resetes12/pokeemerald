@@ -2173,14 +2173,19 @@ const struct Item gItems[] =
 
     [ITEM_UNUSED_BERRY_1] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
-        .price = 0,
-        .description = sDummyDesc,
-        .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .name = _("SITRUS BERRY"),
+        .itemId = ITEM_SITRUS_BERRY,
+        .price = 20,
+        .holdEffect = HOLD_EFFECT_RESTORE_HP,
+        .holdEffectParam = 30,
+        .description = sSitrusBerryDesc_Old,
+        .pocket = POCKET_BERRIES,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Medicine,
+        .battleUsage = ITEM_B_USE_MEDICINE,
+        .battleUseFunc = ItemUseInBattle_Medicine,
     },
+
 
     [ITEM_UNUSED_BERRY_2] =
     {
@@ -7023,13 +7028,17 @@ const struct Item gItems2[] =
 
     [ITEM_UNUSED_BERRY_1] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
-        .price = 0,
-        .description = sDummyDesc,
-        .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .name = _("SITRUS BERRY"),
+        .itemId = ITEM_SITRUS_BERRY,
+        .price = 20,
+        .holdEffect = HOLD_EFFECT_RESTORE_HP,
+        .holdEffectParam = 30,
+        .description = sSitrusBerryDesc_Old,
+        .pocket = POCKET_BERRIES,
+        .type = ITEM_USE_PARTY_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_Medicine,
+        .battleUsage = ITEM_B_USE_MEDICINE,
+        .battleUseFunc = ItemUseInBattle_Medicine,
     },
 
     [ITEM_UNUSED_BERRY_2] =

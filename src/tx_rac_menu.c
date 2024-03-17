@@ -44,6 +44,7 @@ enum
     MENUITEM_FEATURES_SYNCHRONIZE,
     MENUITEM_FEATURES_ITEM_DROP,
     MENUITEM_FEATURES_INFINITE_TMS,
+    MENUITEM_FEATURES_NEW_CITRUS,
     MENUITEM_FEATURES_SURVIVE_POISON,
     MENUITEM_FEATURES_UNLIMITED_WT,
     MENUITEM_FEATURES_PKMN_DEATH,
@@ -286,6 +287,7 @@ static void DrawChoices_Features_Rtc_Type(int selection, int y);
 static void DrawChoices_Features_Unlimited_WT(int selection, int y);
 static void DrawChoices_Features_Synchronize(int selection, int y);
 static void DrawChoices_Features_Mints(int selection, int y);
+static void DrawChoices_Features_New_Citrus(int selection, int y);
 
 
 static void PrintCurrentSelections(void);
@@ -331,6 +333,7 @@ struct // MENU_FEATURES
     [MENUITEM_FEATURES_UNLIMITED_WT]          = {DrawChoices_Features_Unlimited_WT,         ProcessInput_Options_Two},
     [MENUITEM_FEATURES_SYNCHRONIZE]           = {DrawChoices_Features_Synchronize,          ProcessInput_Options_Two},
     [MENUITEM_FEATURES_MINTS]                 = {DrawChoices_Features_Mints,                ProcessInput_Options_Two},
+    [MENUITEM_FEATURES_NEW_CITRUS]            = {DrawChoices_Features_New_Citrus,           ProcessInput_Options_Two},
     [MENUITEM_FEATURES_NEXT]                  = {NULL, NULL},
 };
 
@@ -419,6 +422,7 @@ static const u8 sText_Pkmn_Death[]          = _("{COLOR 7}{COLOR 8}POKÉMON FAIN
 static const u8 sText_Unlimited_WT[]        = _("UNLIMITED WT");
 static const u8 sText_Synchronize[]         = _("NEW SYNCHRONIZE");
 static const u8 sText_Mints[]               = _("NATURE MINTS");
+static const u8 sText_NewCitrus[]           = _("NEW CITRUS BERRY");
 static const u8 sText_Next[]                = _("NEXT");
 // Menu left side option names text
 static const u8 *const sOptionMenuItemsNamesFeatures[MENUITEM_FEATURES_COUNT] =
@@ -434,6 +438,7 @@ static const u8 *const sOptionMenuItemsNamesFeatures[MENUITEM_FEATURES_COUNT] =
     [MENUITEM_FEATURES_UNLIMITED_WT]              = sText_Unlimited_WT,
     [MENUITEM_FEATURES_SYNCHRONIZE]               = sText_Synchronize,
     [MENUITEM_FEATURES_MINTS]                     = sText_Mints,
+    [MENUITEM_FEATURES_NEW_CITRUS]                = sText_NewCitrus,
     [MENUITEM_FEATURES_NEXT]                      = sText_Next,
 };
 
@@ -649,6 +654,8 @@ static const u8 sText_Description_Features_Synchronize_Old[]          = _("Synch
 static const u8 sText_Description_Features_Synchronize_New[]          = _("Synchronize works as in GEN VIII.\n100% chance to copy nature.");
 static const u8 sText_Description_Features_Mints_Off[]                = _("Mints are not availabe ingame.");
 static const u8 sText_Description_Features_Mints_On[]                 = _("Mints can be bought at PRETTY PETAL\nFLOWER SHOP after the 4th medal.");
+static const u8 sText_Description_Features_New_Citrus_Off[]           = _("CITRUS BERRY restores 30HP.\nSame as GEN III.");
+static const u8 sText_Description_Features_New_Citrus_On[]            = _("CITRUS BERRY restores 25% of\ntotal HP. Same as GEN IV and up.");
 static const u8 sText_Description_Features_Next[]                     = _("Continue to Randomizer options.");
 static const u8 *const sOptionMenuItemDescriptionsFeatures[MENUITEM_FEATURES_COUNT][5] =
 {
@@ -663,6 +670,7 @@ static const u8 *const sOptionMenuItemDescriptionsFeatures[MENUITEM_FEATURES_COU
     [MENUITEM_FEATURES_UNLIMITED_WT]          = {sText_Description_Features_Unlimited_WT_On,        sText_Description_Features_Unlimited_WT_Off,      sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_SYNCHRONIZE]           = {sText_Description_Features_Synchronize_Old,        sText_Description_Features_Synchronize_New,       sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_MINTS]                 = {sText_Description_Features_Mints_Off,              sText_Description_Features_Mints_On,              sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_FEATURES_NEW_CITRUS]            = {sText_Description_Features_New_Citrus_Off,         sText_Description_Features_New_Citrus_On,         sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_NEXT]                  = {sText_Description_Features_Next,                   sText_Empty,                                      sText_Empty,                                        sText_Empty,                                        sText_Empty},
 };
 
@@ -825,6 +833,7 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledFeatures[MENUITEM_FEAT
     [MENUITEM_FEATURES_UNLIMITED_WT]          = sText_Empty,
     [MENUITEM_FEATURES_SYNCHRONIZE]           = sText_Empty,
     [MENUITEM_FEATURES_MINTS]                 = sText_Empty,
+    [MENUITEM_FEATURES_NEW_CITRUS]            = sText_Empty,
     [MENUITEM_FEATURES_NEXT]                  = sText_Empty,
 };
 
@@ -1204,6 +1213,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         gSaveBlock1Ptr->tx_Features_Unlimited_WT            = TX_FEATURES_UNLIMITED_WT;
         gSaveBlock1Ptr->tx_Features_Synchronize             = TX_FEATURES_SYNCHRONIZE;
         gSaveBlock1Ptr->tx_Features_Mints                   = TX_FEATURES_MINTS;
+        gSaveBlock1Ptr->tx_Features_New_Citrus              = TX_FEATURES_NEW_CITRUS;
 
         gSaveBlock1Ptr->tx_Random_Starter                   = TX_RANDOM_STARTER;
         gSaveBlock1Ptr->tx_Random_WildPokemon               = TX_RANDOM_WILD_POKEMON;
@@ -1262,6 +1272,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         sOptions->sel_features[MENUITEM_FEATURES_UNLIMITED_WT]           = gSaveBlock1Ptr->tx_Features_Unlimited_WT;
         sOptions->sel_features[MENUITEM_FEATURES_SYNCHRONIZE]            = gSaveBlock1Ptr->tx_Features_Synchronize;
         sOptions->sel_features[MENUITEM_FEATURES_MINTS]                  = gSaveBlock1Ptr->tx_Features_Mints;
+        sOptions->sel_features[MENUITEM_FEATURES_NEW_CITRUS]             = gSaveBlock1Ptr->tx_Features_New_Citrus;
         
         //MENU RANDOMIZER
         sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON]                     = FALSE;
@@ -1581,6 +1592,7 @@ void SaveData_TxRandomizerAndChallenges(void)
     gSaveBlock1Ptr->tx_Features_Unlimited_WT                = sOptions->sel_features[MENUITEM_FEATURES_UNLIMITED_WT]; 
     gSaveBlock1Ptr->tx_Features_Synchronize                 = sOptions->sel_features[MENUITEM_FEATURES_SYNCHRONIZE]; 
     gSaveBlock1Ptr->tx_Features_Mints                       = sOptions->sel_features[MENUITEM_FEATURES_MINTS]; 
+    gSaveBlock1Ptr->tx_Features_New_Citrus                  = sOptions->sel_features[MENUITEM_FEATURES_NEW_CITRUS]; 
     // MENU_RANDOMIZER
     if (sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON] == TRUE)
     {
@@ -2549,6 +2561,25 @@ static void DrawChoices_Features_Mints(int selection, int y)
     {
         gSaveBlock1Ptr->tx_Features_Mints = 1; //Yes mints
         FlagSet (FLAG_MINTS_ENABLED);
+    }
+
+    DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
+}
+
+static void DrawChoices_Features_New_Citrus(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_FEATURES_NEW_CITRUS);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock1Ptr->tx_Features_New_Citrus = 0; //No new citrus, old citrus
+    }
+    else
+    {
+        gSaveBlock1Ptr->tx_Features_New_Citrus = 1; //Yes new citrus
     }
 
     DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);

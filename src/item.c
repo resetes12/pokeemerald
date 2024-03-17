@@ -926,6 +926,8 @@ static u16 SanitizeItemId(u16 itemId)
 {
     if (itemId >= ITEMS_COUNT)
         return ITEM_NONE;
+    if (itemId == ITEM_SITRUS_BERRY && (gSaveBlock1Ptr->tx_Features_New_Citrus == 0))
+        return ITEM_UNUSED_BERRY_1;
     else
         return itemId;
 }
