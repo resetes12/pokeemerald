@@ -517,7 +517,7 @@
 #define FLAG_WT_ENABLED_RANDOMIZER           0x1E0
 #define FLAG_FERTILIZER_ROUTE_102            0x1E1
 #define FLAG_UNLIMITIED_WONDERTRADE          0x1E2
-#define FLAG_UNUSED_0x1E3                    0x1E3 // Unused Flag
+#define FLAG_MINTS_ENABLED                   0x1E3
 
 // Mystery Gift Flags (Unknown)
 #define FLAG_MYSTERY_GIFT_DONE               0x1E4
@@ -652,7 +652,7 @@
 #define FLAG_HIDDEN_ITEM_ROUTE_123_RARE_CANDY                (FLAG_HIDDEN_ITEMS_START + 0x6E)
 #define FLAG_HIDDEN_ITEM_ROUTE_105_BIG_PEARL                 (FLAG_HIDDEN_ITEMS_START + 0x6F)
 
-#define FLAG_UNUSED_0x264  0x264 // Unused Flag
+#define FLAG_MINTS_CLERK   0x264
 #define FLAG_UNUSED_0x265  0x265 // Unused Flag
 #define FLAG_UNUSED_0x266  0x266 // Unused Flag
 #define FLAG_UNUSED_0x267  0x267 // Unused Flag

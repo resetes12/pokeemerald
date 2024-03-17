@@ -40,11 +40,12 @@ enum
     MENUITEM_FEATURES_RTC_TYPE,
     MENUITEM_FEATURES_ALTERNATE_SPAWNS,
     MENUITEM_FEATURES_SHINY_CHANCE,
+    MENUITEM_FEATURES_MINTS,
+    MENUITEM_FEATURES_SYNCHRONIZE,
     MENUITEM_FEATURES_ITEM_DROP,
     MENUITEM_FEATURES_INFINITE_TMS,
     MENUITEM_FEATURES_SURVIVE_POISON,
     MENUITEM_FEATURES_UNLIMITED_WT,
-    MENUITEM_FEATURES_SYNCHRONIZE,
     MENUITEM_FEATURES_PKMN_DEATH,
     MENUITEM_FEATURES_EASY_FEEBAS, //will be deleted
     MENUITEM_FEATURES_NEXT,
@@ -284,6 +285,7 @@ static void DrawChoices_Features_Pkmn_Death(int selection, int y);
 static void DrawChoices_Features_Rtc_Type(int selection, int y);
 static void DrawChoices_Features_Unlimited_WT(int selection, int y);
 static void DrawChoices_Features_Synchronize(int selection, int y);
+static void DrawChoices_Features_Mints(int selection, int y);
 
 
 static void PrintCurrentSelections(void);
@@ -328,6 +330,7 @@ struct // MENU_FEATURES
     [MENUITEM_FEATURES_PKMN_DEATH]            = {DrawChoices_Features_Pkmn_Death,           ProcessInput_Options_Two},
     [MENUITEM_FEATURES_UNLIMITED_WT]          = {DrawChoices_Features_Unlimited_WT,         ProcessInput_Options_Two},
     [MENUITEM_FEATURES_SYNCHRONIZE]           = {DrawChoices_Features_Synchronize,          ProcessInput_Options_Two},
+    [MENUITEM_FEATURES_MINTS]                 = {DrawChoices_Features_Mints,                ProcessInput_Options_Two},
     [MENUITEM_FEATURES_NEXT]                  = {NULL, NULL},
 };
 
@@ -415,6 +418,7 @@ static const u8 sText_EasyFeebas[]          = _("EASIER FEEBAS");
 static const u8 sText_Pkmn_Death[]          = _("{COLOR 7}{COLOR 8}POKÉMON FAINT");
 static const u8 sText_Unlimited_WT[]        = _("UNLIMITED WT");
 static const u8 sText_Synchronize[]         = _("NEW SYNCHRONIZE");
+static const u8 sText_Mints[]               = _("NATURE MINTS");
 static const u8 sText_Next[]                = _("NEXT");
 // Menu left side option names text
 static const u8 *const sOptionMenuItemsNamesFeatures[MENUITEM_FEATURES_COUNT] =
@@ -429,6 +433,7 @@ static const u8 *const sOptionMenuItemsNamesFeatures[MENUITEM_FEATURES_COUNT] =
     [MENUITEM_FEATURES_PKMN_DEATH]                = sText_Pkmn_Death,
     [MENUITEM_FEATURES_UNLIMITED_WT]              = sText_Unlimited_WT,
     [MENUITEM_FEATURES_SYNCHRONIZE]               = sText_Synchronize,
+    [MENUITEM_FEATURES_MINTS]                     = sText_Mints,
     [MENUITEM_FEATURES_NEXT]                      = sText_Next,
 };
 
@@ -642,6 +647,8 @@ static const u8 sText_Description_Features_Unlimited_WT_On[]          = _("Enabl
 static const u8 sText_Description_Features_Unlimited_WT_Off[]         = _("WonderTrades have no daily limit.");
 static const u8 sText_Description_Features_Synchronize_Old[]          = _("Synchronize works as in GEN III.\n50% to copy nature.");
 static const u8 sText_Description_Features_Synchronize_New[]          = _("Synchronize works as in GEN VIII.\n100% chance to copy nature.");
+static const u8 sText_Description_Features_Mints_Off[]                = _("Mints are not availabe ingame.");
+static const u8 sText_Description_Features_Mints_On[]                 = _("Mints can be bought at PRETTY PETAL\nFLOWER SHOP after the 4th medal.");
 static const u8 sText_Description_Features_Next[]                     = _("Continue to Randomizer options.");
 static const u8 *const sOptionMenuItemDescriptionsFeatures[MENUITEM_FEATURES_COUNT][5] =
 {
@@ -655,6 +662,7 @@ static const u8 *const sOptionMenuItemDescriptionsFeatures[MENUITEM_FEATURES_COU
     [MENUITEM_FEATURES_PKMN_DEATH]            = {sText_Description_Features_Pkmn_Death_Off,         sText_Description_Features_Pkmn_Death_On,         sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_UNLIMITED_WT]          = {sText_Description_Features_Unlimited_WT_On,        sText_Description_Features_Unlimited_WT_Off,      sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_SYNCHRONIZE]           = {sText_Description_Features_Synchronize_Old,        sText_Description_Features_Synchronize_New,       sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_FEATURES_MINTS]                 = {sText_Description_Features_Mints_Off,              sText_Description_Features_Mints_On,              sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_NEXT]                  = {sText_Description_Features_Next,                   sText_Empty,                                      sText_Empty,                                        sText_Empty,                                        sText_Empty},
 };
 
@@ -816,6 +824,7 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledFeatures[MENUITEM_FEAT
     [MENUITEM_FEATURES_PKMN_DEATH]            = sText_Description_Disabled_Features_PkmnDeath,
     [MENUITEM_FEATURES_UNLIMITED_WT]          = sText_Empty,
     [MENUITEM_FEATURES_SYNCHRONIZE]           = sText_Empty,
+    [MENUITEM_FEATURES_MINTS]                 = sText_Empty,
     [MENUITEM_FEATURES_NEXT]                  = sText_Empty,
 };
 
@@ -1194,6 +1203,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         gSaveBlock1Ptr->tx_Features_PkmnDeath               = TX_FEATURES_PKMN_DEATH;
         gSaveBlock1Ptr->tx_Features_Unlimited_WT            = TX_FEATURES_UNLIMITED_WT;
         gSaveBlock1Ptr->tx_Features_Synchronize             = TX_FEATURES_SYNCHRONIZE;
+        gSaveBlock1Ptr->tx_Features_Mints                   = TX_FEATURES_MINTS;
 
         gSaveBlock1Ptr->tx_Random_Starter                   = TX_RANDOM_STARTER;
         gSaveBlock1Ptr->tx_Random_WildPokemon               = TX_RANDOM_WILD_POKEMON;
@@ -1251,6 +1261,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         sOptions->sel_features[MENUITEM_FEATURES_PKMN_DEATH]             = gSaveBlock1Ptr->tx_Features_PkmnDeath;
         sOptions->sel_features[MENUITEM_FEATURES_UNLIMITED_WT]           = gSaveBlock1Ptr->tx_Features_Unlimited_WT;
         sOptions->sel_features[MENUITEM_FEATURES_SYNCHRONIZE]            = gSaveBlock1Ptr->tx_Features_Synchronize;
+        sOptions->sel_features[MENUITEM_FEATURES_MINTS]                  = gSaveBlock1Ptr->tx_Features_Mints;
         
         //MENU RANDOMIZER
         sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON]                     = FALSE;
@@ -1569,6 +1580,7 @@ void SaveData_TxRandomizerAndChallenges(void)
     gSaveBlock1Ptr->tx_Features_PkmnDeath                   = sOptions->sel_features[MENUITEM_FEATURES_PKMN_DEATH]; 
     gSaveBlock1Ptr->tx_Features_Unlimited_WT                = sOptions->sel_features[MENUITEM_FEATURES_UNLIMITED_WT]; 
     gSaveBlock1Ptr->tx_Features_Synchronize                 = sOptions->sel_features[MENUITEM_FEATURES_SYNCHRONIZE]; 
+    gSaveBlock1Ptr->tx_Features_Mints                       = sOptions->sel_features[MENUITEM_FEATURES_MINTS]; 
     // MENU_RANDOMIZER
     if (sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON] == TRUE)
     {
@@ -2516,6 +2528,27 @@ static void DrawChoices_Features_Synchronize(int selection, int y)
     else
     {
         gSaveBlock1Ptr->tx_Features_Synchronize = 1; //New synchronize
+    }
+
+    DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
+}
+
+static void DrawChoices_Features_Mints(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_FEATURES_MINTS);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock1Ptr->tx_Features_Mints = 0; //No mints
+        FlagClear (FLAG_MINTS_ENABLED);
+    }
+    else
+    {
+        gSaveBlock1Ptr->tx_Features_Mints = 1; //Yes mints
+        FlagSet (FLAG_MINTS_ENABLED);
     }
 
     DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);

@@ -1,15 +1,28 @@
 .set LOCALID_OWNER, 1
+.set LOCALID_MINT_CLERK, 4
 
 Route104_PrettyPetalFlowerShop_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, Route104_PrettyPetalFlowerShop_OnTransition
 	.byte 0
 
 Route104_PrettyPetalFlowerShop_OnTransition:
+	call_if_unset FLAG_MINTS_ENABLED, Route104_PrettyPetalFlowerShop_HideMintClerk
+	call_if_set FLAG_MINTS_ENABLED, Route104_PrettyPetalFlowerShop_ShowMintClerk
 	setflag FLAG_LANDMARK_FLOWER_SHOP
 	goto_if_unset FLAG_MET_PRETTY_PETAL_SHOP_OWNER, Route104_PrettyPetalFlowerShop_EventScript_MoveShopOwner
 	goto_if_unset FLAG_BADGE03_GET, Route104_PrettyPetalFlowerShop_EventScript_MoveShopOwner
 	setflag FLAG_TEMP_1
 	end
+
+Route104_PrettyPetalFlowerShop_HideMintClerk::
+	setflag FLAG_MINTS_CLERK
+	removeobject LOCALID_MINT_CLERK
+	return
+
+Route104_PrettyPetalFlowerShop_ShowMintClerk::
+	clearflag FLAG_MINTS_CLERK
+	addobject LOCALID_MINT_CLERK
+	return
 
 Route104_PrettyPetalFlowerShop_EventScript_MoveShopOwner::
 	setobjectxyperm LOCALID_OWNER, 4, 6

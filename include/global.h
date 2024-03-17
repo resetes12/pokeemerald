@@ -1154,6 +1154,7 @@ struct SaveBlock1
         u8 tx_Features_WildMonDropItems:1;
         u8 tx_Features_Unlimited_WT:1;
         u8 tx_Features_Synchronize:1;
+        u8 tx_Features_Mints:1;
 };
 
 extern struct SaveBlock1* gSaveBlock1Ptr;
