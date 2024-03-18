@@ -8261,9 +8261,9 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
     // Skip using the item if it won't do anything
     if (!ITEM_HAS_EFFECT(item))
         return TRUE;
-    if (gItemEffectTable[item - ITEM_POTION] == NULL && item != ITEM_ENIGMA_BERRY && (gSaveBlock1Ptr->tx_Features_New_Citrus == 1))
+    if (gItemEffectTable[item - ITEM_POTION] == NULL && item != ITEM_ENIGMA_BERRY && (gSaveBlock1Ptr->tx_Mode_New_Citrus == 1))
         return TRUE;
-    else if (gItemEffectTable_OldSitrus[item - ITEM_POTION] == NULL && item != ITEM_ENIGMA_BERRY && (gSaveBlock1Ptr->tx_Features_New_Citrus == 0))
+    else if (gItemEffectTable_OldSitrus[item - ITEM_POTION] == NULL && item != ITEM_ENIGMA_BERRY && (gSaveBlock1Ptr->tx_Mode_New_Citrus == 0))
         return TRUE;
 
     // Get item effect
@@ -8276,9 +8276,9 @@ bool8 PokemonUseItemEffects(struct Pokemon *mon, u16 item, u8 partyIndex, u8 mov
     }
     else
     {
-        if (gSaveBlock1Ptr->tx_Features_New_Citrus == 0)
+        if (gSaveBlock1Ptr->tx_Mode_New_Citrus == 0)
             itemEffect = gItemEffectTable_OldSitrus[item - ITEM_POTION];
-        else if (gSaveBlock1Ptr->tx_Features_New_Citrus == 1)
+        else if (gSaveBlock1Ptr->tx_Mode_New_Citrus == 1)
             itemEffect = gItemEffectTable[item - ITEM_POTION];
     }
 
@@ -8798,16 +8798,16 @@ u8 GetItemEffectParamOffset(u16 itemId, u8 effectByte, u8 effectBit)
     temp = gItemEffectTable[itemId - ITEM_POTION];
     temp2 = gItemEffectTable_OldSitrus[itemId - ITEM_POTION];
 
-    if (!temp && itemId != ITEM_ENIGMA_BERRY && (gSaveBlock1Ptr->tx_Features_New_Citrus == 1))
+    if (!temp && itemId != ITEM_ENIGMA_BERRY && (gSaveBlock1Ptr->tx_Mode_New_Citrus == 1))
         return 0;
-    else if (!temp2 && itemId != ITEM_ENIGMA_BERRY && (gSaveBlock1Ptr->tx_Features_New_Citrus == 0))
+    else if (!temp2 && itemId != ITEM_ENIGMA_BERRY && (gSaveBlock1Ptr->tx_Mode_New_Citrus == 0))
         return 0;
 
-    if ((itemId == ITEM_ENIGMA_BERRY) && (gSaveBlock1Ptr->tx_Features_New_Citrus == 1))
+    if ((itemId == ITEM_ENIGMA_BERRY) && (gSaveBlock1Ptr->tx_Mode_New_Citrus == 1))
     {
         temp = gEnigmaBerries[gActiveBattler].itemEffect;
     }
-    else if ((itemId == ITEM_ENIGMA_BERRY) && (gSaveBlock1Ptr->tx_Features_New_Citrus == 0))
+    else if ((itemId == ITEM_ENIGMA_BERRY) && (gSaveBlock1Ptr->tx_Mode_New_Citrus == 0))
     {
         temp2 = gEnigmaBerries[gActiveBattler].itemEffect;
     }
@@ -8827,9 +8827,9 @@ u8 GetItemEffectParamOffset(u16 itemId, u8 effectByte, u8 effectBit)
                 return 0;
             break;
         case 4:
-            if (gSaveBlock1Ptr->tx_Features_New_Citrus == 1)
+            if (gSaveBlock1Ptr->tx_Mode_New_Citrus == 1)
                 effectFlags = itemEffect[4];
-            else if (gSaveBlock1Ptr->tx_Features_New_Citrus == 0)
+            else if (gSaveBlock1Ptr->tx_Mode_New_Citrus == 0)
                 effectFlags = itemEffect2[4];
             if (effectFlags & ITEM4_PP_UP)
                 effectFlags &= ~(ITEM4_PP_UP);
@@ -8872,9 +8872,9 @@ u8 GetItemEffectParamOffset(u16 itemId, u8 effectByte, u8 effectBit)
             }
             break;
         case 5:
-            if (gSaveBlock1Ptr->tx_Features_New_Citrus == 1)
+            if (gSaveBlock1Ptr->tx_Mode_New_Citrus == 1)
                 effectFlags = itemEffect[5];
-            else if (gSaveBlock1Ptr->tx_Features_New_Citrus == 0)
+            else if (gSaveBlock1Ptr->tx_Mode_New_Citrus == 0)
                 effectFlags = itemEffect2[5];
             j = 0;
             while (effectFlags)
@@ -8934,9 +8934,9 @@ u8 *UseStatIncreaseItem(u16 itemId)
     }
     else
     {
-        if (gSaveBlock1Ptr->tx_Features_New_Citrus == 0)
+        if (gSaveBlock1Ptr->tx_Mode_New_Citrus == 0)
             itemEffect = gItemEffectTable_OldSitrus[itemId - ITEM_POTION];
-        else if (gSaveBlock1Ptr->tx_Features_New_Citrus == 1)
+        else if (gSaveBlock1Ptr->tx_Mode_New_Citrus == 1)
             itemEffect = gItemEffectTable[itemId - ITEM_POTION];
     }
 

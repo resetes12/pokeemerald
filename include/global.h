@@ -1142,20 +1142,20 @@ struct SaveBlock1
         u8 tx_Nuzlocke_Deletion:1;
         u8 tx_Random_Starter:1;
         u8 tx_Challenges_MaxPartyIVs:2;
-        u8 tx_Features_InfiniteTMs:1;
-        u8 tx_Features_PoisonSurvive:1;
+        u8 tx_Mode_InfiniteTMs:1;
+        u8 tx_Mode_PoisonSurvive:1;
         u8 optionsEasierFeebas:1; //will be deleted
         u8 tx_Features_PkmnDeath:1;
         u8 tx_Challenges_PCHeal:1;
         u8 tx_Features_RTCType:1;
-        u8 tx_Features_AlternateSpawns:1;
+        u8 tx_Mode_AlternateSpawns:1;
         u8 tx_Features_LimitDifficulty:1;
         u8 tx_Features_ShinyChance:4;
         u8 tx_Features_WildMonDropItems:1;
         u8 tx_Features_Unlimited_WT:1;
-        u8 tx_Features_Synchronize:1;
-        u8 tx_Features_Mints:1;
-        u8 tx_Features_New_Citrus:1;
+        u8 tx_Mode_Synchronize:1;
+        u8 tx_Mode_Mints:1;
+        u8 tx_Mode_New_Citrus:1;
 };
 
 extern struct SaveBlock1* gSaveBlock1Ptr;

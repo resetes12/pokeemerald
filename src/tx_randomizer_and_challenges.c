@@ -14,9 +14,9 @@ bool8 AreFeaturesActivated(void)
 {
     if (gSaveBlock1Ptr->tx_Features_ShinyChance
         || gSaveBlock1Ptr->tx_Features_WildMonDropItems
-        || gSaveBlock1Ptr->tx_Features_AlternateSpawns
-        || gSaveBlock1Ptr->tx_Features_InfiniteTMs
-        || gSaveBlock1Ptr->tx_Features_PoisonSurvive
+        || gSaveBlock1Ptr->tx_Mode_AlternateSpawns
+        || gSaveBlock1Ptr->tx_Mode_InfiniteTMs
+        || gSaveBlock1Ptr->tx_Mode_PoisonSurvive
         || gSaveBlock1Ptr->optionsEasierFeebas)
         return TRUE;
 

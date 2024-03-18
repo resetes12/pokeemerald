@@ -483,19 +483,19 @@ void InitRamScript_NoObjectEvent(u8 *script, u16 scriptSize)
 void SetTimeBasedEncounters(void)
 {
 	RtcCalcLocalTime();
-    if ((gLocalTime.hours >= 6 && gLocalTime.hours <= 19) && (gSaveBlock1Ptr->tx_Features_AlternateSpawns == 1))
+    if ((gLocalTime.hours >= 6 && gLocalTime.hours <= 19) && (gSaveBlock1Ptr->tx_Mode_AlternateSpawns == 1))
     {
 		VarSet(VAR_TIME_BASED_ENCOUNTER, 3); // Modern Spawns, Day
 	}
-    else if (gSaveBlock1Ptr->tx_Features_AlternateSpawns == 1)
+    else if (gSaveBlock1Ptr->tx_Mode_AlternateSpawns == 1)
     {
 		VarSet(VAR_TIME_BASED_ENCOUNTER, 4); // Modern Spawns, Night
 	}
-	else if ((gLocalTime.hours >= 6 && gLocalTime.hours <= 19) && (gSaveBlock1Ptr->tx_Features_AlternateSpawns == 0))
+	else if ((gLocalTime.hours >= 6 && gLocalTime.hours <= 19) && (gSaveBlock1Ptr->tx_Mode_AlternateSpawns == 0))
 	{
 		VarSet(VAR_TIME_BASED_ENCOUNTER, 1); // Day
 	}
-	else if (gSaveBlock1Ptr->tx_Features_AlternateSpawns == 0)
+	else if (gSaveBlock1Ptr->tx_Mode_AlternateSpawns == 0)
     {
 		VarSet(VAR_TIME_BASED_ENCOUNTER, 2); // Night
 	}

@@ -25,6 +25,7 @@
 
 enum
 {
+    MENU_MODE,
     MENU_FEATURES,
     MENU_RANDOMIZER,
     MENU_NUZLOCKE,
@@ -37,15 +38,21 @@ enum
 
 enum
 {
+    MENUITEM_MODE_ALTERNATE_SPAWNS,
+    MENUITEM_MODE_MINTS,
+    MENUITEM_MODE_SYNCHRONIZE,
+    MENUITEM_MODE_INFINITE_TMS,
+    MENUITEM_MODE_NEW_CITRUS,
+    MENUITEM_MODE_SURVIVE_POISON,
+    MENUITEM_MODE_NEXT,
+    MENUITEM_MODE_COUNT,
+};
+
+enum
+{
     MENUITEM_FEATURES_RTC_TYPE,
-    MENUITEM_FEATURES_ALTERNATE_SPAWNS,
     MENUITEM_FEATURES_SHINY_CHANCE,
-    MENUITEM_FEATURES_MINTS,
-    MENUITEM_FEATURES_SYNCHRONIZE,
     MENUITEM_FEATURES_ITEM_DROP,
-    MENUITEM_FEATURES_INFINITE_TMS,
-    MENUITEM_FEATURES_NEW_CITRUS,
-    MENUITEM_FEATURES_SURVIVE_POISON,
     MENUITEM_FEATURES_UNLIMITED_WT,
     MENUITEM_FEATURES_PKMN_DEATH,
     MENUITEM_FEATURES_EASY_FEEBAS, //will be deleted
@@ -179,6 +186,7 @@ static const struct BgTemplate sOptionMenuBgTemplates[] =
 struct OptionMenu
 {
     u8 submenu;
+    u8 sel_mode[MENUITEM_MODE_COUNT];
     u8 sel_features[MENUITEM_FEATURES_COUNT];
     u8 sel_randomizer[MENUITEM_RANDOM_COUNT];
     u8 sel_nuzlocke[MENUITEM_NUZLOCKE_COUNT];
@@ -276,18 +284,18 @@ static void DrawChoices_Challenges_LimitDifficulty(int selection, int y);
 static void DrawChoices_Challenges_MaxPartyIVs(int selection, int y);
 static void DrawChoices_Challenges_PCHeal(int selection, int y);
 
-static void DrawChoices_Features_AlternateSpawns(int selection, int y);
+static void DrawChoices_Mode_AlternateSpawns(int selection, int y);
 static void DrawChoices_Features_ShinyChance(int selection, int y);
 static void DrawChoices_Features_ItemDrop(int selection, int y);
-static void DrawChoices_Features_InfiniteTMs(int selection, int y);
-static void DrawChoices_Features_SurvivePoison(int selection, int y);
+static void DrawChoices_Mode_InfiniteTMs(int selection, int y);
+static void DrawChoices_Mode_SurvivePoison(int selection, int y);
 static void DrawChoices_Features_EasyFeebas(int selection, int y);
 static void DrawChoices_Features_Pkmn_Death(int selection, int y);
 static void DrawChoices_Features_Rtc_Type(int selection, int y);
 static void DrawChoices_Features_Unlimited_WT(int selection, int y);
-static void DrawChoices_Features_Synchronize(int selection, int y);
-static void DrawChoices_Features_Mints(int selection, int y);
-static void DrawChoices_Features_New_Citrus(int selection, int y);
+static void DrawChoices_Mode_Synchronize(int selection, int y);
+static void DrawChoices_Mode_Mints(int selection, int y);
+static void DrawChoices_Mode_New_Citrus(int selection, int y);
 
 
 static void PrintCurrentSelections(void);
@@ -315,6 +323,20 @@ static const u16 sOptionMenuText_Pal[] = INCBIN_U16("graphics/interface/option_m
 #define TEXT_COLOR_OPTIONS_RED_DARK_FG          13
 #define TEXT_COLOR_OPTIONS_RED_DARK_SHADOW      14
 
+struct // MENU_MODE
+{
+    void (*drawChoices)(int selection, int y);
+    int (*processInput)(int selection);
+} static const sItemFunctionsMode[MENUITEM_MODE_COUNT] =
+{
+    [MENUITEM_MODE_ALTERNATE_SPAWNS]      = {DrawChoices_Mode_AlternateSpawns,      ProcessInput_Options_Two},
+    [MENUITEM_MODE_INFINITE_TMS]          = {DrawChoices_Mode_InfiniteTMs,          ProcessInput_Options_Two},
+    [MENUITEM_MODE_SURVIVE_POISON]        = {DrawChoices_Mode_SurvivePoison,        ProcessInput_Options_Two},
+    [MENUITEM_MODE_SYNCHRONIZE]           = {DrawChoices_Mode_Synchronize,          ProcessInput_Options_Two},
+    [MENUITEM_MODE_MINTS]                 = {DrawChoices_Mode_Mints,                ProcessInput_Options_Two},
+    [MENUITEM_MODE_NEW_CITRUS]            = {DrawChoices_Mode_New_Citrus,           ProcessInput_Options_Two},
+    [MENUITEM_MODE_NEXT]                  = {NULL, NULL},
+};
 
 struct // MENU_FEATURES
 {
@@ -323,17 +345,11 @@ struct // MENU_FEATURES
 } static const sItemFunctionsFeatures[MENUITEM_FEATURES_COUNT] =
 {
     [MENUITEM_FEATURES_RTC_TYPE]              = {DrawChoices_Features_Rtc_Type,             ProcessInput_Options_Two},
-    [MENUITEM_FEATURES_ALTERNATE_SPAWNS]      = {DrawChoices_Features_AlternateSpawns,      ProcessInput_Options_Two},
     [MENUITEM_FEATURES_SHINY_CHANCE]          = {DrawChoices_Features_ShinyChance,          ProcessInput_Options_Five},
     [MENUITEM_FEATURES_ITEM_DROP]             = {DrawChoices_Features_ItemDrop,             ProcessInput_Options_Two},
-    [MENUITEM_FEATURES_INFINITE_TMS]          = {DrawChoices_Features_InfiniteTMs,          ProcessInput_Options_Two},
-    [MENUITEM_FEATURES_SURVIVE_POISON]        = {DrawChoices_Features_SurvivePoison,        ProcessInput_Options_Two},
     [MENUITEM_FEATURES_EASY_FEEBAS]           = {DrawChoices_Features_EasyFeebas,           ProcessInput_Options_Two},
     [MENUITEM_FEATURES_PKMN_DEATH]            = {DrawChoices_Features_Pkmn_Death,           ProcessInput_Options_Two},
     [MENUITEM_FEATURES_UNLIMITED_WT]          = {DrawChoices_Features_Unlimited_WT,         ProcessInput_Options_Two},
-    [MENUITEM_FEATURES_SYNCHRONIZE]           = {DrawChoices_Features_Synchronize,          ProcessInput_Options_Two},
-    [MENUITEM_FEATURES_MINTS]                 = {DrawChoices_Features_Mints,                ProcessInput_Options_Two},
-    [MENUITEM_FEATURES_NEW_CITRUS]            = {DrawChoices_Features_New_Citrus,           ProcessInput_Options_Two},
     [MENUITEM_FEATURES_NEXT]                  = {NULL, NULL},
 };
 
@@ -411,34 +427,41 @@ struct // MENU_CHALLENGES
     [MENUITEM_CHALLENGES_SAVE] = {NULL, NULL},
 };
 
-static const u8 sText_RTC_Type[]            = _("CLOCK TYPE");
+
 static const u8 sText_AlternateSpawns[]     = _("MODERN SPAWNS");
-static const u8 sText_ShinyChance[]         = _("SHINY CHANCE");
-static const u8 sText_ItemDrop[]            = _("ITEM DROP");
 static const u8 sText_InfiniteTMs[]         = _("REUSABLE TMS");
 static const u8 sText_Poison[]              = _("SURVIVE POISON");
-static const u8 sText_EasyFeebas[]          = _("EASIER FEEBAS");
-static const u8 sText_Pkmn_Death[]          = _("{COLOR 7}{COLOR 8}POKÉMON FAINT");
-static const u8 sText_Unlimited_WT[]        = _("UNLIMITED WT");
 static const u8 sText_Synchronize[]         = _("NEW SYNCHRONIZE");
 static const u8 sText_Mints[]               = _("NATURE MINTS");
 static const u8 sText_NewCitrus[]           = _("NEW CITRUS BERRY");
 static const u8 sText_Next[]                = _("NEXT");
 // Menu left side option names text
+static const u8 *const sOptionMenuItemsNamesMode[MENUITEM_MODE_COUNT] =
+{
+    [MENUITEM_MODE_ALTERNATE_SPAWNS]          = sText_AlternateSpawns,
+    [MENUITEM_MODE_INFINITE_TMS]              = sText_InfiniteTMs,
+    [MENUITEM_MODE_SURVIVE_POISON]            = sText_Poison,
+    [MENUITEM_MODE_SYNCHRONIZE]               = sText_Synchronize,
+    [MENUITEM_MODE_MINTS]                     = sText_Mints,
+    [MENUITEM_MODE_NEW_CITRUS]                = sText_NewCitrus,
+    [MENUITEM_MODE_NEXT]                      = sText_Next,
+};
+
+static const u8 sText_RTC_Type[]            = _("CLOCK TYPE");
+static const u8 sText_ShinyChance[]         = _("SHINY CHANCE");
+static const u8 sText_ItemDrop[]            = _("ITEM DROP");
+static const u8 sText_EasyFeebas[]          = _("EASIER FEEBAS");
+static const u8 sText_Pkmn_Death[]          = _("{COLOR 7}{COLOR 8}POKÉMON FAINT");
+static const u8 sText_Unlimited_WT[]        = _("UNLIMITED WT");
+// Menu left side option names text
 static const u8 *const sOptionMenuItemsNamesFeatures[MENUITEM_FEATURES_COUNT] =
 {
     [MENUITEM_FEATURES_RTC_TYPE]                  = sText_RTC_Type,
-    [MENUITEM_FEATURES_ALTERNATE_SPAWNS]          = sText_AlternateSpawns,
     [MENUITEM_FEATURES_SHINY_CHANCE]              = sText_ShinyChance,
     [MENUITEM_FEATURES_ITEM_DROP]                 = sText_ItemDrop,
-    [MENUITEM_FEATURES_INFINITE_TMS]              = sText_InfiniteTMs,
-    [MENUITEM_FEATURES_SURVIVE_POISON]            = sText_Poison,
     [MENUITEM_FEATURES_EASY_FEEBAS]               = sText_EasyFeebas,
     [MENUITEM_FEATURES_PKMN_DEATH]                = sText_Pkmn_Death,
     [MENUITEM_FEATURES_UNLIMITED_WT]              = sText_Unlimited_WT,
-    [MENUITEM_FEATURES_SYNCHRONIZE]               = sText_Synchronize,
-    [MENUITEM_FEATURES_MINTS]                     = sText_Mints,
-    [MENUITEM_FEATURES_NEW_CITRUS]                = sText_NewCitrus,
     [MENUITEM_FEATURES_NEXT]                      = sText_Next,
 };
 
@@ -545,6 +568,7 @@ static const u8 *const OptionTextRight(u8 menuItem)
 {
     switch (sOptions->submenu)
     {
+    case MENU_MODE:             return sOptionMenuItemsNamesMode[menuItem];
     case MENU_FEATURES:         return sOptionMenuItemsNamesFeatures[menuItem];
     case MENU_RANDOMIZER:       return sOptionMenuItemsNamesRandom[menuItem];
     case MENU_NUZLOCKE:         return sOptionMenuItemsNamesNuzlocke[menuItem];
@@ -558,6 +582,11 @@ static bool8 CheckConditions(int selection)
 {
     switch (sOptions->submenu)
     {
+    case MENU_MODE:
+        switch(selection)
+        {
+        default:       return TRUE;
+        }
     case MENU_FEATURES:
         switch(selection)
         {
@@ -629,10 +658,33 @@ static bool8 CheckConditions(int selection)
 static const u8 sText_Empty[]               = _("");
 static const u8 sText_Description_Save[]    = _("Save choices and continue...");
 
+static const u8 sText_Description_Mode_AlternateSpawns_Off[]      = _("Use vanilla-ish wild encounters,\nwithout version exclusives.");
+static const u8 sText_Description_Mode_AlternateSpawns_On[]       = _("Use Modern Emerald wild encounters.\nAll 423 {PKMN} available.");
+static const u8 sText_Description_Mode_InfiniteTMs_On[]           = _("TMs are reusable.\nModern Emerald recommended.");
+static const u8 sText_Description_Mode_InfiniteTMs_Off[]          = _("TMs are not reusable.\nLike in the original.");
+static const u8 sText_Description_Mode_SurvivePoison_On[]         = _("Your {PKMN} will survive the POISON\nstatus with 1HP.");
+static const u8 sText_Description_Mode_SurvivePoison_Off[]        = _("Your {PKMN} will faint if they are\nPOISONED.");
+static const u8 sText_Description_Mode_Synchronize_Old[]          = _("Synchronize works as in GEN III.\n50% to copy nature.");
+static const u8 sText_Description_Mode_Synchronize_New[]          = _("Synchronize works as in GEN VIII.\n100% chance to copy nature.");
+static const u8 sText_Description_Mode_Mints_Off[]                = _("Mints are not availabe ingame.");
+static const u8 sText_Description_Mode_Mints_On[]                 = _("Mints can be bought at PRETTY PETAL\nFLOWER SHOP after the 4th medal.");
+static const u8 sText_Description_Mode_New_Citrus_Off[]           = _("CITRUS BERRY restores 30HP.\nSame as GEN III.");
+static const u8 sText_Description_Mode_New_Citrus_On[]            = _("CITRUS BERRY restores 25% of\ntotal HP. Same as GEN IV and up.");
+static const u8 sText_Description_Mode_Next[]                     = _("Continue to Features options.");
+
+static const u8 *const sOptionMenuItemDescriptionsMode[MENUITEM_MODE_COUNT][5] =
+{
+    [MENUITEM_MODE_ALTERNATE_SPAWNS]      = {sText_Description_Mode_AlternateSpawns_Off,    sText_Description_Mode_AlternateSpawns_On,    sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_MODE_INFINITE_TMS]          = {sText_Description_Mode_InfiniteTMs_Off,        sText_Description_Mode_InfiniteTMs_On,        sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_MODE_SURVIVE_POISON]        = {sText_Description_Mode_SurvivePoison_Off,      sText_Description_Mode_SurvivePoison_On,      sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_MODE_SYNCHRONIZE]           = {sText_Description_Mode_Synchronize_Old,        sText_Description_Mode_Synchronize_New,       sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_MODE_MINTS]                 = {sText_Description_Mode_Mints_Off,              sText_Description_Mode_Mints_On,              sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_MODE_NEW_CITRUS]            = {sText_Description_Mode_New_Citrus_Off,         sText_Description_Mode_New_Citrus_On,         sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_MODE_NEXT]                  = {sText_Description_Mode_Next,                   sText_Empty,                                      sText_Empty,                                        sText_Empty,                                        sText_Empty},
+};
+
 static const u8 sText_Description_Features_RTC_Type_RTC[]             = _("Use vanilla Real Time Clock.");
 static const u8 sText_Description_Features_RTC_Type_FakeRTC[]         = _("Use a fake Real Time Clock.\n1h in real life = 1 day in-game.");
-static const u8 sText_Description_Features_AlternateSpawns_Off[]      = _("Use vanilla-ish wild encounters,\nwithout version exclusives.");
-static const u8 sText_Description_Features_AlternateSpawns_On[]       = _("Use Modern Emerald wild encounters.\nAll 423 {PKMN} available.");
 static const u8 sText_Description_Features_ItemDrop_On[]              = _("Wild {PKMN} will drop their hold item\nafter defeating them.");
 static const u8 sText_Description_Features_ItemDrop_Off[]             = _("Wild {PKMN} items will be only obtainable\nvia capture or THIEF.");
 static const u8 sText_Description_Features_ShinyChance_8192[]         = _("Very low chance of SHINY encounter.\nDefault chance from Generation III.");
@@ -640,37 +692,22 @@ static const u8 sText_Description_Features_ShinyChance_4096[]         = _("Low c
 static const u8 sText_Description_Features_ShinyChance_2048[]         = _("Decent chance of SHINY encounter.");
 static const u8 sText_Description_Features_ShinyChance_1024[]         = _("High chance of SHINY encounter.");
 static const u8 sText_Description_Features_ShinyChance_512[]          = _("Very high chance of SHINY encounter.");
-static const u8 sText_Description_Features_InfiniteTMs_On[]           = _("TMs are reusable.\nModern Emerald recommended.");
-static const u8 sText_Description_Features_InfiniteTMs_Off[]          = _("TMs are not reusable.\nLike in the original.");
-static const u8 sText_Description_Features_SurvivePoison_On[]         = _("Your {PKMN} will survive the POISON\nstatus with 1HP.");
-static const u8 sText_Description_Features_SurvivePoison_Off[]        = _("Your {PKMN} will faint if they are\nPOISONED.");
 static const u8 sText_Description_Features_EasyFeebas_On[]            = _("FEEBAS is easier to catch and spawns\neverywhere in ROUTE 119.");
 static const u8 sText_Description_Features_EasyFeebas_Off[]           = _("FEEBAS is encountered in random\nspots in ROUTE 119.");
 static const u8 sText_Description_Features_Pkmn_Death_On[]            = _("{COLOR 7}{COLOR 8}YOUR {PKMN} WILL DIE!! Getting to zero\n{PKMN} could be the end of your save."); //{COLOR 1}{COLOR 2} 
 static const u8 sText_Description_Features_Pkmn_Death_Off[]           = _("{PKMN} will not die from fainting.\nRecommended.");
 static const u8 sText_Description_Features_Unlimited_WT_On[]          = _("Enables a daily limit of 3\nWonderTrades. Recommended.");
 static const u8 sText_Description_Features_Unlimited_WT_Off[]         = _("WonderTrades have no daily limit.");
-static const u8 sText_Description_Features_Synchronize_Old[]          = _("Synchronize works as in GEN III.\n50% to copy nature.");
-static const u8 sText_Description_Features_Synchronize_New[]          = _("Synchronize works as in GEN VIII.\n100% chance to copy nature.");
-static const u8 sText_Description_Features_Mints_Off[]                = _("Mints are not availabe ingame.");
-static const u8 sText_Description_Features_Mints_On[]                 = _("Mints can be bought at PRETTY PETAL\nFLOWER SHOP after the 4th medal.");
-static const u8 sText_Description_Features_New_Citrus_Off[]           = _("CITRUS BERRY restores 30HP.\nSame as GEN III.");
-static const u8 sText_Description_Features_New_Citrus_On[]            = _("CITRUS BERRY restores 25% of\ntotal HP. Same as GEN IV and up.");
 static const u8 sText_Description_Features_Next[]                     = _("Continue to Randomizer options.");
+
 static const u8 *const sOptionMenuItemDescriptionsFeatures[MENUITEM_FEATURES_COUNT][5] =
 {
     [MENUITEM_FEATURES_RTC_TYPE]              = {sText_Description_Features_RTC_Type_RTC,           sText_Description_Features_RTC_Type_FakeRTC,      sText_Empty,                                        sText_Empty,                                        sText_Empty},
-    [MENUITEM_FEATURES_ALTERNATE_SPAWNS]      = {sText_Description_Features_AlternateSpawns_Off,    sText_Description_Features_AlternateSpawns_On,    sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_SHINY_CHANCE]          = {sText_Description_Features_ShinyChance_8192,       sText_Description_Features_ShinyChance_4096,      sText_Description_Features_ShinyChance_2048,        sText_Description_Features_ShinyChance_1024,        sText_Description_Features_ShinyChance_512},
     [MENUITEM_FEATURES_ITEM_DROP]             = {sText_Description_Features_ItemDrop_Off,           sText_Description_Features_ItemDrop_On,           sText_Empty,                                        sText_Empty,                                        sText_Empty},
-    [MENUITEM_FEATURES_INFINITE_TMS]          = {sText_Description_Features_InfiniteTMs_Off,        sText_Description_Features_InfiniteTMs_On,        sText_Empty,                                        sText_Empty,                                        sText_Empty},
-    [MENUITEM_FEATURES_SURVIVE_POISON]        = {sText_Description_Features_SurvivePoison_Off,      sText_Description_Features_SurvivePoison_On,      sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_EASY_FEEBAS]           = {sText_Description_Features_EasyFeebas_Off,         sText_Description_Features_EasyFeebas_On,         sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_PKMN_DEATH]            = {sText_Description_Features_Pkmn_Death_Off,         sText_Description_Features_Pkmn_Death_On,         sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_UNLIMITED_WT]          = {sText_Description_Features_Unlimited_WT_On,        sText_Description_Features_Unlimited_WT_Off,      sText_Empty,                                        sText_Empty,                                        sText_Empty},
-    [MENUITEM_FEATURES_SYNCHRONIZE]           = {sText_Description_Features_Synchronize_Old,        sText_Description_Features_Synchronize_New,       sText_Empty,                                        sText_Empty,                                        sText_Empty},
-    [MENUITEM_FEATURES_MINTS]                 = {sText_Description_Features_Mints_Off,              sText_Description_Features_Mints_On,              sText_Empty,                                        sText_Empty,                                        sText_Empty},
-    [MENUITEM_FEATURES_NEW_CITRUS]            = {sText_Description_Features_New_Citrus_Off,         sText_Description_Features_New_Citrus_On,         sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_NEXT]                  = {sText_Description_Features_Next,                   sText_Empty,                                      sText_Empty,                                        sText_Empty,                                        sText_Empty},
 };
 
@@ -819,21 +856,27 @@ static const u8 *const sOptionMenuItemDescriptionsChallenges[MENUITEM_CHALLENGES
 };
 
 // Disabled descriptions
+static const u8 *const sOptionMenuItemDescriptionsDisabledMode[MENUITEM_MODE_COUNT] =
+{
+    [MENUITEM_MODE_ALTERNATE_SPAWNS]      = sText_Empty,
+    [MENUITEM_MODE_INFINITE_TMS]          = sText_Empty,
+    [MENUITEM_MODE_SURVIVE_POISON]        = sText_Empty,
+    [MENUITEM_MODE_SYNCHRONIZE]           = sText_Empty,
+    [MENUITEM_MODE_MINTS]                 = sText_Empty,
+    [MENUITEM_MODE_NEW_CITRUS]            = sText_Empty,
+    [MENUITEM_MODE_NEXT]                  = sText_Empty,
+};
+
+// Disabled descriptions
 static const u8 sText_Description_Disabled_Features_PkmnDeath[]  = _("Already enabled via\nthe Nuzlocke Challenge.");
 static const u8 *const sOptionMenuItemDescriptionsDisabledFeatures[MENUITEM_FEATURES_COUNT] =
 {
     [MENUITEM_FEATURES_RTC_TYPE]              = sText_Empty,
-    [MENUITEM_FEATURES_ALTERNATE_SPAWNS]      = sText_Empty,
     [MENUITEM_FEATURES_SHINY_CHANCE]          = sText_Empty,
     [MENUITEM_FEATURES_ITEM_DROP]             = sText_Empty,
-    [MENUITEM_FEATURES_INFINITE_TMS]          = sText_Empty,
-    [MENUITEM_FEATURES_SURVIVE_POISON]        = sText_Empty,
     [MENUITEM_FEATURES_EASY_FEEBAS]           = sText_Empty,
     [MENUITEM_FEATURES_PKMN_DEATH]            = sText_Description_Disabled_Features_PkmnDeath,
     [MENUITEM_FEATURES_UNLIMITED_WT]          = sText_Empty,
-    [MENUITEM_FEATURES_SYNCHRONIZE]           = sText_Empty,
-    [MENUITEM_FEATURES_MINTS]                 = sText_Empty,
-    [MENUITEM_FEATURES_NEW_CITRUS]            = sText_Empty,
     [MENUITEM_FEATURES_NEXT]                  = sText_Empty,
 };
 
@@ -907,6 +950,11 @@ static const u8 *const OptionTextDescription(void)
 
     switch (sOptions->submenu)
     {
+    case MENU_MODE:
+        if (!CheckConditions(menuItem) && sOptionMenuItemDescriptionsDisabledMode[menuItem] != sText_Empty)
+            return sOptionMenuItemDescriptionsDisabledMode[menuItem];
+        selection = sOptions->sel_mode[menuItem];  
+        return sOptionMenuItemDescriptionsMode[menuItem][selection];
     case MENU_FEATURES:
         if (!CheckConditions(menuItem) && sOptionMenuItemDescriptionsDisabledFeatures[menuItem] != sText_Empty)
             return sOptionMenuItemDescriptionsDisabledFeatures[menuItem];
@@ -945,6 +993,7 @@ static u8 MenuItemCount(void)
 {
     switch (sOptions->submenu)
     {
+    case MENU_MODE:         return MENUITEM_MODE_COUNT;
     case MENU_FEATURES:     return MENUITEM_FEATURES_COUNT;
     case MENU_RANDOMIZER:   return MENUITEM_RANDOM_COUNT;
     case MENU_NUZLOCKE:     return MENUITEM_NUZLOCKE_COUNT;
@@ -957,6 +1006,7 @@ static u8 MenuItemCountFromIndex(u8 index)
 {
     switch (index)
     {
+    case MENU_MODE:         return MENUITEM_MODE_COUNT; 
     case MENU_FEATURES:     return MENUITEM_FEATURES_COUNT; 
     case MENU_RANDOMIZER:   return MENUITEM_RANDOM_COUNT;
     case MENU_NUZLOCKE:     return MENUITEM_NUZLOCKE_COUNT;
@@ -969,6 +1019,7 @@ static u8 MenuItemCancel(void)
 {
     switch (sOptions->submenu)
     {
+    case MENU_MODE:         return MENUITEM_MODE_NEXT;
     case MENU_FEATURES:     return MENUITEM_FEATURES_NEXT;
     case MENU_RANDOMIZER:   return MENUITEM_RANDOM_NEXT;
     case MENU_NUZLOCKE:     return MENUITEM_NUZLOCKE_NEXT;
@@ -995,6 +1046,7 @@ static void VBlankCB(void)
 
 static const u8 sText_TopBar_Left[]             = _("{L_BUTTON}PREVIOUS");
 static const u8 sText_TopBar_Right[]            = _("{R_BUTTON}NEXT");
+static const u8 sText_TopBar_Mode[]             = _("MODE");
 static const u8 sText_TopBar_Features[]         = _("FEATURES");
 static const u8 sText_TopBar_Randomizer[]       = _("RANDOMIZER");
 static const u8 sText_TopBar_Nuzlocke[]         = _("NUZLOCKE");
@@ -1009,8 +1061,14 @@ static void DrawTopBarText(void)
     FillWindowPixelBuffer(WIN_TOPBAR, PIXEL_FILL(15));
     switch (sOptions->submenu)
     {
+        case MENU_MODE:
+            width = GetStringWidth(FONT_SMALL, sText_TopBar_Mode, 0) / 2;
+            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 120-width, 1, color, 0, sText_TopBar_Mode);
+            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, right, 1, color, 0, sText_TopBar_Right);
+            break;
         case MENU_FEATURES:
             width = GetStringWidth(FONT_SMALL, sText_TopBar_Features, 0) / 2;
+            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 5, 1, color, 0, sText_TopBar_Left);
             AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 120-width, 1, color, 0, sText_TopBar_Features);
             AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, right, 1, color, 0, sText_TopBar_Right);
             break;
@@ -1117,6 +1175,10 @@ static void DrawChoices(u32 id, int y) //right side draw function
 {
     switch (sOptions->submenu)
     {
+        case MENU_MODE:
+            if (sItemFunctionsMode[id].drawChoices != NULL)
+                sItemFunctionsMode[id].drawChoices(sOptions->sel_mode[id], y);
+            break;
         case MENU_FEATURES:
             if (sItemFunctionsFeatures[id].drawChoices != NULL)
                 sItemFunctionsFeatures[id].drawChoices(sOptions->sel_features[id], y);
@@ -1202,18 +1264,19 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         break;
     case 6:
         //tx_randomizer_and_challenges
+        gSaveBlock1Ptr->tx_Mode_AlternateSpawns             = TX_MODE_ALTERNATE_SPAWNS;
+        gSaveBlock1Ptr->tx_Mode_InfiniteTMs                 = TX_MODE_INFINITE_TMS;
+        gSaveBlock1Ptr->tx_Mode_PoisonSurvive               = TX_MODE_SURVIVE_POISON;
+        gSaveBlock1Ptr->tx_Mode_Synchronize                 = TX_MODE_NEW_SYNCHRONIZE;
+        gSaveBlock1Ptr->tx_Mode_Mints                       = TX_MODE_MINTS;
+        gSaveBlock1Ptr->tx_Mode_New_Citrus                  = TX_MODE_NEW_CITRUS;
+
         gSaveBlock1Ptr->tx_Features_RTCType                 = TX_FEATURES_RTC_TYPE;
-        gSaveBlock1Ptr->tx_Features_AlternateSpawns         = TX_FEATURES_ALTERNATE_SPAWNS;
         gSaveBlock1Ptr->tx_Features_ShinyChance             = TX_FEATURES_SHINY_CHANCE;
         gSaveBlock1Ptr->tx_Features_WildMonDropItems        = TX_FEATURES_ITEM_DROP;
-        gSaveBlock1Ptr->tx_Features_InfiniteTMs             = TX_FEATURES_INFINITE_TMS;
-        gSaveBlock1Ptr->tx_Features_PoisonSurvive           = TX_FEATURES_SURVIVE_POISON;
         gSaveBlock1Ptr->optionsEasierFeebas                 = TX_FEATURES_EASIER_FEEBAS;
         gSaveBlock1Ptr->tx_Features_PkmnDeath               = TX_FEATURES_PKMN_DEATH;
         gSaveBlock1Ptr->tx_Features_Unlimited_WT            = TX_FEATURES_UNLIMITED_WT;
-        gSaveBlock1Ptr->tx_Features_Synchronize             = TX_FEATURES_SYNCHRONIZE;
-        gSaveBlock1Ptr->tx_Features_Mints                   = TX_FEATURES_MINTS;
-        gSaveBlock1Ptr->tx_Features_New_Citrus              = TX_FEATURES_NEW_CITRUS;
 
         gSaveBlock1Ptr->tx_Random_Starter                   = TX_RANDOM_STARTER;
         gSaveBlock1Ptr->tx_Random_WildPokemon               = TX_RANDOM_WILD_POKEMON;
@@ -1260,19 +1323,20 @@ void CB2_InitTxRandomizerChallengesMenu(void)
                
 
         sOptions = AllocZeroed(sizeof(*sOptions));
+        //MENU MODE
+        sOptions->sel_mode[MENUITEM_MODE_ALTERNATE_SPAWNS]       = gSaveBlock1Ptr->tx_Mode_AlternateSpawns;
+        sOptions->sel_mode[MENUITEM_MODE_INFINITE_TMS]           = gSaveBlock1Ptr->tx_Mode_InfiniteTMs;
+        sOptions->sel_mode[MENUITEM_MODE_SURVIVE_POISON]         = gSaveBlock1Ptr->tx_Mode_PoisonSurvive;  
+        sOptions->sel_mode[MENUITEM_MODE_SYNCHRONIZE]            = gSaveBlock1Ptr->tx_Mode_Synchronize;
+        sOptions->sel_mode[MENUITEM_MODE_MINTS]                  = gSaveBlock1Ptr->tx_Mode_Mints;
+        sOptions->sel_mode[MENUITEM_MODE_NEW_CITRUS]             = gSaveBlock1Ptr->tx_Mode_New_Citrus;
         //MENU FEATURES
         sOptions->sel_features[MENUITEM_FEATURES_RTC_TYPE]               = gSaveBlock1Ptr->tx_Features_RTCType;
-        sOptions->sel_features[MENUITEM_FEATURES_ALTERNATE_SPAWNS]       = gSaveBlock1Ptr->tx_Features_AlternateSpawns;
         sOptions->sel_features[MENUITEM_FEATURES_SHINY_CHANCE]           = gSaveBlock1Ptr->tx_Features_ShinyChance;
         sOptions->sel_features[MENUITEM_FEATURES_ITEM_DROP]              = gSaveBlock1Ptr->tx_Features_WildMonDropItems;
-        sOptions->sel_features[MENUITEM_FEATURES_INFINITE_TMS]           = gSaveBlock1Ptr->tx_Features_InfiniteTMs;
-        sOptions->sel_features[MENUITEM_FEATURES_SURVIVE_POISON]         = gSaveBlock1Ptr->tx_Features_PoisonSurvive;  
         sOptions->sel_features[MENUITEM_FEATURES_EASY_FEEBAS]            = gSaveBlock1Ptr->optionsEasierFeebas;
         sOptions->sel_features[MENUITEM_FEATURES_PKMN_DEATH]             = gSaveBlock1Ptr->tx_Features_PkmnDeath;
         sOptions->sel_features[MENUITEM_FEATURES_UNLIMITED_WT]           = gSaveBlock1Ptr->tx_Features_Unlimited_WT;
-        sOptions->sel_features[MENUITEM_FEATURES_SYNCHRONIZE]            = gSaveBlock1Ptr->tx_Features_Synchronize;
-        sOptions->sel_features[MENUITEM_FEATURES_MINTS]                  = gSaveBlock1Ptr->tx_Features_Mints;
-        sOptions->sel_features[MENUITEM_FEATURES_NEW_CITRUS]             = gSaveBlock1Ptr->tx_Features_New_Citrus;
         
         //MENU RANDOMIZER
         sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON]                     = FALSE;
@@ -1323,7 +1387,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR]                 = gSaveBlock1Ptr->tx_Challenges_Mirror;
         sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR_THIEF]           = gSaveBlock1Ptr->tx_Challenges_Mirror_Thief;
 
-        sOptions->submenu = MENU_FEATURES;
+        sOptions->submenu = MENU_MODE;
 
         gMain.state++;
         break;
@@ -1453,7 +1517,24 @@ static void Task_OptionMenuProcessInput(u8 taskId)
     }
     else if (JOY_NEW(DPAD_LEFT | DPAD_RIGHT))
     {
-        if (sOptions->submenu == MENU_FEATURES)
+        if (sOptions->submenu == MENU_MODE)
+        {
+            int cursor = sOptions->menuCursor[sOptions->submenu];
+            u8 previousOption = sOptions->sel_mode[cursor];
+            if (CheckConditions(cursor))
+            {
+                if (sItemFunctionsMode[cursor].processInput != NULL)
+                {
+                    sOptions->sel_mode[cursor] = sItemFunctionsMode[cursor].processInput(previousOption);
+                    ReDrawAll();
+                    DrawDescriptionText();
+                }
+
+                if (previousOption != sOptions->sel_mode[cursor])
+                    DrawChoices(cursor, sOptions->visibleCursor[sOptions->submenu] * Y_DIFF);
+            }
+        }
+        else if (sOptions->submenu == MENU_FEATURES)
         {
             int cursor = sOptions->menuCursor[sOptions->submenu];
             u8 previousOption = sOptions->sel_features[cursor];
@@ -1580,19 +1661,20 @@ static void Task_RandomizerChallengesMenuFadeOut(u8 taskId)
 void SaveData_TxRandomizerAndChallenges(void)
 {
     PrintCurrentSelections();
+    //MENU MODE
+    gSaveBlock1Ptr->tx_Mode_AlternateSpawns             = sOptions->sel_mode[MENUITEM_MODE_ALTERNATE_SPAWNS]; 
+    gSaveBlock1Ptr->tx_Mode_InfiniteTMs                 = sOptions->sel_mode[MENUITEM_MODE_INFINITE_TMS]; 
+    gSaveBlock1Ptr->tx_Mode_PoisonSurvive               = sOptions->sel_mode[MENUITEM_MODE_SURVIVE_POISON]; 
+    gSaveBlock1Ptr->tx_Mode_Synchronize                 = sOptions->sel_mode[MENUITEM_MODE_SYNCHRONIZE]; 
+    gSaveBlock1Ptr->tx_Mode_Mints                       = sOptions->sel_mode[MENUITEM_MODE_MINTS]; 
+    gSaveBlock1Ptr->tx_Mode_New_Citrus                  = sOptions->sel_mode[MENUITEM_MODE_NEW_CITRUS]; 
     //MENU FEAUTRES
     gSaveBlock1Ptr->tx_Features_RTCType                     = sOptions->sel_features[MENUITEM_FEATURES_RTC_TYPE]; 
-    gSaveBlock1Ptr->tx_Features_AlternateSpawns             = sOptions->sel_features[MENUITEM_FEATURES_ALTERNATE_SPAWNS]; 
     gSaveBlock1Ptr->tx_Features_ShinyChance                 = sOptions->sel_features[MENUITEM_FEATURES_SHINY_CHANCE]; 
     gSaveBlock1Ptr->tx_Features_WildMonDropItems            = sOptions->sel_features[MENUITEM_FEATURES_ITEM_DROP]; 
-    gSaveBlock1Ptr->tx_Features_InfiniteTMs                 = sOptions->sel_features[MENUITEM_FEATURES_INFINITE_TMS]; 
-    gSaveBlock1Ptr->tx_Features_PoisonSurvive               = sOptions->sel_features[MENUITEM_FEATURES_SURVIVE_POISON]; 
     gSaveBlock1Ptr->optionsEasierFeebas                     = sOptions->sel_features[MENUITEM_FEATURES_EASY_FEEBAS]; 
     gSaveBlock1Ptr->tx_Features_PkmnDeath                   = sOptions->sel_features[MENUITEM_FEATURES_PKMN_DEATH]; 
     gSaveBlock1Ptr->tx_Features_Unlimited_WT                = sOptions->sel_features[MENUITEM_FEATURES_UNLIMITED_WT]; 
-    gSaveBlock1Ptr->tx_Features_Synchronize                 = sOptions->sel_features[MENUITEM_FEATURES_SYNCHRONIZE]; 
-    gSaveBlock1Ptr->tx_Features_Mints                       = sOptions->sel_features[MENUITEM_FEATURES_MINTS]; 
-    gSaveBlock1Ptr->tx_Features_New_Citrus                  = sOptions->sel_features[MENUITEM_FEATURES_NEW_CITRUS]; 
     // MENU_RANDOMIZER
     if (sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON] == TRUE)
     {
@@ -2290,19 +2372,19 @@ static void DrawChoices_Features_Rtc_Type(int selection, int y)
     DrawOptionMenuChoice(sText_Features_RTC_Fake_RTC, GetStringRightAlignXOffset(1, sText_Features_RTC_Fake_RTC, 198), y, styles[1], active);
 }
 
-static void DrawChoices_Features_AlternateSpawns(int selection, int y)
+static void DrawChoices_Mode_AlternateSpawns(int selection, int y)
 {
-    bool8 active = CheckConditions(MENUITEM_FEATURES_ALTERNATE_SPAWNS);
+    bool8 active = CheckConditions(MENUITEM_MODE_ALTERNATE_SPAWNS);
     u8 styles[2] = {0};
     styles[selection] = 1;
 
     if (selection == 0)
     {
-        gSaveBlock1Ptr->tx_Features_AlternateSpawns = 0; //Off, no spawns
+        gSaveBlock1Ptr->tx_Mode_AlternateSpawns = 0; //Off, no spawns
     }
     else
     {
-        gSaveBlock1Ptr->tx_Features_AlternateSpawns = 1; //On, new spawns
+        gSaveBlock1Ptr->tx_Mode_AlternateSpawns = 1; //On, new spawns
     }
 
     DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
@@ -2376,20 +2458,20 @@ static void DrawChoices_Features_ItemDrop(int selection, int y)
     DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
 }
 
-static void DrawChoices_Features_InfiniteTMs(int selection, int y)
+static void DrawChoices_Mode_InfiniteTMs(int selection, int y)
 {
-    bool8 active = CheckConditions(MENUITEM_FEATURES_INFINITE_TMS);
+    bool8 active = CheckConditions(MENUITEM_MODE_INFINITE_TMS);
     u8 styles[2] = {0};
     styles[selection] = 1;
 
     if (selection == 0)
     {
-        gSaveBlock1Ptr->tx_Features_InfiniteTMs = 0; //TMs are finite
+        gSaveBlock1Ptr->tx_Mode_InfiniteTMs = 0; //TMs are finite
         FlagSet (FLAG_FINITE_TMS);
     }
     else
     {
-        gSaveBlock1Ptr->tx_Features_InfiniteTMs = 1; //TMs are infinite
+        gSaveBlock1Ptr->tx_Mode_InfiniteTMs = 1; //TMs are infinite
         FlagClear (FLAG_FINITE_TMS);
     }
 
@@ -2397,19 +2479,19 @@ static void DrawChoices_Features_InfiniteTMs(int selection, int y)
     DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
 }
 
-static void DrawChoices_Features_SurvivePoison(int selection, int y)
+static void DrawChoices_Mode_SurvivePoison(int selection, int y)
 {
-    bool8 active = CheckConditions(MENUITEM_FEATURES_SURVIVE_POISON);
+    bool8 active = CheckConditions(MENUITEM_MODE_SURVIVE_POISON);
     u8 styles[2] = {0};
     styles[selection] = 1;
 
     if (selection == 0)
     {
-        gSaveBlock1Ptr->tx_Features_PoisonSurvive = 0; //Poison will kill
+        gSaveBlock1Ptr->tx_Mode_PoisonSurvive = 0; //Poison will kill
     }
     else
     {
-        gSaveBlock1Ptr->tx_Features_PoisonSurvive = 1; //1hp survive poison
+        gSaveBlock1Ptr->tx_Mode_PoisonSurvive = 1; //1hp survive poison
     }
 
     DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
@@ -2527,39 +2609,39 @@ static void DrawChoices_Features_Unlimited_WT(int selection, int y)
     DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
 }
 
-static void DrawChoices_Features_Synchronize(int selection, int y)
+static void DrawChoices_Mode_Synchronize(int selection, int y)
 {
-    bool8 active = CheckConditions(MENUITEM_FEATURES_SYNCHRONIZE);
+    bool8 active = CheckConditions(MENUITEM_MODE_SYNCHRONIZE);
     u8 styles[2] = {0};
     styles[selection] = 1;
 
     if (selection == 0)
     {
-        gSaveBlock1Ptr->tx_Features_Synchronize = 0; //Old synchronize
+        gSaveBlock1Ptr->tx_Mode_Synchronize = 0; //Old synchronize
     }
     else
     {
-        gSaveBlock1Ptr->tx_Features_Synchronize = 1; //New synchronize
+        gSaveBlock1Ptr->tx_Mode_Synchronize = 1; //New synchronize
     }
 
     DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
     DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
 }
 
-static void DrawChoices_Features_Mints(int selection, int y)
+static void DrawChoices_Mode_Mints(int selection, int y)
 {
-    bool8 active = CheckConditions(MENUITEM_FEATURES_MINTS);
+    bool8 active = CheckConditions(MENUITEM_MODE_MINTS);
     u8 styles[2] = {0};
     styles[selection] = 1;
 
     if (selection == 0)
     {
-        gSaveBlock1Ptr->tx_Features_Mints = 0; //No mints
+        gSaveBlock1Ptr->tx_Mode_Mints = 0; //No mints
         FlagClear (FLAG_MINTS_ENABLED);
     }
     else
     {
-        gSaveBlock1Ptr->tx_Features_Mints = 1; //Yes mints
+        gSaveBlock1Ptr->tx_Mode_Mints = 1; //Yes mints
         FlagSet (FLAG_MINTS_ENABLED);
     }
 
@@ -2567,19 +2649,19 @@ static void DrawChoices_Features_Mints(int selection, int y)
     DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
 }
 
-static void DrawChoices_Features_New_Citrus(int selection, int y)
+static void DrawChoices_Mode_New_Citrus(int selection, int y)
 {
-    bool8 active = CheckConditions(MENUITEM_FEATURES_NEW_CITRUS);
+    bool8 active = CheckConditions(MENUITEM_MODE_NEW_CITRUS);
     u8 styles[2] = {0};
     styles[selection] = 1;
 
     if (selection == 0)
     {
-        gSaveBlock1Ptr->tx_Features_New_Citrus = 0; //No new citrus, old citrus
+        gSaveBlock1Ptr->tx_Mode_New_Citrus = 0; //No new citrus, old citrus
     }
     else
     {
-        gSaveBlock1Ptr->tx_Features_New_Citrus = 1; //Yes new citrus
+        gSaveBlock1Ptr->tx_Mode_New_Citrus = 1; //Yes new citrus
     }
 
     DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);

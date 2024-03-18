@@ -403,11 +403,11 @@ static u16 PickRandomSpecies() // picks only base forms
 {
     u16 species = sIsValidSpecies[Random() % NELEMS(sIsValidSpecies)];
     u16 speciesVanilla = sIsValidSpeciesVanilla[Random() % NELEMS(sIsValidSpeciesVanilla)];
-    if (gSaveBlock1Ptr->tx_Features_AlternateSpawns == 1)
+    if (gSaveBlock1Ptr->tx_Mode_AlternateSpawns == 1)
         return species;
-    if ((gSaveBlock1Ptr->tx_Features_AlternateSpawns == 0) && (FlagGet(FLAG_SYS_GAME_CLEAR) == TRUE))
+    if ((gSaveBlock1Ptr->tx_Mode_AlternateSpawns == 0) && (FlagGet(FLAG_SYS_GAME_CLEAR) == TRUE))
         return species;
-    else if (gSaveBlock1Ptr->tx_Features_AlternateSpawns == 0)
+    else if (gSaveBlock1Ptr->tx_Mode_AlternateSpawns == 0)
         return speciesVanilla;
 }
 
