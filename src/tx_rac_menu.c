@@ -38,6 +38,7 @@ enum
 
 enum
 {
+    MENUITEM_MODE_CLASSIC_MODERN,
     MENUITEM_MODE_ALTERNATE_SPAWNS,
     MENUITEM_MODE_MINTS,
     MENUITEM_MODE_SYNCHRONIZE,
@@ -234,6 +235,7 @@ static u8 MenuItemCountFromIndex(u8 index);
 static u8 MenuItemCancel(void);
 static void DrawDescriptionText(void);
 static void DrawOptionMenuChoice(const u8 *text, u8 x, u8 y, u8 style, bool8 active);
+static void DrawChoices_Options_Three(const u8 *const *const strings, int selection, int y, bool8 active);
 static void DrawChoices_Options_Four(const u8 *const *const strings, int selection, int y, bool8 active);
 static void DrawChoices_Options_Five(const u8 *const *const strings, int selection, int y, bool8 active);
 static void ReDrawAll(void);
@@ -284,6 +286,7 @@ static void DrawChoices_Challenges_LimitDifficulty(int selection, int y);
 static void DrawChoices_Challenges_MaxPartyIVs(int selection, int y);
 static void DrawChoices_Challenges_PCHeal(int selection, int y);
 
+static void DrawChoices_Mode_Classic_Modern_Selector(int selection, int y);
 static void DrawChoices_Mode_AlternateSpawns(int selection, int y);
 static void DrawChoices_Features_ShinyChance(int selection, int y);
 static void DrawChoices_Features_ItemDrop(int selection, int y);
@@ -329,6 +332,7 @@ struct // MENU_MODE
     int (*processInput)(int selection);
 } static const sItemFunctionsMode[MENUITEM_MODE_COUNT] =
 {
+    [MENUITEM_MODE_CLASSIC_MODERN]        = {DrawChoices_Mode_Classic_Modern_Selector,       ProcessInput_Options_Three},
     [MENUITEM_MODE_ALTERNATE_SPAWNS]      = {DrawChoices_Mode_AlternateSpawns,      ProcessInput_Options_Two},
     [MENUITEM_MODE_INFINITE_TMS]          = {DrawChoices_Mode_InfiniteTMs,          ProcessInput_Options_Two},
     [MENUITEM_MODE_SURVIVE_POISON]        = {DrawChoices_Mode_SurvivePoison,        ProcessInput_Options_Two},
@@ -428,6 +432,7 @@ struct // MENU_CHALLENGES
 };
 
 
+static const u8 sText_Gamemode[]            = _("GAMEMODE");
 static const u8 sText_AlternateSpawns[]     = _("MODERN SPAWNS");
 static const u8 sText_InfiniteTMs[]         = _("REUSABLE TMS");
 static const u8 sText_Poison[]              = _("SURVIVE POISON");
@@ -438,6 +443,7 @@ static const u8 sText_Next[]                = _("NEXT");
 // Menu left side option names text
 static const u8 *const sOptionMenuItemsNamesMode[MENUITEM_MODE_COUNT] =
 {
+    [MENUITEM_MODE_CLASSIC_MODERN]            = sText_Gamemode,
     [MENUITEM_MODE_ALTERNATE_SPAWNS]          = sText_AlternateSpawns,
     [MENUITEM_MODE_INFINITE_TMS]              = sText_InfiniteTMs,
     [MENUITEM_MODE_SURVIVE_POISON]            = sText_Poison,
@@ -585,7 +591,15 @@ static bool8 CheckConditions(int selection)
     case MENU_MODE:
         switch(selection)
         {
-        default:       return TRUE;
+            case MENUITEM_MODE_CLASSIC_MODERN:            return TRUE;
+            case MENUITEM_MODE_NEXT:                      return TRUE;
+            case MENUITEM_MODE_ALTERNATE_SPAWNS:          return sOptions->sel_mode[MENUITEM_MODE_CLASSIC_MODERN] == 2;
+            case MENUITEM_MODE_MINTS:                     return sOptions->sel_mode[MENUITEM_MODE_CLASSIC_MODERN] == 2;
+            case MENUITEM_MODE_SYNCHRONIZE:               return sOptions->sel_mode[MENUITEM_MODE_CLASSIC_MODERN] == 2;
+            case MENUITEM_MODE_INFINITE_TMS:              return sOptions->sel_mode[MENUITEM_MODE_CLASSIC_MODERN] == 2;
+            case MENUITEM_MODE_NEW_CITRUS:                return sOptions->sel_mode[MENUITEM_MODE_CLASSIC_MODERN] == 2;
+            case MENUITEM_MODE_SURVIVE_POISON:            return sOptions->sel_mode[MENUITEM_MODE_CLASSIC_MODERN] == 2;
+        default:       return FALSE;
         }
     case MENU_FEATURES:
         switch(selection)
@@ -658,6 +672,8 @@ static bool8 CheckConditions(int selection)
 static const u8 sText_Empty[]               = _("");
 static const u8 sText_Description_Save[]    = _("Save choices and continue...");
 
+static const u8 sText_Description_Mode_Gamemode_Classic[]         = _("Vanilla-like preset.");
+static const u8 sText_Description_Mode_Gamemode_Modern[]          = _("Modernized preset.");
 static const u8 sText_Description_Mode_AlternateSpawns_Off[]      = _("Use vanilla-ish wild encounters,\nwithout version exclusives.");
 static const u8 sText_Description_Mode_AlternateSpawns_On[]       = _("Use Modern Emerald wild encounters.\nAll 423 {PKMN} available.");
 static const u8 sText_Description_Mode_InfiniteTMs_On[]           = _("TMs are reusable.\nModern Emerald recommended.");
@@ -674,13 +690,14 @@ static const u8 sText_Description_Mode_Next[]                     = _("Continue 
 
 static const u8 *const sOptionMenuItemDescriptionsMode[MENUITEM_MODE_COUNT][5] =
 {
+    [MENUITEM_MODE_CLASSIC_MODERN]        = {sText_Description_Mode_Gamemode_Classic,       sText_Description_Mode_Gamemode_Modern,       sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_MODE_ALTERNATE_SPAWNS]      = {sText_Description_Mode_AlternateSpawns_Off,    sText_Description_Mode_AlternateSpawns_On,    sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_MODE_INFINITE_TMS]          = {sText_Description_Mode_InfiniteTMs_Off,        sText_Description_Mode_InfiniteTMs_On,        sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_MODE_SURVIVE_POISON]        = {sText_Description_Mode_SurvivePoison_Off,      sText_Description_Mode_SurvivePoison_On,      sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_MODE_SYNCHRONIZE]           = {sText_Description_Mode_Synchronize_Old,        sText_Description_Mode_Synchronize_New,       sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_MODE_MINTS]                 = {sText_Description_Mode_Mints_Off,              sText_Description_Mode_Mints_On,              sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_MODE_NEW_CITRUS]            = {sText_Description_Mode_New_Citrus_Off,         sText_Description_Mode_New_Citrus_On,         sText_Empty,                                        sText_Empty,                                        sText_Empty},
-    [MENUITEM_MODE_NEXT]                  = {sText_Description_Mode_Next,                   sText_Empty,                                      sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_MODE_NEXT]                  = {sText_Description_Mode_Next,                   sText_Empty,                                  sText_Empty,                                        sText_Empty,                                        sText_Empty},
 };
 
 static const u8 sText_Description_Features_RTC_Type_RTC[]             = _("Use vanilla Real Time Clock.");
@@ -858,6 +875,7 @@ static const u8 *const sOptionMenuItemDescriptionsChallenges[MENUITEM_CHALLENGES
 // Disabled descriptions
 static const u8 *const sOptionMenuItemDescriptionsDisabledMode[MENUITEM_MODE_COUNT] =
 {
+    [MENUITEM_MODE_CLASSIC_MODERN]        = sText_Empty,
     [MENUITEM_MODE_ALTERNATE_SPAWNS]      = sText_Empty,
     [MENUITEM_MODE_INFINITE_TMS]          = sText_Empty,
     [MENUITEM_MODE_SURVIVE_POISON]        = sText_Empty,
@@ -1046,7 +1064,7 @@ static void VBlankCB(void)
 
 static const u8 sText_TopBar_Left[]             = _("{L_BUTTON}PREVIOUS");
 static const u8 sText_TopBar_Right[]            = _("{R_BUTTON}NEXT");
-static const u8 sText_TopBar_Mode[]             = _("MODE");
+static const u8 sText_TopBar_Mode[]             = _("GAMEMODE");
 static const u8 sText_TopBar_Features[]         = _("FEATURES");
 static const u8 sText_TopBar_Randomizer[]       = _("RANDOMIZER");
 static const u8 sText_TopBar_Nuzlocke[]         = _("NUZLOCKE");
@@ -1324,6 +1342,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
 
         sOptions = AllocZeroed(sizeof(*sOptions));
         //MENU MODE
+        sOptions->sel_mode[MENUITEM_MODE_CLASSIC_MODERN]         = FALSE;
         sOptions->sel_mode[MENUITEM_MODE_ALTERNATE_SPAWNS]       = gSaveBlock1Ptr->tx_Mode_AlternateSpawns;
         sOptions->sel_mode[MENUITEM_MODE_INFINITE_TMS]           = gSaveBlock1Ptr->tx_Mode_InfiniteTMs;
         sOptions->sel_mode[MENUITEM_MODE_SURVIVE_POISON]         = gSaveBlock1Ptr->tx_Mode_PoisonSurvive;  
@@ -1960,6 +1979,24 @@ static void DrawChoices_Options_Four(const u8 *const *const strings, int selecti
     DrawOptionMenuChoice(strings[order[2]], GetStringRightAlignXOffset(1, strings[order[2]], 198), y, styles[order[2]], active);
 }
 
+
+static void DrawChoices_Options_Three(const u8 *const *const strings, int selection, int y, bool8 active)
+{
+    static const u8 choiceOrders[][2] =
+    {
+        {0, 1},
+        {1, 2},
+        {1, 2},
+    };
+    u8 styles[3] = {0};
+    const u8 *order = choiceOrders[selection];
+    styles[selection] = 1;
+
+    DrawOptionMenuChoice(strings[order[0]], 104, y, styles[order[0]], active);
+    DrawOptionMenuChoice(strings[order[1]], GetStringRightAlignXOffset(1, strings[order[1]], 198), y, styles[order[1]], active);
+}
+
+
 static void DrawChoices_Options_Five(const u8 *const *const strings, int selection, int y, bool8 active)
 {
     static const u8 choiceOrders[][3] =
@@ -2022,6 +2059,37 @@ static void DrawChoices_Random_OffOn(int selection, int y, bool8 active)
 
     DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
     DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
+}
+
+
+static const u8 sClassic[]  = _("CLASSIC");
+static const u8 sModern[]   = _("MODERN");
+static const u8 sCustom[]   = _("CUSTOM");
+static const u8 *const sText_Mode_Strings[] = {sClassic,  sModern,  sCustom};
+
+static void DrawChoices_Mode_Classic_Modern_Selector(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_MODE_CLASSIC_MODERN);
+    DrawChoices_Options_Three(sText_Mode_Strings, selection, y, active);
+    
+    if (selection == 0)
+    {
+        sOptions->sel_mode[MENUITEM_MODE_ALTERNATE_SPAWNS]          = TX_MODE_ALTERNATE_SPAWNS;
+        sOptions->sel_mode[MENUITEM_MODE_INFINITE_TMS]              = TX_MODE_INFINITE_TMS;
+        sOptions->sel_mode[MENUITEM_MODE_SURVIVE_POISON]            = TX_MODE_SURVIVE_POISON;
+        sOptions->sel_mode[MENUITEM_MODE_SYNCHRONIZE]               = TX_MODE_NEW_SYNCHRONIZE;
+        sOptions->sel_mode[MENUITEM_MODE_MINTS]                     = TX_MODE_MINTS;
+        sOptions->sel_mode[MENUITEM_MODE_NEW_CITRUS]                = TX_MODE_NEW_CITRUS;
+    }
+    else if (selection == 1)
+    {
+        sOptions->sel_mode[MENUITEM_MODE_ALTERNATE_SPAWNS]          = !TX_MODE_ALTERNATE_SPAWNS;
+        sOptions->sel_mode[MENUITEM_MODE_INFINITE_TMS]              = !TX_MODE_INFINITE_TMS;
+        sOptions->sel_mode[MENUITEM_MODE_SURVIVE_POISON]            = !TX_MODE_SURVIVE_POISON;
+        sOptions->sel_mode[MENUITEM_MODE_SYNCHRONIZE]               = !TX_MODE_NEW_SYNCHRONIZE;
+        sOptions->sel_mode[MENUITEM_MODE_MINTS]                     = !TX_MODE_MINTS;
+        sOptions->sel_mode[MENUITEM_MODE_NEW_CITRUS]                = !TX_MODE_NEW_CITRUS;
+    }
 }
 
 static const u8 sText_Random[]  = _("RANDOM");
