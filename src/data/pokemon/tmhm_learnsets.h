@@ -1364,6 +1364,7 @@ const union {
         .IRON_TAIL = TRUE,
         .RETURN = TRUE,
         .DIG = TRUE,
+        .PSYCHIC = TRUE,
         .BRICK_BREAK = TRUE,
         .DOUBLE_TEAM = TRUE,
         .AERIAL_ACE = TRUE,
