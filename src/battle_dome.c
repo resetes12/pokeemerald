@@ -2426,8 +2426,54 @@ static void InitDomeTrainers(void)
             rankingScores[i] += statValues[STAT_SPDEF];
             rankingScores[i] += statValues[STAT_SPEED];
             rankingScores[i] += statValues[STAT_HP];
-            monTypesBits |= gBitTable[gSpeciesInfo[gFacilityTrainerMons[DOME_MONS[i][j]].species].types[0]];
-            monTypesBits |= gBitTable[gSpeciesInfo[gFacilityTrainerMons[DOME_MONS[i][j]].species].types[1]];
+            if ((gSaveBlock1Ptr->tx_Mode_Modern_Types == 0) 
+                && (species == SPECIES_ARBOK 
+                || species == SPECIES_PARASECT 
+                || species == SPECIES_GOLDUCK
+                || species == SPECIES_MEGANIUM
+                || species == SPECIES_TYPHLOSION
+                || species == SPECIES_FERALIGATR
+                || species == SPECIES_NOCTOWL
+                || species == SPECIES_SUNFLORA
+                || species == SPECIES_STANTLER
+                || species == SPECIES_DELCATTY
+                || species == SPECIES_GULPIN
+                || species == SPECIES_SWALOT
+                || species == SPECIES_LUVDISC))
+                {
+                    monTypesBits |= gBitTable[gSpeciesInfo[gFacilityTrainerMons[DOME_MONS[i][j]].species].types_old[0]];
+                    monTypesBits |= gBitTable[gSpeciesInfo[gFacilityTrainerMons[DOME_MONS[i][j]].species].types_old[1]];
+                }
+            else if ((gSaveBlock1Ptr->tx_Mode_Fairy_Types == 0) 
+                && (species == SPECIES_JIGGLYPUFF 
+                || species == SPECIES_WIGGLYTUFF
+                || species == SPECIES_CLEFAIRY
+                || species == SPECIES_CLEFABLE
+                || species == SPECIES_MR_MIME
+                || species == SPECIES_CLEFFA
+                || species == SPECIES_IGGLYBUFF
+                || species == SPECIES_TOGEPI
+                || species == SPECIES_TOGETIC
+                || species == SPECIES_MARILL
+                || species == SPECIES_AZUMARILL
+                || species == SPECIES_SNUBBULL
+                || species == SPECIES_GRANBULL
+                || species == SPECIES_RALTS
+                || species == SPECIES_KIRLIA
+                || species == SPECIES_GARDEVOIR
+                || species == SPECIES_AZURILL
+                || species == SPECIES_MAWILE
+                || species == SPECIES_MIME_JR
+                || species == SPECIES_TOGEKISS))
+                {
+                    monTypesBits |= gBitTable[gSpeciesInfo[gFacilityTrainerMons[DOME_MONS[i][j]].species].types_old[0]];
+                    monTypesBits |= gBitTable[gSpeciesInfo[gFacilityTrainerMons[DOME_MONS[i][j]].species].types_old[1]];
+                }
+            else
+            {
+                monTypesBits |= gBitTable[gSpeciesInfo[gFacilityTrainerMons[DOME_MONS[i][j]].species].types[0]];
+                monTypesBits |= gBitTable[gSpeciesInfo[gFacilityTrainerMons[DOME_MONS[i][j]].species].types[1]];
+            }
         }
 
         for (monTypesCount = 0, j = 0; j < 32; j++)
@@ -2532,23 +2578,36 @@ static void CalcDomeMonStats(u16 species, int level, int ivs, u8 evBits, u8 natu
     else
     {
         int n = 2 * gSpeciesInfo[species].baseHP;
+        int n_old = 2 * gSpeciesInfo[species].baseHP_old;
         switch(gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer)
         {
         case 0:
             break;
         case 1: 
-            n = 2 * 100;
+            if ((gSpeciesInfo[species].baseHP_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+                n_old = 2 * 100;
+            else
+                n = 2 * 100;
             break;
         case 2: 
-            n = 2 * 255;
+            if ((gSpeciesInfo[species].baseHP_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+                n_old = 2 * 255;
+            else
+                n = 2 * 255;
             break;
         case 3: 
-            n = 2 * 500;
+            if ((gSpeciesInfo[species].baseHP_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+                n_old = 2 * 500;
+            else
+                n = 2 * 500;
             break;
         default:
             break;
         }
-        stats[STAT_HP] = (((n + ivs + evs[STAT_HP] / 4) * level) / 100) + level + 10;
+        if ((gSpeciesInfo[species].baseHP_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+            stats[STAT_HP] = (((n_old + ivs + evs[STAT_HP] / 4) * level) / 100) + level + 10;
+        else
+            stats[STAT_HP] = (((n + ivs + evs[STAT_HP] / 4) * level) / 100) + level + 10;
     }
 
 
@@ -2563,11 +2622,50 @@ static void CalcDomeMonStats(u16 species, int level, int ivs, u8 evBits, u8 natu
     }
     else
     {
-        CALC_STAT(baseAttack, STAT_ATK);
-        CALC_STAT(baseDefense, STAT_DEF);
-        CALC_STAT(baseSpeed, STAT_SPEED);
-        CALC_STAT(baseSpAttack, STAT_SPATK);
-        CALC_STAT(baseSpDefense, STAT_SPDEF);
+        if ((gSpeciesInfo[species].baseAttack_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+        {
+            CALC_STAT(baseAttack_old, STAT_ATK);
+        }
+        else
+        {
+            CALC_STAT(baseAttack, STAT_ATK);
+        }
+        
+        if ((gSpeciesInfo[species].baseDefense_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+        {
+            CALC_STAT(baseDefense_old, STAT_DEF);
+        }
+        else
+        {
+            CALC_STAT(baseDefense, STAT_DEF);
+        }
+
+        if ((gSpeciesInfo[species].baseSpeed_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+        {
+            CALC_STAT(baseSpeed_old, STAT_SPEED);
+        }
+        else
+        {
+            CALC_STAT(baseSpeed, STAT_SPEED);
+        }
+
+        if ((gSpeciesInfo[species].baseSpAttack_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+        {
+            CALC_STAT(baseSpAttack_old, STAT_SPATK);
+        }
+        else
+        {
+            CALC_STAT(baseSpAttack, STAT_SPATK);
+        }
+
+        if ((gSpeciesInfo[species].baseSpDefense_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+        {
+            CALC_STAT(baseSpDefense_old, STAT_SPDEF);
+        }
+        else
+        {
+            CALC_STAT(baseSpDefense, STAT_SPDEF);
+        }
     }
 }
 

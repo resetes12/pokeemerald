@@ -1426,8 +1426,8 @@ static void ModulateDmgByType(u8 multiplier)
 
 s32 GetTypeEffectiveness(struct Pokemon *mon, u8 moveType) {
     u16 species = GetMonData(mon, MON_DATA_SPECIES);
-    u8 type1 = gSpeciesInfo[species].types[0];
-    u8 type2 = gSpeciesInfo[species].types[1];
+    u8 type1 = GetTypeBySpecies(species, 1);
+    u8 type2 = GetTypeBySpecies(species, 2);
     s32 i = 0;
     u8 multiplier;
     s32 flags = 0;
@@ -9395,7 +9395,12 @@ static void Cmd_trydobeatup(void)
                 gBattleMoveDamage /= baseStat[gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer];
             }
             else
-                gBattleMoveDamage /= gSpeciesInfo[gBattleMons[gBattlerTarget].species].baseDefense;
+            {
+                if ((gSpeciesInfo[gBattleMons[gBattlerTarget].species].baseDefense_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+                    gBattleMoveDamage /= gSpeciesInfo[gBattleMons[gBattlerTarget].species].baseDefense_old;
+                else
+                    gBattleMoveDamage /= gSpeciesInfo[gBattleMons[gBattlerTarget].species].baseDefense;
+            }
             gBattleMoveDamage = (gBattleMoveDamage / 50) + 2;
             if (gProtectStructs[gBattlerAttacker].helpingHand)
                 gBattleMoveDamage = gBattleMoveDamage * 15 / 10;

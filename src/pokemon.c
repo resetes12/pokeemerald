@@ -5806,15 +5806,22 @@ void CalculateMonStats(struct Pokemon *mon)
     else
     {
         s32 n = 2 * gSpeciesInfo[species].baseHP + hpIV;
+        s32 n_old = 2 * gSpeciesInfo[species].baseHP_old + hpIV;
         switch(gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer)
         {
         case 0:
             break;
         case 1: 
-            n = 2 * 100 + hpIV;
+            if ((gSpeciesInfo[species].baseHP_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+                n_old = 2 * 100 + hpIV;
+            else
+                n = 2 * 100 + hpIV;
             break;
         case 2: 
-            n = 2 * 255 + hpIV;
+            if ((gSpeciesInfo[species].baseHP_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+                n_old = 2 * 255 + hpIV;
+            else
+                n = 2 * 255 + hpIV;
             break;
         case 3: 
             n = 2 * 500 + hpIV;
@@ -5824,11 +5831,17 @@ void CalculateMonStats(struct Pokemon *mon)
         }
         if (FlagGet(FLAG_LIMIT_TO_50) == TRUE) //Try to limit mons to level 50 for frontier)
         {
-            newMaxHP = (((n + hpEV / 4) * 50) / 100) + 50 + 10;
+            if ((gSpeciesInfo[species].baseHP_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+                newMaxHP = (((n_old + hpEV / 4) * 50) / 100) + 50 + 10;
+            else
+                newMaxHP = (((n + hpEV / 4) * 50) / 100) + 50 + 10;
         }
         else
         {
-            newMaxHP = (((n + hpEV / 4) * level) / 100) + level + 10;
+            if ((gSpeciesInfo[species].baseHP_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+                newMaxHP = (((n_old + hpEV / 4) * level) / 100) + level + 10;
+            else
+                newMaxHP = (((n + hpEV / 4) * level) / 100) + level + 10;
         }
     }
 
@@ -5849,11 +5862,50 @@ void CalculateMonStats(struct Pokemon *mon)
     }
     else if (FlagGet(FLAG_LIMIT_TO_50) == TRUE) //Try to limit mons to level 50 for frontier)
     {
-        CALC_STAT50(baseAttack, attackIV, attackEV, STAT_ATK, MON_DATA_ATK)
-        CALC_STAT50(baseDefense, defenseIV, defenseEV, STAT_DEF, MON_DATA_DEF)
-        CALC_STAT50(baseSpeed, speedIV, speedEV, STAT_SPEED, MON_DATA_SPEED)
-        CALC_STAT50(baseSpAttack, spAttackIV, spAttackEV, STAT_SPATK, MON_DATA_SPATK)
-        CALC_STAT50(baseSpDefense, spDefenseIV, spDefenseEV, STAT_SPDEF, MON_DATA_SPDEF)
+        if ((gSpeciesInfo[species].baseAttack_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+        {
+            CALC_STAT50(baseAttack_old, attackIV, attackEV, STAT_ATK, MON_DATA_ATK)
+        }
+        else
+        {
+            CALC_STAT50(baseAttack, attackIV, attackEV, STAT_ATK, MON_DATA_ATK)
+        }
+
+        if ((gSpeciesInfo[species].baseDefense_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+        {
+            CALC_STAT50(baseDefense_old, defenseIV, defenseEV, STAT_DEF, MON_DATA_DEF)
+        }
+        else
+        {
+            CALC_STAT50(baseDefense, defenseIV, defenseEV, STAT_DEF, MON_DATA_DEF)
+        }
+
+        if ((gSpeciesInfo[species].baseSpeed_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+        {
+            CALC_STAT50(baseSpeed_old, speedIV, speedEV, STAT_SPEED, MON_DATA_SPEED)
+        }
+        else
+        {
+            CALC_STAT50(baseSpeed, speedIV, speedEV, STAT_SPEED, MON_DATA_SPEED)
+        }
+
+        if ((gSpeciesInfo[species].baseSpAttack_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+        {
+            CALC_STAT50(baseSpAttack_old, spAttackIV, spAttackEV, STAT_SPATK, MON_DATA_SPATK)
+        }
+        else
+        {
+            CALC_STAT50(baseSpAttack, spAttackIV, spAttackEV, STAT_SPATK, MON_DATA_SPATK)
+        }
+
+        if ((gSpeciesInfo[species].baseSpDefense_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+        {
+            CALC_STAT50(baseSpDefense_old, spDefenseIV, spDefenseEV, STAT_SPDEF, MON_DATA_SPDEF)
+        }
+        else
+        {
+            CALC_STAT50(baseSpDefense, spDefenseIV, spDefenseEV, STAT_SPDEF, MON_DATA_SPDEF)
+        } 
     }
     else if ((FlagGet(FLAG_LIMIT_TO_50) == TRUE) && (gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer)) //Try to limit mons to level 50 for frontier)
     {
@@ -5866,11 +5918,50 @@ void CalculateMonStats(struct Pokemon *mon)
     }
     else
     {
-        CALC_STAT(baseAttack, attackIV, attackEV, STAT_ATK, MON_DATA_ATK)
-        CALC_STAT(baseDefense, defenseIV, defenseEV, STAT_DEF, MON_DATA_DEF)
-        CALC_STAT(baseSpeed, speedIV, speedEV, STAT_SPEED, MON_DATA_SPEED)
-        CALC_STAT(baseSpAttack, spAttackIV, spAttackEV, STAT_SPATK, MON_DATA_SPATK)
-        CALC_STAT(baseSpDefense, spDefenseIV, spDefenseEV, STAT_SPDEF, MON_DATA_SPDEF)
+        if ((gSpeciesInfo[species].baseAttack_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+        {
+            CALC_STAT(baseAttack_old, attackIV, attackEV, STAT_ATK, MON_DATA_ATK)
+        }
+        else
+        {
+            CALC_STAT(baseAttack, attackIV, attackEV, STAT_ATK, MON_DATA_ATK)
+        }
+
+        if ((gSpeciesInfo[species].baseDefense_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+        {
+            CALC_STAT(baseDefense_old, defenseIV, defenseEV, STAT_DEF, MON_DATA_DEF)
+        }
+        else
+        {
+            CALC_STAT(baseDefense, defenseIV, defenseEV, STAT_DEF, MON_DATA_DEF)
+        }
+
+        if ((gSpeciesInfo[species].baseSpeed_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+        {
+            CALC_STAT(baseSpeed_old, speedIV, speedEV, STAT_SPEED, MON_DATA_SPEED)
+        }
+        else
+        {
+            CALC_STAT(baseSpeed, speedIV, speedEV, STAT_SPEED, MON_DATA_SPEED)
+        }
+
+        if ((gSpeciesInfo[species].baseSpAttack_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+        {
+            CALC_STAT(baseSpAttack_old, spAttackIV, spAttackEV, STAT_SPATK, MON_DATA_SPATK)
+        }
+        else
+        {
+            CALC_STAT(baseSpAttack, spAttackIV, spAttackEV, STAT_SPATK, MON_DATA_SPATK)
+        }
+
+        if ((gSpeciesInfo[species].baseSpDefense_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+        {
+            CALC_STAT(baseSpDefense_old, spDefenseIV, spDefenseEV, STAT_SPDEF, MON_DATA_SPDEF)
+        }
+        else
+        {
+            CALC_STAT(baseSpDefense, spDefenseIV, spDefenseEV, STAT_SPDEF, MON_DATA_SPDEF)
+        } 
     }
 
     if (species == SPECIES_SHEDINJA)
@@ -11297,10 +11388,60 @@ u8 GetTypeBySpecies(u16 species, u8 typeNum)
 {
     u8 type;
 
-    if (typeNum == 1)
-        type = gSpeciesInfo[species].types[0];
+    if ((gSaveBlock1Ptr->tx_Mode_Modern_Types == 0) 
+    && (species == SPECIES_ARBOK 
+    || species == SPECIES_PARASECT 
+    || species == SPECIES_GOLDUCK
+    || species == SPECIES_MEGANIUM
+    || species == SPECIES_TYPHLOSION
+    || species == SPECIES_FERALIGATR
+    || species == SPECIES_NOCTOWL
+    || species == SPECIES_SUNFLORA
+    || species == SPECIES_STANTLER
+    || species == SPECIES_DELCATTY
+    || species == SPECIES_GULPIN
+    || species == SPECIES_SWALOT
+    || species == SPECIES_LUVDISC))
+    {
+        if (typeNum == 1)
+            type = gSpeciesInfo[species].types_old[0];
+        else
+            type = gSpeciesInfo[species].types_old[1];
+    }
+    else if ((gSaveBlock1Ptr->tx_Mode_Fairy_Types == 0) 
+    && (species == SPECIES_JIGGLYPUFF 
+    || species == SPECIES_WIGGLYTUFF
+    || species == SPECIES_CLEFAIRY
+    || species == SPECIES_CLEFABLE
+    || species == SPECIES_MR_MIME
+    || species == SPECIES_CLEFFA
+    || species == SPECIES_IGGLYBUFF
+    || species == SPECIES_TOGEPI
+    || species == SPECIES_TOGETIC
+    || species == SPECIES_MARILL
+    || species == SPECIES_AZUMARILL
+    || species == SPECIES_SNUBBULL
+    || species == SPECIES_GRANBULL
+    || species == SPECIES_RALTS
+    || species == SPECIES_KIRLIA
+    || species == SPECIES_GARDEVOIR
+    || species == SPECIES_AZURILL
+    || species == SPECIES_MAWILE
+    || species == SPECIES_MIME_JR
+    || species == SPECIES_TOGEKISS))
+    {
+        if (typeNum == 1)
+            type = gSpeciesInfo[species].types_old[0];
+        else
+            type = gSpeciesInfo[species].types_old[1];
+    }
     else
-        type = gSpeciesInfo[species].types[1];
+    {
+        if (typeNum == 1)
+            type = gSpeciesInfo[species].types[0];
+        else
+            type = gSpeciesInfo[species].types[1];
+    }
 
     if (!gSaveBlock1Ptr->tx_Random_Type)
         return type;

@@ -267,6 +267,12 @@ struct PokemonStats
     u16 ability0;
     u16 ability1;
     u16 abilityHidden;
+    u8  baseHP_old;
+    u8  baseSpeed_old;
+    u8  baseAttack_old;
+    u8  baseSpAttack_old;
+    u8  baseDefense_old;
+    u8  baseSpDefense_old;
 };
 
 struct EvoScreenData
@@ -4937,12 +4943,30 @@ static void SaveMonDataInStruct(void)
 
     sPokedexView->sPokemonStats.species             = species;
     sPokedexView->sPokemonStats.genderRatio         = gSpeciesInfo[species].genderRatio;
-    sPokedexView->sPokemonStats.baseHP              = gSpeciesInfo[species].baseHP;
-    sPokedexView->sPokemonStats.baseSpeed           = gSpeciesInfo[species].baseSpeed;
-    sPokedexView->sPokemonStats.baseAttack          = gSpeciesInfo[species].baseAttack;
-    sPokedexView->sPokemonStats.baseSpAttack        = gSpeciesInfo[species].baseSpAttack;
-    sPokedexView->sPokemonStats.baseDefense         = gSpeciesInfo[species].baseDefense;
-    sPokedexView->sPokemonStats.baseSpDefense       = gSpeciesInfo[species].baseSpDefense;
+    if ((gSpeciesInfo[species].baseHP_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+        sPokedexView->sPokemonStats.baseHP_old              = gSpeciesInfo[species].baseHP_old;
+    else
+        sPokedexView->sPokemonStats.baseHP              = gSpeciesInfo[species].baseHP;
+    if ((gSpeciesInfo[species].baseSpeed_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+        sPokedexView->sPokemonStats.baseSpeed_old           = gSpeciesInfo[species].baseSpeed_old;
+    else
+        sPokedexView->sPokemonStats.baseSpeed           = gSpeciesInfo[species].baseSpeed;
+    if ((gSpeciesInfo[species].baseAttack_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+        sPokedexView->sPokemonStats.baseAttack_old          = gSpeciesInfo[species].baseAttack_old;
+    else
+        sPokedexView->sPokemonStats.baseAttack          = gSpeciesInfo[species].baseAttack;
+    if ((gSpeciesInfo[species].baseSpAttack_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+        sPokedexView->sPokemonStats.baseSpAttack_old        = gSpeciesInfo[species].baseSpAttack_old;
+    else
+        sPokedexView->sPokemonStats.baseSpAttack        = gSpeciesInfo[species].baseSpAttack;
+    if ((gSpeciesInfo[species].baseDefense_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+        sPokedexView->sPokemonStats.baseDefense_old         = gSpeciesInfo[species].baseDefense_old;
+    else
+        sPokedexView->sPokemonStats.baseDefense         = gSpeciesInfo[species].baseDefense;
+    if ((gSpeciesInfo[species].baseSpDefense_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+        sPokedexView->sPokemonStats.baseSpDefense_old       = gSpeciesInfo[species].baseSpDefense_old;
+    else
+        sPokedexView->sPokemonStats.baseSpDefense       = gSpeciesInfo[species].baseSpDefense;
     sPokedexView->sPokemonStats.differentEVs        = differentEVs;
     sPokedexView->sPokemonStats.evYield_HP          = EVs[0];
     sPokedexView->sPokemonStats.evYield_Speed       = EVs[1];
@@ -5609,34 +5633,53 @@ static void PrintStatsScreen_Left(u8 taskId)
     u8 EVs[6] = {sPokedexView->sPokemonStats.evYield_HP, sPokedexView->sPokemonStats.evYield_Speed, sPokedexView->sPokemonStats.evYield_Attack, sPokedexView->sPokemonStats.evYield_SpAttack, sPokedexView->sPokemonStats.evYield_Defense, sPokedexView->sPokemonStats.evYield_SpDefense};
     u8 differentEVs = 0;
     u8 i;
+    u16 species = NationalPokedexNumToSpeciesHGSS(sPokedexListItem->dexNum);
 
     //Base stats
     if (gTasks[taskId].data[5] == 0)
     {
         PrintStatsScreenTextSmall(WIN_STATS_LEFT, gText_Stats_HP, base_x, base_y + base_y_offset*base_i);
-        ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseHP, STR_CONV_MODE_RIGHT_ALIGN, 3);
+        if ((gSpeciesInfo[species].baseHP_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+            ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseHP_old, STR_CONV_MODE_RIGHT_ALIGN, 3);
+        else
+            ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseHP, STR_CONV_MODE_RIGHT_ALIGN, 3);
         PrintStatsScreenTextSmall(WIN_STATS_LEFT, strBase, base_x+base_x_first_row, base_y + base_y_offset*base_i);
 
         PrintStatsScreenTextSmall(WIN_STATS_LEFT, gText_Stats_Speed, base_x+base_x_second_row, base_y + base_y_offset*base_i);
-        ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseSpeed, STR_CONV_MODE_RIGHT_ALIGN, 3);
+        if ((gSpeciesInfo[species].baseSpeed_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+            ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseSpeed_old, STR_CONV_MODE_RIGHT_ALIGN, 3);
+        else
+            ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseSpeed, STR_CONV_MODE_RIGHT_ALIGN, 3);
         PrintStatsScreenTextSmall(WIN_STATS_LEFT, strBase, base_x+base_x_offset, base_y + base_y_offset*base_i);
 
         base_i++;
         PrintStatsScreenTextSmall(WIN_STATS_LEFT, gText_Stats_Attack, base_x, base_y + base_y_offset*base_i);
-        ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseAttack, STR_CONV_MODE_RIGHT_ALIGN, 3);
+        if ((gSpeciesInfo[species].baseAttack_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+            ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseAttack_old, STR_CONV_MODE_RIGHT_ALIGN, 3);
+        else
+            ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseAttack, STR_CONV_MODE_RIGHT_ALIGN, 3);
         PrintStatsScreenTextSmall(WIN_STATS_LEFT, strBase, base_x+base_x_first_row, base_y + base_y_offset*base_i);
 
         PrintStatsScreenTextSmall(WIN_STATS_LEFT, gText_Stats_SpAttack, base_x+base_x_second_row, base_y + base_y_offset*base_i);
-        ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseSpAttack, STR_CONV_MODE_RIGHT_ALIGN, 3);
+        if ((gSpeciesInfo[species].baseSpAttack_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+            ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseSpAttack_old, STR_CONV_MODE_RIGHT_ALIGN, 3);
+        else
+            ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseSpAttack, STR_CONV_MODE_RIGHT_ALIGN, 3);
         PrintStatsScreenTextSmall(WIN_STATS_LEFT, strBase, base_x+base_x_offset, base_y + base_y_offset*base_i);
 
         base_i++;
         PrintStatsScreenTextSmall(WIN_STATS_LEFT, gText_Stats_Defense, base_x, base_y + base_y_offset*base_i);
-        ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseDefense, STR_CONV_MODE_RIGHT_ALIGN, 3);
+        if ((gSpeciesInfo[species].baseDefense_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+            ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseDefense_old, STR_CONV_MODE_RIGHT_ALIGN, 3);
+        else
+            ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseDefense, STR_CONV_MODE_RIGHT_ALIGN, 3);
         PrintStatsScreenTextSmall(WIN_STATS_LEFT, strBase, base_x+base_x_first_row, base_y + base_y_offset*base_i);
 
         PrintStatsScreenTextSmall(WIN_STATS_LEFT, gText_Stats_SpDefense, base_x+base_x_second_row, base_y + base_y_offset*base_i);
-        ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseSpDefense, STR_CONV_MODE_RIGHT_ALIGN, 3);
+        if ((gSpeciesInfo[species].baseSpDefense_old != 0) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 0))
+            ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseSpDefense_old, STR_CONV_MODE_RIGHT_ALIGN, 3);
+        else
+            ConvertIntToDecimalStringN(strBase, sPokedexView->sPokemonStats.baseSpDefense, STR_CONV_MODE_RIGHT_ALIGN, 3);
         PrintStatsScreenTextSmall(WIN_STATS_LEFT, strBase, base_x+base_x_offset, base_y + base_y_offset*base_i);
         base_i++;
     }
@@ -7801,8 +7844,8 @@ static int DoPokedexSearch(u8 dexMode, u8 order, u8 abcGroup, u8 bodyColor, u8 t
                 {
                     species = NationalPokedexNumToSpecies(sPokedexView->pokedexList[i].dexNum);
 
-                    types[0] = gSpeciesInfo[species].types[0];
-                    types[1] = gSpeciesInfo[species].types[1];
+                    types[0] = GetTypeBySpecies(species, 1);
+                    types[1] = GetTypeBySpecies(species, 2);
                     if (types[0] == type1 || types[1] == type1)
                     {
                         sPokedexView->pokedexList[resultsCount] = sPokedexView->pokedexList[i];
@@ -7819,8 +7862,8 @@ static int DoPokedexSearch(u8 dexMode, u8 order, u8 abcGroup, u8 bodyColor, u8 t
                 {
                     species = NationalPokedexNumToSpecies(sPokedexView->pokedexList[i].dexNum);
 
-                    types[0] = gSpeciesInfo[species].types[0];
-                    types[1] = gSpeciesInfo[species].types[1];
+                    types[0] = GetTypeBySpecies(species, 1);
+                    types[1] = GetTypeBySpecies(species, 2);
                     if ((types[0] == type1 && types[1] == type2) || (types[0] == type2 && types[1] == type1))
                     {
                         sPokedexView->pokedexList[resultsCount] = sPokedexView->pokedexList[i];
