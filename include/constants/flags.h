@@ -1229,9 +1229,9 @@
 #define FLAG_LANDMARK_DRACO_CHAMBER                                 0x49B
 #define FLAG_RAIKOU_BATTLE_2                                        0x49C
 #define FLAG_SUICUNE_BATTLE_1                                       0x49D
-#define FLAG_SUICUNE_BATTLE_2                                       0x49E
-#define FLAG_FEEBAS_TRAINER_DEFEATED                                0x49F
-#define FLAG_FEEBAS_CHANCE                                          0x4A0 // Unused Flag
+#define FLAG_SUICUNE_BATTLE_2                                       0x49E // Unused Flag
+#define FLAG_UNUSED_0x49F                                           0x49F // Unused Flag
+#define FLAG_UNUSED_0x4A0                                           0x4A0 // Unused Flag
 #define FLAG_UNUSED_0x4A1                                           0x4A1 // Unused Flag
 #define FLAG_UNUSED_0x4A2                                           0x4A2 // Unused Flag
 #define FLAG_UNUSED_0x4A3                                           0x4A3 // Unused Flag
