@@ -3953,7 +3953,7 @@ static void HighlightSubmenuScreenSelectBarItem(u8 a, u16 b)
 
 u8 DisplayCaughtMonDexPage(u16 dexNum, u32 otId, u32 personality)
 {
-    u8 taskId = CreateTask(Task_DisplayCaughtMonDexPage, 0);
+    u8 taskId = CreateTask(Task_DisplayCaughtMonDexPageHGSS, 0);
 
     gTasks[taskId].tState = 0;
     gTasks[taskId].tDexNum = dexNum;

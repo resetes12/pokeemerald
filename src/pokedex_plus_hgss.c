@@ -438,7 +438,6 @@ static void Task_SwitchScreensFromSizeScreen(u8);
 static void LoadScreenSelectBarMain(u16);
 static void HighlightScreenSelectBarItem(u8, u16);
 static void HighlightSubmenuScreenSelectBarItem(u8, u16);
-static void Task_DisplayCaughtMonDexPage(u8);
 static void Task_HandleCaughtMonPageInput(u8);
 static void Task_ExitCaughtMonPage(u8);
 static void SpriteCB_SlideCaughtMonToCenter(struct Sprite *sprite);
@@ -4103,7 +4102,7 @@ static void HighlightSubmenuScreenSelectBarItem(u8 a, u16 b)
 #define tPersonalityLo data[14]
 #define tPersonalityHi data[15]
 
-static void Task_DisplayCaughtMonDexPage(u8 taskId)
+void Task_DisplayCaughtMonDexPageHGSS(u8 taskId)
 {
     u8 spriteId;
     u16 species = gTasks[taskId].tSpecies;
