@@ -62,6 +62,7 @@
 #define TX_MODE_FAIRY_TYPES 0
 #define TX_MODE_NEW_STATS 0
 #define TX_MODE_STURDY 0
+#define TX_MODE_MODERN_MOVES 0
 
 // randomization types
 #define TX_RANDOM_T_WILD_POKEMON    0

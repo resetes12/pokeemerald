@@ -5387,11 +5387,23 @@ static void PrintStatsScreen_Moves_Top(u8 taskId)
             level = gLevelUpLearnsets[species][(selected-numEggMoves)].level;
         #else
             //Calculate level of the move
-            while (((gLevelUpLearnsets[species][(selected-numEggMoves)] & LEVEL_UP_MOVE_LV) != (level << 9)))
+            if (gSaveBlock1Ptr->tx_Mode_Modern_Moves == 0)
             {
-                level++;
-                if (gLevelUpLearnsets[species][(selected-numEggMoves)] == LEVEL_UP_END)
-                    level = 100;
+                while (((gLevelUpLearnsets_Original[species][(selected-numEggMoves)] & LEVEL_UP_MOVE_LV) != (level << 9)))
+                {
+                    level++;
+                    if (gLevelUpLearnsets_Original[species][(selected-numEggMoves)] == LEVEL_UP_END)
+                        level = 100;
+                }
+            }
+            else
+            {
+                while (((gLevelUpLearnsets[species][(selected-numEggMoves)] & LEVEL_UP_MOVE_LV) != (level << 9)))
+                {
+                    level++;
+                    if (gLevelUpLearnsets[species][(selected-numEggMoves)] == LEVEL_UP_END)
+                        level = 100;
+                }
             }
         #endif
         ConvertIntToDecimalStringN(gStringVar1, level, STR_CONV_MODE_LEFT_ALIGN, 3); //Move learn lvl

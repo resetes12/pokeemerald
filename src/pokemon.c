@@ -1556,6 +1556,7 @@ const s8 gNatureStatTable[NUM_NATURES][NUM_NATURE_STATS] =
 #include "data/pokemon/experience_tables.h"
 #include "data/pokemon/species_info.h"
 #include "data/pokemon/level_up_learnsets.h"
+#include "data/pokemon/level_up_learnsets_original.h"
 #include "data/pokemon/evolution.h"
 #include "data/pokemon/level_up_learnset_pointers.h"
 
@@ -6089,44 +6090,87 @@ void GiveBoxMonInitialMoveset(struct BoxPokemon *boxMon)
     s32 level = GetLevelFromBoxMonExp(boxMon);
     s32 i;
     bool8 firstMoveGiven = FALSE;
-
-    for (i = 0; gLevelUpLearnsets[species][i] != LEVEL_UP_END; i++)
+    if (gSaveBlock1Ptr->tx_Mode_Modern_Moves == 0)
     {
-        u16 moveLevel;
-        u16 move;
-
-        moveLevel = (gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_LV);
-
-        if (moveLevel > (level << 9))
-            break;
-
-        move = (gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_ID);
-
-        if (gSaveBlock1Ptr->tx_Random_Moves) //tx_randomizer_and_challenges
+        for (i = 0; gLevelUpLearnsets_Original[species][i] != LEVEL_UP_END; i++)
         {
-            move = GetRandomMove(move, species);
-            if (!FlagGet(FLAG_SYS_POKEMON_GET) && !firstMoveGiven)
+            u16 moveLevel;
+            u16 move;
+
+            moveLevel = (gLevelUpLearnsets_Original[species][i] & LEVEL_UP_MOVE_LV);
+
+            if (moveLevel > (level << 9))
+                break;
+
+            move = (gLevelUpLearnsets_Original[species][i] & LEVEL_UP_MOVE_ID);
+
+            if (gSaveBlock1Ptr->tx_Random_Moves) //tx_randomizer_and_challenges
             {
-                u8 j;
-
-                #ifndef NDEBUG
-                MgbaPrintf(MGBA_LOG_DEBUG, "Generate 1 damaging move");
-                #endif
-
-                for (j=0; j<100; j++)
+                move = GetRandomMove(move, species);
+                if (!FlagGet(FLAG_SYS_POKEMON_GET) && !firstMoveGiven)
                 {
-                    if (gBattleMoves[move].power <= 1)
-                        move = GetRandomMove(move, species);
-                    else
-                        break;
+                    u8 j;
+
+                    #ifndef NDEBUG
+                    MgbaPrintf(MGBA_LOG_DEBUG, "Generate 1 damaging move");
+                    #endif
+
+                    for (j=0; j<100; j++)
+                    {
+                        if (gBattleMoves[move].power <= 1)
+                            move = GetRandomMove(move, species);
+                        else
+                            break;
+                    }
                 }
             }
-        }
 
-        if (GiveMoveToBoxMon(boxMon, move) == MON_HAS_MAX_MOVES)
-            DeleteFirstMoveAndGiveMoveToBoxMon(boxMon, move);
-        if (!firstMoveGiven)
-            firstMoveGiven = TRUE;
+            if (GiveMoveToBoxMon(boxMon, move) == MON_HAS_MAX_MOVES)
+                DeleteFirstMoveAndGiveMoveToBoxMon(boxMon, move);
+            if (!firstMoveGiven)
+                firstMoveGiven = TRUE;
+        }
+    }
+    else
+    {
+        for (i = 0; gLevelUpLearnsets[species][i] != LEVEL_UP_END; i++)
+        {
+            u16 moveLevel;
+            u16 move;
+
+            moveLevel = (gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_LV);
+
+            if (moveLevel > (level << 9))
+                break;
+
+            move = (gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_ID);
+
+            if (gSaveBlock1Ptr->tx_Random_Moves) //tx_randomizer_and_challenges
+            {
+                move = GetRandomMove(move, species);
+                if (!FlagGet(FLAG_SYS_POKEMON_GET) && !firstMoveGiven)
+                {
+                    u8 j;
+
+                    #ifndef NDEBUG
+                    MgbaPrintf(MGBA_LOG_DEBUG, "Generate 1 damaging move");
+                    #endif
+
+                    for (j=0; j<100; j++)
+                    {
+                        if (gBattleMoves[move].power <= 1)
+                            move = GetRandomMove(move, species);
+                        else
+                            break;
+                    }
+                }
+            }
+
+            if (GiveMoveToBoxMon(boxMon, move) == MON_HAS_MAX_MOVES)
+                DeleteFirstMoveAndGiveMoveToBoxMon(boxMon, move);
+            if (!firstMoveGiven)
+                firstMoveGiven = TRUE;
+        }
     }
 }
 
@@ -6140,25 +6184,51 @@ u16 MonTryLearningNewMove(struct Pokemon *mon, bool8 firstMove)
     // the game needs to know whether you decided to
     // learn it or keep the old set to avoid asking
     // you to learn the same move over and over again
-    if (firstMove)
+    if (gSaveBlock1Ptr->tx_Mode_Modern_Moves == 0)
     {
-        sLearningMoveTableID = 0;
-
-        while ((gLevelUpLearnsets[species][sLearningMoveTableID] & LEVEL_UP_MOVE_LV) != (level << 9))
+        if (firstMove)
         {
+            sLearningMoveTableID = 0;
+
+            while ((gLevelUpLearnsets_Original[species][sLearningMoveTableID] & LEVEL_UP_MOVE_LV) != (level << 9))
+            {
+                sLearningMoveTableID++;
+                if (gLevelUpLearnsets_Original[species][sLearningMoveTableID] == LEVEL_UP_END)
+                    return MOVE_NONE;
+            }
+        }
+
+        if ((gLevelUpLearnsets_Original[species][sLearningMoveTableID] & LEVEL_UP_MOVE_LV) == (level << 9))
+        {
+            gMoveToLearn = (gLevelUpLearnsets_Original[species][sLearningMoveTableID] & LEVEL_UP_MOVE_ID);
+            if (gSaveBlock1Ptr->tx_Random_Moves) //tx_randomizer_and_challenges
+                gMoveToLearn = GetRandomMove(gMoveToLearn, species);
             sLearningMoveTableID++;
-            if (gLevelUpLearnsets[species][sLearningMoveTableID] == LEVEL_UP_END)
-                return MOVE_NONE;
+            retVal = GiveMoveToMon(mon, gMoveToLearn);
         }
     }
-
-    if ((gLevelUpLearnsets[species][sLearningMoveTableID] & LEVEL_UP_MOVE_LV) == (level << 9))
+    else
     {
-        gMoveToLearn = (gLevelUpLearnsets[species][sLearningMoveTableID] & LEVEL_UP_MOVE_ID);
-        if (gSaveBlock1Ptr->tx_Random_Moves) //tx_randomizer_and_challenges
-            gMoveToLearn = GetRandomMove(gMoveToLearn, species);
-        sLearningMoveTableID++;
-        retVal = GiveMoveToMon(mon, gMoveToLearn);
+        if (firstMove)
+        {
+            sLearningMoveTableID = 0;
+
+            while ((gLevelUpLearnsets[species][sLearningMoveTableID] & LEVEL_UP_MOVE_LV) != (level << 9))
+            {
+                sLearningMoveTableID++;
+                if (gLevelUpLearnsets[species][sLearningMoveTableID] == LEVEL_UP_END)
+                    return MOVE_NONE;
+            }
+        }
+
+        if ((gLevelUpLearnsets[species][sLearningMoveTableID] & LEVEL_UP_MOVE_LV) == (level << 9))
+        {
+            gMoveToLearn = (gLevelUpLearnsets[species][sLearningMoveTableID] & LEVEL_UP_MOVE_ID);
+            if (gSaveBlock1Ptr->tx_Random_Moves) //tx_randomizer_and_challenges
+                gMoveToLearn = GetRandomMove(gMoveToLearn, species);
+            sLearningMoveTableID++;
+            retVal = GiveMoveToMon(mon, gMoveToLearn);
+        }
     }
 
     return retVal;
@@ -9982,39 +10052,82 @@ u8 GetMoveRelearnerMoves(struct Pokemon *mon, u16 *moves)
     for (i = 0; i < MAX_MON_MOVES; i++)
         learnedMoves[i] = GetMonData(mon, MON_DATA_MOVE1 + i, 0);
 
-    for (i = 0; i < MAX_LEVEL_UP_MOVES; i++)
+    if (gSaveBlock1Ptr->tx_Mode_Modern_Moves == 0)
     {
-        u16 moveLevel;
-
-        if (gLevelUpLearnsets[species][i] == LEVEL_UP_END)
+        for (i = 0; i < MAX_LEVEL_UP_MOVES; i++)
         {
-            i = 0;
-            level = preEvLvl;
-            species = GetPreEvolution(species);
-        }
+            u16 moveLevel;
 
-        if (species == SPECIES_NONE)
-            break;
-
-        moveLevel = gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_LV;
-
-        if (moveLevel <= (level << 9))
-        {
-            for (j = 0; j < MAX_MON_MOVES && learnedMoves[j] != (gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_ID); j++)
-                ;
-
-            if (j == MAX_MON_MOVES)
+            if (gLevelUpLearnsets_Original[species][i] == LEVEL_UP_END)
             {
-                for (k = 0; k < numMoves && moves[k] != (gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_ID); k++)
+                i = 0;
+                level = preEvLvl;
+                species = GetPreEvolution(species);
+            }
+
+            if (species == SPECIES_NONE)
+                break;
+
+            moveLevel = gLevelUpLearnsets_Original[species][i] & LEVEL_UP_MOVE_LV;
+
+            if (moveLevel <= (level << 9))
+            {
+                for (j = 0; j < MAX_MON_MOVES && learnedMoves[j] != (gLevelUpLearnsets_Original[species][i] & LEVEL_UP_MOVE_ID); j++)
                     ;
 
-                if (k == numMoves)
+                if (j == MAX_MON_MOVES)
                 {
-                    //tx_randomizer_and_challenges
-                    move = gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_ID;
-                    if (gSaveBlock1Ptr->tx_Random_Moves) //tx_randomizer_and_challenges
-                        move = GetRandomMove(move, species);
-                    moves[numMoves++] = move;
+                    for (k = 0; k < numMoves && moves[k] != (gLevelUpLearnsets_Original[species][i] & LEVEL_UP_MOVE_ID); k++)
+                        ;
+
+                    if (k == numMoves)
+                    {
+                        //tx_randomizer_and_challenges
+                        move = gLevelUpLearnsets_Original[species][i] & LEVEL_UP_MOVE_ID;
+                        if (gSaveBlock1Ptr->tx_Random_Moves) //tx_randomizer_and_challenges
+                            move = GetRandomMove(move, species);
+                        moves[numMoves++] = move;
+                    }
+                }
+            }
+        }
+    }
+    else
+    {
+        for (i = 0; i < MAX_LEVEL_UP_MOVES; i++)
+        {
+            u16 moveLevel;
+
+            if (gLevelUpLearnsets[species][i] == LEVEL_UP_END)
+            {
+                i = 0;
+                level = preEvLvl;
+                species = GetPreEvolution(species);
+            }
+
+            if (species == SPECIES_NONE)
+                break;
+
+            moveLevel = gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_LV;
+
+            if (moveLevel <= (level << 9))
+            {
+                for (j = 0; j < MAX_MON_MOVES && learnedMoves[j] != (gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_ID); j++)
+                    ;
+
+                if (j == MAX_MON_MOVES)
+                {
+                    for (k = 0; k < numMoves && moves[k] != (gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_ID); k++)
+                        ;
+
+                    if (k == numMoves)
+                    {
+                        //tx_randomizer_and_challenges
+                        move = gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_ID;
+                        if (gSaveBlock1Ptr->tx_Random_Moves) //tx_randomizer_and_challenges
+                            move = GetRandomMove(move, species);
+                        moves[numMoves++] = move;
+                    }
                 }
             }
         }
@@ -10029,13 +10142,27 @@ u8 GetLevelUpMovesBySpecies(u16 species, u16 *moves)
     int i;
     u16 move; //tx_randomizer_and_challenges
 
-    for (i = 0; i < MAX_LEVEL_UP_MOVES && gLevelUpLearnsets[species][i] != LEVEL_UP_END; i++)
-    { 
-        //tx_randomizer_and_challenges
-        move = gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_ID;
-        if (gSaveBlock1Ptr->tx_Random_Moves) //tx_randomizer_and_challenges
-            move = GetRandomMove(move, species);
-        moves[numMoves++] = move;
+    if (gSaveBlock1Ptr->tx_Mode_Modern_Moves == 0)
+    {
+        for (i = 0; i < MAX_LEVEL_UP_MOVES && gLevelUpLearnsets_Original[species][i] != LEVEL_UP_END; i++)
+        { 
+            //tx_randomizer_and_challenges
+            move = gLevelUpLearnsets_Original[species][i] & LEVEL_UP_MOVE_ID;
+            if (gSaveBlock1Ptr->tx_Random_Moves) //tx_randomizer_and_challenges
+                move = GetRandomMove(move, species);
+            moves[numMoves++] = move;
+        }
+    }
+    else
+    {
+        for (i = 0; i < MAX_LEVEL_UP_MOVES && gLevelUpLearnsets[species][i] != LEVEL_UP_END; i++)
+        { 
+            //tx_randomizer_and_challenges
+            move = gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_ID;
+            if (gSaveBlock1Ptr->tx_Random_Moves) //tx_randomizer_and_challenges
+                move = GetRandomMove(move, species);
+            moves[numMoves++] = move;
+        }
     }
 
      return numMoves;
@@ -10060,34 +10187,71 @@ u8 GetNumberOfRelearnableMoves(struct Pokemon *mon)
     for (i = 0; i < MAX_MON_MOVES; i++)
         learnedMoves[i] = GetMonData(mon, MON_DATA_MOVE1 + i, 0);
 
-    for (i = 0; i < MAX_LEVEL_UP_MOVES; i++)
+    if (gSaveBlock1Ptr->tx_Mode_Modern_Moves == 0)
     {
-        u16 moveLevel;
-
-        if (gLevelUpLearnsets[species][i] == LEVEL_UP_END)
+        for (i = 0; i < MAX_LEVEL_UP_MOVES; i++)
         {
-            i = 0;
-            level = preEvLvl;
-            species = GetPreEvolution(species);
-        }
+            u16 moveLevel;
 
-        if (species == SPECIES_NONE)
-            break;
-
-        moveLevel = gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_LV;
-
-        if (moveLevel <= (level << 9))
-        {
-            for (j = 0; j < MAX_MON_MOVES && learnedMoves[j] != (gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_ID); j++)
-                ;
-
-            if (j == MAX_MON_MOVES)
+            if (gLevelUpLearnsets_Original[species][i] == LEVEL_UP_END)
             {
-                for (k = 0; k < numMoves && moves[k] != (gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_ID); k++)
+                i = 0;
+                level = preEvLvl;
+                species = GetPreEvolution(species);
+            }
+
+            if (species == SPECIES_NONE)
+                break;
+
+            moveLevel = gLevelUpLearnsets_Original[species][i] & LEVEL_UP_MOVE_LV;
+
+            if (moveLevel <= (level << 9))
+            {
+                for (j = 0; j < MAX_MON_MOVES && learnedMoves[j] != (gLevelUpLearnsets_Original[species][i] & LEVEL_UP_MOVE_ID); j++)
                     ;
 
-                if (k == numMoves)
-                    moves[numMoves++] = gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_ID;
+                if (j == MAX_MON_MOVES)
+                {
+                    for (k = 0; k < numMoves && moves[k] != (gLevelUpLearnsets_Original[species][i] & LEVEL_UP_MOVE_ID); k++)
+                        ;
+
+                    if (k == numMoves)
+                        moves[numMoves++] = gLevelUpLearnsets_Original[species][i] & LEVEL_UP_MOVE_ID;
+                }
+            }
+        }
+    }
+    else
+    {
+        for (i = 0; i < MAX_LEVEL_UP_MOVES; i++)
+        {
+            u16 moveLevel;
+
+            if (gLevelUpLearnsets[species][i] == LEVEL_UP_END)
+            {
+                i = 0;
+                level = preEvLvl;
+                species = GetPreEvolution(species);
+            }
+
+            if (species == SPECIES_NONE)
+                break;
+
+            moveLevel = gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_LV;
+
+            if (moveLevel <= (level << 9))
+            {
+                for (j = 0; j < MAX_MON_MOVES && learnedMoves[j] != (gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_ID); j++)
+                    ;
+
+                if (j == MAX_MON_MOVES)
+                {
+                    for (k = 0; k < numMoves && moves[k] != (gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_ID); k++)
+                        ;
+
+                    if (k == numMoves)
+                        moves[numMoves++] = gLevelUpLearnsets[species][i] & LEVEL_UP_MOVE_ID;
+                }
             }
         }
     }
