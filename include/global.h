@@ -1161,6 +1161,7 @@ struct SaveBlock1
         u8 tx_Mode_New_Stats:1;
         u8 tx_Mode_Sturdy:1;
         u8 tx_Mode_Modern_Moves:1;
+        u8 tx_Mode_Legendary_Abilities:1;
 };
 
 extern struct SaveBlock1* gSaveBlock1Ptr;

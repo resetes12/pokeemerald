@@ -43,6 +43,7 @@ enum
     MENUITEM_MODE_MODERN_TYPES,
     MENUITEM_MODE_FAIRY_TYPES,
     MENUITEM_MODE_NEW_STATS,
+    MENUITEM_MODE_LEGENDARY_ABILITIES,
     MENUITEM_MODE_MODERN_MOVES,
     MENUITEM_MODE_MINTS,
     MENUITEM_MODE_SYNCHRONIZE,
@@ -309,6 +310,7 @@ static void DrawChoices_Mode_Fairy_Types(int selection, int y);
 static void DrawChoices_Mode_New_Stats(int selection, int y);
 static void DrawChoices_Mode_Sturdy(int selection, int y);
 static void DrawChoices_Mode_Modern_Moves(int selection, int y);
+static void DrawChoices_Mode_Legendary_Abilities(int selection, int y);
 
 static void PrintCurrentSelections(void);
 
@@ -353,6 +355,7 @@ struct // MENU_MODE
     [MENUITEM_MODE_NEW_STATS]             = {DrawChoices_Mode_New_Stats,            ProcessInput_Options_Two},
     [MENUITEM_MODE_NEW_CITRUS]            = {DrawChoices_Mode_New_Citrus,           ProcessInput_Options_Two},
     [MENUITEM_MODE_MODERN_MOVES]          = {DrawChoices_Mode_Modern_Moves,         ProcessInput_Options_Two},
+    [MENUITEM_MODE_LEGENDARY_ABILITIES]   = {DrawChoices_Mode_Legendary_Abilities,  ProcessInput_Options_Two},
     [MENUITEM_MODE_NEXT]                  = {NULL, NULL},
 };
 
@@ -458,6 +461,7 @@ static const u8 sText_FairyTypes[]          = _("ADD FAIRY TYPE");
 static const u8 sText_NewStats[]            = _("BETTER STATS");
 static const u8 sText_Sturdy[]              = _("STURDY");
 static const u8 sText_Modern_Moves[]        = _("MODERN MOVEPOOL");
+static const u8 sText_Legendary_Abilities[] = _("LEGEN. ABILITIES");
 static const u8 sText_Next[]                = _("NEXT");
 // Menu left side option names text
 static const u8 *const sOptionMenuItemsNamesMode[MENUITEM_MODE_COUNT] =
@@ -474,6 +478,7 @@ static const u8 *const sOptionMenuItemsNamesMode[MENUITEM_MODE_COUNT] =
     [MENUITEM_MODE_FAIRY_TYPES]               = sText_FairyTypes,
     [MENUITEM_MODE_NEW_STATS]                 = sText_NewStats,
     [MENUITEM_MODE_MODERN_MOVES]              = sText_Modern_Moves,
+    [MENUITEM_MODE_LEGENDARY_ABILITIES]       = sText_Legendary_Abilities,
     [MENUITEM_MODE_NEXT]                      = sText_Next,
 };
 
@@ -628,6 +633,7 @@ static bool8 CheckConditions(int selection)
             case MENUITEM_MODE_NEW_STATS:                 return sOptions->sel_mode[MENUITEM_MODE_CLASSIC_MODERN] == 2;
             case MENUITEM_MODE_STURDY:                    return sOptions->sel_mode[MENUITEM_MODE_CLASSIC_MODERN] == 2;
             case MENUITEM_MODE_MODERN_MOVES:              return sOptions->sel_mode[MENUITEM_MODE_CLASSIC_MODERN] == 2;
+            case MENUITEM_MODE_LEGENDARY_ABILITIES:       return sOptions->sel_mode[MENUITEM_MODE_CLASSIC_MODERN] == 2;
         default:       return FALSE;
         }
     case MENU_FEATURES:
@@ -726,6 +732,8 @@ static const u8 sText_Description_Mode_Sturdy_Off[]               = _("STURDY wo
 static const u8 sText_Description_Mode_Sturdy_On[]                = _("STURDY works as in GEN V+.\n{PKMN} survive letal hits with 1HP.");
 static const u8 sText_Description_Mode_Modern_Moves_Off[]         = _("No new MOVES, and original MOVEPOOL\nfor all {PKMN}.");
 static const u8 sText_Description_Mode_Modern_Moves_On[]          = _("13 new MOVES, with improved MOVEPOOLS\nfor all {PKMN}.");
+static const u8 sText_Description_Mode_Leg_Abilities_Off[]        = _("PRESSURE stays as the main\nability of some legendaries.");
+static const u8 sText_Description_Mode_Leg_Abilities_On[]         = _("Legendaries have PRESSURE changed\nfor a better ability.");
 static const u8 sText_Description_Mode_Next[]                     = _("Continue to Features options.");
 
 static const u8 *const sOptionMenuItemDescriptionsMode[MENUITEM_MODE_COUNT][5] =
@@ -742,6 +750,7 @@ static const u8 *const sOptionMenuItemDescriptionsMode[MENUITEM_MODE_COUNT][5] =
     [MENUITEM_MODE_NEW_STATS]             = {sText_Description_Mode_New_Stats_Off,          sText_Description_Mode_New_Stats_On,          sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_MODE_STURDY]                = {sText_Description_Mode_Sturdy_Off,             sText_Description_Mode_Sturdy_On,             sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_MODE_MODERN_MOVES]          = {sText_Description_Mode_Modern_Moves_Off,       sText_Description_Mode_Modern_Moves_On,       sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_MODE_LEGENDARY_ABILITIES]   = {sText_Description_Mode_Leg_Abilities_Off,      sText_Description_Mode_Leg_Abilities_On,      sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_MODE_NEXT]                  = {sText_Description_Mode_Next,                   sText_Empty,                                  sText_Empty,                                        sText_Empty,                                        sText_Empty},
 };
 
@@ -933,6 +942,7 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledMode[MENUITEM_MODE_COU
     [MENUITEM_MODE_NEW_STATS]             = sText_Empty,
     [MENUITEM_MODE_MODERN_MOVES]          = sText_Empty,
     [MENUITEM_MODE_NEXT]                  = sText_Empty,
+    [MENUITEM_MODE_LEGENDARY_ABILITIES]   = sText_Empty,
 };
 
 // Disabled descriptions
@@ -1343,6 +1353,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         gSaveBlock1Ptr->tx_Mode_New_Stats                   = TX_MODE_NEW_STATS;
         gSaveBlock1Ptr->tx_Mode_Sturdy                      = TX_MODE_STURDY;
         gSaveBlock1Ptr->tx_Mode_Modern_Moves                = TX_MODE_MODERN_MOVES;
+        gSaveBlock1Ptr->tx_Mode_Legendary_Abilities         = TX_MODE_LEGENDARY_ABILITIES;
 
         gSaveBlock1Ptr->tx_Features_RTCType                 = TX_FEATURES_RTC_TYPE;
         gSaveBlock1Ptr->tx_Features_ShinyChance             = TX_FEATURES_SHINY_CHANCE;
@@ -1409,6 +1420,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         sOptions->sel_mode[MENUITEM_MODE_NEW_STATS]              = gSaveBlock1Ptr->tx_Mode_New_Stats;
         sOptions->sel_mode[MENUITEM_MODE_STURDY]                 = gSaveBlock1Ptr->tx_Mode_Sturdy;
         sOptions->sel_mode[MENUITEM_MODE_MODERN_MOVES]           = gSaveBlock1Ptr->tx_Mode_Modern_Moves;
+        sOptions->sel_mode[MENUITEM_MODE_LEGENDARY_ABILITIES]    = gSaveBlock1Ptr->tx_Mode_Legendary_Abilities;
         //MENU FEATURES
         sOptions->sel_features[MENUITEM_FEATURES_RTC_TYPE]               = gSaveBlock1Ptr->tx_Features_RTCType;
         sOptions->sel_features[MENUITEM_FEATURES_SHINY_CHANCE]           = gSaveBlock1Ptr->tx_Features_ShinyChance;
@@ -1752,6 +1764,7 @@ void SaveData_TxRandomizerAndChallenges(void)
     gSaveBlock1Ptr->tx_Mode_New_Stats                   = sOptions->sel_mode[MENUITEM_MODE_NEW_STATS]; 
     gSaveBlock1Ptr->tx_Mode_Sturdy                      = sOptions->sel_mode[MENUITEM_MODE_STURDY]; 
     gSaveBlock1Ptr->tx_Mode_Modern_Moves                = sOptions->sel_mode[MENUITEM_MODE_MODERN_MOVES]; 
+    gSaveBlock1Ptr->tx_Mode_Legendary_Abilities         = sOptions->sel_mode[MENUITEM_MODE_LEGENDARY_ABILITIES]; 
     //MENU FEAUTRES
     gSaveBlock1Ptr->tx_Features_RTCType                     = sOptions->sel_features[MENUITEM_FEATURES_RTC_TYPE]; 
     gSaveBlock1Ptr->tx_Features_ShinyChance                 = sOptions->sel_features[MENUITEM_FEATURES_SHINY_CHANCE]; 
@@ -2150,6 +2163,7 @@ static void DrawChoices_Mode_Classic_Modern_Selector(int selection, int y)
         sOptions->sel_mode[MENUITEM_MODE_NEW_STATS]                 = TX_MODE_NEW_STATS;
         sOptions->sel_mode[MENUITEM_MODE_STURDY]                    = TX_MODE_STURDY;
         sOptions->sel_mode[MENUITEM_MODE_MODERN_MOVES]              = TX_MODE_MODERN_MOVES;
+        sOptions->sel_mode[MENUITEM_MODE_LEGENDARY_ABILITIES]       = TX_MODE_LEGENDARY_ABILITIES;
     }
     else if (selection == 1)
     {
@@ -2164,6 +2178,7 @@ static void DrawChoices_Mode_Classic_Modern_Selector(int selection, int y)
         sOptions->sel_mode[MENUITEM_MODE_NEW_STATS]                 = !TX_MODE_NEW_STATS;
         sOptions->sel_mode[MENUITEM_MODE_STURDY]                    = !TX_MODE_STURDY;
         sOptions->sel_mode[MENUITEM_MODE_MODERN_MOVES]              = !TX_MODE_MODERN_MOVES;
+        sOptions->sel_mode[MENUITEM_MODE_LEGENDARY_ABILITIES]       = !TX_MODE_LEGENDARY_ABILITIES;
     }
 }
 
@@ -2905,6 +2920,26 @@ static void DrawChoices_Mode_Modern_Moves(int selection, int y)
     DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
     DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
 }
+
+static void DrawChoices_Mode_Legendary_Abilities(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_MODE_LEGENDARY_ABILITIES);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock1Ptr->tx_Mode_Legendary_Abilities = 0; //Pressure as main ability
+    }
+    else
+    {
+        gSaveBlock1Ptr->tx_Mode_Legendary_Abilities = 1; //New abilities
+    }
+
+    DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
+}
+
 
 
 // Background tilemap

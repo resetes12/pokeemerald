@@ -8157,7 +8157,18 @@ u8 GetAbilityBySpecies(u16 species, u8 abilityNum)
         else
             abilityNum = 1;
     }
-    if (abilityNum)
+    if ((abilityNum == 0) && (species == SPECIES_ARTICUNO 
+            || species == SPECIES_ZAPDOS 
+            || species == SPECIES_MOLTRES
+            || species == SPECIES_MEWTWO
+            || species == SPECIES_RAICHU
+            || species == SPECIES_ENTEI
+            || species == SPECIES_SUICUNE
+            || species == SPECIES_HO_OH
+            || species == SPECIES_LUGIA)
+            && (gSaveBlock1Ptr->tx_Mode_Legendary_Abilities == 0))
+        gLastUsedAbility = gSpeciesInfo[species].abilities_old[0];
+    else if (abilityNum)
         gLastUsedAbility = gSpeciesInfo[species].abilities[1];
     else
         gLastUsedAbility = gSpeciesInfo[species].abilities[0];
