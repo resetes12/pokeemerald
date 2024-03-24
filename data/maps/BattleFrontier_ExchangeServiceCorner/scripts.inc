@@ -264,7 +264,15 @@ BattleFrontier_ExchangeServiceCorner_EventScript_ChooseVitamin::
 	case MULTI_B_PRESSED, BattleFrontier_ExchangeServiceCorner_EventScript_ClerkGoodbye
 	end
 
+BattleFrontier_ExchangeServiceCorner_EventScript_YouAlreadyHaveThis::
+	msgbox BattleFrontier_ExchangeServiceCorner_Text_YouAlreadyHaveThis, MSGBOX_DEFAULT
+	goto BattleFrontier_ExchangeServiceCorner_EventScript_ChooseVitamin
+	release
+	end
+
 BattleFrontier_ExchangeServiceCorner_EventScript_EonTicket::
+	checkitem ITEM_EON_TICKET, 1
+	goto_if_eq VAR_RESULT, TRUE, BattleFrontier_ExchangeServiceCorner_EventScript_YouAlreadyHaveThis
 	msgbox BattleFrontier_ExchangeServiceCorner_Text_ConfirmEonTicket, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, BattleFrontier_ExchangeServiceCorner_EventScript_ChooseVitamin
 	setvar VAR_0x8008, 48
@@ -273,6 +281,8 @@ BattleFrontier_ExchangeServiceCorner_EventScript_EonTicket::
 	end
 
 BattleFrontier_ExchangeServiceCorner_EventScript_MysticTicket::
+	checkitem ITEM_MYSTIC_TICKET, 1
+	goto_if_eq VAR_RESULT, TRUE, BattleFrontier_ExchangeServiceCorner_EventScript_YouAlreadyHaveThis
 	msgbox BattleFrontier_ExchangeServiceCorner_Text_ConfirmMysticTicket, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, BattleFrontier_ExchangeServiceCorner_EventScript_ChooseVitamin
 	setvar VAR_0x8008, 96
@@ -281,6 +291,8 @@ BattleFrontier_ExchangeServiceCorner_EventScript_MysticTicket::
 	end
 
 BattleFrontier_ExchangeServiceCorner_EventScript_AuroraTicket::
+	checkitem ITEM_AURORA_TICKET, 1
+	goto_if_eq VAR_RESULT, TRUE, BattleFrontier_ExchangeServiceCorner_EventScript_YouAlreadyHaveThis
 	msgbox BattleFrontier_ExchangeServiceCorner_Text_ConfirmAuroraTicket, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, BattleFrontier_ExchangeServiceCorner_EventScript_ChooseVitamin
 	setvar VAR_0x8008, 96
@@ -289,6 +301,8 @@ BattleFrontier_ExchangeServiceCorner_EventScript_AuroraTicket::
 	end
 
 BattleFrontier_ExchangeServiceCorner_EventScript_OldMap::
+	checkitem ITEM_OLD_SEA_MAP, 1
+	goto_if_eq VAR_RESULT, TRUE, BattleFrontier_ExchangeServiceCorner_EventScript_YouAlreadyHaveThis
 	msgbox BattleFrontier_ExchangeServiceCorner_Text_ConfirmOldMap, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, BattleFrontier_ExchangeServiceCorner_EventScript_ChooseVitamin
 	setvar VAR_0x8008, 96
@@ -437,6 +451,9 @@ BattleFrontier_ExchangeServiceCorner_EventScript_Girl::
 BattleFrontier_ExchangeServiceCorner_EventScript_OldWTMan::
 	msgbox BattleFrontier_ExchangeServiceCorner_EventScript_OldWTMan_Text, MSGBOX_NPC
 	end
+
+BattleFrontier_ExchangeServiceCorner_Text_YouAlreadyHaveThis:
+	.string "You already have this item.$"
 
 BattleFrontier_ExchangeServiceCorner_EventScript_OldWTMan_Text:
 	.string "Hi! If you are looking for the\n"
