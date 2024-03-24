@@ -874,7 +874,7 @@ EventScript_FirstTimeWonderRandomizer::
 	end
 
 EventScript_FirstTimeWonderUnlimited::
-	msgbox EventScript_FirstTimeWonder_Text, MSGBOX_DEFAULT
+	msgbox EventScript_FirstTimeWonder_Text_Unlimited, MSGBOX_DEFAULT
 	setflag FLAG_WONDERTRADE_FIRSTIME
 	closemessage
 	end
@@ -908,6 +908,22 @@ EventScript_FirstTimeWonder_Text:
 	.string "WONDERTRADE! Oh, also, to not\n"
 	.string "overload the server, there is a\p"
 	.string "maximum of 3 DAILY WONDERTRADES.\p"
+	.string "We hope you have a great\n"
+	.string "WONDERTRADE experience!$"
+
+EventScript_FirstTimeWonder_Text_Unlimited:
+	.string "Hello trainer!\p"
+	.string "Oh, is this your first time\n"
+	.string "using the WONDERTRADE SYSTEM?\p"
+	.string "WONDERTRADE is a techonology developed\n"
+	.string "by DEVON CORP. to TRADE anonimously.\p"
+	.string "You basically send a selected\n"
+	.string "POKéMON to someone, and they send\p"
+	.string "you another one in exchange.\n"
+	.string "Neither you nor the other trainer\p"
+	.string "know which POKéMON is going to\n"
+	.string "show up. And that is the fun of\l"
+	.string "WONDERTRADE!\p"
 	.string "We hope you have a great\n"
 	.string "WONDERTRADE experience!$"
 
