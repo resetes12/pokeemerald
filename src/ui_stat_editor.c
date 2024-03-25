@@ -973,6 +973,8 @@ static void HandleEditingStatInput(u32 input)
                     sStatEditorDataPtr->editingStat += EV_MAX_TOTAL - sStatEditorDataPtr->evTotal;
                 else
                     sStatEditorDataPtr->editingStat = EV_MAX_SINGLE_STAT;
+                if(sStatEditorDataPtr->editingStat > EV_MAX_SINGLE_STAT)
+                    sStatEditorDataPtr->editingStat = EV_MAX_SINGLE_STAT;
             }
             else
             {
@@ -1003,11 +1005,11 @@ static void Task_MenuEditingStat(u8 taskId) // This function should be refactore
     }
     if (JOY_NEW(DPAD_LEFT))
         HandleEditingStatInput(EDIT_INPUT_DECREASE_STATE);
-    if (JOY_NEW(DPAD_RIGHT))
+    else if (JOY_NEW(DPAD_RIGHT))
         HandleEditingStatInput(EDIT_INPUT_INCREASE_STATE);
-    if (JOY_NEW(DPAD_UP) || JOY_NEW(R_BUTTON))
+    else if (JOY_NEW(DPAD_UP) || JOY_NEW(R_BUTTON))
         HandleEditingStatInput(EDIT_INPUT_MAX_INCREASE_STATE);
-    if (JOY_NEW(DPAD_DOWN) || JOY_NEW(L_BUTTON))
+    else if (JOY_NEW(DPAD_DOWN) || JOY_NEW(L_BUTTON))
         HandleEditingStatInput(EDIT_INPUT_MAX_DECREASE_STATE);
 
 }
