@@ -62,7 +62,7 @@ enum
     MENUITEM_FEATURES_ITEM_DROP,
     MENUITEM_FEATURES_UNLIMITED_WT,
     MENUITEM_FEATURES_PKMN_DEATH,
-    MENUITEM_FEATURES_EASY_FEEBAS, //will be deleted
+    MENUITEM_FEATURES_EASY_FEEBAS,
     MENUITEM_FEATURES_NEXT,
     MENUITEM_FEATURES_COUNT,
 };
@@ -1358,7 +1358,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         gSaveBlock1Ptr->tx_Features_RTCType                 = TX_FEATURES_RTC_TYPE;
         gSaveBlock1Ptr->tx_Features_ShinyChance             = TX_FEATURES_SHINY_CHANCE;
         gSaveBlock1Ptr->tx_Features_WildMonDropItems        = TX_FEATURES_ITEM_DROP;
-        gSaveBlock1Ptr->optionsEasierFeebas                 = TX_FEATURES_EASIER_FEEBAS;
+        gSaveBlock1Ptr->tx_Features_EasierFeebas            = TX_FEATURES_EASIER_FEEBAS;
         gSaveBlock1Ptr->tx_Features_PkmnDeath               = TX_FEATURES_PKMN_DEATH;
         gSaveBlock1Ptr->tx_Features_Unlimited_WT            = TX_FEATURES_UNLIMITED_WT;
 
@@ -1425,7 +1425,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         sOptions->sel_features[MENUITEM_FEATURES_RTC_TYPE]               = gSaveBlock1Ptr->tx_Features_RTCType;
         sOptions->sel_features[MENUITEM_FEATURES_SHINY_CHANCE]           = gSaveBlock1Ptr->tx_Features_ShinyChance;
         sOptions->sel_features[MENUITEM_FEATURES_ITEM_DROP]              = gSaveBlock1Ptr->tx_Features_WildMonDropItems;
-        sOptions->sel_features[MENUITEM_FEATURES_EASY_FEEBAS]            = gSaveBlock1Ptr->optionsEasierFeebas;
+        sOptions->sel_features[MENUITEM_FEATURES_EASY_FEEBAS]            = gSaveBlock1Ptr->tx_Features_EasierFeebas;
         sOptions->sel_features[MENUITEM_FEATURES_PKMN_DEATH]             = gSaveBlock1Ptr->tx_Features_PkmnDeath;
         sOptions->sel_features[MENUITEM_FEATURES_UNLIMITED_WT]           = gSaveBlock1Ptr->tx_Features_Unlimited_WT;
         
@@ -1769,7 +1769,7 @@ void SaveData_TxRandomizerAndChallenges(void)
     gSaveBlock1Ptr->tx_Features_RTCType                     = sOptions->sel_features[MENUITEM_FEATURES_RTC_TYPE]; 
     gSaveBlock1Ptr->tx_Features_ShinyChance                 = sOptions->sel_features[MENUITEM_FEATURES_SHINY_CHANCE]; 
     gSaveBlock1Ptr->tx_Features_WildMonDropItems            = sOptions->sel_features[MENUITEM_FEATURES_ITEM_DROP]; 
-    gSaveBlock1Ptr->optionsEasierFeebas                     = sOptions->sel_features[MENUITEM_FEATURES_EASY_FEEBAS]; 
+    gSaveBlock1Ptr->tx_Features_EasierFeebas                = sOptions->sel_features[MENUITEM_FEATURES_EASY_FEEBAS]; 
     gSaveBlock1Ptr->tx_Features_PkmnDeath                   = sOptions->sel_features[MENUITEM_FEATURES_PKMN_DEATH]; 
     gSaveBlock1Ptr->tx_Features_Unlimited_WT                = sOptions->sel_features[MENUITEM_FEATURES_UNLIMITED_WT]; 
     // MENU_RANDOMIZER
@@ -2664,11 +2664,11 @@ static void DrawChoices_Features_EasyFeebas(int selection, int y)
 
     if (selection == 0)
     {
-        gSaveBlock1Ptr->optionsEasierFeebas = 0; //off
+        gSaveBlock1Ptr->tx_Features_EasierFeebas = 0; //off
     }
     else
     {
-        gSaveBlock1Ptr->optionsEasierFeebas = 1; //on
+        gSaveBlock1Ptr->tx_Features_EasierFeebas = 1; //on
     }
 
     DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);

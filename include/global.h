@@ -1144,7 +1144,7 @@ struct SaveBlock1
         u8 tx_Challenges_MaxPartyIVs:2;
         u8 tx_Mode_InfiniteTMs:1;
         u8 tx_Mode_PoisonSurvive:1;
-        u8 optionsEasierFeebas:1; //will be deleted
+        u8 tx_Features_EasierFeebas:1;
         u8 tx_Features_PkmnDeath:1;
         u8 tx_Challenges_PCHeal:1;
         u8 tx_Features_RTCType:1;
