@@ -68,18 +68,11 @@ NavelRock_Top_EventScript_HoOh::
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, NavelRock_Top_EventScript_RanFromHoOh
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, NavelRock_Top_EventScript_RanFromHoOh
 	setflag FLAG_CAUGHT_HO_OH
-	setflag FLAG_UNLOCK_BIRDS
-	playmoncry SPECIES_ARTICUNO, CRY_MODE_NORMAL
-	waitmoncry
-	playmoncry SPECIES_ZAPDOS, CRY_MODE_NORMAL
-	waitmoncry
-	playmoncry SPECIES_MOLTRES, CRY_MODE_NORMAL
-	waitmoncry
+	call_if_set FLAG_EXTRA_LEGENDARIES, NavelRock_Top_Enable_Kanto_Legendaries
 	releaseall
 	end
 
-NavelRock_Top_EventScript_DefeatedHoOh::
-	setflag FLAG_DEFEATED_HO_OH
+NavelRock_Top_Enable_Kanto_Legendaries::
 	setflag FLAG_UNLOCK_BIRDS
 	playmoncry SPECIES_ARTICUNO, CRY_MODE_NORMAL
 	waitmoncry
@@ -87,6 +80,11 @@ NavelRock_Top_EventScript_DefeatedHoOh::
 	waitmoncry
 	playmoncry SPECIES_MOLTRES, CRY_MODE_NORMAL
 	waitmoncry
+	return
+
+NavelRock_Top_EventScript_DefeatedHoOh::
+	setflag FLAG_DEFEATED_HO_OH
+	call_if_set FLAG_EXTRA_LEGENDARIES, NavelRock_Top_Enable_Kanto_Legendaries
 	setvar VAR_0x8004, SPECIES_HO_OH
 	goto Common_EventScript_LegendaryFlewAway
 	end

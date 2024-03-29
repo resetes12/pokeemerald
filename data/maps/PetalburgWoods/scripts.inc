@@ -1,6 +1,8 @@
 .set LOCALID_GRUNT, 3
 .set LOCALID_DEVON_EMPLOYEE, 4
 .set LOCALID_CELEBI, 17
+.set LOCALID_OLD_MAN, 15
+.set LOCALID_DUSCLOPS, 16
 
 PetalburgWoods_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, PetalburgWoods_OnTransition
@@ -9,8 +11,17 @@ PetalburgWoods_MapScripts::
 
 PetalburgWoods_OnTransition::
 	callnative SetTimeBasedEncounters
+	goto_if_unset FLAG_EXTRA_LEGENDARIES, PetalburgWoods_SwitchToOld
 	call_if_unset FLAG_SYS_GAME_CLEAR, PetalburgWoods_NoCelebiEvent
 	call_if_set FLAG_SYS_GAME_CLEAR, PetalburgWoods_YesCelebiEvent
+	end
+
+PetalburgWoods_SwitchToOld::
+	setmaplayoutindex LAYOUT_PETALBURG_WOODS_OLD
+	setflag FLAG_OLD_MAN_AND_DUSCLOPS
+	removeobject LOCALID_OLD_MAN
+	removeobject LOCALID_DUSCLOPS
+	return
 	end
 
 PetalburgWoods_NoCelebiEvent::

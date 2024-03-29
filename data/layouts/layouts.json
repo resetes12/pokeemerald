@@ -4470,6 +4470,16 @@
       "secondary_tileset": "gTileset_Lavaridge",
       "border_filepath": "data/layouts/MagmaHideout_3F_1R_Modern/border.bin",
       "blockdata_filepath": "data/layouts/MagmaHideout_3F_1R_Modern/map.bin"
+    },
+    {
+      "id": "LAYOUT_PETALBURG_WOODS_OLD",
+      "name": "PetalburgWoods_Old_Layout",
+      "width": 54,
+      "height": 44,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Rustboro",
+      "border_filepath": "data/layouts/PetalburgWoods_Old/border.bin",
+      "blockdata_filepath": "data/layouts/PetalburgWoods_Old/map.bin"
     }
   ]
 }

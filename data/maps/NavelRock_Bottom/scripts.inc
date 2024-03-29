@@ -63,18 +63,11 @@ NavelRock_Bottom_EventScript_Lugia::
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, NavelRock_Bottom_EventScript_RanFromLugia
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, NavelRock_Bottom_EventScript_RanFromLugia
 	setflag FLAG_CAUGHT_LUGIA
-	setflag FLAG_UNLOCK_DOGS
-	playmoncry SPECIES_SUICUNE, CRY_MODE_NORMAL
-	waitmoncry
-	playmoncry SPECIES_ENTEI, CRY_MODE_NORMAL
-	waitmoncry
-	playmoncry SPECIES_RAIKOU, CRY_MODE_NORMAL
-	waitmoncry
+	call_if_set FLAG_EXTRA_LEGENDARIES, NavelRock_Bottom_Enable_Johto_Legendaries
 	release
 	end
 
-NavelRock_Bottom_EventScript_DefeatedLugia::
-	setflag FLAG_DEFEATED_LUGIA
+NavelRock_Bottom_Enable_Johto_Legendaries::
 	setflag FLAG_UNLOCK_DOGS
 	playmoncry SPECIES_SUICUNE, CRY_MODE_NORMAL
 	waitmoncry
@@ -82,6 +75,11 @@ NavelRock_Bottom_EventScript_DefeatedLugia::
 	waitmoncry
 	playmoncry SPECIES_RAIKOU, CRY_MODE_NORMAL
 	waitmoncry
+	return
+
+NavelRock_Bottom_EventScript_DefeatedLugia::
+	setflag FLAG_DEFEATED_LUGIA
+	call_if_set FLAG_EXTRA_LEGENDARIES, NavelRock_Bottom_Enable_Johto_Legendaries
 	setvar VAR_0x8004, SPECIES_LUGIA
 	goto Common_EventScript_LegendaryFlewAway
 	end

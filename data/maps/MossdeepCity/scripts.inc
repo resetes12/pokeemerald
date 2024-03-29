@@ -101,6 +101,7 @@ MossdeepCity_EventScript_WhiteRock::
 	msgbox MossdeepCity_Text_ItsAWhiteRock, MSGBOX_SIGN
 	closemessage
 	goto_if_set FLAG_JIRACHI, MossdeepCity_EventScript_WhiteRockEnd
+	goto_if_unset FLAG_EXTRA_LEGENDARIES, MossdeepCity_EventScript_WhiteRockEnd
 	goto_if_set FLAG_SYS_GAME_CLEAR, MossdeepCity_EventScript_Jirachi
 	end
 

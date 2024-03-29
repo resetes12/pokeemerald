@@ -1081,3 +1081,5 @@ Common_EventScript_LegendaryFlewAway::
 	.include "data/maps/NewMauville_Inside_Modern/scripts.inc"
 
 	.include "data/maps/MagmaHideout_3F_1R_Modern/scripts.inc"
+
+	.include "data/maps/PetalburgWoods_Old/scripts.inc"

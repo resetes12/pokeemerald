@@ -1,0 +1,28 @@
+{
+  "id": "MAP_PETALBURG_WOODS_OLD",
+  "name": "PetalburgWoods_Old",
+  "layout": "LAYOUT_PETALBURG_WOODS_OLD",
+  "music": "MUS_PETALBURG_WOODS",
+  "region_map_section": "MAPSEC_PETALBURG_WOODS",
+  "requires_flash": false,
+  "weather": "WEATHER_NONE",
+  "map_type": "MAP_TYPE_NONE",
+  "allow_cycling": true,
+  "allow_escaping": false,
+  "allow_running": true,
+  "show_map_name": true,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": 0,
+  "object_events": [
+
+  ],
+  "warp_events": [
+
+  ],
+  "coord_events": [
+
+  ],
+  "bg_events": [
+
+  ]
+}
