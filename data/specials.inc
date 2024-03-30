@@ -566,3 +566,4 @@ gSpecials::
 	def_special SetSpdStat
 	def_special SetSpAtkStat
 	def_special SetSpDefStat
+	def_special BufferUnitSystemText

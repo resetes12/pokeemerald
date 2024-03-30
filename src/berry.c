@@ -115,6 +115,8 @@ static const u8 sBerryDescriptionPart1_Starf[] = _("So strong, it was abandoned 
 static const u8 sBerryDescriptionPart2_Starf[] = _("world's edge. Considered a mirage.");
 static const u8 sBerryDescriptionPart1_Enigma[] = _("A completely enigmatic BERRY.");
 static const u8 sBerryDescriptionPart2_Enigma[] = _("Appears to have the power of stars.");
+const u8 sBerryDescriptionPart1_WatmelMetric[] = _("A huge Berry, with some over half a");
+const u8 sBerryDescriptionPart2_WatmelMetric[] = _("meter discovered. Exceedingly sweet.");
 
 const struct Berry gBerries[] =
 {

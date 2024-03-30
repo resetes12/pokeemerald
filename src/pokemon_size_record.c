@@ -6,6 +6,7 @@
 #include "pokemon_size_record.h"
 #include "string_util.h"
 #include "text.h"
+#include "constants/pokemon_size_record.h"
 
 #define DEFAULT_MAX_SIZE 0x8000 // was 0x8100 in Ruby/Sapphire
 
@@ -46,6 +47,53 @@ static const u8 sGiftRibbonsMonDataIds[GIFT_RIBBONS_COUNT - 4] =
 
 extern const u8 gText_DecimalPoint[];
 extern const u8 gText_Marco[];
+
+static const u8 gText_Inch[] = _("inch");
+static const u8 gText_InchPlural[] = _("inches");
+static const u8 gText_InchSymbol[] = _("”");
+static const u8 gText_Foot[] = _("foot");
+static const u8 gText_FootPlural[] = _("feet");
+static const u8 gText_FootSymbol[] = _("’");
+static const u8 gText_Pound[] = _("pound");
+static const u8 gText_PoundPlural[] = _("pounds");
+static const u8 gText_PoundSymbol[] = _("lb");
+
+static const u8 gText_Centimeter[] = _("centimeter");
+static const u8 gText_CentimeterPlural[] = _("centimeters");
+static const u8 gText_CentimeterSymbol[] = _("cm");
+static const u8 gText_Meter[] = _("meter");
+static const u8 gText_MeterPlural[] = _("meters");
+static const u8 gText_MeterSymbol[] = _("m");
+static const u8 gText_Kilogram[] = _("kilogram");
+static const u8 gText_KilogramPlural[] = _("kilograms");
+static const u8 gText_KilogramSymbol[] = _("kg");
+
+static const u8* const sImperialText[] =
+{
+    [UNIT_TEXT_LENGTH_SMALL_SINGLE]  = gText_Inch,
+    [UNIT_TEXT_LENGTH_SMALL_PLURAL]  = gText_InchPlural,
+    [UNIT_TEXT_LENGTH_SMALL_SYMBOL]  = gText_InchSymbol,
+    [UNIT_TEXT_LENGTH_MEDIUM_SINGLE] = gText_Foot,
+    [UNIT_TEXT_LENGTH_MEDIUM_PLURAL] = gText_FootPlural,
+    [UNIT_TEXT_LENGTH_MEDIUM_SYMBOL] = gText_FootSymbol,
+    [UNIT_TEXT_WEIGHT_SINGLE]        = gText_Pound,
+    [UNIT_TEXT_WEIGHT_PLURAL]        = gText_PoundPlural,
+    [UNIT_TEXT_WEIGHT_SYMBOL]        = gText_PoundSymbol
+};
+
+static const u8* const sMetricText[] =
+{
+    [UNIT_TEXT_LENGTH_SMALL_SINGLE] = gText_Centimeter,
+    [UNIT_TEXT_LENGTH_SMALL_PLURAL] = gText_CentimeterPlural,
+    [UNIT_TEXT_LENGTH_SMALL_SYMBOL] = gText_CentimeterSymbol,
+    [UNIT_TEXT_LENGTH_MEDIUM_SINGLE] = gText_Meter,
+    [UNIT_TEXT_LENGTH_MEDIUM_PLURAL] = gText_MeterPlural,
+    [UNIT_TEXT_LENGTH_MEDIUM_SYMBOL] = gText_MeterSymbol,
+    [UNIT_TEXT_WEIGHT_SINGLE]        = gText_Kilogram,
+    [UNIT_TEXT_WEIGHT_PLURAL]        = gText_KilogramPlural,
+    [UNIT_TEXT_WEIGHT_SYMBOL]        = gText_KilogramSymbol
+};
+
 
 #define CM_PER_INCH 2.54
 
@@ -95,10 +143,8 @@ static u32 GetMonSize(u16 species, u16 b)
 
 static void FormatMonSizeRecord(u8 *string, u32 size)
 {
-#ifdef UNITS_IMPERIAL
-    //Convert size from centimeters to inches
-    size = (f64)(size * 10) / (CM_PER_INCH * 10);
-#endif
+    if (gSaveBlock2Ptr->optionsUnitSystem == 1) //Imperial
+            size = (f64)(size * 10) / (CM_PER_INCH * 10);
 
     string = ConvertIntToDecimalStringN(string, size / 10, STR_CONV_MODE_LEFT_ALIGN, 8);
     string = StringAppend(string, gText_DecimalPoint);
@@ -153,6 +199,36 @@ static void GetMonSizeRecordInfo(u16 species, u16 *sizeRecord)
         StringCopy(gStringVar2, gText_Marco);
     else
         StringCopy(gStringVar2, gSaveBlock2Ptr->playerName);
+}
+
+void BufferUnitSystemText(void)
+{
+    u8 *strvar, *text;
+    u8 textType = gSpecialVar_0x8000;
+    u8 stringVarNum = gSpecialVar_0x8001;
+
+    switch (stringVarNum)
+    {
+        case 1:
+        default:
+            strvar = gStringVar1;
+            break;
+        case 2:
+            strvar = gStringVar2;
+            break;
+        case 3:
+            strvar = gStringVar3;
+            break;
+    }
+
+    if (gSaveBlock2Ptr->optionsUnitSystem == 1) //Imperial
+    {
+        StringCopy(strvar, sImperialText[textType]);
+    }
+    else //Metric
+    {
+        StringCopy(strvar, sMetricText[textType]);
+    }
 }
 
 void InitSeedotSizeRecord(void)

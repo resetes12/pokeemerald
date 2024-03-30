@@ -3190,5 +3190,8 @@ extern const u8 gText_NuzlockeCantThrowPokeBallSpeciesClause[];
 extern const u8 gText_NuzlockeCantThrowPokeBallAlreadyCaught[];
 extern const u8 gText_OneTypeChallengeCantThrowPokeBall[];
 extern const u8 gText_BattleRules_NoItems_Player[];
+extern const u8 gText_UnitSystemMetric[];   //tx_optionsPlus
+extern const u8 gText_UnitSystemImperial[]; //tx_optionsPlus
+extern const u8 gText_Var1DotVar2_Metric[];
 
 #endif // GUARD_STRINGS_H

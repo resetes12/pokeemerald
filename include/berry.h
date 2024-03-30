@@ -32,6 +32,8 @@ struct BerryCrushBerryData {
     u8 difficulty; // The number of A presses required to crush it
     u16 powder;
 };
+extern const u8 sBerryDescriptionPart1_WatmelMetric[];
+extern const u8 sBerryDescriptionPart2_WatmelMetric[];
 
 extern const struct BerryCrushBerryData gBerryCrush_BerryData[];
 

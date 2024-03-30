@@ -41,8 +41,9 @@ enum
     MENUITEM_MAIN_LARGE_FOLLOWER,
     MENUITEM_MAIN_AUTORUN,
     MENUITEM_MAIN_MATCHCALL,
-    MENUITEM_CUSTOM_FISHING, //will be removed
+    MENUITEM_CUSTOM_FISHING,
     MENUITEM_MAIN_EVEN_FASTER_JOY,
+    MENUITEM_MAIN_UNIT_TYPE,
     MENUITEM_MAIN_SKIP_INTRO,
     MENUITEM_MAIN_FRAMETYPE,
     MENUITEM_MAIN_COUNT,
@@ -55,7 +56,7 @@ enum
     MENUITEM_BATTLE_FAST_INTRO,
     MENUITEM_BATTLE_FAST_BATTLES,
     MENUITEM_BATTLE_BALL_PROMPT,
-    MENUITEM_BATTLE_TYPE_EFFECTIVE, //will be removed
+    MENUITEM_BATTLE_TYPE_EFFECTIVE,
     MENUITEM_BATTLE_LR_RUN,
     MENUITEM_BATTLE_COUNT,
 };
@@ -210,6 +211,7 @@ static void DrawChoices_Sound_Effects(int selection, int y);
 static void DrawChoices_Skip_Intro(int selection, int y);
 static void DrawChoices_LR_Run(int selection, int y);
 static void DrawChoices_Ball_Prompt(int selection, int y);
+static void DrawChoices_Unit_Type(int selection, int y);
 static void DrawBgWindowFrames(void);
 
 // EWRAM vars
@@ -253,7 +255,8 @@ struct // MENU_MAIN
     [MENUITEM_MAIN_MATCHCALL]               = {DrawChoices_MatchCall,        ProcessInput_Options_Two},
     [MENUITEM_CUSTOM_FISHING]               = {DrawChoices_Fishing,          ProcessInput_Options_Two},
     [MENUITEM_MAIN_EVEN_FASTER_JOY]         = {DrawChoices_EvenFasterJoy,    ProcessInput_Options_Two},
-    [MENUITEM_MAIN_SKIP_INTRO]              = {DrawChoices_Skip_Intro,       ProcessInput_Options_Two},  
+    [MENUITEM_MAIN_SKIP_INTRO]              = {DrawChoices_Skip_Intro,       ProcessInput_Options_Two}, 
+    [MENUITEM_MAIN_UNIT_TYPE]               = {DrawChoices_Unit_Type,        ProcessInput_Options_Two},  
     [MENUITEM_MAIN_FRAMETYPE]               = {DrawChoices_FrameType,        ProcessInput_FrameType},
 };
 
@@ -297,6 +300,7 @@ static const u8 sText_OptionEvenFasterJoy[]       = _("EVEN FASTER JOY");
 static const u8 sText_OptionSkipIntro[]           = _("SKIP INTRO");
 static const u8 sText_OptionLR_Run[]              = _("RUN PROMPT");
 static const u8 sText_OptionBallPrompt[]          = _("BALL PROMPT");
+static const u8 sText_OptionUnitType[]            = _("UNIT SYSTEM");
 static const u8 *const sOptionMenuItemsNamesMain[MENUITEM_MAIN_COUNT] =
 {
     [MENUITEM_MAIN_TEXTSPEED]           = gText_TextSpeed,
@@ -311,6 +315,7 @@ static const u8 *const sOptionMenuItemsNamesMain[MENUITEM_MAIN_COUNT] =
     [MENUITEM_CUSTOM_FISHING]           = sText_OptionFishing,
     [MENUITEM_MAIN_EVEN_FASTER_JOY]   = sText_OptionEvenFasterJoy,
     [MENUITEM_MAIN_SKIP_INTRO]        = sText_OptionSkipIntro,
+    [MENUITEM_MAIN_UNIT_TYPE]         = sText_OptionUnitType,
     [MENUITEM_MAIN_FRAMETYPE]           = gText_Frame,
 };
 
@@ -373,6 +378,7 @@ static bool8 CheckConditions(int selection)
         case MENUITEM_CUSTOM_FISHING:         return TRUE;
         case MENUITEM_MAIN_EVEN_FASTER_JOY:   return TRUE;
         case MENUITEM_MAIN_SKIP_INTRO:        return TRUE;
+        case MENUITEM_MAIN_UNIT_TYPE:         return TRUE;
         }
     case MENU_CUSTOM:
         switch(selection)
@@ -428,6 +434,8 @@ static const u8 sText_Desc_SkipIntroOn[]           = _("Skips the Copyright scre
 static const u8 sText_Desc_SkipIntroOff[]          = _("Shows the Copyright screen and\nthe game's introduction.");
 static const u8 sText_Desc_OverworldCallsOn[]      = _("TRAINERs will be able to call you,\noffering rematches and info.");
 static const u8 sText_Desc_OverworldCallsOff[]     = _("You will not receive calls.\nSpecial events will still occur.");
+static const u8 sText_Desc_Units_Imperial[]        = _("Display BERRY and POKéMON weight\nand size in pounds and inches.");
+static const u8 sText_Desc_Units_Metric[]          = _("Display BERRY and POKéMON weight\nand size in kilograms and meters.");
 static const u8 *const sOptionMenuItemDescriptionsMain[MENUITEM_MAIN_COUNT][3] =
 {
     [MENUITEM_MAIN_TEXTSPEED]   = {sText_Desc_TextSpeed,            sText_Empty,                sText_Empty},
@@ -443,6 +451,7 @@ static const u8 *const sOptionMenuItemDescriptionsMain[MENUITEM_MAIN_COUNT][3] =
     [MENUITEM_CUSTOM_FISHING]     = {sText_Desc_FishingOn,            sText_Desc_FishingOff},
     [MENUITEM_MAIN_EVEN_FASTER_JOY]     = {sText_Desc_EvenFasterJoyOn,            sText_Desc_EvenFasterJoyOff},
     [MENUITEM_MAIN_SKIP_INTRO]     = {sText_Desc_SkipIntroOn,            sText_Desc_SkipIntroOff},
+    [MENUITEM_MAIN_UNIT_TYPE]     = {sText_Desc_Units_Metric,            sText_Desc_Units_Imperial},
 };
 
 // Custom {PKMN}
@@ -786,6 +795,7 @@ void CB2_InitOptionPlusMenu(void)
         sOptions->sel[MENUITEM_CUSTOM_FISHING]           = gSaveBlock2Ptr->optionsFishing;
         sOptions->sel[MENUITEM_MAIN_EVEN_FASTER_JOY]     = gSaveBlock2Ptr->optionsEvenFasterJoy;
         sOptions->sel[MENUITEM_MAIN_SKIP_INTRO]          = gSaveBlock2Ptr->optionsSkipIntro;
+        sOptions->sel[MENUITEM_MAIN_UNIT_TYPE]           = gSaveBlock2Ptr->optionsUnitSystem;
 
         sOptions->sel_battle[MENUITEM_BATTLE_FAST_INTRO]        = gSaveBlock2Ptr->optionsFastIntro;
         sOptions->sel_battle[MENUITEM_BATTLE_FAST_BATTLES]      = gSaveBlock2Ptr->optionsFastBattle;
@@ -1016,6 +1026,7 @@ static void Task_OptionMenuSave(u8 taskId)
     gSaveBlock2Ptr->optionsFishing               = sOptions->sel[MENUITEM_CUSTOM_FISHING];
     gSaveBlock2Ptr->optionsEvenFasterJoy         = sOptions->sel[MENUITEM_MAIN_EVEN_FASTER_JOY];
     gSaveBlock2Ptr->optionsSkipIntro             = sOptions->sel[MENUITEM_MAIN_SKIP_INTRO];
+    gSaveBlock2Ptr->optionsUnitSystem            = sOptions->sel[MENUITEM_MAIN_UNIT_TYPE];
 
     gSaveBlock2Ptr->optionsFastIntro        = sOptions->sel_battle[MENUITEM_BATTLE_FAST_INTRO];
     gSaveBlock2Ptr->optionsFastBattle       = sOptions->sel_battle[MENUITEM_BATTLE_FAST_BATTLES];
@@ -1821,6 +1832,26 @@ static void DrawChoices_Ball_Prompt(int selection, int y)
     }
     DrawOptionMenuChoice(gText_BattleSceneOn, 104, y, styles[0], active);
     DrawOptionMenuChoice(gText_BattleSceneOff, GetStringRightAlignXOffset(1, gText_BattleSceneOff, 198), y, styles[1], active);
+}
+
+static const u8 sText_Metric[]        = _("METRIC");
+static const u8 sText_Imperial[]      = _("IMPERIAL");
+static void DrawChoices_Unit_Type(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_MAIN_UNIT_TYPE);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock2Ptr->optionsUnitSystem = 0; //METRIC
+    }
+    else
+    {
+        gSaveBlock2Ptr->optionsUnitSystem = 1; //IMPERIAL
+    }
+    DrawOptionMenuChoice(sText_Metric, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_Imperial, GetStringRightAlignXOffset(1, sText_Imperial, 198), y, styles[1], active);
 }
 
 // Background tilemap

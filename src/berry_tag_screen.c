@@ -415,17 +415,25 @@ static void PrintBerrySize(void)
     AddTextPrinterParameterized(WIN_SIZE_FIRM, FONT_NORMAL, gText_SizeSlash, 0, 1, TEXT_SKIP_DRAW, NULL);
     if (berry->size != 0)
     {
-        u32 inches, fraction;
+        if (gSaveBlock2Ptr->optionsUnitSystem == 1)
+        {
+            u32 inches, fraction;
 
-        inches = 1000 * berry->size / 254;
-        if (inches % 10 > 4)
-            inches += 10;
-        fraction = (inches % 100) / 10;
-        inches /= 100;
-
-        ConvertIntToDecimalStringN(gStringVar1, inches, STR_CONV_MODE_LEFT_ALIGN, 2);
-        ConvertIntToDecimalStringN(gStringVar2, fraction, STR_CONV_MODE_LEFT_ALIGN, 2);
-        StringExpandPlaceholders(gStringVar4, gText_Var1DotVar2);
+            inches = 1000 * berry->size / 254;
+            if (inches % 10 > 4)
+                inches += 10;
+            fraction = (inches % 100) / 10;
+            inches /= 100;
+            ConvertIntToDecimalStringN(gStringVar1, inches, STR_CONV_MODE_LEFT_ALIGN, 2);
+            ConvertIntToDecimalStringN(gStringVar2, fraction, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringExpandPlaceholders(gStringVar4, gText_Var1DotVar2);
+        }
+        else
+        {
+            ConvertIntToDecimalStringN(gStringVar1, berry->size / 10, STR_CONV_MODE_LEFT_ALIGN, 2);
+            ConvertIntToDecimalStringN(gStringVar2, berry->size % 10, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringExpandPlaceholders(gStringVar4, gText_Var1DotVar2_Metric);
+        }
         AddTextPrinterParameterized(WIN_SIZE_FIRM, FONT_NORMAL, gStringVar4, 0x28, 1, 0, NULL);
     }
     else
@@ -446,14 +454,30 @@ static void PrintBerryFirmness(void)
 
 static void PrintBerryDescription1(void)
 {
-    const struct Berry *berry = GetBerryInfo(sBerryTag->berryId);
-    AddTextPrinterParameterized(WIN_DESC, FONT_NORMAL, berry->description1, 0, 1, 0, NULL);
+    //Metric
+    if (gSaveBlock2Ptr->optionsUnitSystem == 0 && sBerryTag->berryId == ItemIdToBerryType(ITEM_WATMEL_BERRY))
+    {
+        AddTextPrinterParameterized(WIN_DESC, FONT_NORMAL, sBerryDescriptionPart1_WatmelMetric, 0, 1, 0, NULL);
+    }
+    else
+    {
+        const struct Berry *berry = GetBerryInfo(sBerryTag->berryId);
+        AddTextPrinterParameterized(WIN_DESC, FONT_NORMAL, berry->description1, 0, 1, 0, NULL);
+    }
 }
 
 static void PrintBerryDescription2(void)
 {
-    const struct Berry *berry = GetBerryInfo(sBerryTag->berryId);
-    AddTextPrinterParameterized(WIN_DESC, FONT_NORMAL, berry->description2, 0, 0x11, 0, NULL);
+    //Metric
+    if (gSaveBlock2Ptr->optionsUnitSystem == 0 && sBerryTag->berryId == ItemIdToBerryType(ITEM_WATMEL_BERRY))
+    {
+        AddTextPrinterParameterized(WIN_DESC, FONT_NORMAL, sBerryDescriptionPart2_WatmelMetric, 0, 0x11, 0, NULL);
+    }
+    else
+    {
+        const struct Berry *berry = GetBerryInfo(sBerryTag->berryId);
+        AddTextPrinterParameterized(WIN_DESC, FONT_NORMAL, berry->description2, 0, 0x11, 0, NULL);
+    }
 }
 
 static void CreateBerrySprite(void)
