@@ -8417,7 +8417,7 @@
               {
                 "min_level": 29,
                 "max_level": 29,
-                "species": "SPECIES_WOBBUFFET"
+                "species": "SPECIES_BULBASAUR"
               }
             ]
           }
@@ -22052,7 +22052,7 @@
               {
                 "min_level": 29,
                 "max_level": 29,
-                "species": "SPECIES_WOBBUFFET"
+                "species": "SPECIES_CHARMANDER"
               }
             ]
           },
