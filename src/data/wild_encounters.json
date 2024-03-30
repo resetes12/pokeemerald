@@ -17211,7 +17211,7 @@
               {
                 "min_level": 100,
                 "max_level": 100,
-                "species": "SPECIES_WOBBUFFET"
+                "species": "SPECIES_WYNAUT"
               }
             ]
           },
@@ -21258,7 +21258,7 @@
               {
                 "min_level": 18,
                 "max_level": 23,
-                "species": "SPECIES_KRABBY"
+                "species": "SPECIES_SANDSLASH"
               },
               {
                 "min_level": 25,

@@ -169,8 +169,8 @@ static const u16 sSpeciesHiddenFromAreaScreenModern[] = {
     SPECIES_DUGTRIO, 
     SPECIES_MEOWTH, 
     SPECIES_PERSIAN, 
-    SPECIES_PSYDUCK, 
-    SPECIES_GOLDUCK, 
+    //SPECIES_PSYDUCK, 
+    //SPECIES_GOLDUCK, 
     SPECIES_MANKEY, 
     SPECIES_PRIMEAPE, 
     SPECIES_GROWLITHE, 
@@ -359,13 +359,13 @@ static const u16 sSpeciesHiddenFromAreaScreenModern[] = {
     SPECIES_LARVITAR, 
     SPECIES_PUPITAR, 
     SPECIES_TYRANITAR, 
-    SPECIES_TREECKO, 
+    //SPECIES_TREECKO, 
     SPECIES_GROVYLE, 
     SPECIES_SCEPTILE, 
-    SPECIES_TORCHIC, 
+    //SPECIES_TORCHIC, 
     SPECIES_COMBUSKEN, 
     SPECIES_BLAZIKEN, 
-    SPECIES_MUDKIP, 
+    //SPECIES_MUDKIP, 
     SPECIES_MARSHTOMP, 
     SPECIES_SWAMPERT, 
     /*SPECIES_POOCHYENA, 
@@ -532,13 +532,16 @@ static const u16 sFeebasData[][3] =
     {NUM_SPECIES}
 };
 
-/*static const u16 sHiddenPokemon[][3] =
+static const u16 sHiddenPokemon[][3] =
 {
-    {SPECIES_PARASECT, MAP_GROUP(CERULEAN_CAVE1), MAP_NUM(CERULEAN_CAVE1)},
-    {SPECIES_PARASECT, MAP_GROUP(CERULEAN_CAVE2), MAP_NUM(CERULEAN_CAVE2)},
-    {SPECIES_PARASECT, MAP_GROUP(CERULEAN_CAVE3), MAP_NUM(CERULEAN_CAVE3)},
+    {SPECIES_HOUNDOUR, MAP_GROUP(SAFARI_ZONE_NORTHWEST), MAP_NUM(SAFARI_ZONE_NORTHWEST)},
+    {SPECIES_HOOTHOOT, MAP_GROUP(SAFARI_ZONE_NORTHWEST), MAP_NUM(SAFARI_ZONE_NORTHWEST)},
+    {SPECIES_LEDYBA, MAP_GROUP(SAFARI_ZONE_NORTHWEST), MAP_NUM(SAFARI_ZONE_NORTHWEST)},
+    {SPECIES_SPINARAK, MAP_GROUP(SAFARI_ZONE_NORTHWEST), MAP_NUM(SAFARI_ZONE_NORTHWEST)},
+    {SPECIES_SUNKERN, MAP_GROUP(SAFARI_ZONE_NORTHWEST), MAP_NUM(SAFARI_ZONE_NORTHWEST)},
+    {SPECIES_SNUBBULL, MAP_GROUP(SAFARI_ZONE_NORTHWEST), MAP_NUM(SAFARI_ZONE_NORTHWEST)},
     {NUM_SPECIES}
-};*/
+};
 
 static const u16 sLandmarkData[][2] =
 {
@@ -672,17 +675,30 @@ static void FindMapsWithMon(u16 species)
 
         //hides the pkm that are part from the list from above. Certain pkm will still overlap, but it's a solution for now
         if (gSaveBlock1Ptr->tx_Mode_AlternateSpawns == 0)
+        {
             for (i = 0; i < ARRAY_COUNT(sSpeciesHiddenFromAreaScreenModern); i++)
             {
                 if (VarGet(VAR_TIME_BASED_ENCOUNTER) >= 0 && VarGet(VAR_TIME_BASED_ENCOUNTER) <= 2)
                     if (sSpeciesHiddenFromAreaScreenModern[i] == species)
                         return;
             }
-        /*for (i = 0; sHiddenPokemon[i][0] != NUM_SPECIES; i++)
+            for (i = 0; sHiddenPokemon[i][0] != NUM_SPECIES; i++)
             {
                 if (species == sHiddenPokemon[i][0])
-                return;
-            }*/
+                {
+                    switch (sHiddenPokemon[i][1])
+                    {
+                    case MAP_GROUP_TOWNS_AND_ROUTES:
+                        SetAreaHasMon(sHiddenPokemon[i][1], sHiddenPokemon[i][2]);
+                        return;
+                    case MAP_GROUP_DUNGEONS:
+                    case MAP_GROUP_SPECIAL_AREA:
+                        SetSpecialMapHasMon(sHiddenPokemon[i][1], sHiddenPokemon[i][2]);
+                        return;
+                    }
+                }
+            }
+        }
         // Check if this species should be hidden from the area map.
         // This only applies to Wynaut, to hide the encounters on Mirage Island.
         for (i = 0; i < ARRAY_COUNT(sSpeciesHiddenFromAreaScreen); i++)
