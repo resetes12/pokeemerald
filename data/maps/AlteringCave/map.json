@@ -41,19 +41,6 @@
       "flag": "FLAG_CAVE_MOONSTONE"
     },
     {
-      "graphics_id": "OBJ_EVENT_GFX_MON_BASE+SPECIES_MEWTWO",
-      "x": 7,
-      "y": 2,
-      "elevation": 0,
-      "movement_type": "MOVEMENT_TYPE_NONE",
-      "movement_range_x": 0,
-      "movement_range_y": 0,
-      "trainer_type": "TRAINER_TYPE_NONE",
-      "trainer_sight_or_berry_tree_id": "0",
-      "script": "AlteringCave_EventScript_Mewtwo",
-      "flag": "FLAG_HIDE_MEWTWO"
-    },
-    {
       "graphics_id": "OBJ_EVENT_GFX_FOSSIL",
       "x": 5,
       "y": 13,
@@ -73,6 +60,13 @@
       "y": 22,
       "elevation": 0,
       "dest_map": "MAP_ROUTE103",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 7,
+      "y": 2,
+      "elevation": 0,
+      "dest_map": "MAP_CERULEAN_CAVE1",
       "dest_warp_id": "0"
     }
   ],

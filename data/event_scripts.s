@@ -1084,3 +1084,11 @@ Common_EventScript_LegendaryFlewAway::
 	.include "data/maps/MagmaHideout_3F_1R_Modern/scripts.inc"
 
 	.include "data/maps/PetalburgWoods_Old/scripts.inc"
+
+	.include "data/maps/CeruleanCave1/scripts.inc"
+
+	.include "data/maps/CeruleanCave2/scripts.inc"
+
+	.include "data/maps/CeruleanCave3/scripts.inc"
+
+	.include "data/maps/AlteringCave_Mewtwo/scripts.inc"

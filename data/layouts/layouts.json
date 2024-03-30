@@ -4480,6 +4480,46 @@
       "secondary_tileset": "gTileset_Rustboro",
       "border_filepath": "data/layouts/PetalburgWoods_Old/border.bin",
       "blockdata_filepath": "data/layouts/PetalburgWoods_Old/map.bin"
+    },
+    {
+      "id": "LAYOUT_CERULEAN_CAVE1",
+      "name": "CeruleanCave1_Layout",
+      "width": 39,
+      "height": 23,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Cave",
+      "border_filepath": "data/layouts/CeruleanCave1/border.bin",
+      "blockdata_filepath": "data/layouts/CeruleanCave1/map.bin"
+    },
+    {
+      "id": "LAYOUT_CERULEAN_CAVE2",
+      "name": "CeruleanCave2_Layout",
+      "width": 39,
+      "height": 23,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Cave",
+      "border_filepath": "data/layouts/CeruleanCave2/border.bin",
+      "blockdata_filepath": "data/layouts/CeruleanCave2/map.bin"
+    },
+    {
+      "id": "LAYOUT_CERULEAN_CAVE3",
+      "name": "CeruleanCave3_Layout",
+      "width": 40,
+      "height": 23,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Cave",
+      "border_filepath": "data/layouts/CeruleanCave3/border.bin",
+      "blockdata_filepath": "data/layouts/CeruleanCave3/map.bin"
+    },
+    {
+      "id": "LAYOUT_ALTERING_CAVE_MEWTWO",
+      "name": "AlteringCave_Mewtwo_Layout",
+      "width": 32,
+      "height": 24,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Cave",
+      "border_filepath": "data/layouts/AlteringCave_Mewtwo/border.bin",
+      "blockdata_filepath": "data/layouts/AlteringCave_Mewtwo/map.bin"
     }
   ]
 }

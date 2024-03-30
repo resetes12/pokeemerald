@@ -436,7 +436,11 @@
     "ShoalCave_LowTideIceRoom_Modern",
     "NewMauville_Inside_Modern",
     "MagmaHideout_3F_1R_Modern",
-    "PetalburgWoods_Old"
+    "PetalburgWoods_Old",
+    "CeruleanCave1",
+    "CeruleanCave2",
+    "CeruleanCave3",
+    "AlteringCave_Mewtwo"
   ],
   "gMapGroup_IndoorDynamic": [
     "SecretBase_RedCave1",

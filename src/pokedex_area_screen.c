@@ -532,6 +532,14 @@ static const u16 sFeebasData[][3] =
     {NUM_SPECIES}
 };
 
+/*static const u16 sHiddenPokemon[][3] =
+{
+    {SPECIES_PARASECT, MAP_GROUP(CERULEAN_CAVE1), MAP_NUM(CERULEAN_CAVE1)},
+    {SPECIES_PARASECT, MAP_GROUP(CERULEAN_CAVE2), MAP_NUM(CERULEAN_CAVE2)},
+    {SPECIES_PARASECT, MAP_GROUP(CERULEAN_CAVE3), MAP_NUM(CERULEAN_CAVE3)},
+    {NUM_SPECIES}
+};*/
+
 static const u16 sLandmarkData[][2] =
 {
     {MAPSEC_SKY_PILLAR,       FLAG_LANDMARK_SKY_PILLAR},
@@ -670,6 +678,11 @@ static void FindMapsWithMon(u16 species)
                     if (sSpeciesHiddenFromAreaScreenModern[i] == species)
                         return;
             }
+        /*for (i = 0; sHiddenPokemon[i][0] != NUM_SPECIES; i++)
+            {
+                if (species == sHiddenPokemon[i][0])
+                return;
+            }*/
         // Check if this species should be hidden from the area map.
         // This only applies to Wynaut, to hide the encounters on Mirage Island.
         for (i = 0; i < ARRAY_COUNT(sSpeciesHiddenFromAreaScreen); i++)
