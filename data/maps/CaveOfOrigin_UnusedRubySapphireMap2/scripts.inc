@@ -30,10 +30,7 @@ CaveOfOrigin_UnusedRubySapphireMap2_EventScript_Regigigas::
 	waitmoncry
 	setwildbattle SPECIES_REGIGIGAS, 70
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
-	setvar VAR_0x8000, 600 @HP
-	setvar VAR_0x8001, 464 @ATK
-	special SetHpStat
-	special SetAtkStat
+	call_if_set FLAG_DIFFICULTY_HARD, CaveOfOrigin_UnusedRubySapphireMap2_EventScript_Regigigas_Stats
 	special BattleSetup_StartLegendaryBattle
 	waitstate
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
@@ -45,6 +42,13 @@ CaveOfOrigin_UnusedRubySapphireMap2_EventScript_Regigigas::
 	setflag FLAG_DEFEATED_REGIGIGAS
 	release
 	end
+
+CaveOfOrigin_UnusedRubySapphireMap2_EventScript_Regigigas_Stats::
+	setvar VAR_0x8000, 600 @HP
+	setvar VAR_0x8001, 464 @ATK
+	special SetHpStat
+	special SetAtkStat
+	return
 
 CaveOfOrigin_UnusedRubySapphireMap2_EventScript_DefeatedRegigigas::
 	setflag FLAG_DEFEATED_REGIGIGAS

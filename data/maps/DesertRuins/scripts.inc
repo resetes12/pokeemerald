@@ -63,11 +63,8 @@ DesertRuins_EventScript_Regirock::
 	delay 40
 	waitmoncry
 	setwildbattle SPECIES_REGIROCK, 40
-	setvar VAR_0x8000, 500 @HP
-	setvar VAR_0x8002, 999 @DEF
-	special SetHpStat
-	special SetDefStat
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
+	call_if_set FLAG_DIFFICULTY_HARD, DesertRuins_EventScript_Regirock_Stats
 	special StartRegiBattle
 	waitstate
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
@@ -79,6 +76,13 @@ DesertRuins_EventScript_Regirock::
 	setflag FLAG_DEFEATED_REGIROCK
 	release
 	end
+
+DesertRuins_EventScript_Regirock_Stats::
+	setvar VAR_0x8000, 500 @HP
+	setvar VAR_0x8002, 999 @DEF
+	special SetHpStat
+	special SetDefStat
+	return
 
 DesertRuins_EventScript_DefeatedRegirock::
 	setflag FLAG_DEFEATED_REGIROCK

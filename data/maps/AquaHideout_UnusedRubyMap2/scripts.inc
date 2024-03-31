@@ -107,10 +107,7 @@ AquaHideout_UnusedRubyMap2_EventScript_Regieleki::
 	waitmoncry
 	setwildbattle SPECIES_REGIELEKI, 40
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
-	setvar VAR_0x8000, 500 @HP
-	setvar VAR_0x8003, 999 @SPD
-	special SetHpStat
-	special SetSpdStat
+	call_if_set FLAG_DIFFICULTY_HARD, AquaHideout_UnusedRubyMap2_EventScript_Regieleki_Stats
 	special StartRegiBattle
 	waitstate
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
@@ -122,6 +119,13 @@ AquaHideout_UnusedRubyMap2_EventScript_Regieleki::
 	setflag FLAG_DEFEATED_REGIELEKI
 	release
 	end
+
+AquaHideout_UnusedRubyMap2_EventScript_Regieleki_Stats::
+	setvar VAR_0x8000, 500 @HP
+	setvar VAR_0x8003, 999 @SPD
+	special SetHpStat
+	special SetSpdStat
+	return
 
 AquaHideout_UnusedRubyMap2_EventScript_DefeatedRegieleki::
 	setflag FLAG_DEFEATED_REGIELEKI

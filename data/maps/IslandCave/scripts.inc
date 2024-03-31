@@ -96,11 +96,8 @@ IslandCave_EventScript_Regice::
 	delay 40
 	waitmoncry
 	setwildbattle SPECIES_REGICE, 40
-	setvar VAR_0x8000, 500 @HP
-	setvar VAR_0x8006, 999 @SP.DEF
-	special SetHpStat
-	special SetSpDefStat
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
+	call_if_set FLAG_DIFFICULTY_HARD, IslandCave_EventScript_Regice_Stats
 	special StartRegiBattle
 	waitstate
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
@@ -112,6 +109,13 @@ IslandCave_EventScript_Regice::
 	setflag FLAG_DEFEATED_REGICE
 	release
 	end
+
+IslandCave_EventScript_Regice_Stats::
+	setvar VAR_0x8000, 500 @HP
+	setvar VAR_0x8006, 999 @SP.DEF
+	special SetHpStat
+	special SetSpDefStat
+	return
 
 IslandCave_EventScript_DefeatedRegice::
 	setflag FLAG_DEFEATED_REGICE
