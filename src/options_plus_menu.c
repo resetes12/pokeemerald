@@ -486,8 +486,8 @@ static const u8 *const sOptionMenuItemDescriptionsCustom[MENUITEM_BATTLE_COUNT][
 
 static const u8 sText_Desc_SoundMono[]                       = _("Sound is the same in all speakers.\nRecommended for original hardware.");
 static const u8 sText_Desc_SoundStereo[]                     = _("Play the left and right audio channel\nseperatly. Great with headphones.");
-static const u8 sText_Desc_Music_On[]                        = _("Enables music playback.");
-static const u8 sText_Desc_Music_Off[]                       = _("Disables music playback.");
+static const u8 sText_Desc_Music_On[]                        = _("Enables music playback.\nChange maps to take effect.");
+static const u8 sText_Desc_Music_Off[]                       = _("Disables music playback.\nChange maps to take effect.");
 static const u8 sText_Desc_BikeMusicOn[]                     = _("Enables BIKE music.");
 static const u8 sText_Desc_BikeMusicOff[]                    = _("Disables BIKE music.");
 static const u8 sText_Desc_SurfMusicOn[]                     = _("Enables SURF music.");
