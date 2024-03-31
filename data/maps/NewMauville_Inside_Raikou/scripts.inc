@@ -44,10 +44,7 @@ NewMauville_Inside_Raikou_RaikouBattle_1::
 	setflag FLAG_SYS_NO_CATCHING
 	setflag FLAG_SYS_SET_BATTLE_BGM
 	setvar VAR_TEMP_F, MUS_RG_VS_LEGEND
-	setvar VAR_0x8000, 250 @hp
-	setvar VAR_0x8003, 400 @Speed
-	special SetHpStat
-	special SetSpdStat
+	call_if_set FLAG_DIFFICULTY_HARD, NewMauville_Inside_Raikou_RaikouBattle_1_Stats
 	dowildbattle
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
 	specialvar VAR_RESULT, GetBattleOutcome
@@ -56,6 +53,13 @@ NewMauville_Inside_Raikou_RaikouBattle_1::
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, NewMauville_Inside_Raikou_Ran
 	releaseall
 	end
+
+NewMauville_Inside_Raikou_RaikouBattle_1_Stats::
+	setvar VAR_0x8000, 250 @hp
+	setvar VAR_0x8003, 400 @Speed
+	special SetHpStat
+	special SetSpdStat
+	return
 
 NewMauville_Inside_Raikou_RaikouBattle_1_Won::
 	applymovement LOCALID_RAIKOU_1, NewMauville_Inside_Raikou_RaikouBattle_1_Movement
@@ -92,10 +96,7 @@ NewMauville_Inside_Raikou_RaikouBattle_2::
 	setflag FLAG_SYS_NO_CATCHING
 	setflag FLAG_SYS_SET_BATTLE_BGM
 	setvar VAR_TEMP_F, MUS_C_VS_LEGEND_BEAST
-	setvar VAR_0x8000, 400 @hp
-	setvar VAR_0x8003, 400 @Speed
-	special SetHpStat
-	special SetSpdStat
+	call_if_set FLAG_DIFFICULTY_HARD, NewMauville_Inside_Raikou_RaikouBattle_2_Stats
 	dowildbattle
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
 	specialvar VAR_RESULT, GetBattleOutcome
@@ -104,6 +105,13 @@ NewMauville_Inside_Raikou_RaikouBattle_2::
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, NewMauville_Inside_Raikou_Ran
 	releaseall
 	end
+
+NewMauville_Inside_Raikou_RaikouBattle_2_Stats::
+	setvar VAR_0x8000, 400 @hp
+	setvar VAR_0x8003, 400 @Speed
+	special SetHpStat
+	special SetSpdStat
+	return
 
 NewMauville_Inside_Raikou_RaikouBattle_2_Won::
 	applymovement LOCALID_RAIKOU_2, NewMauville_Inside_Raikou_RaikouBattle_2_Movement
@@ -136,11 +144,8 @@ NewMauville_Inside_Raikou_RaikouBattle::
 	msgbox NewMauville_Inside_Raikou_RaikouBattle_Text, MSGBOX_DEFAULT
 	closemessage
 	setwildbattle SPECIES_RAIKOU, 70, ITEM_MAGNET
-	setvar VAR_0x8000, 600 @hp
-	setvar VAR_0x8003, 400 @Speed
-	special SetHpStat
-	special SetSpdStat
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
+	call_if_set FLAG_DIFFICULTY_HARD, NewMauville_Inside_Raikou_RaikouBattle_3_Stats
 	special BattleSetup_StartLegendaryBattle
 	waitstate
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
@@ -152,6 +157,13 @@ NewMauville_Inside_Raikou_RaikouBattle::
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, NewMauville_Inside_Raikou_Ran
 	release
 	end
+
+NewMauville_Inside_Raikou_RaikouBattle_3_Stats::
+	setvar VAR_0x8000, 600 @hp
+	setvar VAR_0x8003, 400 @Speed
+	special SetHpStat
+	special SetSpdStat
+	return
 
 NewMauville_Inside_Raikou_RaikouBattle_Text::
 	.string "RAIKOU stopped running away.\n"

@@ -51,10 +51,7 @@ ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle1::
 	setflag FLAG_SYS_NO_CATCHING
 	setflag FLAG_SYS_SET_BATTLE_BGM
 	setvar VAR_TEMP_F, MUS_RG_VS_LEGEND
-	setvar VAR_0x8002, 450 @DEF
-	setvar VAR_0x8006, 450 @SP. DEF
-	special SetDefStat
-	special SetSpDefStat
+	call_if_set FLAG_DIFFICULTY_HARD, ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle1_Stats
 	dowildbattle
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
 	specialvar VAR_RESULT, GetBattleOutcome
@@ -63,6 +60,13 @@ ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle1::
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, ShoalCave_LowTideIceRoom_Suicune_Ran
 	releaseall
 	end
+
+ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle1_Stats::
+	setvar VAR_0x8002, 450 @DEF
+	setvar VAR_0x8006, 450 @SP. DEF
+	special SetDefStat
+	special SetSpDefStat
+	return
 
 ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle1_Won::
 	applymovement LOCALID_SUICUNE_1, ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle1_Movement
@@ -105,10 +109,7 @@ ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle2::
 	setflag FLAG_SYS_NO_CATCHING
 	setflag FLAG_SYS_SET_BATTLE_BGM
 	setvar VAR_TEMP_F, MUS_C_VS_LEGEND_BEAST
-	setvar VAR_0x8002, 550 @DEF
-	setvar VAR_0x8006, 550 @SP. DEF
-	special SetDefStat
-	special SetSpDefStat
+	call_if_set FLAG_DIFFICULTY_HARD, ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle2_Stats
 	dowildbattle
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
 	specialvar VAR_RESULT, GetBattleOutcome
@@ -117,6 +118,13 @@ ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle2::
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, ShoalCave_LowTideIceRoom_Suicune_Ran
 	releaseall
 	end
+
+ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle2_Stats::
+	setvar VAR_0x8002, 550 @DEF
+	setvar VAR_0x8006, 550 @SP. DEF
+	special SetDefStat
+	special SetSpDefStat
+	return
 
 ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle2_Won::
 	applymovement LOCALID_SUICUNE_2, ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle2_Movement
@@ -159,10 +167,7 @@ ShoalCave_LowTideIceRoom_Suicune_SuicuneFinalBattle::
 	closemessage
 	setwildbattle SPECIES_SUICUNE, 70, ITEM_MYSTIC_WATER
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
-	setvar VAR_0x8002, 700 @DEF
-	setvar VAR_0x8006, 700 @SP. DEF
-	special SetDefStat
-	special SetSpDefStat
+	call_if_set FLAG_DIFFICULTY_HARD, ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle3_Stats
 	special BattleSetup_StartLegendaryBattle
 	waitstate
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
@@ -174,6 +179,13 @@ ShoalCave_LowTideIceRoom_Suicune_SuicuneFinalBattle::
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, ShoalCave_LowTideIceRoom_Suicune_Ran
 	releaseall
 	end
+
+ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle3_Stats::
+	setvar VAR_0x8002, 700 @DEF
+	setvar VAR_0x8006, 700 @SP. DEF
+	special SetDefStat
+	special SetSpDefStat
+	return
 
 ShoalCave_LowTideIceRoom_Suicune_SuicuneFinalBattle_Text:
 	.string "SUICUNE doesn't have anywhere\n"

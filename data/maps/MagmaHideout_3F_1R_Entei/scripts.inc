@@ -68,8 +68,7 @@ MagmaHideout_3F_1R_Entei_EnteiBattle1::
 	setflag FLAG_SYS_NO_CATCHING
 	setflag FLAG_SYS_SET_BATTLE_BGM
 	setvar VAR_TEMP_F, MUS_RG_VS_WILD
-	setvar VAR_0x8000, 300 @HP
-	special SetHpStat
+	call_if_set FLAG_DIFFICULTY_HARD, MagmaHideout_3F_1R_Entei_EnteiBattle1_Stats
 	dowildbattle
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
 	specialvar VAR_RESULT, GetBattleOutcome
@@ -78,6 +77,11 @@ MagmaHideout_3F_1R_Entei_EnteiBattle1::
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, MagmaHideout_3F_1R_Entei_Ran
 	releaseall
 	end
+
+MagmaHideout_3F_1R_Entei_EnteiBattle1_Stats::
+	setvar VAR_0x8000, 300 @HP
+	special SetHpStat
+	return
 
 MagmaHideout_3F_1R_EnteiBattle1_Won::
 	applymovement LOCALID_ENTEI_1, MagmaHideout_3F_1R_EnteiBattle1_Movement
@@ -123,12 +127,7 @@ MagmaHideout_3F_1R_Entei_EnteiBattle2::
 	setflag FLAG_SYS_NO_CATCHING
 	setflag FLAG_SYS_SET_BATTLE_BGM
 	setvar VAR_TEMP_F, MUS_RG_VS_LEGEND
-	setvar VAR_0x8000, 750 @HP
-	setvar VAR_0x8001, 200 @Atk
-	setvar VAR_0x8005, 200 @Sp. Atk
-	special SetHpStat
-	special SetAtkStat
-	special SetSpAtkStat
+	call_if_set FLAG_DIFFICULTY_HARD, MagmaHideout_3F_1R_Entei_EnteiBattle2_Stats
 	dowildbattle
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
 	specialvar VAR_RESULT, GetBattleOutcome
@@ -138,6 +137,15 @@ MagmaHideout_3F_1R_Entei_EnteiBattle2::
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, MagmaHideout_3F_1R_Entei_Ran
 	releaseall
 	end
+
+MagmaHideout_3F_1R_Entei_EnteiBattle2_Stats::
+	setvar VAR_0x8000, 750 @HP
+	setvar VAR_0x8001, 200 @Atk
+	setvar VAR_0x8005, 200 @Sp. Atk
+	special SetHpStat
+	special SetAtkStat
+	special SetSpAtkStat
+	return
 
 MagmaHideout_3F_1R_EnteiBattle2_Won::
 	applymovement LOCALID_ENTEI_2, MagmaHideout_3F_1R_EnteiBattle2_Movement
@@ -183,12 +191,7 @@ MagmaHideout_3F_1R_Entei_EnteiBattle3::
 	setflag FLAG_SYS_NO_CATCHING
 	setflag FLAG_SYS_SET_BATTLE_BGM
 	setvar VAR_TEMP_F, MUS_C_VS_LEGEND_BEAST
-	setvar VAR_0x8000, 750 @HP
-	setvar VAR_0x8001, 250 @Atk
-	setvar VAR_0x8005, 200 @Sp. Atk
-	special SetHpStat
-	special SetAtkStat
-	special SetSpAtkStat
+	call_if_set FLAG_DIFFICULTY_HARD, MagmaHideout_3F_1R_Entei_EnteiBattle3_Stats
 	dowildbattle
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
 	specialvar VAR_RESULT, GetBattleOutcome
@@ -198,6 +201,15 @@ MagmaHideout_3F_1R_Entei_EnteiBattle3::
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, MagmaHideout_3F_1R_Entei_Ran
 	releaseall
 	end
+
+MagmaHideout_3F_1R_Entei_EnteiBattle3_Stats::
+	setvar VAR_0x8000, 750 @HP
+	setvar VAR_0x8001, 250 @Atk
+	setvar VAR_0x8005, 200 @Sp. Atk
+	special SetHpStat
+	special SetAtkStat
+	special SetSpAtkStat
+	return
 
 MagmaHideout_3F_1R_EnteiBattle3_Won::
 	applymovement LOCALID_ENTEI_3, MagmaHideout_3F_1R_EnteiBattle3_Movement
@@ -262,12 +274,7 @@ MagmaHideout_3F_1R_Entei_EnteiFinalBattle::
 	closemessage
 	setwildbattle SPECIES_ENTEI, 70, ITEM_CHARCOAL
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
-	setvar VAR_0x8000, 900 @HP
-	setvar VAR_0x8001, 300 @Atk
-	setvar VAR_0x8005, 200 @Sp. Atk
-	special SetHpStat
-	special SetAtkStat
-	special SetSpAtkStat
+	call_if_set FLAG_DIFFICULTY_HARD, MagmaHideout_3F_1R_Entei_EnteiBattle4_Stats
 	special BattleSetup_StartLegendaryBattle
 	waitstate
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
@@ -279,6 +286,15 @@ MagmaHideout_3F_1R_Entei_EnteiFinalBattle::
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, MagmaHideout_3F_1R_Entei_Ran
 	releaseall
 	end
+
+MagmaHideout_3F_1R_Entei_EnteiBattle4_Stats::
+	setvar VAR_0x8000, 900 @HP
+	setvar VAR_0x8001, 300 @Atk
+	setvar VAR_0x8005, 200 @Sp. Atk
+	special SetHpStat
+	special SetAtkStat
+	special SetSpAtkStat
+	return
 
 MagmaHideout_3F_1R_EnteiBattleFinal_Text:
 	.string "ENTEI looks exhausted.\n"
