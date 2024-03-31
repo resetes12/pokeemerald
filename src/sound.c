@@ -405,15 +405,18 @@ static void CreateFanfareTask(void)
 
 void FadeInNewBGM(u16 songNum, u8 speed)
 {
-    if (gDisableMusic)
-        songNum = 0;
-    if (songNum == MUS_NONE)
-        songNum = 0;
-    m4aSongNumStart(songNum);
-    m4aMPlayImmInit(&gMPlayInfo_BGM);
-    m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, 0);
-    m4aSongNumStop(songNum);
-    m4aMPlayFadeIn(&gMPlayInfo_BGM, speed);
+    if (gSaveBlock2Ptr->optionsMusicOnOff == 0)
+    {        
+        if (gDisableMusic)
+            songNum = 0;
+        if (songNum == MUS_NONE)
+            songNum = 0;
+        m4aSongNumStart(songNum);
+        m4aMPlayImmInit(&gMPlayInfo_BGM);
+        m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, 0);
+        m4aSongNumStop(songNum);
+        m4aMPlayFadeIn(&gMPlayInfo_BGM, speed);
+    }
 }
 
 void FadeOutBGMTemporarily(u8 speed)
@@ -710,11 +713,14 @@ static void RestoreBGMVolumeAfterPokemonCry(void)
 
 void PlayBGM(u16 songNum)
 {
-    if (gDisableMusic)
-        songNum = 0;
-    if (songNum == MUS_NONE)
-        songNum = 0;
-    m4aSongNumStart(songNum);
+    if (gSaveBlock2Ptr->optionsMusicOnOff == 0)
+    {    
+        if (gDisableMusic)
+            songNum = 0;
+        if (songNum == MUS_NONE)
+            songNum = 0;
+        m4aSongNumStart(songNum);
+    }
 }
 
 void PlaySE(u16 songNum)

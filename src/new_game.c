@@ -118,6 +118,7 @@ static void SetDefaultOptions(void)
     gSaveBlock2Ptr->optionsLRtoRun = 0;
     gSaveBlock2Ptr->optionsBallPrompt = 1;
     gSaveBlock2Ptr->optionsUnitSystem = 0;
+    gSaveBlock2Ptr->optionsMusicOnOff = 0;
 }
 
 static void ClearPokedexFlags(void)
