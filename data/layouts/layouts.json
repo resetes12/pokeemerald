@@ -4550,6 +4550,26 @@
       "secondary_tileset": "gTileset_Cave",
       "border_filepath": "data/layouts/VictoryRoad_B2F_Modern/border.bin",
       "blockdata_filepath": "data/layouts/VictoryRoad_B2F_Modern/map.bin"
+    },
+    {
+      "id": "LAYOUT_METEOR_FALLS_B1F_2R_MODERN",
+      "name": "MeteorFalls_B1F_2R_Modern_Layout",
+      "width": 11,
+      "height": 18,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_MeteorFalls",
+      "border_filepath": "data/layouts/MeteorFalls_B1F_2R_Modern/border.bin",
+      "blockdata_filepath": "data/layouts/MeteorFalls_B1F_2R_Modern/map.bin"
+    },
+    {
+      "id": "LAYOUT_METEOR_FALLS_ARTICUNO",
+      "name": "MeteorFalls_Articuno_Layout",
+      "width": 20,
+      "height": 20,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Pacifidlog",
+      "border_filepath": "data/layouts/MeteorFalls_Articuno/border.bin",
+      "blockdata_filepath": "data/layouts/MeteorFalls_Articuno/map.bin"
     }
   ]
 }

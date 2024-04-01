@@ -443,7 +443,9 @@
     "AlteringCave_Mewtwo",
     "VictoryRoad_Moltres",
     "VictoryRoad_Moltres2",
-    "VictoryRoad_B2F_Modern"
+    "VictoryRoad_B2F_Modern",
+    "MeteorFalls_B1F_2R_Modern",
+    "MeteorFalls_Articuno"
   ],
   "gMapGroup_IndoorDynamic": [
     "SecretBase_RedCave1",

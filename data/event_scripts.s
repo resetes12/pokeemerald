@@ -1098,3 +1098,7 @@ Common_EventScript_LegendaryFlewAway::
 	.include "data/maps/VictoryRoad_Moltres2/scripts.inc"
 
 	.include "data/maps/VictoryRoad_B2F_Modern/scripts.inc"
+
+	.include "data/maps/MeteorFalls_B1F_2R_Modern/scripts.inc"
+
+	.include "data/maps/MeteorFalls_Articuno/scripts.inc"
