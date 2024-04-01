@@ -440,7 +440,10 @@
     "CeruleanCave1",
     "CeruleanCave2",
     "CeruleanCave3",
-    "AlteringCave_Mewtwo"
+    "AlteringCave_Mewtwo",
+    "VictoryRoad_Moltres",
+    "VictoryRoad_Moltres2",
+    "VictoryRoad_B2F_Modern"
   ],
   "gMapGroup_IndoorDynamic": [
     "SecretBase_RedCave1",

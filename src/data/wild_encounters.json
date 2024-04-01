@@ -33727,6 +33727,75 @@
               }
             ]
           }
+        },
+        {
+          "map": "MAP_VICTORY_ROAD_MOLTRES",
+          "base_label": "gVictoryRoad_Moltres0",
+          "land_mons": {
+            "encounter_rate": 5,
+            "mons": [
+              {
+                "min_level": 44,
+                "max_level": 46,
+                "species": "SPECIES_GOLBAT"
+              },
+              {
+                "min_level": 44,
+                "max_level": 46,
+                "species": "SPECIES_SABLEYE"
+              },
+              {
+                "min_level": 44,
+                "max_level": 46,
+                "species": "SPECIES_LAIRON"
+              },
+              {
+                "min_level": 44,
+                "max_level": 46,
+                "species": "SPECIES_LAIRON"
+              },
+              {
+                "min_level": 44,
+                "max_level": 46,
+                "species": "SPECIES_MEDITITE"
+              },
+              {
+                "min_level": 42,
+                "max_level": 46,
+                "species": "SPECIES_SABLEYE"
+              },
+              {
+                "min_level": 44,
+                "max_level": 46,
+                "species": "SPECIES_MEDICHAM"
+              },
+              {
+                "min_level": 44,
+                "max_level": 46,
+                "species": "SPECIES_SABLEYE"
+              },
+              {
+                "min_level": 42,
+                "max_level": 46,
+                "species": "SPECIES_LAIRON"
+              },
+              {
+                "min_level": 45,
+                "max_level": 46,
+                "species": "SPECIES_MAWILE"
+              },
+              {
+                "min_level": 44,
+                "max_level": 46,
+                "species": "SPECIES_LAIRON"
+              },
+              {
+                "min_level": 47,
+                "max_level": 47,
+                "species": "SPECIES_MAWILE"
+              }
+            ]
+          }
         }
       ]
     },

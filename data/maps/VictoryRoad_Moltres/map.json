@@ -1,0 +1,41 @@
+{
+  "id": "MAP_VICTORY_ROAD_MOLTRES",
+  "name": "VictoryRoad_Moltres",
+  "layout": "LAYOUT_VICTORY_ROAD_MOLTRES",
+  "music": "MUS_DP_OREBURGH_MINE",
+  "region_map_section": "MAPSEC_VICTORY_ROAD",
+  "requires_flash": true,
+  "weather": "WEATHER_NONE",
+  "map_type": "MAP_TYPE_UNDERGROUND",
+  "allow_cycling": true,
+  "allow_escaping": true,
+  "allow_running": true,
+  "show_map_name": true,
+  "battle_scene": "MAP_BATTLE_SCENE_NORMAL",
+  "connections": 0,
+  "object_events": [
+
+  ],
+  "warp_events": [
+    {
+      "x": 9,
+      "y": 18,
+      "elevation": 0,
+      "dest_map": "MAP_VICTORY_ROAD_B2F",
+      "dest_warp_id": "4"
+    },
+    {
+      "x": 18,
+      "y": 18,
+      "elevation": 0,
+      "dest_map": "MAP_VICTORY_ROAD_MOLTRES2",
+      "dest_warp_id": "0"
+    }
+  ],
+  "coord_events": [
+
+  ],
+  "bg_events": [
+
+  ]
+}

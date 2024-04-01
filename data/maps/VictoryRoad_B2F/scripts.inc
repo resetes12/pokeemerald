@@ -7,58 +7,15 @@ VictoryRoad_B2F_MapScripts::
 
 VictoryRoad_B2F_OnResume:
 	callnative SetTimeBasedEncounters
-	call_if_set FLAG_SYS_CTRL_OBJ_DELETE, VictoryRoad_B2F_EventScript_TryRemoveMoltres
 	end
-
-VictoryRoad_B2F_EventScript_TryRemoveMoltres::
-	specialvar VAR_RESULT, GetBattleOutcome
-	goto_if_ne VAR_RESULT, B_OUTCOME_CAUGHT, Common_EventScript_NopReturn
-	removeobject VAR_LAST_TALKED
-	return
 
 VictoryRoad_B2F_OnTransition:
 	callnative SetTimeBasedEncounters
-	call_if_unset FLAG_UNLOCK_BIRDS, VictoryRoad_B2F_EventScript_HideMoltres
-	call_if_unset FLAG_DEFEATED_MOLTRES, VictoryRoad_B2F_EventScript_ShowMoltres
+	goto_if_set FLAG_UNLOCK_BIRDS, VictoryRoad_B2F_SwitchToModern
 	end
 
-VictoryRoad_B2F_EventScript_ShowMoltres::
-	clearflag FLAG_HIDE_MOLTRES
-	end
-
-VictoryRoad_B2F_EventScript_HideMoltres::
-	setflag FLAG_HIDE_MOLTRES
-	removeobject LOCALID_MOLTRES
-	end
-
-VictoryRoad_B2F_EventScript_Moltres::
-	lock
-	faceplayer
-	waitse
-	playmoncry SPECIES_MOLTRES, CRY_MODE_ENCOUNTER
-	delay 40
-	waitmoncry
-	setwildbattle SPECIES_MOLTRES, 50
-	setflag FLAG_SYS_CTRL_OBJ_DELETE
-	special BattleSetup_StartLegendaryBattle
-	waitstate
-	clearflag FLAG_SYS_CTRL_OBJ_DELETE
-	specialvar VAR_RESULT, GetBattleOutcome
-	goto_if_eq VAR_RESULT, B_OUTCOME_WON, VictoryRoad_B2F_EventScript_DefeatedMoltres
-	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, VictoryRoad_B2F_EventScript_RanFromMoltres
-	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, VictoryRoad_B2F_EventScript_RanFromMoltres
-	setflag FLAG_DEFEATED_MOLTRES
-	release
-	end
-
-VictoryRoad_B2F_EventScript_DefeatedMoltres::
-	setflag FLAG_DEFEATED_MOLTRES
-	goto Common_EventScript_RemoveStaticPokemon
-	end
-
-VictoryRoad_B2F_EventScript_RanFromMoltres::
-	setvar VAR_0x8004, SPECIES_MOLTRES
-	goto Common_EventScript_LegendaryFlewAway
+VictoryRoad_B2F_SwitchToModern::
+	setmaplayoutindex LAYOUT_VICTORY_ROAD_B2F_MODERN
 	end
 
 VictoryRoad_B2F_EventScript_Vito::

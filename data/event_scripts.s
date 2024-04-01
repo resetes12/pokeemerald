@@ -1092,3 +1092,9 @@ Common_EventScript_LegendaryFlewAway::
 	.include "data/maps/CeruleanCave3/scripts.inc"
 
 	.include "data/maps/AlteringCave_Mewtwo/scripts.inc"
+
+	.include "data/maps/VictoryRoad_Moltres/scripts.inc"
+
+	.include "data/maps/VictoryRoad_Moltres2/scripts.inc"
+
+	.include "data/maps/VictoryRoad_B2F_Modern/scripts.inc"

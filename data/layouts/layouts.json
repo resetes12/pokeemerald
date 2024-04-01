@@ -4520,6 +4520,36 @@
       "secondary_tileset": "gTileset_Cave",
       "border_filepath": "data/layouts/AlteringCave_Mewtwo/border.bin",
       "blockdata_filepath": "data/layouts/AlteringCave_Mewtwo/map.bin"
+    },
+    {
+      "id": "LAYOUT_VICTORY_ROAD_MOLTRES",
+      "name": "VictoryRoad_Moltres_Layout",
+      "width": 20,
+      "height": 20,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Cave",
+      "border_filepath": "data/layouts/VictoryRoad_Moltres/border.bin",
+      "blockdata_filepath": "data/layouts/VictoryRoad_Moltres/map.bin"
+    },
+    {
+      "id": "LAYOUT_VICTORY_ROAD_MOLTRES2",
+      "name": "VictoryRoad_Moltres2_Layout",
+      "width": 20,
+      "height": 20,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Cave",
+      "border_filepath": "data/layouts/VictoryRoad_Moltres2/border.bin",
+      "blockdata_filepath": "data/layouts/VictoryRoad_Moltres2/map.bin"
+    },
+    {
+      "id": "LAYOUT_VICTORY_ROAD_B2F_MODERN",
+      "name": "VictoryRoad_B2F_Modern_Layout",
+      "width": 46,
+      "height": 31,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Cave",
+      "border_filepath": "data/layouts/VictoryRoad_B2F_Modern/border.bin",
+      "blockdata_filepath": "data/layouts/VictoryRoad_B2F_Modern/map.bin"
     }
   ]
 }
