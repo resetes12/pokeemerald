@@ -1154,6 +1154,11 @@ static u16 GetWonderTradeEvolutionTargetSpecies(struct Pokemon *mon)
                 }
             }
             break;
+        case EVO_ITEM_HOLD:
+                HeldItem = 0;
+                SetMonData(mon, MON_DATA_HELD_ITEM, &HeldItem);
+                targetSpecies = gEvolutionTable[species][i].targetSpecies;
+            break;
         }
     }
 

@@ -263,6 +263,7 @@
 #define EVO_MOVE_TYPE        23 // Pokémon levels up, knows move with specified type
 #define EVO_LEVEL_FEMALE_MORNING 24 // Pokémon levels up, being female, during the day
 #define EVO_LEVEL_MALE_MORNING   25 // Pokémon levels up, being male, during the day
+#define EVO_ITEM_HOLD        26 // Pokémon levels up, holds specified item
 
 #define EVOS_PER_MON 8
 #define EVOS_PER_LINE 9
