@@ -445,7 +445,9 @@
     "VictoryRoad_Moltres2",
     "VictoryRoad_B2F_Modern",
     "MeteorFalls_B1F_2R_Modern",
-    "MeteorFalls_Articuno"
+    "MeteorFalls_Articuno",
+    "ScorchedSlab_Zapdos",
+    "ScorchedSlab_Modern"
   ],
   "gMapGroup_IndoorDynamic": [
     "SecretBase_RedCave1",

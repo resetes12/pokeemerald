@@ -1102,3 +1102,7 @@ Common_EventScript_LegendaryFlewAway::
 	.include "data/maps/MeteorFalls_B1F_2R_Modern/scripts.inc"
 
 	.include "data/maps/MeteorFalls_Articuno/scripts.inc"
+
+	.include "data/maps/ScorchedSlab_Zapdos/scripts.inc"
+
+	.include "data/maps/ScorchedSlab_Modern/scripts.inc"

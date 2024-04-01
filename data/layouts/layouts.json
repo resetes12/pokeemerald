@@ -4570,6 +4570,26 @@
       "secondary_tileset": "gTileset_Pacifidlog",
       "border_filepath": "data/layouts/MeteorFalls_Articuno/border.bin",
       "blockdata_filepath": "data/layouts/MeteorFalls_Articuno/map.bin"
+    },
+    {
+      "id": "LAYOUT_SCORCHED_SLAB_ZAPDOS",
+      "name": "ScorchedSlab_Zapdos_Layout",
+      "width": 15,
+      "height": 20,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Cave",
+      "border_filepath": "data/layouts/ScorchedSlab_Zapdos/border.bin",
+      "blockdata_filepath": "data/layouts/ScorchedSlab_Zapdos/map.bin"
+    },
+    {
+      "id": "LAYOUT_SCORCHED_SLAB_MODERN",
+      "name": "ScorchedSlab_Modern_Layout",
+      "width": 15,
+      "height": 20,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_Cave",
+      "border_filepath": "data/layouts/ScorchedSlab_Modern/border.bin",
+      "blockdata_filepath": "data/layouts/ScorchedSlab_Modern/map.bin"
     }
   ]
 }
