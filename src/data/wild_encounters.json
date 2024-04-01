@@ -699,7 +699,7 @@
               {
                 "min_level": 3,
                 "max_level": 3,
-                "species": "SPECIES_BELLSPROUT"
+                "species": "SPECIES_SUNKERN"
               },
               {
                 "min_level": 3,
@@ -853,12 +853,12 @@
               {
                 "min_level": 3,
                 "max_level": 3,
-                "species": "SPECIES_MISDREAVUS"
+                "species": "SPECIES_BELLSPROUT"
               },
               {
                 "min_level": 3,
                 "max_level": 3,
-                "species": "SPECIES_MISDREAVUS"
+                "species": "SPECIES_BELLSPROUT"
               },
               {
                 "min_level": 4,
@@ -1300,7 +1300,7 @@
               {
                 "min_level": 4,
                 "max_level": 4,
-                "species": "SPECIES_POOCHYENA"
+                "species": "SPECIES_POLIWAG"
               },
               {
                 "min_level": 2,
@@ -1315,7 +1315,7 @@
               {
                 "min_level": 3,
                 "max_level": 4,
-                "species": "SPECIES_SUNKERN"
+                "species": "SPECIES_WINGULL"
               },
               {
                 "min_level": 4,
@@ -1325,22 +1325,22 @@
               {
                 "min_level": 3,
                 "max_level": 3,
-                "species": "SPECIES_WINGULL"
+                "species": "SPECIES_SNUBBULL"
               },
               {
                 "min_level": 3,
                 "max_level": 3,
-                "species": "SPECIES_WINGULL"
+                "species": "SPECIES_SNUBBULL"
               },
               {
                 "min_level": 2,
                 "max_level": 2,
-                "species": "SPECIES_WINGULL"
+                "species": "SPECIES_SNUBBULL"
               },
               {
                 "min_level": 4,
                 "max_level": 4,
-                "species": "SPECIES_HOPPIP"
+                "species": "SPECIES_POLIWAG"
               }
             ]
           },
@@ -1459,7 +1459,7 @@
               {
                 "min_level": 2,
                 "max_level": 2,
-                "species": "SPECIES_POOCHYENA"
+                "species": "SPECIES_POLIWAG"
               },
               {
                 "min_level": 3,
@@ -1469,7 +1469,7 @@
               {
                 "min_level": 3,
                 "max_level": 4,
-                "species": "SPECIES_MURKROW"
+                "species": "SPECIES_WINGULL"
               },
               {
                 "min_level": 4,
@@ -1911,7 +1911,7 @@
               {
                 "min_level": 5,
                 "max_level": 5,
-                "species": "SPECIES_POOCHYENA"
+                "species": "SPECIES_HOPPIP"
               },
               {
                 "min_level": 5,
@@ -2080,7 +2080,7 @@
               {
                 "min_level": 5,
                 "max_level": 5,
-                "species": "SPECIES_POOCHYENA"
+                "species": "SPECIES_HOPPIP"
               },
               {
                 "min_level": 4,
