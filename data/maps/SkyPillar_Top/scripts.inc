@@ -74,9 +74,11 @@ SkyPillar_Top_EventScript_RayquazaHard::
 	waitmoncry
 	setwildbattle SPECIES_RAYQUAZA, 50
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
+	call_if_set FLAG_DIFFICULTY_HARD, SkyPillar_Top_EventScript_RayquazaHard_Stats
 	special BattleSetup_StartLegendaryBattle
 	waitstate
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	calculatemonstats
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, SkyPillar_Top_EventScript_DefeatedRayquaza
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, SkyPillar_Top_EventScript_RanFromRayquaza
@@ -84,6 +86,21 @@ SkyPillar_Top_EventScript_RayquazaHard::
 	setflag FLAG_DEFEATED_RAYQUAZA
 	releaseall
 	end
+
+SkyPillar_Top_EventScript_RayquazaHard_Stats::
+	setvar VAR_0x8000, 250 @HP
+	setvar VAR_0x8001, 240 @ATK
+	setvar VAR_0x8002, 150 @DEF
+	setvar VAR_0x8003, 170 @SPD
+	setvar VAR_0x8005, 240 @SP. ATK
+	setvar VAR_0x8006, 150 @SP. ATK
+	special SetHpStat
+	special SetAtkStat
+	special SetDefStat
+	special SetSpAtkStat
+	special SetSpDefStat
+	special SetSpdStat
+	return
 
 SkyPillar_Top_EventScript_DefeatedRayquaza::
 	setflag FLAG_DEFEATED_RAYQUAZA
