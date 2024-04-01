@@ -26,19 +26,6 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "ArtisanCave_B1F_EventScript_ItemHPUp",
       "flag": "FLAG_ITEM_ARTISAN_CAVE_B1F_HP_UP"
-    },
-    {
-      "graphics_id": "OBJ_EVENT_GFX_FOSSIL",
-      "x": 32,
-      "y": 38,
-      "elevation": 0,
-      "movement_type": "MOVEMENT_TYPE_NONE",
-      "movement_range_x": 0,
-      "movement_range_y": 0,
-      "trainer_type": "TRAINER_TYPE_NONE",
-      "trainer_sight_or_berry_tree_id": "ITEM_DOME_FOSSIL",
-      "script": "Common_EventScript_FindItem",
-      "flag": "FLAG_DOME_FOSSIL_ALTERING_CAVE"
     }
   ],
   "warp_events": [
@@ -71,8 +58,8 @@
     },
     {
       "type": "hidden_item",
-      "x": 27,
-      "y": 8,
+      "x": 32,
+      "y": 38,
       "elevation": 0,
       "item": "ITEM_CALCIUM",
       "flag": "FLAG_HIDDEN_ITEM_ARTISAN_CAVE_B1F_CALCIUM"
