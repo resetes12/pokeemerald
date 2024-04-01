@@ -1,5 +1,3 @@
-.set LOCALID_MOLTRES, 8
-
 VictoryRoad_B2F_MapScripts::
 	map_script MAP_SCRIPT_ON_RESUME, VictoryRoad_B2F_OnResume
 	map_script MAP_SCRIPT_ON_TRANSITION, VictoryRoad_B2F_OnTransition
