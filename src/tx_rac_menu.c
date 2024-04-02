@@ -741,7 +741,7 @@ static const u8 sText_Description_Mode_Modern_Moves_On[]          = _("13 new MO
 static const u8 sText_Description_Mode_Leg_Abilities_Off[]        = _("PRESSURE stays as the main\nability of some legendaries.");
 static const u8 sText_Description_Mode_Leg_Abilities_On[]         = _("Legendaries have PRESSURE changed\nfor a better ability.");
 static const u8 sText_Description_Mode_New_Legendaries_Off[]      = _("No extra legendaries are added.");
-static const u8 sText_Description_Mode_New_Legendaries_On[]       = _("Entra legendaries from GEN I and II\nare added via ingame events.");
+static const u8 sText_Description_Mode_New_Legendaries_On[]       = _("Extra legendaries from GEN I and II\nare added via ingame events.");
 static const u8 sText_Description_Mode_Next[]                     = _("Continue to Features options.");
 
 static const u8 *const sOptionMenuItemDescriptionsMode[MENUITEM_MODE_COUNT][5] =
