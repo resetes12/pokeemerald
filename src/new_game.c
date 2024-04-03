@@ -176,6 +176,7 @@ void NewGameInitData(void)
     bool8 TMPrev = FlagGet(FLAG_FINITE_TMS);
     bool8 UnlimitedWT = FlagGet(FLAG_UNLIMITIED_WONDERTRADE);
     bool8 EnableMints = FlagGet(FLAG_MINTS_ENABLED);
+    bool8 EnableExtraLegendaries = FlagGet(FLAG_EXTRA_LEGENDARIES);
 
     if (gSaveFileStatus == SAVE_STATUS_EMPTY || gSaveFileStatus == SAVE_STATUS_CORRUPT)
         RtcReset();
@@ -240,6 +241,7 @@ void NewGameInitData(void)
     TMPrev ? FlagSet(FLAG_FINITE_TMS) : FlagClear(FLAG_FINITE_TMS);
     UnlimitedWT ? FlagSet(FLAG_UNLIMITIED_WONDERTRADE) : FlagClear(FLAG_UNLIMITIED_WONDERTRADE);
     EnableMints ? FlagSet(FLAG_MINTS_ENABLED) : FlagClear(FLAG_MINTS_ENABLED);
+    EnableExtraLegendaries ? FlagSet(FLAG_EXTRA_LEGENDARIES) : FlagClear(FLAG_EXTRA_LEGENDARIES);
 
     /*if (difficultyPrev == DIFFICULTY_EASY)
         VarSet(VAR_DIFFICULTY, DIFFICULTY_EASY);

@@ -2166,34 +2166,64 @@ static void DrawChoices_Mode_Classic_Modern_Selector(int selection, int y)
     if (selection == 0)
     {
         sOptions->sel_mode[MENUITEM_MODE_ALTERNATE_SPAWNS]          = TX_MODE_ALTERNATE_SPAWNS;
+        gSaveBlock1Ptr->tx_Mode_AlternateSpawns = 0;
         sOptions->sel_mode[MENUITEM_MODE_INFINITE_TMS]              = TX_MODE_INFINITE_TMS;
+        gSaveBlock1Ptr->tx_Mode_InfiniteTMs = 0;
+        FlagSet (FLAG_FINITE_TMS);
         sOptions->sel_mode[MENUITEM_MODE_SURVIVE_POISON]            = TX_MODE_SURVIVE_POISON;
+        gSaveBlock1Ptr->tx_Mode_PoisonSurvive = 0;
         sOptions->sel_mode[MENUITEM_MODE_SYNCHRONIZE]               = TX_MODE_NEW_SYNCHRONIZE;
+        gSaveBlock1Ptr->tx_Mode_Synchronize = 0;
         sOptions->sel_mode[MENUITEM_MODE_MINTS]                     = TX_MODE_MINTS;
+        gSaveBlock1Ptr->tx_Mode_Mints = 0;
+        FlagClear (FLAG_MINTS_ENABLED);
         sOptions->sel_mode[MENUITEM_MODE_NEW_CITRUS]                = TX_MODE_NEW_CITRUS;
+        gSaveBlock1Ptr->tx_Mode_New_Citrus = 0;
         sOptions->sel_mode[MENUITEM_MODE_MODERN_TYPES]              = TX_MODE_MODERN_TYPES;
+        gSaveBlock1Ptr->tx_Mode_Modern_Types = 0;
         sOptions->sel_mode[MENUITEM_MODE_FAIRY_TYPES]               = TX_MODE_FAIRY_TYPES;
+        gSaveBlock1Ptr->tx_Mode_Fairy_Types = 0;
         sOptions->sel_mode[MENUITEM_MODE_NEW_STATS]                 = TX_MODE_NEW_STATS;
+        gSaveBlock1Ptr->tx_Mode_New_Stats = 0;
         sOptions->sel_mode[MENUITEM_MODE_STURDY]                    = TX_MODE_STURDY;
+        gSaveBlock1Ptr->tx_Mode_Sturdy = 0;
         sOptions->sel_mode[MENUITEM_MODE_MODERN_MOVES]              = TX_MODE_MODERN_MOVES;
+        gSaveBlock1Ptr->tx_Mode_Modern_Moves = 0;
         sOptions->sel_mode[MENUITEM_MODE_LEGENDARY_ABILITIES]       = TX_MODE_LEGENDARY_ABILITIES;
+        gSaveBlock1Ptr->tx_Mode_Legendary_Abilities = 0;
         sOptions->sel_mode[MENUITEM_MODE_NEW_LEGENDARIES]           = TX_MODE_NEW_LEGENDARIES;
+        gSaveBlock1Ptr->tx_Mode_New_Legendaries = 0;
     }
     else if (selection == 1)
     {
         sOptions->sel_mode[MENUITEM_MODE_ALTERNATE_SPAWNS]          = !TX_MODE_ALTERNATE_SPAWNS;
+        gSaveBlock1Ptr->tx_Mode_AlternateSpawns = 1;
         sOptions->sel_mode[MENUITEM_MODE_INFINITE_TMS]              = !TX_MODE_INFINITE_TMS;
+        gSaveBlock1Ptr->tx_Mode_InfiniteTMs = 1;
+        FlagClear (FLAG_FINITE_TMS);
         sOptions->sel_mode[MENUITEM_MODE_SURVIVE_POISON]            = !TX_MODE_SURVIVE_POISON;
+        gSaveBlock1Ptr->tx_Mode_PoisonSurvive = 1;
         sOptions->sel_mode[MENUITEM_MODE_SYNCHRONIZE]               = !TX_MODE_NEW_SYNCHRONIZE;
+        gSaveBlock1Ptr->tx_Mode_Synchronize = 1;
         sOptions->sel_mode[MENUITEM_MODE_MINTS]                     = !TX_MODE_MINTS;
+        gSaveBlock1Ptr->tx_Mode_Mints = 1;
+        FlagSet (FLAG_MINTS_ENABLED);
         sOptions->sel_mode[MENUITEM_MODE_NEW_CITRUS]                = !TX_MODE_NEW_CITRUS;
+        gSaveBlock1Ptr->tx_Mode_New_Citrus = 1;
         sOptions->sel_mode[MENUITEM_MODE_MODERN_TYPES]              = !TX_MODE_MODERN_TYPES;
+        gSaveBlock1Ptr->tx_Mode_Modern_Types = 1;
         sOptions->sel_mode[MENUITEM_MODE_FAIRY_TYPES]               = !TX_MODE_FAIRY_TYPES;
+        gSaveBlock1Ptr->tx_Mode_Fairy_Types = 1;
         sOptions->sel_mode[MENUITEM_MODE_NEW_STATS]                 = !TX_MODE_NEW_STATS;
+        gSaveBlock1Ptr->tx_Mode_New_Stats = 1;
         sOptions->sel_mode[MENUITEM_MODE_STURDY]                    = !TX_MODE_STURDY;
+        gSaveBlock1Ptr->tx_Mode_Sturdy = 1;
         sOptions->sel_mode[MENUITEM_MODE_MODERN_MOVES]              = !TX_MODE_MODERN_MOVES;
+        gSaveBlock1Ptr->tx_Mode_Modern_Moves = 1;
         sOptions->sel_mode[MENUITEM_MODE_LEGENDARY_ABILITIES]       = !TX_MODE_LEGENDARY_ABILITIES;
+        gSaveBlock1Ptr->tx_Mode_Legendary_Abilities = 1;
         sOptions->sel_mode[MENUITEM_MODE_NEW_LEGENDARIES]           = !TX_MODE_NEW_LEGENDARIES;
+        gSaveBlock1Ptr->tx_Mode_New_Legendaries = 1;
     }
 }
 
