@@ -842,7 +842,7 @@ static const u8 *const sOptionMenuItemDescriptionsRandomizer[MENUITEM_RANDOM_COU
     [MENUITEM_RANDOM_NEXT]                      = {sText_Description_Random_Next,                  sText_Empty},
 };
 
-static const u8 sText_Description_Nuzlocke_Base[]               = _("Nuzlocke mode is disabled.");
+static const u8 sText_Description_Nuzlocke_Base[]               = _("No nuzlocke. {COLOR 7}{COLOR 8}REMEMBER TO DISABLE {PKMN}\nFAINT AFTER YOU TOUCH THESE OPTIONS.");
 static const u8 sText_Description_Nuzlocke_Normal[]             = _("One catch per route! Fainted POKéMON\ncan't be used anymore.");
 static const u8 sText_Description_Nuzlocke_Hard[]               = _("Same rules as NORMAL but also\n{COLOR 7}{COLOR 8}deletes SAVE on battle loss!");
 static const u8 sText_Description_Nuzlocke_SpeciesClause_Off[]  = _("The player always has to catch the\nfirst POKéMON per route.");
@@ -2354,7 +2354,6 @@ static void DrawChoices_Challenges_Nuzlocke(int selection, int y)
         sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_SHINY_CLAUSE]      = !TX_NUZLOCKE_SHINY_CLAUSE; 
         sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NICKNAMING]        = !TX_NUZLOCKE_NICKNAMING;
         sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_DELETION]          = TX_NUZLOCKE_DELETION;
-        sOptions->sel_features[MENUITEM_FEATURES_PKMN_DEATH]        = TX_FEATURES_PKMN_DEATH;
     }
     if (selection >= 1)
     {
