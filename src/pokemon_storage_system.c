@@ -2764,7 +2764,7 @@ static void Task_OnSelectedMon(u8 taskId)
         break;
     case 7: //tx_randomizer_and_challenges
         PlaySE(SE_FAILURE);
-        if (gSaveBlock1Ptr->tx_Features_PkmnDeath)
+        if ((gSaveBlock1Ptr->tx_Features_PkmnDeath) && (!IsNuzlockeActive()))
             PrintMessage(MSG_DEAD_POKEMON);
         else
             PrintMessage(MSG_NUZLOCKE);
@@ -2843,7 +2843,7 @@ static void Task_WithdrawMon(u8 taskId)
         }
         else if (GetCurrentBoxMonData(sCursorPosition, MON_DATA_NUZLOCKE_RIBBON)) //tx_randomizer_and_challenges
         {
-            if (gSaveBlock1Ptr->tx_Features_PkmnDeath)
+            if ((gSaveBlock1Ptr->tx_Features_PkmnDeath) && (!IsNuzlockeActive()))
                 PrintMessage(MSG_DEAD_POKEMON);
             else
                 PrintMessage(MSG_NUZLOCKE);
@@ -2851,7 +2851,7 @@ static void Task_WithdrawMon(u8 taskId)
         }
         else if (sIsMonBeingMoved && GetMonData(&sStorage->movingMon, MON_DATA_NUZLOCKE_RIBBON))
         {
-            if (gSaveBlock1Ptr->tx_Features_PkmnDeath)
+            if ((gSaveBlock1Ptr->tx_Features_PkmnDeath) && (!IsNuzlockeActive()))
                 PrintMessage(MSG_DEAD_POKEMON);
             else
                 PrintMessage(MSG_NUZLOCKE);
@@ -2997,6 +2997,11 @@ static void Task_ReleaseMon(u8 taskId)
             {
                 s8 canRelease = RunCanReleaseMon();
                 if (canRelease == TRUE)
+                {
+                    sStorage->state++;
+                    break;
+                }
+                else if ((!canRelease) && (gSaveBlock1Ptr->tx_Features_PkmnDeath) && (!IsNuzlockeActive()))
                 {
                     sStorage->state++;
                     break;

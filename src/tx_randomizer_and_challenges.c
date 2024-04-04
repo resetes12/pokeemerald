@@ -285,9 +285,9 @@ void NuzlockeDeleteFaintedPartyPokemon(void) // @Kurausukun
                     AddBagItem(monItem, 1);
                     SetMonData(pokemon, MON_DATA_HELD_ITEM, ITEM_NONE);
                 }
-                if (gSaveBlock1Ptr->tx_Features_PkmnDeath)
+                if ((gSaveBlock1Ptr->tx_Features_PkmnDeath) && (!IsNuzlockeActive()))
                     NuzlockeDeletePartyMonOption(i);
-                else if (!gSaveBlock1Ptr->tx_Features_PkmnDeath)
+                else
                     NuzlockeDeletePartyMon(i);
             }
         }
