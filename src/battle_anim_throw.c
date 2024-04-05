@@ -21,6 +21,7 @@
 #include "constants/moves.h"
 #include "constants/songs.h"
 #include "constants/rgb.h"
+#include "random.h"
 
 // iwram
 u32 gMonShrinkDuration;
@@ -1321,7 +1322,21 @@ static void SpriteCB_Ball_Capture_Step(struct Sprite *sprite)
         gDoingBattleAnim = FALSE;
         UpdateOamPriorityInAllHealthboxes(1);
         m4aMPlayAllStop();
-        PlaySE(MUS_RG_CAUGHT_INTRO);
+        if ((gSaveBlock2Ptr->optionsWildBattleMusic == 0) || (gSaveBlock2Ptr->optionsWildBattleMusic == 1))
+            PlaySE(MUS_RG_CAUGHT_INTRO);
+        else if (gSaveBlock2Ptr->optionsWildBattleMusic == 2)
+            PlayBGM(MUS_DP_CAUGHT_INTRO); 
+        else if((gSaveBlock2Ptr->optionsWildBattleMusic == 3) || (gSaveBlock2Ptr->optionsWildBattleMusic == 4))
+            PlaySE(MUS_HG_BUG_CONTEST_3RD_PLACE); 
+        else if (gSaveBlock2Ptr->optionsWildBattleMusic == 5)
+        {
+            if((Random() % 3) == 1)
+                PlayBGM(MUS_DP_CAUGHT_INTRO); 
+            if((Random() % 3) == 2)
+                PlayBGM(MUS_HG_BUG_CONTEST_3RD_PLACE); 
+            else
+                PlaySE(MUS_RG_CAUGHT_INTRO);
+        }
     }
     else if (sprite->sTimer == 315)
     {

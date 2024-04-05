@@ -3693,12 +3693,23 @@ static void Cmd_getexp(void)
                 // music change in wild battle after fainting a poke
                 if (!(gBattleTypeFlags & BATTLE_TYPE_TRAINER) && gBattleMons[0].hp != 0 && !gBattleStruct->wildVictorySong)
                 {
-                    if (GetMonData(&gEnemyParty[gBattlerPartyIndexes[gBattlerTarget]], MON_DATA_POKEBALL) == ITEM_NONE)
-                    {
-                        BattleStopLowHpSound();
+                    BattleStopLowHpSound();
+                    if ((gSaveBlock2Ptr->optionsWildBattleMusic == 0) || (gSaveBlock2Ptr->optionsWildBattleMusic == 1))
                         PlayBGM(MUS_VICTORY_WILD);
-                        gBattleStruct->wildVictorySong++;
+                    else if (gSaveBlock2Ptr->optionsWildBattleMusic == 2)
+                        PlayBGM(MUS_DP_VICTORY_WILD); 
+                    else if((gSaveBlock2Ptr->optionsWildBattleMusic == 3) || (gSaveBlock2Ptr->optionsWildBattleMusic == 4))
+                        PlayBGM(MUS_HG_VICTORY_WILD); 
+                    else if (gSaveBlock2Ptr->optionsWildBattleMusic == 5)
+                    {
+                        if((Random() % 3) == 1)
+                            PlayBGM(MUS_DP_VICTORY_WILD); 
+                        if((Random() % 3) == 2)
+                            PlayBGM(MUS_HG_VICTORY_WILD); 
+                        else
+                            PlayBGM(MUS_VICTORY_WILD); 
                     }
+                    gBattleStruct->wildVictorySong++;
                 }
 
                 if (GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_HP) && !GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_IS_EGG))
