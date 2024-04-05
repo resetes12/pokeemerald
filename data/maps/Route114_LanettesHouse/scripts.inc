@@ -64,7 +64,7 @@ Route114_LanettesHouse_Text_ResearchNotesPage1:
 	.string "There's information about BOXES.\p"
 	.string "Design BOXES to hold 30 POKéMON each.\p"
 	.string "Each TRAINER should be able to store\n"
-	.string "420 POKéMON on the PC system.\p"
+	.string "450 POKéMON on the PC system.\p"
 	.string "Keep reading?$"
 
 Route114_LanettesHouse_Text_ResearchNotesPage2:
