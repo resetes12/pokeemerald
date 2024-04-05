@@ -339,38 +339,42 @@ void StopFanfareByFanfareNum(u8 fanfareNum)
 void PlayFanfare(u16 songNum)
 {
     s32 i;
-    for (i = 0; (u32)i < ARRAY_COUNT(sFanfares); i++)
+    if (gSaveBlock2Ptr->optionsSoundEffects == 0)
     {
-        if (gSaveBlock2Ptr->optionsSoundEffects == 0)
+        for (i = 0; (u32)i < ARRAY_COUNT(sFanfares); i++)
         {
             if (sFanfares[i].songNum == songNum)
-            {
-                PlayFanfareByFanfareNum(i);
-                CreateFanfareTask();
-                return;
-            }
+                {
+                    PlayFanfareByFanfareNum(i);
+                    CreateFanfareTask();
+                    return;
+                }
         }
-        else if (gSaveBlock2Ptr->optionsSoundEffects == 1)
-        {
-            if (sFanfaresDPL[i].songNum == songNum)
-            {
-                PlayFanfareByFanfareNum(i);
-                CreateFanfareTask();
-                return;
-            }
-        }
-        else if (gSaveBlock2Ptr->optionsSoundEffects == 2)
-        {
-            if (sFanfaresHGSS[i].songNum == songNum)
-            {
-                PlayFanfareByFanfareNum(i);
-                CreateFanfareTask();
-                return;
-            }
-        }
-        
     }
-
+    else if (gSaveBlock2Ptr->optionsSoundEffects == 1)
+    {
+        for (i = 0; (u32)i < ARRAY_COUNT(sFanfaresDPL); i++)
+        {
+            if (sFanfares[i].songNum == songNum)
+                {
+                    PlayFanfareByFanfareNum(i);
+                    CreateFanfareTask();
+                    return;
+                }
+        }
+    }
+    else if (gSaveBlock2Ptr->optionsSoundEffects == 2)
+    {
+        for (i = 0; (u32)i < ARRAY_COUNT(sFanfaresHGSS); i++)
+        {
+            if (sFanfares[i].songNum == songNum)
+                {
+                    PlayFanfareByFanfareNum(i);
+                    CreateFanfareTask();
+                    return;
+                }
+        }
+    }
     // songNum is not in sFanfares
     // Play first fanfare in table instead
     PlayFanfareByFanfareNum(0);
