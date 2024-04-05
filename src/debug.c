@@ -108,6 +108,7 @@ enum { // Flags and Vars
     DEBUG_FLAGVAR_MENU_ITEM_VARS,
     DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_ALL,
     DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_RESET,
+    DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_SEEN,
     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKEDEX,
     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_NATDEX,
     DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKENAV,
@@ -342,6 +343,7 @@ static void DebugAction_FlagsVars_Select(u8 taskId);
 static void DebugAction_FlagsVars_SetValue(u8 taskId);
 static void DebugAction_FlagsVars_PokedexFlags_All(u8 taskId);
 static void DebugAction_FlagsVars_PokedexFlags_Reset(u8 taskId);
+static void DebugAction_FlagsVars_PokedexFlags_Seen(u8 taskId);
 static void DebugAction_FlagsVars_SwitchDex(u8 taskId);
 static void DebugAction_FlagsVars_SwitchNatDex(u8 taskId);
 static void DebugAction_FlagsVars_SwitchPokeNav(u8 taskId);
@@ -487,6 +489,7 @@ static const u8 sDebugText_FlagsVars_Variable[] =               _("Var: {STR_VAR
 static const u8 sDebugText_FlagsVars_VariableValueSet[] =       _("Var: {STR_VAR_1}{CLEAR_TO 90}\nVal: {STR_VAR_3}{CLEAR_TO 90}\n{STR_VAR_2}");
 static const u8 sDebugText_FlagsVars_PokedexFlags_All[] =       _("Pokédex Flags All");
 static const u8 sDebugText_FlagsVars_PokedexFlags_Reset[] =     _("Pokédex Flags Reset");
+static const u8 sDebugText_FlagsVars_PokedexFlags_Seen[] =       _("Pokédex Flags Seen");
 static const u8 sDebugText_FlagsVars_SwitchDex[] =              _("Toggle {STR_VAR_1}Pokédex");
 static const u8 sDebugText_FlagsVars_SwitchNationalDex[] =      _("Toggle {STR_VAR_1}NatDex");
 static const u8 sDebugText_FlagsVars_SwitchPokeNav[] =          _("Toggle {STR_VAR_1}PokéNav");
@@ -681,6 +684,7 @@ static const struct ListMenuItem sDebugMenu_Items_FlagsVars[] =
     [DEBUG_FLAGVAR_MENU_ITEM_VARS]                 = {sDebugText_FlagsVars_Vars,               DEBUG_FLAGVAR_MENU_ITEM_VARS},
     [DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_ALL]         = {sDebugText_FlagsVars_PokedexFlags_All,   DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_ALL},
     [DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_RESET]       = {sDebugText_FlagsVars_PokedexFlags_Reset, DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_RESET},
+    [DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_SEEN]        = {sDebugText_FlagsVars_PokedexFlags_Seen,  DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_SEEN},
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKEDEX]       = {sDebugText_FlagsVars_SwitchDex,          DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKEDEX},
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_NATDEX]        = {sDebugText_FlagsVars_SwitchNationalDex,  DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_NATDEX},
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKENAV]       = {sDebugText_FlagsVars_SwitchPokeNav,      DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKENAV},
@@ -830,6 +834,7 @@ static void (*const sDebugMenu_Actions_Flags[])(u8) =
     [DEBUG_FLAGVAR_MENU_ITEM_VARS]                 = DebugAction_FlagsVars_Vars,
     [DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_ALL]         = DebugAction_FlagsVars_PokedexFlags_All,
     [DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_RESET]       = DebugAction_FlagsVars_PokedexFlags_Reset,
+    [DEBUG_FLAGVAR_MENU_ITEM_DEXFLAGS_SEEN]        = DebugAction_FlagsVars_PokedexFlags_Seen,
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKEDEX]       = DebugAction_FlagsVars_SwitchDex,
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_NATDEX]        = DebugAction_FlagsVars_SwitchNatDex,
     [DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_POKENAV]       = DebugAction_FlagsVars_SwitchPokeNav,
@@ -2475,6 +2480,16 @@ static void DebugAction_FlagsVars_PokedexFlags_Reset(u8 taskId)
                 GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_SET_SEEN);
             }
         }
+    }
+    Debug_DestroyMenu_Full(taskId);
+    ScriptContext_Enable();
+}
+static void DebugAction_FlagsVars_PokedexFlags_Seen(u8 taskId)
+{
+    u16 i;
+    for (i = 0; i < NATIONAL_DEX_COUNT; i++)
+    {
+        GetSetPokedexFlag(i + 1, FLAG_SET_SEEN);
     }
     Debug_DestroyMenu_Full(taskId);
     ScriptContext_Enable();
