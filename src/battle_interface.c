@@ -2704,6 +2704,8 @@ bool32 CanThrowLastUsedBall(void)
 {
     if (gSaveBlock2Ptr->optionsBallPrompt == 1)
         return FALSE;
+    if (NuzlockeIsSpeciesClauseActive || OneTypeChallengeCaptureBlocked || NuzlockeIsCaptureBlocked)
+        return FALSE;
     if (gBattleTypeFlags & (BATTLE_TYPE_TRAINER | BATTLE_TYPE_FRONTIER))
         return FALSE;
     if (!CheckBagHasItem(gBallToDisplay, 1))
