@@ -412,6 +412,7 @@ static const u16 sRaichuLevelUpLearnset[] = {
     LEVEL_UP_MOVE( 1, MOVE_LIGHT_SCREEN),
     LEVEL_UP_MOVE( 1, MOVE_FOCUS_BLAST),
     LEVEL_UP_MOVE( 1, MOVE_PLAY_ROUGH),
+    LEVEL_UP_MOVE(50, MOVE_VOLT_TACKLE),
     LEVEL_UP_END
 };
 
