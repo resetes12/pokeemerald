@@ -64,7 +64,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "ITEM_CALM_MINT",
       "script": "Common_EventScript_FindItem",
-      "flag": "FLAG_MINT_SANDTOWER"
+      "flag": "FLAG_CALM_MINT_SANDTOWER"
     }
   ],
   "warp_events": [

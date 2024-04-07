@@ -61,10 +61,10 @@
 #define FLAG_CAVE_MOONSTONE  0x30 
 #define FLAG_CAVE_SUNSTONE   0x31 
 #define FLAG_EV_MAN_FIRSTIME        0x32
-#define FLAG_MINT_LILYCOVE   0x33
-#define FLAG_MINT_BF         0x34 
+#define FLAG_MODEST_MINT_LILYCOVE   0x33
+#define FLAG_TIMID_MINT_MAUVILLE         0x34 
 #define FLAG_HELIX_FOSSIL_ALTERING   0x35 
-#define FLAG_MINT_SANDTOWER  0x36
+#define FLAG_CALM_MINT_SANDTOWER  0x36
 #define FLAG_DRAKE_REMATCH   0x37 //Elite Four Rematch 4
 #define FLAG_WALLACE_REMATCH 0x38 //Elite Four Rematch 5, Champion
 #define FLAG_STEVEN_REMATCH  0x39 // Steven Rematch, true champion

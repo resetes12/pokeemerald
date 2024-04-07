@@ -42,6 +42,7 @@ LittlerootTown_MapScripts::
 
 LittlerootTown_OnTransition:
 	callnative SetTimeBasedEncounters
+	call_if_unset FLAG_MINTS_ENABLED, LittlerootTown_Disable_Pokeball_Mints
 	setflag FLAG_VISITED_LITTLEROOT_TOWN
 	call Common_EventScript_SetupRivalGfxId
 	call_if_eq VAR_LITTLEROOT_INTRO_STATE, 2, LittlerootTown_EventScript_MoveMomToMaysDoor
@@ -54,6 +55,13 @@ LittlerootTown_OnTransition:
 	call_if_eq VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 1, LittlerootTown_EventScript_HideMapNamePopup
 	call_if_eq VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 2, LittlerootTown_EventScript_LeftLabAfterDexUpgrade
 	end
+
+LittlerootTown_Disable_Pokeball_Mints::
+	setflag FLAG_MODEST_MINT_LILYCOVE
+	setflag FLAG_TIMID_MINT_MAUVILLE
+	setflag FLAG_CALM_MINT_SANDTOWER
+	setflag FLAG_RASH_MINT_METEOR_FALLS
+	return
 
 LittlerootTown_EventScript_LeftLabAfterDexUpgrade::
 	setvar VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 3

@@ -322,7 +322,7 @@
       "trainer_type": "TRAINER_TYPE_NONE",
       "trainer_sight_or_berry_tree_id": "ITEM_MODEST_MINT",
       "script": "Common_EventScript_FindItem",
-      "flag": "FLAG_MINT_LILYCOVE"
+      "flag": "FLAG_MODEST_MINT_LILYCOVE"
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_LIGHT_SPRITE",
