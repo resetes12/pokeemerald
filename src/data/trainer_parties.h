@@ -1604,7 +1604,7 @@ static const struct TrainerMonItemDefaultMoves sParty_Cindy4[] = {
     .iv = 255,
     .lvl = 58,
     .species = SPECIES_LINOONE,
-    .heldItem = ITEM_NUGGET
+    .heldItem = ITEM_BIG_NUGGET
     }
 };
 
@@ -1613,7 +1613,7 @@ static const struct TrainerMonItemDefaultMoves sParty_Cindy5[] = {
     .iv = 255,
     .lvl = 63,
     .species = SPECIES_LINOONE,
-    .heldItem = ITEM_NUGGET
+    .heldItem = ITEM_BIG_NUGGET
     }
 };
 
@@ -1622,7 +1622,7 @@ static const struct TrainerMonItemCustomMoves sParty_Cindy6[] = {
     .iv = 255,
     .lvl = 78,
     .species = SPECIES_LINOONE,
-    .heldItem = ITEM_NUGGET,
+    .heldItem = ITEM_BIG_NUGGET,
     .moves = {MOVE_FURY_SWIPES, MOVE_BELLY_DRUM, MOVE_FACADE, MOVE_SAND_ATTACK}
     }
 };
@@ -1842,7 +1842,7 @@ static const struct TrainerMonItemDefaultMoves sParty_Winston4[] = {
     .iv = 255,
     .lvl = 60,
     .species = SPECIES_LINOONE,
-    .heldItem = ITEM_NUGGET
+    .heldItem = ITEM_BIG_NUGGET
     }
 };
 
@@ -1851,7 +1851,7 @@ static const struct TrainerMonItemCustomMoves sParty_Winston5[] = {
     .iv = 255,
     .lvl = 75,
     .species = SPECIES_LINOONE,
-    .heldItem = ITEM_NUGGET,
+    .heldItem = ITEM_BIG_NUGGET,
     .moves = {MOVE_FURY_SWIPES, MOVE_SURF, MOVE_BELLY_DRUM, MOVE_SLASH}
     }
 };
