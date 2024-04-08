@@ -74,8 +74,4 @@ BattleFrontier_Lounge6_Text_WellThatsFineToo:
 BattleFrontier_Lounge6_Text_SkittySoMuchCuterThanImagined:
 	.string "Giggle!\n"
 	.string "A SKITTY is so much cuter than I had\l"
-	.string "imagined. I'm delighted!\p"
-	.string "By the way, have you seen there's a\n"
-	.string "wild MEOWTH around the island?\p"
-	.string "I heard it's hoarding\n"
-	.string "all the money he finds.$"
+	.string "imagined. I'm delighted!$"

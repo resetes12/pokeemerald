@@ -1571,7 +1571,7 @@
 #define FLAG_DAILY_SECRET_BASE                      (DAILY_FLAGS_START + 0x2)
 #define FLAG_UNUSED_0x923                           (DAILY_FLAGS_START + 0x3)  // Sudo2
 #define FLAG_UNUSED_0x924                           (DAILY_FLAGS_START + 0x4)  // Sudo3
-#define FLAG_DAILY_MONEYFARM                        (DAILY_FLAGS_START + 0x5)  // Meowth flag, daily, for money
+#define FLAG_UNUSED_0x925                           (DAILY_FLAGS_START + 0x5)  // Unused Flag
 #define FLAG_WONDERTRADE1                           (DAILY_FLAGS_START + 0x6)  // WondertradeFlag (1)
 #define FLAG_WONDERTRADE2                           (DAILY_FLAGS_START + 0x7)  // WondertradeFlag (2)
 #define FLAG_WONDERTRADE3                           (DAILY_FLAGS_START + 0x8)  // WondertradeFlag (3)

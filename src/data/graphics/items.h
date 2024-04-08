@@ -216,6 +216,8 @@ const u32 gItemIcon_StarPiece[] = INCBIN_U32("graphics/items/icons/star_piece.4b
 
 const u32 gItemIcon_Nugget[] = INCBIN_U32("graphics/items/icons/nugget.4bpp.lz");
 const u32 gItemIconPalette_Nugget[] = INCBIN_U32("graphics/items/icon_palettes/nugget.gbapal.lz");
+const u32 gItemIcon_Big_Nugget[] = INCBIN_U32("graphics/items/icons/big_nugget.4bpp.lz");
+const u32 gItemIconPalette_Big_Nugget[] = INCBIN_U32("graphics/items/icon_palettes/big_nugget.gbapal.lz");
 
 const u32 gItemIcon_HeartScale[] = INCBIN_U32("graphics/items/icons/heart_scale.4bpp.lz");
 const u32 gItemIconPalette_HeartScale[] = INCBIN_U32("graphics/items/icon_palettes/heart_scale.gbapal.lz");

@@ -359,19 +359,6 @@
       "flag": "0"
     },
     {
-      "graphics_id": "OBJ_EVENT_GFX_MON_BASE+SPECIES_MEOWTH",
-      "x": 64,
-      "y": 60,
-      "elevation": 0,
-      "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
-      "movement_range_x": 2,
-      "movement_range_y": 1,
-      "trainer_type": "TRAINER_TYPE_NONE",
-      "trainer_sight_or_berry_tree_id": "0",
-      "script": "BattleFrontier_MoneyFarm01",
-      "flag": "FLAG_DAILY_MONEYFARM"
-    },
-    {
       "graphics_id": "OBJ_EVENT_GFX_LIGHT_SPRITE",
       "x": 5,
       "y": 51,

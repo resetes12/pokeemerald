@@ -1043,12 +1043,12 @@ const struct Item gItems[] =
         .battleUseFunc = ItemUseInBattle_Escape,
     },
 
-    [ITEM_052] =
+    [ITEM_BIG_NUGGET] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
-        .price = 0,
-        .description = sDummyDesc,
+        .name = _("BIG NUGGET"),
+        .itemId = ITEM_BIG_NUGGET,
+        .price = 60000,
+        .description = sBigNuggetDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
@@ -5898,12 +5898,12 @@ const struct Item gItems2[] =
         .battleUseFunc = ItemUseInBattle_Escape,
     },
 
-    [ITEM_052] =
+    [ITEM_BIG_NUGGET] =
     {
-        .name = _("????????"),
-        .itemId = ITEM_NONE,
-        .price = 0,
-        .description = sDummyDesc,
+        .name = _("BIG NUGGET"),
+        .itemId = ITEM_BIG_NUGGET,
+        .price = 60000,
+        .description = sBigNuggetDesc,
         .pocket = POCKET_ITEMS,
         .type = ITEM_USE_BAG_MENU,
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
