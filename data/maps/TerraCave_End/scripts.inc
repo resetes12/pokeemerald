@@ -62,8 +62,8 @@ TerraCave_End_EventScript_RanFromGroudon::
 	end
 
 TerraCave_End_Movement_GroudonApproach:
-	init_affine_anim
-	walk_down_start_affine
+	@init_affine_anim
+	walk_down_affine
 	delay_16
 	delay_16
 	walk_down_affine
