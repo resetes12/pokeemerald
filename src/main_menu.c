@@ -754,6 +754,10 @@ static void Task_MainMenuCheckBattery(u8 taskId)
         {
             gTasks[taskId].func = Task_DisplayMainMenu;
         }
+        else if ((RtcGetErrorStatus() & RTC_ERR_FLAG_MASK) && (gSaveBlock1Ptr->tx_Features_RTCType == 1))
+        {
+            gTasks[taskId].func = Task_DisplayMainMenu;
+        }
         else
         {
             CreateMainMenuErrorWindow(gText_BatteryRunDry);
