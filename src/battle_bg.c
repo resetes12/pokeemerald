@@ -936,7 +936,7 @@ void DrawMainBattleBackground(void)
 {
     if (gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_FRONTIER | BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_RECORDED_LINK))
     {
-        if (!FlagGet(FLAG_MOSSDEEP_GYM_SWITCH_1))
+        if (gSaveBlock2Ptr->optionsNewBackgrounds == 0)
         {
             LZDecompressVram(gBattleTerrainTiles_Building, (void *)(BG_CHAR_ADDR(2)));
             LZDecompressVram(gBattleTerrainTilemap_Building, (void *)(BG_SCREEN_ADDR(26)));
@@ -951,7 +951,7 @@ void DrawMainBattleBackground(void)
     }
     else if (gBattleTypeFlags & BATTLE_TYPE_GROUDON)
     {
-        if (!FlagGet(FLAG_MOSSDEEP_GYM_SWITCH_1))
+        if (gSaveBlock2Ptr->optionsNewBackgrounds == 0)
         {
             LZDecompressVram(gBattleTerrainTiles_Cave, (void *)(BG_CHAR_ADDR(2)));
             LZDecompressVram(gBattleTerrainTilemap_Cave, (void *)(BG_SCREEN_ADDR(26)));
@@ -966,7 +966,7 @@ void DrawMainBattleBackground(void)
     }
     else if (gBattleTypeFlags & BATTLE_TYPE_KYOGRE)
     {
-        if (!FlagGet(FLAG_MOSSDEEP_GYM_SWITCH_1))
+        if (gSaveBlock2Ptr->optionsNewBackgrounds == 0)
         {
             LZDecompressVram(gBattleTerrainTiles_Water, (void *)(BG_CHAR_ADDR(2)));
             LZDecompressVram(gBattleTerrainTilemap_Water, (void *)(BG_SCREEN_ADDR(26)));
@@ -981,7 +981,7 @@ void DrawMainBattleBackground(void)
     }
     else if (gBattleTypeFlags & BATTLE_TYPE_RAYQUAZA)
     {
-        if (!FlagGet(FLAG_MOSSDEEP_GYM_SWITCH_1))
+        if (gSaveBlock2Ptr->optionsNewBackgrounds == 0)
         {
             LZDecompressVram(gBattleTerrainTiles_Rayquaza, (void *)(BG_CHAR_ADDR(2)));
             LZDecompressVram(gBattleTerrainTilemap_Rayquaza, (void *)(BG_SCREEN_ADDR(26)));
@@ -1013,7 +1013,7 @@ void DrawMainBattleBackground(void)
             u8 trainerClass = gTrainers[gTrainerBattleOpponent_A].trainerClass;
             if (trainerClass == TRAINER_CLASS_LEADER)
             {
-                if (!FlagGet(FLAG_MOSSDEEP_GYM_SWITCH_1))
+                if (gSaveBlock2Ptr->optionsNewBackgrounds == 0)
                 {
                     LZDecompressVram(gBattleTerrainTiles_Building, (void *)(BG_CHAR_ADDR(2)));
                     LZDecompressVram(gBattleTerrainTilemap_Building, (void *)(BG_SCREEN_ADDR(26)));
@@ -1029,7 +1029,7 @@ void DrawMainBattleBackground(void)
             }
             else if (trainerClass == TRAINER_CLASS_CHAMPION)
             {
-                if (!FlagGet(FLAG_MOSSDEEP_GYM_SWITCH_1))
+                if (gSaveBlock2Ptr->optionsNewBackgrounds == 0)
                 {
                     LZDecompressVram(gBattleTerrainTiles_Stadium, (void *)(BG_CHAR_ADDR(2)));
                     LZDecompressVram(gBattleTerrainTilemap_Stadium, (void *)(BG_SCREEN_ADDR(26)));
@@ -1050,7 +1050,7 @@ void DrawMainBattleBackground(void)
         default:
         case MAP_BATTLE_SCENE_NORMAL:
             UpdateTimeOfDay();
-            if (!FlagGet(FLAG_MOSSDEEP_GYM_SWITCH_1))
+            if (gSaveBlock2Ptr->optionsNewBackgrounds == 0)
             {
                 LZDecompressVram(sBattleTerrainTable[gBattleTerrain].tileset, (void *)(BG_CHAR_ADDR(2)));
                 LZDecompressVram(sBattleTerrainTable[gBattleTerrain].tilemap, (void *)(BG_SCREEN_ADDR(26)));
@@ -1154,7 +1154,7 @@ void DrawMainBattleBackground(void)
             }
             break;
         case MAP_BATTLE_SCENE_GYM:
-            if (!FlagGet(FLAG_MOSSDEEP_GYM_SWITCH_1))
+            if (gSaveBlock2Ptr->optionsNewBackgrounds == 0)
             {
                 LZDecompressVram(gBattleTerrainTiles_Building, (void *)(BG_CHAR_ADDR(2)));
                 LZDecompressVram(gBattleTerrainTilemap_Building, (void *)(BG_SCREEN_ADDR(26)));
@@ -1168,7 +1168,7 @@ void DrawMainBattleBackground(void)
             }
             break;
         case MAP_BATTLE_SCENE_MAGMA:
-            if (!FlagGet(FLAG_MOSSDEEP_GYM_SWITCH_1))
+            if (gSaveBlock2Ptr->optionsNewBackgrounds == 0)
             {
                 LZDecompressVram(gBattleTerrainTiles_Stadium, (void *)(BG_CHAR_ADDR(2)));
                 LZDecompressVram(gBattleTerrainTilemap_Stadium, (void *)(BG_SCREEN_ADDR(26)));
@@ -1182,7 +1182,7 @@ void DrawMainBattleBackground(void)
             }
             break;
         case MAP_BATTLE_SCENE_AQUA:
-            if (!FlagGet(FLAG_MOSSDEEP_GYM_SWITCH_1))
+            if (gSaveBlock2Ptr->optionsNewBackgrounds == 0)
             {
                 LZDecompressVram(gBattleTerrainTiles_Stadium, (void *)(BG_CHAR_ADDR(2)));
                 LZDecompressVram(gBattleTerrainTilemap_Stadium, (void *)(BG_SCREEN_ADDR(26)));
@@ -1196,7 +1196,7 @@ void DrawMainBattleBackground(void)
             }
             break;
         case MAP_BATTLE_SCENE_SIDNEY:
-            if (!FlagGet(FLAG_MOSSDEEP_GYM_SWITCH_1))
+            if (gSaveBlock2Ptr->optionsNewBackgrounds == 0)
             {
                 LZDecompressVram(gBattleTerrainTiles_Stadium, (void *)(BG_CHAR_ADDR(2)));
                 LZDecompressVram(gBattleTerrainTilemap_Stadium, (void *)(BG_SCREEN_ADDR(26)));
@@ -1210,7 +1210,7 @@ void DrawMainBattleBackground(void)
             }
             break;
         case MAP_BATTLE_SCENE_PHOEBE:
-            if (!FlagGet(FLAG_MOSSDEEP_GYM_SWITCH_1))
+            if (gSaveBlock2Ptr->optionsNewBackgrounds == 0)
             {
                 LZDecompressVram(gBattleTerrainTiles_Stadium, (void *)(BG_CHAR_ADDR(2)));
                 LZDecompressVram(gBattleTerrainTilemap_Stadium, (void *)(BG_SCREEN_ADDR(26)));
@@ -1224,7 +1224,7 @@ void DrawMainBattleBackground(void)
             }
             break;
         case MAP_BATTLE_SCENE_GLACIA:
-            if (!FlagGet(FLAG_MOSSDEEP_GYM_SWITCH_1))
+            if (gSaveBlock2Ptr->optionsNewBackgrounds == 0)
             {
                 LZDecompressVram(gBattleTerrainTiles_Stadium, (void *)(BG_CHAR_ADDR(2)));
                 LZDecompressVram(gBattleTerrainTilemap_Stadium, (void *)(BG_SCREEN_ADDR(26)));
@@ -1238,7 +1238,7 @@ void DrawMainBattleBackground(void)
             }
             break;
         case MAP_BATTLE_SCENE_DRAKE:
-            if (!FlagGet(FLAG_MOSSDEEP_GYM_SWITCH_1))
+            if (gSaveBlock2Ptr->optionsNewBackgrounds == 0)
             {
                 LZDecompressVram(gBattleTerrainTiles_Stadium, (void *)(BG_CHAR_ADDR(2)));
                 LZDecompressVram(gBattleTerrainTilemap_Stadium, (void *)(BG_SCREEN_ADDR(26)));
@@ -1252,7 +1252,7 @@ void DrawMainBattleBackground(void)
             }
             break;
         case MAP_BATTLE_SCENE_FRONTIER:
-            if (!FlagGet(FLAG_MOSSDEEP_GYM_SWITCH_1))
+            if (gSaveBlock2Ptr->optionsNewBackgrounds == 0)
             {
                 LZDecompressVram(gBattleTerrainTiles_Building, (void *)(BG_CHAR_ADDR(2)));
                 LZDecompressVram(gBattleTerrainTilemap_Building, (void *)(BG_SCREEN_ADDR(26)));
@@ -1651,7 +1651,7 @@ bool8 LoadChosenBattleElement(u8 caseId)
                 u8 trainerClass = gTrainers[gTrainerBattleOpponent_A].trainerClass;
                 if (trainerClass == TRAINER_CLASS_LEADER)
                 {
-                    if (!FlagGet(FLAG_MOSSDEEP_GYM_SWITCH_1))
+                    if (gSaveBlock2Ptr->optionsNewBackgrounds == 0)
                         LZDecompressVram(gBattleTerrainTiles_Building, (void *)(BG_CHAR_ADDR(2)));
                     else
                         LZDecompressVram(gBattleTerrainTiles_Stadium_2, (void *)(BG_CHAR_ADDR(2)));
@@ -1716,7 +1716,7 @@ bool8 LoadChosenBattleElement(u8 caseId)
                 u8 trainerClass = gTrainers[gTrainerBattleOpponent_A].trainerClass;
                 if (trainerClass == TRAINER_CLASS_LEADER)
                 {
-                    if (!FlagGet(FLAG_MOSSDEEP_GYM_SWITCH_1))
+                    if (gSaveBlock2Ptr->optionsNewBackgrounds == 0)
                         LZDecompressVram(gBattleTerrainTilemap_Building, (void *)(BG_SCREEN_ADDR(26)));
                     else
                         LZDecompressVram(gBattleTerrainTilemap_Stadium_2, (void *)(BG_SCREEN_ADDR(26)));
@@ -1781,7 +1781,7 @@ bool8 LoadChosenBattleElement(u8 caseId)
                 u8 trainerClass = gTrainers[gTrainerBattleOpponent_A].trainerClass;
                 if (trainerClass == TRAINER_CLASS_LEADER)
                 {
-                    if (!FlagGet(FLAG_MOSSDEEP_GYM_SWITCH_1))
+                    if (gSaveBlock2Ptr->optionsNewBackgrounds == 0)
                         LoadCompressedPalette(gBattleTerrainPalette_BuildingLeader, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
                     else
                         LoadCompressedPalette(gBattleTerrainPalette_StadiumLeader, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
@@ -1842,13 +1842,13 @@ bool8 LoadChosenBattleElement(u8 caseId)
                 LoadCompressedPalette(gBattleTerrainPalette_BuildingGym, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
                 break;
             case MAP_BATTLE_SCENE_MAGMA:
-                if (!FlagGet(FLAG_MOSSDEEP_GYM_SWITCH_1))
+                if (gSaveBlock2Ptr->optionsNewBackgrounds == 0)
                     LoadCompressedPalette(gBattleTerrainPalette_StadiumMagma, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
                 else
                     LoadCompressedPalette(gBattleTerrainPalette_BuildingMagma, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
                 break;
             case MAP_BATTLE_SCENE_AQUA:
-                if (!FlagGet(FLAG_MOSSDEEP_GYM_SWITCH_1))
+                if (gSaveBlock2Ptr->optionsNewBackgrounds == 0)
                     LoadCompressedPalette(gBattleTerrainPalette_StadiumAqua, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
                 else
                     LoadCompressedPalette(gBattleTerrainPalette_BuildingAqua, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
