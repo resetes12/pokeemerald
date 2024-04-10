@@ -52,6 +52,7 @@ extern const u8 EventScript_ResetAllMapFlags[];
 static void ClearFrontierRecord(void);
 static void WarpToTruck(void);
 static void ResetMiniGamesRecords(void);
+static void CreateBaseSavefile(void);
 
 EWRAM_DATA bool8 gDifferentSaveFile = FALSE;
 EWRAM_DATA bool8 gEnableContestDebugging = FALSE;
@@ -210,7 +211,8 @@ void NewGameInitData(void)
     InitLotadSizeRecord();
     gPlayerPartyCount = 0;
     ZeroPlayerPartyMons();
-    ResetPokemonStorageSystem();
+    //ResetPokemonStorageSystem();
+    CreateBaseSavefile();
     ClearRoamerData();
     ClearRoamerLocationData();
     gSaveBlock1Ptr->registeredItem = ITEM_NONE;
@@ -252,6 +254,29 @@ void NewGameInitData(void)
         VarSet(VAR_DIFFICULTY, DIFFICULTY_HARD);*/
     
 }
+
+static void CreateBaseSavefile(void)
+{
+    u8 status;
+
+    gSaveBlock2Ptr->currentStorageSlot = 1;
+    ResetPokemonStorageSystem();
+    status = TrySavingData(SAVE_NORMAL);
+
+    //MgbaOpen();
+    //MgbaPrintf(MGBA_LOG_ERROR, "trying to save data1 result : %d", status);
+    //MgbaClose();
+
+    //SetSaveBlocksPointers(GetSaveBlocksPointersBaseOffset());
+    gSaveBlock2Ptr->currentStorageSlot = 0;
+    ResetPokemonStorageSystem();
+    status = TrySavingData(SAVE_NORMAL);
+
+    //MgbaOpen();
+    //MgbaPrintf(MGBA_LOG_ERROR, "trying to save data2 result : %d", status);
+    //MgbaClose();
+}
+
 void CheckIfChallengesAreActive(void)
 {
     if (((gSaveBlock1Ptr->tx_Challenges_Nuzlocke) == 1)

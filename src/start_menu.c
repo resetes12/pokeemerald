@@ -137,6 +137,7 @@ static u8 SaveForceSavingMessageCallback(void);
 // Task callbacks
 static void StartMenuTask(u8 taskId);
 static void SaveGameTask(u8 taskId);
+static void SaveGameChangeSlotTask(u8 taskId);
 static void Task_SaveAfterLinkBattle(u8 taskId);
 static void Task_WaitForBattleTowerLinkSave(u8 taskId);
 static bool8 FieldCB_ReturnToFieldStartMenu(void);
@@ -954,6 +955,40 @@ void SaveGame(void)
 {
     InitSave();
     CreateTask(SaveGameTask, 0x50);
+}
+
+void SaveGameAndChangeSlot(void)
+{
+    InitSave();
+    CreateTask(SaveGameChangeSlotTask, 0x50);
+}
+
+static void SaveGameChangeSlotTask(u8 taskId)
+{
+    u8 status = RunSaveCallback();
+
+    switch (status)
+    {
+    case SAVE_CANCELED:
+    case SAVE_ERROR:
+        gSpecialVar_Result = 0;
+        break;
+    case SAVE_SUCCESS:
+        u8 inc;
+        inc = (gSaveBlock2Ptr->currentStorageSlot + 1) % NUM_STORAGE_SLOTS;
+        gSaveBlock2Ptr->currentStorageSlot = inc;
+        u16 offset = (GetSaveBlocksPointersBaseOffset() + Random()) & (SAVEBLOCK_MOVE_RANGE - 4);
+        gPokemonStoragePtr = (void *)(&gPokemonStorage) + offset;
+        UpdateSaveAddresses();
+        LoadStorageData();
+        gSpecialVar_Result = status;
+        break;
+    case SAVE_IN_PROGRESS:
+        return;
+    }
+
+    DestroyTask(taskId);
+    ScriptContext_Enable();
 }
 
 void ForceSaveGame(void) // Called from scripts
