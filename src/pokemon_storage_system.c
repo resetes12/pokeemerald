@@ -39,6 +39,7 @@
 #include "trig.h"
 #include "walda_phrase.h"
 #include "window.h"
+#include "start_menu.h"
 #include "constants/items.h"
 #include "constants/moves.h"
 #include "constants/rgb.h"
@@ -59,6 +60,7 @@ enum {
     OPTION_WITHDRAW,
     OPTION_DEPOSIT,
     OPTION_MOVE_ITEMS,
+    OPTION_CHANGE_SLOT,
     OPTION_EXIT,
     OPTIONS_COUNT
 };
@@ -890,6 +892,7 @@ struct {
     [OPTION_DEPOSIT]    = {gText_DepositPokemon,  gText_DepositMonDescription},
     [OPTION_MOVE_MONS]  = {gText_MovePokemon,     gText_MoveMonDescription},
     [OPTION_MOVE_ITEMS] = {gText_MoveItems,       gText_MoveItemsDescription},
+    [OPTION_CHANGE_SLOT]= {gText_ChangeSlot,      gText_ChangeSlotDescription},
     [OPTION_EXIT]       = {gText_SeeYa,           gText_SeeYaDescription}
 };
 
@@ -899,7 +902,7 @@ static const struct WindowTemplate sWindowTemplate_MainMenu =
     .tilemapLeft = 1,
     .tilemapTop = 1,
     .width = 17,
-    .height = 10,
+    .height = 12,
     .paletteNum = 15,
     .baseBlock = 0x1,
 };
@@ -1549,11 +1552,14 @@ static void Task_PCMainMenu(u8 taskId)
     switch (task->tState)
     {
     case STATE_LOAD:
+        ConvertIntToDecimalStringN(gStringVar2, 1 + gSaveBlock2Ptr->currentStorageSlot, STR_CONV_MODE_LEFT_ALIGN, 2);
+        StringExpandPlaceholders(gStringVar1, sMainMenuTexts[task->tSelectedOption].desc);
         CreateMainMenu(task->tSelectedOption, &task->tWindowId);
         LoadMessageBoxAndBorderGfx();
         DrawDialogueFrame(0, FALSE);
         FillWindowPixelBuffer(0, PIXEL_FILL(1));
-        AddTextPrinterParameterized2(0, FONT_NORMAL, sMainMenuTexts[task->tSelectedOption].desc, TEXT_SKIP_DRAW, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+        //AddTextPrinterParameterized2(0, FONT_NORMAL, sMainMenuTexts[task->tSelectedOption].desc, TEXT_SKIP_DRAW, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+        AddTextPrinterParameterized2(0, FONT_NORMAL, gStringVar1, TEXT_SKIP_DRAW, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
         CopyWindowToVram(0, COPYWIN_FULL);
         CopyWindowToVram(task->tWindowId, COPYWIN_FULL);
         task->tState++;
@@ -1576,9 +1582,18 @@ static void Task_PCMainMenu(u8 taskId)
             if (task->tSelectedOption != task->tNextOption)
             {
                 task->tSelectedOption = task->tNextOption;
+                ConvertIntToDecimalStringN(gStringVar2, 1 + gSaveBlock2Ptr->currentStorageSlot, STR_CONV_MODE_LEFT_ALIGN, 2);
+                StringExpandPlaceholders(gStringVar1, sMainMenuTexts[task->tSelectedOption].desc);
                 FillWindowPixelBuffer(0, PIXEL_FILL(1));
-                AddTextPrinterParameterized2(0, FONT_NORMAL, sMainMenuTexts[task->tSelectedOption].desc, 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+                AddTextPrinterParameterized2(0, FONT_NORMAL, gStringVar1, 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+                //AddTextPrinterParameterized2(0, FONT_NORMAL, sMainMenuTexts[task->tSelectedOption].desc, 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
             }
+            break;
+        case OPTION_CHANGE_SLOT:
+            ClearStdWindowAndFrame(task->tWindowId, TRUE);
+            SaveGameAndChangeSlot();
+            RemoveWindow(task->tWindowId);
+            DestroyTask(taskId);
             break;
         case MENU_B_PRESSED:
         case OPTION_EXIT:
@@ -1617,8 +1632,11 @@ static void Task_PCMainMenu(u8 taskId)
         // Wait for new input after message
         if (JOY_NEW(A_BUTTON | B_BUTTON))
         {
+            ConvertIntToDecimalStringN(gStringVar2, 1 + gSaveBlock2Ptr->currentStorageSlot, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringExpandPlaceholders(gStringVar1, sMainMenuTexts[task->tSelectedOption].desc);
             FillWindowPixelBuffer(0, PIXEL_FILL(1));
-            AddTextPrinterParameterized2(0, FONT_NORMAL, sMainMenuTexts[task->tSelectedOption].desc, 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+            AddTextPrinterParameterized2(0, FONT_NORMAL, gStringVar1, 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+            //AddTextPrinterParameterized2(0, FONT_NORMAL, sMainMenuTexts[task->tSelectedOption].desc, 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
             task->tState = STATE_HANDLE_INPUT;
         }
         else if (JOY_NEW(DPAD_UP))
@@ -1627,8 +1645,11 @@ static void Task_PCMainMenu(u8 taskId)
                 task->tSelectedOption = OPTIONS_COUNT - 1;
             Menu_MoveCursor(-1);
             task->tSelectedOption = Menu_GetCursorPos();
+            ConvertIntToDecimalStringN(gStringVar2, 1 + gSaveBlock2Ptr->currentStorageSlot, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringExpandPlaceholders(gStringVar1, sMainMenuTexts[task->tSelectedOption].desc);
             FillWindowPixelBuffer(0, PIXEL_FILL(1));
-            AddTextPrinterParameterized2(0, FONT_NORMAL, sMainMenuTexts[task->tSelectedOption].desc, 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+            AddTextPrinterParameterized2(0, FONT_NORMAL, gStringVar1, 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+            //AddTextPrinterParameterized2(0, FONT_NORMAL, sMainMenuTexts[task->tSelectedOption].desc, 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
             task->tState = STATE_HANDLE_INPUT;
         }
         else if (JOY_NEW(DPAD_DOWN))
@@ -1637,8 +1658,11 @@ static void Task_PCMainMenu(u8 taskId)
                 task->tSelectedOption = 0;
             Menu_MoveCursor(1);
             task->tSelectedOption = Menu_GetCursorPos();
+            ConvertIntToDecimalStringN(gStringVar2, 1 + gSaveBlock2Ptr->currentStorageSlot, STR_CONV_MODE_LEFT_ALIGN, 2);
+            StringExpandPlaceholders(gStringVar1, sMainMenuTexts[task->tSelectedOption].desc);
             FillWindowPixelBuffer(0, PIXEL_FILL(1));
-            AddTextPrinterParameterized2(0, FONT_NORMAL, sMainMenuTexts[task->tSelectedOption].desc, 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+            AddTextPrinterParameterized2(0, FONT_NORMAL, gStringVar1, 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
+            //AddTextPrinterParameterized2(0, FONT_NORMAL, sMainMenuTexts[task->tSelectedOption].desc, 0, NULL, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_WHITE, TEXT_COLOR_LIGHT_GRAY);
             task->tState = STATE_HANDLE_INPUT;
         }
         break;
@@ -1751,7 +1775,8 @@ void ResetPokemonStorageSystem(void)
     for (boxId = 0; boxId < TOTAL_BOXES_COUNT; boxId++)
     {
         u8 *dest = StringCopy(GetBoxNamePtr(boxId), gText_Box);
-        ConvertIntToDecimalStringN(dest, boxId + 1, STR_CONV_MODE_LEFT_ALIGN, 2);
+        ConvertIntToDecimalStringN(dest, boxId + 1 + (TOTAL_BOXES_COUNT * gSaveBlock2Ptr->currentStorageSlot), STR_CONV_MODE_LEFT_ALIGN, 2);
+        //ConvertIntToDecimalStringN(dest, boxId + 1, STR_CONV_MODE_LEFT_ALIGN, 2);
     }
 
     for (boxId = 0; boxId < TOTAL_BOXES_COUNT; boxId++)

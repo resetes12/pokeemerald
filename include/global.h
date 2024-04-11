@@ -565,6 +565,8 @@ struct SaveBlock2
     /*0x64C*/ struct BattleFrontier frontier;
               struct Time fakeRTC;
               u16 optionsNewBackgrounds:1;
+              u8 currentStorageSlot;
+              u8 saveSequence;
 }; // sizeof=0xF2C
 
 extern struct SaveBlock2 *gSaveBlock2Ptr;

@@ -225,6 +225,8 @@ extern const u8 gText_MovePokemon[];
 extern const u8 gText_MoveMonDescription[];
 extern const u8 gText_MoveItems[];
 extern const u8 gText_MoveItemsDescription[];
+extern const u8 gText_ChangeSlot[];
+extern const u8 gText_ChangeSlotDescription[];
 extern const u8 gText_SeeYa[];
 extern const u8 gText_SeeYaDescription[];
 

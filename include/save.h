@@ -28,6 +28,7 @@
 #define SECTORS_COUNT                32
 
 #define NUM_HOF_SECTORS 2
+#define NUM_STORAGE_SLOTS 2
 
 #define SAVE_STATUS_EMPTY    0
 #define SAVE_STATUS_OK       1
@@ -94,8 +95,12 @@ extern struct SaveSector gSaveDataBuffer;
 
 void ClearSaveData(void);
 void Save_ResetSaveCounters(void);
+void UpdateSaveAddresses(void);
 u8 HandleSavingData(u8 saveType);
 u8 TrySavingData(u8 saveType);
+u8 LoadStorageData();
+u8 SaveStorageData();
+u8 VerifySaveSequenceAndFlash(void);
 bool8 LinkFullSave_Init(void);
 bool8 LinkFullSave_WriteSector(void);
 bool8 LinkFullSave_ReplaceLastSector(void);
