@@ -6550,6 +6550,8 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     }
     if (attacker->ability == ABILITY_HUSTLE)
         attack = (150 * attack) / 100;
+    if (attacker->ability == ABILITY_CACOPHONY && (gCurrentMove == MOVE_SNORE || gCurrentMove == MOVE_UPROAR || gCurrentMove == MOVE_HYPER_VOICE || gCurrentMove == MOVE_BUG_BUZZ))
+        spAttack = (150 * spAttack) / 100;
     if (attacker->ability == ABILITY_PLUS && ABILITY_ON_FIELD2(ABILITY_MINUS))
         spAttack = (150 * spAttack) / 100;
     if (attacker->ability == ABILITY_MINUS && ABILITY_ON_FIELD2(ABILITY_PLUS))
@@ -8177,6 +8179,8 @@ u8 GetAbilityBySpecies(u16 species, u8 abilityNum)
             || species == SPECIES_LUGIA)
             && (gSaveBlock1Ptr->tx_Mode_Legendary_Abilities == 0))
         gLastUsedAbility = gSpeciesInfo[species].abilities_old[0];
+    else if ((abilityNum == 1) && (species == SPECIES_NOCTOWL) && (gSaveBlock1Ptr->tx_Mode_Modern_Types == 0))
+        gLastUsedAbility = gSpeciesInfo[species].abilities_old[1];
     else if (abilityNum)
         gLastUsedAbility = gSpeciesInfo[species].abilities[1];
     else
