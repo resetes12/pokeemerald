@@ -2008,6 +2008,11 @@ static const struct TrainerMonNoItemDefaultMoves sParty_Matthew[] = {
     .iv = 0,
     .lvl = 26,
     .species = SPECIES_CARVANHA,
+    },
+    {
+    .iv = 0,
+    .lvl = 26,
+    .species = SPECIES_GOREBYSS,
     }
 };
 
@@ -4700,7 +4705,7 @@ static const struct TrainerMonNoItemDefaultMoves sParty_Claude[] = {
     {
     .iv = 0,
     .lvl = 17,
-    .species = SPECIES_GOREBYSS,
+    .species = SPECIES_GOLDEEN,
     },
     {
     .iv = 0,
