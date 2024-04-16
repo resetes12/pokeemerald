@@ -5248,13 +5248,27 @@ static void FreeStatsScreenWindowAndBgBuffers(void)
 
 static void Task_HandleStatsScreenInput(u8 taskId)
 {
+    u8 selected         = sPokedexView->moveSelected;
+    u8 moves_x = 5;
+    u8 moves_y = 3;
+    u16 move;
+    move = sStatsMoves[selected];
+
     if (JOY_NEW(A_BUTTON))
     {
         PlaySE(SE_DEX_PAGE);
         if (gTasks[taskId].data[5] == 0)
+            {            
             gTasks[taskId].data[5] = 1;
+            SetTypeIconPosAndPal(NUMBER_OF_MON_TYPES + gContestMoves[move].contestCategory, moves_x + 146, moves_y + 17, 1);
+            SetSpriteInvisibility(0, TRUE);
+            }
         else
+            {
             gTasks[taskId].data[5] = 0;
+            SetTypeIconPosAndPal(gBattleMoves[move].type, moves_x + 146, moves_y + 17, 0);
+            SetSpriteInvisibility(1, TRUE);
+            }
 
         FillWindowPixelBuffer(WIN_STATS_LEFT, PIXEL_FILL(0));
         PrintStatsScreen_Left(taskId);
@@ -5477,7 +5491,7 @@ static void PrintStatsScreen_Moves_Top(u8 taskId)
     if (gTasks[taskId].data[5] == 0)
     {
         SetTypeIconPosAndPal(gBattleMoves[move].type, moves_x + 146, moves_y + 17, 0);
-        SetSpriteInvisibility(1, TRUE);
+        SetSpriteInvisibility(1, TRUE); 
     }
     else
     {
