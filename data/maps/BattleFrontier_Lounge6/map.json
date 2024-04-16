@@ -1,7 +1,7 @@
 {
   "id": "MAP_BATTLE_FRONTIER_LOUNGE6",
   "name": "BattleFrontier_Lounge6",
-  "layout": "LAYOUT_BATTLE_FRONTIER_LOUNGE1",
+  "layout": "LAYOUT_UNUSED_CAVE1",
   "music": "MUS_B_TOWER_RS",
   "region_map_section": "MAPSEC_BATTLE_FRONTIER",
   "requires_flash": false,
@@ -30,15 +30,8 @@
   ],
   "warp_events": [
     {
-      "x": 1,
-      "y": 7,
-      "elevation": 0,
-      "dest_map": "MAP_BATTLE_FRONTIER_OUTSIDE_EAST",
-      "dest_warp_id": "8"
-    },
-    {
-      "x": 2,
-      "y": 7,
+      "x": 4,
+      "y": 9,
       "elevation": 0,
       "dest_map": "MAP_BATTLE_FRONTIER_OUTSIDE_EAST",
       "dest_warp_id": "8"

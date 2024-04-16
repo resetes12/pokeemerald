@@ -1694,10 +1694,10 @@
     {
       "id": "LAYOUT_UNUSED_CAVE1",
       "name": "UnusedCave1_Layout",
-      "width": 1,
-      "height": 1,
-      "primary_tileset": "gTileset_General",
-      "secondary_tileset": "gTileset_Cave",
+      "width": 9,
+      "height": 10,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_BattleFrontier",
       "border_filepath": "data/layouts/UnusedCave1/border.bin",
       "blockdata_filepath": "data/layouts/UnusedCave1/map.bin"
     },

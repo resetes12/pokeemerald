@@ -1,7 +1,7 @@
 {
   "id": "MAP_BATTLE_FRONTIER_LOUNGE4",
   "name": "BattleFrontier_Lounge4",
-  "layout": "LAYOUT_BATTLE_FRONTIER_LOUNGE1",
+  "layout": "LAYOUT_UNUSED_CAVE1",
   "music": "MUS_B_TOWER_RS",
   "region_map_section": "MAPSEC_BATTLE_FRONTIER",
   "requires_flash": false,
@@ -19,7 +19,7 @@
       "x": 4,
       "y": 4,
       "elevation": 0,
-      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
+      "movement_type": "MOVEMENT_TYPE_FACE_UP",
       "movement_range_x": 1,
       "movement_range_y": 1,
       "trainer_type": "TRAINER_TYPE_NONE",
@@ -29,8 +29,8 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_COOK",
-      "x": 11,
-      "y": 3,
+      "x": 6,
+      "y": 6,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_WANDER_AROUND",
       "movement_range_x": 1,
@@ -56,15 +56,8 @@
   ],
   "warp_events": [
     {
-      "x": 1,
-      "y": 7,
-      "elevation": 0,
-      "dest_map": "MAP_BATTLE_FRONTIER_OUTSIDE_WEST",
-      "dest_warp_id": "6"
-    },
-    {
-      "x": 2,
-      "y": 7,
+      "x": 4,
+      "y": 9,
       "elevation": 0,
       "dest_map": "MAP_BATTLE_FRONTIER_OUTSIDE_WEST",
       "dest_warp_id": "6"
