@@ -2,7 +2,7 @@
   "id": "MAP_BATTLE_FRONTIER_LOUNGE9",
   "name": "BattleFrontier_Lounge9",
   "layout": "LAYOUT_BATTLE_FRONTIER_LOUNGE2",
-  "music": "MUS_RG_GYM",
+  "music": "MUS_HG_B_TOWER",
   "region_map_section": "MAPSEC_LILYCOVE_CITY",
   "requires_flash": false,
   "weather": "WEATHER_NONE",

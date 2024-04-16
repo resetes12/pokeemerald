@@ -45,9 +45,7 @@ BattleFrontier_Lounge9_EV_HP_Yes::
 	msgbox BattleFrontier_Lounge9_EV_HP_TEXT2, MSGBOX_DEFAULT
 	waitmessage
 	setflag FLAG_SYS_NO_CATCHING
-	setflag FLAG_SYS_SET_BATTLE_BGM
 	setflag FLAG_NO_SHINY
-	setvar VAR_TEMP_F, MUS_RG_VS_WILD
 	setwildbattle SPECIES_WAILORD, 1, ITEM_NONE
 	dowildbattle
 	clearflag FLAG_SYS_NO_CATCHING
@@ -70,9 +68,7 @@ BattleFrontier_Lounge9_EV_ATK_Yes::
 	msgbox BattleFrontier_Lounge9_EV_ATK_TEXT2, MSGBOX_DEFAULT
 	waitmessage
 	setflag FLAG_SYS_NO_CATCHING
-	setflag FLAG_SYS_SET_BATTLE_BGM
 	setflag FLAG_NO_SHINY
-	setvar VAR_TEMP_F, MUS_RG_VS_WILD
 	setwildbattle SPECIES_GALLADE, 1, ITEM_NONE
 	dowildbattle
 	clearflag FLAG_SYS_NO_CATCHING
@@ -95,9 +91,7 @@ BattleFrontier_Lounge9_EV_SATK_Yes::
 	msgbox BattleFrontier_Lounge9_EV_SATK_TEXT2, MSGBOX_DEFAULT
 	waitmessage
 	setflag FLAG_SYS_NO_CATCHING
-	setflag FLAG_SYS_SET_BATTLE_BGM
 	setflag FLAG_NO_SHINY
-	setvar VAR_TEMP_F, MUS_RG_VS_WILD
 	setwildbattle SPECIES_GARDEVOIR, 1, ITEM_NONE
 	dowildbattle
 	clearflag FLAG_SYS_NO_CATCHING
@@ -120,9 +114,7 @@ BattleFrontier_Lounge9_EV_DEF_Yes::
 	msgbox BattleFrontier_Lounge9_EV_DEF_TEXT2, MSGBOX_DEFAULT
 	waitmessage
 	setflag FLAG_SYS_NO_CATCHING
-	setflag FLAG_SYS_SET_BATTLE_BGM
 	setflag FLAG_NO_SHINY
-	setvar VAR_TEMP_F, MUS_RG_VS_WILD
 	setwildbattle SPECIES_AGGRON, 1, ITEM_NONE
 	dowildbattle
 	clearflag FLAG_SYS_NO_CATCHING
@@ -145,9 +137,7 @@ BattleFrontier_Lounge9_EV_SDEF_Yes::
 	msgbox BattleFrontier_Lounge9_EV_SDEF_TEXT2, MSGBOX_DEFAULT
 	waitmessage
 	setflag FLAG_SYS_NO_CATCHING
-	setflag FLAG_SYS_SET_BATTLE_BGM
 	setflag FLAG_NO_SHINY
-	setvar VAR_TEMP_F, MUS_RG_VS_WILD
 	setwildbattle SPECIES_LUDICOLO, 1, ITEM_NONE
 	dowildbattle
 	clearflag FLAG_SYS_NO_CATCHING
@@ -170,9 +160,7 @@ BattleFrontier_Lounge9_EV_SPD_Yes::
 	msgbox BattleFrontier_Lounge9_EV_SPD_TEXT2, MSGBOX_DEFAULT
 	waitmessage
 	setflag FLAG_SYS_NO_CATCHING
-	setflag FLAG_SYS_SET_BATTLE_BGM
 	setflag FLAG_NO_SHINY
-	setvar VAR_TEMP_F, MUS_RG_VS_WILD
 	setwildbattle SPECIES_SCEPTILE, 1, ITEM_NONE
 	dowildbattle
 	clearflag FLAG_SYS_NO_CATCHING
