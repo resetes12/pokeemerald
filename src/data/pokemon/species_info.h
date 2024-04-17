@@ -5660,6 +5660,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
 
     [SPECIES_POLITOED] =
     {
+        .baseHP_old    = 90,
         .baseHP        = 100, //+10
         .baseAttack    = 75,
         .baseDefense   = 75,
@@ -7715,8 +7716,10 @@ const struct SpeciesInfo gSpeciesInfo[] =
     [SPECIES_TREECKO] = //modified
     {
         .baseHP        = 40,
+        .baseAttack_old  = 45,
         .baseAttack    = 50, //+5
         .baseDefense   = 30, //-5
+        .baseDefense_old   = 35,
         .baseSpeed     = 70,
         .baseSpAttack  = 65,
         .baseSpDefense = 55,
@@ -7746,7 +7749,9 @@ const struct SpeciesInfo gSpeciesInfo[] =
     {
         .baseHP        = 50,
         .baseAttack    = 70, //+5
+        .baseAttack_old    = 65,
         .baseDefense   = 40, //-5
+        .baseDefense_old   = 45,
         .baseSpeed     = 95,
         .baseSpAttack  = 85,
         .baseSpDefense = 65,
@@ -7777,7 +7782,9 @@ const struct SpeciesInfo gSpeciesInfo[] =
     {
         .baseHP        = 70,
         .baseAttack    = 95, //+10
+        .baseAttack_old    = 85,
         .baseDefense   = 60, //-5
+        .baseDefense_old   = 65,
         .baseSpeed     = 120,
         .baseSpAttack  = 105,
         .baseSpDefense = 85,
