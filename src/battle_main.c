@@ -3984,7 +3984,10 @@ static void BattleIntroPrintWildMonAttacked(void)
 {
     if (gBattleControllerExecFlags == 0)
     {
-        gBattleMainFunc = BattleIntroQuickRun;
+        if (gSaveBlock2Ptr->optionsRunType == 1)
+            gBattleMainFunc = BattleIntroQuickRun;
+        else
+            gBattleMainFunc = BattleIntroPrintPlayerSendsOut;
         PrepareStringBattle(STRINGID_INTROMSG, 0);
     }
 }

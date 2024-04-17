@@ -565,6 +565,7 @@ struct SaveBlock2
     /*0x64C*/ struct BattleFrontier frontier;
               struct Time fakeRTC;
               u16 optionsNewBackgrounds:1;
+              u16 optionsRunType:2;
 }; // sizeof=0xF2C
 
 extern struct SaveBlock2 *gSaveBlock2Ptr;

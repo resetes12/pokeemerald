@@ -58,6 +58,7 @@ enum
     MENUITEM_BATTLE_NEW_BACKGROUNDS,
     MENUITEM_BATTLE_BALL_PROMPT,
     MENUITEM_BATTLE_TYPE_EFFECTIVE,
+    MENUITEM_BATTLE_RUN_TYPE,
     MENUITEM_BATTLE_LR_RUN,
     MENUITEM_BATTLE_COUNT,
 };
@@ -216,6 +217,7 @@ static void DrawChoices_Ball_Prompt(int selection, int y);
 static void DrawChoices_Unit_Type(int selection, int y);
 static void DrawChoices_Music(int selection, int y);
 static void DrawChoices_New_Backgrounds(int selection, int y);
+static void DrawChoices_Run_Type(int selection, int y);
 static void DrawBgWindowFrames(void);
 
 // EWRAM vars
@@ -275,6 +277,7 @@ struct // MENU_CUSTOM
     [MENUITEM_BATTLE_SPLIT]            = {DrawChoices_Style,              ProcessInput_Options_Two},
     [MENUITEM_BATTLE_TYPE_EFFECTIVE]   = {DrawChoices_TypeEffective,      ProcessInput_Options_Two},
     [MENUITEM_BATTLE_FAST_BATTLES]     = {DrawChoices_FastBattles,        ProcessInput_Options_Two},
+    [MENUITEM_BATTLE_RUN_TYPE]         = {DrawChoices_Run_Type,           ProcessInput_Options_Three},
     [MENUITEM_BATTLE_LR_RUN]           = {DrawChoices_LR_Run,             ProcessInput_Options_Two},
     [MENUITEM_BATTLE_BALL_PROMPT]      = {DrawChoices_Ball_Prompt,        ProcessInput_Options_Two},
     [MENUITEM_BATTLE_NEW_BACKGROUNDS]  = {DrawChoices_New_Backgrounds,    ProcessInput_Options_Two},
@@ -308,6 +311,7 @@ static const u8 sText_OptionLR_Run[]              = _("RUN PROMPT");
 static const u8 sText_OptionBallPrompt[]          = _("BALL PROMPT");
 static const u8 sText_OptionUnitType[]            = _("UNIT SYSTEM");
 static const u8 sText_OptionNewBackgrounds[]      = _("BATTLE TERRAIN");
+static const u8 sText_OptionRunType[]             = _("QUICK RUN");
 static const u8 *const sOptionMenuItemsNamesMain[MENUITEM_MAIN_COUNT] =
 {
     [MENUITEM_MAIN_TEXTSPEED]           = gText_TextSpeed,
@@ -315,14 +319,14 @@ static const u8 *const sOptionMenuItemsNamesMain[MENUITEM_MAIN_COUNT] =
     [MENUITEM_MAIN_DIFFICULTY]          = gText_OptionDifficulty,
     [MENUITEM_MAIN_BATTLESTYLE]         = gText_BattleStyle,
     [MENUITEM_MAIN_BUTTONMODE]          = gText_ButtonMode,
-    [MENUITEM_MAIN_FOLLOWER]          = gText_FollowerEnable,
-    [MENUITEM_MAIN_LARGE_FOLLOWER]    = sText_OptionLargeFollower,
-    [MENUITEM_MAIN_AUTORUN]           = gText_AutorunEnable,
-    [MENUITEM_MAIN_MATCHCALL]         = gText_OptionMatchCalls,
+    [MENUITEM_MAIN_FOLLOWER]            = gText_FollowerEnable,
+    [MENUITEM_MAIN_LARGE_FOLLOWER]      = sText_OptionLargeFollower,
+    [MENUITEM_MAIN_AUTORUN]             = gText_AutorunEnable,
+    [MENUITEM_MAIN_MATCHCALL]           = gText_OptionMatchCalls,
     [MENUITEM_CUSTOM_FISHING]           = sText_OptionFishing,
-    [MENUITEM_MAIN_EVEN_FASTER_JOY]   = sText_OptionEvenFasterJoy,
-    [MENUITEM_MAIN_SKIP_INTRO]        = sText_OptionSkipIntro,
-    [MENUITEM_MAIN_UNIT_TYPE]         = sText_OptionUnitType,
+    [MENUITEM_MAIN_EVEN_FASTER_JOY]     = sText_OptionEvenFasterJoy,
+    [MENUITEM_MAIN_SKIP_INTRO]          = sText_OptionSkipIntro,
+    [MENUITEM_MAIN_UNIT_TYPE]           = sText_OptionUnitType,
     [MENUITEM_MAIN_FRAMETYPE]           = gText_Frame,
 };
 
@@ -332,6 +336,7 @@ static const u8 *const sOptionMenuItemsNamesCustom[MENUITEM_BATTLE_COUNT] =
     [MENUITEM_BATTLE_SPLIT]            = gText_OptionStyle,
     [MENUITEM_BATTLE_TYPE_EFFECTIVE]   = sText_OptionTypeEffective,
     [MENUITEM_BATTLE_FAST_BATTLES]     = sText_OptionFastBattles,
+    [MENUITEM_BATTLE_RUN_TYPE]         = sText_OptionRunType,
     [MENUITEM_BATTLE_LR_RUN]           = sText_OptionLR_Run,
     [MENUITEM_BATTLE_BALL_PROMPT]      = sText_OptionBallPrompt,
     [MENUITEM_BATTLE_NEW_BACKGROUNDS]  = sText_OptionNewBackgrounds,
@@ -397,7 +402,8 @@ static bool8 CheckConditions(int selection)
         case MENUITEM_BATTLE_SPLIT:           return TRUE;
         case MENUITEM_BATTLE_TYPE_EFFECTIVE:  return TRUE;
         case MENUITEM_BATTLE_FAST_BATTLES:    return TRUE;
-        case MENUITEM_BATTLE_LR_RUN:          return TRUE;
+        case MENUITEM_BATTLE_RUN_TYPE:        return TRUE;
+        case MENUITEM_BATTLE_LR_RUN:          return sOptions->sel_battle[MENUITEM_BATTLE_RUN_TYPE] == 1;
         case MENUITEM_BATTLE_BALL_PROMPT:     return TRUE;
         case MENUITEM_BATTLE_COUNT:           return TRUE;
         case MENUITEM_BATTLE_NEW_BACKGROUNDS: return TRUE;
@@ -475,22 +481,26 @@ static const u8 sText_Desc_FastIntroOn[]           = _("Skip the sliding animati
 static const u8 sText_Desc_FastIntroOff[]          = _("Battles load at the usual speed.");
 static const u8 sText_Desc_FastBattleOn[]          = _("Skips all delays in battles, which\nmakes them faster.");
 static const u8 sText_Desc_FastBattleOff[]         = _("Manual delay skipping. You can\npress A or B to skip delays.");
+static const u8 sText_Desc_Run_Type_Off[]          = _("No quick running from battles.");
+static const u8 sText_Desc_Run_Type_LR[]           = _("Press {L_BUTTON}+{R_BUTTON}, then A to run from\nbattles before they start.");
+static const u8 sText_Desc_Run_Type_B[]            = _("Press B to move the cursor to\nthe RUN option after the battle started.");
 static const u8 sText_Desc_LR_Run_On[]             = _("Enables a prompt to show that you\ncan run away from battles.");
 static const u8 sText_Desc_LR_Run_Off[]            = _("Disables said prompt to flee.\nButton combo still works.");
 static const u8 sText_Desc_Ball_Prompt_On[]        = _("Use POKéBALLS pressing {R_BUTTON} in battle.\n Hold {L_BUTTON}/{R_BUTTON} to swap POKéBALLS.");
 static const u8 sText_Desc_Ball_Prompt_Off[]       = _("Disables the prompt to use\nPOKéBALLS quickly.");
 static const u8 sText_Desc_NewBackgrounds_Old[]    = _("Original battle terrain backgrounds.");
 static const u8 sText_Desc_NewBackgrounds_New[]    = _("Modernized battle terrain\nbackgrounds, similar to GEN IV.");
-static const u8 *const sOptionMenuItemDescriptionsCustom[MENUITEM_BATTLE_COUNT][2] =
+static const u8 *const sOptionMenuItemDescriptionsCustom[MENUITEM_BATTLE_COUNT][3] =
 {
 
-    [MENUITEM_BATTLE_FAST_INTRO]  = {sText_Desc_FastIntroOn,          sText_Desc_FastIntroOff},
-    [MENUITEM_BATTLE_FAST_BATTLES]  = {sText_Desc_FastBattleOn,          sText_Desc_FastBattleOff},
-    [MENUITEM_BATTLE_SPLIT]       = {sText_Desc_StyleOn,              sText_Desc_StyleOff},
-    [MENUITEM_BATTLE_TYPE_EFFECTIVE]       = {sText_Desc_TypeEffectiveOn,              sText_Desc_TypeEffectiveOff},
-    [MENUITEM_BATTLE_LR_RUN]     = {sText_Desc_LR_Run_On,            sText_Desc_LR_Run_Off},
-    [MENUITEM_BATTLE_BALL_PROMPT]     = {sText_Desc_Ball_Prompt_On,            sText_Desc_Ball_Prompt_Off},
-    [MENUITEM_BATTLE_NEW_BACKGROUNDS]     = {sText_Desc_NewBackgrounds_Old,             sText_Desc_NewBackgrounds_New},
+    [MENUITEM_BATTLE_FAST_INTRO]          = {sText_Desc_FastIntroOn,              sText_Desc_FastIntroOff},
+    [MENUITEM_BATTLE_FAST_BATTLES]        = {sText_Desc_FastBattleOn,             sText_Desc_FastBattleOff},
+    [MENUITEM_BATTLE_SPLIT]               = {sText_Desc_StyleOn,                  sText_Desc_StyleOff},
+    [MENUITEM_BATTLE_TYPE_EFFECTIVE]      = {sText_Desc_TypeEffectiveOn,          sText_Desc_TypeEffectiveOff},
+    [MENUITEM_BATTLE_LR_RUN]              = {sText_Desc_LR_Run_On,                sText_Desc_LR_Run_Off},
+    [MENUITEM_BATTLE_BALL_PROMPT]         = {sText_Desc_Ball_Prompt_On,           sText_Desc_Ball_Prompt_Off},
+    [MENUITEM_BATTLE_NEW_BACKGROUNDS]     = {sText_Desc_NewBackgrounds_Old,       sText_Desc_NewBackgrounds_New},
+    [MENUITEM_BATTLE_RUN_TYPE]            = {sText_Desc_Run_Type_Off,             sText_Desc_Run_Type_LR,             sText_Desc_Run_Type_B},
 };
 
 static const u8 sText_Desc_SoundMono[]                       = _("Sound is the same in all speakers.\nRecommended for original hardware.");
@@ -544,15 +554,17 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledMain[MENUITEM_MAIN_COU
 };
 
 // Disabled Custom
+static const u8 sText_Desc_Disabled_LR_Run[]   = _("Only active if L+R is selected above.");
 static const u8 *const sOptionMenuItemDescriptionsDisabledCustom[MENUITEM_BATTLE_COUNT] =
 {
-    [MENUITEM_BATTLE_FAST_INTRO]  = sText_Empty,
-    [MENUITEM_BATTLE_FAST_BATTLES]  = sText_Empty,
-    [MENUITEM_BATTLE_SPLIT]       = sText_Empty,
-    [MENUITEM_BATTLE_TYPE_EFFECTIVE]       = sText_Empty,
-    [MENUITEM_BATTLE_LR_RUN]     = sText_Empty,
-    [MENUITEM_BATTLE_BALL_PROMPT]     = sText_Empty,
+    [MENUITEM_BATTLE_FAST_INTRO]          = sText_Empty,
+    [MENUITEM_BATTLE_FAST_BATTLES]        = sText_Empty,
+    [MENUITEM_BATTLE_SPLIT]               = sText_Empty,
+    [MENUITEM_BATTLE_TYPE_EFFECTIVE]      = sText_Empty,
+    [MENUITEM_BATTLE_LR_RUN]              = sText_Desc_Disabled_LR_Run,
+    [MENUITEM_BATTLE_BALL_PROMPT]         = sText_Empty,
     [MENUITEM_BATTLE_NEW_BACKGROUNDS]     = sText_Empty,
+    [MENUITEM_BATTLE_RUN_TYPE]            = sText_Empty,
 };
 
 static const u8 *const sOptionMenuItemDescriptionsDisabledSound[MENUITEM_SOUND_COUNT] =
@@ -583,7 +595,7 @@ static const u8 *const OptionTextDescription(void)
         return sOptionMenuItemDescriptionsMain[menuItem][selection];
     case MENU_CUSTOM:
         if (!CheckConditions(menuItem))
-            return sOptionMenuItemDescriptionsDisabledMain[menuItem];
+            return sOptionMenuItemDescriptionsDisabledCustom[menuItem];
         selection = sOptions->sel_battle[menuItem];
         return sOptionMenuItemDescriptionsCustom[menuItem][selection];
     case MENU_SOUND:
@@ -824,6 +836,7 @@ void CB2_InitOptionPlusMenu(void)
         sOptions->sel_battle[MENUITEM_BATTLE_LR_RUN]            = gSaveBlock2Ptr->optionsLRtoRun;
         sOptions->sel_battle[MENUITEM_BATTLE_BALL_PROMPT]       = gSaveBlock2Ptr->optionsBallPrompt;
         sOptions->sel_battle[MENUITEM_BATTLE_NEW_BACKGROUNDS]   = gSaveBlock2Ptr->optionsNewBackgrounds;
+        sOptions->sel_battle[MENUITEM_BATTLE_RUN_TYPE]          = gSaveBlock2Ptr->optionsRunType;
 
         sOptions->sel_sound[MENUITEM_SOUND_SOUND]                             = gSaveBlock2Ptr->optionsSound;
         sOptions->sel_sound[MENUITEM_SOUND_MUSIC]                             = gSaveBlock2Ptr->optionsMusicOnOff;
@@ -1057,6 +1070,7 @@ static void Task_OptionMenuSave(u8 taskId)
     gSaveBlock2Ptr->optionsLRtoRun          = sOptions->sel_battle[MENUITEM_BATTLE_LR_RUN];
     gSaveBlock2Ptr->optionsBallPrompt       = sOptions->sel_battle[MENUITEM_BATTLE_BALL_PROMPT];
     gSaveBlock2Ptr->optionsNewBackgrounds   = sOptions->sel_battle[MENUITEM_BATTLE_NEW_BACKGROUNDS];
+    gSaveBlock2Ptr->optionsRunType          = sOptions->sel_battle[MENUITEM_BATTLE_RUN_TYPE];
     
     gSaveBlock2Ptr->optionsSound            = sOptions->sel_sound[MENUITEM_SOUND_SOUND];
     gSaveBlock2Ptr->optionsMusicOnOff       = sOptions->sel_sound[MENUITEM_SOUND_MUSIC];
@@ -1913,6 +1927,36 @@ static void DrawChoices_New_Backgrounds(int selection, int y)
     }
     DrawOptionMenuChoice(sText_Old, 104, y, styles[0], active);
     DrawOptionMenuChoice(sText_New, GetStringRightAlignXOffset(1, sText_New, 198), y, styles[1], active);
+}
+
+static const u8 sText_No[]        = _("NO");
+static const u8 sText_LR[]        = _("L+R");
+static const u8 sText_B[]         = _("B");
+static void DrawChoices_Run_Type(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_BATTLE_RUN_TYPE);
+    u8 styles[3] = {0};
+    int xMid = GetMiddleX(sText_No, sText_LR, sText_B);
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock2Ptr->optionsRunType = 0; //No
+        sOptions->sel_battle[MENUITEM_BATTLE_LR_RUN]          = gSaveBlock2Ptr->optionsLRtoRun = 1;
+    }
+    else if (selection == 1)
+    {
+        gSaveBlock2Ptr->optionsRunType = 1; //LR
+    }
+    else
+    {
+        gSaveBlock2Ptr->optionsRunType = 2; //B->A
+        sOptions->sel_battle[MENUITEM_BATTLE_LR_RUN]          = gSaveBlock2Ptr->optionsLRtoRun = 1;
+    }
+
+    DrawOptionMenuChoice(sText_No, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_LR, xMid, y, styles[1], active);
+    DrawOptionMenuChoice(sText_B, GetStringRightAlignXOffset(1, sText_LR, 205), y, styles[2], active);
 }
 
 // Background tilemap
