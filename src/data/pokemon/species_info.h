@@ -4858,15 +4858,15 @@ const struct SpeciesInfo gSpeciesInfo[] =
 
     [SPECIES_FERALIGATR] = //modified
     {
-        .baseHP        = 85,
-        .baseAttack    = 115, //+10
+        .baseHP            = 85,
+        .baseAttack        = 115, //+10
         .baseAttack_old    = 105,
-        .baseDefense   = 100,
-        .baseSpeed     = 83, //+5
+        .baseDefense       = 100,
+        .baseSpeed         = 83, //+5
         .baseSpeed_old     = 78,
-        .baseSpAttack  = 69, //-10
+        .baseSpAttack      = 69, //-10
         .baseSpAttack_old  = 79,
-        .baseSpDefense = 83,
+        .baseSpDefense     = 83,
         .types = { TYPE_WATER, TYPE_DRAGON }, //changed
         .types_old = { TYPE_WATER, TYPE_WATER },
         .catchRate = 45,
@@ -7712,11 +7712,11 @@ const struct SpeciesInfo gSpeciesInfo[] =
 
     [SPECIES_OLD_UNOWN_Z] = OLD_UNOWN_SPECIES_INFO,
 
-    [SPECIES_TREECKO] =
+    [SPECIES_TREECKO] = //modified
     {
         .baseHP        = 40,
-        .baseAttack    = 45,
-        .baseDefense   = 35,
+        .baseAttack    = 50, //+5
+        .baseDefense   = 30, //-5
         .baseSpeed     = 70,
         .baseSpAttack  = 65,
         .baseSpDefense = 55,
@@ -7742,15 +7742,16 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .noFlip = FALSE,
     },
 
-    [SPECIES_GROVYLE] =
+    [SPECIES_GROVYLE] = //modified
     {
         .baseHP        = 50,
-        .baseAttack    = 65,
-        .baseDefense   = 45,
+        .baseAttack    = 70, //+5
+        .baseDefense   = 40, //-5
         .baseSpeed     = 95,
         .baseSpAttack  = 85,
         .baseSpDefense = 65,
-        .types = { TYPE_GRASS, TYPE_GRASS },
+        .types_old = { TYPE_GRASS, TYPE_GRASS },
+        .types = { TYPE_GRASS, TYPE_DRAGON }, //changed
         .catchRate = 45,
         .expYield = 141,
         .evYield_HP        = 0,
@@ -7772,15 +7773,16 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .noFlip = FALSE,
     },
 
-    [SPECIES_SCEPTILE] =
+    [SPECIES_SCEPTILE] = //modified
     {
         .baseHP        = 70,
-        .baseAttack    = 85,
-        .baseDefense   = 65,
+        .baseAttack    = 95, //+10
+        .baseDefense   = 60, //-5
         .baseSpeed     = 120,
         .baseSpAttack  = 105,
         .baseSpDefense = 85,
-        .types = { TYPE_GRASS, TYPE_GRASS },
+        .types = { TYPE_GRASS, TYPE_DRAGON }, //changed
+        .types_old = { TYPE_GRASS, TYPE_GRASS },
         .catchRate = 45,
         .expYield = 208,
         .evYield_HP        = 0,
@@ -8782,7 +8784,8 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .baseSpeed_old     = 70,
         .baseSpAttack_old  = 80,
         .baseSpDefense = 82,
-        .types = { TYPE_BUG, TYPE_FLYING },
+        .types_old = { TYPE_BUG, TYPE_FLYING },
+        .types = { TYPE_BUG, TYPE_WATER }, //changed
         .catchRate = 75,
         .expYield = 128,
         .evYield_HP        = 0,
