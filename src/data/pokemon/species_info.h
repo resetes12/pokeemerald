@@ -5660,7 +5660,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
 
     [SPECIES_POLITOED] =
     {
-        .baseHP        = 90,
+        .baseHP        = 100, //+10
         .baseAttack    = 75,
         .baseDefense   = 75,
         .baseSpeed     = 70,
