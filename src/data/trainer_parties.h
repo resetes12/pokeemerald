@@ -8012,21 +8012,21 @@ static const struct TrainerMonItemCustomMoves sParty_Steven2[] = {
     .iv = 255,
     .lvl = 100,
     .species = SPECIES_SKARMORY,
-    .heldItem = ITEM_METAL_COAT,
+    .heldItem = ITEM_LEFTOVERS,
     .moves = {MOVE_TOXIC, MOVE_DRILL_PECK, MOVE_SPIKES, MOVE_STEEL_WING}
     },
     {
     .iv = 255,
     .lvl = 100,
     .species = SPECIES_SCIZOR,
-    .heldItem = ITEM_LEFTOVERS,
-    .moves = {MOVE_IRON_DEFENSE, MOVE_SWORDS_DANCE, MOVE_SUBSTITUTE, MOVE_BATON_PASS}
+    .heldItem = ITEM_METAL_COAT,
+    .moves = {MOVE_AGILITY, MOVE_SWORDS_DANCE, MOVE_SUBSTITUTE, MOVE_METAL_CLAW}
     },
     {
     .iv = 255,
     .lvl = 100,
     .species = SPECIES_AGGRON,
-    .heldItem = ITEM_METAL_COAT,
+    .heldItem = ITEM_LEFTOVERS,
     .moves = {MOVE_ICE_BEAM, MOVE_FOCUS_PUNCH, MOVE_SUBSTITUTE, MOVE_ROCK_SLIDE}
     },
     {
@@ -8034,7 +8034,7 @@ static const struct TrainerMonItemCustomMoves sParty_Steven2[] = {
     .lvl = 100,
     .species = SPECIES_RHYPERIOR,
     .heldItem = ITEM_LEFTOVERS,
-    .moves = {MOVE_ROCK_SLIDE, MOVE_EARTHQUAKE, MOVE_INGRAIN, MOVE_SUBSTITUTE}
+    .moves = {MOVE_ROCK_SLIDE, MOVE_EARTHQUAKE, MOVE_SWORDS_DANCE, MOVE_SUBSTITUTE}
     },
     {
     .iv = 255,
