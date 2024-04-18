@@ -10461,7 +10461,8 @@ u16 GetBattleBGM(void)
             }
             return MUS_VS_CHAMPION;
         case TRAINER_CLASS_RIVAL:
-            if ((gBattleTypeFlags & BATTLE_TYPE_FRONTIER) || (!StringCompare(gTrainers[gTrainerBattleOpponent_A].trainerName, gText_BattleWallyName)))
+            //if ((gBattleTypeFlags & BATTLE_TYPE_FRONTIER) || (!StringCompare(gTrainers[gTrainerBattleOpponent_A].trainerName, gText_BattleWallyName)))
+            {
                 if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 0)
                     return MUS_VS_RIVAL;
                 else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 1)
@@ -10481,6 +10482,7 @@ u16 GetBattleBGM(void)
                     else
                         return MUS_VS_RIVAL;
                 }
+            }
             return MUS_VS_RIVAL;
         case TRAINER_CLASS_ELITE_FOUR:
             if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 0)
