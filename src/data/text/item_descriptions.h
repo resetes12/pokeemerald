@@ -1623,7 +1623,7 @@ static const u8 sJollyMintDesc[] = _(
 static const u8 sLaxMintDesc[] = _(
     "Changes POKéMON\n"
     "nature to LAX.\n"
-    "+DEF, SP.DEF");
+    "+DEF, -SP.DEF");
 
 static const u8 sLonelyMintDesc[] = _(
     "Changes POKéMON\n"
@@ -1643,7 +1643,7 @@ static const u8 sModestMintDesc[] = _(
 static const u8 sNaiveMintDesc[] = _(
     "Changes POKéMON\n"
     "nature to NAIVE.\n"
-    "+SPD, SP.DEF");
+    "+SPD, -SP.DEF");
 
 static const u8 sNaughtyMintDesc[] = _(
     "Changes POKéMON\n"
