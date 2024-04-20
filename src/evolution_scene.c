@@ -1172,19 +1172,19 @@ static void Task_TradeEvolutionScene(u8 taskId)
     case T_EVOSTATE_EVO_SOUND:
         if (!gTasks[sEvoGraphicsTaskId].isActive)
         {
-            PlaySE(SE_EXP);
+            //PlaySE(SE_EXP);
             gTasks[taskId].tState++;
         }
         break;
     case T_EVOSTATE_EVO_MON_ANIM:
-        if (IsSEPlaying())
-        {
+        //if (IsSEPlaying())
+        //{
             // Restore bg, do mon anim/cry
             Free(sBgAnimPal);
             EvoScene_DoMonAnimAndCry(sEvoStructPtr->postEvoSpriteId, gTasks[taskId].tPostEvoSpecies);
             memcpy(&gPlttBufferUnfaded[BG_PLTT_ID(2)], sEvoStructPtr->savedPalette, sizeof(sEvoStructPtr->savedPalette));
             gTasks[taskId].tState++;
-        }
+        //}
         break;
     case T_EVOSTATE_SET_MON_EVOLVED:
         if (IsCryFinished())
