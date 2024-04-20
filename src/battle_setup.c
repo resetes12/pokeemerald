@@ -49,6 +49,7 @@
 #include "tx_randomizer_and_challenges.h"
 #include "pokedex.h" //tx_randomizer_and_challenges
 #include "constants/region_map_sections.h" //tx_randomizer_and_challenges
+#include "debug.h"
 
 
 enum {
@@ -1515,6 +1516,9 @@ void BattleSetup_StartTrainerBattle_Debug(void)
 
 static void CB2_EndTrainerBattle(void)
 {
+    #if TX_DEBUG_SYSTEM_ENABLE == TRUE
+        gIsDebugBattle = FALSE;
+    #endif
     if (gTrainerBattleOpponent_A == TRAINER_SECRET_BASE)
     {
         SetMainCallback2(CB2_ReturnToFieldContinueScriptPlayMapMusic);
