@@ -689,6 +689,13 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
         }
         return;
     }
+    if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_UNDERWATER)
+    {
+        if (heldKeys & B_BUTTON)
+            PlayerWalkFast(direction);
+        else
+            PlayerWalkNormal(direction);
+    }
     else
     {
         if (ObjectMovingOnRockStairs(&gObjectEvents[gPlayerAvatar.objectEventId], direction))
