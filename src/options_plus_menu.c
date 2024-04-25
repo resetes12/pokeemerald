@@ -277,7 +277,7 @@ struct // MENU_CUSTOM
     [MENUITEM_BATTLE_SPLIT]            = {DrawChoices_Style,              ProcessInput_Options_Two},
     [MENUITEM_BATTLE_TYPE_EFFECTIVE]   = {DrawChoices_TypeEffective,      ProcessInput_Options_Two},
     [MENUITEM_BATTLE_FAST_BATTLES]     = {DrawChoices_FastBattles,        ProcessInput_Options_Two},
-    [MENUITEM_BATTLE_RUN_TYPE]         = {DrawChoices_Run_Type,           ProcessInput_Options_Three},
+    [MENUITEM_BATTLE_RUN_TYPE]         = {DrawChoices_Run_Type,           ProcessInput_Options_Four},
     [MENUITEM_BATTLE_LR_RUN]           = {DrawChoices_LR_Run,             ProcessInput_Options_Two},
     [MENUITEM_BATTLE_BALL_PROMPT]      = {DrawChoices_Ball_Prompt,        ProcessInput_Options_Two},
     [MENUITEM_BATTLE_NEW_BACKGROUNDS]  = {DrawChoices_New_Backgrounds,    ProcessInput_Options_Two},
@@ -403,7 +403,7 @@ static bool8 CheckConditions(int selection)
         case MENUITEM_BATTLE_TYPE_EFFECTIVE:  return TRUE;
         case MENUITEM_BATTLE_FAST_BATTLES:    return TRUE;
         case MENUITEM_BATTLE_RUN_TYPE:        return TRUE;
-        case MENUITEM_BATTLE_LR_RUN:          return sOptions->sel_battle[MENUITEM_BATTLE_RUN_TYPE] == 1;
+        case MENUITEM_BATTLE_LR_RUN:          return sOptions->sel_battle[MENUITEM_BATTLE_RUN_TYPE] == 1 || sOptions->sel_battle[MENUITEM_BATTLE_RUN_TYPE] == 3;
         case MENUITEM_BATTLE_BALL_PROMPT:     return TRUE;
         case MENUITEM_BATTLE_COUNT:           return TRUE;
         case MENUITEM_BATTLE_NEW_BACKGROUNDS: return TRUE;
@@ -482,15 +482,16 @@ static const u8 sText_Desc_FastIntroOff[]          = _("Battles load at the usua
 static const u8 sText_Desc_FastBattleOn[]          = _("Skips all delays in battles, which\nmakes them faster.");
 static const u8 sText_Desc_FastBattleOff[]         = _("Manual delay skipping. You can\npress A or B to skip delays.");
 static const u8 sText_Desc_Run_Type_Off[]          = _("No quick running from battles.");
-static const u8 sText_Desc_Run_Type_LR[]           = _("Press {L_BUTTON}+{R_BUTTON}, then A to run from\nbattles before they start.");
-static const u8 sText_Desc_Run_Type_B[]            = _("Press B to move the cursor to the RUN\noption after the battle started.");
+static const u8 sText_Desc_Run_Type_LR[]           = _("Hold {L_BUTTON}+{R_BUTTON}, then {A_BUTTON} to run from\nbattles before they start.");
+static const u8 sText_Desc_Run_Type_B[]            = _("Press {B_BUTTON} to move the cursor to the RUN\noption after the battle started.");
+static const u8 sText_Desc_Run_Type_B_2[]          = _("Hold {B_BUTTON} to run from battles\nbefore they start.");
 static const u8 sText_Desc_LR_Run_On[]             = _("Enables a prompt to show that you\ncan run away from battles.");
 static const u8 sText_Desc_LR_Run_Off[]            = _("Disables said prompt to flee.\nButton combo still works.");
 static const u8 sText_Desc_Ball_Prompt_On[]        = _("Use POKéBALLS pressing {R_BUTTON} in battle.\n Hold {L_BUTTON}/{R_BUTTON} to swap POKéBALLS.");
 static const u8 sText_Desc_Ball_Prompt_Off[]       = _("Disables the prompt to use\nPOKéBALLS quickly.");
 static const u8 sText_Desc_NewBackgrounds_Old[]    = _("Original battle terrain backgrounds.");
 static const u8 sText_Desc_NewBackgrounds_New[]    = _("Modernized battle terrain\nbackgrounds, similar to GEN IV.");
-static const u8 *const sOptionMenuItemDescriptionsCustom[MENUITEM_BATTLE_COUNT][3] =
+static const u8 *const sOptionMenuItemDescriptionsCustom[MENUITEM_BATTLE_COUNT][4] =
 {
 
     [MENUITEM_BATTLE_FAST_INTRO]          = {sText_Desc_FastIntroOn,              sText_Desc_FastIntroOff},
@@ -500,7 +501,7 @@ static const u8 *const sOptionMenuItemDescriptionsCustom[MENUITEM_BATTLE_COUNT][
     [MENUITEM_BATTLE_LR_RUN]              = {sText_Desc_LR_Run_On,                sText_Desc_LR_Run_Off},
     [MENUITEM_BATTLE_BALL_PROMPT]         = {sText_Desc_Ball_Prompt_On,           sText_Desc_Ball_Prompt_Off},
     [MENUITEM_BATTLE_NEW_BACKGROUNDS]     = {sText_Desc_NewBackgrounds_Old,       sText_Desc_NewBackgrounds_New},
-    [MENUITEM_BATTLE_RUN_TYPE]            = {sText_Desc_Run_Type_Off,             sText_Desc_Run_Type_LR,             sText_Desc_Run_Type_B},
+    [MENUITEM_BATTLE_RUN_TYPE]            = {sText_Desc_Run_Type_Off,             sText_Desc_Run_Type_LR,             sText_Desc_Run_Type_B,         sText_Desc_Run_Type_B_2},
 };
 
 static const u8 sText_Desc_SoundMono[]                       = _("Sound is the same in all speakers.\nRecommended for original hardware.");
@@ -1931,13 +1932,13 @@ static void DrawChoices_New_Backgrounds(int selection, int y)
 
 static const u8 sText_No[]        = _("NO");
 static const u8 sText_LR[]        = _("L+R");
-static const u8 sText_B[]         = _("B");
+static const u8 sText_B[]         = _("B->A");
+static const u8 sText_B_2[]       = _("B");
+static const u8 *const sRunTypeStrings[] = {sText_No, sText_LR, sText_B, sText_B_2};
 static void DrawChoices_Run_Type(int selection, int y)
 {
     bool8 active = CheckConditions(MENUITEM_BATTLE_RUN_TYPE);
-    u8 styles[3] = {0};
-    int xMid = GetMiddleX(sText_No, sText_LR, sText_B);
-    styles[selection] = 1;
+    DrawChoices_Options_Four(sRunTypeStrings, selection, y, active);
 
     if (selection == 0)
     {
@@ -1948,15 +1949,15 @@ static void DrawChoices_Run_Type(int selection, int y)
     {
         gSaveBlock2Ptr->optionsRunType = 1; //LR
     }
-    else
+    else if (selection == 2)
     {
         gSaveBlock2Ptr->optionsRunType = 2; //B->A
         sOptions->sel_battle[MENUITEM_BATTLE_LR_RUN]          = gSaveBlock2Ptr->optionsLRtoRun = 1;
     }
-
-    DrawOptionMenuChoice(sText_No, 104, y, styles[0], active);
-    DrawOptionMenuChoice(sText_LR, xMid, y, styles[1], active);
-    DrawOptionMenuChoice(sText_B, GetStringRightAlignXOffset(1, sText_LR, 205), y, styles[2], active);
+    else
+    {
+        gSaveBlock2Ptr->optionsRunType = 3; //Hold B (before battle)
+    }
 }
 
 // Background tilemap

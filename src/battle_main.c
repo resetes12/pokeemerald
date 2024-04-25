@@ -3984,7 +3984,7 @@ static void BattleIntroPrintWildMonAttacked(void)
 {
     if (gBattleControllerExecFlags == 0)
     {
-        if (gSaveBlock2Ptr->optionsRunType == 1)
+        if ((gSaveBlock2Ptr->optionsRunType == 1) || (gSaveBlock2Ptr->optionsRunType == 3))
             gBattleMainFunc = BattleIntroQuickRun;
         else
             gBattleMainFunc = BattleIntroPrintPlayerSendsOut;
@@ -3994,16 +3994,35 @@ static void BattleIntroPrintWildMonAttacked(void)
 
 static void BattleIntroQuickRun(void)
 {
-    if (gBattleControllerExecFlags == 0)
-    {
-        if ((JOY_HELD(R_BUTTON))&&(JOY_HELD(L_BUTTON))){
-            if (!IsRunningFromBattleImpossible() && TryRunFromBattle(gBattlerAttacker)){
-                gBattleMainFunc = HandleEndTurn_RanFromBattle;
-                return;
+    if (gSaveBlock2Ptr->optionsRunType == 1)
+        {
+        if (gBattleControllerExecFlags == 0)
+        {
+            if ((JOY_HELD(R_BUTTON))&&(JOY_HELD(L_BUTTON)))
+            {
+                if (!IsRunningFromBattleImpossible() && TryRunFromBattle(gBattlerAttacker)){
+                    gBattleMainFunc = HandleEndTurn_RanFromBattle;
+                    return;
+                }
+                PrepareStringBattle(STRINGID_CANTESCAPE, 0);
             }
-            PrepareStringBattle(STRINGID_CANTESCAPE, 0);
+            gBattleMainFunc = BattleIntroPrintPlayerSendsOut;
         }
-        gBattleMainFunc = BattleIntroPrintPlayerSendsOut;
+    }
+    else if (gSaveBlock2Ptr->optionsRunType == 3)
+        {
+        if (gBattleControllerExecFlags == 0)
+        {
+            if (JOY_HELD(B_BUTTON))
+            {
+                if (!IsRunningFromBattleImpossible() && TryRunFromBattle(gBattlerAttacker)){
+                    gBattleMainFunc = HandleEndTurn_RanFromBattle;
+                    return;
+                }
+                PrepareStringBattle(STRINGID_CANTESCAPE, 0);
+            }
+            gBattleMainFunc = BattleIntroPrintPlayerSendsOut;
+        }
     }
 }
 
