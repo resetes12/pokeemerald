@@ -1814,7 +1814,9 @@ static void MoveSelectionDisplayMoveType(void)
                      | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_SPATK_IV) & 1) << 4)
                      | ((GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_SPDEF_IV) & 1) << 5);
 
-        u8 type = ((NUMBER_OF_MON_TYPES - 2) * typeBits) / 63 + 1;
+        u8 type = ((NUMBER_OF_MON_TYPES - 4) * typeBits) / 63 + 1;
+        if (type > TYPE_MYSTERY)
+            type++;
         if (type == TYPE_MYSTERY)
             type = TYPE_FAIRY;
         type |= 0xC0;
