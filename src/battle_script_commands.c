@@ -1375,28 +1375,6 @@ u8 DisplayMoveTypeChange(u16 move)
     return moveType;
 }
 
-u8 getHiddenPowerType(void)
-{
-    u8 typeBits  = ((gBattleMons[gBattlerAttacker].hpIV & 1) << 0)
-                 | ((gBattleMons[gBattlerAttacker].attackIV & 1) << 1)
-                 | ((gBattleMons[gBattlerAttacker].defenseIV & 1) << 2)
-                 | ((gBattleMons[gBattlerAttacker].speedIV & 1) << 3)
-                 | ((gBattleMons[gBattlerAttacker].spAttackIV & 1) << 4)
-                 | ((gBattleMons[gBattlerAttacker].spDefenseIV & 1) << 5);
-
-    // Subtract 4 instead of 1 below because 3 types are excluded (TYPE_NORMAL, TYPE_MYSTERY and TYPE_FAIRY)
-    // The final + 1 skips past Normal
-    // If the type number is larger than TYPE_MISTERY, + 1 like in Vanilla Emerald
-    // This makes Hidden Power calculators accurate again
-    // But if the type number equals to TYPE_MISTERY, become TYPE_FAIRY
-    u8 type = ((NUMBER_OF_MON_TYPES - 4) * typeBits) / 63 + 1;
-    if (type > TYPE_MYSTERY)
-        type++;
-    if (type == TYPE_MYSTERY)
-        type = TYPE_FAIRY;
-    return type;
-}
-
 void AI_CalcDmg(u8 attacker, u8 defender)
 {
     u16 sideStatus = gSideStatuses[GET_BATTLER_SIDE(defender)];
@@ -1514,11 +1492,7 @@ static void Cmd_typecalc(void)
     }
 
     GET_MOVE_TYPE(gCurrentMove, moveType);
-    
-    if (gCurrentMove == MOVE_HIDDEN_POWER)
-        moveType = getHiddenPowerType();
-    else
-        moveType = CheckAbilityChangeMoveType(gCurrentMove);
+    moveType = CheckAbilityChangeMoveType(gCurrentMove);
 
     // check stab
     if (IS_BATTLER_OF_TYPE(gBattlerAttacker, moveType))
@@ -1744,6 +1718,23 @@ u8 TypeCalc(u16 move, u8 attacker, u8 defender)
         flags |= MOVE_RESULT_MISSED;
     }
     return flags;
+}
+
+u8 getHiddenPowerType(void)
+{
+    u8 typeBits  = ((gBattleMons[gBattlerAttacker].hpIV & 1) << 0)
+                 | ((gBattleMons[gBattlerAttacker].attackIV & 1) << 1)
+                 | ((gBattleMons[gBattlerAttacker].defenseIV & 1) << 2)
+                 | ((gBattleMons[gBattlerAttacker].speedIV & 1) << 3)
+                 | ((gBattleMons[gBattlerAttacker].spAttackIV & 1) << 4)
+                 | ((gBattleMons[gBattlerAttacker].spDefenseIV & 1) << 5);
+
+    // Subtract 3 instead of 1 below because 2 types are excluded (TYPE_NORMAL and TYPE_MYSTERY)
+    // The final + 1 skips past Normal, and the following conditional skips TYPE_MYSTERY
+    u8 type = ((NUMBER_OF_MON_TYPES - 3) * typeBits) / 63 + 1;
+    if (type == TYPE_MYSTERY)
+        type = TYPE_FAIRY;
+    return type;
 }
 
 u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility)
@@ -9320,14 +9311,11 @@ static void Cmd_hiddenpowercalc(void)
 
     gDynamicBasePower = 60;
 
-    // Subtract 4 instead of 1 below because 3 types are excluded (TYPE_NORMAL, TYPE_MYSTERY and TYPE_FAIRY)
-    // The final + 1 skips past Normal
-    // If the type number is larger than TYPE_MISTERY, + 1 like in Vanilla Emerald
-    // This makes Hidden Power calculators accurate again
-    // But if the type number equals to TYPE_MISTERY, become TYPE_FAIRY
-    gBattleStruct->dynamicMoveType = ((NUMBER_OF_MON_TYPES - 4) * typeBits) / 63 + 1;
-    if (gBattleStruct->dynamicMoveType > TYPE_MYSTERY)
-        gBattleStruct->dynamicMoveType++;
+    // Subtract 2 instead of 1 below because 3 types are excluded (TYPE_NORMAL and TYPE_MYSTERY)
+    // The number goes from 0 to 16 (19 - 2), from TYPE_NORMAL to TYPE_DRAGON.
+    // The final + 1 skips past Normal, and allows getting to TYPE_DARK.
+    // If the number equals TYPE_MISTERY, the typing changes to TYPE_FAIRY.
+    gBattleStruct->dynamicMoveType = ((NUMBER_OF_MON_TYPES - 3) * typeBits) / 63 + 1;
     if (gBattleStruct->dynamicMoveType == TYPE_MYSTERY)
         gBattleStruct->dynamicMoveType = TYPE_FAIRY;
     gBattleStruct->dynamicMoveType |= F_DYNAMIC_TYPE_IGNORE_PHYSICALITY | F_DYNAMIC_TYPE_SET;
