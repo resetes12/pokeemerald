@@ -882,6 +882,10 @@ extern const u8 gText_IcePunch48BP[];
 extern const u8 gText_ThunderPunch48BP[];
 extern const u8 gText_FirePunch48BP[];
 
+extern const u8 gText_FrenzyPlant64BP[];
+extern const u8 gText_BlastBurn64BP[];
+extern const u8 gText_HydroCannon64BP[];
+
 extern const u8 gText_SlateportCity[];
 extern const u8 gText_BattleFrontier[];
 extern const u8 gText_SouthernIsland[];
@@ -1025,6 +1029,8 @@ extern const u8 BattleFrontier_Lounge7_Text_PsychUpDesc[];
 extern const u8 BattleFrontier_Lounge7_Text_IcePunchDesc[];
 extern const u8 BattleFrontier_Lounge7_Text_ThunderPunchDesc[];
 extern const u8 BattleFrontier_Lounge7_Text_FirePunchDesc[];
+
+extern const u8 BattleFrontier_Lounge7_Text_StrongElementalMoveDesc[];
 
 extern const u8 gText_YourPartnerHasRetired[];
 
