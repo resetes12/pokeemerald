@@ -101,6 +101,8 @@ static void SetDefaultOptions(void)
     gSaveBlock2Ptr->optionsfollowerEnable = 0;
     gSaveBlock2Ptr->optionsfollowerLargeEnable = 1;
     gSaveBlock2Ptr->optionsautoRun = 1;
+    gSaveBlock2Ptr->optionsAutorunDive = 1;
+    gSaveBlock2Ptr->optionsAutorunSurf = 1;
     gSaveBlock2Ptr->optionsDisableMatchCall = 0;
     gSaveBlock2Ptr->optionStyle = 0;
     gSaveBlock2Ptr->optionTypeEffective = 0;

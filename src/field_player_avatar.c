@@ -662,10 +662,21 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
         // same speed as running
         //PlayerWalkFast(direction);
         //return;
-        if (heldKeys & B_BUTTON)
-            PlayerWalkFaster(direction);
+        if (gSaveBlock2Ptr->optionsAutorunSurf == 1)
+        {            
+            if (heldKeys & B_BUTTON)
+                PlayerWalkFaster(direction);
+            else
+                PlayerWalkFast(direction);
+        }
         else
-            PlayerWalkFast(direction);
+        {            
+            if (heldKeys & B_BUTTON)
+                PlayerWalkFast(direction);
+            else
+                PlayerWalkFaster(direction);
+        }
+
     }
 
     if (!(gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_UNDERWATER) && IsPlayerTryingToRun(heldKeys) && FlagGet(FLAG_SYS_B_DASH)
@@ -691,10 +702,20 @@ static void PlayerNotOnBikeMoving(u8 direction, u16 heldKeys)
     }
     if (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_UNDERWATER)
     {
-        if (heldKeys & B_BUTTON)
-            PlayerWalkFast(direction);
+        if (gSaveBlock2Ptr->optionsAutorunDive == 1)
+        {            
+            if (heldKeys & B_BUTTON)
+                PlayerWalkFast(direction);
+            else
+                PlayerWalkNormal(direction);
+        }
         else
-            PlayerWalkNormal(direction);
+        {            
+            if (heldKeys & B_BUTTON)
+                PlayerWalkNormal(direction);
+            else
+                PlayerWalkFast(direction);
+        }
     }
     else
     {

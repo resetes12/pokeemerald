@@ -39,8 +39,10 @@ enum
     MENUITEM_MAIN_BUTTONMODE,
     MENUITEM_MAIN_FOLLOWER,
     MENUITEM_MAIN_LARGE_FOLLOWER,
-    MENUITEM_MAIN_AUTORUN,
     MENUITEM_MAIN_MATCHCALL,
+    MENUITEM_MAIN_AUTORUN,
+    MENUITEM_MAIN_AUTORUN_SURF,
+    MENUITEM_MAIN_AUTORUN_DIVE,
     MENUITEM_CUSTOM_FISHING,
     MENUITEM_MAIN_EVEN_FASTER_JOY,
     MENUITEM_MAIN_UNIT_TYPE,
@@ -218,6 +220,8 @@ static void DrawChoices_Unit_Type(int selection, int y);
 static void DrawChoices_Music(int selection, int y);
 static void DrawChoices_New_Backgrounds(int selection, int y);
 static void DrawChoices_Run_Type(int selection, int y);
+static void DrawChoices_Autorun_Surf(int selection, int y);
+static void DrawChoices_Autorun_Dive(int selection, int y);
 static void DrawBgWindowFrames(void);
 
 // EWRAM vars
@@ -258,6 +262,8 @@ struct // MENU_MAIN
     [MENUITEM_MAIN_FOLLOWER]                = {DrawChoices_Follower,         ProcessInput_Options_Two},
     [MENUITEM_MAIN_LARGE_FOLLOWER]          = {DrawChoices_LargeFollower,    ProcessInput_Options_Two},
     [MENUITEM_MAIN_AUTORUN]                 = {DrawChoices_Autorun,          ProcessInput_Options_Two},
+    [MENUITEM_MAIN_AUTORUN_SURF]            = {DrawChoices_Autorun_Surf,     ProcessInput_Options_Two},  
+    [MENUITEM_MAIN_AUTORUN_DIVE]            = {DrawChoices_Autorun_Dive,     ProcessInput_Options_Two},  
     [MENUITEM_MAIN_MATCHCALL]               = {DrawChoices_MatchCall,        ProcessInput_Options_Two},
     [MENUITEM_CUSTOM_FISHING]               = {DrawChoices_Fishing,          ProcessInput_Options_Two},
     [MENUITEM_MAIN_EVEN_FASTER_JOY]         = {DrawChoices_EvenFasterJoy,    ProcessInput_Options_Two},
@@ -312,6 +318,8 @@ static const u8 sText_OptionBallPrompt[]          = _("BALL PROMPT");
 static const u8 sText_OptionUnitType[]            = _("UNIT SYSTEM");
 static const u8 sText_OptionNewBackgrounds[]      = _("BATTLE TERRAIN");
 static const u8 sText_OptionRunType[]             = _("QUICK RUN");
+static const u8 sText_AutorunEnable_Surf[]        = _("AUTORUN (SURF)");
+static const u8 sText_AutorunEnable_Dive[]        = _("AUTORUN (DIVE)");
 static const u8 *const sOptionMenuItemsNamesMain[MENUITEM_MAIN_COUNT] =
 {
     [MENUITEM_MAIN_TEXTSPEED]           = gText_TextSpeed,
@@ -322,6 +330,8 @@ static const u8 *const sOptionMenuItemsNamesMain[MENUITEM_MAIN_COUNT] =
     [MENUITEM_MAIN_FOLLOWER]            = gText_FollowerEnable,
     [MENUITEM_MAIN_LARGE_FOLLOWER]      = sText_OptionLargeFollower,
     [MENUITEM_MAIN_AUTORUN]             = gText_AutorunEnable,
+    [MENUITEM_MAIN_AUTORUN_SURF]        = sText_AutorunEnable_Surf,
+    [MENUITEM_MAIN_AUTORUN_DIVE]        = sText_AutorunEnable_Dive,
     [MENUITEM_MAIN_MATCHCALL]           = gText_OptionMatchCalls,
     [MENUITEM_CUSTOM_FISHING]           = sText_OptionFishing,
     [MENUITEM_MAIN_EVEN_FASTER_JOY]     = sText_OptionEvenFasterJoy,
@@ -388,6 +398,8 @@ static bool8 CheckConditions(int selection)
         case MENUITEM_MAIN_FOLLOWER:          return TRUE;
         case MENUITEM_MAIN_LARGE_FOLLOWER:    return TRUE;
         case MENUITEM_MAIN_AUTORUN:           return TRUE;
+        case MENUITEM_MAIN_AUTORUN_SURF:      return TRUE;
+        case MENUITEM_MAIN_AUTORUN_DIVE:      return TRUE;
         case MENUITEM_MAIN_COUNT:             return TRUE;
         case MENUITEM_MAIN_MATCHCALL:         return TRUE;
         case MENUITEM_CUSTOM_FISHING:         return TRUE;
@@ -444,6 +456,10 @@ static const u8 sText_Desc_FollowerLargeOn[]       = _("Enable large {PKMN} foll
 static const u8 sText_Desc_FollowerLargeOff[]      = _("Disable large {PKMN} followers.\nRecommended.");
 static const u8 sText_Desc_AutorunOn[]             = _("Run without pressing B.");
 static const u8 sText_Desc_AutorunOff[]            = _("Press and hold B to run.");
+static const u8 sText_Desc_AutorunSurfOn[]         = _("Surf faster without pressing B.");
+static const u8 sText_Desc_AutorunSurfOff[]        = _("Press and hold B to surf faster.");
+static const u8 sText_Desc_AutorunDiveOn[]         = _("Surf underwater faster\nwithout pressing B.");
+static const u8 sText_Desc_AutorunDiveOff[]        = _("Press and hold B to surf\nunderwater faster.");
 static const u8 sText_Desc_FishingOn[]             = _("Automatically reel while fishing.");
 static const u8 sText_Desc_FishingOff[]            = _("Manually reel while fishing.\nFish like you always fished!");
 static const u8 sText_Desc_EvenFasterJoyOn[]       = _("NURSE JOY heals you extremely fast.\nFor those who cannot wait.");
@@ -465,6 +481,8 @@ static const u8 *const sOptionMenuItemDescriptionsMain[MENUITEM_MAIN_COUNT][3] =
     [MENUITEM_MAIN_FOLLOWER]    = {sText_Desc_FollowerOn,           sText_Desc_FollowerOff},
     [MENUITEM_MAIN_LARGE_FOLLOWER]    = {sText_Desc_FollowerLargeOn,           sText_Desc_FollowerLargeOff},
     [MENUITEM_MAIN_AUTORUN]     = {sText_Desc_AutorunOn,            sText_Desc_AutorunOff},
+    [MENUITEM_MAIN_AUTORUN_SURF]     = {sText_Desc_AutorunSurfOn,            sText_Desc_AutorunSurfOff},
+    [MENUITEM_MAIN_AUTORUN_DIVE]     = {sText_Desc_AutorunDiveOn,            sText_Desc_AutorunDiveOff},
     [MENUITEM_MAIN_MATCHCALL]   = {sText_Desc_OverworldCallsOn,     sText_Desc_OverworldCallsOff},
     [MENUITEM_CUSTOM_FISHING]     = {sText_Desc_FishingOn,            sText_Desc_FishingOff},
     [MENUITEM_MAIN_EVEN_FASTER_JOY]     = {sText_Desc_EvenFasterJoyOn,            sText_Desc_EvenFasterJoyOff},
@@ -548,6 +566,8 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledMain[MENUITEM_MAIN_COU
     [MENUITEM_MAIN_FOLLOWER]    = sText_Desc_Disabled_BattleHPBar,
     [MENUITEM_MAIN_LARGE_FOLLOWER]    = sText_Desc_Disabled_BattleHPBar,
     [MENUITEM_MAIN_AUTORUN]     = sText_Empty,
+    [MENUITEM_MAIN_AUTORUN_SURF]     = sText_Empty,
+    [MENUITEM_MAIN_AUTORUN_DIVE]     = sText_Empty,
     [MENUITEM_MAIN_MATCHCALL]   = sText_Empty,
     [MENUITEM_CUSTOM_FISHING]     = sText_Empty,
     [MENUITEM_MAIN_EVEN_FASTER_JOY]     = sText_Empty,
@@ -823,6 +843,8 @@ void CB2_InitOptionPlusMenu(void)
         sOptions->sel[MENUITEM_MAIN_FOLLOWER]            = gSaveBlock2Ptr->optionsfollowerEnable;
         sOptions->sel[MENUITEM_MAIN_LARGE_FOLLOWER]      = gSaveBlock2Ptr->optionsfollowerLargeEnable;
         sOptions->sel[MENUITEM_MAIN_AUTORUN]             = gSaveBlock2Ptr->optionsautoRun;
+        sOptions->sel[MENUITEM_MAIN_AUTORUN_SURF]        = gSaveBlock2Ptr->optionsAutorunSurf;
+        sOptions->sel[MENUITEM_MAIN_AUTORUN_DIVE]        = gSaveBlock2Ptr->optionsAutorunDive;
         sOptions->sel[MENUITEM_MAIN_FRAMETYPE]           = gSaveBlock2Ptr->optionsWindowFrameType;
         sOptions->sel[MENUITEM_MAIN_MATCHCALL]           = gSaveBlock2Ptr->optionsDisableMatchCall;
         sOptions->sel[MENUITEM_CUSTOM_FISHING]           = gSaveBlock2Ptr->optionsFishing;
@@ -1057,6 +1079,8 @@ static void Task_OptionMenuSave(u8 taskId)
     gSaveBlock2Ptr->optionsfollowerEnable        = sOptions->sel[MENUITEM_MAIN_FOLLOWER];
     gSaveBlock2Ptr->optionsfollowerLargeEnable   = sOptions->sel[MENUITEM_MAIN_LARGE_FOLLOWER];
     gSaveBlock2Ptr->optionsautoRun               = sOptions->sel[MENUITEM_MAIN_AUTORUN];
+    gSaveBlock2Ptr->optionsAutorunSurf           = sOptions->sel[MENUITEM_MAIN_AUTORUN_SURF];
+    gSaveBlock2Ptr->optionsAutorunDive           = sOptions->sel[MENUITEM_MAIN_AUTORUN_DIVE];
     gSaveBlock2Ptr->optionsDisableMatchCall      = sOptions->sel[MENUITEM_MAIN_MATCHCALL];
     gSaveBlock2Ptr->optionsWindowFrameType       = sOptions->sel[MENUITEM_MAIN_FRAMETYPE];
     gSaveBlock2Ptr->optionsFishing               = sOptions->sel[MENUITEM_CUSTOM_FISHING];
@@ -1958,6 +1982,44 @@ static void DrawChoices_Run_Type(int selection, int y)
     {
         gSaveBlock2Ptr->optionsRunType = 3; //Hold B (before battle)
     }
+}
+
+static void DrawChoices_Autorun_Surf(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_MAIN_AUTORUN_SURF);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock2Ptr->optionsAutorunSurf = 0; //yes
+    }
+    else
+    {
+        gSaveBlock2Ptr->optionsAutorunSurf = 1; //no
+    }
+
+    DrawOptionMenuChoice(gText_BattleSceneOn, 104, y, styles[0], active);
+    DrawOptionMenuChoice(gText_BattleSceneOff, GetStringRightAlignXOffset(1, gText_BattleSceneOff, 198), y, styles[1], active);
+}
+
+static void DrawChoices_Autorun_Dive(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_MAIN_AUTORUN_DIVE);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock2Ptr->optionsAutorunDive = 0; //yes
+    }
+    else
+    {
+        gSaveBlock2Ptr->optionsAutorunDive = 1; //no
+    }
+
+    DrawOptionMenuChoice(gText_BattleSceneOn, 104, y, styles[0], active);
+    DrawOptionMenuChoice(gText_BattleSceneOff, GetStringRightAlignXOffset(1, gText_BattleSceneOff, 198), y, styles[1], active);
 }
 
 // Background tilemap
