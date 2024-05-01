@@ -14,6 +14,8 @@ const u16 gEggMoves[] = {
               MOVE_NATURE_POWER,
               MOVE_MAGICAL_LEAF,
               MOVE_GRASS_WHISTLE,
+              MOVE_EARTH_POWER,
+              MOVE_WEATHER_BALL,
               MOVE_CURSE),
 
     egg_moves(CHARMANDER,
