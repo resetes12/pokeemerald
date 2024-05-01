@@ -152,6 +152,7 @@ static const struct WindowTemplate sMenuWindowTemplates[] =
         .paletteNum = 15,   // palette index to use for text
         .baseBlock = 1 + 70 + 306,     // tile start in VRAM
     },
+    DUMMY_WIN_TEMPLATE
 };
 
 static const u32 sStatEditorBgTiles[] = INCBIN_U32("graphics/ui_menu/background_tileset.4bpp.lz");
