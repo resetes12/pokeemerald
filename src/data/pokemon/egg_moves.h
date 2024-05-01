@@ -1176,6 +1176,8 @@ const u16 gEggMoves[] = {
               MOVE_ENDEAVOR,
               MOVE_LEECH_SEED,
               MOVE_DRAGON_BREATH,
+              MOVE_OUTRAGE,
+              MOVE_DARK_PULSE,
               MOVE_CRUSH_CLAW),
 
     egg_moves(TORCHIC,
