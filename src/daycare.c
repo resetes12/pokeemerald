@@ -595,22 +595,45 @@ static u8 GetEggMoves(struct Pokemon *pokemon, u16 *eggMoves)
     numEggMoves = 0;
     eggMoveIdx = 0;
     species = GetMonData(pokemon, MON_DATA_SPECIES);
-    for (i = 0; i < ARRAY_COUNT(gEggMoves) - 1; i++)
+    if (gSaveBlock1Ptr->tx_Mode_Modern_Moves == 0)
     {
-        if (gEggMoves[i] == species + EGG_MOVES_SPECIES_OFFSET)
+        for (i = 0; i < ARRAY_COUNT(gEggMoves_Old) - 1; i++)
         {
-            eggMoveIdx = i + 1;
-            break;
+            if (gEggMoves_Old[i] == species + EGG_MOVES_SPECIES_OFFSET)
+            {
+                eggMoveIdx = i + 1;
+                break;
+            }
+        }
+
+        for (i = 0; i < EGG_MOVES_ARRAY_COUNT; i++)
+        {
+            if (gEggMoves_Old[eggMoveIdx + i] > EGG_MOVES_SPECIES_OFFSET)
+                break;
+
+            eggMoves[i] = gEggMoves_Old[eggMoveIdx + i];
+            numEggMoves++;
         }
     }
-
-    for (i = 0; i < EGG_MOVES_ARRAY_COUNT; i++)
+    else
     {
-        if (gEggMoves[eggMoveIdx + i] > EGG_MOVES_SPECIES_OFFSET)
-            break;
+        for (i = 0; i < ARRAY_COUNT(gEggMoves) - 1; i++)
+        {
+            if (gEggMoves[i] == species + EGG_MOVES_SPECIES_OFFSET)
+            {
+                eggMoveIdx = i + 1;
+                break;
+            }
+        }
 
-        eggMoves[i] = gEggMoves[eggMoveIdx + i];
-        numEggMoves++;
+        for (i = 0; i < EGG_MOVES_ARRAY_COUNT; i++)
+        {
+            if (gEggMoves[eggMoveIdx + i] > EGG_MOVES_SPECIES_OFFSET)
+                break;
+
+            eggMoves[i] = gEggMoves[eggMoveIdx + i];
+            numEggMoves++;
+        }
     }
 
     return numEggMoves;
@@ -623,25 +646,51 @@ u8 GetEggMovesSpecies(u16 species, u16 *eggMoves)
 
     numEggMoves = 0;
     eggMoveIdx = 0;
-    for (i = 0; i < ARRAY_COUNT(gEggMoves) - 1; i++)
+    if (gSaveBlock1Ptr->tx_Mode_Modern_Moves == 0)
     {
-        if (gEggMoves[i] == species + EGG_MOVES_SPECIES_OFFSET)
+        for (i = 0; i < ARRAY_COUNT(gEggMoves_Old) - 1; i++)
         {
-            eggMoveIdx = i + 1;
-            break;
+            if (gEggMoves_Old[i] == species + EGG_MOVES_SPECIES_OFFSET)
+            {
+                eggMoveIdx = i + 1;
+                break;
+            }
+        }
+
+        for (i = 0; i < EGG_MOVES_ARRAY_COUNT; i++)
+        {
+            if (gEggMoves_Old[eggMoveIdx + i] > EGG_MOVES_SPECIES_OFFSET)
+            {
+                // TODO: the curly braces around this if statement are required for a matching build.
+                break;
+            }
+
+            eggMoves[i] = gEggMoves_Old[eggMoveIdx + i];
+            numEggMoves++;
         }
     }
-
-    for (i = 0; i < EGG_MOVES_ARRAY_COUNT; i++)
+    else
     {
-        if (gEggMoves[eggMoveIdx + i] > EGG_MOVES_SPECIES_OFFSET)
+        for (i = 0; i < ARRAY_COUNT(gEggMoves) - 1; i++)
         {
-            // TODO: the curly braces around this if statement are required for a matching build.
-            break;
+            if (gEggMoves[i] == species + EGG_MOVES_SPECIES_OFFSET)
+            {
+                eggMoveIdx = i + 1;
+                break;
+            }
         }
 
-        eggMoves[i] = gEggMoves[eggMoveIdx + i];
-        numEggMoves++;
+        for (i = 0; i < EGG_MOVES_ARRAY_COUNT; i++)
+        {
+            if (gEggMoves[eggMoveIdx + i] > EGG_MOVES_SPECIES_OFFSET)
+            {
+                // TODO: the curly braces around this if statement are required for a matching build.
+                break;
+            }
+
+            eggMoves[i] = gEggMoves[eggMoveIdx + i];
+            numEggMoves++;
+        }
     }
 
     return numEggMoves;
@@ -651,22 +700,45 @@ bool8 SpeciesCanLearnEggMove(u16 species, u16 move) //Move search PokedexPlus HG
     u16 eggMoveIdx;
     u16 i;
     eggMoveIdx = 0;
-    for (i = 0; i < ARRAY_COUNT(gEggMoves) - 1; i++)
+    if (gSaveBlock1Ptr->tx_Mode_Modern_Moves == 0)
     {
-        if (gEggMoves[i] == species + EGG_MOVES_SPECIES_OFFSET)
+        for (i = 0; i < ARRAY_COUNT(gEggMoves_Old) - 1; i++)
         {
-            eggMoveIdx = i + 1;
-            break;
+            if (gEggMoves_Old[i] == species + EGG_MOVES_SPECIES_OFFSET)
+            {
+                eggMoveIdx = i + 1;
+                break;
+            }
+        }
+
+        for (i = 0; i < EGG_MOVES_ARRAY_COUNT; i++)
+        {
+            if (gEggMoves_Old[eggMoveIdx + i] > EGG_MOVES_SPECIES_OFFSET)
+                return FALSE;
+
+            if (move == gEggMoves_Old[eggMoveIdx + i])
+                return TRUE;
         }
     }
-
-    for (i = 0; i < EGG_MOVES_ARRAY_COUNT; i++)
+    else
     {
-        if (gEggMoves[eggMoveIdx + i] > EGG_MOVES_SPECIES_OFFSET)
-            return FALSE;
+        for (i = 0; i < ARRAY_COUNT(gEggMoves) - 1; i++)
+        {
+            if (gEggMoves[i] == species + EGG_MOVES_SPECIES_OFFSET)
+            {
+                eggMoveIdx = i + 1;
+                break;
+            }
+        }
 
-        if (move == gEggMoves[eggMoveIdx + i])
-            return TRUE;
+        for (i = 0; i < EGG_MOVES_ARRAY_COUNT; i++)
+        {
+            if (gEggMoves[eggMoveIdx + i] > EGG_MOVES_SPECIES_OFFSET)
+                return FALSE;
+
+            if (move == gEggMoves[eggMoveIdx + i])
+                return TRUE;
+        }
     }
     return FALSE;
 }
