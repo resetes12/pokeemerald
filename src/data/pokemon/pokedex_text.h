@@ -2414,7 +2414,7 @@ const u8 gMagmortarPokedexText[] = _(
     "According to what is known, a single pair\n"
     "of male and female MAGMORTAR lives in\n"
     "one volcano. From its arm, it launches\n"
-    "fireballs hotter than 3,600ºF.");
+    "fireballs hotter than 3,600ºF (1.982ºC).");
 
 const u8 gMagnezonePokedexText[] = _(
     "As it zooms through the sky, this\n"
