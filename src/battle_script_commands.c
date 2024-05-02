@@ -1497,6 +1497,23 @@ u8 getHiddenPowerType(void)
     return type;
 }
 
+u8 getHiddenPowerType2(void)
+{
+    u8 typeBits  = ((gBattleMons[gActiveBattler].hpIV & 1) << 0)
+                 | ((gBattleMons[gActiveBattler].attackIV & 1) << 1)
+                 | ((gBattleMons[gActiveBattler].defenseIV & 1) << 2)
+                 | ((gBattleMons[gActiveBattler].speedIV & 1) << 3)
+                 | ((gBattleMons[gActiveBattler].spAttackIV & 1) << 4)
+                 | ((gBattleMons[gActiveBattler].spDefenseIV & 1) << 5);
+
+    // Subtract 3 instead of 1 below because 2 types are excluded (TYPE_NORMAL and TYPE_MYSTERY)
+    // The final + 1 skips past Normal, and the following conditional skips TYPE_MYSTERY
+    u8 type = ((NUMBER_OF_MON_TYPES - 3) * typeBits) / 63 + 1;
+    if (type == TYPE_MYSTERY)
+        type = TYPE_FAIRY;
+    return type;
+}
+
 static void Cmd_typecalc(void)
 {
     s32 i = 0;
@@ -1800,7 +1817,7 @@ u8 AI_TypeDisplay(u16 move, u16 targetSpecies, u8 targetAbility)
         return 0;
 
     if (move == MOVE_HIDDEN_POWER)
-        moveType = getHiddenPowerType();
+        moveType = getHiddenPowerType2();
     else
         moveType = DisplayMoveTypeChange(move);
 
