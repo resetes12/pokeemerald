@@ -2383,6 +2383,8 @@ bool8 ObjectMovingOnRockStairs(struct ObjectEvent *objectEvent, u8 direction)
             if (PlayerHasFollower() && (objectEvent->isPlayer || objectEvent->localId == GetFollowerLocalId()))
                 return FALSE;
         #endif
+        if (FlagGet(FLAG_NO_SLOW_STAIR_MOVEMENT) == 1)
+            return FALSE;
         
         switch (direction)
         {
