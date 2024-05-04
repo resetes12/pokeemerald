@@ -29,6 +29,11 @@ MarineCave_End_EventScript_Kyogre::
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceUp
 	waitmovement 0
 	applymovement LOCALID_KYOGRE, MarineCave_End_Movement_KyogreApproach
+	setvar VAR_0x8004, 1  @ vertical pan
+	setvar VAR_0x8005, 1  @ horizontal pan
+	setvar VAR_0x8006, 52  @ num shakes
+	setvar VAR_0x8007, 5  @ shake delay
+	special ShakeCamera
 	waitmovement 0
 	waitse
 	playmoncry SPECIES_KYOGRE, CRY_MODE_ENCOUNTER

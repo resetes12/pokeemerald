@@ -29,6 +29,11 @@ TerraCave_End_EventScript_Groudon::
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceUp
 	waitmovement 0
 	applymovement LOCALID_GROUDON, TerraCave_End_Movement_GroudonApproach
+	setvar VAR_0x8004, 1  @ vertical pan
+	setvar VAR_0x8005, 1  @ horizontal pan
+	setvar VAR_0x8006, 52  @ num shakes
+	setvar VAR_0x8007, 5  @ shake delay
+	special ShakeCamera
 	waitmovement 0
 	waitse
 	playmoncry SPECIES_GROUDON, CRY_MODE_ENCOUNTER
