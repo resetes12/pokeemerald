@@ -183,8 +183,8 @@ BerryTree_Text_BerryGrowthStage3:
 	.string "Want to water it with the WAILMER PAIL?$"
 
 BerryTree_Text_BerryGrowthStage4:
-	.string "These {STR_VAR_1} flowers are blooming\n"
-	.string "{STR_VAR_2}. Want to water them?$"
+	.string "These {STR_VAR_1} flowers are\n"
+	.string "blooming {STR_VAR_2}. Want to water them?$"
 
 BerryTree_Text_CareAdverbGreat:
 	.string "very beautifully$"
