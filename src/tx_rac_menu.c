@@ -193,7 +193,7 @@ static const struct BgTemplate sOptionMenuBgTemplates[] =
 
 struct OptionMenu
 {
-    u8 submenu;
+    u16 submenu;
     u8 sel_mode[MENUITEM_MODE_COUNT];
     u8 sel_features[MENUITEM_FEATURES_COUNT];
     u8 sel_randomizer[MENUITEM_RANDOM_COUNT];

@@ -2430,12 +2430,16 @@ static void InitDomeTrainers(void)
                 && (species == SPECIES_ARBOK 
                 || species == SPECIES_PARASECT 
                 || species == SPECIES_GOLDUCK
+                || species == SPECIES_KINGLER
                 || species == SPECIES_MEGANIUM
                 || species == SPECIES_TYPHLOSION
                 || species == SPECIES_FERALIGATR
                 || species == SPECIES_NOCTOWL
                 || species == SPECIES_SUNFLORA
                 || species == SPECIES_STANTLER
+                || species == SPECIES_GROVYLE
+                || species == SPECIES_SCEPTILE
+                || species == SPECIES_MASQUERAIN
                 || species == SPECIES_DELCATTY
                 || species == SPECIES_GULPIN
                 || species == SPECIES_SWALOT
@@ -2468,6 +2472,13 @@ static void InitDomeTrainers(void)
                 {
                     monTypesBits |= gBitTable[gSpeciesInfo[gFacilityTrainerMons[DOME_MONS[i][j]].species].types_old[0]];
                     monTypesBits |= gBitTable[gSpeciesInfo[gFacilityTrainerMons[DOME_MONS[i][j]].species].types_old[1]];
+                }
+            else if ((gSaveBlock1Ptr->tx_Mode_Fairy_Types == 1) 
+                && (species == SPECIES_SNUBBULL 
+                || species == SPECIES_GRANBULL))
+                {
+                    monTypesBits |= gBitTable[gSpeciesInfo[gFacilityTrainerMons[DOME_MONS[i][j]].species].types_new[0]];
+                    monTypesBits |= gBitTable[gSpeciesInfo[gFacilityTrainerMons[DOME_MONS[i][j]].species].types_new[1]];
                 }
             else
             {

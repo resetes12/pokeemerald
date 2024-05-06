@@ -492,7 +492,8 @@ const u16 gEggMoves[] = {
               MOVE_DISABLE,
               MOVE_COUNTER,
               MOVE_CRUSH_CLAW,
-              MOVE_SUBSTITUTE),
+              MOVE_SUBSTITUTE,
+              MOVE_SUPERPOWER),
 
     egg_moves(HORSEA,
               MOVE_FLAIL,
@@ -628,7 +629,8 @@ const u16 gEggMoves[] = {
               MOVE_DOUBLE_EDGE,
               MOVE_CURSE,
               MOVE_FISSURE,
-              MOVE_SUBSTITUTE),
+              MOVE_SUBSTITUTE,
+              MOVE_FOCUS_BLAST),
 
     egg_moves(DRATINI,
               MOVE_LIGHT_SCREEN,
@@ -664,7 +666,8 @@ const u16 gEggMoves[] = {
               MOVE_FORESIGHT,
               MOVE_COVET,
               MOVE_HOWL,
-              MOVE_CRUSH_CLAW),
+              MOVE_CRUSH_CLAW,
+              MOVE_PLAY_ROUGH),
 
     egg_moves(TOTODILE,
               MOVE_CRUNCH,
@@ -944,7 +947,8 @@ const u16 gEggMoves[] = {
               MOVE_CRUNCH,
               MOVE_HEAL_BELL,
               MOVE_SNORE,
-              MOVE_SMELLING_SALT),
+              MOVE_SMELLING_SALT,
+              MOVE_KNOCK_OFF),
 
     egg_moves(QWILFISH,
               MOVE_FLAIL,
@@ -1619,7 +1623,9 @@ const u16 gEggMoves[] = {
               MOVE_RAZOR_WIND,
               MOVE_COUNTER,
               MOVE_ROAR,
-              MOVE_CURSE),
+              MOVE_CURSE,
+              MOVE_FOCUS_BLAST,
+              MOVE_REVENGE),
 
     egg_moves(RELICANTH,
               MOVE_MAGNITUDE,
@@ -2872,7 +2878,8 @@ const u16 gEggMoves_Old[] = {
               MOVE_FORESIGHT,
               MOVE_FAKE_OUT,
               MOVE_BATON_PASS,
-              MOVE_DYNAMIC_PUNCH),
+              MOVE_DYNAMIC_PUNCH,
+              MOVE_PSYCHO_CUT),
 
     egg_moves(SWABLU,
               MOVE_AGILITY,
@@ -3068,7 +3075,8 @@ const u16 gEggMoves_Old[] = {
               MOVE_DOUBLE_EDGE,
               MOVE_CURSE,
               MOVE_FISSURE,
-              MOVE_SUBSTITUTE),
+              MOVE_SUBSTITUTE,
+              MOVE_FOCUS_BLAST),
 
     egg_moves(BONSLY,
               MOVE_DEFENSE_CURL,

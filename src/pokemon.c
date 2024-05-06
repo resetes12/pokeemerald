@@ -11590,6 +11590,7 @@ u8 GetTypeBySpecies(u16 species, u8 typeNum)
     && (species == SPECIES_ARBOK 
     || species == SPECIES_PARASECT 
     || species == SPECIES_GOLDUCK
+    || species == SPECIES_KINGLER
     || species == SPECIES_MEGANIUM
     || species == SPECIES_TYPHLOSION
     || species == SPECIES_FERALIGATR
@@ -11635,6 +11636,15 @@ u8 GetTypeBySpecies(u16 species, u8 typeNum)
             type = gSpeciesInfo[species].types_old[0];
         else
             type = gSpeciesInfo[species].types_old[1];
+    }
+    else if ((gSaveBlock1Ptr->tx_Mode_Modern_Types == 1) 
+    && (species == SPECIES_SNUBBULL
+    || species == SPECIES_GRANBULL))
+    {
+        if (typeNum == 1)
+            type = gSpeciesInfo[species].types_new[0];
+        else
+            type = gSpeciesInfo[species].types_new[1];
     }
     else
     {

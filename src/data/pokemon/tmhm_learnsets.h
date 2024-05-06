@@ -929,6 +929,7 @@ const union {
         .IRON_TAIL = TRUE,
         .RETURN = TRUE,
         .DIG = TRUE,
+        .SHADOW_BALL = TRUE,
         .DOUBLE_TEAM = TRUE,
         .FLAMETHROWER = TRUE,
         .FIRE_BLAST = TRUE,

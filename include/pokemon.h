@@ -341,6 +341,7 @@ struct SpeciesInfo
  /* 0x05 */ u8 baseSpDefense_old;
  /* 0x06 */ u8 types_old[2];
             u8 abilities_old[2];
+            u8 types_new[2];
 };
 
 #define MOVE_CATEGORY_PHYSICAL 0
