@@ -4674,8 +4674,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
 
     [SPECIES_MEGANIUM] = //modified
     {
-        .baseHP        = 85, //+5
-        .baseHP_old        = 80,
+        .baseHP        = 80,
         .baseAttack    = 82,
         .baseDefense   = 105, //+5
         .baseDefense_old   = 100,
