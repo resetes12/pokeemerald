@@ -14,7 +14,7 @@ ShoalCave_LowTideEntranceRoom_EventScript_SetHighTide::
 	end
 
 ShoalCave_LowTideEntranceRoom_Suicune_CryFaint::
-	playmoncry SPECIES_ENTEI, CRY_MODE_FAINT
+	playmoncry SPECIES_SUICUNE, CRY_MODE_FAINT
 	release
 	end
 
