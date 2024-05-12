@@ -1589,6 +1589,7 @@ const u16 gEggMoves[] = {
 
     egg_moves(ABSOL,
               MOVE_BATON_PASS,
+              MOVE_FALSE_SWIPE,
               MOVE_MEAN_LOOK,
               MOVE_MEGAHORN,
               MOVE_FAINT_ATTACK,
@@ -1731,6 +1732,7 @@ const u16 gEggMoves_Old[] = {
               MOVE_PETAL_DANCE,
               MOVE_MAGICAL_LEAF,
               MOVE_GRASS_WHISTLE,
+              MOVE_FALSE_SWIPE,
               MOVE_CURSE),
 
     egg_moves(CHARMANDER,
@@ -1741,6 +1743,7 @@ const u16 gEggMoves_Old[] = {
               MOVE_OUTRAGE,
               MOVE_BEAT_UP,
               MOVE_SWORDS_DANCE,
+              MOVE_FALSE_SWIPE,
               MOVE_DRAGON_DANCE),
 
     egg_moves(SQUIRTLE,
@@ -1751,6 +1754,7 @@ const u16 gEggMoves_Old[] = {
               MOVE_FLAIL,
               MOVE_REFRESH,
               MOVE_MUD_SPORT,
+              MOVE_FALSE_SWIPE,
               MOVE_YAWN),
 
     egg_moves(PIDGEY,
@@ -1788,6 +1792,7 @@ const u16 gEggMoves_Old[] = {
 
     egg_moves(SANDSHREW,
               MOVE_FLAIL,
+              MOVE_FALSE_SWIPE,
               MOVE_SAFEGUARD,
               MOVE_COUNTER,
               MOVE_RAPID_SPIN,
@@ -1869,6 +1874,7 @@ const u16 gEggMoves_Old[] = {
               MOVE_SPITE,
               MOVE_CHARM,
               MOVE_HYPNOSIS,
+              MOVE_FALSE_SWIPE,
               MOVE_AMNESIA,
               MOVE_PSYCH_UP,
               MOVE_ASSIST),
@@ -1975,6 +1981,7 @@ const u16 gEggMoves_Old[] = {
               MOVE_QUICK_ATTACK,
               MOVE_FLAIL,
               MOVE_FEATHER_DANCE,
+              MOVE_FALSE_SWIPE,
               MOVE_CURSE),
 
     egg_moves(DODUO,
@@ -2172,6 +2179,7 @@ const u16 gEggMoves_Old[] = {
               MOVE_ENDURE,
               MOVE_CURSE,
               MOVE_TICKLE,
+              MOVE_FALSE_SWIPE,
               MOVE_WISH),
 
     egg_moves(OMANYTE,
@@ -2440,6 +2448,7 @@ const u16 gEggMoves_Old[] = {
     egg_moves(GLIGAR,
               MOVE_METAL_CLAW,
               MOVE_WING_ATTACK,
+              MOVE_FALSE_SWIPE,
               MOVE_RAZOR_WIND,
               MOVE_COUNTER,
               MOVE_SAND_TOMB),
@@ -2775,6 +2784,7 @@ const u16 gEggMoves_Old[] = {
     egg_moves(CORPHISH,
               MOVE_MUD_SPORT,
               MOVE_ENDEAVOR,
+              MOVE_FALSE_SWIPE,
               MOVE_BODY_SLAM,
               MOVE_ANCIENT_POWER),
 
@@ -3005,6 +3015,7 @@ const u16 gEggMoves_Old[] = {
               MOVE_RAPID_SPIN,
               MOVE_KNOCK_OFF,
               MOVE_SWORDS_DANCE,
+              MOVE_FALSE_SWIPE,
               MOVE_ROCK_SLIDE),
 
     egg_moves(RALTS,
