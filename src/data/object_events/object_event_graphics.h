@@ -124,7 +124,6 @@ const u32 gObjectEventPic_CyclingTriathleteF[] = INCBIN_U32("graphics/object_eve
 const u32 gObjectEventPic_Man4[] = INCBIN_U32("graphics/object_events/pics/people/man_4.4bpp");
 const u32 gObjectEventPic_Man5[] = INCBIN_U32("graphics/object_events/pics/people/man_5.4bpp");
 const u32 gObjectEventPic_Nurse[] = INCBIN_U32("graphics/object_events/pics/people/nurse.4bpp");
-const u32 gObjectEventPic_ItemBall[] = INCBIN_U32("graphics/object_events/pics/misc/item_ball.4bpp");
 const u32 gObjectEventPic_ProfBirch[] = INCBIN_U32("graphics/object_events/pics/people/prof_birch.4bpp");
 const u32 gObjectEventPic_ReporterM[] = INCBIN_U32("graphics/object_events/pics/people/reporter_m.4bpp");
 const u32 gObjectEventPic_ReporterF[] = INCBIN_U32("graphics/object_events/pics/people/reporter_f.4bpp");
@@ -345,7 +344,7 @@ const u32 gObjectEventPic_Greta[] = INCBIN_U32("graphics/object_events/pics/peop
 const u32 gObjectEventPic_Noland[] = INCBIN_U32("graphics/object_events/pics/people/frontier_brains/noland.4bpp");
 const u32 gObjectEventPic_Lucy[] = INCBIN_U32("graphics/object_events/pics/people/frontier_brains/lucy.4bpp");
 const u32 gObjectEventPic_Brandon[] = INCBIN_U32("graphics/object_events/pics/people/frontier_brains/brandon.4bpp");
-const u32 gObjectEventPic_AnimatedBall[] = INCBIN_U32("graphics/object_events/pics/misc/animated_ball.4bpp");
+const u32 gObjectEventPic_PokeBall[] = INCBIN_U32("graphics/object_events/pics/misc/ball_poke.4bpp");
 
 // Normally, INCBIN_COMP acts like INCBIN_U32, but appends `.lz` to the file, compressing it;
 // If not compressing follower gfx, make this an alias to INCBIN_32, so gfx will *not* be compressed
@@ -731,7 +730,7 @@ const u32 gObjectEventPic_Anorith[] = INCBIN_COMP("graphics/object_events/pics/p
 const u32 gObjectEventPic_Armaldo[] = INCBIN_COMP("graphics/object_events/pics/pokemon/armaldo.4bpp");
 const u32 gObjectEventPic_Feebas[] = INCBIN_COMP("graphics/object_events/pics/pokemon/feebas.4bpp");
 const u32 gObjectEventPic_Milotic[] = INCBIN_COMP("graphics/object_events/pics/pokemon/milotic.4bpp");
-const u32 gObjectEventPic_Castform[] = INCBIN_U32("graphics/object_events/pics/pokemon/castform.4bpp");
+const u32 gObjectEventPic_Castform[] = INCBIN_COMP("graphics/object_events/pics/pokemon/castform.4bpp");
 const u32 gObjectEventPic_CastformSunny[] = INCBIN_COMP("graphics/object_events/pics/pokemon/castform_sunny.4bpp");
 const u16 gObjectEventPal_CastformSunny[] = INCBIN_U16("graphics/pokemon/castform/sunny/normal.gbapal");
 const u32 gObjectEventPic_CastformRainy[] = INCBIN_COMP("graphics/object_events/pics/pokemon/castform_rainy.4bpp");
