@@ -12,6 +12,7 @@ u16 RandomSeeded(u16 value, u8 seeded);
 u16 RandomSeededModulo(u32 value, u16 modulo);
 void ShuffleListU8(u8 *list, u8 count, u8 seed);
 void ShuffleListU16(u16 *list, u16 count, u32 seed);
+u8 RandomWeightedIndex(u8 *weights, u8 length);
 
 //Returns a 32-bit pseudorandom number
 #define Random32() (Random() | (Random() << 16))
