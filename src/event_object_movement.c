@@ -1345,7 +1345,7 @@ u8 GetFirstInactiveObjectEventId(void)
 
 u8 GetObjectEventIdByLocalIdAndMap(u8 localId, u8 mapNum, u8 mapGroupId)
 {
-    if (localId < OBJ_EVENT_ID_FOLLOWER)
+    if (localId < OBJ_EVENT_ID_DYNAMIC_BASE)
         return GetObjectEventIdByLocalIdAndMapInternal(localId, mapNum, mapGroupId);
 
     return GetObjectEventIdByLocalId(localId);
