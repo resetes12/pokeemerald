@@ -3580,7 +3580,7 @@ static void BufferIvOrEvStats(u8 mode)
         PrintRightColumnStats();
         break;
     case 2:
-    default:
+    default: ;
         const s8 *natureMod = gNatureStatTable[
             (sMonSummaryScreen->summary.hiddenNature == HIDDEN_NATURE_NONE) ? sMonSummaryScreen->summary.nature : sMonSummaryScreen->summary.hiddenNature];
         BufferStat(currHPString, 0, hp, 0, 3);
