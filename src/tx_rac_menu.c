@@ -1550,7 +1550,8 @@ static void Task_OptionMenuFadeIn(u8 taskId)
 static void Task_OptionMenuProcessInput(u8 taskId)
 {
     int i, scrollCount = 0, itemsToRedraw;
-    if (JOY_NEW(A_BUTTON))
+    // Treat the L BUTTON as an L BUTTON even if the user has L=A set.
+    if (JOY_NEW(A_BUTTON) && !(JOY_NEW(L_BUTTON)))
     {
         if (sOptions->menuCursor[sOptions->submenu] == MenuItemCancel())
         {
