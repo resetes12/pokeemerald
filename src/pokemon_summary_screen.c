@@ -1655,6 +1655,11 @@ static void Task_HandleInput(u8 taskId)
                     SwitchToMoveSelection(taskId);
                 }
             }
+            // Carve out exception for L=A setting.
+            else if(gMain.newKeys & L_BUTTON)
+            {
+                BufferIvOrEvStats(1);
+            }
         }
         else if (JOY_NEW(B_BUTTON))
         {
