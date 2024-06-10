@@ -36,7 +36,7 @@ PetalburgCity_GalladeEvo3:
 
 PetalburgCity_GalladeEvo_Text:
 	.string "PROF. BIRCH might be the most famous\n"
-	.string "PROFFESOR of HOENN, but I am also a\l"
+	.string "PROFESSOR of HOENN, but I am also a\l"
 	.string "reliable PROFESSOR.\p"
 	.string "To prove it, I can give you a piece of\n"
 	.string "information that he might not know\l"
