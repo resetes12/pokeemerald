@@ -1536,7 +1536,7 @@ void UpdateAltBgPalettes(u16 palettes) {
         return;
     palettes &= ~((1 << NUM_PALS_IN_PRIMARY) - 1) | primary->swapPalettes;
     palettes &= ((1 << NUM_PALS_IN_PRIMARY) - 1) | (secondary->swapPalettes << NUM_PALS_IN_PRIMARY);
-    palettes &= 0x1FFE; // don't blend palette 0, [13,15]
+    palettes &= PALETTES_MAP ^ (1 << 0); // don't blend palette 0, [13,15]
     palettes >>= 1; // start at palette 1
     if (!palettes)
         return;
@@ -1558,10 +1558,10 @@ void UpdatePalettesWithTime(u32 palettes) {
     u32 mask = 1 << 16;
     if (palettes >= 0x10000)
       for (i = 0; i < 16; i++, mask <<= 1)
-        if (GetSpritePaletteTagByPaletteNum(i) >> 15) // Don't blend special sprite palette tags
+        if (IS_BLEND_IMMUNE_TAG(GetSpritePaletteTagByPaletteNum(i)))
           palettes &= ~(mask);
 
-    palettes &= 0xFFFF1FFF; // Don't blend UI BG palettes [13,15]
+    palettes &= PALETTES_MAP | PALETTES_OBJECTS; // Don't blend UI pals
     if (!palettes)
       return;
     TimeMixPalettes(palettes,
@@ -1575,13 +1575,11 @@ void UpdatePalettesWithTime(u32 palettes) {
 
 u8 UpdateSpritePaletteWithTime(u8 paletteNum) {
   if (MapHasNaturalLight(gMapHeader.mapType)) {
-    u16 offset;
-    if (GetSpritePaletteTagByPaletteNum(paletteNum) >> 15)
+    if (IS_BLEND_IMMUNE_TAG(GetSpritePaletteTagByPaletteNum(paletteNum)))
       return paletteNum;
-    offset = (paletteNum + 16) << 4;
     TimeMixPalettes(1,
-      gPlttBufferUnfaded + offset,
-      gPlttBufferFaded + offset,
+      &gPlttBufferUnfaded[OBJ_PLTT_ID(paletteNum)],
+      &gPlttBufferFaded[OBJ_PLTT_ID(paletteNum)],
       (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time0],
       (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time1],
       currentTimeBlend.weight);
