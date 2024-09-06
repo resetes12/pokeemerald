@@ -12,6 +12,7 @@
 #include "field_camera.h"
 #include "field_control_avatar.h"
 #include "field_effect.h"
+#include "field_effect_helpers.h"
 #include "field_message_box.h"
 #include "field_player_avatar.h"
 #include "field_screen_effect.h"
@@ -61,6 +62,7 @@
 #include "wild_encounter.h"
 #include "frontier_util.h"
 #include "constants/abilities.h"
+#include "constants/event_objects.h"
 #include "constants/layouts.h"
 #include "constants/map_types.h"
 #include "constants/region_map_sections.h"
@@ -1535,9 +1537,9 @@ void CB1_Overworld(void)
 
 const struct BlendSettings gTimeOfDayBlend[] =
 {
-  [TIME_OF_DAY_NIGHT] = {.coeff = 10, .blendColor = TINT_NIGHT, .isTint = TRUE},
-  [TIME_OF_DAY_TWILIGHT] = {.coeff = 4, .blendColor = 0xA8B0E0, .isTint = TRUE},
-  [TIME_OF_DAY_DAY] = {.coeff = 0, .blendColor = 0},
+    [TIME_OF_DAY_NIGHT] = {.coeff = 10, .blendColor = TINT_NIGHT, .isTint = TRUE},
+    [TIME_OF_DAY_TWILIGHT] = {.coeff = 4, .blendColor = 0xA8B0E0, .isTint = TRUE},
+    [TIME_OF_DAY_DAY] = {.coeff = 0, .blendColor = 0},
 };
 
 u8 UpdateTimeOfDay(void) {
@@ -1585,8 +1587,12 @@ u8 UpdateTimeOfDay(void) {
 }
 
 bool8 MapHasNaturalLight(u8 mapType) { // Whether a map type is naturally lit/outside
-  return mapType == MAP_TYPE_TOWN || mapType == MAP_TYPE_CITY || mapType == MAP_TYPE_ROUTE
-      || mapType == MAP_TYPE_OCEAN_ROUTE;
+    return (
+        mapType == MAP_TYPE_TOWN
+        || mapType == MAP_TYPE_CITY
+        || mapType == MAP_TYPE_ROUTE
+        || mapType == MAP_TYPE_OCEAN_ROUTE
+    );
 }
 
 // Update & mix day / night bg palettes (into unfaded)
@@ -1598,7 +1604,7 @@ void UpdateAltBgPalettes(u16 palettes) {
         return;
     palettes &= ~((1 << NUM_PALS_IN_PRIMARY) - 1) | primary->swapPalettes;
     palettes &= ((1 << NUM_PALS_IN_PRIMARY) - 1) | (secondary->swapPalettes << NUM_PALS_IN_PRIMARY);
-    palettes &= 0x1FFE; // don't blend palette 0, [13,15]
+    palettes &= PALETTES_MAP ^ (1 << 0); // don't blend palette 0, [13,15]
     palettes >>= 1; // start at palette 1
     if (!palettes)
         return;
@@ -1615,40 +1621,42 @@ void UpdateAltBgPalettes(u16 palettes) {
 }
 
 void UpdatePalettesWithTime(u32 palettes) {
-  if (MapHasNaturalLight(gMapHeader.mapType)) {
-    u32 i;
-    u32 mask = 1 << 16;
-    if (palettes >= 0x10000)
-      for (i = 0; i < 16; i++, mask <<= 1)
-        if (GetSpritePaletteTagByPaletteNum(i) >> 15) // Don't blend special sprite palette tags
-          palettes &= ~(mask);
+    if (MapHasNaturalLight(gMapHeader.mapType)) {
+        u32 i;
+        u32 mask = 1 << 16;
+        if (palettes >= (1 << 16))
+        for (i = 0; i < 16; i++, mask <<= 1)
+            if (IS_BLEND_IMMUNE_TAG(GetSpritePaletteTagByPaletteNum(i)))
+                palettes &= ~(mask);
 
-    palettes &= 0xFFFF1FFF; // Don't blend UI BG palettes [13,15]
+    palettes &= PALETTES_MAP | PALETTES_OBJECTS; // Don't blend UI pals
     if (!palettes)
-      return;
-    TimeMixPalettes(palettes,
-      gPlttBufferUnfaded,
-      gPlttBufferFaded,
-      (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time0],
-      (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time1],
-      currentTimeBlend.weight);
-  }
+        return;
+    TimeMixPalettes(
+        palettes,
+        gPlttBufferUnfaded,
+        gPlttBufferFaded,
+        (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time0],
+        (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time1],
+        currentTimeBlend.weight
+    );
+    }
 }
 
 u8 UpdateSpritePaletteWithTime(u8 paletteNum) {
-  if (MapHasNaturalLight(gMapHeader.mapType)) {
-    u16 offset;
-    if (GetSpritePaletteTagByPaletteNum(paletteNum) >> 15)
-      return paletteNum;
-    offset = (paletteNum + 16) << 4;
-    TimeMixPalettes(1,
-      gPlttBufferUnfaded + offset,
-      gPlttBufferFaded + offset,
-      (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time0],
-      (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time1],
-      currentTimeBlend.weight);
-  }
-  return paletteNum;
+    if (MapHasNaturalLight(gMapHeader.mapType)) {
+        if (IS_BLEND_IMMUNE_TAG(GetSpritePaletteTagByPaletteNum(paletteNum)))
+        return paletteNum;
+    TimeMixPalettes(
+        1,
+        &gPlttBufferUnfaded[OBJ_PLTT_ID(paletteNum)],
+        &gPlttBufferFaded[OBJ_PLTT_ID(paletteNum)],
+        (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time0],
+        (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time1],
+        currentTimeBlend.weight
+    );
+    }
+    return paletteNum;
 }
 
 static void OverworldBasic(void)
@@ -1664,19 +1672,20 @@ static void OverworldBasic(void)
     DoScheduledBgTilemapCopiesToVram();
     // Every minute if no palette fade is active, update TOD blending as needed
     if (!gPaletteFade.active && ++gTimeUpdateCounter >= 3600) {
-      struct TimeBlendSettings cachedBlend = {
-        .time0 = currentTimeBlend.time0,
-        .time1 = currentTimeBlend.time1,
-        .weight = currentTimeBlend.weight,
-      };
-      gTimeUpdateCounter = 0;
-      UpdateTimeOfDay();
-      if (cachedBlend.time0 != currentTimeBlend.time0
-       || cachedBlend.time1 != currentTimeBlend.time1
-       || cachedBlend.weight != currentTimeBlend.weight) {
+        struct TimeBlendSettings cachedBlend = {
+            .time0 = currentTimeBlend.time0,
+            .time1 = currentTimeBlend.time1,
+            .weight = currentTimeBlend.weight,
+        };
+        gTimeUpdateCounter = 0;
+        UpdateTimeOfDay();
+        if (cachedBlend.time0 != currentTimeBlend.time0
+            || cachedBlend.time1 != currentTimeBlend.time1
+            || cachedBlend.weight != currentTimeBlend.weight)
+        {
            UpdateAltBgPalettes(PALETTES_BG);
            UpdatePalettesWithTime(PALETTES_ALL);
-       }
+        }
     }
 }
 
@@ -3429,6 +3438,8 @@ static void CreateLinkPlayerSprite(u8 linkPlayerId, u8 gameVersion)
         sprite->coordOffsetEnabled = TRUE;
         sprite->data[0] = linkPlayerId;
         objEvent->triggerGroundEffectsOnMove = 0;
+        objEvent->localId = OBJ_EVENT_ID_DYNAMIC_BASE + linkPlayerId;
+        SetUpShadow(objEvent, sprite);
     }
 }
 
