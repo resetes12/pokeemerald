@@ -567,3 +567,4 @@ gSpecials::
 	def_special SetSpAtkStat
 	def_special SetSpDefStat
 	def_special BufferUnitSystemText
+	def_special SwitchMonAbility

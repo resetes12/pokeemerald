@@ -69,6 +69,7 @@
 #include "constants/metatile_behaviors.h"
 #include "item.h"
 #include "item_menu.h"
+#include "constants/abilities.h"
 
 #define TAG_ITEM_ICON 5500
 
@@ -4553,4 +4554,16 @@ void SetSpDefStat(void)
 {
     u16 SpDefStat = gSpecialVar_0x8006;
     SetMonData(&gEnemyParty[0], MON_DATA_SPDEF, &SpDefStat);
+}
+
+void SwitchMonAbility(void)
+{
+    u16 species = GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_SPECIES, NULL);
+    u8 currentAbilityNum = GetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_ABILITY_NUM, NULL);
+
+    if (gSpeciesInfo[species].abilities[1] != 0 && gSpeciesInfo[species].abilities[0] != gSpeciesInfo[species].abilities[1])
+    {
+        u8 newAbilityNum = !currentAbilityNum;
+        SetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_ABILITY_NUM, &newAbilityNum);
+    }
 }
