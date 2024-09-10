@@ -165,6 +165,8 @@ EventScript_PkmnCenterNurse_HealPkmnFaster::
 EventScript_PkmnCenterNurse_PlayerTurnFast::
 	special HealPlayerParty
   	callnative UpdateFollowingPokemon
+	waitse
+	playse SE_M_MORNING_SUN
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown
 	waitmovement 0
 	release
