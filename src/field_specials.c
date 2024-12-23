@@ -4565,5 +4565,10 @@ void SwitchMonAbility(void)
     {
         u8 newAbilityNum = !currentAbilityNum;
         SetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_ABILITY_NUM, &newAbilityNum);
+        gSpecialVar_Result = TRUE;
+    }
+    else
+    {
+        gSpecialVar_Result = FALSE;
     }
 }

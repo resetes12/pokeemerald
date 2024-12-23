@@ -367,6 +367,7 @@ BattleFrontier_Lounge9_IV_SetMax::
 	delay 100
 	removemoney 100000, 0
 	fadescreen 0x0
+	faceplayer
 	setvar VAR_0x8007, 31
 	setvar VAR_0x8008, 31
 	setvar VAR_0x8009, 31
@@ -549,6 +550,8 @@ BattleFrontier_Lounge9_EV_SPD_TEXT2:
 BattleFrontier_Lounge9_EV_No_TEXT:
 	.string "No? Okay.$"
 
+@Chansey training
+
 BattleFrontier_Lounge9_Chansey5::
 	faceplayer
 	goto_if_unset FLAG_SYS_GAME_CLEAR, BattleFrontier_Lounge9_Chansey5Champion
@@ -595,3 +598,77 @@ BattleFrontier_Lounge9_Chansey5Repeat:
 
 BattleFrontier_Lounge9_Chansey5Repeat2:
 	.string "Ready for a battle?$"
+
+@Ability swapper
+
+BattleFrontier_Lounge9_Ability_Man::
+	lockall
+	faceplayer
+	msgbox BattleFrontier_Lounge9_Ability_Text1, MSGBOX_YESNO
+	waitmessage
+	compare VAR_RESULT, YES
+	goto_if_eq BattleFrontier_Lounge9_Ability_CheckMoney
+	compare VAR_RESULT, NO
+	goto_if_eq BattleFrontier_Lounge9_Ability_No
+	end
+
+BattleFrontier_Lounge9_Ability_No:
+	msgbox BattleFrontier_Lounge9_Ability_Text_No, MSGBOX_DEFAULT
+	waitmessage
+	releaseall
+	end
+
+BattleFrontier_Lounge9_Ability_CheckMoney:
+	checkmoney 25000, 0
+	compare VAR_RESULT, TRUE
+	goto_if_eq BattleFrontier_Lounge9_Ability_Continue
+	compare VAR_RESULT, FALSE
+	goto_if_eq BattleFrontier_Lounge9_EV_SetZeroNoMoney
+	end
+
+BattleFrontier_Lounge9_Ability_Continue:
+	closemessage
+	special ChoosePartyMon
+	waitstate
+	special SwitchMonAbility
+	compare VAR_RESULT, TRUE
+	goto_if_eq BattleFrontier_Lounge9_Ability_Finish
+	compare VAR_RESULT, FALSE
+	goto_if_eq BattleFrontier_Lounge9_Ability_Cant
+	end
+
+BattleFrontier_Lounge9_Ability_Cant:
+	msgbox BattleFrontier_Lounge9_Ability_Text_Cant, MSGBOX_DEFAULT
+	waitmessage
+	releaseall
+	end
+
+BattleFrontier_Lounge9_Ability_Finish:
+	fadescreen 0x1
+	delay 100
+	fadescreen 0x0
+	faceplayer
+	waitse
+	playse SE_EXP_MAX
+	msgbox BattleFrontier_Lounge9_Ability_Finish_Text, MSGBOX_DEFAULT
+	removemoney 25000, 0
+	closemessage
+	releaseall
+	end
+
+BattleFrontier_Lounge9_Ability_Finish_Text:
+	.string "That's it! You're welcome!$"
+
+BattleFrontier_Lounge9_Ability_Text1:
+	.string "Welcome! I'm the ABILITY EXPERT!\n"
+	.string "I can swap POKéMON's abilities\l"
+	.string "in a heartbeat.\p"
+	.string "Would you like me to swap any\n"
+	.string "POKéMON's ability?$"
+
+BattleFrontier_Lounge9_Ability_Text_No:
+	.string "Sure. I'll be here if you need me.$"
+
+BattleFrontier_Lounge9_Ability_Text_Cant:
+	.string "I cannot do that. This POKéMON\n"
+	.string "does not have a second ABILITY!$"
