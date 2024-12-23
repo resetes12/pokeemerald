@@ -26,7 +26,7 @@ When you compile, use the modern compiler with "make modern". Compiling using th
 * Synchronize: Choose if this ability works like in modern games or like in Gen 3.
 * Sturdy: Choose if this ability works like in modern games or like in Gen 3.
 * Reusable TMs: Choose between a faithful usage of TMs or a simplistic option that makes TMs infinite. All TMs can be bought in the Battlefrontier PokéMart only if you have Reusable TMs off, and makes Move Tutors one time only just like in the original (Move tutors are infinite if you enable Reusable TMs).
-* Citrus berry: Choose if it works like Gen 3 or like Gen 4+.
+* Sitrus berry: Choose if it works like Gen 3 or like Gen 4+.
 * Survive Poison: If enabled, your Pokémon will survive poison damage with 1hp when outside of battle.
 * Features
 * RTC Type: Choose between using a real clock, or using a fake clock. Fake clock rate is 1h irl, 1 day ingame.
