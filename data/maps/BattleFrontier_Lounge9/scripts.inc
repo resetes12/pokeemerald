@@ -294,9 +294,13 @@ BattleFrontier_Lounge9_IV_ManNoChampion::
 	end
 
 BattleFrontier_Lounge9_IV_TextNoChampion:
-	.string "Who are you? You seem… Weak?\n"
-	.string "Kinda…\p"
-	.string "Meh. Come back if you get stronger.$"
+	.string "Hmm? What?\p"
+	.string "Oh, you're a trainer. But not\n"
+	.string "one I would call strong…\p"
+	.string "Try beating the POKéMON LEAGUE\n"
+	.string "and come back again.\p"
+	.string "I will show you the strongest\n"
+	.string "training routine of the region!$"
 
 BattleFrontier_Lounge9_IV_First_Time::
 	msgbox BattleFrontier_Lounge9_IV_TextFirstTime, MSGBOX_NPC
@@ -604,12 +608,19 @@ BattleFrontier_Lounge9_Chansey5Repeat2:
 BattleFrontier_Lounge9_Ability_Man::
 	lockall
 	faceplayer
+	goto_if_unset FLAG_SYS_GAME_CLEAR, BattleFrontier_Lounge9_Ability_ManNoChampion
 	msgbox BattleFrontier_Lounge9_Ability_Text1, MSGBOX_YESNO
 	waitmessage
 	compare VAR_RESULT, YES
 	goto_if_eq BattleFrontier_Lounge9_Ability_CheckMoney
 	compare VAR_RESULT, NO
 	goto_if_eq BattleFrontier_Lounge9_Ability_No
+	end
+
+BattleFrontier_Lounge9_Ability_ManNoChampion::
+	msgbox BattleFrontier_Lounge9_Ability_Text_NoChampion, MSGBOX_DEFAULT
+	waitmessage
+	releaseall
 	end
 
 BattleFrontier_Lounge9_Ability_No:
@@ -660,8 +671,8 @@ BattleFrontier_Lounge9_Ability_Finish_Text:
 	.string "That's it! You're welcome!$"
 
 BattleFrontier_Lounge9_Ability_Text1:
-	.string "Welcome! I'm the ABILITY EXPERT!\n"
-	.string "I can swap POKéMON's abilities\l"
+	.string "Welcome! I'm the ABILITY EXPERT!\p"
+	.string "I can swap POKéMON's abilities\n"
 	.string "in a heartbeat.\p"
 	.string "Would you like me to swap any\n"
 	.string "POKéMON's ability?$"
@@ -672,3 +683,11 @@ BattleFrontier_Lounge9_Ability_Text_No:
 BattleFrontier_Lounge9_Ability_Text_Cant:
 	.string "I cannot do that. This POKéMON\n"
 	.string "does not have a second ABILITY!$"
+
+BattleFrontier_Lounge9_Ability_Text_NoChampion:
+	.string "Welcome! I'm the ABILITY EXPERT!\p"
+	.string "I can swap POKéMON's abilities\n"
+	.string "in a heartbeat.\p"
+	.string "Unfortunately, my back hurts and\n"
+	.string "I can't work today.\p"
+	.string "Come again later!$"
