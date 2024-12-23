@@ -463,7 +463,7 @@ static void Task_TrainerCard(u8 taskId)
     case STATE_WAIT_FLIP_TO_BACK:
         if (IsCardFlipTaskActive() && Overworld_IsRecvQueueAtMax() != TRUE)
         {
-            UpdateTrainerCardMonIcons();
+            //UpdateTrainerCardMonIcons();
             PlaySE(SE_RG_CARD_OPEN);
             sData->mainState = STATE_HANDLE_INPUT_BACK;
         }
@@ -482,7 +482,7 @@ static void Task_TrainerCard(u8 taskId)
             }
             else
             {
-                DestroyTrainerCardMonIcons();
+                //DestroyTrainerCardMonIcons();
                 FlipTrainerCard();
                 sData->mainState = STATE_WAIT_FLIP_TO_FRONT;
                 PlaySE(SE_RG_CARD_FLIP);
