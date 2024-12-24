@@ -672,8 +672,8 @@ BattleFrontier_Lounge9_Ability_Finish_Text:
 
 BattleFrontier_Lounge9_Ability_Text1:
 	.string "Welcome! I'm the ABILITY EXPERT!\p"
-	.string "I can swap POKéMON's abilities\n"
-	.string "in a heartbeat.\p"
+	.string "I can swap POKéMON's abilities in\n"
+	.string "a heartbeat, only for 25.000¥!\p"
 	.string "Would you like me to swap any\n"
 	.string "POKéMON's ability?$"
 
