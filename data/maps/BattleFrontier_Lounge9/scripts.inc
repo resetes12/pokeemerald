@@ -570,6 +570,7 @@ BattleFrontier_Lounge9_Chansey5Battle::
 	end
 
 BattleFrontier_Lounge9_Chansey1End::
+	closemessage
 	end
 
 BattleFrontier_Lounge9_ChanseyBattleAgain::
@@ -591,7 +592,6 @@ BattleFrontier_Lounge9_Chansey5ChampionText:
 	.string "Come back when you get stronger.$"
 
 BattleFrontier_Lounge9_Chansey5Intro:
-	.string "Have you come to train?\n"
 	.string "My BLISSEY are ready for it!$"
 
 BattleFrontier_Lounge9_Chansey5Defeat:
@@ -601,7 +601,7 @@ BattleFrontier_Lounge9_Chansey5Repeat:
 	.string "We can battle again if you want!$"
 
 BattleFrontier_Lounge9_Chansey5Repeat2:
-	.string "Ready for a battle?$"
+	.string "Have you come to train?$"
 
 @Ability swapper
 
