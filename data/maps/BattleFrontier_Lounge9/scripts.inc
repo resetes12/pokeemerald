@@ -201,7 +201,7 @@ BattleFrontier_Lounge9_EV_SetZeroMoney::
 	end
 
 BattleFrontier_Lounge9_EV_SetZeroCheckMoney::
-	checkmoney 10000, 0
+	checkmoney 20000, 0
 	compare VAR_RESULT, TRUE
 	goto_if_eq BattleFrontier_Lounge9_EV_SetZeroYes
 	compare VAR_RESULT, FALSE
@@ -321,7 +321,7 @@ BattleFrontier_Lounge9_IV_NoLevel::
 	end
 
 BattleFrontier_Lounge9_IV_CheckMoney::
-	checkmoney 60000, 0
+	checkmoney 100000, 0
 	compare VAR_RESULT, TRUE
 	goto_if_eq BattleFrontier_Lounge9_IV_Continue
 	compare VAR_RESULT, FALSE
@@ -340,6 +340,37 @@ BattleFrontier_Lounge9_IV_Continue::
 	goto_if_eq BattleFrontier_Lounge9_EV_SetZeroEgg
 	goto BattleFrontier_Lounge9_IV_Continue2
 	end
+
+BattleFrontier_Lounge9_MultichoiceIVs::
+	lock
+	faceplayer
+	dynmultichoice 0, 0, TRUE, 3, 0, DYN_MULTICHOICE_CB_NONE, EventScript_MultichoiceTests_Text_3, EventScript_MultichoiceTests_Text_4, EventScript_MultichoiceTests_Text_5, EventScript_MultichoiceTests_Text_6
+	buffernumberstring STR_VAR_1, VAR_RESULT
+	msgbox EventScript_MultichoiceTests_Text_0, MSGBOX_DEFAULT
+	closemessage
+	release
+	end
+
+EventScript_MultichoiceTests_Text_0:
+	.string "{STR_VAR_1}$"
+
+EventScript_MultichoiceTests_Text_1:
+	.string "{STR_VAR_2}$"
+
+EventScript_MultichoiceTests_Text_2:
+	.string "{STR_VAR_3}$"
+
+EventScript_MultichoiceTests_Text_3:
+	.string "Option 1$"
+
+EventScript_MultichoiceTests_Text_4:
+	.string "Option 2$"
+
+EventScript_MultichoiceTests_Text_5:
+	.string "Option 3$"
+
+EventScript_MultichoiceTests_Text_6:
+	.string "Option 4$"
 
 BattleFrontier_Lounge9_IV_Continue2::
 	faceplayer
