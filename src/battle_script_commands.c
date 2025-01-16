@@ -1350,6 +1350,18 @@ u8 CheckAbilityChangeMoveType(u16 move) // handles move type change
             moveType = TYPE_FAIRY;
         break;
         }
+        case ABILITY_FORECAST:
+        {
+            if (WEATHER_HAS_EFFECT && gBattleWeather & B_WEATHER_RAIN)
+                moveType = TYPE_WATER;
+            else if (WEATHER_HAS_EFFECT && gBattleWeather & B_WEATHER_SUN)
+                moveType = TYPE_FIRE;
+            else if (WEATHER_HAS_EFFECT && gBattleWeather & B_WEATHER_HAIL)
+                moveType = TYPE_ICE;
+            else
+                moveType = TYPE_NORMAL;
+        break;
+        }
     }
     return moveType;
 }
@@ -1369,6 +1381,18 @@ u8 DisplayMoveTypeChange(u16 move)
         case ABILITY_PIXILATE:
         {
             moveType = TYPE_FAIRY;
+        break;
+        }
+        case ABILITY_FORECAST:
+        {
+            if (WEATHER_HAS_EFFECT && gBattleWeather & B_WEATHER_RAIN)
+                moveType = TYPE_WATER;
+            else if (WEATHER_HAS_EFFECT && gBattleWeather & B_WEATHER_SUN)
+                moveType = TYPE_FIRE;
+            else if (WEATHER_HAS_EFFECT && gBattleWeather & B_WEATHER_HAIL)
+                moveType = TYPE_ICE;
+            else
+                moveType = TYPE_NORMAL;
         break;
         }
     }
