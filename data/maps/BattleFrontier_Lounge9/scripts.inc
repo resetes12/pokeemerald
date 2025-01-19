@@ -341,37 +341,6 @@ BattleFrontier_Lounge9_IV_Continue::
 	goto BattleFrontier_Lounge9_IV_Continue2
 	end
 
-BattleFrontier_Lounge9_MultichoiceIVs::
-	lock
-	faceplayer
-	dynmultichoice 0, 0, TRUE, 3, 0, DYN_MULTICHOICE_CB_NONE, EventScript_MultichoiceTests_Text_3, EventScript_MultichoiceTests_Text_4, EventScript_MultichoiceTests_Text_5, EventScript_MultichoiceTests_Text_6
-	buffernumberstring STR_VAR_1, VAR_RESULT
-	msgbox EventScript_MultichoiceTests_Text_0, MSGBOX_DEFAULT
-	closemessage
-	release
-	end
-
-EventScript_MultichoiceTests_Text_0:
-	.string "{STR_VAR_1}$"
-
-EventScript_MultichoiceTests_Text_1:
-	.string "{STR_VAR_2}$"
-
-EventScript_MultichoiceTests_Text_2:
-	.string "{STR_VAR_3}$"
-
-EventScript_MultichoiceTests_Text_3:
-	.string "Option 1$"
-
-EventScript_MultichoiceTests_Text_4:
-	.string "Option 2$"
-
-EventScript_MultichoiceTests_Text_5:
-	.string "Option 3$"
-
-EventScript_MultichoiceTests_Text_6:
-	.string "Option 4$"
-
 BattleFrontier_Lounge9_IV_Continue2::
 	faceplayer
 	waitmessage
@@ -380,20 +349,27 @@ BattleFrontier_Lounge9_IV_Continue2::
 	goto_if_eq BattleFrontier_Lounge9_IV_Continue3
 	compare VAR_RESULT, FALSE
 	goto_if_eq BattleFrontier_Lounge9_IV_NoLevel
-	end
 	releaseall
 	end
 
 BattleFrontier_Lounge9_IV_Continue3::
 	faceplayer
-	msgbox BattleFrontier_Lounge9_IV_Continue_Text, MSGBOX_YESNO
+	msgbox BattleFrontier_Lounge9_IV_Text_CustomizeIVs, MSGBOX_YESNO
+	waitmessage
+	compare VAR_RESULT, YES
+	goto_if_eq BattleFrontier_Lounge9_IV_CustomizeIVs_HP_Start
+	compare VAR_RESULT, NO
+	goto_if_eq BattleFrontier_Lounge9_IV_SetMaxQuestion
+	releaseall
+	end
+
+BattleFrontier_Lounge9_IV_SetMaxQuestion::
+	msgbox BattleFrontier_Lounge9_IV_Text_SetMaxQuestion, MSGBOX_YESNO
 	waitmessage
 	compare VAR_RESULT, YES
 	goto_if_eq BattleFrontier_Lounge9_IV_SetMax
 	compare VAR_RESULT, NO
 	goto_if_eq BattleFrontier_Lounge9_IV_No
-	end
-	releaseall
 	end
 
 BattleFrontier_Lounge9_IV_SetMax::
@@ -419,6 +395,175 @@ BattleFrontier_Lounge9_IV_SetMax::
 	closemessage
 	releaseall
 	end
+
+BattleFrontier_Lounge9_IV_CustomizeIVs_HP_Start::
+	setflag FLAG_3031BOX
+	msgbox BattleFrontier_Lounge9_IV_Text_CustomizeIVs_HP, MSGBOX_YESNO
+	switch VAR_RESULT
+	case YES, BattleFrontier_Lounge9_MultichoiceIVs_HP_31
+	case NO, BattleFrontier_Lounge9_MultichoiceIVs_HP_30
+	case 2, BattleFrontier_Lounge9_IV_CustomizeIVs_HP_Start
+	waitmessage
+	end
+
+BattleFrontier_Lounge9_MultichoiceIVs_HP_31::
+	setvar VAR_0x8007, 31
+	special SetHpIvs
+	goto BattleFrontier_Lounge9_IV_CustomizeIVs_ATK_Start
+
+BattleFrontier_Lounge9_MultichoiceIVs_HP_30::
+	setvar VAR_0x8007, 30
+	special SetHpIvs
+	goto BattleFrontier_Lounge9_IV_CustomizeIVs_ATK_Start
+
+BattleFrontier_Lounge9_IV_CustomizeIVs_ATK_Start::
+	msgbox BattleFrontier_Lounge9_IV_Text_CustomizeIVs_ATK, MSGBOX_YESNO
+	switch VAR_RESULT
+	case YES, BattleFrontier_Lounge9_MultichoiceIVs_ATK_31
+	case NO, BattleFrontier_Lounge9_MultichoiceIVs_ATK_30
+	case 2, BattleFrontier_Lounge9_IV_CustomizeIVs_HP_Start
+	waitmessage
+	end
+
+BattleFrontier_Lounge9_MultichoiceIVs_ATK_31::
+	setvar VAR_0x8008, 31
+	special SetAtkIvs
+	goto BattleFrontier_Lounge9_IV_CustomizeIVs_DEF_Start
+
+BattleFrontier_Lounge9_MultichoiceIVs_ATK_30::
+	setvar VAR_0x8008, 30
+	special SetAtkIvs
+	goto BattleFrontier_Lounge9_IV_CustomizeIVs_DEF_Start
+
+BattleFrontier_Lounge9_IV_CustomizeIVs_DEF_Start::
+	msgbox BattleFrontier_Lounge9_IV_Text_CustomizeIVs_DEF, MSGBOX_YESNO
+	switch VAR_RESULT
+	case YES, BattleFrontier_Lounge9_MultichoiceIVs_DEF_31
+	case NO, BattleFrontier_Lounge9_MultichoiceIVs_DEF_30
+	case 2, BattleFrontier_Lounge9_IV_CustomizeIVs_ATK_Start
+	waitmessage
+	end
+
+BattleFrontier_Lounge9_MultichoiceIVs_DEF_31::
+	setvar VAR_0x8009, 31
+	special SetDefIvs
+	goto BattleFrontier_Lounge9_IV_CustomizeIVs_SPD_Start
+
+BattleFrontier_Lounge9_MultichoiceIVs_DEF_30::
+	setvar VAR_0x8009, 30
+	special SetDefIvs
+	goto BattleFrontier_Lounge9_IV_CustomizeIVs_SPD_Start
+
+BattleFrontier_Lounge9_IV_CustomizeIVs_SPD_Start::
+	msgbox BattleFrontier_Lounge9_IV_Text_CustomizeIVs_SPD, MSGBOX_YESNO
+	switch VAR_RESULT
+	case YES, BattleFrontier_Lounge9_MultichoiceIVs_SPD_31
+	case NO, BattleFrontier_Lounge9_MultichoiceIVs_SPD_30
+	case 2, BattleFrontier_Lounge9_IV_CustomizeIVs_DEF_Start
+	waitmessage
+	end
+
+BattleFrontier_Lounge9_MultichoiceIVs_SPD_31::
+	setvar VAR_0x800A, 31
+	special SetSpdIvs
+	goto BattleFrontier_Lounge9_IV_CustomizeIVs_SPATK_Start
+	end
+
+BattleFrontier_Lounge9_MultichoiceIVs_SPD_30::
+	setvar VAR_0x800A, 30
+	special SetSpdIvs
+	goto BattleFrontier_Lounge9_IV_CustomizeIVs_SPATK_Start
+	end
+
+BattleFrontier_Lounge9_IV_CustomizeIVs_SPATK_Start::
+	msgbox BattleFrontier_Lounge9_IV_Text_CustomizeIVs_SPATK, MSGBOX_YESNO
+	switch VAR_RESULT
+	case YES, BattleFrontier_Lounge9_MultichoiceIVs_SPATK_31
+	case NO, BattleFrontier_Lounge9_MultichoiceIVs_SPATK_30
+	case 2, BattleFrontier_Lounge9_IV_CustomizeIVs_SPD_Start
+	waitmessage
+	end
+
+BattleFrontier_Lounge9_MultichoiceIVs_SPATK_31::
+	setvar VAR_0x800B, 31
+	special SetSpAtkIvs
+	goto BattleFrontier_Lounge9_IV_CustomizeIVs_SPDEF_Start
+
+BattleFrontier_Lounge9_MultichoiceIVs_SPATK_30::
+	setvar VAR_0x800B, 30
+	special SetSpAtkIvs
+	goto BattleFrontier_Lounge9_IV_CustomizeIVs_SPDEF_Start
+
+BattleFrontier_Lounge9_IV_CustomizeIVs_SPDEF_Start::
+	msgbox BattleFrontier_Lounge9_IV_Text_CustomizeIVs_SPDEF, MSGBOX_YESNO
+	switch VAR_RESULT
+	case YES, BattleFrontier_Lounge9_MultichoiceIVs_SPDEF_31
+	case NO, BattleFrontier_Lounge9_MultichoiceIVs_SPDEF_30
+	case 2, BattleFrontier_Lounge9_IV_CustomizeIVs_SPATK_Start
+	waitmessage
+	end
+
+BattleFrontier_Lounge9_MultichoiceIVs_SPDEF_31::
+	setvar VAR_UNUSED_0x8014, 31
+	special SetSpDefIvs
+	faceplayer
+	fadescreen 0x1
+	delay 100
+	removemoney 100000, 0
+	fadescreen 0x0
+	faceplayer
+	msgbox BattleFrontier_Lounge9_IV_Finish, MSGBOX_DEFAULT
+	clearflag FLAG_3031BOX
+	closemessage
+	releaseall
+	end
+
+BattleFrontier_Lounge9_MultichoiceIVs_SPDEF_30::
+	setvar VAR_UNUSED_0x8014, 30
+	special SetSpDefIvs
+	faceplayer
+	fadescreen 0x1
+	delay 100
+	removemoney 100000, 0
+	fadescreen 0x0
+	faceplayer
+	msgbox BattleFrontier_Lounge9_IV_Finish, MSGBOX_DEFAULT
+	clearflag FLAG_3031BOX
+	closemessage
+	releaseall
+	end
+
+BattleFrontier_Lounge9_IV_Text_CustomizeIVs:
+	.string "Would you like to customize the IV\n"
+	.string "stat distribution?$"
+
+BattleFrontier_Lounge9_IV_Text_CustomizeIVs_HP:
+	.string "How many points should I set the\n"
+	.string "HP stat to?$"
+
+BattleFrontier_Lounge9_IV_Text_CustomizeIVs_ATK:
+	.string "How many points should I set the\n"
+	.string "ATK stat to?$"
+
+BattleFrontier_Lounge9_IV_Text_CustomizeIVs_SPATK:
+	.string "How many points should I set the\n"
+	.string "SP.ATK stat to?$"
+
+BattleFrontier_Lounge9_IV_Text_CustomizeIVs_DEF:
+	.string "How many points should I set the\n"
+	.string "DEF stat to?$"
+
+BattleFrontier_Lounge9_IV_Text_CustomizeIVs_SPDEF:
+	.string "How many points should I set the\n"
+	.string "SP.DEF stat to?$"
+
+BattleFrontier_Lounge9_IV_Text_CustomizeIVs_SPD:
+	.string "How many points should I set the\n"
+	.string "SPD stat to?$"
+
+BattleFrontier_Lounge9_IV_Text_SetMaxQuestion:
+	.string "I will set all IVs to the maximum\n"
+	.string "value, which is 31. Should I continue?$"
 
 BattleFrontier_Lounge9_IV_TextFirstTime:
 	.string "Hey! It's you! Nice to\n"

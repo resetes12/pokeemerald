@@ -657,7 +657,7 @@
 #define FLAG_OLD_MAN_AND_DUSCLOPS  0x266
 #define FLAG_CERULEAN_CAVE_LUCKY_EGG  0x267
 #define FLAG_MET_FRONTIER_ELEMENTAL_MOVE_TUTOR  0x268
-#define FLAG_UNUSED_0x269  0x269 // Unused Flag
+#define FLAG_3031BOX       0x269 // Unused Flag
 #define FLAG_UNUSED_0x26A  0x26A // Unused Flag
 #define FLAG_UNUSED_0x26B  0x26B // Unused Flag
 #define FLAG_UNUSED_0x26C  0x26C // Unused Flag
