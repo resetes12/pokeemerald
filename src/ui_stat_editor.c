@@ -917,16 +917,31 @@ static void ChangeAndUpdateStat()
 #define EDIT_INPUT_MAX_DECREASE_STATE       3
 
 #define STAT_MINIMUM          0  
-#define IV_MAX_SINGLE_STAT    31   
-#define EV_MAX_SINGLE_STAT    255   
-#define EV_MAX_TOTAL          510            
+#define IV_MAX_SINGLE_STAT    MAX_PER_STAT_IVS
+#define EV_MAX_SINGLE_STAT    MAX_PER_STAT_EVS
+#define EV_MAX_TOTAL          MAX_TOTAL_EVS
                 
 #define EDITING_EVS     0
 #define EDITING_IVS     1
 
 #define CHECK_IF_STAT_CANT_INCREASE (((sStatEditorDataPtr->editingStat == ((sStatEditorDataPtr->selector_x == EDITING_EVS) ? (EV_MAX_SINGLE_STAT) : (IV_MAX_SINGLE_STAT))) \
                                      || ((sStatEditorDataPtr->selector_x == EDITING_EVS) && (sStatEditorDataPtr->evTotal == EV_MAX_TOTAL))))
+/*
+Breakdown of CHECK_IF_STAT_CANT_INCREASE
+TLDR: Stat can't increase if you're either: at the maximum amount a stat can have (for both EVs and IVs), or for EVs, if you already hit the max total of EVs
 
+ | (sStatEditorDataPtr->editingStat == ((sStatEditorDataPtr->selector_x == EDITING_EVS) ? (EV_MAX_SINGLE_STAT) : (IV_MAX_SINGLE_STAT))
+  \> This part checks if the current stat being raised is already at max, whether it's an EV or IV
+
+ | (sStatEditorDataPtr->selector_x == EDITING_EVS)
+  \> This part checks if you're currently editing an EV
+
+ | (sStatEditorDataPtr->evTotal == EV_MAX_TOTAL)
+  \> This part checks if the Pokémon already has the max amount of evs
+
+ | ((sStatEditorDataPtr->selector_x == EDITING_EVS) && (sStatEditorDataPtr->evTotal == EV_MAX_TOTAL))
+  \> Together, these two check if you're editing an EV and already at the maximum amount of EVs
+*/
 static void HandleEditingStatInput(u32 input)
 {
     u16 iterator = 0;
