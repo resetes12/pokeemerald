@@ -1232,10 +1232,10 @@
 #define FLAG_SUICUNE_BATTLE_2                                       0x49E
 #define FLAG_NO_SLOW_STAIR_MOVEMENT                                 0x49F // Used to temporaly remove slow stair movement, as it glitches things 
                                                                           // like Steven in Sootopolis leading to Origin Cave.
-#define FLAG_UNUSED_0x4A0                                           0x4A0 // Unused Flag
-#define FLAG_UNUSED_0x4A1                                           0x4A1 // Unused Flag
-#define FLAG_UNUSED_0x4A2                                           0x4A2 // Unused Flag
-#define FLAG_UNUSED_0x4A3                                           0x4A3 // Unused Flag
+#define FLAG_SHINY_STARTER_1                                        0x4A0 // Makes starter Shiny (Usually Torchic)
+#define FLAG_SHINY_STARTER_2                                        0x4A1 // Makes starter Shiny (Usually Treecko)
+#define FLAG_SHINY_STARTER_3                                        0x4A2 // Makes starter Shiny (Usually Mudkip)
+#define FLAG_FORCE_SHINY                                            0x4A3 // All encounters are shiny
 #define FLAG_UNUSED_0x4A4                                           0x4A4 // Unused Flag
 #define FLAG_UNUSED_0x4A5                                           0x4A5 // Unused Flag
 #define FLAG_EXP_SHARE                                              0x4A6
