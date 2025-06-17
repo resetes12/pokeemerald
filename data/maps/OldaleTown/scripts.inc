@@ -40,7 +40,7 @@ OldaleTown_EventScript_Girl::
 OldaleTown_EventScript_InfiniteItems1::
 	faceplayer
 	goto_if_set FLAG_INFINITE_STUFF, OldaleTown_EventScript_InfiniteItems5
-	playbgm MUS_RG_FOLLOW_ME, FALSE
+	playbgm MUS_HG_FOLLOW_ME_2, FALSE
 	msgbox OldaleTown_Text_InfiniteItems1, MSGBOX_YESNO
 	call_if_eq VAR_RESULT, YES, OldaleTown_EventScript_InfiniteItems2
 	call_if_eq VAR_RESULT, NO, OldaleTown_EventScript_InfiniteItemsNo
@@ -61,6 +61,7 @@ OldaleTown_EventScript_InfiniteItems3::
 OldaleTown_EventScript_InfiniteItems4::
 	giveitem ITEM_INFINITE_REPEL
 	giveitem ITEM_INFINITE_RARE_CANDIES
+	giveitem ITEM_HEALING_HEART
 	msgbox OldaleTown_Text_InfiniteItems4, MSGBOX_NPC
 	setflag FLAG_INFINITE_STUFF
 	fadedefaultbgm
@@ -440,8 +441,10 @@ OldaleTown_Text_TownSign:
 OldaleTown_Text_InfiniteItems1:
 	.string "Hey! I got some really good items from\n"
 	.string "a strange guy. They are…\p"
-	.string "An INFINITE REPEL and a BOX filled with\n"
-	.string "RARE CANDIES! Cool, right?\p"
+	.string "An INFINITE REPEL, a BOX filled with\n"
+	.string "RARE CANDIES, and a HEALING HEART to\l"
+	.string "heal your {PKMN} party infinitely!\p"
+	.string "Cool, right?\n"
 	.string "Are you interested in them?$"
 
 OldaleTown_Text_InfiniteItems2:
@@ -452,7 +455,7 @@ OldaleTown_Text_InfiniteItems2:
 OldaleTown_Text_InfiniteItems3:
 	.string "Do you really want them?\n"
 	.string "Just making sure…\p"
-	.string "You can not throw them away.$"
+	.string "You cannot throw them away.$"
 
 OldaleTown_Text_InfiniteItems4:
 	.string "Cheat at your own responsibility!$"
