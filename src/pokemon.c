@@ -6615,15 +6615,17 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
             attacker->ability = ABILITY_SPEED_BOOST;
         }
         
-        // Kingdra gets Drizzle
+        // Kingdra gets a 15% atk and sp.atk boost
         if ((attacker->species == SPECIES_KINGDRA) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER_CHESTO))
         {
-            attacker->ability = ABILITY_DRIZZLE;
+            spAttack = (115 * spAttack) / 100;
+            attack = (115 * attack) / 100;
         }
-        // Kingdra gets Drizzle, and Liechi modifier for rematches
+        // Kingdra gets a 20% atk and sp.atk boost for rematches
         else if ((attacker->species == SPECIES_KINGDRA) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER_LIECHI))
         {
-            attacker->ability = ABILITY_DRIZZLE;
+            spAttack = (120 * spAttack) / 100;
+            attack = (120 * attack) / 100;
         }
 
         // Dusknoir gets Levitate

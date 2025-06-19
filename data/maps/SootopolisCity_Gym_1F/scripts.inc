@@ -13,7 +13,7 @@ SootopolisCity_Gym_1F_OnResume:
 	setstepcallback STEP_CB_SOOTOPOLIS_ICE
 	end
 
-SootopolisCity_Gym_1F_OnLoad:
+SootopolisCity_Gym_1F_OnLoad: 
 	call SootopolisCity_Gym_1F_EventScript_CheckSetStairMetatiles
 	special SetSootopolisGymCrackedIceMetatiles
 	end
@@ -79,7 +79,22 @@ SootopolisCity_Gym_1F_Movement_FallThroughIce:
 	set_invisible
 	step_end
 
+SootopolisCity_Gym_1F_CheckBadgeAndSetWeather::
+	goto_if_unset FLAG_BADGE08_GET, SootopolisCity_Gym_1F_SetWeatherHardMode
+	goto_if_set FLAG_BADGE08_GET, SootopolisCity_Gym_1F_EventScript_Juan2
+	end
+
+SootopolisCity_Gym_1F_SetWeatherHardMode::
+	setweather WEATHER_RAIN
+	doweather
+	goto SootopolisCity_Gym_1F_EventScript_Juan2
+
 SootopolisCity_Gym_1F_EventScript_Juan::
+	goto_if_set FLAG_DIFFICULTY_HARD, SootopolisCity_Gym_1F_CheckBadgeAndSetWeather
+	goto_if_unset FLAG_DIFFICULTY_HARD, SootopolisCity_Gym_1F_EventScript_Juan2
+	end
+
+SootopolisCity_Gym_1F_EventScript_Juan2::
 	trainerbattle_single TRAINER_JUAN_1, SootopolisCity_Gym_1F_Text_JuanIntro, SootopolisCity_Gym_1F_Text_JuanDefeat, SootopolisCity_Gym_1F_EventScript_JuanDefeated, NO_MUSIC
 	specialvar VAR_RESULT, ShouldTryRematchBattle
 	goto_if_eq VAR_RESULT, TRUE, SootopolisCity_Gym_1F_EventScript_JuanRematch
@@ -90,6 +105,8 @@ SootopolisCity_Gym_1F_EventScript_Juan::
 	end
 
 SootopolisCity_Gym_1F_EventScript_JuanDefeated::
+	setweather WEATHER_NONE
+	doweather
 	message SootopolisCity_Gym_1F_Text_ReceivedRainBadge
 	waitmessage
 	call Common_EventScript_PlayGymBadgeFanfare
@@ -136,7 +153,11 @@ SootopolisCity_Gym_1F_EventScript_GoGetFortreeBadge::
 	end
 
 SootopolisCity_Gym_1F_EventScript_JuanRematch::
+	setweather WEATHER_RAIN
+	doweather
 	trainerbattle_rematch_double TRAINER_JUAN_1, SootopolisCity_Gym_1F_Text_JuanPreRematch, SootopolisCity_Gym_1F_Text_JuanRematchDefeat, SootopolisCity_Gym_1F_Text_JuanRematchNeedTwoMons
+	setweather WEATHER_NONE
+	doweather
 	msgbox SootopolisCity_Gym_1F_Text_JuanPostRematch, MSGBOX_AUTOCLOSE
 	end
 
