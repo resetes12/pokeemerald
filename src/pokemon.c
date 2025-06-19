@@ -6639,6 +6639,13 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
             attack = (120 * attack) / 100;
         }
 
+        // Drake's Salamence gets way stronger and is now a menace, like Goopey
+        if ((attacker->species == SPECIES_SALAMENCE) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER_SITRUS))
+        {
+            spAttack = (130 * spAttack) / 100;
+            attack = (130 * attack) / 100;
+        }
+
         // Dusknoir gets Levitate
         if ((attacker->species == SPECIES_DUSKNOIR) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER))
         {
