@@ -6609,10 +6609,21 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
                 }
         }
 
-        // Altaria gets faster, and holds a Chesto for the rematches.
-        if ((attacker->species == SPECIES_ALTARIA) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER_CHESTO))
+        // Altaria gets faster, and holds a Chesto for the rematches
+        if ((attacker->species == SPECIES_ALTARIA) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER_SITRUS))
         {
             attacker->ability = ABILITY_SPEED_BOOST;
+        }
+        else if ((attacker->species == SPECIES_ALTARIA) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER_CHESTO))
+        {
+
+            attacker->ability = ABILITY_SPEED_BOOST;
+        }
+        // Altaria gests bulkier during the rematches
+        if ((defender->species == SPECIES_ALTARIA) && (defenderHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER_CHESTO))
+        {
+            defense = (115 * defense) / 100;
+            spDefense = (115 * spDefense) / 100;
         }
         
         // Kingdra gets a 15% atk and sp.atk boost

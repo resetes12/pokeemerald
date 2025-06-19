@@ -2272,11 +2272,19 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                         && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_LEADER)
                             helditem = ITEM_072; //no modifier
                             SetMonData(&party[i], MON_DATA_HELD_ITEM, &helditem);
-                        
+
                         if (partyData[i].species == SPECIES_ALTARIA && gTrainers[trainerNum].trainerPic == TRAINER_PIC_LEADER_WINONA  
-                        && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_LEADER)
+                        && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_LEADER && (FlagGet(FLAG_BADGE06_GET) == FALSE))
+                        {
+                            helditem = ITEM_073; //sitrus modifier
+                            SetMonData(&party[i], MON_DATA_HELD_ITEM, &helditem);
+                        }
+                        else if (partyData[i].species == SPECIES_ALTARIA && gTrainers[trainerNum].trainerPic == TRAINER_PIC_LEADER_WINONA  
+                        && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_LEADER && (FlagGet(FLAG_BADGE06_GET) == TRUE))
+                        {
                             helditem = ITEM_074; //chesto modifier
                             SetMonData(&party[i], MON_DATA_HELD_ITEM, &helditem);
+                        }
                         
                         if (partyData[i].species == SPECIES_LUNATONE && gTrainers[trainerNum].trainerPic == TRAINER_PIC_LEADER_TATE_AND_LIZA
                         && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_LEADER && (FlagGet(FLAG_BADGE07_GET) == FALSE))
