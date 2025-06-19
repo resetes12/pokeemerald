@@ -2305,9 +2305,17 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                             SetMonData(&party[i], MON_DATA_HELD_ITEM, &helditem);
                         
                         if (partyData[i].species == SPECIES_KINGDRA && gTrainers[trainerNum].trainerPic == TRAINER_PIC_LEADER_JUAN
-                        && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_LEADER)
+                        && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_LEADER && (FlagGet(FLAG_BADGE08_GET) == FALSE))
+                        {
                             helditem = ITEM_074; //chesto modifier
                             SetMonData(&party[i], MON_DATA_HELD_ITEM, &helditem);
+                        }
+                        else if (partyData[i].species == SPECIES_KINGDRA && gTrainers[trainerNum].trainerPic == TRAINER_PIC_LEADER_JUAN
+                        && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_LEADER && (FlagGet(FLAG_BADGE08_GET) == TRUE))
+                        {
+                            helditem = ITEM_076; //liechi modifier
+                            SetMonData(&party[i], MON_DATA_HELD_ITEM, &helditem);
+                        }
 
                         if (partyData[i].species == SPECIES_ABSOL && gTrainers[trainerNum].trainerPic == TRAINER_PIC_ELITE_FOUR_SIDNEY
                         && gTrainers[trainerNum].trainerClass == TRAINER_CLASS_ELITE_FOUR)
