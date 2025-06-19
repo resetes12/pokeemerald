@@ -6638,28 +6638,31 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
             attacker->ability = ABILITY_LEVITATE;
         }
         
-        // Whiscash gets Drizzle, and Milotic gets Swift Swim together with Marvel Scale
-        if ((attacker->species == SPECIES_WHISCASH) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER))
+        // Champion: Whiscash gets a 10% def and sp. def boost
+        if ((attacker->species == SPECIES_WHISCASH) && (defenderHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER))
         {
-            attacker->ability = ABILITY_DRIZZLE;
+            defense = (110 * defense) / 100;
+            spDefense = (110 * spDefense) / 100;
         }
+        // Champion: Milotic gets Swift Swim
         if ((attacker->species == SPECIES_MILOTIC) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER))
         {
             attacker->ability = ABILITY_SWIFT_SWIM;
         }
+        // Rematch, now holds leftovers
         else if ((attacker->species == SPECIES_MILOTIC) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER_LEFTOVERS))
         {
             attacker->ability = ABILITY_SWIFT_SWIM;
         }
+        // Champion: permanent Marvel Scale, no status needed
         if ((defender->species == SPECIES_MILOTIC) && (defenderHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER))
         {
-            if (defender->status1)
-                defense = (150 * defense) / 100;
+            defense = (150 * defense) / 100;
         }
+        // Rematch, now holds leftovers
         else if ((defender->species == SPECIES_MILOTIC) && (defenderHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER_LEFTOVERS))
         {
-            if (defender->status1)
-                defense = (150 * defense) / 100;
+            defense = (150 * defense) / 100;
         }
         
         // Solrock and Lunatone get a 15% dmg boost if they are together on the field, and a Sitrus berry.

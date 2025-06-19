@@ -24,7 +24,17 @@ EverGrandeCity_ChampionsRoom_OnFrame:
 	map_script_2 VAR_TEMP_1, 0, EverGrandeCity_ChampionsRoom_EventScript_EnterRoom
 	.2byte 0
 
+EverGrandeCity_ChampionsRoom_SetWeatherHardMode::
+	setweather WEATHER_RAIN
+	doweather
+	goto EverGrandeCity_ChampionsRoom_EventScript_EnterRoom2
+
 EverGrandeCity_ChampionsRoom_EventScript_EnterRoom::
+	goto_if_unset FLAG_DIFFICULTY_HARD, EverGrandeCity_ChampionsRoom_EventScript_EnterRoom2
+	goto_if_set FLAG_DIFFICULTY_HARD, EverGrandeCity_ChampionsRoom_SetWeatherHardMode
+	end
+
+EverGrandeCity_ChampionsRoom_EventScript_EnterRoom2::
 	lockall
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_WalkUp4
 	waitmovement 0
@@ -57,6 +67,8 @@ EverGrandeCity_ChampionsRoom_EventScript_WallaceRematch::
 	end
 
 EverGrandeCity_ChampionsRoom_EventScript_Defeated::
+	setweather WEATHER_NONE
+	doweather
 	playse SE_DOOR
 	setmetatile 6, 1, METATILE_EliteFour_OpenDoorChampion_Frame, FALSE
 	setmetatile 6, 2, METATILE_EliteFour_OpenDoorChampion_Opening, FALSE
@@ -75,6 +87,8 @@ EverGrandeCity_ChampionsRoom_EventScript_Defeated::
 	end
 
 EverGrandeCity_ChampionsRoom_EventScript_Defeated2::
+	setweather WEATHER_NONE
+	doweather
 	playse SE_DOOR
 	setmetatile 6, 1, METATILE_EliteFour_OpenDoorChampion_Frame, FALSE
 	setmetatile 6, 2, METATILE_EliteFour_OpenDoorChampion_Opening, FALSE
