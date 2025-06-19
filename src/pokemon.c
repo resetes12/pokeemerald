@@ -6674,10 +6674,10 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         {
             spAttack = (115 * spAttack) / 100;
         }
-        // Lunatone with chesto for rematches
+        // Lunatone with chesto for rematches, +5% extra sp.atk
         else if (attacker->species == SPECIES_LUNATONE && ((ABILITY_ON_FIELD2(ABILITY_LEVITATE)) && (attackerHoldEffect == HOLD_EFFECT_HARD_MODE_MODIFIER_CHESTO)))
         {
-            spAttack = (115 * spAttack) / 100;
+            spAttack = (120 * spAttack) / 100;
         }
     }
         
