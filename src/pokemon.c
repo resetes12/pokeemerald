@@ -11489,7 +11489,7 @@ void RandomizeTypeEffectivenessListEWRAM(u16 seed)
     memcpy(stemp, sOneTypeChallengeValidTypes, sizeof(sOneTypeChallengeValidTypes));
     ShuffleListU8(stemp, NELEMS(sOneTypeChallengeValidTypes), seed);
 
-    sTypeEffectivenessList[TYPE_MYSTERY] = TYPE_MYSTERY;
+    sTypeEffectivenessList[TYPE_MYSTERY] = TYPE_NORMAL;
     for (i=0; i<NUMBER_OF_MON_TYPES; i++)
     {
         if (i != TYPE_MYSTERY)
