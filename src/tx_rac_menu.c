@@ -121,6 +121,7 @@ enum
 {
     MENUITEM_DIFFICULTY_POKECENTER,
     MENUITEM_CHALLENGES_PCHEAL,
+    MENUITEM_CHALLENGES_EXPENSIVE,
     MENUITEM_CHALLENGES_EVO_LIMIT,
     MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE,
     MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER,
@@ -294,6 +295,7 @@ static void DrawChoices_Challenges_LimitDifficulty(int selection, int y);
 static void DrawChoices_Challenges_MaxPartyIVs(int selection, int y);
 static void DrawChoices_Challenges_PCHeal(int selection, int y);
 static void DrawChoices_Challenges_LessEscapes(int selection, int y);
+static void DrawChoices_Challenges_Expensive(int selection, int y);
 
 static void DrawChoices_Mode_Classic_Modern_Selector(int selection, int y);
 static void DrawChoices_Mode_AlternateSpawns(int selection, int y);
@@ -446,6 +448,7 @@ struct // MENU_CHALLENGES
 {
     [MENUITEM_DIFFICULTY_POKECENTER]            = {DrawChoices_Challenges_Pokecenters,          ProcessInput_Options_Two},
     [MENUITEM_CHALLENGES_PCHEAL]                = {DrawChoices_Challenges_PCHeal,               ProcessInput_Options_Two},
+    [MENUITEM_CHALLENGES_EXPENSIVE]             = {DrawChoices_Challenges_Expensive,            ProcessInput_Options_Four},
     [MENUITEM_CHALLENGES_EVO_LIMIT]             = {DrawChoices_Challenges_EvoLimit,             ProcessInput_Options_Three},
     [MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]    = {DrawChoices_Challenges_OneTypeChallenge,     ProcessInput_Options_OneTypeChallenge},
     [MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]   = {DrawChoices_Challenges_BaseStatEqualizer,    ProcessInput_Options_Four},
@@ -591,6 +594,7 @@ static const u8 *const sOptionMenuItemsNamesDifficulty[MENUITEM_DIFFICULTY_COUNT
 // MENU_CHALLENGES
 static const u8 sText_Pokecenter[]          = _("POKéCENTER");
 static const u8 sText_PCHeal[]              = _("PC HEALS {PKMN}");
+static const u8 sText_Expensive[]           = _("ULTRA EXPENSIVE!");
 static const u8 sText_EvoLimit[]            = _("EVO LIMIT");
 static const u8 sText_OneTypeChallenge[]    = _("ONE TYPE ONLY");
 static const u8 sText_BaseStatEqualizer[]   = _("STAT EQUALIZER");
@@ -601,6 +605,7 @@ static const u8 *const sOptionMenuItemsNamesChallenges[MENUITEM_CHALLENGES_COUNT
 {
     [MENUITEM_DIFFICULTY_POKECENTER]            = sText_Pokecenter,
     [MENUITEM_CHALLENGES_PCHEAL]                = sText_PCHeal,
+    [MENUITEM_CHALLENGES_EXPENSIVE]             = sText_Expensive,
     [MENUITEM_CHALLENGES_EVO_LIMIT]             = sText_EvoLimit,
     [MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]    = sText_OneTypeChallenge,
     [MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]   = sText_BaseStatEqualizer,
@@ -931,10 +936,15 @@ static const u8 sText_Description_Challenges_Mirror_Trainer[]           = _("In 
 static const u8 sText_Description_Challenges_Mirror_All[]               = _("The player gets a copy of the\nenemy's party in {COLOR 7}{COLOR 8}ALL battles!");
 static const u8 sText_Description_Challenges_MirrorThief_Off[]          = _("The player gets their own party back\nafter battles.");
 static const u8 sText_Description_Challenges_MirrorThief_On[]           = _("The player keeps the enemies party\nafter battle!");
+static const u8 sText_Description_Challenges_Expensive_0ff[]            = _("Everything has the usual cost.");
+static const u8 sText_Description_Challenges_Expensive_5[]              = _("Everything is 5 times more\nexpensive!");
+static const u8 sText_Description_Challenges_Expensive_10[]             = _("Everything is 10 times more\nexpensive! Good ol' capitalism.");
+static const u8 sText_Description_Challenges_Expensive_50[]             = _("Everything is 50 times more\nexpensive! Ultra capitalism!");
 static const u8 *const sOptionMenuItemDescriptionsChallenges[MENUITEM_CHALLENGES_COUNT][5] =
 {
     [MENUITEM_DIFFICULTY_POKECENTER]            = {sText_Description_Difficulty_Pokecenter_Yes,         sText_Description_Difficulty_Pokecenter_No,         sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_CHALLENGES_PCHEAL]                = {sText_Description_Challenges_PCHeal_Yes,             sText_Description_Challenges_PCHeal_No,             sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_CHALLENGES_EXPENSIVE]             = {sText_Description_Challenges_Expensive_0ff,          sText_Description_Challenges_Expensive_5,           sText_Description_Challenges_Expensive_10,          sText_Description_Challenges_Expensive_50,          sText_Empty},
     [MENUITEM_CHALLENGES_EVO_LIMIT]             = {sText_Description_Challenges_EvoLimit_Base,          sText_Description_Challenges_EvoLimit_First,        sText_Description_Challenges_EvoLimit_All,          sText_Empty,                                        sText_Empty},
     [MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]    = {sText_Description_Challenges_OneTypeChallenge,       sText_Empty,                                        sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]   = {sText_Description_Challenges_BaseStatEqualizer_Base, sText_Description_Challenges_BaseStatEqualizer_100, sText_Description_Challenges_BaseStatEqualizer_255, sText_Description_Challenges_BaseStatEqualizer_500, sText_Empty},
@@ -1032,6 +1042,7 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledChallenges[MENUITEM_CH
     [MENUITEM_DIFFICULTY_POKECENTER]            = sText_Empty,
     [MENUITEM_CHALLENGES_PCHEAL]                = sText_Description_Disabled_Features_PCHeal,
     [MENUITEM_CHALLENGES_EVO_LIMIT]             = sText_Empty,
+    [MENUITEM_CHALLENGES_EXPENSIVE]             = sText_Empty,
     [MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]    = sText_Empty,
     [MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]   = sText_Empty,
     [MENUITEM_CHALLENGES_MIRROR]                = sText_Empty,
@@ -1419,6 +1430,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         gSaveBlock1Ptr->tx_Challenges_MaxPartyIVs           = TX_DIFFICULTY_MAX_PARTY_IVS;
 
         gSaveBlock1Ptr->tx_Challenges_PCHeal                = TX_CHALLENGE_PCHEAL;
+        gSaveBlock1Ptr->tx_Challenges_Expensive             = TX_CHALLENGES_EXPENSIVE;
         gSaveBlock1Ptr->tx_Challenges_EvoLimit              = TX_CHALLENGE_EVO_LIMIT;
         gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge      = TX_CHALLENGE_TYPE;
         gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer     = TX_CHALLENGE_BASE_STAT_EQUALIZER;
@@ -1494,6 +1506,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         // MENU_CHALLENGES
         sOptions->sel_challenges[MENUITEM_DIFFICULTY_POKECENTER]             = gSaveBlock1Ptr->tx_Challenges_PkmnCenter;
         sOptions->sel_challenges[MENUITEM_CHALLENGES_PCHEAL]                 = gSaveBlock1Ptr->tx_Challenges_PCHeal;
+        sOptions->sel_challenges[MENUITEM_CHALLENGES_EXPENSIVE]              = gSaveBlock1Ptr->tx_Challenges_Expensive;
         sOptions->sel_challenges[MENUITEM_CHALLENGES_EVO_LIMIT]              = gSaveBlock1Ptr->tx_Challenges_EvoLimit;
         sOptions->sel_challenges[MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE]     = gSaveBlock1Ptr->tx_Challenges_OneTypeChallenge;
         sOptions->sel_challenges[MENUITEM_CHALLENGES_BASE_STAT_EQUALIZER]    = gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer;
@@ -1888,6 +1901,7 @@ void SaveData_TxRandomizerAndChallenges(void)
     gSaveBlock1Ptr->tx_Challenges_Mirror_Thief         = sOptions->sel_challenges[MENUITEM_CHALLENGES_MIRROR_THIEF]; 
     gSaveBlock1Ptr->tx_Challenges_PCHeal               = sOptions->sel_challenges[MENUITEM_CHALLENGES_PCHEAL]; 
     gSaveBlock1Ptr->tx_Challenges_PkmnCenter           = sOptions->sel_challenges[MENUITEM_DIFFICULTY_POKECENTER];
+    gSaveBlock1Ptr->tx_Challenges_Expensive            = sOptions->sel_challenges[MENUITEM_CHALLENGES_EXPENSIVE];
 
     PrintTXSaveData();
 
@@ -3031,6 +3045,17 @@ static void DrawChoices_Challenges_LessEscapes(int selection, int y)
 
     DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
     DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
+}
+
+static const u8 sText_Challenges_Expensive_Off[]   = _("OFF");
+static const u8 sText_Challenges_Expensive_5[]     = _("x5");
+static const u8 sText_Challenges_Expensive_10[]    = _("x10");
+static const u8 sText_Challenges_Expensive_50[]    = _("x50!");
+static const u8 *const sText_Challenges_Expensive_Strings[] = {sText_Challenges_Expensive_Off, sText_Challenges_Expensive_5, sText_Challenges_Expensive_10, sText_Challenges_Expensive_50};
+static void DrawChoices_Challenges_Expensive(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_CHALLENGES_EXPENSIVE);
+    DrawChoices_Options_Four(sText_Challenges_Expensive_Strings, selection, y, active);
 }
 
 
