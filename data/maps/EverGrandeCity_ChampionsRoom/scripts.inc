@@ -312,7 +312,7 @@ EverGrandeCity_ChampionsRoom_Text_IntroSpeech2:
 	.string "That gaze you're giving me…\p"
 	.string "Alright, I see that you are already\n"
 	.string "prepared for this battle.\p"
-	.string "Let's see if your can\n"
+	.string "Let's see if you can\n"
 	.string "dance at my rhythm.\p"
 	.string "Show me that you are the strongest\n"
 	.string "POKéMON trainer in HOENN!$"
