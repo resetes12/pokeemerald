@@ -14,11 +14,11 @@ FortreeCity_PokemonCenter_1F_RhyperiorEvo::
 	end
 
 FortreeCity_PokemonCenter_1F_RhyperiorEvo_Text:
-	.string "RHYDON evolves by trading.\n"
-	.string "But only if it is traded with an object.\p"
+	.string "RHYDON evolves by trading, but\n"
+	.string "only if it is traded with an object.\p"
 	.string "Which object, you might ask?\p"
-	.string "Well… My memory is not as good as it\n"
-	.string "was thirty years ago… It was a…\l"
+	.string "Well… My memory is not as good as\n"
+	.string "it was thirty years ago… It was a…\l"
 	.string "HARD… HARD… Ah.\p"
 	.string "I can't remember it. Sorry.$"
 

@@ -26,11 +26,11 @@ MossdeepCity_EventScript_Evo::
 	end
 
 MossdeepCity_EventScript_Evo_Text:
-	.string "The POKéMON EEVEEE evolves\n"
-	.string "in many different ways.\p"
+	.string "The POKéMON EEVEEE evolves in\n"
+	.string "many different ways.\p"
 	.string "Using a THUNDER STONE, FIRE STONE,\n"
-	.string "WATER STONE… Just like, for\l"
-	.string "example, ELECTABUZZ and MAGMAR.\p"
+	.string "WATER STONE… Just like, to name a\l"
+	.string "few, ELECTABUZZ and MAGMAR.\p"
 	.string "They also evolve with STONES.$"
 
 MossdeepCity_EventScript_Evo2::
@@ -42,14 +42,15 @@ MossdeepCity_EventScript_Evo2_Text:
 	.string "She knows all the ways they can\n"
 	.string "evolve. Like, when HOLDING a WATER\l"
 	.string "STONE, or a LEAF STONE.\p"
-	.string "Yes, HOLDING, not using!\n"
+	.string "Yes, HOLDING it! Not using it!\n"
 	.string "Did you know about it? I didn't.\p"
 	.string "Or being HAPPY during day or night.\p"
 	.string "Or being cute whilst using a\n"
 	.string "FAIRY TYPE move!\p"
 	.string "…\p"
-	.string "Do you know where EEVEE are?\n"
-	.string "Maybe I should capture one for her.\p"
+	.string "Do you know where can I find\n"
+	.string "an EEVEE in the wild?\p"
+	.string "Maybe I should capture one for her.\n"
 	.string "She's gonna love it!$"
 
 MossdeepCity_EventScript_PokefanF::

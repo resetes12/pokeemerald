@@ -27,13 +27,14 @@ MauvilleCity_EventScript_MagnezoneEvo::
 	end
 
 MauvilleCity_EventScript_MagnezoneEvo_Text:
-	.string "Did you know that MAGNETON can evolve?\n"
-	.string "Do you know how?\p"
+	.string "Did you know that MAGNETON can\n"
+	.string "evolve? Do you know how?\p"
 	.string "Because… I would like to know.\p"
-	.string "I know it was something related to a\n"
-	.string "STONE. A THUNDER STONE, to be exact!\p"
-	.string "But it was not using it.\n"
-	.string "Was it battling? HOLDING IT?\l"
+	.string "I know it was something related\n"
+	.string "to a evolutionary STONE. A THUNDER\l"
+	.string "STONE, to be precise!\p"
+	.string "But it was not using it!\p"
+	.string "Was it battling? HOLDING IT?\n"
 	.string "I seriously don't know…$"
 
 MauvilleCity_EventScript_Boy::
