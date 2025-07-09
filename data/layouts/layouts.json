@@ -622,6 +622,16 @@
       "blockdata_filepath": "data/layouts/PokemonCenter_2F/map.bin"
     },
     {
+      "id": "LAYOUT_POKEMON_CENTER_3F",
+      "name": "PokemonCenter_3F_Layout",
+      "width": 11,
+      "height": 10,
+      "primary_tileset": "gTileset_Building",
+      "secondary_tileset": "gTileset_PokemonCenter",
+      "border_filepath": "data/layouts/PokemonCenter_3F/border.bin",
+      "blockdata_filepath": "data/layouts/PokemonCenter_3F/map.bin"
+    },
+    {
       "id": "LAYOUT_MART",
       "name": "Mart_Layout",
       "width": 11,

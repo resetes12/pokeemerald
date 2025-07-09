@@ -77,6 +77,7 @@
 #define MAP_OLDALE_TOWN_POKEMON_CENTER_1F (2 | (2 << 8))
 #define MAP_OLDALE_TOWN_POKEMON_CENTER_2F (3 | (2 << 8))
 #define MAP_OLDALE_TOWN_MART              (4 | (2 << 8))
+#define MAP_OLDALE_TOWN_POKEMON_CENTER_3F (5 | (2 << 8))
 
 // gMapGroup_IndoorDewford
 #define MAP_DEWFORD_TOWN_HOUSE1            (0 | (3 << 8))
@@ -85,6 +86,7 @@
 #define MAP_DEWFORD_TOWN_GYM               (3 | (3 << 8))
 #define MAP_DEWFORD_TOWN_HALL              (4 | (3 << 8))
 #define MAP_DEWFORD_TOWN_HOUSE2            (5 | (3 << 8))
+#define MAP_DEWFORD_TOWN_POKEMON_CENTER_3F (6 | (3 << 8))
 
 // gMapGroup_IndoorLavaridge
 #define MAP_LAVARIDGE_TOWN_HERB_SHOP         (0 | (4 << 8))
@@ -94,6 +96,7 @@
 #define MAP_LAVARIDGE_TOWN_MART              (4 | (4 << 8))
 #define MAP_LAVARIDGE_TOWN_POKEMON_CENTER_1F (5 | (4 << 8))
 #define MAP_LAVARIDGE_TOWN_POKEMON_CENTER_2F (6 | (4 << 8))
+#define MAP_LAVARIDGE_TOWN_POKEMON_CENTER_3F (7 | (4 << 8))
 
 // gMapGroup_IndoorFallarbor
 #define MAP_FALLARBOR_TOWN_MART                    (0 | (5 << 8))
@@ -104,6 +107,7 @@
 #define MAP_FALLARBOR_TOWN_POKEMON_CENTER_2F       (5 | (5 << 8))
 #define MAP_FALLARBOR_TOWN_COZMOS_HOUSE            (6 | (5 << 8))
 #define MAP_FALLARBOR_TOWN_MOVE_RELEARNERS_HOUSE   (7 | (5 << 8))
+#define MAP_FALLARBOR_TOWN_POKEMON_CENTER_3F       (8 | (5 << 8))
 
 // gMapGroup_IndoorVerdanturf
 #define MAP_VERDANTURF_TOWN_BATTLE_TENT_LOBBY       (0 | (6 << 8))
@@ -115,6 +119,7 @@
 #define MAP_VERDANTURF_TOWN_WANDAS_HOUSE            (6 | (6 << 8))
 #define MAP_VERDANTURF_TOWN_FRIENDSHIP_RATERS_HOUSE (7 | (6 << 8))
 #define MAP_VERDANTURF_TOWN_HOUSE                   (8 | (6 << 8))
+#define MAP_VERDANTURF_TOWN_POKEMON_CENTER_3F       (9 | (6 << 8))
 
 // gMapGroup_IndoorPacifidlog
 #define MAP_PACIFIDLOG_TOWN_POKEMON_CENTER_1F (0 | (7 << 8))
@@ -124,6 +129,7 @@
 #define MAP_PACIFIDLOG_TOWN_HOUSE3            (4 | (7 << 8))
 #define MAP_PACIFIDLOG_TOWN_HOUSE4            (5 | (7 << 8))
 #define MAP_PACIFIDLOG_TOWN_HOUSE5            (6 | (7 << 8))
+#define MAP_PACIFIDLOG_POKEMON_CENTER_3F      (7 | (7 << 8))
 
 // gMapGroup_IndoorPetalburg
 #define MAP_PETALBURG_CITY_WALLYS_HOUSE      (0 | (8 << 8))
@@ -133,6 +139,7 @@
 #define MAP_PETALBURG_CITY_POKEMON_CENTER_1F (4 | (8 << 8))
 #define MAP_PETALBURG_CITY_POKEMON_CENTER_2F (5 | (8 << 8))
 #define MAP_PETALBURG_CITY_MART              (6 | (8 << 8))
+#define MAP_PETALBURG_CITY_POKEMON_CENTER_3F (7 | (8 << 8))
 
 // gMapGroup_IndoorSlateport
 #define MAP_SLATEPORT_CITY_STERNS_SHIPYARD_1F      (0 | (9 << 8))
@@ -149,6 +156,7 @@
 #define MAP_SLATEPORT_CITY_POKEMON_CENTER_1F       (11 | (9 << 8))
 #define MAP_SLATEPORT_CITY_POKEMON_CENTER_2F       (12 | (9 << 8))
 #define MAP_SLATEPORT_CITY_MART                    (13 | (9 << 8))
+#define MAP_SLATEPORT_CITY_POKEMON_CENTER_3F       (14 | (9 << 8))
 
 // gMapGroup_IndoorMauville
 #define MAP_MAUVILLE_CITY_GYM               (0 | (10 << 8))
@@ -159,6 +167,7 @@
 #define MAP_MAUVILLE_CITY_POKEMON_CENTER_1F (5 | (10 << 8))
 #define MAP_MAUVILLE_CITY_POKEMON_CENTER_2F (6 | (10 << 8))
 #define MAP_MAUVILLE_CITY_MART              (7 | (10 << 8))
+#define MAP_MAUVILLE_CITY_POKEMON_CENTER_3F (8 | (10 << 8))
 
 // gMapGroup_IndoorRustboro
 #define MAP_RUSTBORO_CITY_DEVON_CORP_1F     (0 | (11 << 8))
@@ -178,6 +187,7 @@
 #define MAP_RUSTBORO_CITY_FLAT2_2F          (14 | (11 << 8))
 #define MAP_RUSTBORO_CITY_FLAT2_3F          (15 | (11 << 8))
 #define MAP_RUSTBORO_CITY_HOUSE3            (16 | (11 << 8))
+#define MAP_RUSTBORO_CITY_POKEMON_CENTER_3F (17 | (11 << 8))
 
 // gMapGroup_IndoorFortree
 #define MAP_FORTREE_CITY_HOUSE1            (0 | (12 << 8))
@@ -190,6 +200,7 @@
 #define MAP_FORTREE_CITY_HOUSE4            (7 | (12 << 8))
 #define MAP_FORTREE_CITY_HOUSE5            (8 | (12 << 8))
 #define MAP_FORTREE_CITY_DECORATION_SHOP   (9 | (12 << 8))
+#define MAP_FORTREE_CITY_POKEMON_CENTER_3F (10 | (12 << 8))
 
 // gMapGroup_IndoorLilycove
 #define MAP_LILYCOVE_CITY_COVE_LILY_MOTEL_1F        (0 | (13 << 8))
@@ -215,6 +226,7 @@
 #define MAP_LILYCOVE_CITY_DEPARTMENT_STORE_5F       (20 | (13 << 8))
 #define MAP_LILYCOVE_CITY_DEPARTMENT_STORE_ROOFTOP  (21 | (13 << 8))
 #define MAP_LILYCOVE_CITY_DEPARTMENT_STORE_ELEVATOR (22 | (13 << 8))
+#define MAP_LILYCOVE_CITY_POKEMON_CENTER_3F         (23 | (13 << 8))
 
 // gMapGroup_IndoorMossdeep
 #define MAP_MOSSDEEP_CITY_GYM               (0 | (14 << 8))
@@ -230,6 +242,7 @@
 #define MAP_MOSSDEEP_CITY_SPACE_CENTER_2F   (10 | (14 << 8))
 #define MAP_MOSSDEEP_CITY_GAME_CORNER_1F    (11 | (14 << 8))
 #define MAP_MOSSDEEP_CITY_GAME_CORNER_B1F   (12 | (14 << 8))
+#define MAP_MOSSDEEP_CITY_POKEMON_CENTER_3F (13 | (14 << 8))
 
 // gMapGroup_IndoorSootopolis
 #define MAP_SOOTOPOLIS_CITY_GYM_1F                   (0 | (15 << 8))
@@ -247,6 +260,7 @@
 #define MAP_SOOTOPOLIS_CITY_LOTAD_AND_SEEDOT_HOUSE   (12 | (15 << 8))
 #define MAP_SOOTOPOLIS_CITY_MYSTERY_EVENTS_HOUSE_1F  (13 | (15 << 8))
 #define MAP_SOOTOPOLIS_CITY_MYSTERY_EVENTS_HOUSE_B1F (14 | (15 << 8))
+#define MAP_SOOTOPOLIS_CITY_POKEMON_CENTER_3F        (15 | (15 << 8))
 
 // gMapGroup_IndoorEverGrande
 #define MAP_EVER_GRANDE_CITY_SIDNEYS_ROOM      (0 | (16 << 8))
@@ -264,6 +278,8 @@
 #define MAP_EVER_GRANDE_CITY_POKEMON_CENTER_1F (12 | (16 << 8))
 #define MAP_EVER_GRANDE_CITY_POKEMON_CENTER_2F (13 | (16 << 8))
 #define MAP_EVER_GRANDE_CITY_POKEMON_LEAGUE_2F (14 | (16 << 8))
+#define MAP_EVER_GRANDE_CITY_POKEMON_CENTER_3F (15 | (16 << 8))
+#define MAP_EVER_GRANDE_CITY_POKEMON_LEAGUE_3F (16 | (16 << 8))
 
 // gMapGroup_IndoorRoute104
 #define MAP_ROUTE104_MR_BRINEYS_HOUSE         (0 | (17 << 8))
@@ -572,6 +588,7 @@
 #define MAP_NAVEL_ROCK_DOWN11                               (86 | (26 << 8))
 #define MAP_NAVEL_ROCK_BOTTOM                               (87 | (26 << 8))
 #define MAP_TRAINER_HILL_ELEVATOR                           (88 | (26 << 8))
+#define MAP_BATTLE_FRONTIER_POKEMON_CENTER_3F               (89 | (26 << 8))
 
 // gMapGroup_IndoorRoute104Prototype
 #define MAP_ROUTE104_PROTOTYPE                          (0 | (27 << 8))
@@ -610,7 +627,5 @@
 #define MAP_ROUTE124_DIVING_TREASURE_HUNTERS_HOUSE (0 | (33 << 8))
 
 #define MAP_GROUPS_COUNT 34
-
-// static const u8 MAP_GROUP_COUNT[] = {57, 5, 5, 6, 7, 8, 9, 7, 7, 14, 8, 17, 10, 23, 13, 15, 15, 2, 2, 2, 3, 1, 1, 1, 126, 61, 89, 2, 1, 13, 1, 1, 3, 1, 0};
 
 #endif // GUARD_CONSTANTS_MAP_GROUPS_H

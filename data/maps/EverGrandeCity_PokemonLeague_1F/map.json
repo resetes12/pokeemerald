@@ -68,8 +68,8 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_EXPERT_M",
-      "x": 3,
-      "y": 9,
+      "x": 16,
+      "y": 7,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_NONE",
       "movement_range_x": 0,
@@ -111,9 +111,16 @@
     },
     {
       "x": 1,
-      "y": 7,
+      "y": 6,
       "elevation": 4,
       "dest_map": "MAP_EVER_GRANDE_CITY_POKEMON_LEAGUE_2F",
+      "dest_warp_id": "0"
+    },
+    {
+      "x": 1,
+      "y": 8,
+      "elevation": 0,
+      "dest_map": "MAP_EVER_GRANDE_CITY_POKEMON_LEAGUE_3F",
       "dest_warp_id": "0"
     }
   ],
