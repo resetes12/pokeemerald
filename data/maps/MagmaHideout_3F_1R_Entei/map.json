@@ -2,7 +2,7 @@
   "id": "MAP_MAGMA_HIDEOUT_3F_1R_ENTEI",
   "name": "MagmaHideout_3F_1R_Entei",
   "layout": "LAYOUT_MAGMA_HIDEOUT_3F_1R_ENTEI",
-  "music": "MUS_DP_MT_CORONET",
+  "music": "MUS_HG_DRAGONS_DEN",
   "region_map_section": "MAPSEC_MAGMA_HIDEOUT",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
