@@ -33415,7 +33415,7 @@
               {
                 "min_level": 52,
                 "max_level": 61,
-                "species": "SPECIES_DITTO"
+                "species": "SPECIES_CROBAT"
               }
             ]
           },
@@ -33500,7 +33500,7 @@
               {
                 "min_level": 30,
                 "max_level": 50,
-                "species": "SPECIES_PSYDUCK"
+                "species": "SPECIES_POLITOED"
               }
             ]
           }
@@ -33549,7 +33549,7 @@
               {
                 "min_level": 55,
                 "max_level": 62,
-                "species": "SPECIES_CROBAT"
+                "species": "SPECIES_GOLBAT"
               },
               {
                 "min_level": 52,
@@ -33628,7 +33628,7 @@
               {
                 "min_level": 5,
                 "max_level": 5,
-                "species": "SPECIES_NONE"
+                "species": "SPECIES_ELECTRODE"
               },
               {
                 "min_level": 67,
@@ -33723,7 +33723,7 @@
               {
                 "min_level": 67,
                 "max_level": 67,
-                "species": "SPECIES_SLOWKING"
+                "species": "SPECIES_POLIWRATH"
               }
             ]
           }
