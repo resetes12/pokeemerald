@@ -2,7 +2,7 @@
   "id": "MAP_CERULEAN_CAVE1",
   "name": "CeruleanCave1",
   "layout": "LAYOUT_CERULEAN_CAVE1",
-  "music": "MUS_HG_LIGHTHOUSE",
+  "music": "MUS_HG_VICTORY_ROAD",
   "region_map_section": "MAPSEC_ALTERING_CAVE",
   "requires_flash": true,
   "weather": "WEATHER_NONE",
