@@ -2,7 +2,7 @@
   "id": "MAP_NEW_MAUVILLE_INSIDE_RAIKOU",
   "name": "NewMauville_Inside_Raikou",
   "layout": "LAYOUT_NEW_MAUVILLE_INSIDE_RAIKOU",
-  "music": "MUS_DP_MT_CORONET",
+  "music": "MUS_HG_LIGHTHOUSE",
   "region_map_section": "MAPSEC_NEW_MAUVILLE",
   "requires_flash": true,
   "weather": "WEATHER_SHADE",
