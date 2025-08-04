@@ -4214,8 +4214,8 @@
     {
       "id": "LAYOUT_NAVEL_ROCK_EXTERIOR",
       "name": "NavelRock_Exterior_Layout",
-      "width": 21,
-      "height": 24,
+      "width": 40,
+      "height": 40,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_Dewford",
       "border_filepath": "data/layouts/NavelRock_Exterior/border.bin",
