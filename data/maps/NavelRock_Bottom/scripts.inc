@@ -33,6 +33,7 @@ NavelRock_Bottom_EventScript_Lugia::
 	lock
 	faceplayer
 	waitse
+	playbgm MUS_HG_LUGIA_APPEARS, FALSE
 	delay 20
 	playse SE_THUNDERSTORM_STOP
 	setvar VAR_0x8004, 0  @ vertical pan

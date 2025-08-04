@@ -34,6 +34,7 @@ NavelRock_Top_EventScript_TryRemoveHoOh::
 
 NavelRock_Top_EventScript_HoOh::
 	lockall
+	playbgm MUS_HG_HO_OH_APPEARS, FALSE
 	setvar VAR_TEMP_1, 1
 	special SpawnCameraObject
 	setvar VAR_0x8004, 3  @ num loops
