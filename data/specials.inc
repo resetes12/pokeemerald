@@ -568,3 +568,4 @@ gSpecials::
 	def_special SetSpDefStat
 	def_special BufferUnitSystemText
 	def_special SwitchMonAbility
+	def_special DoSlidingPuzzle

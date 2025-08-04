@@ -1236,11 +1236,11 @@
 #define FLAG_SHINY_STARTER_2                                        0x4A1 // Makes starter Shiny (Usually Treecko)
 #define FLAG_SHINY_STARTER_3                                        0x4A2 // Makes starter Shiny (Usually Mudkip)
 #define FLAG_FORCE_SHINY                                            0x4A3 // All encounters are shiny
-#define FLAG_UNUSED_0x4A4                                           0x4A4 // Unused Flag
-#define FLAG_UNUSED_0x4A5                                           0x4A5 // Unused Flag
+#define FLAG_KABUTO_PUZZLE_SOLVED                                   0x4A4
+#define FLAG_OMANYTE_PUZZLE_SOLVED                                  0x4A5
 #define FLAG_EXP_SHARE                                              0x4A6
-#define FLAG_UNUSED_0x4A7                                           0x4A7 // Unused Flag
-#define FLAG_UNUSED_0x4A8                                           0x4A8 // Unused Flag
+#define FLAG_HO_OH_PUZZLE_SOLVED                                    0x4A7
+#define FLAG_AERODACTYL_PUZZLE_SOLVED                               0x4A8
 #define FLAG_UNUSED_0x4A9                                           0x4A9 // Unused Flag
 #define FLAG_UNUSED_0x4AA                                           0x4AA // Unused Flag
 #define FLAG_UNUSED_0x4AB                                           0x4AB // Unused Flag
