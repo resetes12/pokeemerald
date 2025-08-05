@@ -4600,6 +4600,46 @@
       "secondary_tileset": "gTileset_Cave",
       "border_filepath": "data/layouts/ScorchedSlab_Modern/border.bin",
       "blockdata_filepath": "data/layouts/ScorchedSlab_Modern/map.bin"
+    },
+    {
+      "id": "LAYOUT_NAVEL_ROCK_FORK_OPEN",
+      "name": "NavelRock_Fork_Open_Layout",
+      "width": 40,
+      "height": 30,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_NavelRock",
+      "border_filepath": "data/layouts/NavelRock_Fork_Open/border.bin",
+      "blockdata_filepath": "data/layouts/NavelRock_Fork_Open/map.bin"
+    },
+    {
+      "id": "LAYOUT_NAVEL_ROCK_UNOWN_CHAMBER",
+      "name": "NavelRock_UnownChamber_Layout",
+      "width": 25,
+      "height": 21,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_NavelRock",
+      "border_filepath": "data/layouts/NavelRock_UnownChamber/border.bin",
+      "blockdata_filepath": "data/layouts/NavelRock_UnownChamber/map.bin"
+    },
+    {
+      "id": "LAYOUT_NAVEL_ROCK_UNOWN_ROOM_1",
+      "name": "NavelRock_Unown_Room_1_Layout",
+      "width": 1,
+      "height": 1,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_NavelRock",
+      "border_filepath": "data/layouts/NavelRock_Unown_Room_1/border.bin",
+      "blockdata_filepath": "data/layouts/NavelRock_Unown_Room_1/map.bin"
+    },
+    {
+      "id": "LAYOUT_NAVEL_ROCK_UNOWN_ROOM_2",
+      "name": "NavelRock_Unown_Room_2_Layout",
+      "width": 1,
+      "height": 1,
+      "primary_tileset": "gTileset_General",
+      "secondary_tileset": "gTileset_NavelRock",
+      "border_filepath": "data/layouts/NavelRock_Unown_Room_2/border.bin",
+      "blockdata_filepath": "data/layouts/NavelRock_Unown_Room_2/map.bin"
     }
   ]
 }

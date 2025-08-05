@@ -44,10 +44,12 @@ NavelRock_Top_EventScript_HoOh::
 	applymovement OBJ_EVENT_ID_CAMERA, NavelRock_Top_Movement_CameraPanUp
 	waitmovement 0
 	delay 50
-	setweather WEATHER_NONE
+	setweather WEATHER_DROUGHT
 	doweather
 	waitse
 	playmoncry SPECIES_HO_OH, CRY_MODE_ENCOUNTER
+	msgbox Ho_Oh_Text, MSGBOX_NPC
+	closemessage
 	delay 30
 	waitmoncry
 	delay 60
@@ -128,3 +130,6 @@ NavelRock_Top_Movement_HoOhAppear:
 	walk_in_place_down
 	walk_in_place_down
 	step_end
+
+Ho_Oh_Text:
+	.string "Gyyaaao!$"

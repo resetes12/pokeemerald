@@ -618,7 +618,11 @@
     "NavelRock_Down11",
     "NavelRock_Bottom",
     "TrainerHill_Elevator",
-    "BattleFrontier_PokemonCenter_3F"
+    "BattleFrontier_PokemonCenter_3F",
+    "NavelRock_Fork_Open",
+    "NavelRock_UnownChamber",
+    "NavelRock_Unown_Room_1",
+    "NavelRock_Unown_Room_2"
   ],
   "gMapGroup_IndoorRoute104Prototype": [
     "Route104_Prototype",

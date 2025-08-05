@@ -4,7 +4,7 @@
   "layout": "LAYOUT_NAVEL_ROCK_FORK",
   "music": "MUS_HG_RUINS_OF_ALPH",
   "region_map_section": "MAPSEC_NAVEL_ROCK",
-  "requires_flash": false,
+  "requires_flash": true,
   "weather": "WEATHER_NONE",
   "map_type": "MAP_TYPE_UNDERGROUND",
   "allow_cycling": false,
@@ -18,13 +18,6 @@
   ],
   "warp_events": [
     {
-      "x": 4,
-      "y": 6,
-      "elevation": 3,
-      "dest_map": "MAP_NAVEL_ROCK_UP1",
-      "dest_warp_id": "0"
-    },
-    {
       "x": 11,
       "y": 79,
       "elevation": 3,
@@ -32,11 +25,39 @@
       "dest_warp_id": "1"
     },
     {
-      "x": 22,
-      "y": 6,
-      "elevation": 3,
-      "dest_map": "MAP_NAVEL_ROCK_DOWN01",
+      "x": 13,
+      "y": 4,
+      "elevation": 0,
+      "dest_map": "MAP_NAVEL_ROCK_UNOWN_CHAMBER",
       "dest_warp_id": "0"
+    },
+    {
+      "x": 16,
+      "y": 60,
+      "elevation": 0,
+      "dest_map": "MAP_NAVEL_ROCK_FORK",
+      "dest_warp_id": "5"
+    },
+    {
+      "x": 25,
+      "y": 72,
+      "elevation": 0,
+      "dest_map": "MAP_NAVEL_ROCK_FORK",
+      "dest_warp_id": "4"
+    },
+    {
+      "x": 20,
+      "y": 73,
+      "elevation": 0,
+      "dest_map": "MAP_NAVEL_ROCK_FORK",
+      "dest_warp_id": "7"
+    },
+    {
+      "x": 11,
+      "y": 61,
+      "elevation": 0,
+      "dest_map": "MAP_NAVEL_ROCK_FORK",
+      "dest_warp_id": "6"
     }
   ],
   "coord_events": [
@@ -45,23 +66,23 @@
   "bg_events": [
     {
       "type": "sign",
-      "x": 23,
-      "y": 12,
+      "x": 24,
+      "y": 15,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "NavelRock_Fork_Puzzle_Kabuto"
     },
     {
       "type": "sign",
-      "x": 3,
-      "y": 15,
+      "x": 24,
+      "y": 42,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "NavelRock_Fork_Puzzle_Ho_Oh"
     },
     {
       "type": "sign",
-      "x": 3,
+      "x": 2,
       "y": 58,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
@@ -69,8 +90,8 @@
     },
     {
       "type": "sign",
-      "x": 23,
-      "y": 50,
+      "x": 2,
+      "y": 15,
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "NavelRock_Fork_Puzzle_Omanyte"

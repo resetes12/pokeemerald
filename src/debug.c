@@ -429,7 +429,7 @@ extern const u8 gAbilityNames[][ABILITY_NAME_LENGTH + 1];
 
 // *******************************
 //Maps per map group COPY FROM /include/constants/map_groups.h
-static const u8 MAP_GROUP_COUNT[] = {57, 5, 5, 6, 7, 8, 9, 7, 7, 14, 8, 17, 10, 23, 13, 15, 15, 2, 2, 2, 3, 1, 1, 1, 126, 61, 89, 2, 1, 13, 1, 1, 3, 1, 0};
+static const u8 MAP_GROUP_COUNT[] = {57, 5, 5, 6, 7, 8, 9, 7, 7, 14, 8, 17, 10, 23, 13, 15, 15, 2, 2, 2, 3, 1, 1, 1, 126, 61, 93, 2, 1, 13, 1, 1, 3, 1, 0};
 
 // Text
 // General

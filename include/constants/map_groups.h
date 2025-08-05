@@ -589,6 +589,10 @@
 #define MAP_NAVEL_ROCK_BOTTOM                               (87 | (26 << 8))
 #define MAP_TRAINER_HILL_ELEVATOR                           (88 | (26 << 8))
 #define MAP_BATTLE_FRONTIER_POKEMON_CENTER_3F               (89 | (26 << 8))
+#define MAP_NAVEL_ROCK_FORK_OPEN                            (90 | (26 << 8))
+#define MAP_NAVEL_ROCK_UNOWN_CHAMBER                        (91 | (26 << 8))
+#define MAP_NAVEL_ROCK_UNOWN_ROOM_1                         (92 | (26 << 8))
+#define MAP_NAVEL_ROCK_UNOWN_ROOM_2                         (93 | (26 << 8))
 
 // gMapGroup_IndoorRoute104Prototype
 #define MAP_ROUTE104_PROTOTYPE                          (0 | (27 << 8))
@@ -628,6 +632,6 @@
 
 #define MAP_GROUPS_COUNT 34
 
-// static const u8 MAP_GROUP_COUNT[] = {57, 5, 6, 7, 8, 9, 10, 8, 8, 15, 9, 18, 11, 24, 14, 16, 17, 2, 2, 2, 3, 1, 1, 1, 126, 61, 90, 2, 1, 13, 1, 1, 3, 1, 0};
+// static const u8 MAP_GROUP_COUNT[] = {57, 5, 6, 7, 8, 9, 10, 8, 8, 15, 9, 18, 11, 24, 14, 16, 17, 2, 2, 2, 3, 1, 1, 1, 126, 61, 94, 2, 1, 13, 1, 1, 3, 1, 0};
 
 #endif // GUARD_CONSTANTS_MAP_GROUPS_H

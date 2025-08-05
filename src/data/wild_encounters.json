@@ -30669,62 +30669,62 @@
               {
                 "min_level": 1,
                 "max_level": 10,
-                "species": "SPECIES_UNOWN"
+                "species": "SPECIES_ZUBAT"
               },
               {
                 "min_level": 1,
                 "max_level": 15,
-                "species": "SPECIES_UNOWN"
+                "species": "SPECIES_ZUBAT"
               },
               {
                 "min_level": 10,
                 "max_level": 25,
-                "species": "SPECIES_UNOWN"
+                "species": "SPECIES_ZUBAT"
               },
               {
                 "min_level": 10,
                 "max_level": 25,
-                "species": "SPECIES_UNOWN"
+                "species": "SPECIES_ZUBAT"
               },
               {
                 "min_level": 20,
                 "max_level": 35,
-                "species": "SPECIES_UNOWN"
+                "species": "SPECIES_ZUBAT"
               },
               {
                 "min_level": 20,
                 "max_level": 35,
-                "species": "SPECIES_UNOWN"
+                "species": "SPECIES_ZUBAT"
               },
               {
                 "min_level": 35,
                 "max_level": 50,
-                "species": "SPECIES_UNOWN"
+                "species": "SPECIES_ZUBAT"
               },
               {
                 "min_level": 35,
                 "max_level": 50,
-                "species": "SPECIES_UNOWN"
+                "species": "SPECIES_ZUBAT"
               },
               {
                 "min_level": 50,
                 "max_level": 70,
-                "species": "SPECIES_UNOWN"
+                "species": "SPECIES_ZUBAT"
               },
               {
                 "min_level": 55,
                 "max_level": 75,
-                "species": "SPECIES_UNOWN"
+                "species": "SPECIES_ZUBAT"
               },
               {
                 "min_level": 75,
                 "max_level": 85,
-                "species": "SPECIES_UNOWN"
+                "species": "SPECIES_ZUBAT"
               },
               {
                 "min_level": 8,
                 "max_level": 99,
-                "species": "SPECIES_UNOWN"
+                "species": "SPECIES_ZUBAT"
               }
             ]
           }
@@ -34069,6 +34069,213 @@
                 "min_level": 30,
                 "max_level": 33,
                 "species": "SPECIES_SANDSLASH"
+              }
+            ]
+          }
+        },
+        {
+          "map": "MAP_NAVEL_ROCK_UNOWN_ROOM_1",
+          "base_label": "gNavelRock_Unown_Room_10",
+          "land_mons": {
+            "encounter_rate": 10,
+            "mons": [
+              {
+                "min_level": 30,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 30,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 30,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 30,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 30,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 30,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 30,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 30,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 30,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 30,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 30,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 30,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              }
+            ]
+          }
+        },
+        {
+          "map": "MAP_NAVEL_ROCK_UNOWN_CHAMBER",
+          "base_label": "gNavelRock_UnownChamber0",
+          "land_mons": {
+            "encounter_rate": 5,
+            "mons": [
+              {
+                "min_level": 1,
+                "max_level": 20,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 5,
+                "max_level": 25,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 10,
+                "max_level": 35,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 15,
+                "max_level": 40,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 20,
+                "max_level": 45,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 30,
+                "max_level": 50,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 40,
+                "max_level": 55,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 50,
+                "max_level": 60,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 60,
+                "max_level": 65,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 65,
+                "max_level": 70,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 75,
+                "max_level": 80,
+                "species": "SPECIES_UNOWN"
+              },
+              {
+                "min_level": 1,
+                "max_level": 100,
+                "species": "SPECIES_UNOWN"
+              }
+            ]
+          }
+        },
+        {
+          "map": "MAP_NAVEL_ROCK_FORK_OPEN",
+          "base_label": "gNavelRock_Fork_Open0",
+          "land_mons": {
+            "encounter_rate": 10,
+            "mons": [
+              {
+                "min_level": 40,
+                "max_level": 45,
+                "species": "SPECIES_GRAVELER"
+              },
+              {
+                "min_level": 38,
+                "max_level": 42,
+                "species": "SPECIES_GOLBAT"
+              },
+              {
+                "min_level": 40,
+                "max_level": 44,
+                "species": "SPECIES_KADABRA"
+              },
+              {
+                "min_level": 5,
+                "max_level": 5,
+                "species": "SPECIES_GASTLY"
+              },
+              {
+                "min_level": 5,
+                "max_level": 5,
+                "species": "SPECIES_GASTLY"
+              },
+              {
+                "min_level": 5,
+                "max_level": 5,
+                "species": "SPECIES_HAUNTER"
+              },
+              {
+                "min_level": 5,
+                "max_level": 5,
+                "species": "SPECIES_HAUNTER"
+              },
+              {
+                "min_level": 5,
+                "max_level": 5,
+                "species": "SPECIES_ONIX"
+              },
+              {
+                "min_level": 5,
+                "max_level": 5,
+                "species": "SPECIES_ONIX"
+              },
+              {
+                "min_level": 5,
+                "max_level": 5,
+                "species": "SPECIES_ONIX"
+              },
+              {
+                "min_level": 5,
+                "max_level": 5,
+                "species": "SPECIES_LARVITAR"
+              },
+              {
+                "min_level": 5,
+                "max_level": 5,
+                "species": "SPECIES_LARVITAR"
               }
             ]
           }

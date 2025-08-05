@@ -137,3 +137,65 @@ Regigigas_Braille_Text:
 	.braille "DEFEATED.\n"
 	.braille "YOU ARE\n"
 	.braille "CHAMPION.$"
+
+UnownChamber_Left_Braille_Text:
+	brailleformat 3, 0, 25, 19, 6, 3
+	.braille "LEFT AND RIGHT\n"
+	.braille "RIGHT AND LEFT\n"
+	.braille "TWO SIDES OF\n"
+	.braille "THE SAME COIN.$"
+
+UnownChamber_Mid_Braille_Text:
+	brailleformat 3, 0, 25, 19, 6, 3
+	.braille "CHECK. MIRROR.\n"
+	.braille "EIGHT TIMES.\n"
+	.braille "IN ORDER.\n"
+	.braille "OR START AGAIN$"
+
+UnownChamber_Right_Braille_Text:
+	brailleformat 3, 0, 25, 19, 6, 3
+	.braille "RIGHT AND LEFT\n"
+	.braille "LEFT AND RIGHT\n"
+	.braille "TWO SIDES OF\n"
+	.braille "SAME MIRROR.$"
+
+UnownChamber_Random_Text_1:
+	brailleformat 3, 0, 25, 19, 6, 3
+	.braille "TWO START THE\n"
+	.braille "ALPHABET.$"
+
+UnownChamber_Random_Text_2:
+	brailleformat 3, 0, 25, 19, 6, 3
+	.braille "FIVE OF THEM\n"
+	.braille "CURVES AROUND\n"
+	.braille "THEIR EYES.$"
+
+UnownChamber_Random_Text_3:
+	brailleformat 3, 0, 25, 19, 6, 3
+	.braille "FOUR ARE\n"
+	.braille "SYMMETRICAL.$"
+
+UnownChamber_Random_Text_4:
+	brailleformat 3, 0, 25, 19, 6, 3
+	.braille "FIVE ARE NOT\n"
+	.braille "SYMMETRICAL.$"
+
+UnownChamber_Random_Text_5:
+	brailleformat 3, 0, 25, 19, 6, 3
+	.braille "FIVE ARE\n"
+	.braille "STRAIGHT.$"
+
+UnownChamber_Random_Text_6:
+	brailleformat 3, 0, 25, 19, 6, 3
+	.braille "FIVE ARE NOT\n"
+	.braille "SPECIAL.$"
+
+UnownChamber_Random_Text_7:
+	brailleformat 3, 0, 25, 19, 6, 3
+	.braille "TWO ARE THE\n"
+	.braille "END.$"
+
+UnownChamber_Random_Text_8:
+	brailleformat 3, 0, 25, 19, 6, 3
+	.braille "AND THE KING\n"
+	.braille "IS MISSING.$"

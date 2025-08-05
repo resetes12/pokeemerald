@@ -1241,8 +1241,8 @@
 #define FLAG_EXP_SHARE                                              0x4A6
 #define FLAG_HO_OH_PUZZLE_SOLVED                                    0x4A7
 #define FLAG_AERODACTYL_PUZZLE_SOLVED                               0x4A8
-#define FLAG_UNUSED_0x4A9                                           0x4A9 // Unused Flag
-#define FLAG_UNUSED_0x4AA                                           0x4AA // Unused Flag
+#define FLAG_ALL_PUZZLES_COMPLETED                                  0x4A9
+#define FLAG_UNOWN_CHAMBER_OPEN                                     0x4AA
 #define FLAG_UNUSED_0x4AB                                           0x4AB // Unused Flag
 #define FLAG_UNUSED_0x4AC                                           0x4AC // Unused Flag
 #define FLAG_UNUSED_0x4AD                                           0x4AD // Unused Flag

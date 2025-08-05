@@ -51,7 +51,11 @@ NavelRock_Bottom_EventScript_Lugia::
 	delay 30
 	delay 50
 	waitse
+	setweather WEATHER_DOWNPOUR
+	doweather
 	playmoncry SPECIES_LUGIA, CRY_MODE_ENCOUNTER
+	msgbox Lugia_Text, MSGBOX_NPC
+	closemessage
 	waitmoncry
 	delay 20
 	seteventmon SPECIES_LUGIA, 70
@@ -89,3 +93,6 @@ NavelRock_Bottom_EventScript_RanFromLugia::
 	setvar VAR_0x8004, SPECIES_LUGIA
 	goto Common_EventScript_LegendaryFlewAway
 	end
+
+Lugia_Text:
+	.string "Grooaah!$"

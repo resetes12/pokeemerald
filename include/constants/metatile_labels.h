@@ -121,6 +121,13 @@
 #define METATILE_Cave_CrackedFloor                       0x22F
 #define METATILE_Cave_CrackedFloor_Hole                  0x206
 #define METATILE_Cave_EntranceCover                      0x229
+#define METATILE_Cave_NormalHole_BottomLeft              0x213
+#define METATILE_Cave_NormalHole_BottomMid               0x214
+#define METATILE_Cave_NormalHole_BottomRight             0x215
+#define METATILE_Cave_NormalHole_TopLeft                 0x20B
+#define METATILE_Cave_NormalHole_TopMid                  0x20C
+#define METATILE_Cave_NormalHole_TopRight                0x20D
+#define METATILE_Cave_RockWall                           0x219
 #define METATILE_Cave_SealedChamberBraille_Mid           0x235
 #define METATILE_Cave_SealedChamberEntrance_BottomLeft   0x232
 #define METATILE_Cave_SealedChamberEntrance_BottomMid    0x233
