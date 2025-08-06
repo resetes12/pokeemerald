@@ -73,6 +73,7 @@ Debug_Script_2::
 	end
 
 Debug_Script_3::
+	special NameRival
 	end
 
 Debug_Script_4::

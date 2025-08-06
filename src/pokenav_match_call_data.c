@@ -1076,7 +1076,7 @@ static void MatchCall_GetNameAndDesc_Wally(match_call_t matchCall, const u8 **de
 static void MatchCall_GetNameAndDesc_Rival(match_call_t matchCall, const u8 **desc, const u8 **name)
 {
     *desc = matchCall.rival->desc;
-    *name = matchCall.rival->name;
+    *name = gSaveBlock2Ptr->rivalName;
 }
 
 static void MatchCall_GetNameAndDesc_Birch(match_call_t matchCall, const u8 **desc, const u8 **name)

@@ -189,6 +189,10 @@ LittlerootTown_MaysHouse_1F_EventScript_MeetRival::
 	call_if_eq VAR_0x8008, 0, LittlerootTown_MaysHouse_1F_EventScript_MayApproachPlayer0
 	call_if_eq VAR_0x8008, 1, LittlerootTown_MaysHouse_1F_EventScript_MayApproachPlayer1
 	call_if_eq VAR_0x8008, 2, LittlerootTown_MaysHouse_1F_EventScript_MayApproachPlayer2
+	msgbox RivalsHouse_1F_Text_MayWhoAreYou_Name_Rival, MSGBOX_DEFAULT
+	closemessage
+	special NameRival
+	waitstate
 	msgbox RivalsHouse_1F_Text_MayWhoAreYou, MSGBOX_DEFAULT
 	closemessage
 	call_if_eq VAR_0x8008, 0, LittlerootTown_MaysHouse_1F_EventScript_MayGoUpstairs0
@@ -359,14 +363,17 @@ RivalsHouse_1F_Text_ShouldGoHomeEverySoOften:
 	.string "She might not say it, but I'm sure she\n"
 	.string "worries about you, {PLAYER}{KUN}.$"
 
-RivalsHouse_1F_Text_MayWhoAreYou:
+RivalsHouse_1F_Text_MayWhoAreYou_Name_Rival:
 	.string "Huh?\n"
 	.string "Who… Who are you?\p"
 	.string "… … … … … … … …\n"
 	.string "… … … … … … … …\p"
 	.string "Oh, you're {PLAYER}{KUN}.\n"
 	.string "So your move was today.\p"
-	.string "Um… I'm MAY.\n"
+	.string "Um… I'm…$"
+
+RivalsHouse_1F_Text_MayWhoAreYou:
+	.string "Um… I'm {RIVAL}.\n"
 	.string "Glad to meet you!\p"
 	.string "I…\n"
 	.string "I have this dream of becoming friends\l"
@@ -383,7 +390,7 @@ RivalsHouse_1F_Text_MayWhoAreYou:
 	.string "some wild POKéMON!\p"
 	.string "{PLAYER}{KUN}, I'll catch you later!$"
 
-RivalsHouse_1F_Text_BrendanWhoAreYou:
+RivalsHouse_1F_Text_BrendanWhoAreYou_Name_Rival:
 	.string "Hey!\n"
 	.string "You…\p"
 	.string "Who are you?\p"
@@ -393,7 +400,10 @@ RivalsHouse_1F_Text_BrendanWhoAreYou:
 	.string "Dad, PROF. BIRCH, said that our new\n"
 	.string "next-door neighbor is a GYM LEADER's\l"
 	.string "kid, so I assumed you'd be a guy.\p"
-	.string "My name's BRENDAN.\n"
+	.string "My name's…$"
+
+RivalsHouse_1F_Text_BrendanWhoAreYou:
+	.string "My name's {RIVAL}.\n"
 	.string "So, hi, neighbor!\p"
 	.string "Huh? Hey, {PLAYER}, don't you have\n"
 	.string "a POKéMON?\p"
