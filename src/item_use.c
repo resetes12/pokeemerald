@@ -1017,8 +1017,13 @@ static void ItemUseOnFieldCB_EscapeRope(u8 taskId)
 
 bool8 CanUseDigOrEscapeRopeOnCurMap(void)
 {
-    if (gMapHeader.allowEscaping)
-        return TRUE;
+    if (gSaveBlock1Ptr->tx_Difficulty_EscapeRopeDig == 1)
+    {
+        if (gMapHeader.allowEscaping)
+            return TRUE;
+        else
+            return FALSE;
+    }
     else
         return FALSE;
 }
