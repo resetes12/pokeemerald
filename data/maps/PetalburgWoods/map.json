@@ -185,7 +185,7 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_ANABEL",
-      "x": 47,
+      "x": 48,
       "y": 12,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_INVISIBLE",
@@ -198,7 +198,7 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_OLD_MAN",
-      "x": 48,
+      "x": 49,
       "y": 14,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_FACE_DOWN_AND_LEFT",
@@ -224,7 +224,7 @@
     },
     {
       "graphics_id": "OBJ_EVENT_GFX_MON_BASE+SPECIES_CELEBI",
-      "x": 47,
+      "x": 48,
       "y": 11,
       "elevation": 0,
       "movement_type": "MOVEMENT_TYPE_INVISIBLE",

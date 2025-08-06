@@ -1219,7 +1219,7 @@
 #define FLAG_ITEM_SAFARI_ZONE_SOUTH_EAST_BIG_PEARL                  0x492
 
 #define FLAG_JIRACHI                                                0x493
-#define FLAG_ROBERTO1                                               0x494
+#define FLAG_PETALBURG_SHRINE_FIRST_TIME                            0x494
 #define FLAG_ENTEI_BATTLE_1                                         0x495
 #define FLAG_ENTEI_BATTLE_2                                         0x496
 #define FLAG_ENTEI_BATTLE_3                                         0x497
