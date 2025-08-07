@@ -3174,6 +3174,13 @@ extern const u32 gMonStillFrontPic_Dudunsparce[];
 extern const u8 gMonIcon_Dudunsparce[];
 extern const u8 gMonFootprint_Dudunsparce[];
 
+extern const u8 gMonIcon_Test[];
+extern const u32 gMonFrontPic_Test[];
+extern const u32 gMonPalette_Test[];
+extern const u32 gMonBackPic_Test[];
+extern const u32 gMonShinyPalette_Test[];
+extern const u32 gMonStillFrontPic_Test[];
+
 extern const u32 gMonFrontPic_CircledQuestionMark[];
 extern const u32 gMonBackPic_CircledQuestionMark[];
 extern const u32 gMonPalette_CircledQuestionMark[];

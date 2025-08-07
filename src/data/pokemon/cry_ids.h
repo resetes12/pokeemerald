@@ -175,4 +175,5 @@ const u16 gSpeciesIdToCryId[] =
     [SPECIES_ANNIHILAPE - 277] = 425, 
     [SPECIES_FARIGIRAF - 277] = 426,
     [SPECIES_DUDUNSPARCE - 277] = 427,
+    [SPECIES_TEST - 277] = 428,
 };

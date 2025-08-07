@@ -6214,5 +6214,6 @@ const union AnimCmd *const *const gMonFrontAnimsPtrTable[] =
     [SPECIES_ANNIHILAPE] = sAnims_Annihilape,
     [SPECIES_FARIGIRAF] = sAnims_Annihilape,
     [SPECIES_DUDUNSPARCE] = sAnims_Dudunsparce,
+    [SPECIES_TEST] = sAnims_Unown,
 
 };

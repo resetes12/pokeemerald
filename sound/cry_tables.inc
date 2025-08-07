@@ -428,6 +428,7 @@ gCryTable::
 	cry Cry_Annihilape
 	cry Cry_Farigiraf
 	cry Cry_Dudunsparce
+	cry Cry_Test
 
 	.align 2
 gCryTable_Reverse::
@@ -859,4 +860,5 @@ gCryTable_Reverse::
 	cry_reverse Cry_Annihilape
 	cry_reverse Cry_Farigiraf
 	cry_reverse Cry_Dudunsparce
+	cry_reverse Cry_Test
 

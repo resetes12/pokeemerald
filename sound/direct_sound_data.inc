@@ -2099,6 +2099,10 @@ Cry_Dudunsparce::
 	.incbin "sound/direct_sound_samples/cries/dudunsparce.bin"
 
 	.align 2
+Cry_Test::
+	.incbin "sound/direct_sound_samples/cries/unown.bin"
+
+	.align 2
 DirectSoundWaveData_register_noise::
 	.incbin "sound/direct_sound_samples/register_noise.bin"
 

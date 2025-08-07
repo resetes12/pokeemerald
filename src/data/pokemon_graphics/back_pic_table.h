@@ -486,7 +486,7 @@ const struct CompressedSpriteSheet gMonBackPicTable[] =
     //SPECIES_SPRITE(UNUSED_SPACE4, gMonBackPic_Unused_Space4),
     //SPECIES_SPRITE(UNUSED_SPACE5, gMonBackPic_Unused_Space5),
     //SPECIES_SPRITE(UNUSED_SPACE6, gMonBackPic_Unused_Space6),
-    //SPECIES_SPRITE(UNUSED_SPACE7, gMonBackPic_Unused_Space7),
+    SPECIES_SPRITE(TEST, gMonBackPic_Test),
     //SPECIES_SPRITE(UNUSED_SPACE8, gMonBackPic_Unused_Space8),
     //SPECIES_SPRITE(UNUSED_SPACE9, gMonBackPic_Unused_Space9),
     //SPECIES_SPRITE(UNUSED_SPACE10, gMonBackPic_Unused_Space10),

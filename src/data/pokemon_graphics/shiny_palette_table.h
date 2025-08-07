@@ -486,7 +486,7 @@ const struct CompressedSpritePalette gMonShinyPaletteTable[] =
     //SPECIES_SHINY_PAL(UNUSED_SPACE4, gMonShinyPalette_Unused_Space4),
     //SPECIES_SHINY_PAL(UNUSED_SPACE5, gMonShinyPalette_Unused_Space5),
     //SPECIES_SHINY_PAL(UNUSED_SPACE6, gMonShinyPalette_Unused_Space6),
-    //SPECIES_SHINY_PAL(UNUSED_SPACE7, gMonShinyPalette_Unused_Space7),
+    SPECIES_SHINY_PAL(TEST, gMonShinyPalette_Test),
     //SPECIES_SHINY_PAL(UNUSED_SPACE8, gMonShinyPalette_Unused_Space8),
     //SPECIES_SHINY_PAL(UNUSED_SPACE9, gMonShinyPalette_Unused_Space9),
     //SPECIES_SHINY_PAL(UNUSED_SPACE10, gMonShinyPalette_Unused_Space10),

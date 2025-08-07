@@ -489,7 +489,7 @@ const struct MonCoords gMonBackPicCoords[] =
     //[SPECIES_UNUSED_SPACE4]                = { .size = MON_COORDS_SIZE(64, 56), .y_offset =  5 },
     //[SPECIES_UNUSED_SPACE5]                = { .size = MON_COORDS_SIZE(64, 56), .y_offset =  5 },
     //[SPECIES_UNUSED_SPACE6]                = { .size = MON_COORDS_SIZE(64, 56), .y_offset =  5 },
-    //[SPECIES_UNUSED_SPACE7]                = { .size = MON_COORDS_SIZE(64, 56), .y_offset =  5 },
+    [SPECIES_TEST]                         = { .size = MON_COORDS_SIZE(24, 48), .y_offset =  8 },
     //[SPECIES_UNUSED_SPACE8]                = { .size = MON_COORDS_SIZE(64, 56), .y_offset =  5 },
     //[SPECIES_UNUSED_SPACE9]                = { .size = MON_COORDS_SIZE(64, 56), .y_offset =  5 },
     //[SPECIES_UNUSED_SPACE10]               = { .size = MON_COORDS_SIZE(64, 56), .y_offset =  5 },

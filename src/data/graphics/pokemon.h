@@ -3102,3 +3102,9 @@ const u32 gMonBackPic_Dudunsparce[] = INCBIN_U32("graphics/pokemon/dudunsparce/b
 const u32 gMonShinyPalette_Dudunsparce[] = INCBIN_U32("graphics/pokemon/dudunsparce/shiny.gbapal.lz");
 const u8 gMonIcon_Dudunsparce[] = INCBIN_U8("graphics/pokemon/dudunsparce/icon.4bpp");
 const u8 gMonFootprint_Dudunsparce[] = INCBIN_U8("graphics/pokemon/dudunsparce/footprint.1bpp");
+
+const u8 gMonIcon_Test[] = INCBIN_U8("graphics/pokemon/test/icon.4bpp");
+const u32 gMonStillFrontPic_Test[] = INCBIN_U32("graphics/pokemon/test/front.4bpp.lz");
+const u32 gMonPalette_Test[] = INCBIN_U32("graphics/pokemon/test/normal.gbapal.lz");
+const u32 gMonBackPic_Test[] = INCBIN_U32("graphics/pokemon/test/back.4bpp.lz");
+const u32 gMonShinyPalette_Test[] = INCBIN_U32("graphics/pokemon/test/shiny.gbapal.lz");
