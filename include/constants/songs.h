@@ -944,12 +944,14 @@
 #define MUS_HG_OBTAIN_CASTLE_POINTS       896 // Received Castle Points!
 #define MUS_HG_OBTAIN_B_POINTS            897 // Received Battle Points!
 #define MUS_HG_WIN_MINIGAME               898 // Cleared Wobbuffet Pop!
+#define MUS_BW_VS_LEGEND                  899 // Battle Vs. Legendary Pokémon - Black and White
+#define MUS_BW_VS_IRIS                    900 // Champion Battle! - Black and White 2
 
-#define HG_MUSIC_END                      MUS_HG_WIN_MINIGAME
+#define HG_MUSIC_END                      MUS_BW_VS_IRIS
 
 #define SONGS_END                         HG_MUSIC_END
 #define END_SE                            PH_NURSE_SOLO
-#define END_MUS                           MUS_HG_WIN_MINIGAME
+#define END_MUS                           MUS_BW_VS_IRIS
 
 #define MUS_ROUTE118                      0x7FFF  // Map is split into 2 music sections. controlled by GetCurrLocationDefaultMusic().
 

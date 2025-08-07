@@ -2363,3 +2363,9 @@ $(MID_SUBDIR)/mus_hg_obtain_b_points.s: %.s: %.mid
 
 $(MID_SUBDIR)/mus_hg_win_minigame.s: %.s: %.mid
 	$(MID) $< $@ -E -R0 -G229 -V091 -p5
+
+$(MID_SUBDIR)/mus_bw_vs_legend.s: %.s: %.mid
+	$(MID) $< $@ -E -R0 -G275 -V090
+
+$(MID_SUBDIR)/mus_bw_vs_iris.s: %.s: %.mid
+	$(MID) $< $@ -E -R0 -G274 -V090
