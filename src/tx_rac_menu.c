@@ -924,7 +924,7 @@ static const u8 *const sOptionMenuItemDescriptionsDifficulty[MENUITEM_DIFFICULTY
     [MENUITEM_DIFFICULTY_SCALING_EVS]           = {sText_Description_Difficulty_ScalingEVs_Off,     sText_Description_Difficulty_ScalingEVs_Scaling,    sText_Description_Difficulty_ScalingEVs_Hard,   sText_Description_Difficulty_ScalingEVs_Extreme},
     [MENUITEM_DIFFICULTY_NEXT]                  = {sText_Description_Difficulty_Next,               sText_Empty,                                        sText_Empty,                                    sText_Empty},
     [MENUITEM_DIFFICULTY_LIMIT_DIFFICULTY]      = {sText_Description_Challenges_LimitDifficulty_Off,    sText_Description_Challenges_LimitDifficulty_On,    sText_Empty,                                        sText_Empty},
-    [MENUITEM_DIFFICULTY_ESCAPE_ROPE_DIG]       = {sText_Description_Difficulty_EscapeRopeDig_Off,  sText_Description_Difficulty_EscapeRopeDig_On,  sText_Empty,                                        sText_Empty},
+    [MENUITEM_DIFFICULTY_ESCAPE_ROPE_DIG]       = {sText_Description_Difficulty_EscapeRopeDig_On,  sText_Description_Difficulty_EscapeRopeDig_Off,  sText_Empty,                                        sText_Empty},
     [MENUITEM_DIFFICULTY_MAX_PARTY_IVS]         = {sText_Description_Difficulty_MaxPartyIvs_Off,    sText_Description_Difficulty_MaxPartyIvs_On,    sText_Description_Difficulty_MaxPartyIvs_On_HP,                                        sText_Empty},
 };  
 
@@ -3078,15 +3078,15 @@ static void DrawChoices_Difficulty_Escape_Rope_Dig(int selection, int y)
 
     if (selection == 0)
     {
-        gSaveBlock1Ptr->tx_Difficulty_EscapeRopeDig = 0; //Escape rope and dig are disallowed
+        gSaveBlock1Ptr->tx_Difficulty_EscapeRopeDig = 0; //YES, Escape rope and dig are allowed. DEFAULT.
     }
     else
     {
-        gSaveBlock1Ptr->tx_Challenges_LessEscapes = 1; //Escape rope and dig are allowed. DEFAULT.
+        gSaveBlock1Ptr->tx_Difficulty_EscapeRopeDig = 1; //NO, Escape rope and dig are disallowed
     }
 
-    DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
-    DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
+    DrawOptionMenuChoice(sText_Yes, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_No, GetStringRightAlignXOffset(1, sText_No, 198), y, styles[1], active);
 }
 
 
