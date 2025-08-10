@@ -119,6 +119,7 @@ OpenUnownChamber:
 	special DrawWholeMapView
 	playse SE_BANG
 	setflag FLAG_UNOWN_CHAMBER_OPEN
+	setvar VAR_TEST, 28
 	end
 
 EndUnownScript:

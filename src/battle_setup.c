@@ -636,6 +636,14 @@ void BattleSetup_StartLegendaryBattle(void)
     case SPECIES_LATIAS:
         CreateBattleStartTask(B_TRANSITION_GRID_SQUARES, MUS_RG_VS_LEGEND);
         break;
+    case SPECIES_ARCEUS:
+        gBattleTypeFlags |= BATTLE_TYPE_GROUDON;
+        CreateBattleStartTask(B_TRANSITION_BLUR, MUS_HG_VS_ARCEUS);
+        break;
+    case SPECIES_TEST:
+        gBattleTypeFlags |= BATTLE_TYPE_GROUDON;
+        CreateBattleStartTask(B_TRANSITION_BLACKHOLE_PULSATE, MUS_BW_VS_IRIS);
+        break;
     }
 
     IncrementGameStat(GAME_STAT_TOTAL_BATTLES);
