@@ -79,6 +79,22 @@ Debug_Script_3::
 	case MULTI_B_PRESSED, Debug_Script_1_Closemessage
 	special NameRival
 	waitstate
+	msgbox Debug_Script_3_Text_Which_WT, MSGBOX_YESNO
+	switch VAR_RESULT
+	case YES, Debug_Script_3_Set_Unlimited_WT
+	case NO, Debug_Script_3_Set_Limited_WT
+	case MULTI_B_PRESSED, Debug_Script_3_Set_Limited_WT
+	end
+
+Debug_Script_3_Set_Limited_WT:
+	closemessage
+	setvar VAR_WONDERTRADE, 1
+	warp MAP_PETALBURG_CITY, 16, 16
+	end
+
+Debug_Script_3_Set_Unlimited_WT:
+	setvar VAR_WONDERTRADE, 0
+	closemessage
 	warp MAP_PETALBURG_CITY, 16, 16
 	end
 
@@ -87,17 +103,23 @@ Debug_Script_3_Text:
 	.string "However, if you are willing to\n"
 	.string "accept possible issues,\l"
 	.string "this script will let you name\l"
-	.string "your rival and then teleport you\l"
-	.string "to PETALBURG CITY.\l"
+	.string "your rival, fix other stuff, then\l"
+	.string "teleport you to PETALBURG CITY.\l"
 	.string "The teleport fixes characters stuck\l"
 	.string "in broken interiors, and naming your\l"
 	.string "rival is now mandatory.\p"
 	.string "Continue?$"
 
+Debug_Script_3_Text_Which_WT:
+	.string "Is UNLIMITED WONDERTRADES\n"
+	.string "in the challenges menu enabled?$"
+
 Debug_Script_4::
+	setvar VAR_WONDERTRADE, 0
 	end
 
 Debug_Script_5::
+	setvar VAR_WONDERTRADE, 1
 	end
 
 Debug_Script_6::

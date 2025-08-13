@@ -42,21 +42,21 @@
 #define TEMP_FLAGS_END   FLAG_TEMP_1F
 #define NUM_TEMP_FLAGS   (TEMP_FLAGS_END - TEMP_FLAGS_START + 1)     
 
-#define FLAG_SYS_NO_COLLISION                0x20 // Unused Flag //DEBUG
-#define FLAG_SYS_NO_ENCOUNTER                0x21 // Unused Flag //DEBUG
-#define FLAG_SYS_NO_TRAINER_SEE              0x22 // Unused Flag //DEBUG
-#define FLAG_SYS_NO_BAG_USE                  0x23 // Unused Flag //DEBUG
-#define FLAG_SYS_NO_CATCHING                 0x24 // Unused Flag //DEBUG
-#define FLAG_SYS_PC_FROM_DEBUG_MENU          0x25 // Unused Flag //DEBUG
+#define FLAG_SYS_NO_COLLISION                0x20 //DEBUG
+#define FLAG_SYS_NO_ENCOUNTER                0x21 //DEBUG
+#define FLAG_SYS_NO_TRAINER_SEE              0x22 //DEBUG
+#define FLAG_SYS_NO_BAG_USE                  0x23 //DEBUG
+#define FLAG_SYS_NO_CATCHING                 0x24 //DEBUG
+#define FLAG_SYS_PC_FROM_DEBUG_MENU          0x25 //DEBUG
 #define FLAG_ARCEUS_EGG_GIVE                 0x26
-#define FLAG_SYS_NO_BATTLE_DMG               0x27 // Unused Flag //DEBUG
+#define FLAG_SYS_NO_BATTLE_DMG               0x27 //DEBUG
 #define FLAG_IV_SETTER                       0x28 
-#define FLAG_SIDNEY_REMATCH                  0x29 //Elite Four Rematch 1
-#define FLAG_PHOEBE_REMATCH                  0x2A //Elite Four Rematch 2
+#define FLAG_SIDNEY_REMATCH                  0x29 // Elite Four Rematch 1
+#define FLAG_PHOEBE_REMATCH                  0x2A // Elite Four Rematch 2
 #define FLAG_SYS_SET_BATTLE_BGM              0x2B // Changes BGM
-#define FLAG_WONDERTRADE_FIRSTIME            0x2C 
+#define FLAG_UNUSED_0x02C                    0x2C // Unused
 #define FLAG_NO_WT_BECAUSE_CHALLENGE         0x2D 
-#define FLAG_GLACIA_REMATCH                  0x2E //Elite Four Rematch 3
+#define FLAG_GLACIA_REMATCH                  0x2E // Elite Four Rematch 3
 #define FLAG_DOME_FOSSIL_ALTERING_CAVE       0x2F 
 #define FLAG_CAVE_MOONSTONE                  0x30 
 #define FLAG_CAVE_SUNSTONE                   0x31 
@@ -65,8 +65,8 @@
 #define FLAG_TIMID_MINT_MAUVILLE             0x34 
 #define FLAG_HELIX_FOSSIL_ALTERING           0x35 
 #define FLAG_CALM_MINT_SANDTOWER             0x36
-#define FLAG_DRAKE_REMATCH                   0x37 //Elite Four Rematch 4
-#define FLAG_WALLACE_REMATCH                 0x38 //Elite Four Rematch 5, Champion
+#define FLAG_DRAKE_REMATCH                   0x37 // Elite Four Rematch 4
+#define FLAG_WALLACE_REMATCH                 0x38 // Elite Four Rematch 5, Champion
 #define FLAG_STEVEN_REMATCH                  0x39 // Steven Rematch, true champion
 #define FLAG_SYS_BRAILLE_REGIELEKI_COMPLETED 0x3A
 #define FLAG_DEFEATED_REGIELEKI              0x3B 

@@ -605,6 +605,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_GivePokedex::
 	setvar VAR_OLDALE_TOWN_STATE, 1
 	setvar VAR_LITTLEROOT_RIVAL_STATE, 4
 	setvar VAR_LITTLEROOT_TOWN_STATE, 3
+	goto_if_unset FLAG_UNLIMITIED_WONDERTRADE, SetWonderTradeModeLimited
 	releaseall
 	end
 
