@@ -986,25 +986,25 @@ static const struct InGameTrade sIngameTrades[] =
 {
     [INGAME_TRADE_SEEDOT] =
     {
-        .nickname = _("BUDDY"),
-        .species = SPECIES_BUDEW,
+        .nickname = _("DOTS"),
+        .species = SPECIES_SEEDOT,
         .ivs31 = {31, 31, 31, 31, 31, 31},
         .ivs = {5, 4, 5, 4, 4, 4},
-        .abilityNum = 0,
+        .abilityNum = 1,
         .otId = 38726,
         .conditions = {30, 5, 5, 5, 5},
         .personality = 0x84,
         .heldItem = ITEM_CHESTO_BERRY,
         .mailNum = -1,
         .otName = _("KOBE"),
-        .otGender = FEMALE,
+        .otGender = MALE,
         .sheen = 10,
         .requestedSpecies = SPECIES_RALTS
     },
     [INGAME_TRADE_PLUSLE] =
     {
-        .nickname = _("CHING"),
-        .species = SPECIES_CHINGLING,
+        .nickname = _("PLUSES"),
+        .species = SPECIES_PLUSLE,
         .ivs31 = {31, 31, 31, 31, 31, 31},
         .ivs = {4, 4, 4, 5, 5, 4},
         .abilityNum = 0,
@@ -1014,7 +1014,7 @@ static const struct InGameTrade sIngameTrades[] =
         .heldItem = ITEM_WOOD_MAIL,
         .mailNum = 0,
         .otName = _("ROMAN"),
-        .otGender = FEMALE,
+        .otGender = MALE,
         .sheen = 10,
         .requestedSpecies = SPECIES_VOLBEAT
     },
