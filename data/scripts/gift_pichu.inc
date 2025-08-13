@@ -3,10 +3,11 @@ MysteryGiftScript_SurfPichu::
 	vgoto_if_unset FLAG_MYSTERY_GIFT_DONE, SurfPichu_GiveIfPossible
 	returnram
 
-SurfPichu_GiveIfPossible:
+SurfPichu_GiveIfPossible::
+	goto_if_set FLAG_SURF_PICHU_OBTAINED, SurfPichu_Obtained
 	specialvar VAR_GIFT_PICHU_SLOT, CalculatePlayerPartyCount
 	vgoto_if_eq VAR_GIFT_PICHU_SLOT, PARTY_SIZE, SurfPichu_FullParty
-	setflag FLAG_MYSTERY_GIFT_DONE
+	setflag FLAG_SURF_PICHU_OBTAINED
 	vcall SurfPichu_GiveEgg
 	lock
 	faceplayer
@@ -16,6 +17,11 @@ SurfPichu_GiveIfPossible:
 	playfanfare MUS_OBTAIN_ITEM
 	waitfanfare
 	release
+	end
+
+SurfPichu_Obtained::
+	msgbox MysteryGiftEggObtained_Text, MSGBOX_DEFAULT
+	closemessage
 	end
 
 SurfPichu_FullParty:
@@ -59,8 +65,8 @@ SurfPichu_Slot5:
 	return
 
 sText_MysteryGiftEgg:
-	.string "Thank you for using the MYSTERY\n"
-	.string "GIFT System.\p"
+	.string "Congratulations on becoming\n"
+	.string "CHAMPION!\p"
 	.string "From the POKéMON CENTER we\n"
 	.string "have a gift--a POKéMON EGG!\p"
 	.string "Please raise it with love and\n"
@@ -70,3 +76,7 @@ sText_FullParty:
 	.string "Oh, your party appears to be full.\p"
 	.string "Please come see me after storing\n"
 	.string "a POKéMON on a PC.$"
+
+MysteryGiftEggObtained_Text:
+	.string "Please raise it with love and\n"
+	.string "kindness.$"

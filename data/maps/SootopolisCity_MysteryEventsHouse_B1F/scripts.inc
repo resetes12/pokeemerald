@@ -4,11 +4,11 @@ SootopolisCity_MysteryEventsHouse_B1F_MapScripts::
 	.byte 0
 
 SootopolisCity_MysteryEventsHouse_B1F_OnTransition:
-	special SetEReaderTrainerGfxId
+	@special SetEReaderTrainerGfxId
 	end
 
 SootopolisCity_MysteryEventsHouse_B1F_OnFrame:
-	map_script_2 VAR_TEMP_1, 0, SootopolisCity_MysteryEventsHouse_B1F_EventScript_BattleVisitingTrainer
+	@map_script_2 VAR_TEMP_1, 0, SootopolisCity_MysteryEventsHouse_B1F_EventScript_BattleVisitingTrainer
 	.2byte 0
 
 SootopolisCity_MysteryEventsHouse_B1F_EventScript_BattleVisitingTrainer::
