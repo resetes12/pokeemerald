@@ -684,8 +684,8 @@
 #define FLAG_UNUSED_0x281  0x281
 #define FLAG_UNUSED_0x282  0x282
 #define FLAG_UNUSED_0x283  0x283
-#define FLAG_UNUSED_0x284  0x284 //QM
-#define FLAG_UNUSED_0x285  0x285 // Unused Flag
+#define FLAG_UNUSED_0x284  0x284 
+#define FLAG_UNUSED_0x285  0x285 //QM
 #define FLAG_UNUSED_0x286  0x286 // Unused Flag
 #define FLAG_UNUSED_0x287  0x287 // Unused Flag
 #define FLAG_UNUSED_0x288  0x288 // Unused Flag
@@ -1243,12 +1243,12 @@
 #define FLAG_AERODACTYL_PUZZLE_SOLVED                               0x4A8
 #define FLAG_ALL_PUZZLES_COMPLETED                                  0x4A9
 #define FLAG_UNOWN_CHAMBER_OPEN                                     0x4AA
-#define FLAG_UNUSED_0x4AB                                           0x4AB // Unused Flag
-#define FLAG_UNUSED_0x4AC                                           0x4AC // Unused Flag
-#define FLAG_UNUSED_0x4AD                                           0x4AD // Unused Flag
-#define FLAG_UNUSED_0x4AE                                           0x4AE // Unused Flag
-#define FLAG_UNUSED_0x4AF                                           0x4AF // Unused Flag
-#define FLAG_UNUSED_0x4B0                                           0x4B0 // Unused Flag
+#define FLAG_TEST_DONE                                              0x4AB
+#define FLAG_TEST_CAPTURED                                          0x4AC
+#define FLAG_TEST_GUIDE                                             0x4AD
+#define FLAG_TEST_HIDE_1                                            0x4AE
+#define FLAG_TEST_HIDE_2                                            0x4AF
+#define FLAG_TEST_HIDE_3                                            0x4B0
 #define FLAG_UNUSED_0x4B1                                           0x4B1 // Unused Flag
 #define FLAG_UNUSED_0x4B2                                           0x4B2 // Unused Flag
 #define FLAG_UNUSED_0x4B3                                           0x4B3 // Unused Flag

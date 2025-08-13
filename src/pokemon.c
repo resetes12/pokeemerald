@@ -569,7 +569,7 @@ static const u16 sSpeciesToHoennPokedexNum[NUM_SPECIES - 1] =
     //SPECIES_TO_HOENN(UNUSED_SPACE4),
     //SPECIES_TO_HOENN(UNUSED_SPACE5),
     //SPECIES_TO_HOENN(UNUSED_SPACE6),
-    //SPECIES_TO_HOENN(UNUSED_SPACE7),
+    SPECIES_TO_HOENN(TEST),
     //SPECIES_TO_HOENN(UNUSED_SPACE8),
     //SPECIES_TO_HOENN(UNUSED_SPACE9),
     //SPECIES_TO_HOENN(UNUSED_SPACE10),
@@ -1035,7 +1035,7 @@ static const u16 sSpeciesToNationalPokedexNum[NUM_SPECIES - 1] =
     //SPECIES_TO_NATIONAL(UNUSED_SPACE4),
     //SPECIES_TO_NATIONAL(UNUSED_SPACE5),
     //SPECIES_TO_NATIONAL(UNUSED_SPACE6),
-    //SPECIES_TO_NATIONAL(UNUSED_SPACE7),
+    SPECIES_TO_NATIONAL(TEST),
     //SPECIES_TO_NATIONAL(UNUSED_SPACE8),
     //SPECIES_TO_NATIONAL(UNUSED_SPACE9),
     //SPECIES_TO_NATIONAL(UNUSED_SPACE10),
@@ -1502,7 +1502,7 @@ static const u16 sHoennToNationalOrder[NUM_SPECIES - 1] =
     //HOENN_TO_NATIONAL(UNUSED_SPACE4),
     //HOENN_TO_NATIONAL(UNUSED_SPACE5),
     //HOENN_TO_NATIONAL(UNUSED_SPACE6),
-    //HOENN_TO_NATIONAL(UNUSED_SPACE7),
+    HOENN_TO_NATIONAL(TEST),
     //HOENN_TO_NATIONAL(UNUSED_SPACE8),
     //HOENN_TO_NATIONAL(UNUSED_SPACE9),
     //HOENN_TO_NATIONAL(UNUSED_SPACE10),
@@ -2847,7 +2847,7 @@ static const u8 gSpeciesMapping[NUM_SPECIES+1] =
     //[SPECIES_UNUSED_SPACE4 - 1] = EVO_TYPE_LEGENDARY,
     //[SPECIES_UNUSED_SPACE5 - 1] = EVO_TYPE_LEGENDARY,
     //[SPECIES_UNUSED_SPACE6 - 1] = EVO_TYPE_LEGENDARY,
-    //[SPECIES_UNUSED_SPACE7 - 1] = EVO_TYPE_LEGENDARY,
+    //[SPECIES_TEST - 1] = EVO_TYPE_LEGENDARY,
     //[SPECIES_UNUSED_SPACE8 - 1] = EVO_TYPE_LEGENDARY,
     //[SPECIES_UNUSED_SPACE9 - 1] = EVO_TYPE_LEGENDARY,
     //[SPECIES_UNUSED_SPACE10 - 1] = EVO_TYPE_LEGENDARY,
@@ -3316,7 +3316,7 @@ static const u16 sRandomSpecies[] =
     //SPECIES_UNUSED_SPACE4           ,
     //SPECIES_UNUSED_SPACE5           ,
     //SPECIES_UNUSED_SPACE6           ,
-    //SPECIES_UNUSED_SPACE7           ,
+    //SPECIES_TEST           ,
     //SPECIES_UNUSED_SPACE8           ,
     //SPECIES_UNUSED_SPACE9           ,
     //SPECIES_UNUSED_SPACE10            ,
@@ -3780,7 +3780,7 @@ static const u16 sRandomSpeciesLegendary[] =
     //SPECIES_UNUSED_SPACE4           ,
     //SPECIES_UNUSED_SPACE5           ,
     //SPECIES_UNUSED_SPACE6           ,
-    //SPECIES_UNUSED_SPACE7           ,
+    //SPECIES_TEST           ,
     //SPECIES_UNUSED_SPACE8           ,
     //SPECIES_UNUSED_SPACE9           ,
     //SPECIES_UNUSED_SPACE10            ,
@@ -4136,7 +4136,7 @@ static const u16 sRandomSpeciesEvo1[] =
     //SPECIES_UNUSED_SPACE4           ,
     //SPECIES_UNUSED_SPACE5           ,
     //SPECIES_UNUSED_SPACE6           ,
-    //SPECIES_UNUSED_SPACE7           ,
+    //SPECIES_TEST           ,
     //SPECIES_UNUSED_SPACE8           ,
     //SPECIES_UNUSED_SPACE9           ,
     //SPECIES_UNUSED_SPACE10            ,
@@ -4210,7 +4210,7 @@ static const u16 sRandomSpeciesEvo2[] =
     //SPECIES_UNUSED_SPACE4           ,
     //SPECIES_UNUSED_SPACE5           ,
     //SPECIES_UNUSED_SPACE6           ,
-    //SPECIES_UNUSED_SPACE7           ,
+    //SPECIES_TEST           ,
     //SPECIES_UNUSED_SPACE8           ,
     //SPECIES_UNUSED_SPACE9           ,
     //SPECIES_UNUSED_SPACE10            ,
@@ -4252,7 +4252,7 @@ static const u16 sRandomSpeciesEvoLegendary[] =
     //SPECIES_UNUSED_SPACE4           ,
     //SPECIES_UNUSED_SPACE5           ,
     //SPECIES_UNUSED_SPACE6           ,
-    //SPECIES_UNUSED_SPACE7           ,
+    //SPECIES_TEST           ,
     //SPECIES_UNUSED_SPACE8           ,
     //SPECIES_UNUSED_SPACE9           ,
     //SPECIES_UNUSED_SPACE10            ,
@@ -6507,6 +6507,12 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     {
         defense *= 1.25;
         spDefense *= 1.25;
+    }
+    //Test event
+    if ((attacker->ability == ABILITY_LEVITATE) && (type == TYPE_MYSTERY))
+    {
+        attack *= 1.5;
+        spAttack *= 1.5;
     }
     // Apply abilities / field sports
     if (gSaveBlock2Ptr->optionStyle == 0)

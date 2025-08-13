@@ -2859,6 +2859,7 @@ static void PrintMonInfo(void)
     ScheduleBgCopyTilemapToVram(0);
 }
 static const u8 sText_Deoxys_Number[] = _("{NO}{CLEAR 0x01}386");
+static const u8 sText_Test_Number[] = _("{NO}{CLEAR 0x01}???");
 
 static void PrintNotEggInfo(void)
 {
@@ -2878,6 +2879,20 @@ static void PrintNotEggInfo(void)
         else
         {
             PrintTextOnWindow(PSS_LABEL_WINDOW_PORTRAIT_DEX_NUMBER, sText_Deoxys_Number, 0, 1, 0, 7);
+            SetMonPicBackgroundPalette(TRUE);
+        }
+        PutWindowTilemap(PSS_LABEL_WINDOW_PORTRAIT_DEX_NUMBER);
+    }
+    else if (species == SPECIES_TEST)
+    {
+        if (!IsMonShiny(mon))
+        {
+            PrintTextOnWindow(PSS_LABEL_WINDOW_PORTRAIT_DEX_NUMBER, sText_Test_Number, 0, 1, 0, 1);
+            SetMonPicBackgroundPalette(FALSE);
+        }
+        else
+        {
+            PrintTextOnWindow(PSS_LABEL_WINDOW_PORTRAIT_DEX_NUMBER, sText_Test_Number, 0, 1, 0, 7);
             SetMonPicBackgroundPalette(TRUE);
         }
         PutWindowTilemap(PSS_LABEL_WINDOW_PORTRAIT_DEX_NUMBER);

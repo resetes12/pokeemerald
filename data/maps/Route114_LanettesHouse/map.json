@@ -26,6 +26,19 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "Route114_LanettesHouse_EventScript_Lanette",
       "flag": "FLAG_HIDE_LANETTES_HOUSE_LANETTE"
+    },
+    {
+      "graphics_id": "OBJ_EVENT_GFX_MON_BASE+SPECIES_UNOWN_J",
+      "x": 1,
+      "y": 6,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_INVISIBLE",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "NULL",
+      "flag": "0"
     }
   ],
   "warp_events": [
@@ -71,6 +84,14 @@
       "elevation": 0,
       "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
       "script": "Route114_LanettesHouse_EventScript_PC"
+    },
+    {
+      "type": "sign",
+      "x": 2,
+      "y": 7,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "U_J_Sign"
     }
   ]
 }

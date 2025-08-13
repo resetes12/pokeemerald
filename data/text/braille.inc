@@ -161,41 +161,32 @@ UnownChamber_Right_Braille_Text:
 
 UnownChamber_Random_Text_1:
 	brailleformat 3, 0, 25, 19, 6, 3
-	.braille "TWO START THE\n"
-	.braille "ALPHABET.$"
+	.braille "GOLD$"
 
 UnownChamber_Random_Text_2:
 	brailleformat 3, 0, 25, 19, 6, 3
-	.braille "FIVE OF THEM\n"
-	.braille "CURVES AROUND\n"
-	.braille "THEIR EYES.$"
+	.braille "AND SILVER.$"
 
 UnownChamber_Random_Text_3:
 	brailleformat 3, 0, 25, 19, 6, 3
-	.braille "FOUR ARE\n"
-	.braille "SYMMETRICAL.$"
+	.braille "SILVER$"
 
 UnownChamber_Random_Text_4:
 	brailleformat 3, 0, 25, 19, 6, 3
-	.braille "FIVE ARE NOT\n"
-	.braille "SYMMETRICAL.$"
+	.braille "AND GOLD.$"
 
 UnownChamber_Random_Text_5:
 	brailleformat 3, 0, 25, 19, 6, 3
-	.braille "FIVE ARE\n"
-	.braille "STRAIGHT.$"
+	.braille "TWENTY$"
 
 UnownChamber_Random_Text_6:
 	brailleformat 3, 0, 25, 19, 6, 3
-	.braille "FIVE ARE NOT\n"
-	.braille "SPECIAL.$"
+	.braille "EIGHT.$"
 
 UnownChamber_Random_Text_7:
 	brailleformat 3, 0, 25, 19, 6, 3
-	.braille "TWO ARE THE\n"
-	.braille "END.$"
+	.braille "THEY ARE$"
 
 UnownChamber_Random_Text_8:
 	brailleformat 3, 0, 25, 19, 6, 3
-	.braille "AND THE KING\n"
-	.braille "IS MISSING.$"
+	.braille "WAITING.$"

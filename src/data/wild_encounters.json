@@ -34013,62 +34013,62 @@
               {
                 "min_level": 20,
                 "max_level": 25,
-                "species": "SPECIES_WINGULL"
+                "species": "SPECIES_NATU"
               },
               {
                 "min_level": 30,
                 "max_level": 32,
-                "species": "SPECIES_PELIPPER"
+                "species": "SPECIES_SMEARGLE"
               },
               {
                 "min_level": 20,
                 "max_level": 21,
-                "species": "SPECIES_WINGULL"
+                "species": "SPECIES_NATU"
               },
               {
                 "min_level": 20,
                 "max_level": 25,
-                "species": "SPECIES_KRABBY"
+                "species": "SPECIES_NATU"
               },
               {
                 "min_level": 20,
                 "max_level": 22,
-                "species": "SPECIES_WINGULL"
+                "species": "SPECIES_SMEARGLE"
               },
               {
                 "min_level": 20,
                 "max_level": 25,
-                "species": "SPECIES_HOPPIP"
+                "species": "SPECIES_SMEARGLE"
               },
               {
                 "min_level": 25,
                 "max_level": 25,
-                "species": "SPECIES_HOPPIP"
+                "species": "SPECIES_XATU"
               },
               {
                 "min_level": 30,
                 "max_level": 31,
-                "species": "SPECIES_PELIPPER"
+                "species": "SPECIES_XATU"
               },
               {
                 "min_level": 29,
                 "max_level": 31,
-                "species": "SPECIES_PELIPPER"
+                "species": "SPECIES_SMEARGLE"
               },
               {
                 "min_level": 25,
                 "max_level": 26,
-                "species": "SPECIES_SANDSHREW"
+                "species": "SPECIES_SMEARGLE"
               },
               {
                 "min_level": 24,
                 "max_level": 26,
-                "species": "SPECIES_SANDSHREW"
+                "species": "SPECIES_XATU"
               },
               {
                 "min_level": 30,
                 "max_level": 33,
-                "species": "SPECIES_SANDSLASH"
+                "species": "SPECIES_SMEARGLE"
               }
             ]
           }
@@ -34077,7 +34077,7 @@
           "map": "MAP_NAVEL_ROCK_UNOWN_ROOM_1",
           "base_label": "gNavelRock_Unown_Room_10",
           "land_mons": {
-            "encounter_rate": 10,
+            "encounter_rate": 0,
             "mons": [
               {
                 "min_level": 30,

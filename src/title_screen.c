@@ -787,6 +787,8 @@ static void Task_TitleScreenPhase3(u8 taskId)
         FadeOutBGM(4);
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_WHITEALPHA);
         SetMainCallback2(CB2_GoToMainMenu);
+        if ((FlagGet(FLAG_UNOWN_CHAMBER_OPEN)) && (FlagGet(FLAG_COLLECTED_ALL_GOLD_SYMBOLS)) && (VarGet(VAR_TEST) > 0))
+            PlayCry_Normal(SPECIES_UNOWN, 0);
     }
     else if (JOY_HELD(CLEAR_SAVE_BUTTON_COMBO) == CLEAR_SAVE_BUTTON_COMBO)
     {

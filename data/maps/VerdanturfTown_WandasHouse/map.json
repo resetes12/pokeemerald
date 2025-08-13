@@ -78,6 +78,19 @@
       "trainer_sight_or_berry_tree_id": "0",
       "script": "VerdanturfTown_WandasHouse_EventScript_Wanda",
       "flag": "FLAG_HIDE_VERDANTURF_TOWN_WANDAS_HOUSE_WANDA"
+    },
+    {
+      "graphics_id": "OBJ_EVENT_GFX_MON_BASE+SPECIES_UNOWN_H",
+      "x": 14,
+      "y": 0,
+      "elevation": 0,
+      "movement_type": "MOVEMENT_TYPE_INVISIBLE",
+      "movement_range_x": 0,
+      "movement_range_y": 0,
+      "trainer_type": "TRAINER_TYPE_NONE",
+      "trainer_sight_or_berry_tree_id": "0",
+      "script": "NULL",
+      "flag": "0"
     }
   ],
   "warp_events": [
@@ -100,6 +113,13 @@
 
   ],
   "bg_events": [
-
+    {
+      "type": "sign",
+      "x": 13,
+      "y": 1,
+      "elevation": 0,
+      "player_facing_dir": "BG_EVENT_PLAYER_FACING_ANY",
+      "script": "U_H_Sign"
+    }
   ]
 }

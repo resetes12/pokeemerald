@@ -5186,14 +5186,14 @@ const struct PokedexEntry gPokedexEntries[] =
         .trainerScale = 256,
         .trainerOffset = 0,
     },
-    [NATIONAL_DEX_UNUSED_SPACE7] =
+    [NATIONAL_DEX_TEST] =
     {
-        .categoryName = _("ALPHA"),
-        .height = 32,
-        .weight = 3200,
-        .description = gArceusPokedexText,
-        .pokemonScale = 356,
-        .pokemonOffset = 0,
+        .categoryName = _("???"),
+        .height = 5,
+        .weight = 9999,
+        .description = gDummyPokedexText,
+        .pokemonScale = 411,
+        .pokemonOffset = 2,
         .trainerScale = 256,
         .trainerOffset = 0,
     },

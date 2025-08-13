@@ -74,4 +74,5 @@ const u8 gEnemyMonElevation[NUM_SPECIES] =
     [SPECIES_PORYGON_Z] = 12,
     [SPECIES_PROBOPASS] = 6,
     [SPECIES_REGIDRAGO] = 5,
+    [SPECIES_TEST] = 8,
 };

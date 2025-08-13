@@ -4624,8 +4624,8 @@
     {
       "id": "LAYOUT_NAVEL_ROCK_UNOWN_ROOM_1",
       "name": "NavelRock_Unown_Room_1_Layout",
-      "width": 1,
-      "height": 1,
+      "width": 3,
+      "height": 80,
       "primary_tileset": "gTileset_General",
       "secondary_tileset": "gTileset_NavelRock",
       "border_filepath": "data/layouts/NavelRock_Unown_Room_1/border.bin",
