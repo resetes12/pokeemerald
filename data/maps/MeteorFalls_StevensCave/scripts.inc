@@ -78,12 +78,12 @@ MeteorFalls_StevensCave_EventScript_StevenArceusEventToPC::
 	end
 
 MeteorFalls_StevensCave_Text_ArceusEvent1:
-	.string "And… I would like to give you\n"
-	.string "something I found while digging\l"
-	.string "around. It's a strange egg.\p"
-	.string "I've been carrying it for many\n"
-	.string "weeks but it doesn't hatch.\p"
-	.string "You're a better trainer than me,\n"
+	.string "And… I want to give you something\n"
+	.string "I found while digging here.\p"
+	.string "It's a strange egg.\p"
+	.string "I've carried it for weeks, but\n"
+	.string "it won't hatch.\p"
+	.string "You're a stronger trainer than me,\n"
 	.string "so maybe you can make it hatch.$"
 
 MeteorFalls_StevensCave_Text_ArceusEvent2:

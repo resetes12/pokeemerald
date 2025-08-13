@@ -39,14 +39,13 @@ MagmaHideout_3F_1R_EntranceTrigger::
 	end
 
 MagmaHideout_3F_1R_EntranceTrigger_Text:
-	.string "A big roar echoes around MAGMA\n"
-	.string "HIDEOUT.\p"
-	.string "It seems that the echoing roars\n"
-	.string "come from a menacing POKéMON.\p"
-	.string "However… It looks distressed.\n"
-	.string "Is it scared?\p"
-	.string "Catching it may be impossible without\n"
-	.string "weakening it.$"
+	.string "A deep roar shakes the MAGMA HIDEOUT.\n"
+	.string "The sound belongs to a menacing\n"
+	.string "POKéMON, yet something feels off.\p"
+	.string "The POKéMON senses your intent\n"
+	.string "to capture it…\p"
+	.string "Using POKé BALLS now might\n"
+	.string "just be a waste.$"
 
 MagmaHideout_3F_1R_EntranceTriggerMovement:
 	face_right
@@ -111,7 +110,7 @@ MagmaHideout_3F_1R_EnteiBattle1_Movement:
 	step_end
 
 MagmaHideout_3F_1R_EnteiBattle1_Text:
-	.string "The POKéMON ran away!$"
+	.string "ENTEI ran away!$"
 
 @@Second encounter with Entei. Has 750HP and is now level 50. Atk and Sp.Atk are getting stronger.
 
@@ -174,7 +173,7 @@ MagmaHideout_3F_1R_EnteiBattle2_Movement:
 	step_end
 
 MagmaHideout_3F_1R_EnteiBattle2_Text:
-	.string "The POKéMON ran away, but not\n"
+	.string "ENTEI ran away, but not\n"
 	.string "as fast as before.$"
 
 @@Third and last encounter with Entei before catching it. Has 800HP and is now level 60, and it's sunny. More atk and sp.atk.
@@ -241,9 +240,8 @@ MagmaHideout_3F_1R_EnteiBattle3_Movement:
 	step_end
 
 MagmaHideout_3F_1R_EnteiBattle3_Text:
-	.string "The POKéMON ran away. However it's\n"
-	.string "way slower than before.\l"
-	.string "Is it getting tired?$"
+	.string "ENTEI fled, but far more\n"
+	.string "slowly than before.$"
 
 @@Final battle with Entei, now you can catch it. Has 900HP, holds charcoal and it's sunny. Way stronger as well.
 
@@ -297,8 +295,10 @@ MagmaHideout_3F_1R_Entei_EnteiBattle4_Stats::
 	return
 
 MagmaHideout_3F_1R_EnteiBattleFinal_Text:
-	.string "ENTEI looks exhausted.\n"
-	.string "Can it be captured now?$"
+	.string "It seems ENTEI wasn't using its\n"
+	.string "full power.\p"
+	.string "Now that it focusing on it, capture\n"
+	.string "might finally be possible.$"
 
 MagmaHideout_3F_1R_EnteiFinalBattle_Won::
 	setflag FLAG_DEFEATED_ENTEI

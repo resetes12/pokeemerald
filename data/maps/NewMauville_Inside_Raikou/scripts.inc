@@ -20,10 +20,8 @@ NewMauville_Inside_Raikou_EntranceTrigger::
 	end
 
 NewMauville_Inside_Raikou_EntranceTrigger_Text:
-	.string "A big roar echoes around NEW\n"
-	.string "MAUVILLE.\p"
-	.string "Is there something hiding in\n"
-	.string "this place?$"
+	.string "A thunderous roar rumbles through\n"
+	.string "the halls of NEW MAUVILLE.$"
 
 NewMauville_Inside_Raikou_EntranceTrigger_Movement:
 	delay_16
@@ -80,7 +78,7 @@ NewMauville_Inside_Raikou_RaikouBattle_1_Movement:
 	step_end
 
 NewMauville_Inside_Raikou_RaikouBattle_1_Text:
-	.string "It ran away faster than light!$"
+	.string "RAIKOU ran away swiftly!$"
 
 @@Second encounter with Raikou. Level 70, 400 speed, 300hp
 
@@ -131,7 +129,7 @@ NewMauville_Inside_Raikou_RaikouBattle_2_Movement:
 	step_end
 
 NewMauville_Inside_Raikou_RaikouBattle_2_Text:
-	.string "It ran away even faster than before!$"
+	.string "RAIKOU swiftly escaped again!$"
 
 @@ Final battle with Raikou, has 600hp and 400 speed, with magnet
 NewMauville_Inside_Raikou_RaikouBattle::
@@ -166,8 +164,7 @@ NewMauville_Inside_Raikou_RaikouBattle_3_Stats::
 	return
 
 NewMauville_Inside_Raikou_RaikouBattle_Text::
-	.string "RAIKOU stopped running away.\n"
-	.string "Can it be captured now?$"
+	.string "RAIKOU stopped running away.$"
 
 NewMauville_Inside_Raikou_Won::
 	setflag FLAG_DEFEATED_RAIKOU
