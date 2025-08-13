@@ -73,8 +73,26 @@ Debug_Script_2::
 	end
 
 Debug_Script_3::
+	msgbox Debug_Script_3_Text, MSGBOX_YESNO
+	switch VAR_RESULT
+	case NO, Debug_Script_1_Closemessage
+	case MULTI_B_PRESSED, Debug_Script_1_Closemessage
 	special NameRival
+	waitstate
+	warp MAP_PETALBURG_CITY, 16, 16
 	end
+
+Debug_Script_3_Text:
+	.string "STARTING A NEW GAME IS RECOMMENDED!\p"
+	.string "However, if you are willing to\n"
+	.string "accept possible issues,\l"
+	.string "this script will let you name\l"
+	.string "your rival and then teleport you\l"
+	.string "to PETALBURG CITY.\l"
+	.string "The teleport fixes characters stuck\l"
+	.string "in broken interiors, and naming your\l"
+	.string "rival is now mandatory.\p"
+	.string "Continue?$"
 
 Debug_Script_4::
 	end
