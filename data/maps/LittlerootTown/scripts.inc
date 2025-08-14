@@ -223,7 +223,7 @@ LittlerootTown_EventScript_BeginDexUpgradeScene::
 	applymovement LOCALID_BIRCH, Common_Movement_ExclamationMark
 	waitmovement 0
 	delay 80
-	goto_if_ge VAR_ENCOUNTER_TABLE, 3, LittlerootTown_EventScript_BeginDexUpgradeSceneSkip
+	goto_if_ge VAR_ENCOUNTER_TABLE, 2, LittlerootTown_EventScript_BeginDexUpgradeSceneSkip
 	msgbox LittlerootTown_Text_BirchSomethingToShowYouAtLab, MSGBOX_DEFAULT
 	closemessage
 	clearflag FLAG_HIDE_LITTLEROOT_TOWN_RIVAL
