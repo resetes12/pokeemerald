@@ -2,8 +2,8 @@
 .set LOCALID_CLAW_FOSSIL, 2
 
 MirageTower_4F_MapScripts::
-	map_script MAP_SCRIPT_ON_TRANSITION, SetTimeEncounters
-	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
+	map_script MAP_SCRIPT_ON_TRANSITION, EncounterTable
+	map_script MAP_SCRIPT_ON_RESUME, EncounterTable
 	.byte 0
 
 MirageTower_4F_EventScript_RootFossil::

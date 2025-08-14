@@ -360,8 +360,8 @@ static u16 GetCurrentMapWildMonHeaderId(void)
         if (gWildMonHeaders[i].mapGroup == gSaveBlock1Ptr->location.mapGroup &&
             gWildMonHeaders[i].mapNum == gSaveBlock1Ptr->location.mapNum)
         {
-            if (VarGet(VAR_TIME_BASED_ENCOUNTER) >= 1 && VarGet(VAR_TIME_BASED_ENCOUNTER) <= 4)
-                i += (VarGet(VAR_TIME_BASED_ENCOUNTER) - 1);
+            if (VarGet(VAR_ENCOUNTER_TABLE) >= 1 && VarGet(VAR_ENCOUNTER_TABLE) <= 4)
+                i += (VarGet(VAR_ENCOUNTER_TABLE) - 1);
             if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(ALTERING_CAVE) &&
                 gSaveBlock1Ptr->location.mapNum == MAP_NUM(ALTERING_CAVE))
             {

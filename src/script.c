@@ -489,23 +489,22 @@ void InitRamScript_NoObjectEvent(u8 *script, u16 scriptSize)
     InitRamScript(script, scriptSize, MAP_GROUP(UNDEFINED), MAP_NUM(UNDEFINED), NO_OBJECT);
 }
 
-void SetTimeBasedEncounters(void)
+void ChangeEncounterTable(void)
 {
-	RtcCalcLocalTime();
-    if ((gLocalTime.hours >= 6 && gLocalTime.hours <= 19) && (gSaveBlock1Ptr->tx_Mode_AlternateSpawns == 1))
-    {
-		VarSet(VAR_TIME_BASED_ENCOUNTER, 3); // Modern Spawns, Day
-	}
+    if ((gSaveBlock1Ptr->tx_Mode_Encounters == 0)) // Vanilla Mode, unmodified encounters
+        VarSet(VAR_ENCOUNTER_TABLE, 1);
+    else if ((gSaveBlock1Ptr->tx_Mode_Encounters == 1)) //Modern Encounters always
+        VarSet(VAR_ENCOUNTER_TABLE, 2);
+    else if ((gSaveBlock1Ptr->tx_Mode_Encounters == 2) && (FlagGet(FLAG_SYS_GAME_CLEAR) == FALSE)) //Post-game Mode, before champion (Vanilla)
+        VarSet(VAR_ENCOUNTER_TABLE, 1);
+    else if ((gSaveBlock1Ptr->tx_Mode_Encounters == 2) && (FlagGet(FLAG_SYS_GAME_CLEAR) == TRUE)) //Post-game Mode, after champion (Modern)
+        VarSet(VAR_ENCOUNTER_TABLE, 2);
+}
+
+void Update24to30(void)
+{
+    if (gSaveBlock1Ptr->tx_Mode_AlternateSpawns == 0)
+        gSaveBlock1Ptr->tx_Mode_Encounters = 0;
     else if (gSaveBlock1Ptr->tx_Mode_AlternateSpawns == 1)
-    {
-		VarSet(VAR_TIME_BASED_ENCOUNTER, 4); // Modern Spawns, Night
-	}
-	else if ((gLocalTime.hours >= 6 && gLocalTime.hours <= 19) && (gSaveBlock1Ptr->tx_Mode_AlternateSpawns == 0))
-	{
-		VarSet(VAR_TIME_BASED_ENCOUNTER, 1); // Day
-	}
-	else if (gSaveBlock1Ptr->tx_Mode_AlternateSpawns == 0)
-    {
-		VarSet(VAR_TIME_BASED_ENCOUNTER, 2); // Night
-	}
-}    
+        gSaveBlock1Ptr->tx_Mode_Encounters = 1;
+}

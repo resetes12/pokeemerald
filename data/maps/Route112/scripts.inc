@@ -3,11 +3,11 @@
 
 Route112_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, Route112_OnTransition
-	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
+	map_script MAP_SCRIPT_ON_RESUME, EncounterTable
 	.byte 0
 
 Route112_OnTransition:
-	callnative SetTimeBasedEncounters
+	callnative ChangeEncounterTable
 	clearflag FLAG_FORCE_MIRAGE_TOWER_VISIBLE
 	setvar VAR_JAGGED_PASS_ASH_WEATHER, 0
 	end

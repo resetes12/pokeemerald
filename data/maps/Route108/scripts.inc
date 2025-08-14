@@ -1,6 +1,6 @@
 Route108_MapScripts::
-	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
-	map_script MAP_SCRIPT_ON_TRANSITION, SetTimeEncounters
+	map_script MAP_SCRIPT_ON_RESUME, EncounterTable
+	map_script MAP_SCRIPT_ON_TRANSITION, EncounterTable
 	.byte 0
 
 Route108_EventScript_Jerome::

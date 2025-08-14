@@ -1,11 +1,11 @@
 AbandonedShip_Rooms_B1F_MapScripts::
 	map_script MAP_SCRIPT_ON_RESUME, AbandonedShip_Rooms_B1F_OnResume
-	map_script MAP_SCRIPT_ON_TRANSITION, SetTimeEncounters
+	map_script MAP_SCRIPT_ON_TRANSITION, EncounterTable
 	.byte 0
 
 AbandonedShip_Rooms_B1F_OnResume:
 	setdivewarp MAP_ABANDONED_SHIP_UNDERWATER2, 17, 4
-	callnative SetTimeBasedEncounters
+	callnative ChangeEncounterTable
 	end
 
 AbandonedShip_Rooms_B1F_EventScript_FatMan::

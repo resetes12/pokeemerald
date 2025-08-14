@@ -1,6 +1,6 @@
 VictoryRoad_B1F_MapScripts::
-	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
-	map_script MAP_SCRIPT_ON_TRANSITION, SetTimeEncounters
+	map_script MAP_SCRIPT_ON_RESUME, EncounterTable
+	map_script MAP_SCRIPT_ON_TRANSITION, EncounterTable
 	.byte 0
 
 VictoryRoad_B1F_EventScript_Samuel::

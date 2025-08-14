@@ -7,7 +7,7 @@ JaggedPass_MapScripts::
 	.byte 0
 
 JaggedPass_OnResume:
-	callnative SetTimeBasedEncounters
+	callnative ChangeEncounterTable
 	setstepcallback STEP_CB_ASH
 	call_if_eq VAR_JAGGED_PASS_STATE, 0, JaggedPass_EventScript_CheckHasMagmaEmblem
 	end
@@ -23,7 +23,7 @@ JaggedPass_EventScript_SetReadyToOpenHideout::
 
 JaggedPass_OnTransition:
 	call_if_eq VAR_JAGGED_PASS_ASH_WEATHER, 1, JaggedPass_EventScript_SetWeatherAsh
-	callnative SetTimeBasedEncounters
+	callnative ChangeEncounterTable
 	end
 
 JaggedPass_EventScript_SetWeatherAsh::

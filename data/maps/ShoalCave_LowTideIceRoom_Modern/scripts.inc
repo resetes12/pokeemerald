@@ -1,8 +1,8 @@
 ShoalCave_LowTideIceRoom_Modern_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, ShoalCave_LowTideIceRoom_Modern_OnTransition
-	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
+	map_script MAP_SCRIPT_ON_RESUME, EncounterTable
 	.byte 0
 
 ShoalCave_LowTideIceRoom_Modern_OnTransition::
-	callnative SetTimeBasedEncounters
+	callnative ChangeEncounterTable
 	end

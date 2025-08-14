@@ -1,7 +1,7 @@
 AbandonedShip_HiddenFloorRooms_MapScripts::
 	map_script MAP_SCRIPT_ON_FRAME_TABLE, AbandonedShip_HiddenFloorRooms_OnFrame
-	map_script MAP_SCRIPT_ON_TRANSITION, SetTimeEncounters
-	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
+	map_script MAP_SCRIPT_ON_TRANSITION, EncounterTable
+	map_script MAP_SCRIPT_ON_RESUME, EncounterTable
 	.byte 0
 
 AbandonedShip_HiddenFloorRooms_OnFrame:

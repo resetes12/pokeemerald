@@ -1,12 +1,12 @@
 AbandonedShip_Corridors_B1F_MapScripts::
 	map_script MAP_SCRIPT_ON_RESUME, AbandonedShip_Corridors_B1F_OnResume
-	map_script MAP_SCRIPT_ON_TRANSITION, SetTimeEncounters
+	map_script MAP_SCRIPT_ON_TRANSITION, EncounterTable
 	map_script MAP_SCRIPT_ON_LOAD, AbandonedShip_Corridors_B1F_OnLoad
 	.byte 0
 
 AbandonedShip_Corridors_B1F_OnResume:
 	setdivewarp MAP_ABANDONED_SHIP_UNDERWATER1, 5, 4
-	callnative SetTimeBasedEncounters
+	callnative ChangeEncounterTable
 	end
 
 AbandonedShip_Corridors_B1F_OnLoad:

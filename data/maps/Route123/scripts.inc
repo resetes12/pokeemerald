@@ -1,10 +1,10 @@
 Route123_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, Route123_OnTransition
-	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
+	map_script MAP_SCRIPT_ON_RESUME, EncounterTable
 	.byte 0
 
 Route123_OnTransition:
-	callnative SetTimeBasedEncounters
+	callnative ChangeEncounterTable
 	special SetRoute123Weather
 	end
 

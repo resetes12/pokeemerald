@@ -1,12 +1,12 @@
 FieryPath_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, FieryPath_OnTransition
-	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
+	map_script MAP_SCRIPT_ON_RESUME, EncounterTable
 	.byte 0
 
 FieryPath_OnTransition:
 	call_if_unset FLAG_LANDMARK_FIERY_PATH, FieryPath_EventScript_MoveScottToFallarbor
 	setflag FLAG_LANDMARK_FIERY_PATH
-	callnative SetTimeBasedEncounters
+	callnative ChangeEncounterTable
 	end
 
 FieryPath_EventScript_MoveScottToFallarbor::

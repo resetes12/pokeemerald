@@ -4,11 +4,11 @@
 
 MagmaHideout_3F_1R_Entei_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, MagmaHideout_3F_1R_Entei_OnTransition
-	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
+	map_script MAP_SCRIPT_ON_RESUME, EncounterTable
 	.byte 0
 
 MagmaHideout_3F_1R_Entei_OnTransition::
-	callnative SetTimeBasedEncounters
+	callnative ChangeEncounterTable
 	end
 
 MagmaHideout_3F_1R_DroughtTrigger::

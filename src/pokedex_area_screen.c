@@ -674,13 +674,12 @@ static void FindMapsWithMon(u16 species)
         sPokedexAreaScreen->numSpecialAreas = 0;
 
         //hides the pkm that are part from the list from above. Certain pkm will still overlap, but it's a solution for now
-        if (gSaveBlock1Ptr->tx_Mode_AlternateSpawns == 0)
+        if (gSaveBlock1Ptr->tx_Mode_Encounters == 0) // Use sHiddenPokemon #fix!!!
         {
             for (i = 0; i < ARRAY_COUNT(sSpeciesHiddenFromAreaScreenModern); i++)
             {
-                if (VarGet(VAR_TIME_BASED_ENCOUNTER) >= 0 && VarGet(VAR_TIME_BASED_ENCOUNTER) <= 2)
-                    if (sSpeciesHiddenFromAreaScreenModern[i] == species)
-                        return;
+                if (sSpeciesHiddenFromAreaScreenModern[i] == species)
+                    return;
             }
             for (i = 0; sHiddenPokemon[i][0] != NUM_SPECIES; i++)
             {

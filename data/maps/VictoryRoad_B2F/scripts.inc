@@ -4,11 +4,11 @@ VictoryRoad_B2F_MapScripts::
 	.byte 0
 
 VictoryRoad_B2F_OnResume:
-	callnative SetTimeBasedEncounters
+	callnative ChangeEncounterTable
 	end
 
 VictoryRoad_B2F_OnTransition:
-	callnative SetTimeBasedEncounters
+	callnative ChangeEncounterTable
 	goto_if_set FLAG_UNLOCK_BIRDS, VictoryRoad_B2F_SwitchToModern
 	end
 

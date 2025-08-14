@@ -6,11 +6,11 @@
 
 PetalburgWoods_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, PetalburgWoods_OnTransition
-	map_script MAP_SCRIPT_ON_RESUME, SetTimeEncounters
+	map_script MAP_SCRIPT_ON_RESUME, EncounterTable
 	.byte 0
 
 PetalburgWoods_OnTransition::
-	callnative SetTimeBasedEncounters
+	callnative ChangeEncounterTable
 	goto_if_unset FLAG_EXTRA_LEGENDARIES, PetalburgWoods_SwitchToOld
 	call_if_unset FLAG_SYS_GAME_CLEAR, PetalburgWoods_NoCelebiEvent
 	call_if_set FLAG_SYS_GAME_CLEAR, PetalburgWoods_YesCelebiEvent

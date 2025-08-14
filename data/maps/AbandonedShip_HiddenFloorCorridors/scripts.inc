@@ -1,12 +1,12 @@
 AbandonedShip_HiddenFloorCorridors_MapScripts::
 	map_script MAP_SCRIPT_ON_RESUME, AbandonedShip_HiddenFloorCorridors_OnResume
 	map_script MAP_SCRIPT_ON_LOAD, AbandonedShip_HiddenFloorCorridors_OnLoad
-	map_script MAP_SCRIPT_ON_TRANSITION, SetTimeEncounters
+	map_script MAP_SCRIPT_ON_TRANSITION, EncounterTable
 	.byte 0
 
 AbandonedShip_HiddenFloorCorridors_OnResume:
 	setdivewarp MAP_ABANDONED_SHIP_UNDERWATER1, 5, 4
-	callnative SetTimeBasedEncounters
+	callnative ChangeEncounterTable
 	end
 
 AbandonedShip_HiddenFloorCorridors_OnLoad:
