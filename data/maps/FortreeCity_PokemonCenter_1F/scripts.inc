@@ -14,13 +14,13 @@ FortreeCity_PokemonCenter_1F_RhyperiorEvo::
 	end
 
 FortreeCity_PokemonCenter_1F_RhyperiorEvo_Text:
-	.string "RHYDON evolves by trading, but\n"
-	.string "only if it is traded with an object.\p"
-	.string "Which object, you might ask?\p"
-	.string "Well… My memory is not as good as\n"
-	.string "it was thirty years ago… It was a…\l"
-	.string "HARD… HARD… Ah.\p"
-	.string "I can't remember it. Sorry.$"
+	.string "RHYDON evolves when traded, but\n"
+	.string "only if it holds a special item.\p"
+	.string "Which one, you ask?\p"
+	.string "Hmm… My memory isn’t what it\n"
+	.string "used to be… It was a HARD…\l"
+	.string "HARD… Oh dear.\p"
+	.string "I just can’t recall. Sorry.$"
 
 FortreeCity_PokemonCenter_1F_EventScript_Nurse::
 	setvar VAR_0x800B, LOCALID_NURSE

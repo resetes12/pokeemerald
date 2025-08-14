@@ -16,18 +16,16 @@ RustboroCity_PokemonCenter_1F_ProbopassEvo::
 
 RustboroCity_PokemonCenter_1F_ProbopassEvo_Text:
 	.string "NOSEPASS evolves and changes\n"
-	.string "its typing to ROCK and STEEL.\p"
-	.string "But in order to evolve, it needs\n"
-	.string "to be exposed to a strong\l"
-	.string "magnetic field.\p"
-	.string "It's difficult finding a place\n"
-	.string "like that in HOENN, so scientists\l"
-	.string "discovered that making NOSEPASS\l"
-	.string "hold a THUNDER STONE makes it\l"
-	.string "evolve by multiplying its own\l"
-	.string "magnetic field by two! Crazy!\p"
-	.string "I wonder what THUNDER STONES are\n"
-	.string "made of.$"
+	.string "its type to ROCK and STEEL.\p"
+	.string "To evolve, it must be near a\n"
+	.string "strong magnetic field.\p"
+	.string "Such places are rare in HOENN,\n"
+	.string "so scientists found another way:\l"
+	.string "making NOSEPASS hold a THUNDER\l"
+	.string "STONE boosts its magnetic field\l"
+	.string "enough to trigger evolution!\p"
+	.string "I still wonder what THUNDER\n"
+	.string "STONES are made of…$"
 
 RustboroCity_PokemonCenter_1F_EventScript_Nurse::
 	setvar VAR_0x800B, LOCALID_NURSE

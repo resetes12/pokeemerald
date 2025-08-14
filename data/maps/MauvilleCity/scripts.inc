@@ -29,13 +29,25 @@ MauvilleCity_EventScript_MagnezoneEvo::
 MauvilleCity_EventScript_MagnezoneEvo_Text:
 	.string "Did you know that MAGNETON can\n"
 	.string "evolve? Do you know how?\p"
-	.string "Because… I would like to know.\p"
-	.string "I know it was something related\n"
-	.string "to a evolutionary STONE. A THUNDER\l"
-	.string "STONE, to be precise!\p"
-	.string "But it was not using it!\p"
-	.string "Was it battling? HOLDING IT?\n"
-	.string "I seriously don't know…$"
+	.string "I am really curious about this.\p"
+	.string "I heard it involves a THUNDERSTONE,\n"
+	.string "but if you use it, nothing happens!\p"
+	.string "What do you mean I should check the\n"
+	.string "EVOLUTION tab in the POKéDEX?\p"
+	.string "I… I don't even have one yet…$"
+
+MauvilleCity_EventScript_MagnezoneEvo_Magneton::
+	lock
+	faceplayer
+	waitse
+	playmoncry SPECIES_MAGNETON, CRY_MODE_NORMAL
+	msgbox MauvilleCity_EventScript_MagnezoneEvo_Magneton_Text, MSGBOX_DEFAULT
+	waitmoncry
+	release
+	end
+
+MauvilleCity_EventScript_MagnezoneEvo_Magneton_Text:
+	.string "MAGNETON: Magne! Ton!$"
 
 MauvilleCity_EventScript_Boy::
 	msgbox MauvilleCity_Text_NurseHurtMonBackToHealth, MSGBOX_NPC

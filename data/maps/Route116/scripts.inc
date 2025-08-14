@@ -21,10 +21,9 @@ Route116_RoseradeEvo::
 	end
 
 Route116_RoseradeEvo_Text:
-	.string "Did you know that certain POKéMON\n"
-	.string "evolve when their BEAUTY reaches its\l"
-	.string "maximum level?\p"
-	.string "That's how my ROSELIA evolved!$"
+	.string "Did you know some POKéMON evolve\n"
+	.string "when their BEAUTY is maxed?\p"
+	.string "That’s how my ROSELIA evolved!$"
 
 Route116_EventScript_SetWandasBoyfriendPos::
 	setobjectxyperm LOCALID_WANDAS_BF_OUTSIDE, 38, 10
