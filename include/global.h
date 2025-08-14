@@ -1155,7 +1155,7 @@ struct SaveBlock1
         u8 tx_Features_PkmnDeath:1;
         u8 tx_Challenges_PCHeal:1;
         u8 tx_Features_RTCType:1;
-        u8 tx_Mode_AlternateSpawns:1;
+        u8 tx_Mode_AlternateSpawns:1; //Unused
         u8 tx_Features_LimitDifficulty:1;
         u8 tx_Features_ShinyChance:4;
         u8 tx_Features_WildMonDropItems:1;
@@ -1172,6 +1172,7 @@ struct SaveBlock1
         u8 tx_Mode_New_Legendaries:1;
         u8 tx_Challenges_Expensive:3;
         u8 tx_Difficulty_EscapeRopeDig:1;
+        u8 tx_Mode_Encounters:2;
 };
 
 extern struct SaveBlock1* gSaveBlock1Ptr;

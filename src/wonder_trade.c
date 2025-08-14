@@ -401,12 +401,14 @@ static u16 PickRandomSpecies() // picks only base forms
 {
     u16 species = sIsValidSpecies[Random() % NELEMS(sIsValidSpecies)];
     u16 speciesVanilla = sIsValidSpeciesVanilla[Random() % NELEMS(sIsValidSpeciesVanilla)];
-    if (gSaveBlock1Ptr->tx_Mode_AlternateSpawns == 1)
-        return species;
-    if ((gSaveBlock1Ptr->tx_Mode_AlternateSpawns == 0) && (FlagGet(FLAG_SYS_GAME_CLEAR) == TRUE))
-        return species;
-    else if (gSaveBlock1Ptr->tx_Mode_AlternateSpawns == 0)
+    if (gSaveBlock1Ptr->tx_Mode_Encounters == 0) //Vanilla Mode
         return speciesVanilla;
+    else if (gSaveBlock1Ptr->tx_Mode_Encounters == 1) //Modern Mode
+        return species;
+    else if ((gSaveBlock1Ptr->tx_Mode_Encounters == 2) && (FlagGet(FLAG_SYS_GAME_CLEAR) == FALSE)) //Post-game mode
+        return speciesVanilla;
+    else if ((gSaveBlock1Ptr->tx_Mode_Encounters == 2) && (FlagGet(FLAG_SYS_GAME_CLEAR) == TRUE)) //Post-game mode, after champion
+        return species;
 }
 
 static u8 GetWonderTradeOT(u8 *name)

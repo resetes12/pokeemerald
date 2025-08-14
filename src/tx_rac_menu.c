@@ -353,7 +353,7 @@ struct // MENU_MODE
 } static const sItemFunctionsMode[MENUITEM_MODE_COUNT] =
 {
     [MENUITEM_MODE_CLASSIC_MODERN]        = {DrawChoices_Mode_Classic_Modern_Selector,       ProcessInput_Options_Three},
-    [MENUITEM_MODE_ALTERNATE_SPAWNS]      = {DrawChoices_Mode_AlternateSpawns,      ProcessInput_Options_Two},
+    [MENUITEM_MODE_ALTERNATE_SPAWNS]      = {DrawChoices_Mode_AlternateSpawns,      ProcessInput_Options_Three},
     [MENUITEM_MODE_INFINITE_TMS]          = {DrawChoices_Mode_InfiniteTMs,          ProcessInput_Options_Two},
     [MENUITEM_MODE_SURVIVE_POISON]        = {DrawChoices_Mode_SurvivePoison,        ProcessInput_Options_Two},
     [MENUITEM_MODE_SYNCHRONIZE]           = {DrawChoices_Mode_Synchronize,          ProcessInput_Options_Two},
@@ -463,7 +463,7 @@ struct // MENU_CHALLENGES
 
 
 static const u8 sText_Gamemode[]            = _("GAMEMODE");
-static const u8 sText_AlternateSpawns[]     = _("MODERN SPAWNS");
+static const u8 sText_AlternateSpawns[]     = _("ENCOUNTERS");
 static const u8 sText_InfiniteTMs[]         = _("REUSABLE TMS");
 static const u8 sText_Poison[]              = _("SURVIVE POISON");
 static const u8 sText_Synchronize[]         = _("SYNCHRONIZE");
@@ -732,8 +732,9 @@ static const u8 sText_Description_Save[]    = _("Save choices and continue...");
 static const u8 sText_Description_Mode_Gamemode_Classic[]         = _("Vanilla-like preset.");
 static const u8 sText_Description_Mode_Gamemode_Modern[]          = _("Modernized preset.");
 static const u8 sText_Description_Mode_Gamemode_Custom[]          = _("Choose your own rules.");
-static const u8 sText_Description_Mode_AlternateSpawns_Off[]      = _("Use vanilla-ish wild encounters,\nwithout version exclusives.");
-static const u8 sText_Description_Mode_AlternateSpawns_On[]       = _("Use Modern Emerald wild encounters.\nAll 423 {PKMN} available.");
+static const u8 sText_Description_Mode_AlternateSpawns_Vanilla[]        = _("Use VANILLA wild encounters.\nUnchanged from the original.");
+static const u8 sText_Description_Mode_AlternateSpawns_Postgame[]       = _("VANILLA, but after becoming champion,\nall 423 {PKMN} will become available.");
+static const u8 sText_Description_Mode_AlternateSpawns_Modern[]         = _("Use MODERN wild encounters.\nAll 423 {PKMN} will be available.");
 static const u8 sText_Description_Mode_InfiniteTMs_On[]           = _("TMs are reusable.\nModern Emerald recommended.");
 static const u8 sText_Description_Mode_InfiniteTMs_Off[]          = _("TMs are not reusable.\nLike in the original.");
 static const u8 sText_Description_Mode_SurvivePoison_On[]         = _("Your {PKMN} will survive the POISON\nstatus with 1HP.");
@@ -763,7 +764,7 @@ static const u8 sText_Description_Mode_Next[]                     = _("Continue 
 static const u8 *const sOptionMenuItemDescriptionsMode[MENUITEM_MODE_COUNT][5] =
 {
     [MENUITEM_MODE_CLASSIC_MODERN]        = {sText_Description_Mode_Gamemode_Classic,       sText_Description_Mode_Gamemode_Modern,       sText_Description_Mode_Gamemode_Custom,             sText_Empty,                                        sText_Empty},
-    [MENUITEM_MODE_ALTERNATE_SPAWNS]      = {sText_Description_Mode_AlternateSpawns_Off,    sText_Description_Mode_AlternateSpawns_On,    sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_MODE_ALTERNATE_SPAWNS]      = {sText_Description_Mode_AlternateSpawns_Vanilla,    sText_Description_Mode_AlternateSpawns_Modern,      sText_Description_Mode_AlternateSpawns_Postgame,                                         sText_Empty,                                        sText_Empty},
     [MENUITEM_MODE_INFINITE_TMS]          = {sText_Description_Mode_InfiniteTMs_Off,        sText_Description_Mode_InfiniteTMs_On,        sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_MODE_SURVIVE_POISON]        = {sText_Description_Mode_SurvivePoison_Off,      sText_Description_Mode_SurvivePoison_On,      sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_MODE_SYNCHRONIZE]           = {sText_Description_Mode_Synchronize_Old,        sText_Description_Mode_Synchronize_New,       sText_Empty,                                        sText_Empty,                                        sText_Empty},
@@ -1381,7 +1382,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         break;
     case 6:
         //tx_randomizer_and_challenges
-        gSaveBlock1Ptr->tx_Mode_AlternateSpawns             = TX_MODE_ALTERNATE_SPAWNS;
+        gSaveBlock1Ptr->tx_Mode_Encounters                  = TX_MODE_ALTERNATE_SPAWNS;
         gSaveBlock1Ptr->tx_Mode_InfiniteTMs                 = TX_MODE_INFINITE_TMS;
         gSaveBlock1Ptr->tx_Mode_PoisonSurvive               = TX_MODE_SURVIVE_POISON;
         gSaveBlock1Ptr->tx_Mode_Synchronize                 = TX_MODE_NEW_SYNCHRONIZE;
@@ -1451,7 +1452,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         sOptions = AllocZeroed(sizeof(*sOptions));
         //MENU MODE
         sOptions->sel_mode[MENUITEM_MODE_CLASSIC_MODERN]         = FALSE;
-        sOptions->sel_mode[MENUITEM_MODE_ALTERNATE_SPAWNS]       = gSaveBlock1Ptr->tx_Mode_AlternateSpawns;
+        sOptions->sel_mode[MENUITEM_MODE_ALTERNATE_SPAWNS]       = gSaveBlock1Ptr->tx_Mode_Encounters;
         sOptions->sel_mode[MENUITEM_MODE_INFINITE_TMS]           = gSaveBlock1Ptr->tx_Mode_InfiniteTMs;
         sOptions->sel_mode[MENUITEM_MODE_SURVIVE_POISON]         = gSaveBlock1Ptr->tx_Mode_PoisonSurvive;  
         sOptions->sel_mode[MENUITEM_MODE_SYNCHRONIZE]            = gSaveBlock1Ptr->tx_Mode_Synchronize;
@@ -1800,7 +1801,7 @@ void SaveData_TxRandomizerAndChallenges(void)
 {
     PrintCurrentSelections();
     //MENU MODE
-    gSaveBlock1Ptr->tx_Mode_AlternateSpawns             = sOptions->sel_mode[MENUITEM_MODE_ALTERNATE_SPAWNS]; 
+    gSaveBlock1Ptr->tx_Mode_Encounters                  = sOptions->sel_mode[MENUITEM_MODE_ALTERNATE_SPAWNS]; 
     gSaveBlock1Ptr->tx_Mode_InfiniteTMs                 = sOptions->sel_mode[MENUITEM_MODE_INFINITE_TMS]; 
     gSaveBlock1Ptr->tx_Mode_PoisonSurvive               = sOptions->sel_mode[MENUITEM_MODE_SURVIVE_POISON]; 
     gSaveBlock1Ptr->tx_Mode_Synchronize                 = sOptions->sel_mode[MENUITEM_MODE_SYNCHRONIZE]; 
@@ -2204,7 +2205,7 @@ static void DrawChoices_Mode_Classic_Modern_Selector(int selection, int y)
     if (selection == 0)
     {
         sOptions->sel_mode[MENUITEM_MODE_ALTERNATE_SPAWNS]          = TX_MODE_ALTERNATE_SPAWNS;
-        gSaveBlock1Ptr->tx_Mode_AlternateSpawns = 0;
+        gSaveBlock1Ptr->tx_Mode_Encounters = 0;
         sOptions->sel_mode[MENUITEM_MODE_INFINITE_TMS]              = TX_MODE_INFINITE_TMS;
         gSaveBlock1Ptr->tx_Mode_InfiniteTMs = 0;
         FlagSet (FLAG_FINITE_TMS);
@@ -2235,7 +2236,7 @@ static void DrawChoices_Mode_Classic_Modern_Selector(int selection, int y)
     else if (selection == 1)
     {
         sOptions->sel_mode[MENUITEM_MODE_ALTERNATE_SPAWNS]          = !TX_MODE_ALTERNATE_SPAWNS;
-        gSaveBlock1Ptr->tx_Mode_AlternateSpawns = 1;
+        gSaveBlock1Ptr->tx_Mode_Encounters = 1;
         sOptions->sel_mode[MENUITEM_MODE_INFINITE_TMS]              = !TX_MODE_INFINITE_TMS;
         gSaveBlock1Ptr->tx_Mode_InfiniteTMs = 1;
         FlagClear (FLAG_FINITE_TMS);
@@ -2609,23 +2610,33 @@ static void DrawChoices_Features_Rtc_Type(int selection, int y)
     DrawOptionMenuChoice(sText_Features_RTC_Fake_RTC, GetStringRightAlignXOffset(1, sText_Features_RTC_Fake_RTC, 198), y, styles[1], active);
 }
 
+static const u8 sText_Encounters_Vanilla[]   = _("ORIG");
+static const u8 sText_Encounters_Postgame[]  = _("POST");
+static const u8 sText_Encounters_Modern[]    = _("NEW");
+
 static void DrawChoices_Mode_AlternateSpawns(int selection, int y)
 {
     bool8 active = CheckConditions(MENUITEM_MODE_ALTERNATE_SPAWNS);
-    u8 styles[2] = {0};
+    u8 styles[3] = {0};
+    int xMid = GetMiddleX(sText_Encounters_Vanilla, sText_Encounters_Modern, sText_Encounters_Postgame);
     styles[selection] = 1;
 
     if (selection == 0)
     {
-        gSaveBlock1Ptr->tx_Mode_AlternateSpawns = 0; //Off, no spawns
+        gSaveBlock1Ptr->tx_Mode_Encounters = 0; //Vanilla, unmodified encounters
+    }
+    else if (selection == 1)
+    {
+        gSaveBlock1Ptr->tx_Mode_Encounters = 1; //Full modern encounters
     }
     else
     {
-        gSaveBlock1Ptr->tx_Mode_AlternateSpawns = 1; //On, new spawns
+        gSaveBlock1Ptr->tx_Mode_Encounters = 2; //Vanilla encounters, with post-game pokémon
     }
 
-    DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
-    DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
+    DrawOptionMenuChoice(sText_Encounters_Vanilla, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_Encounters_Modern, xMid, y, styles[1], active);
+    DrawOptionMenuChoice(sText_Encounters_Postgame, GetStringRightAlignXOffset(1, sText_Encounters_Postgame, 198), y, styles[2], active);
 }
 
 static void DrawChoices_Challenges_LimitDifficulty(int selection, int y)

@@ -57,14 +57,14 @@ Debug_Script_1_Closemessage::
 	end
 
 Debug_Script_1_Text:
-	.string "WARNING! ENTERING THE CHALLENGES\n"
+	.string "{COLOR RED}WARNING! ENTERING THE CHALLENGES\n"
 	.string "MENU COULD MESS YOUR SAVE DATA.\p"
 	.string "SOME OPTIONS MAY NOT WORK UNLESS A\n"
 	.string "NEW GAME IS STARTED. PLEASE BACKUP\p"
 	.string "YOUR DATA BEFORE PRESSING YES.$"
 
 Debug_Script_1_Text2:
-	.string "ALL OPTIONS YOU CHOSE AT THE START\n"
+	.string "{COLOR RED}ALL OPTIONS YOU CHOSE AT THE START\n"
 	.string "OF THE GAME WILL RESET AND YOU\l"
 	.string "WILL HAVE TO ENABLE THEM AGAIN.$"
 
@@ -77,6 +77,7 @@ Debug_Script_3::
 	switch VAR_RESULT
 	case NO, Debug_Script_1_Closemessage
 	case MULTI_B_PRESSED, Debug_Script_1_Closemessage
+	callnative Update24to30
 	special NameRival
 	waitstate
 	msgbox Debug_Script_3_Text_Which_WT, MSGBOX_YESNO
@@ -99,13 +100,12 @@ Debug_Script_3_Set_Unlimited_WT:
 	end
 
 Debug_Script_3_Text:
-	.string "STARTING A NEW GAME IS RECOMMENDED!\p"
-	.string "However, if you are willing to\n"
-	.string "accept possible issues,\l"
-	.string "this script will let you name\l"
-	.string "your rival, fix other stuff, then\l"
-	.string "teleport you to PETALBURG CITY.\l"
-	.string "The teleport fixes characters stuck\l"
+	.string "{COLOR RED}STARTING A NEW GAME IS RECOMMENDED!\p"
+	.string "However, if you are willing to accept\n"
+	.string "possible issues, this script will let you\l"
+	.string "name your rival, fix other stuff, then\l"
+	.string "teleport you to PETALBURG CITY.\p"
+	.string "The teleport fixes characters stuck\n"
 	.string "in broken interiors, and naming your\l"
 	.string "rival is now mandatory.\p"
 	.string "Continue?$"
@@ -115,11 +115,11 @@ Debug_Script_3_Text_Which_WT:
 	.string "in the challenges menu enabled?$"
 
 Debug_Script_4::
-	setvar VAR_WONDERTRADE, 0
+	warp MAP_ALTERING_CAVE, 15, 17
 	end
 
 Debug_Script_5::
-	setvar VAR_WONDERTRADE, 1
+	setflag FLAG_SYS_GAME_CLEAR
 	end
 
 Debug_Script_6::
