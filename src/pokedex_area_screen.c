@@ -392,10 +392,10 @@ static const u16 sSpeciesHiddenFromAreaScreenModern[] = {
     SPECIES_BRELOOM, 
     SPECIES_SPINDA, 
     SPECIES_WINGULL, 
-    SPECIES_PELIPPER, 
+    SPECIES_PELIPPER, */ 
     SPECIES_SURSKIT, 
     SPECIES_MASQUERAIN, 
-    SPECIES_WAILMER, 
+    /*SPECIES_WAILMER, 
     SPECIES_WAILORD, 
     SPECIES_SKITTY, 
     SPECIES_DELCATTY, 
@@ -429,24 +429,24 @@ static const u16 sSpeciesHiddenFromAreaScreenModern[] = {
     SPECIES_CACNEA, 
     SPECIES_CACTURNE, 
     SPECIES_SNORUNT, 
-    SPECIES_GLALIE, 
+    SPECIES_GLALIE, */ 
     SPECIES_LUNATONE, 
-    SPECIES_SOLROCK, 
+    /*SPECIES_SOLROCK, 
     SPECIES_AZURILL, 
     SPECIES_SPOINK, 
     SPECIES_GRUMPIG, 
     SPECIES_PLUSLE, 
     SPECIES_MINUN, 
-    SPECIES_MAWILE, 
+    SPECIES_MAWILE, */
     SPECIES_MEDITITE, 
     SPECIES_MEDICHAM, 
-    SPECIES_SWABLU, 
+    /*SPECIES_SWABLU, 
     SPECIES_ALTARIA, 
     SPECIES_WYNAUT, 
     SPECIES_DUSKULL, 
-    SPECIES_DUSCLOPS, 
+    SPECIES_DUSCLOPS, */
     SPECIES_ROSELIA, 
-    SPECIES_SLAKOTH, 
+    /*SPECIES_SLAKOTH, 
     SPECIES_VIGOROTH, 
     SPECIES_SLAKING, 
     SPECIES_GULPIN, 
@@ -461,9 +461,9 @@ static const u16 sSpeciesHiddenFromAreaScreenModern[] = {
     SPECIES_ABSOL, 
     SPECIES_SHUPPET, 
     SPECIES_BANETTE, 
-    SPECIES_SEVIPER, 
+    SPECIES_SEVIPER, */
     SPECIES_ZANGOOSE, 
-    SPECIES_RELICANTH, 
+    /*SPECIES_RELICANTH, 
     SPECIES_ARON, 
     SPECIES_LAIRON, 
     SPECIES_AGGRON, 
@@ -483,7 +483,7 @@ static const u16 sSpeciesHiddenFromAreaScreenModern[] = {
     SPECIES_BELDUM, 
     SPECIES_METANG, 
     SPECIES_METAGROSS, 
-    SPECIES_CHIMECHO, */ 
+    SPECIES_CHIMECHO,*/
     SPECIES_MIME_JR, 
     SPECIES_MUNCHLAX, 
     SPECIES_BONSLY, 
@@ -532,14 +532,9 @@ static const u16 sFeebasData[][3] =
     {NUM_SPECIES}
 };
 
-static const u16 sHiddenPokemon[][3] =
+static const u16 sShowPokemonOnlyIn[][3] =
 {
-    {SPECIES_HOUNDOUR, MAP_GROUP(SAFARI_ZONE_NORTHWEST), MAP_NUM(SAFARI_ZONE_NORTHWEST)},
-    {SPECIES_HOOTHOOT, MAP_GROUP(SAFARI_ZONE_NORTHWEST), MAP_NUM(SAFARI_ZONE_NORTHWEST)},
-    {SPECIES_LEDYBA, MAP_GROUP(SAFARI_ZONE_NORTHWEST), MAP_NUM(SAFARI_ZONE_NORTHWEST)},
-    {SPECIES_SPINARAK, MAP_GROUP(SAFARI_ZONE_NORTHWEST), MAP_NUM(SAFARI_ZONE_NORTHWEST)},
-    {SPECIES_SUNKERN, MAP_GROUP(SAFARI_ZONE_NORTHWEST), MAP_NUM(SAFARI_ZONE_NORTHWEST)},
-    {SPECIES_SNUBBULL, MAP_GROUP(SAFARI_ZONE_NORTHWEST), MAP_NUM(SAFARI_ZONE_NORTHWEST)},
+    {SPECIES_NOSEPASS, MAP_GROUP(GRANITE_CAVE_B2F), MAP_NUM(GRANITE_CAVE_B2F)},
     {NUM_SPECIES}
 };
 
@@ -673,26 +668,27 @@ static void FindMapsWithMon(u16 species)
         sPokedexAreaScreen->numOverworldAreas = 0;
         sPokedexAreaScreen->numSpecialAreas = 0;
 
-        //hides the pkm that are part from the list from above. Certain pkm will still overlap, but it's a solution for now
-        if (gSaveBlock1Ptr->tx_Mode_Encounters == 0) // Use sHiddenPokemon #fix!!!
+        //Modern encounters and post-game encounters DON'T block from showing any species
+        if ((gSaveBlock1Ptr->tx_Mode_Encounters == 0) // If it's vanilla encounters
+        ||  (gSaveBlock1Ptr->tx_Mode_Encounters == 2) && (FlagGet(FLAG_SYS_GAME_CLEAR) == FALSE)) //Or if it's post-game encounters, but without being champion
         {
             for (i = 0; i < ARRAY_COUNT(sSpeciesHiddenFromAreaScreenModern); i++)
             {
-                if (sSpeciesHiddenFromAreaScreenModern[i] == species)
+                if (sSpeciesHiddenFromAreaScreenModern[i] == species) //Blocks the Pokémon list from showing up in the Pokédex
                     return;
             }
-            for (i = 0; sHiddenPokemon[i][0] != NUM_SPECIES; i++)
+            for (i = 0; sShowPokemonOnlyIn[i][0] != NUM_SPECIES; i++) //Plus, makes Pokémon from this other list appear ONLY in the map provided on the list
             {
-                if (species == sHiddenPokemon[i][0])
+                if (species == sShowPokemonOnlyIn[i][0])
                 {
-                    switch (sHiddenPokemon[i][1])
+                    switch (sShowPokemonOnlyIn[i][1])
                     {
                     case MAP_GROUP_TOWNS_AND_ROUTES:
-                        SetAreaHasMon(sHiddenPokemon[i][1], sHiddenPokemon[i][2]);
+                        SetAreaHasMon(sShowPokemonOnlyIn[i][1], sShowPokemonOnlyIn[i][2]);
                         return;
                     case MAP_GROUP_DUNGEONS:
                     case MAP_GROUP_SPECIAL_AREA:
-                        SetSpecialMapHasMon(sHiddenPokemon[i][1], sHiddenPokemon[i][2]);
+                        SetSpecialMapHasMon(sShowPokemonOnlyIn[i][1], sShowPokemonOnlyIn[i][2]);
                         return;
                     }
                 }
