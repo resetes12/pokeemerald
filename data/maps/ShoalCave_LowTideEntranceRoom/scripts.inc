@@ -1,8 +1,10 @@
 ShoalCave_LowTideEntranceRoom_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, ShoalCave_LowTideEntranceRoom_OnTransition
+	map_script MAP_SCRIPT_ON_RESUME, EncounterTable
 	.byte 0
 
 ShoalCave_LowTideEntranceRoom_OnTransition:
+	callnative ChangeEncounterTable
 	special UpdateShoalTideFlag
 	goto_if_set FLAG_SYS_SHOAL_TIDE, ShoalCave_LowTideEntranceRoom_EventScript_SetHighTide
 	goto ShoalCave_LowTideEntranceRoom_EventScript_SetLowTide

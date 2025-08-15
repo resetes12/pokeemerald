@@ -1,4 +1,6 @@
 MtPyre_3F_MapScripts::
+	map_script MAP_SCRIPT_ON_RESUME, EncounterTable
+	map_script MAP_SCRIPT_ON_TRANSITION, EncounterTable
 	.byte 0
 
 MtPyre_3F_EventScript_William::

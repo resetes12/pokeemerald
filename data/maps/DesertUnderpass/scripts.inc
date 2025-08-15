@@ -1,10 +1,12 @@
 .set LOCALID_FOSSIL, 1
 
 DesertUnderpass_MapScripts::
+	map_script MAP_SCRIPT_ON_RESUME, EncounterTable
 	map_script MAP_SCRIPT_ON_TRANSITION, DesertUnderpass_OnTransition
 	.byte 0
 
 DesertUnderpass_OnTransition:
+	callnative ChangeEncounterTable
 	setflag FLAG_LANDMARK_DESERT_UNDERPASS
 	end
 

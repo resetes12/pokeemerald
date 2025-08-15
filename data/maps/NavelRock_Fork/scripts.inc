@@ -1,9 +1,11 @@
 NavelRock_Fork_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, NavelRock_Fork_Puzzle_All_Puzzles_Completed_Check
 	map_script MAP_SCRIPT_ON_LOAD, NavelRock_Fork_Puzzle_All_Puzzles_Completed_Check
+	map_script MAP_SCRIPT_ON_RESUME, EncounterTable
 	.byte 0
 
 NavelRock_Fork_Puzzle_All_Puzzles_Completed_Check::
+	callnative ChangeEncounterTable
 	call_if_unset FLAG_ALL_PUZZLES_COMPLETED, NavelRock_Fork_Close_Unown_Ruins
 	end
 

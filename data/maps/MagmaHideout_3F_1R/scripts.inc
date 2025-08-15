@@ -1,8 +1,10 @@
 MagmaHideout_3F_1R_MapScripts::
+	map_script MAP_SCRIPT_ON_RESUME, EncounterTable
 	map_script MAP_SCRIPT_ON_TRANSITION, MagmaHideout_3F_1R_OnTransition
 	.byte 0
 
 MagmaHideout_3F_1R_OnTransition:
+	callnative ChangeEncounterTable
 	goto_if_set FLAG_UNLOCK_DOGS, MagmaHideout_3F_1R_SwitchToModern
 	end
 

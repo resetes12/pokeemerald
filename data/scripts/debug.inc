@@ -115,11 +115,9 @@ Debug_Script_3_Text_Which_WT:
 	.string "in the challenges menu enabled?$"
 
 Debug_Script_4::
-	warp MAP_ALTERING_CAVE, 15, 17
 	end
 
 Debug_Script_5::
-	setflag FLAG_SYS_GAME_CLEAR
 	end
 
 Debug_Script_6::

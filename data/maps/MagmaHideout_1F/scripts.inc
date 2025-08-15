@@ -1,8 +1,10 @@
 MagmaHideout_1F_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, MagmaHideout_1F_OnTransition
+	map_script MAP_SCRIPT_ON_RESUME, EncounterTable
 	.byte 0
 
 MagmaHideout_1F_OnTransition:
+	callnative ChangeEncounterTable
 	setvar VAR_JAGGED_PASS_ASH_WEATHER, 0
 	goto_if_set FLAG_DEFEATED_ENTEI, MagmaHideout_End
 	goto_if_set FLAG_UNLOCK_DOGS, MagmaHideout_Entei_CryFaint

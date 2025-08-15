@@ -6,6 +6,7 @@ MeteorFalls_Articuno_MapScripts::
 	.byte 0
 
 MeteorFalls_Articuno_OnResume:
+	callnative ChangeEncounterTable
 	call_if_set FLAG_SYS_CTRL_OBJ_DELETE, MeteorFalls_Articuno_EventScript_TryRemoveArticuno
 	end
 
@@ -16,6 +17,7 @@ MeteorFalls_Articuno_EventScript_TryRemoveArticuno::
 	return
 
 MeteorFalls_Articuno_OnTransition:
+	callnative ChangeEncounterTable
 	call_if_unset FLAG_UNLOCK_BIRDS, MeteorFalls_Articuno_EventScript_HideArticuno
 	call_if_unset FLAG_DEFEATED_ARTICUNO, MeteorFalls_Articuno_EventScript_ShowArticuno
 	end

@@ -1,4 +1,6 @@
 GraniteCave_B2F_MapScripts::
+	map_script MAP_SCRIPT_ON_RESUME, EncounterTable
+	map_script MAP_SCRIPT_ON_TRANSITION, EncounterTable
 	map_script MAP_SCRIPT_ON_LOAD, GraniteCave_B2F_OnLoad
 	.byte 0
 

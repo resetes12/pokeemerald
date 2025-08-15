@@ -1,8 +1,10 @@
 SkyPillar_1F_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, SkyPillar_1F_OnTransition
+	map_script MAP_SCRIPT_ON_RESUME, EncounterTable
 	.byte 0
 
 SkyPillar_1F_OnTransition:
+	callnative ChangeEncounterTable
 	call_if_lt VAR_SKY_PILLAR_STATE, 2, SkyPillar_1F_EventScript_CleanFloor
 	end
 

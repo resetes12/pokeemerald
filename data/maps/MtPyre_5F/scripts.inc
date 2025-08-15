@@ -1,4 +1,6 @@
 MtPyre_5F_MapScripts::
+	map_script MAP_SCRIPT_ON_RESUME, EncounterTable
+	map_script MAP_SCRIPT_ON_TRANSITION, EncounterTable
 	.byte 0
 
 @ Seems like the scripts for the 4F and 5F were swapped

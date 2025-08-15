@@ -1,9 +1,7 @@
 AquaHideout_UnusedRubyMap3_MapScripts::
-	map_script MAP_SCRIPT_ON_TRANSITION, AquaHideout_UnusedRubyMap3_OnTransition
+	map_script MAP_SCRIPT_ON_RESUME, EncounterTable
+	map_script MAP_SCRIPT_ON_TRANSITION, EncounterTable
 	.byte 0
-
-AquaHideout_UnusedRubyMap3_OnTransition::
-	end
 
 AquaHideout_UnusedRubyMap3_BonslyMunchEvo::
 	msgbox AquaHideout_UnusedRubyMap3_BonslyMunchEvo_Text, MSGBOX_NPC

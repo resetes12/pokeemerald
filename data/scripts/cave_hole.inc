@@ -3,6 +3,7 @@ CaveHole_CheckFallDownHole:
 	.2byte 0
 
 CaveHole_FixCrackedGround:
+	callnative ChangeEncounterTable
 	copyvar VAR_ICE_STEP_COUNT, 1
 	end
 

@@ -7,10 +7,12 @@
 .set LOCALID_MAXIE, 8
 
 MtPyre_Summit_MapScripts::
+	map_script MAP_SCRIPT_ON_RESUME, EncounterTable
 	map_script MAP_SCRIPT_ON_TRANSITION, MtPyre_Summit_OnTransition
 	.byte 0
 
 MtPyre_Summit_OnTransition:
+	callnative ChangeEncounterTable
 	call_if_eq VAR_MT_PYRE_STATE, 2, MtPyre_Summit_EventScript_SetArchieMaxiePositions
 	end
 

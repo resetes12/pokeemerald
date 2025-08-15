@@ -4,10 +4,12 @@ PacifidlogTown_MapScripts::
 	.byte 0
 
 PacifidlogTown_OnTransition:
+	callnative ChangeEncounterTable
 	setflag FLAG_VISITED_PACIFIDLOG_TOWN
 	end
 
 PacifidlogTown_OnResume:
+	callnative ChangeEncounterTable
 	setstepcallback STEP_CB_PACIFIDLOG_BRIDGE
 	end
 

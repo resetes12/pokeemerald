@@ -2,6 +2,8 @@
 .set LOCALID_RAIKOU_2, 2
 
 NewMauville_Inside_Raikou_MapScripts::
+	map_script MAP_SCRIPT_ON_RESUME, EncounterTable
+	map_script MAP_SCRIPT_ON_TRANSITION, EncounterTable
 	.byte 0
 
 @@Trigger at the start

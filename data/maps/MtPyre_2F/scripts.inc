@@ -5,6 +5,7 @@ MtPyre_2F_MapScripts::
 	.byte 0
 
 MtPyre_2F_SetHoleWarp:
+	callnative ChangeEncounterTable
 	setstepcallback STEP_CB_CRACKED_FLOOR
 	setholewarp MAP_MT_PYRE_1F
 	end

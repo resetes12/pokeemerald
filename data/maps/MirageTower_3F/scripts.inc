@@ -5,6 +5,7 @@ MirageTower_3F_MapScripts::
 	.byte 0
 
 MirageTower_3F_SetHoleWarp:
+	callnative ChangeEncounterTable
 	setstepcallback STEP_CB_CRACKED_FLOOR
 	setholewarp MAP_MIRAGE_TOWER_2F
 	end

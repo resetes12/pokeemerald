@@ -5,6 +5,7 @@ GraniteCave_B1F_MapScripts::
 	.byte 0
 
 GraniteCave_B1F_SetHoleWarp:
+	callnative ChangeEncounterTable
 	setstepcallback STEP_CB_CRACKED_FLOOR
 	setholewarp MAP_GRANITE_CAVE_B2F
 	end

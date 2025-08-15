@@ -2,9 +2,11 @@
 
 SeafloorCavern_Entrance_MapScripts::
 	map_script MAP_SCRIPT_ON_RESUME, SeafloorCavern_Entrance_OnResume
+	map_script MAP_SCRIPT_ON_TRANSITION, EncounterTable
 	.byte 0
 
 SeafloorCavern_Entrance_OnResume:
+	callnative ChangeEncounterTable
 	setdivewarp MAP_UNDERWATER_SEAFLOOR_CAVERN, 6, 5
 	setescapewarp MAP_UNDERWATER_SEAFLOOR_CAVERN, 6, 5
 	end

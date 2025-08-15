@@ -1,13 +1,11 @@
 CaveOfOrigin_UnusedRubySapphireMap3_MapScripts::
 	map_script MAP_SCRIPT_ON_LOAD, CaveOfOrigin_UnusedRubySapphireMap3_OnLoad
-	map_script MAP_SCRIPT_ON_TRANSITION, CaveOfOrigin_UnusedRubySapphireMap3_OnTransition
+	map_script MAP_SCRIPT_ON_RESUME, EncounterTable
+	map_script MAP_SCRIPT_ON_TRANSITION, EncounterTable
 	.byte 0
 
 CaveOfOrigin_UnusedRubySapphireMap3_OnLoad:
 	call_if_unset FLAG_REGI_DOORS_OPENED, CaveOfOrigin_UnusedRubySapphireMap3_CloseRegiEntrance
-	end
-
-CaveOfOrigin_UnusedRubySapphireMap3_OnTransition:
 	end
 
 CaveOfOrigin_UnusedRubySapphireMap3_CloseRegiEntrance::

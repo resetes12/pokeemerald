@@ -1,6 +1,8 @@
 .set LOCALID_STEVEN, 1
 
 GraniteCave_StevensRoom_MapScripts::
+	map_script MAP_SCRIPT_ON_RESUME, EncounterTable
+	map_script MAP_SCRIPT_ON_TRANSITION, EncounterTable
 	.byte 0
 
 GraniteCave_StevensRoom_EventScript_Steven::
