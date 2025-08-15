@@ -149,6 +149,8 @@ FarawayIsland_Interior_Enable_Mewtwo::
 	setflag FLAG_UNLOCK_MEWTWO
 	playmoncry SPECIES_MEWTWO, CRY_MODE_NORMAL
 	waitmoncry
+	msgbox Mew_Mewtwo_Unlocked_Text, MSGBOX_NPC
+	closemessage
 	return
 
 FarawayIsland_Interior_EventScript_MewDefeated::
@@ -196,3 +198,7 @@ FarawayIsland_Interior_EventScript_HideMewWhenGrassCut::
 
 FarawayIsland_Interior_Text_TheFeelingOfBeingWatchedFaded:
 	.string "The feeling of being watched faded…$"
+
+Mew_Mewtwo_Unlocked_Text:
+	.string "A fierce roar shakes\n"
+	.string "the air around.$"

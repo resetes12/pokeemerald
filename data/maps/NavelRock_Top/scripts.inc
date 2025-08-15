@@ -71,6 +71,8 @@ NavelRock_Top_EventScript_HoOh::
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, NavelRock_Top_EventScript_RanFromHoOh
 	goto_if_eq VAR_RESULT, B_OUTCOME_PLAYER_TELEPORTED, NavelRock_Top_EventScript_RanFromHoOh
 	setflag FLAG_CAUGHT_HO_OH
+	setweather WEATHER_NONE
+	doweather
 	call_if_set FLAG_EXTRA_LEGENDARIES, NavelRock_Top_Enable_Kanto_Legendaries
 	releaseall
 	end
@@ -83,9 +85,13 @@ NavelRock_Top_Enable_Kanto_Legendaries::
 	waitmoncry
 	playmoncry SPECIES_MOLTRES, CRY_MODE_NORMAL
 	waitmoncry
+	msgbox Ho_Oh_Legendaries_Text, MSGBOX_NPC
+	closemessage
 	return
 
 NavelRock_Top_EventScript_DefeatedHoOh::
+	setweather WEATHER_NONE
+	doweather
 	setflag FLAG_DEFEATED_HO_OH
 	call_if_set FLAG_EXTRA_LEGENDARIES, NavelRock_Top_Enable_Kanto_Legendaries
 	setvar VAR_0x8004, SPECIES_HO_OH
@@ -93,6 +99,8 @@ NavelRock_Top_EventScript_DefeatedHoOh::
 	end
 
 NavelRock_Top_EventScript_RanFromHoOh::
+	setweather WEATHER_NONE
+	doweather
 	setvar VAR_0x8004, SPECIES_HO_OH
 	goto Common_EventScript_LegendaryFlewAway
 	end
@@ -133,3 +141,7 @@ NavelRock_Top_Movement_HoOhAppear:
 
 Ho_Oh_Text:
 	.string "Gyyaaao!$"
+
+Ho_Oh_Legendaries_Text:
+	.string "Three mighty cries echoed\n"
+	.string "through NAVEL ROCK.$"
