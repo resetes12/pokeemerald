@@ -88,31 +88,58 @@ Debug_Script_3::
 	end
 
 Debug_Script_3_Set_Limited_WT:
-	closemessage
 	setvar VAR_WONDERTRADE, 1
-	warp MAP_PETALBURG_CITY, 16, 16
+	msgbox Debug_Script_3_SelectFrontierBanOption_Text, MSGBOX_YESNO
+	switch VAR_RESULT
+	case YES, Debug_Script_3_SelectFrontierBanOption_Zero
+	case NO, Debug_Script_3_SelectFrontierBanOption_One
+	case MULTI_B_PRESSED, Debug_Script_3_SelectFrontierBanOption_One
 	end
 
 Debug_Script_3_Set_Unlimited_WT:
 	setvar VAR_WONDERTRADE, 0
+	msgbox Debug_Script_3_SelectFrontierBanOption_Text, MSGBOX_YESNO
+	switch VAR_RESULT
+	case YES, Debug_Script_3_SelectFrontierBanOption_Zero
+	case NO, Debug_Script_3_SelectFrontierBanOption_One
+	case MULTI_B_PRESSED, Debug_Script_3_SelectFrontierBanOption_One
+	end
+
+Debug_Script_3_SelectFrontierBanOption_Zero:
+	callnative Update24to30_SetFrontierBansToZero
+	closemessage
+	warp MAP_PETALBURG_CITY, 16, 16
+	end
+
+Debug_Script_3_SelectFrontierBanOption_One:
+	callnative Update24to30_SetFrontierBansToOne
 	closemessage
 	warp MAP_PETALBURG_CITY, 16, 16
 	end
 
 Debug_Script_3_Text:
-	.string "{COLOR RED}STARTING A NEW GAME IS RECOMMENDED!\p"
+	.string "{COLOR RED}WARNING! ONLY RUN THIS SCRIPT ONCE.\p"
+	.string "STARTING A NEW GAME IS RECOMMENDED!\p"
 	.string "However, if you are willing to accept\n"
 	.string "possible issues, this script will let you\l"
 	.string "name your rival, fix other stuff, then\l"
 	.string "teleport you to PETALBURG CITY.\p"
-	.string "The teleport fixes characters stuck\n"
-	.string "in broken interiors, and naming your\l"
-	.string "rival is now mandatory.\p"
 	.string "Continue?$"
 
 Debug_Script_3_Text_Which_WT:
 	.string "Is UNLIMITED WONDERTRADES\n"
 	.string "in the challenges menu enabled?$"
+
+Debug_Script_3_SelectFrontierBanOption_Text:
+	.string "Would you like to enable the new\n"
+	.string "option FRONTIER BANS?\p"
+	.string "According to your current difficulty,\n"
+	.string "enabling it will ban legendaries from\l"
+	.string "participating in the BATTLE FRONTIER.\p"
+	.string "Disabling it will let lengendaries in,\n"
+	.string "no matter your chosen difficulty.\p"
+	.string "Would you like to enable the bans?\n"
+	.string "{COLOR RED}(YES has been always the default option)$"
 
 Debug_Script_4::
 	end

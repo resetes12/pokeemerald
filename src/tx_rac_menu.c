@@ -64,6 +64,7 @@ enum
     MENUITEM_FEATURES_UNLIMITED_WT,
     MENUITEM_FEATURES_PKMN_DEATH,
     MENUITEM_FEATURES_EASY_FEEBAS,
+    MENUITEM_FEATURES_FRONTIER_BANS,
     MENUITEM_FEATURES_NEXT,
     MENUITEM_FEATURES_COUNT,
 };
@@ -318,6 +319,7 @@ static void DrawChoices_Mode_Sturdy(int selection, int y);
 static void DrawChoices_Mode_Modern_Moves(int selection, int y);
 static void DrawChoices_Mode_Legendary_Abilities(int selection, int y);
 static void DrawChoices_Mode_New_Legendaries(int selection, int y);
+static void DrawChoices_Features_FrontierBans(int selection, int y);
 
 static void DrawChoices_Difficulty_Escape_Rope_Dig(int selection, int y);
 
@@ -381,6 +383,7 @@ struct // MENU_FEATURES
     [MENUITEM_FEATURES_EASY_FEEBAS]           = {DrawChoices_Features_EasyFeebas,           ProcessInput_Options_Two},
     [MENUITEM_FEATURES_PKMN_DEATH]            = {DrawChoices_Features_Pkmn_Death,           ProcessInput_Options_Two},
     [MENUITEM_FEATURES_UNLIMITED_WT]          = {DrawChoices_Features_Unlimited_WT,         ProcessInput_Options_Two},
+    [MENUITEM_FEATURES_FRONTIER_BANS]         = {DrawChoices_Features_FrontierBans,         ProcessInput_Options_Two},
     [MENUITEM_FEATURES_NEXT]                  = {NULL, NULL},
 };
 
@@ -501,8 +504,9 @@ static const u8 sText_RTC_Type[]            = _("CLOCK TYPE");
 static const u8 sText_ShinyChance[]         = _("SHINY CHANCE");
 static const u8 sText_ItemDrop[]            = _("ITEM DROP");
 static const u8 sText_EasyFeebas[]          = _("EASIER FEEBAS");
-static const u8 sText_Pkmn_Death[]          = _("{COLOR 7}{COLOR 8}POKÉMON FAINT");
+static const u8 sText_Pkmn_Death[]          = _("{COLOR 7}{COLOR 8}POKéMON FAINT");
 static const u8 sText_Unlimited_WT[]        = _("UNLIMITED WT");
+static const u8 sText_FrontierBans[]        = _("FRONTIER BANS");
 // Menu left side option names text
 static const u8 *const sOptionMenuItemsNamesFeatures[MENUITEM_FEATURES_COUNT] =
 {
@@ -512,6 +516,7 @@ static const u8 *const sOptionMenuItemsNamesFeatures[MENUITEM_FEATURES_COUNT] =
     [MENUITEM_FEATURES_EASY_FEEBAS]               = sText_EasyFeebas,
     [MENUITEM_FEATURES_PKMN_DEATH]                = sText_Pkmn_Death,
     [MENUITEM_FEATURES_UNLIMITED_WT]              = sText_Unlimited_WT,
+    [MENUITEM_FEATURES_FRONTIER_BANS]             = sText_FrontierBans,
     [MENUITEM_FEATURES_NEXT]                      = sText_Next,
 };
 
@@ -795,6 +800,9 @@ static const u8 sText_Description_Features_Pkmn_Death_On[]            = _("{COLO
 static const u8 sText_Description_Features_Pkmn_Death_Off[]           = _("{PKMN} will not die from fainting.\nRecommended.");
 static const u8 sText_Description_Features_Unlimited_WT_On[]          = _("Enables a daily limit of 3\nWonderTrades. Recommended.");
 static const u8 sText_Description_Features_Unlimited_WT_Off[]         = _("WonderTrades have no daily limit.");
+static const u8 sText_Description_Features_FrontierBans_Unban[]       = _("All legendaries are allowed to\nparticipate in the BATTLE FRONTIER.");
+static const u8 sText_Description_Features_FrontierBans_Ban[]         = _("According to the chosen difficulty,\nsome lengendaries are banned in BF.");
+
 static const u8 sText_Description_Features_Next[]                     = _("Continue to Randomizer options.");
 
 static const u8 *const sOptionMenuItemDescriptionsFeatures[MENUITEM_FEATURES_COUNT][5] =
@@ -805,6 +813,7 @@ static const u8 *const sOptionMenuItemDescriptionsFeatures[MENUITEM_FEATURES_COU
     [MENUITEM_FEATURES_EASY_FEEBAS]           = {sText_Description_Features_EasyFeebas_Off,         sText_Description_Features_EasyFeebas_On,         sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_PKMN_DEATH]            = {sText_Description_Features_Pkmn_Death_Off,         sText_Description_Features_Pkmn_Death_On,         sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_UNLIMITED_WT]          = {sText_Description_Features_Unlimited_WT_On,        sText_Description_Features_Unlimited_WT_Off,      sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_FEATURES_FRONTIER_BANS]         = {sText_Description_Features_FrontierBans_Ban,       sText_Description_Features_FrontierBans_Unban,    sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_NEXT]                  = {sText_Description_Features_Next,                   sText_Empty,                                      sText_Empty,                                        sText_Empty,                                        sText_Empty},
 };
 
@@ -1402,6 +1411,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         gSaveBlock1Ptr->tx_Features_EasierFeebas            = TX_FEATURES_EASIER_FEEBAS;
         gSaveBlock1Ptr->tx_Features_PkmnDeath               = TX_FEATURES_PKMN_DEATH;
         gSaveBlock1Ptr->tx_Features_Unlimited_WT            = TX_FEATURES_UNLIMITED_WT;
+        gSaveBlock1Ptr->tx_Features_FrontierBans            = TX_FEATURES_FRONTIER_BANS;
 
         gSaveBlock1Ptr->tx_Random_Starter                   = TX_RANDOM_STARTER;
         gSaveBlock1Ptr->tx_Random_WildPokemon               = TX_RANDOM_WILD_POKEMON;
@@ -1472,6 +1482,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         sOptions->sel_features[MENUITEM_FEATURES_EASY_FEEBAS]            = gSaveBlock1Ptr->tx_Features_EasierFeebas;
         sOptions->sel_features[MENUITEM_FEATURES_PKMN_DEATH]             = gSaveBlock1Ptr->tx_Features_PkmnDeath;
         sOptions->sel_features[MENUITEM_FEATURES_UNLIMITED_WT]           = gSaveBlock1Ptr->tx_Features_Unlimited_WT;
+        sOptions->sel_features[MENUITEM_FEATURES_FRONTIER_BANS]          = gSaveBlock1Ptr->tx_Features_FrontierBans;
         
         //MENU RANDOMIZER
         sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON]                     = FALSE;
@@ -1821,6 +1832,7 @@ void SaveData_TxRandomizerAndChallenges(void)
     gSaveBlock1Ptr->tx_Features_EasierFeebas                = sOptions->sel_features[MENUITEM_FEATURES_EASY_FEEBAS]; 
     gSaveBlock1Ptr->tx_Features_PkmnDeath                   = sOptions->sel_features[MENUITEM_FEATURES_PKMN_DEATH]; 
     gSaveBlock1Ptr->tx_Features_Unlimited_WT                = sOptions->sel_features[MENUITEM_FEATURES_UNLIMITED_WT]; 
+    gSaveBlock1Ptr->tx_Features_FrontierBans                = sOptions->sel_features[MENUITEM_FEATURES_FRONTIER_BANS]; 
     // MENU_RANDOMIZER
     if (sOptions->sel_randomizer[MENUITEM_RANDOM_OFF_ON] == TRUE)
     {
@@ -3098,6 +3110,27 @@ static void DrawChoices_Difficulty_Escape_Rope_Dig(int selection, int y)
 
     DrawOptionMenuChoice(sText_Yes, 104, y, styles[0], active);
     DrawOptionMenuChoice(sText_No, GetStringRightAlignXOffset(1, sText_No, 198), y, styles[1], active);
+}
+
+static const u8 sText_Features_Frontier_Ban[]   = _("BAN");
+static const u8 sText_Features_Frontier_UnBan[]     = _("UNBAN");
+static void DrawChoices_Features_FrontierBans(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_FEATURES_FRONTIER_BANS);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock1Ptr->tx_Features_FrontierBans = 0; //Ban
+    }
+    else
+    {
+        gSaveBlock1Ptr->tx_Features_FrontierBans = 1; //Unban
+    }
+
+    DrawOptionMenuChoice(sText_Features_Frontier_Ban, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_Features_Frontier_UnBan, GetStringRightAlignXOffset(1, sText_Features_Frontier_UnBan, 198), y, styles[1], active);
 }
 
 

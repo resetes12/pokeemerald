@@ -509,6 +509,15 @@ void Update24to30(void)
         gSaveBlock1Ptr->tx_Mode_Encounters = 1;
 }
 
+void Update24to30_SetFrontierBansToZero(void)
+{
+    gSaveBlock1Ptr->tx_Features_FrontierBans = 0;
+}
+
+void Update24to30_SetFrontierBansToOne(void)
+{
+    gSaveBlock1Ptr->tx_Features_FrontierBans = 1;
+}
 
 void DisableChallengesAfterBeatingGameEvoLimit(void)
 {
