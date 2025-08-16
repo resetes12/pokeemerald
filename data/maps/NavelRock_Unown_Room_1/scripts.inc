@@ -149,12 +149,14 @@ NavelRock_Unown_Room_1_Second_Trigger::
 	end
 
 NavelRock_Unown_Room_1_Second_Trigger_No::
+	clearflag FLAG_SYS_NO_BAG_USE
 	applymovement OBJ_EVENT_ID_PLAYER, Player_Movement_1
 	waitmovement 0
 	closemessage
 	end
 
 NavelRock_Unown_Room_1_Second_Trigger_Battle_Ran::
+	clearflag FLAG_SYS_NO_BAG_USE
 	applymovement LOCALID_ARC, LOCALID_ARC_Movement_No
 	waitmovement 0
 	applymovement OBJ_EVENT_ID_PLAYER, Player_Movement_1
