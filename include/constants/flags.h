@@ -687,7 +687,7 @@
 #define FLAG_UNUSED_0x284  0x284 
 #define FLAG_UNUSED_0x285  0x285 //QM
 #define FLAG_SURF_PICHU_OBTAINED  0x286 // Surf Pichu
-#define FLAG_UNUSED_0x287  0x287 // Unused Flag
+#define FLAG_RS_OUTFIT     0x287
 #define FLAG_UNUSED_0x288  0x288 // Unused Flag
 #define FLAG_UNUSED_0x289  0x289 // Unused Flag
 #define FLAG_UNUSED_0x28A  0x28A // Unused Flag

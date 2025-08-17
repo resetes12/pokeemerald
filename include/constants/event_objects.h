@@ -5,7 +5,7 @@
 #define OBJ_EVENT_GFX_BRENDAN_MACH_BIKE            1
 #define OBJ_EVENT_GFX_BRENDAN_SURFING              2
 #define OBJ_EVENT_GFX_BRENDAN_FIELD_MOVE           3
-#define OBJ_EVENT_GFX_QUINTY_PLUMP                 4
+#define OBJ_EVENT_GFX_QUINTY_PLUMP                 4 //Was unused, now used for Followers
 #define OBJ_EVENT_GFX_NINJA_BOY                    5
 #define OBJ_EVENT_GFX_TWIN                         6
 #define OBJ_EVENT_GFX_BOY_1                        7
@@ -60,7 +60,7 @@
 #define OBJ_EVENT_GFX_CYCLING_TRIATHLETE_M        56
 #define OBJ_EVENT_GFX_CYCLING_TRIATHLETE_F        57
 #define OBJ_EVENT_GFX_NURSE                       58
-#define OBJ_EVENT_GFX_ITEM_BALL                   59
+#define OBJ_EVENT_GFX_ITEM_BALL                   59 //Was unused, now used for Followers
 #define OBJ_EVENT_GFX_BERRY_TREE                  60
 #define OBJ_EVENT_GFX_BERRY_TREE_EARLY_STAGES     61
 #define OBJ_EVENT_GFX_BERRY_TREE_LATE_STAGES      62
@@ -77,12 +77,12 @@
 #define OBJ_EVENT_GFX_SPENSER                     73
 #define OBJ_EVENT_GFX_NOLAND                      74
 #define OBJ_EVENT_GFX_LUCY                        75
-#define OBJ_EVENT_GFX_UNUSED_NATU_DOLL            76
-#define OBJ_EVENT_GFX_UNUSED_MAGNEMITE_DOLL       77
-#define OBJ_EVENT_GFX_UNUSED_SQUIRTLE_DOLL        78
-#define OBJ_EVENT_GFX_UNUSED_WOOPER_DOLL          79
-#define OBJ_EVENT_GFX_UNUSED_PIKACHU_DOLL         80
-#define OBJ_EVENT_GFX_UNUSED_PORYGON2_DOLL        81
+#define OBJ_EVENT_GFX_UNUSED_NATU_DOLL            76 //Was unused, now used for RS Outfit
+#define OBJ_EVENT_GFX_UNUSED_MAGNEMITE_DOLL       77 //Was unused, now used for RS Outfit
+#define OBJ_EVENT_GFX_UNUSED_SQUIRTLE_DOLL        78 //Was unused, now used for RS Outfit
+#define OBJ_EVENT_GFX_UNUSED_WOOPER_DOLL          79 //Was unused, now used for RS Outfit
+#define OBJ_EVENT_GFX_UNUSED_PIKACHU_DOLL         80 //Was unused, now used for RS Outfit
+#define OBJ_EVENT_GFX_UNUSED_PORYGON2_DOLL        81 //Was unused, now used for RS Outfit
 #define OBJ_EVENT_GFX_CUTTABLE_TREE               82
 #define OBJ_EVENT_GFX_MART_EMPLOYEE               83
 #define OBJ_EVENT_GFX_ROOFTOP_SALE_WOMAN          84
@@ -201,33 +201,33 @@
 #define OBJ_EVENT_GFX_KYOGRE_FRONT               197
 #define OBJ_EVENT_GFX_GROUDON_FRONT              198
 #define OBJ_EVENT_GFX_FOSSIL                     199
-#define OBJ_EVENT_GFX_REGIROCK                   200
-#define OBJ_EVENT_GFX_REGICE                     201
-#define OBJ_EVENT_GFX_REGISTEEL                  202
-#define OBJ_EVENT_GFX_SKITTY                     203
-#define OBJ_EVENT_GFX_KECLEON                    204
+#define OBJ_EVENT_GFX_REGIROCK                   200 //Was unused, now used for RS Outfit
+#define OBJ_EVENT_GFX_REGICE                     201 //Was unused, now used for Followers
+#define OBJ_EVENT_GFX_REGISTEEL                  202 //Was unused, now used for RS Outfit
+#define OBJ_EVENT_GFX_SKITTY                     203 //Was unused, now used for RS Outfit
+#define OBJ_EVENT_GFX_KECLEON                    204 //Was unused, now used for RS Outfit
 #define OBJ_EVENT_GFX_KYOGRE_ASLEEP              205
 #define OBJ_EVENT_GFX_GROUDON_ASLEEP             206
 #define OBJ_EVENT_GFX_RAYQUAZA                   207
-#define OBJ_EVENT_GFX_ZIGZAGOON_2                208
-#define OBJ_EVENT_GFX_PIKACHU                    209
-#define OBJ_EVENT_GFX_AZUMARILL                  210
-#define OBJ_EVENT_GFX_WINGULL                    211
-#define OBJ_EVENT_GFX_KECLEON_BRIDGE_SHADOW      212
+#define OBJ_EVENT_GFX_ZIGZAGOON_2                208 //Was unused, now used for RS Outfit
+#define OBJ_EVENT_GFX_PIKACHU                    209 //Was unused, now used for RS Outfit
+#define OBJ_EVENT_GFX_AZUMARILL                  210 //Was unused, now used for RS Outfit
+#define OBJ_EVENT_GFX_WINGULL                    211 //Was unused, now used for RS Outfit
+#define OBJ_EVENT_GFX_KECLEON_BRIDGE_SHADOW      212 //Unused
 #define OBJ_EVENT_GFX_TUBER_M_SWIMMING           213
-#define OBJ_EVENT_GFX_AZURILL                    214
+#define OBJ_EVENT_GFX_AZURILL                    214 //Was unused, now used for RS Outfit
 #define OBJ_EVENT_GFX_MOM                        215
 #define OBJ_EVENT_GFX_LINK_BRENDAN               216
 #define OBJ_EVENT_GFX_LINK_MAY                   217
 #define OBJ_EVENT_GFX_JUAN                       218
 #define OBJ_EVENT_GFX_SCOTT                      219
-#define OBJ_EVENT_GFX_POOCHYENA                  220
+#define OBJ_EVENT_GFX_POOCHYENA                  220 //Was unused, now used for RS Outfit
 #define OBJ_EVENT_GFX_KYOGRE_SIDE                221
 #define OBJ_EVENT_GFX_GROUDON_SIDE               222
 #define OBJ_EVENT_GFX_MYSTERY_GIFT_MAN           223
 #define OBJ_EVENT_GFX_TRICK_HOUSE_STATUE         224
-#define OBJ_EVENT_GFX_KIRLIA                     225
-#define OBJ_EVENT_GFX_DUSCLOPS                   226
+#define OBJ_EVENT_GFX_KIRLIA                     225 //Was unused, now used for RS Outfit
+#define OBJ_EVENT_GFX_DUSCLOPS                   226 //Was unused, now used for RS Outfit
 #define OBJ_EVENT_GFX_UNION_ROOM_NURSE           227
 #define OBJ_EVENT_GFX_SUDOWOODO                  228
 #define OBJ_EVENT_GFX_MEW                        229
@@ -243,6 +243,26 @@
 #define OBJ_EVENT_GFX_POKE_BALL                  OBJ_EVENT_GFX_ITEM_BALL // replaces ITEM_BALL
 #define OBJ_EVENT_GFX_OW_MON                     OBJ_EVENT_GFX_REGICE
 #define OBJ_EVENT_GFX_LIGHT_SPRITE               OBJ_EVENT_GFX_QUINTY_PLUMP
+//RS Outfit, Brendan
+#define OBJ_EVENT_GFX_BRENDAN_NORMAL_RS               OBJ_EVENT_GFX_UNUSED_NATU_DOLL
+#define OBJ_EVENT_GFX_BRENDAN_MACH_BIKE_RS            OBJ_EVENT_GFX_UNUSED_MAGNEMITE_DOLL
+#define OBJ_EVENT_GFX_BRENDAN_SURFING_RS              OBJ_EVENT_GFX_UNUSED_SQUIRTLE_DOLL
+#define OBJ_EVENT_GFX_BRENDAN_FIELD_MOVE_RS           OBJ_EVENT_GFX_UNUSED_WOOPER_DOLL
+#define OBJ_EVENT_GFX_BRENDAN_ACRO_BIKE_RS            OBJ_EVENT_GFX_UNUSED_PIKACHU_DOLL
+#define OBJ_EVENT_GFX_BRENDAN_UNDERWATER_RS           OBJ_EVENT_GFX_UNUSED_PORYGON2_DOLL
+#define OBJ_EVENT_GFX_BRENDAN_FISHING_RS              OBJ_EVENT_GFX_REGIROCK
+#define OBJ_EVENT_GFX_BRENDAN_WATERING_RS             OBJ_EVENT_GFX_SKITTY
+#define OBJ_EVENT_GFX_BRENDAN_DECORATING_RS           OBJ_EVENT_GFX_REGISTEEL
+//RS Outfit, May
+#define OBJ_EVENT_GFX_MAY_NORMAL_RS                   OBJ_EVENT_GFX_KECLEON
+#define OBJ_EVENT_GFX_MAY_MACH_BIKE_RS                OBJ_EVENT_GFX_ZIGZAGOON_2
+#define OBJ_EVENT_GFX_MAY_SURFING_RS                  OBJ_EVENT_GFX_PIKACHU
+#define OBJ_EVENT_GFX_MAY_FIELD_MOVE_RS               OBJ_EVENT_GFX_AZUMARILL
+#define OBJ_EVENT_GFX_MAY_ACRO_BIKE_RS                OBJ_EVENT_GFX_WINGULL
+#define OBJ_EVENT_GFX_MAY_UNDERWATER_RS               OBJ_EVENT_GFX_POOCHYENA
+#define OBJ_EVENT_GFX_MAY_FISHING_RS                  OBJ_EVENT_GFX_KIRLIA
+#define OBJ_EVENT_GFX_MAY_WATERING_RS                 OBJ_EVENT_GFX_DUSCLOPS
+#define OBJ_EVENT_GFX_MAY_DECORATING_RS               OBJ_EVENT_GFX_AZURILL
 
 // NOTE: By default, the max value for NUM_OBJ_EVENT_GFX is 239.
 //
