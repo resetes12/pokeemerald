@@ -314,6 +314,7 @@ PlayersHouse_1F_Movement_MomReturnToSeatFemale:
 PlayersHouse_1F_EventScript_Mom::
 	lock
 	faceplayer
+	goto_if_unset FLAG_OUTFIT_BOX_OBTAINED, PlayersHouse_1F_EventScript_Mom_OutfitBox @May be removed in future versions, maybe?
 	goto_if_eq VAR_LITTLEROOT_HOUSES_STATE_MAY, 4, PlayersHouse_1F_EventScript_DontPushYourselfTooHard
 	goto_if_eq VAR_LITTLEROOT_HOUSES_STATE_BRENDAN, 4, PlayersHouse_1F_EventScript_DontPushYourselfTooHard
 	goto_if_set FLAG_HAS_MATCH_CALL, PlayersHouse_1F_EventScript_TryRegisterMom
@@ -323,6 +324,28 @@ PlayersHouse_1F_EventScript_Mom::
 	msgbox PlayersHouse_1F_Text_IsntItNiceInHere, MSGBOX_DEFAULT
 	release
 	end
+
+PlayersHouse_1F_EventScript_Mom_OutfitBox::
+	goto_if_eq VAR_LITTLEROOT_INTRO_STATE, 7, PlayersHouse_1F_EventScript_DidYouMeetProfBirch
+	msgbox PlayersHouse_1F_Mom_OutfitBox_Text, MSGBOX_DEFAULT
+	closemessage
+	setflag FLAG_OUTFIT_BOX_OBTAINED
+	giveitem ITEM_OAKS_PARCEL
+	msgbox PlayersHouse_1F_Mom_OutfitBox_Text_HowToUse, MSGBOX_DEFAULT
+	closemessage
+	end
+
+PlayersHouse_1F_Mom_OutfitBox_Text:
+	.string "MOM: Oh! I just realized I haven't\n"
+	.string "given you the COSTUME BOX yet.\p"
+	.string "Here you go, dear!$"
+
+PlayersHouse_1F_Mom_OutfitBox_Text_HowToUse:
+	.string "MOM: Now you can change your clothes\n"
+	.string "whenever you like.\p"
+	.string "Just remember, you need to use the\n"
+	.string "COSTUME BOX from your BAG.\p"
+	.string "Take care, honey!$"
 
 PlayersHouse_1F_EventScript_DontPushYourselfTooHard::
 	msgbox PlayersHouse_1F_Text_DontPushYourselfTooHard, MSGBOX_DEFAULT
