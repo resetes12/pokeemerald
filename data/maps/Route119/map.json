@@ -468,7 +468,7 @@
       "flag": "0"
     },
     {
-      "graphics_id": "OBJ_EVENT_GFX_KECLEON",
+      "graphics_id": "OBJ_EVENT_GFX_MON_BASE+SPECIES_KECLEON",
       "x": 31,
       "y": 6,
       "elevation": 3,
@@ -481,7 +481,7 @@
       "flag": "FLAG_HIDE_ROUTE_119_KECLEON_1"
     },
     {
-      "graphics_id": "OBJ_EVENT_GFX_KECLEON",
+      "graphics_id": "OBJ_EVENT_GFX_MON_BASE+SPECIES_KECLEON",
       "x": 25,
       "y": 15,
       "elevation": 3,
@@ -585,7 +585,7 @@
       "flag": "FLAG_HIDE_ROUTE_119_SCOTT"
     },
     {
-      "graphics_id": "OBJ_EVENT_GFX_KECLEON",
+      "graphics_id": "OBJ_EVENT_GFX_MON_BASE+SPECIES_KECLEON",
       "x": 38,
       "y": 62,
       "elevation": 0,
