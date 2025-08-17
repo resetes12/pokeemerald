@@ -314,7 +314,6 @@ PlayersHouse_1F_Movement_MomReturnToSeatFemale:
 PlayersHouse_1F_EventScript_Mom::
 	lock
 	faceplayer
-	goto_if_unset FLAG_OUTFIT_BOX_OBTAINED, PlayersHouse_1F_EventScript_Mom_OutfitBox @May be removed in future versions, maybe?
 	goto_if_eq VAR_LITTLEROOT_HOUSES_STATE_MAY, 4, PlayersHouse_1F_EventScript_DontPushYourselfTooHard
 	goto_if_eq VAR_LITTLEROOT_HOUSES_STATE_BRENDAN, 4, PlayersHouse_1F_EventScript_DontPushYourselfTooHard
 	goto_if_set FLAG_HAS_MATCH_CALL, PlayersHouse_1F_EventScript_TryRegisterMom
@@ -326,7 +325,6 @@ PlayersHouse_1F_EventScript_Mom::
 	end
 
 PlayersHouse_1F_EventScript_Mom_OutfitBox::
-	goto_if_eq VAR_LITTLEROOT_INTRO_STATE, 7, PlayersHouse_1F_EventScript_DidYouMeetProfBirch
 	msgbox PlayersHouse_1F_Mom_OutfitBox_Text, MSGBOX_DEFAULT
 	closemessage
 	setflag FLAG_OUTFIT_BOX_OBTAINED
@@ -381,6 +379,7 @@ PlayersHouse_1F_EventScript_TryGiveAmuletCoin::
 	end
 
 PlayersHouse_1F_EventScript_MomHealsParty::
+	goto_if_unset FLAG_OUTFIT_BOX_OBTAINED, PlayersHouse_1F_EventScript_Mom_OutfitBox @May be removed in future versions, maybe?
 	specialvar VAR_RESULT, IsPokecenterChallengeActivated
 	goto_if_eq VAR_RESULT, TRUE, PlayersHouse_1F_EventScript_MomHealsParty_PokecenterChallenge
 	msgbox PlayersHouse_1F_Text_YouShouldRestABit, MSGBOX_DEFAULT
