@@ -4269,6 +4269,8 @@ extern const u32 gItemIcon_HM[];
 // FireRed/LeafGreen key items
 extern const u32 gItemIcon_OaksParcel[];
 extern const u32 gItemIconPalette_OaksParcel[];
+extern const u32 gItemIcon_OutfitBox[];
+extern const u32 gItemIconPalette_OutfitBox[];
 extern const u32 gItemIcon_PokeFlute[];
 extern const u32 gItemIconPalette_PokeFlute[];
 extern const u32 gItemIcon_SecretKey[];

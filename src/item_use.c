@@ -725,6 +725,28 @@ void ItemUseOutOfBattle_InfiniteRareCandies(u8 taskId)
     }
 }
 
+void ItemUseOutOfBattle_OutfitBox(u8 taskId)
+{
+    if (gTasks[taskId].tUsingRegisteredKeyItem) // to account for pressing select in the overworld
+    {
+        DisplayItemMessageOnField(taskId, gText_OutfitBox_CantUse, Task_CloseCantUseKeyItemMessage);
+    }
+    else
+    {
+        PlayFanfare(SE_USE_ITEM);
+        if (FlagGet(FLAG_RS_OUTFIT))
+        {
+            DisplayItemMessage(taskId, 1, gText_OutfitBox_Em, CloseItemMessage);
+            FlagClear(FLAG_RS_OUTFIT);
+        }
+        else
+        {
+            DisplayItemMessage(taskId, 1, gText_OutfitBox_RS, CloseItemMessage);
+            FlagSet(FLAG_RS_OUTFIT);
+        }
+    }
+}
+
 void ItemUseOutOfBattle_HealingHeart(u8 taskId)
 {
     PlayFanfare(MUS_HEAL);

@@ -3194,6 +3194,9 @@ extern const u8 gText_infiniteRepelOn[];
 extern const u8 gText_infiniteRepelOff[];
 extern const u8 gText_infiniteCandies[];
 extern const u8 gText_HealingHeart[];
+extern const u8 gText_OutfitBox_RS[];
+extern const u8 gText_OutfitBox_Em[];
+extern const u8 gText_OutfitBox_CantUse[];
 
 //tx_randomizer_and_challenges
 extern const u8 gText_NuzlockeCantThrowPokeBallRoute[];

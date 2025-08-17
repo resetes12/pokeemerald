@@ -4268,14 +4268,14 @@ const struct Item gItems[] =
 
     [ITEM_OAKS_PARCEL] =
     {
-        .name = _("OAK'S PARCEL"),
+        .name = _("OUTFIT BOX"),
         .itemId = ITEM_OAKS_PARCEL,
         .price = 0,
         .description = sOaksParcelDesc,
-        .importance = 2,
+        .importance = 1,
         .pocket = POCKET_KEY_ITEMS,
         .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .fieldUseFunc = ItemUseOutOfBattle_OutfitBox,
     },
 
     [ITEM_POKE_FLUTE] =
@@ -9073,14 +9073,14 @@ const struct Item gItems2[] =
 
     [ITEM_OAKS_PARCEL] =
     {
-        .name = _("OAK'S PARCEL"),
+        .name = _("OUTFIT BOX"),
         .itemId = ITEM_OAKS_PARCEL,
         .price = 0,
         .description = sOaksParcelDesc,
-        .importance = 2,
+        .importance = 1,
         .pocket = POCKET_KEY_ITEMS,
         .type = ITEM_USE_BAG_MENU,
-        .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
+        .fieldUseFunc = ItemUseOutOfBattle_OutfitBox,
     },
 
     [ITEM_POKE_FLUTE] =

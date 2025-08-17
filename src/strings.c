@@ -1884,6 +1884,9 @@ const u8 gText_infiniteRepelOff[] = _("Turned off the Inf. Repel.{PAUSE_UNTIL_PR
 // Inf. Candies
 const u8 gText_infiniteCandies[] = _("You obtained 999 RARE\nCANDIES!{PAUSE_UNTIL_PRESS}");
 const u8 gText_HealingHeart[] = _("The soft HEALING HEART\nfully healed your party!{PAUSE 120}{WAIT_SE}");
+const u8 gText_OutfitBox_RS[] = _("You are now wearing your secondary\noutfit!{PAUSE 120}{WAIT_SE}");
+const u8 gText_OutfitBox_Em[] = _("You are now wearing your main\noutfit!{PAUSE 120}{WAIT_SE}");
+const u8 gText_OutfitBox_CantUse[] = _("The OUTFIT BOX can only be\nused from the BAG.{PAUSE 120}");
 
 //tx_randomizer_and_challenges
 const u8 gText_NuzlockeCantThrowPokeBallRoute[]             = _("You have already used your encounter\nfor this area!{PAUSE_UNTIL_PRESS}");
