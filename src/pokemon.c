@@ -6601,7 +6601,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     && (gSaveBlock2Ptr->optionsDifficulty == 2) 
     && (side == B_SIDE_PLAYER) 
     //&& !(gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_EREADER_TRAINER | BATTLE_TYPE_RECORDED_LINK | BATTLE_TYPE_FRONTIER))
-    ) //FlagSet(FLAG_DIFFICULTY_HARD)
+    ) //Damage scaling in HARD MODE. Pokemon take more damage with more badges
     {
         if (FlagGet(FLAG_BADGE05_GET) == TRUE)
         {
