@@ -72,6 +72,7 @@ static const u8* const sDayTexts[] = {sCondMsg43, sCondMsg44, NULL};
 static const u8 sCondMsg45[] = _("Your POKéMON is staring spellbound\nat the night sky!");
 static const u8 sCondMsg46[] = _("Your POKéMON is happily gazing at\nthe beautiful, starry sky!");
 static const u8* const sNightTexts[] = {sCondMsg45, sCondMsg46, NULL};
+static const u8 sCondMsg50[] = _("{STR_VAR_1} is disturbed by the\nabnormal weather!");
 
 // See the struct definition in follower_helper.h for more info
 const struct FollowerMsgInfoExtended gFollowerConditionalMessages[COND_MSG_COUNT] = {
@@ -296,6 +297,17 @@ const struct FollowerMsgInfoExtended gFollowerConditionalMessages[COND_MSG_COUNT
     .textSpread = 1,
     .emotion = FOLLOWER_EMOTION_MUSIC,
     .conditions = {MATCH_TIME_OF_DAY(TIME_OF_DAY_NIGHT)},
+    },
+    [COND_MSG_ABNORMAL_WEATHER] =
+    {
+    .text = sCondMsg50,
+    .emotion = FOLLOWER_EMOTION_SURPRISE,
+    .conditions = {
+        MATCH_MUSIC(MUS_ABNORMAL_WEATHER),
+        MATCH_NOT_SPECIES(SPECIES_KYOGRE),
+        MATCH_NOT_SPECIES(SPECIES_GROUDON),
+        MATCH_NOT_SPECIES(SPECIES_RAYQUAZA),
+    }
     },
 };
 
