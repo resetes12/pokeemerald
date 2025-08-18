@@ -332,6 +332,12 @@
 // instead of a normal pokeball
 #define OW_MON_POKEBALLS TRUE
 
+// New/old handling for followers during scripts;
+// TRUE: Script collisions hide follower, FLAG_SAFE_FOLLOWER_MOVEMENT on by default
+// (scripted player movement moves follower too!)
+// FALSE: Script collisions unhandled, FLAG_SAFE_FOLLOWER_MOVEMENT off by default
+#define OW_MON_SCRIPT_MOVEMENT FALSE
+
 #define SHADOW_SIZE_S   0
 #define SHADOW_SIZE_M   1
 #define SHADOW_SIZE_L   2

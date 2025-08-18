@@ -5603,9 +5603,7 @@ bool8 FollowablePlayerMovement_Step(struct ObjectEvent *objectEvent, struct Spri
     s16 y;
     s16 targetX;
     s16 targetY;
-    #ifdef MB_SIDEWAYS_STAIRS_RIGHT_SIDE
     u32 playerAction = gObjectEvents[gPlayerAvatar.objectEventId].movementActionId;
-    #endif
 
     targetX = gObjectEvents[gPlayerAvatar.objectEventId].previousCoords.x;
     targetY = gObjectEvents[gPlayerAvatar.objectEventId].previousCoords.y;
@@ -5621,8 +5619,8 @@ bool8 FollowablePlayerMovement_Step(struct ObjectEvent *objectEvent, struct Spri
 
     if (objectEvent->invisible) {
         // Animate exiting pokeball
-        // Player is jumping, but follower is invisible
-        if (PlayerGetCopyableMovement() == COPY_MOVE_JUMP2) {
+        // don't emerge if player is jumping or moving via script
+        if (PlayerGetCopyableMovement() == COPY_MOVE_JUMP2 || ArePlayerFieldControlsLocked()) {
             sprite->sTypeFuncId = 0; // return to shadowing state
             return FALSE;
         }
@@ -5651,44 +5649,26 @@ bool8 FollowablePlayerMovement_Step(struct ObjectEvent *objectEvent, struct Spri
     MoveCoords(direction, &x, &y);
     #ifdef MB_SIDEWAYS_STAIRS_RIGHT_SIDE // https://github.com/ghoulslash/pokeemerald/tree/sideways_stairs
     GetCollisionAtCoords(objectEvent, x, y, direction); // Sets directionOverwrite for stairs
-    if (GetLedgeJumpDirection(x, y, direction) != DIR_NONE) {
+    #endif
+    if (GetLedgeJumpDirection(x, y, direction) != DIR_NONE)
         // InitJumpRegular will set the proper speed
         ObjectEventSetSingleMovement(objectEvent, sprite, GetJump2MovementAction(direction));
-    } else if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_DASH)) {
-        // Set follow speed according to player's speed
-        if (playerAction >= MOVEMENT_ACTION_RUN_DOWN_SLOW && playerAction <= MOVEMENT_ACTION_RUN_RIGHT_SLOW)
+    else if (playerAction >= MOVEMENT_ACTION_WALK_SLOW_DOWN && playerAction <= MOVEMENT_ACTION_WALK_SLOW_RIGHT) {
+        if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_DASH)) // on sideways stairs
             objectEvent->movementActionId = GetWalkNormalMovementAction(direction);
         else
-            objectEvent->movementActionId = GetWalkFastMovementAction(direction);
-    } else if (PlayerGetCopyableMovement() == COPY_MOVE_JUMP2) {
-        ObjectEventSetSingleMovement(objectEvent, sprite, GetWalkSlowMovementAction(direction));
-    } else {
-        if (playerAction >= MOVEMENT_ACTION_WALK_SLOW_DOWN && playerAction <= MOVEMENT_ACTION_WALK_SLOW_RIGHT) {
             ObjectEventSetSingleMovement(objectEvent, sprite, GetWalkSlowMovementAction(direction));
-        } else {
-            objectEvent->movementActionId = GetWalkNormalMovementAction(direction);
-            if (OW_MON_BOBBING == TRUE)
-                sprite->y2 = -1;
-        }
-    }
-    sprite->sActionFuncId = 0;
-    #else
-    if (GetLedgeJumpDirection(x, y, direction) != DIR_NONE) {
-        // InitJumpRegular will set the proper speed
-        ObjectEventSetSingleMovement(objectEvent, sprite, GetJump2MovementAction(direction));
-    } else if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_DASH)) {
-        // Set follow speed according to player's speed
-        ObjectEventSetSingleMovement(objectEvent, sprite, GetWalkFastMovementAction(direction));
     } else if (PlayerGetCopyableMovement() == COPY_MOVE_JUMP2) {
-        // If *player* jumps, make step take twice as long
         ObjectEventSetSingleMovement(objectEvent, sprite, GetWalkSlowMovementAction(direction));
+    } else if (gSprites[gPlayerAvatar.spriteId].data[4] == MOVE_SPEED_FAST_1) {
+        objectEvent->movementActionId = GetWalkFastMovementAction(direction);
     } else {
-        ObjectEventSetSingleMovement(objectEvent, sprite, GetWalkNormalMovementAction(direction));
+        objectEvent->movementActionId = GetWalkNormalMovementAction(direction);
         if (OW_MON_BOBBING == TRUE)
             sprite->y2 = -1;
     }
-    #endif
-    objectEvent->singleMovementActive = TRUE;
+    sprite->sActionFuncId = 0;
+    objectEvent->singleMovementActive = 1;
     sprite->sTypeFuncId = 2;
     return TRUE;
 }
@@ -6347,13 +6327,17 @@ static bool8 IsMetatileDirectionallyImpassable(struct ObjectEvent *objectEvent, 
     return FALSE;
 }
 
-static bool8 DoesObjectCollideWithObjectAt(struct ObjectEvent *objectEvent, s16 x, s16 y)
-{
+u32 GetObjectObjectCollidesWith(struct ObjectEvent *objectEvent, s16 x, s16 y, bool32 addCoords) {
     u8 i;
     struct ObjectEvent *curObject;
 
     if (objectEvent->localId == OBJ_EVENT_ID_FOLLOWER)
-        return FALSE; // follower cannot collide with other objects, but they can collide with it
+        return OBJECT_EVENTS_COUNT; // follower cannot collide with other objects, but they can collide with it
+
+    if (addCoords) {
+        x += objectEvent->currentCoords.x;
+        y += objectEvent->currentCoords.y;
+    }
 
     for (i = 0; i < OBJECT_EVENTS_COUNT; i++)
     {
@@ -6363,11 +6347,16 @@ static bool8 DoesObjectCollideWithObjectAt(struct ObjectEvent *objectEvent, s16 
             if ((curObject->currentCoords.x == x && curObject->currentCoords.y == y) || (curObject->previousCoords.x == x && curObject->previousCoords.y == y))
             {
                 if (AreElevationsCompatible(objectEvent->currentElevation, curObject->currentElevation))
-                    return TRUE;
+                    return i;
             }
         }
     }
-    return FALSE;
+    return OBJECT_EVENTS_COUNT;
+}
+
+static bool8 DoesObjectCollideWithObjectAt(struct ObjectEvent *objectEvent, s16 x, s16 y)
+{
+    return (GetObjectObjectCollidesWith(objectEvent, x, y, FALSE) < OBJECT_EVENTS_COUNT);
 }
 
 bool8 IsBerryTreeSparkling(u8 localId, u8 mapNum, u8 mapGroup)
@@ -6524,6 +6513,18 @@ static u8 TryUpdateMovementActionOnStairs(struct ObjectEvent *objectEvent, u8 mo
     }
 }
 
+static const u8 sActionIdToCopyableMovement[] = {
+    [MOVEMENT_ACTION_FACE_DOWN ... MOVEMENT_ACTION_FACE_RIGHT] = COPY_MOVE_FACE,
+    [MOVEMENT_ACTION_WALK_SLOW_DOWN ... MOVEMENT_ACTION_WALK_NORMAL_RIGHT] = COPY_MOVE_WALK,
+    [MOVEMENT_ACTION_JUMP_2_DOWN ... MOVEMENT_ACTION_JUMP_2_RIGHT] = COPY_MOVE_JUMP2,
+    [MOVEMENT_ACTION_WALK_FAST_DOWN ... MOVEMENT_ACTION_WALK_FAST_RIGHT] = COPY_MOVE_WALK,
+    [MOVEMENT_ACTION_RIDE_WATER_CURRENT_DOWN ... MOVEMENT_ACTION_PLAYER_RUN_RIGHT] = COPY_MOVE_WALK,
+    // Not a typo; follower needs to take an action with a duration == JUMP's,
+    // and JUMP2 here will lead to WALK_SLOW later
+    [MOVEMENT_ACTION_JUMP_DOWN ... MOVEMENT_ACTION_JUMP_RIGHT] = COPY_MOVE_JUMP2,
+    [MOVEMENT_ACTION_NONE] = COPY_MOVE_NONE,
+};
+
 bool8 ObjectEventSetHeldMovement(struct ObjectEvent *objectEvent, u8 movementActionId)
 {
     if (ObjectEventIsMovementOverridden(objectEvent))
@@ -6536,6 +6537,16 @@ bool8 ObjectEventSetHeldMovement(struct ObjectEvent *objectEvent, u8 movementAct
     objectEvent->heldMovementActive = TRUE;
     objectEvent->heldMovementFinished = FALSE;
     gSprites[objectEvent->spriteId].sActionFuncId = 0;
+
+    // When player is moved via script, set copyable movement
+    // for any followers via a lookup table
+    if (ArePlayerFieldControlsLocked() &&
+        objectEvent->isPlayer &&
+        FlagGet(FLAG_SAFE_FOLLOWER_MOVEMENT))
+    {
+        objectEvent->playerCopyableMovement = sActionIdToCopyableMovement[objectEvent->movementActionId];
+    }
+
     return FALSE;
 }
 
@@ -6559,6 +6570,15 @@ void ObjectEventClearHeldMovement(struct ObjectEvent *objectEvent)
     objectEvent->heldMovementFinished = FALSE;
     gSprites[objectEvent->spriteId].sTypeFuncId = 0;
     gSprites[objectEvent->spriteId].sActionFuncId = 0;
+
+    // When player is moved via script, set copyable movement
+    // for any followers via a lookup table
+    if (ArePlayerFieldControlsLocked() &&
+        objectEvent->isPlayer &&
+        FlagGet(FLAG_SAFE_FOLLOWER_MOVEMENT))
+    {
+        objectEvent->playerCopyableMovement = sActionIdToCopyableMovement[objectEvent->movementActionId];
+    }
 }
 
 u8 ObjectEventCheckHeldMovementStatus(struct ObjectEvent *objectEvent)
