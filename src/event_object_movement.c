@@ -2208,7 +2208,7 @@ static bool8 GetFollowerInfo(u16 *species, u8 *form, u8 *shiny)
     if (gSaveBlock2Ptr->optionsfollowerEnable == 0) 
         return GetMonInfo(GetFirstLiveMon(), species, form, shiny);
     else
-        return;
+        return FALSE;
 }
 
 void UpdateFollowingPokemon(void) { // Update following pokemon if any
