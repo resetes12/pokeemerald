@@ -1808,7 +1808,7 @@ static u16 PackGraphicsId(const struct ObjectEventTemplate *template) {
         if (template->script && template->script[0] == 0x7d) {
             form = T1_READ_16(&template->script[2]);
             form = (form >> 10) & 0x1F;
-        } else if (template->trainerRange_berryTreeId) {
+        } else if (template->trainerRange_berryTreeId && !template->trainerType) {
             form = template->trainerRange_berryTreeId & 0x1F;
         }
         graphicsId |= form << OBJ_EVENT_GFX_SPECIES_BITS;
