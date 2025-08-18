@@ -2140,8 +2140,9 @@ static void RefreshFollowerGraphics(struct ObjectEvent *objEvent) {
         sprite->y += -(graphicsInfo->height >> 1) - sprite->centerToCornerVecY;
     }
 
-    if (OW_GFX_COMPRESS)
-        LoadSheetGraphicsInfo(graphicsInfo, objEvent->graphicsId, sprite);
+    #if OW_GFX_COMPRESS
+    LoadSheetGraphicsInfo(graphicsInfo, objEvent->graphicsId, sprite);
+    #endif
 
     sprite->oam.shape = graphicsInfo->oam->shape;
     sprite->oam.size = graphicsInfo->oam->size;
