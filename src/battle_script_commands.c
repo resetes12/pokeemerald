@@ -3633,9 +3633,14 @@ static void Cmd_getexp(void)
                 }
             }
 
-            if (gSaveBlock2Ptr->optionsDifficulty == 2) //exp decrease for hard mode
-                calculatedExp *= 0.60;
-            if (gSaveBlock2Ptr->optionsDifficulty == 0) //exp increase for easy mode
+            if (gSaveBlock2Ptr->optionsDifficulty == 2) //Only if playing HARD MODE
+            {
+                if (gSaveBlock1Ptr->tx_Difficulty_HardExp == 0) //Exp decrease for HARD MODE
+                    calculatedExp *= 0.60;
+                else if (gSaveBlock1Ptr->tx_Difficulty_HardExp == 1) //Maintain default exp. gain for HARD MODE
+                    calculatedExp *= 1;
+            }
+            else if (gSaveBlock2Ptr->optionsDifficulty == 0) //exp increase for easy mode
                 calculatedExp *= 1.2;
 
             if (FlagGet(FLAG_EXP_SHARE) == FALSE)
