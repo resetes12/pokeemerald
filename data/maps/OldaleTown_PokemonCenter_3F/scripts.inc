@@ -130,6 +130,8 @@ EventScript_DoWonderTradeCancelSaveThirdTrade::
 
 EventScript_DoWonderTradeStartNoLimit::
 	goto_if_unset FLAG_BADGE05_GET, EventScript_WTNotActiveYet
+	msgbox EventScript_DoWonderTrade_Text_Welcome, MSGBOX_DEFAULT
+	closemessage
 	special CheckIfChallengesAreActive
 	goto_if_set FLAG_NO_WT_BECAUSE_CHALLENGE, EventScript_WTChallengesUnlimited
 	call Common_EventScript_SaveGame
