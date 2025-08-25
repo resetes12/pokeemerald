@@ -2419,7 +2419,9 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
         gBattleTypeFlags |= gTrainers[trainerNum].doubleBattle;
 
         //tx_randomizer_and_challenges
-        if (gSaveBlock1Ptr->tx_Challenges_TrainerScalingIVs && !FlagGet(FLAG_IS_CHAMPION))
+        if (gSaveBlock1Ptr->tx_Challenges_TrainerScalingIVs && !(gBattleTypeFlags & (BATTLE_TYPE_FRONTIER
+                                                                        | BATTLE_TYPE_EREADER_TRAINER
+                                                                        | BATTLE_TYPE_TRAINER_HILL)))
         {
             u8 iv = GetCurrentTrainerIVs();
 
@@ -2433,7 +2435,9 @@ static u8 CreateNPCTrainerParty(struct Pokemon *party, u16 trainerNum, bool8 fir
                 CalculateMonStats(&party[i]);
             }
         }
-        if (gSaveBlock1Ptr->tx_Challenges_TrainerScalingEVs && !FlagGet(FLAG_IS_CHAMPION))
+        if (gSaveBlock1Ptr->tx_Challenges_TrainerScalingEVs && !(gBattleTypeFlags & (BATTLE_TYPE_FRONTIER
+                                                                        | BATTLE_TYPE_EREADER_TRAINER
+                                                                        | BATTLE_TYPE_TRAINER_HILL)))
         {
             u8 ev = GetCurrentTrainerEVs();
 
