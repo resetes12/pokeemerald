@@ -335,14 +335,14 @@ PlayersHouse_1F_EventScript_Mom_OutfitBox::
 
 PlayersHouse_1F_Mom_OutfitBox_Text:
 	.string "MOM: Oh! I just realized I haven't\n"
-	.string "given you the COSTUME BOX yet.\p"
+	.string "given you the OUTFIT BOX yet.\p"
 	.string "Here you go, dear!$"
 
 PlayersHouse_1F_Mom_OutfitBox_Text_HowToUse:
 	.string "MOM: Now you can change your clothes\n"
 	.string "whenever you like.\p"
 	.string "Just remember, you need to use the\n"
-	.string "COSTUME BOX from your BAG.\p"
+	.string "OUTFIT BOX from your BAG.\p"
 	.string "Take care, honey!$"
 
 PlayersHouse_1F_EventScript_DontPushYourselfTooHard::

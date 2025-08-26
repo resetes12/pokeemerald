@@ -927,11 +927,11 @@ LittlerootTown_EventScript_GiveRunningShoes::
 	waitfanfare
 	setflag FLAG_RECEIVED_RUNNING_SHOES
 	msgbox LittlerootTown_Text_ExplainRunningShoes, MSGBOX_DEFAULT
-	msgbox LittlerootTown_Text_GiveCostumeBox, MSGBOX_DEFAULT
+	msgbox LittlerootTown_Text_GiveOutfitBox, MSGBOX_DEFAULT
 	closemessage
 	setflag FLAG_OUTFIT_BOX_OBTAINED
 	giveitem ITEM_OAKS_PARCEL
-	msgbox LittlerootTown_Text_ExplainCostumeBox, MSGBOX_DEFAULT
+	msgbox LittlerootTown_Text_ExplainOutfitBox, MSGBOX_DEFAULT
 	msgbox LittlerootTown_Text_ComeHomeIfAnythingHappens, MSGBOX_DEFAULT
 	closemessage
 	delay 30
@@ -967,16 +967,16 @@ LittlerootTown_Text_SwitchShoesWithRunningShoes:
 	.string "{PLAYER} switched shoes with the\n"
 	.string "RUNNING SHOES.$"
 
-LittlerootTown_Text_GiveCostumeBox:
+LittlerootTown_Text_GiveOutfitBox:
 	.string "MOM: Oh! I almost forgot to give\n"
-	.string "you the COSTUME BOX.\p"
+	.string "you the OUTFIT BOX.\p"
 	.string "Here you go, dear!$"
 
-LittlerootTown_Text_ExplainCostumeBox:
+LittlerootTown_Text_ExplainOutfitBox:
 	.string "MOM: Now you can change your clothes\n"
 	.string "whenever you like.\p"
 	.string "Just remember, you need to use the\n"
-	.string "COSTUME BOX from your BAG.$"
+	.string "OUTFIT BOX from your BAG.$"
 
 LittlerootTown_Text_ExplainRunningShoes:
 	.string "MOM: {PLAYER}, those shoes came with\n"
