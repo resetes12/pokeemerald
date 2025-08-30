@@ -2426,6 +2426,13 @@ static void InitDomeTrainers(void)
             rankingScores[i] += statValues[STAT_SPDEF];
             rankingScores[i] += statValues[STAT_SPEED];
             rankingScores[i] += statValues[STAT_HP];
+            //If "tx_Mode_Modern_Types" is enabled, 18 Pokémon have new types. THIS CODE DISABLES THE NEW TYPES IN EACH POKÉMON.
+            //The second column shows which type has been added or removed from each Pokémon.
+            //"-" means that the type is removed, "+" means that the type is added.
+
+            //The game defaults to the new typings.
+            //Logically speaking, this should have been reversed: The code should check if "tx_Mode_Modern_Types" is enabled, and then
+            //apply the new typing. I didn't do it like that, and reversing it means breaking savegames, so now it stays like this.
             if ((gSaveBlock1Ptr->tx_Mode_Modern_Types == 0) 
                 && (species == SPECIES_ARBOK 
                 || species == SPECIES_PARASECT 
@@ -2449,6 +2456,8 @@ static void InitDomeTrainers(void)
                     monTypesBits |= gBitTable[gSpeciesInfo[gFacilityTrainerMons[DOME_MONS[i][j]].species].types_old[0]];
                     monTypesBits |= gBitTable[gSpeciesInfo[gFacilityTrainerMons[DOME_MONS[i][j]].species].types_old[1]];
                 }
+            //20 new Pokémon are now Fairy Type. This code DISABLES the Fairy type for the following Pokémon.
+            //Same as above, this code should be reversed, but I didn't do it, so it stays like that for now.
             else if ((gSaveBlock1Ptr->tx_Mode_Fairy_Types == 0) 
                 && (species == SPECIES_JIGGLYPUFF 
                 || species == SPECIES_WIGGLYTUFF
@@ -2474,6 +2483,7 @@ static void InitDomeTrainers(void)
                     monTypesBits |= gBitTable[gSpeciesInfo[gFacilityTrainerMons[DOME_MONS[i][j]].species].types_old[0]];
                     monTypesBits |= gBitTable[gSpeciesInfo[gFacilityTrainerMons[DOME_MONS[i][j]].species].types_old[1]];
                 }
+            //When modern typings are enabled, Snubull and Granbull also have Fairy Type + Normal Type
             else if ((gSaveBlock1Ptr->tx_Mode_Fairy_Types == 1) 
                 && (species == SPECIES_SNUBBULL 
                 || species == SPECIES_GRANBULL))

@@ -11705,32 +11705,41 @@ u8 GetTypeBySpecies(u16 species, u8 typeNum)
 {
     u8 type;
 
-    if ((gSaveBlock1Ptr->tx_Mode_Modern_Types == 0) 
-    && (species == SPECIES_ARBOK 
-    || species == SPECIES_PARASECT 
-    || species == SPECIES_GOLDUCK
-    || species == SPECIES_KINGLER
-    || species == SPECIES_MEGANIUM
-    || species == SPECIES_TYPHLOSION
-    || species == SPECIES_FERALIGATR
-    || species == SPECIES_NOCTOWL
-    || species == SPECIES_SUNFLORA
-    || species == SPECIES_STANTLER
-    || species == SPECIES_GROVYLE
-    || species == SPECIES_SCEPTILE
-    || species == SPECIES_MASQUERAIN
-    || species == SPECIES_DELCATTY
-    || species == SPECIES_GULPIN
-    || species == SPECIES_SWALOT
-    || species == SPECIES_LUVDISC
-    || species == SPECIES_ELECTIVIRE))
+    //If "tx_Mode_Modern_Types" is enabled, 18 Pokémon have new types. THIS CODE DISABLES THE NEW TYPES IN EACH POKÉMON.
+    //The second column shows which type has been added or removed from each Pokémon.
+    //"-" means that the type is removed, "+" means that the type is added.
+
+    //The game defaults to the new typings.
+    //Logically speaking, this should have been reversed: The code should check if "tx_Mode_Modern_Types" is enabled, and then
+    //apply the new typing. I didn't do it like that, and reversing it means breaking savegames, so now it stays like this.
+    if ((gSaveBlock1Ptr->tx_Mode_Modern_Types == 0)
+    && (species == SPECIES_ARBOK                //-Dark
+    || species == SPECIES_PARASECT              //+Grass, -Ghost
+    || species == SPECIES_GOLDUCK               //-Psychic
+    || species == SPECIES_KINGLER               //-Steel
+    || species == SPECIES_MEGANIUM              //-Fairy
+    || species == SPECIES_TYPHLOSION            //-Ground
+    || species == SPECIES_FERALIGATR            //-Dragon
+    || species == SPECIES_NOCTOWL               //+Normal, -Psychic (+new ability to maintain Normal Type STAB)
+    || species == SPECIES_SUNFLORA              //-Fire
+    || species == SPECIES_STANTLER              //-Psychic
+    || species == SPECIES_GROVYLE               //-Dragon
+    || species == SPECIES_SCEPTILE              //-Dragon
+    || species == SPECIES_MASQUERAIN            //+Flying, -Water
+    || species == SPECIES_DELCATTY              //-Fairy
+    || species == SPECIES_GULPIN                //-Normal
+    || species == SPECIES_SWALOT                //-Normal
+    || species == SPECIES_LUVDISC               //-Fairy
+    || species == SPECIES_ELECTIVIRE))          //-Fighting
     {
         if (typeNum == 1)
             type = gSpeciesInfo[species].types_old[0];
         else
             type = gSpeciesInfo[species].types_old[1];
     }
-    else if ((gSaveBlock1Ptr->tx_Mode_Fairy_Types == 0) 
+    //20 new Pokémon are now Fairy Type. This code DISABLES the Fairy type for the following Pokémon.
+    //Same as above, this code should be reversed, but I didn't do it, so it stays like that for now.
+    else if ((gSaveBlock1Ptr->tx_Mode_Fairy_Types == 0)
     && (species == SPECIES_JIGGLYPUFF 
     || species == SPECIES_WIGGLYTUFF
     || species == SPECIES_CLEFAIRY
@@ -11757,7 +11766,8 @@ u8 GetTypeBySpecies(u16 species, u8 typeNum)
         else
             type = gSpeciesInfo[species].types_old[1];
     }
-    else if ((gSaveBlock1Ptr->tx_Mode_Modern_Types == 1) 
+    //When modern typings are enabled, Snubull and Granbull also have Fairy Type + Normal Type
+    else if ((gSaveBlock1Ptr->tx_Mode_Modern_Types == 1)
     && (species == SPECIES_SNUBBULL
     || species == SPECIES_GRANBULL))
     {
