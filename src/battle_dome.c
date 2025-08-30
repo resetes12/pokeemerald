@@ -2443,7 +2443,8 @@ static void InitDomeTrainers(void)
                 || species == SPECIES_DELCATTY
                 || species == SPECIES_GULPIN
                 || species == SPECIES_SWALOT
-                || species == SPECIES_LUVDISC))
+                || species == SPECIES_LUVDISC
+                || species == SPECIES_ELECTIVIRE))
                 {
                     monTypesBits |= gBitTable[gSpeciesInfo[gFacilityTrainerMons[DOME_MONS[i][j]].species].types_old[0]];
                     monTypesBits |= gBitTable[gSpeciesInfo[gFacilityTrainerMons[DOME_MONS[i][j]].species].types_old[1]];

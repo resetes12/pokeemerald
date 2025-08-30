@@ -11722,7 +11722,8 @@ u8 GetTypeBySpecies(u16 species, u8 typeNum)
     || species == SPECIES_DELCATTY
     || species == SPECIES_GULPIN
     || species == SPECIES_SWALOT
-    || species == SPECIES_LUVDISC))
+    || species == SPECIES_LUVDISC
+    || species == SPECIES_ELECTIVIRE))
     {
         if (typeNum == 1)
             type = gSpeciesInfo[species].types_old[0];
