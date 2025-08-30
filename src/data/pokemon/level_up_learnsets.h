@@ -3964,7 +3964,8 @@ static const u16 sOctilleryLevelUpLearnset[] = {
 static const u16 sDelibirdLevelUpLearnset[] = {
     LEVEL_UP_MOVE( 1, MOVE_PRESENT),
     LEVEL_UP_MOVE( 1, MOVE_AIR_SLASH),
-    LEVEL_UP_MOVE(25, MOVE_DRILL_PECK),
+    LEVEL_UP_MOVE( 1, MOVE_METRONOME),
+    LEVEL_UP_MOVE( 1, MOVE_DRILL_PECK),
     LEVEL_UP_END
 };
 
