@@ -740,6 +740,7 @@ void ItemUseOutOfBattle_OutfitBox(u8 taskId)
         DisplayItemMessage(taskId, 1, gText_OutfitBox_CantUseBikeSurfUnderwater, CloseItemMessage);
     }
     else
+    //You can't change your outfit while riding a bike or surfing
     {
         PlayFanfare(SE_USE_ITEM);
         if (FlagGet(FLAG_RS_OUTFIT))
