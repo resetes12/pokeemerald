@@ -727,9 +727,17 @@ void ItemUseOutOfBattle_InfiniteRareCandies(u8 taskId)
 
 void ItemUseOutOfBattle_OutfitBox(u8 taskId)
 {
-    if (gTasks[taskId].tUsingRegisteredKeyItem) // to account for pressing select in the overworld
+    if (gTasks[taskId].tUsingRegisteredKeyItem) // to account for pressing select in the overworld, although you can't use it there                                  
     {
         DisplayItemMessageOnField(taskId, gText_OutfitBox_CantUse, Task_CloseCantUseKeyItemMessage);
+    }
+    //You can't change your outfit while riding a bike, surfing or diving
+    else if ((gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_MACH_BIKE) 
+         || (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_ACRO_BIKE)
+         || (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_SURFING)
+         || (gPlayerAvatar.flags & PLAYER_AVATAR_FLAG_UNDERWATER))
+    {
+        DisplayItemMessage(taskId, 1, gText_OutfitBox_CantUseBikeSurfUnderwater, CloseItemMessage);
     }
     else
     {

@@ -1887,6 +1887,7 @@ const u8 gText_HealingHeart[] = _("The soft HEALING HEART\nfully healed your par
 const u8 gText_OutfitBox_RS[] = _("You are now wearing your secondary\noutfit!{PAUSE 120}{WAIT_SE}");
 const u8 gText_OutfitBox_Em[] = _("You are now wearing your main\noutfit!{PAUSE 120}{WAIT_SE}");
 const u8 gText_OutfitBox_CantUse[] = _("The OUTFIT BOX can only be\nused from the BAG.{PAUSE 120}");
+const u8 gText_OutfitBox_CantUseBikeSurfUnderwater[] = _("You can't use the OUTFIT BOX while\nBIKING, SURFING, or DIVING!{PAUSE 120}");
 
 //tx_randomizer_and_challenges
 const u8 gText_NuzlockeCantThrowPokeBallRoute[]             = _("You have already used your encounter\nfor this area!{PAUSE_UNTIL_PRESS}");

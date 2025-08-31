@@ -3199,6 +3199,7 @@ extern const u8 gText_HealingHeart[];
 extern const u8 gText_OutfitBox_RS[];
 extern const u8 gText_OutfitBox_Em[];
 extern const u8 gText_OutfitBox_CantUse[];
+extern const u8 gText_OutfitBox_CantUseBikeSurfUnderwater[];
 
 //tx_randomizer_and_challenges
 extern const u8 gText_NuzlockeCantThrowPokeBallRoute[];
