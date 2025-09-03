@@ -46,7 +46,7 @@ TrainerHill_Entrance_OnReturn:
 	end
 
 TrainerHill_Entrance_OnLoad:
-	setflag FLAG_LIMIT_TO_50
+	clearflag FLAG_LIMIT_TO_50
 	calculatemonstats
 	call_if_eq VAR_TEMP_D, 17, TrainerHill_Entrance_EventScript_OpenCounterDoor
 	end
@@ -398,7 +398,8 @@ TrainerHill_Roof_Text_YouFinallyCameBravo:
 
 TrainerHill_Roof_Text_HaveTheMostMarvelousGift:
 	.string "For a marvelous someone like you,\n"
-	.string "I have the most marvelous gift!$"
+	.string "I have the most marvelous gift,\l"
+	.string "plus some money for your effort!$"
 
 TrainerHill_Roof_Text_FullUpBeBackLaterForThis:
 	.string "Oh, no, full up with things!\n"
