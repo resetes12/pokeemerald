@@ -10755,6 +10755,9 @@ static void Cmd_handleballthrow(void)
     {
         u32 odds;
         u8 catchRate;
+        u8 catchRateHardMode;
+
+        catchRateHardMode = gSpeciesInfo[gBattleMons[gBattlerTarget].species].catchRate_hard;
 
         gLastThrownBall = gLastUsedItem;
         gBallToDisplay = gLastThrownBall;
@@ -10763,6 +10766,9 @@ static void Cmd_handleballthrow(void)
             catchRate = gBattleStruct->safariCatchFactor * 1275 / 100;
         else
             catchRate = gSpeciesInfo[gBattleMons[gBattlerTarget].species].catchRate;
+
+        if ((catchRate == 3) && (catchRateHardMode == 2) && (gSaveBlock2Ptr->optionsDifficulty == 2))
+            catchRate = 2;
 
         if (gLastUsedItem > ITEM_SAFARI_BALL)
         {
