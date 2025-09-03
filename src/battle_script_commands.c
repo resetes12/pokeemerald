@@ -1457,7 +1457,7 @@ s32 GetTypeEffectiveness(struct Pokemon *mon, u8 moveType) {
     s32 flags = 0;
     if (GetMonAbility(mon) == ABILITY_LEVITATE && moveType == TYPE_GROUND)
         return MOVE_RESULT_NOT_VERY_EFFECTIVE;
-    if (FlagGet(FLAG_UNUSED_0x289)) //0, Modern type effectiveness
+    if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 1) //Modern type effectiveness
     {
         while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) != TYPE_ENDTABLE) {
             if (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) == TYPE_FORESIGHT) {
@@ -1504,7 +1504,7 @@ s32 GetTypeEffectiveness(struct Pokemon *mon, u8 moveType) {
             i += 3;
         }
     }
-    else if (!FlagGet(FLAG_UNUSED_0x289)) //1, Old type effectiveness
+    else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Old type effectiveness
     {
         while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE_OLD(i)) != TYPE_ENDTABLE) {
             if (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE_OLD(i)) == TYPE_FORESIGHT) {
@@ -1623,7 +1623,7 @@ static void Cmd_typecalc(void)
     }
     else
     {
-        if (FlagGet(FLAG_UNUSED_0x289)) //0, Modern type effectiveness
+        if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 1) //Modern type effectiveness
         {
             while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) != TYPE_ENDTABLE)
             {
@@ -1647,7 +1647,7 @@ static void Cmd_typecalc(void)
                 i += 3;
             }
         }
-        else if (!FlagGet(FLAG_UNUSED_0x289)) //1, Old type effectiveness
+        else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Old type effectiveness
         {
             while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE_OLD(i)) != TYPE_ENDTABLE)
             {
@@ -1708,7 +1708,7 @@ static void CheckWonderGuardAndLevitate(void)
         RecordAbilityBattle(gBattlerTarget, ABILITY_LEVITATE);
         return;
     }
-    if (FlagGet(FLAG_UNUSED_0x289)) //0, Modern type effectiveness
+    if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 1) //Modern type effectiveness
     {
         while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) != TYPE_ENDTABLE)
         {
@@ -1755,7 +1755,7 @@ static void CheckWonderGuardAndLevitate(void)
             i += 3;
         }
     }
-    else if (!FlagGet(FLAG_UNUSED_0x289)) //1, Old type effectiveness
+    else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Old type effectiveness
     {
         while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE_OLD(i)) != TYPE_ENDTABLE)
         {
@@ -1873,7 +1873,7 @@ u8 TypeCalc(u16 move, u8 attacker, u8 defender)
     }
     else
     {
-        if (FlagGet(FLAG_UNUSED_0x289)) //0, Modern type effectiveness
+        if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 1) //Modern type effectiveness
         {
             while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) != TYPE_ENDTABLE)
             {
@@ -1898,7 +1898,7 @@ u8 TypeCalc(u16 move, u8 attacker, u8 defender)
                 i += 3;
             }
         }
-        else if (!FlagGet(FLAG_UNUSED_0x289)) //1, Old type effectiveness
+        else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Old type effectiveness
         {
             while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE_OLD(i)) != TYPE_ENDTABLE)
             {
@@ -1957,7 +1957,7 @@ u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility)
     }
     else
     {
-        if (FlagGet(FLAG_UNUSED_0x289)) //0, Modern type effectiveness
+        if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 1) //Modern type effectiveness
         {
             while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) != TYPE_ENDTABLE)
             {
@@ -1978,7 +1978,7 @@ u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility)
                 i += 3;
             }
         }
-        else if (!FlagGet(FLAG_UNUSED_0x289)) //1, Old type effectiveness
+        else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Old type effectiveness
         {
             while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE_OLD(i)) != TYPE_ENDTABLE)
             {
@@ -2030,7 +2030,7 @@ u8 AI_TypeDisplay(u16 move, u16 targetSpecies, u8 targetAbility)
     }
     else
     {
-        if (FlagGet(FLAG_UNUSED_0x289)) //0, Modern type effectiveness
+        if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 1) //Modern type effectiveness
         {
             while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) != TYPE_ENDTABLE)
             {
@@ -2051,7 +2051,7 @@ u8 AI_TypeDisplay(u16 move, u16 targetSpecies, u8 targetAbility)
                 i += 3;
             }
         }
-        else if (!FlagGet(FLAG_UNUSED_0x289)) //1, Old type effectiveness
+        else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Old type effectiveness
         {
             while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE_OLD(i)) != TYPE_ENDTABLE)
             {
@@ -5179,7 +5179,7 @@ static void Cmd_typecalc2(void)
     }
     else
     {
-        if (FlagGet(FLAG_UNUSED_0x289)) //0, Modern type effectiveness
+        if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 1) //Modern type effectiveness
         {
             while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) != TYPE_ENDTABLE)
             {
@@ -5241,7 +5241,7 @@ static void Cmd_typecalc2(void)
                 i += 3;
             }
         }
-        else if (!FlagGet(FLAG_UNUSED_0x289)) //1, Old type effectiveness
+        else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Old type effectiveness
         {
             while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE_OLD(i)) != TYPE_ENDTABLE)
             {
@@ -8841,7 +8841,7 @@ static void Cmd_settypetorandomresistance(void)
     else
     {
         s32 i, j, rands;
-        if (FlagGet(FLAG_UNUSED_0x289)) //0, Modern type effectiveness
+        if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 1) //Modern type effectiveness
         {
             for (rands = 0; rands < 1000; rands++)
             {
@@ -8884,7 +8884,7 @@ static void Cmd_settypetorandomresistance(void)
             }
             gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
         }
-        else if (!FlagGet(FLAG_UNUSED_0x289)) //1, Old type effectiveness
+        else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Old type effectiveness
         {
             for (rands = 0; rands < 1000; rands++)
             {

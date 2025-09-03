@@ -1175,6 +1175,7 @@ struct SaveBlock1
         u8 tx_Mode_Encounters:2;
         u8 tx_Features_FrontierBans:1;
         u8 tx_Difficulty_HardExp:1;
+        u8 tx_Mode_TypeEffectiveness:1;
 };
 
 extern struct SaveBlock1* gSaveBlock1Ptr;

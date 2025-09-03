@@ -142,11 +142,9 @@ Debug_Script_3_SelectFrontierBanOption_Text:
 	.string "{COLOR RED}(YES has been always the default option)$"
 
 Debug_Script_4::
-	setflag FLAG_UNUSED_0x289
 	end
 
 Debug_Script_5::
-	clearflag FLAG_UNUSED_0x289
 	end
 
 Debug_Script_6::

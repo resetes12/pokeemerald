@@ -2968,7 +2968,7 @@ static int GetTypeEffectivenessPoints(int move, int targetSpecies, int mode)
     }
     else
     {
-        if (FlagGet(FLAG_UNUSED_0x289)) //0, Modern type effectiveness
+        if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 1) //Modern type effectiveness
         {
             // Calculate a "type power" value to determine the benefit of using this type move against the target.
             // This value will then be used to get the number of points to assign to the move.
@@ -2997,7 +2997,7 @@ static int GetTypeEffectivenessPoints(int move, int targetSpecies, int mode)
                 i += 3;
             }
         }
-        else if (!FlagGet(FLAG_UNUSED_0x289)) //1, Old type effectiveness
+        else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Old type effectiveness
         {
             // Calculate a "type power" value to determine the benefit of using this type move against the target.
             // This value will then be used to get the number of points to assign to the move.

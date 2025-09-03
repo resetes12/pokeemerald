@@ -607,7 +607,7 @@ void AI_TrySwitchOrUseItem(void)
 static void ModulateByTypeEffectiveness(u8 atkType, u8 defType1, u8 defType2, u8 *var)
 {
     s32 i = 0;
-    if (FlagGet(FLAG_UNUSED_0x289)) //0, Modern type effectiveness
+    if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 1) //Modern type effectiveness
     {
         while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) != TYPE_ENDTABLE)
         {
@@ -628,7 +628,7 @@ static void ModulateByTypeEffectiveness(u8 atkType, u8 defType1, u8 defType2, u8
             i += 3;
         }
     }
-    else if (!FlagGet(FLAG_UNUSED_0x289)) //1, Old type effectiveness
+    else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Old type effectiveness
     {
         while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE_OLD(i)) != TYPE_ENDTABLE)
         {
