@@ -475,11 +475,11 @@ static const u8 sText_Poison[]              = _("SURVIVE POISON");
 static const u8 sText_Synchronize[]         = _("SYNCHRONIZE");
 static const u8 sText_Mints[]               = _("NATURE MINTS");
 static const u8 sText_NewCitrus[]           = _("SITRUS BERRY");
-static const u8 sText_ModernTypes[]         = _("MODERN TYPING");
+static const u8 sText_ModernTypes[]         = _("{PKMN} TYPES");
 static const u8 sText_FairyTypes[]          = _("ADD FAIRY TYPE");
-static const u8 sText_NewStats[]            = _("BETTER STATS");
+static const u8 sText_NewStats[]            = _("{PKMN} STATS");
 static const u8 sText_Sturdy[]              = _("STURDY");
-static const u8 sText_Modern_Moves[]        = _("MODERN MOVEPOOL");
+static const u8 sText_Modern_Moves[]        = _("{PKMN} MOVEPOOL");
 static const u8 sText_Legendary_Abilities[] = _("LEGEN. ABILITIES");
 static const u8 sText_New_Legendaries[]     = _("EXTRA LEGEND.");
 static const u8 sText_Next[]                = _("NEXT");
@@ -763,8 +763,8 @@ static const u8 sText_Description_Mode_New_Stats_Off[]            = _("Original 
 static const u8 sText_Description_Mode_New_Stats_On[]             = _("Modified stats to make certain\n{PKMN} more viable.");
 static const u8 sText_Description_Mode_Sturdy_Off[]               = _("STURDY works as in GEN III. Only\nnegates OHKO moves (GUILLOTINE, etc.)");
 static const u8 sText_Description_Mode_Sturdy_On[]                = _("STURDY works as in GEN V+.\n{PKMN} survive lethal hits with 1HP.");
-static const u8 sText_Description_Mode_Modern_Moves_Off[]         = _("No new MOVES, and original MOVEPOOL\nfor all {PKMN}.");
-static const u8 sText_Description_Mode_Modern_Moves_On[]          = _("13 new MOVES, with improved MOVEPOOLS\nfor all {PKMN}.");
+static const u8 sText_Description_Mode_Modern_Moves_Off[]         = _("No new MOVES, and original MOVEPOOL\nfor all {PKMN} + new EGG and TUTOR MOVES.");
+static const u8 sText_Description_Mode_Modern_Moves_On[]          = _("13 new MOVES, and improved MOVEPOOL\nfor all {PKMN} + new EGG and TUTOR MOVES.");
 static const u8 sText_Description_Mode_Leg_Abilities_Off[]        = _("PRESSURE stays as the main\nability of some legendaries.");
 static const u8 sText_Description_Mode_Leg_Abilities_On[]         = _("Legendaries have PRESSURE changed\nfor a better ability.");
 static const u8 sText_Description_Mode_New_Legendaries_Off[]      = _("No extra legendaries are added.");
@@ -2636,6 +2636,8 @@ static void DrawChoices_Features_Rtc_Type(int selection, int y)
 static const u8 sText_Encounters_Vanilla[]   = _("ORIG");
 static const u8 sText_Encounters_Postgame[]  = _("POST");
 static const u8 sText_Encounters_Modern[]    = _("NEW");
+static const u8 sText_Encounters_Vanilla_Long[]   = _("ORIGINAL");
+static const u8 sText_Encounters_Modern_Long[]    = _("MODERN");
 
 static void DrawChoices_Mode_AlternateSpawns(int selection, int y)
 {
@@ -2895,8 +2897,8 @@ static void DrawChoices_Mode_Synchronize(int selection, int y)
         gSaveBlock1Ptr->tx_Mode_Synchronize = 1; //New synchronize
     }
 
-    DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
-    DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
+    DrawOptionMenuChoice(sText_Encounters_Vanilla_Long, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_Encounters_Modern_Long, GetStringRightAlignXOffset(1, sText_Encounters_Modern_Long, 198), y, styles[1], active);
 }
 
 static void DrawChoices_Mode_Mints(int selection, int y)
@@ -2935,8 +2937,8 @@ static void DrawChoices_Mode_New_Citrus(int selection, int y)
         gSaveBlock1Ptr->tx_Mode_New_Citrus = 1; //Yes new citrus
     }
 
-    DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
-    DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
+    DrawOptionMenuChoice(sText_Encounters_Vanilla_Long, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_Encounters_Modern_Long, GetStringRightAlignXOffset(1, sText_Encounters_Modern_Long, 198), y, styles[1], active);
 }
 
 static void DrawChoices_Mode_Modern_Types(int selection, int y)
@@ -2954,8 +2956,8 @@ static void DrawChoices_Mode_Modern_Types(int selection, int y)
         gSaveBlock1Ptr->tx_Mode_Modern_Types = 1; //New typings
     }
 
-    DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
-    DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
+    DrawOptionMenuChoice(sText_Encounters_Vanilla_Long, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_Encounters_Modern_Long, GetStringRightAlignXOffset(1, sText_Encounters_Modern_Long, 198), y, styles[1], active);
 }
 
 static void DrawChoices_Mode_Fairy_Types(int selection, int y)
@@ -2992,8 +2994,8 @@ static void DrawChoices_Mode_New_Stats(int selection, int y)
         gSaveBlock1Ptr->tx_Mode_New_Stats = 1; //New stats
     }
 
-    DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
-    DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
+    DrawOptionMenuChoice(sText_Encounters_Vanilla_Long, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_Encounters_Modern_Long, GetStringRightAlignXOffset(1, sText_Encounters_Modern_Long, 198), y, styles[1], active);
 }
 
 static void DrawChoices_Mode_Sturdy(int selection, int y)
@@ -3011,8 +3013,8 @@ static void DrawChoices_Mode_Sturdy(int selection, int y)
         gSaveBlock1Ptr->tx_Mode_Sturdy = 1; //New sturdy
     }
 
-    DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
-    DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
+    DrawOptionMenuChoice(sText_Encounters_Vanilla_Long, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_Encounters_Modern_Long, GetStringRightAlignXOffset(1, sText_Encounters_Modern_Long, 198), y, styles[1], active);
 }
 
 static void DrawChoices_Mode_Modern_Moves(int selection, int y)
@@ -3030,8 +3032,8 @@ static void DrawChoices_Mode_Modern_Moves(int selection, int y)
         gSaveBlock1Ptr->tx_Mode_Modern_Moves = 1; //New movepool, and moves
     }
 
-    DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
-    DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
+    DrawOptionMenuChoice(sText_Encounters_Vanilla_Long, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_Encounters_Modern_Long, GetStringRightAlignXOffset(1, sText_Encounters_Modern_Long, 198), y, styles[1], active);
 }
 
 static void DrawChoices_Mode_Legendary_Abilities(int selection, int y)
