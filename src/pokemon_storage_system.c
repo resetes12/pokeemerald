@@ -7097,7 +7097,7 @@ static void SetDisplayMonData(void *pokemon, u8 mode)
             sStorage->displayMonPalette = GetMonSpritePalFromSpeciesAndPersonality(sStorage->displayMonSpecies, otId, sStorage->displayMonPersonality);
             gender = GetGenderFromSpeciesAndPersonality(sStorage->displayMonSpecies, sStorage->displayMonPersonality);
             sStorage->displayMonItemId = GetBoxMonData(boxMon, MON_DATA_HELD_ITEM);
-            sStorage->displayMonNuzlockeRibbon = GetMonData(boxMon, MON_DATA_NUZLOCKE_RIBBON);
+            sStorage->displayMonNuzlockeRibbon = GetBoxMonData(boxMon, MON_DATA_NUZLOCKE_RIBBON);
         }
     }
     else

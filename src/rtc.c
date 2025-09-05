@@ -369,7 +369,7 @@ struct Time* GetFakeRtc(void)
 
 u16 ConvertDateToDayCountFake(u8 year, u8 month, u8 day)
 {
-    return &gSaveBlock2Ptr->fakeRTC;
+    return gSaveBlock2Ptr->fakeRTC.days;
 }
 
 u16 RtcGetDayCountFake(struct SiiRtcInfo *rtc)
