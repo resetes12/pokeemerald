@@ -42,6 +42,7 @@
 #include "constants/item_effects.h"
 #include "constants/items.h"
 #include "constants/songs.h"
+#include "script_pokemon_util.h"
 
 #include "tx_randomizer_and_challenges.h"
 #include "battle_setup.h" //tx_randomizer_and_challenges
