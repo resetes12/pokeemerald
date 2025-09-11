@@ -10213,7 +10213,7 @@ const struct Trainer gTrainers[] = {
         .party = NO_ITEM_DEFAULT_MOVES(sParty_Everett),
     },
 
-    [TRAINER_RED] =
+    [TRAINER_RED] = //Unused
     {
         .trainerClass = TRAINER_CLASS_RIVAL,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,
@@ -10225,7 +10225,7 @@ const struct Trainer gTrainers[] = {
         .party = NO_ITEM_DEFAULT_MOVES(sParty_Red),
     },
 
-    [TRAINER_LEAF] =
+    [TRAINER_LEAF] = //Unused
     {
         .trainerClass = TRAINER_CLASS_RIVAL,
         .encounterMusic_gender = F_TRAINER_FEMALE | TRAINER_ENCOUNTER_MUSIC_MALE,
@@ -10237,7 +10237,7 @@ const struct Trainer gTrainers[] = {
         .party = NO_ITEM_DEFAULT_MOVES(sParty_Leaf),
     },
 
-    [TRAINER_BRENDAN_PLACEHOLDER] =
+    [TRAINER_BRENDAN_PLACEHOLDER] = //Unused
     {
         .trainerClass = TRAINER_CLASS_RS_PROTAG,
         .encounterMusic_gender = TRAINER_ENCOUNTER_MUSIC_MALE,
@@ -10249,7 +10249,7 @@ const struct Trainer gTrainers[] = {
         .party = NO_ITEM_DEFAULT_MOVES(sParty_BrendanLinkPlaceholder),
     },
 
-    [TRAINER_MAY_PLACEHOLDER] =
+    [TRAINER_MAY_PLACEHOLDER] = //Unused
     {
         .trainerClass = TRAINER_CLASS_RS_PROTAG,
         .encounterMusic_gender = F_TRAINER_FEMALE | TRAINER_ENCOUNTER_MUSIC_MALE,
@@ -10261,7 +10261,7 @@ const struct Trainer gTrainers[] = {
         .party = NO_ITEM_DEFAULT_MOVES(sParty_MayLinkPlaceholder),
     },
 
-    [TRAINER_CHANSEY1] =
+    [TRAINER_UNUSED_855] = //Unused
     {
         .trainerClass = TRAINER_CLASS_NURSE,
         .encounterMusic_gender = F_TRAINER_FEMALE | TRAINER_ENCOUNTER_MUSIC_FEMALE,
@@ -10285,7 +10285,7 @@ const struct Trainer gTrainers[] = {
         .party = ITEM_CUSTOM_MOVES(sParty_Wallace2),
     },
 
-    [TRAINER_CHANSEY3] =
+    [TRAINER_UNUSED_857] = //Unused
     {
         .trainerClass = TRAINER_CLASS_NURSE,
         .encounterMusic_gender = F_TRAINER_FEMALE | TRAINER_ENCOUNTER_MUSIC_FEMALE,
@@ -10297,7 +10297,7 @@ const struct Trainer gTrainers[] = {
         .party = NO_ITEM_CUSTOM_MOVES(sParty_Chansey3),
     },
 
-    [TRAINER_CHANSEY4] =
+    [TRAINER_UNUSED_858] = //Unused
     {
         .trainerClass = TRAINER_CLASS_NURSE,
         .encounterMusic_gender = F_TRAINER_FEMALE | TRAINER_ENCOUNTER_MUSIC_FEMALE,
@@ -10309,7 +10309,7 @@ const struct Trainer gTrainers[] = {
         .party = NO_ITEM_CUSTOM_MOVES(sParty_Chansey4),
     },
 
-    [TRAINER_CHANSEY5] =
+    [TRAINER_NURSE] =
     {
         .trainerClass = TRAINER_CLASS_NURSE,
         .encounterMusic_gender = F_TRAINER_FEMALE | TRAINER_ENCOUNTER_MUSIC_FEMALE,
@@ -10318,7 +10318,7 @@ const struct Trainer gTrainers[] = {
         .items = {},
         .doubleBattle = FALSE,
         .aiFlags = 0,
-        .party = NO_ITEM_CUSTOM_MOVES(sParty_Chansey5),
+        .party = NO_ITEM_CUSTOM_MOVES(sParty_Nurse),
     },
 
     [TRAINER_SIDNEY2] =

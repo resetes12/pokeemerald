@@ -13088,7 +13088,7 @@ static const struct TrainerMonNoItemDefaultMoves sParty_Everett[] = {
     }
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_Red[] = {
+static const struct TrainerMonNoItemDefaultMoves sParty_Red[] = { //Unused
     {
     .iv = 0,
     .lvl = 5,
@@ -13096,7 +13096,7 @@ static const struct TrainerMonNoItemDefaultMoves sParty_Red[] = {
     }
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_Leaf[] = {
+static const struct TrainerMonNoItemDefaultMoves sParty_Leaf[] = { //Unused
     {
     .iv = 0,
     .lvl = 5,
@@ -13104,7 +13104,7 @@ static const struct TrainerMonNoItemDefaultMoves sParty_Leaf[] = {
     }
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_BrendanLinkPlaceholder[] = {
+static const struct TrainerMonNoItemDefaultMoves sParty_BrendanLinkPlaceholder[] = { //Unused
     {
     .iv = 0,
     .lvl = 5,
@@ -13112,7 +13112,7 @@ static const struct TrainerMonNoItemDefaultMoves sParty_BrendanLinkPlaceholder[]
     }
 };
 
-static const struct TrainerMonNoItemDefaultMoves sParty_MayLinkPlaceholder[] = {
+static const struct TrainerMonNoItemDefaultMoves sParty_MayLinkPlaceholder[] = { //Unused
     {
     .iv = 0,
     .lvl = 5,
@@ -13120,7 +13120,7 @@ static const struct TrainerMonNoItemDefaultMoves sParty_MayLinkPlaceholder[] = {
     }
 };
 
-static const struct TrainerMonNoItemCustomMoves sParty_Chansey1[] = {
+static const struct TrainerMonNoItemCustomMoves sParty_Chansey1[] = { //Unused
     {
     .iv = 0,
     .lvl = 15,
@@ -13180,7 +13180,7 @@ static const struct TrainerMonItemCustomMoves sParty_Wallace2[] = {
     }
 };
 
-static const struct TrainerMonNoItemCustomMoves sParty_Chansey3[] = {
+static const struct TrainerMonNoItemCustomMoves sParty_Chansey3[] = { //Unused
     {
     .iv = 0,
     .lvl = 25,
@@ -13207,7 +13207,7 @@ static const struct TrainerMonNoItemCustomMoves sParty_Chansey3[] = {
     }
 };
 
-static const struct TrainerMonNoItemCustomMoves sParty_Chansey4[] = {
+static const struct TrainerMonNoItemCustomMoves sParty_Chansey4[] = { //Unused
     {
     .iv = 0,
     .lvl = 30,
@@ -13234,7 +13234,7 @@ static const struct TrainerMonNoItemCustomMoves sParty_Chansey4[] = {
     }
 };
 
-static const struct TrainerMonNoItemCustomMoves sParty_Chansey5[] = {
+static const struct TrainerMonNoItemCustomMoves sParty_Nurse[] = {
     {
     .iv = 0,
     .lvl = 100,

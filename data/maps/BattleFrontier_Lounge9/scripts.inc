@@ -1073,17 +1073,17 @@ BattleFrontier_Lounge9_IV_Finish:
 
 @Chansey training
 
-BattleFrontier_Lounge9_Chansey5::
+BattleFrontier_Lounge9_Nurse::
 	faceplayer
-	goto_if_unset FLAG_SYS_GAME_CLEAR, BattleFrontier_Lounge9_Chansey5Champion
-	msgbox BattleFrontier_Lounge9_Chansey5Repeat2, MSGBOX_YESNO
+	goto_if_unset FLAG_SYS_GAME_CLEAR, BattleFrontier_Lounge9_NurseChampion
+	msgbox BattleFrontier_Lounge9_NurseRepeat2, MSGBOX_YESNO
 	switch VAR_RESULT
 	case NO, BattleFrontier_Lounge9_Chansey1End
-	case YES, BattleFrontier_Lounge9_Chansey5Battle
+	case YES, BattleFrontier_Lounge9_NurseBattle
 	case MULTI_B_PRESSED, BattleFrontier_Lounge9_Chansey1End
 
-BattleFrontier_Lounge9_Chansey5Battle::
-	trainerbattle TRAINER_BATTLE_CONTINUE_SCRIPT, TRAINER_CHANSEY5, 0, BattleFrontier_Lounge9_Chansey5Intro, BattleFrontier_Lounge9_Chansey5Defeat, BattleFrontier_Lounge9_ChanseyBattleAgain
+BattleFrontier_Lounge9_NurseBattle::
+	trainerbattle TRAINER_BATTLE_CONTINUE_SCRIPT, TRAINER_NURSE, 0, BattleFrontier_Lounge9_NurseIntro, BattleFrontier_Lounge9_NurseDefeat, BattleFrontier_Lounge9_ChanseyBattleAgain
 	end
 
 BattleFrontier_Lounge9_Chansey1End::
@@ -1092,31 +1092,31 @@ BattleFrontier_Lounge9_Chansey1End::
 
 BattleFrontier_Lounge9_ChanseyBattleAgain::
 	faceplayer
-	msgbox BattleFrontier_Lounge9_Chansey5Repeat, MSGBOX_AUTOCLOSE
+	msgbox BattleFrontier_Lounge9_NurseRepeat, MSGBOX_AUTOCLOSE
 	clearflag 0x85B
 	end
 
-BattleFrontier_Lounge9_Chansey5Champion:
+BattleFrontier_Lounge9_NurseChampion:
 	faceplayer
-	msgbox BattleFrontier_Lounge9_Chansey5ChampionText, MSGBOX_DEFAULT
+	msgbox BattleFrontier_Lounge9_NurseChampionText, MSGBOX_DEFAULT
 	release
 	end
 
-BattleFrontier_Lounge9_Chansey5ChampionText:
+BattleFrontier_Lounge9_NurseChampionText:
 	.string "I'm the EXPERIENCE NURSE!\n"
 	.string "Unfortunately, I can't battle you\l"
 	.string "unless you become the CHAMPION.$"
 
-BattleFrontier_Lounge9_Chansey5Intro:
+BattleFrontier_Lounge9_NurseIntro:
 	.string "Let's go, BLISSEY!$"
 
-BattleFrontier_Lounge9_Chansey5Defeat:
+BattleFrontier_Lounge9_NurseDefeat:
 	.string "Oh no… BLISSEY, use SOFT-BOILED!$"
 
-BattleFrontier_Lounge9_Chansey5Repeat:
+BattleFrontier_Lounge9_NurseRepeat:
 	.string "If you want, we can battle again!$"
 
-BattleFrontier_Lounge9_Chansey5Repeat2:
+BattleFrontier_Lounge9_NurseRepeat2:
 	.string "I'm the EXPERIENCE NURSE!\n"
 	.string "Should we battle?$"
 

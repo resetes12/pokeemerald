@@ -852,15 +852,15 @@
 #define TRAINER_MARIELA                     848
 #define TRAINER_ALVARO                      849
 #define TRAINER_EVERETT                     850
-#define TRAINER_RED                         851
-#define TRAINER_LEAF                        852
-#define TRAINER_BRENDAN_PLACEHOLDER         853
-#define TRAINER_MAY_PLACEHOLDER             854
-#define TRAINER_CHANSEY1                    855 //857
+#define TRAINER_RED                         851 //Unused
+#define TRAINER_LEAF                        852 //Unused
+#define TRAINER_BRENDAN_PLACEHOLDER         853 //Unused
+#define TRAINER_MAY_PLACEHOLDER             854 //Unused
+#define TRAINER_UNUSED_855                  855 //857, Unused
 #define TRAINER_WALLACE2                    856 //858
-#define TRAINER_CHANSEY3                    857 //859
-#define TRAINER_CHANSEY4                    858 //85A
-#define TRAINER_CHANSEY5                    859 //85B
+#define TRAINER_UNUSED_857                  857 //859, Unused
+#define TRAINER_UNUSED_858                  858 //85A, Unused
+#define TRAINER_NURSE                       859 //85B
 #define TRAINER_SIDNEY2                     860 //85C
 #define TRAINER_PHOEBE2                     861 //85D
 #define TRAINER_GLACIA2                     862 //85E
