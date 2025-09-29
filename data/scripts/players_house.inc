@@ -325,10 +325,11 @@ PlayersHouse_1F_EventScript_Mom::
 	end
 
 PlayersHouse_1F_EventScript_Mom_OutfitBox::
-	goto_if_unset FLAG_OUTFIT_BOX_OBTAINED, PlayersHouse_1F_EventScript_Mom_OutfitBox2
+	goto_if_unset FLAG_OUTFIT_BOX_OBTAINED, PlayersHouse_1F_EventScript_Mom_GiveOutfitBox
+	goto_if_set FLAG_OUTFIT_BOX_OBTAINED, PlayersHouse_1F_EventScript_MomHealsParty_AfterOutfitBox
 	end
 
-PlayersHouse_1F_EventScript_Mom_OutfitBox2::
+PlayersHouse_1F_EventScript_Mom_GiveOutfitBox::
 	msgbox PlayersHouse_1F_Mom_OutfitBox_Text, MSGBOX_DEFAULT
 	closemessage
 	setflag FLAG_OUTFIT_BOX_OBTAINED
@@ -384,6 +385,9 @@ PlayersHouse_1F_EventScript_TryGiveAmuletCoin::
 
 PlayersHouse_1F_EventScript_MomHealsParty::
 	goto_if_set FLAG_RESCUED_BIRCH, PlayersHouse_1F_EventScript_Mom_OutfitBox
+	end
+
+PlayersHouse_1F_EventScript_MomHealsParty_AfterOutfitBox::
 	specialvar VAR_RESULT, IsPokecenterChallengeActivated
 	goto_if_eq VAR_RESULT, TRUE, PlayersHouse_1F_EventScript_MomHealsParty_PokecenterChallenge
 	msgbox PlayersHouse_1F_Text_YouShouldRestABit, MSGBOX_DEFAULT

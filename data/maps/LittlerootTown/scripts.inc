@@ -927,11 +927,18 @@ LittlerootTown_EventScript_GiveRunningShoes::
 	waitfanfare
 	setflag FLAG_RECEIVED_RUNNING_SHOES
 	msgbox LittlerootTown_Text_ExplainRunningShoes, MSGBOX_DEFAULT
+	goto_if_set FLAG_OUTFIT_BOX_OBTAINED, LittlerootTown_EventScript_GiveRunningShoes_NoOutfitBox
 	msgbox LittlerootTown_Text_GiveOutfitBox, MSGBOX_DEFAULT
 	closemessage
 	setflag FLAG_OUTFIT_BOX_OBTAINED
 	giveitem ITEM_OAKS_PARCEL
 	msgbox LittlerootTown_Text_ExplainOutfitBox, MSGBOX_DEFAULT
+	msgbox LittlerootTown_Text_ComeHomeIfAnythingHappens, MSGBOX_DEFAULT
+	closemessage
+	delay 30
+	return
+
+LittlerootTown_EventScript_GiveRunningShoes_NoOutfitBox::
 	msgbox LittlerootTown_Text_ComeHomeIfAnythingHappens, MSGBOX_DEFAULT
 	closemessage
 	delay 30
