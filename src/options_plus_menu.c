@@ -1955,7 +1955,7 @@ static void DrawChoices_New_Backgrounds(int selection, int y)
 }
 
 static const u8 sText_No[]        = _("NO");
-static const u8 sText_LR[]        = _("L+R");
+static const u8 sText_LR[]        = _("L+R+A");
 static const u8 sText_B[]         = _("B->A");
 static const u8 sText_B_2[]       = _("B");
 static const u8 *const sRunTypeStrings[] = {sText_No, sText_LR, sText_B, sText_B_2};
