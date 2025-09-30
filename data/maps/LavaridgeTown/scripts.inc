@@ -358,7 +358,7 @@ LavaridgeTown_Text_BrendanExplainGoGogglesChallengeDadNoMints:
 	.string "I'm considering challenging NORMAN,\l"
 	.string "the GYM LEADER of PETALBURG.\p"
 	.string "Unlike you, {PLAYER}, your dad looks like\n"
-	.string "he really is tough.$
+	.string "he really is tough.$"
 
 LavaridgeTown_Text_HaveEggWillYouTakeIt:
 	.string "I have here an EGG.\p"
@@ -446,4 +446,3 @@ LavaridgeTown_Text_GymSign:
 LavaridgeTown_Text_HerbShopSign:
 	.string "POKéMON HERB SHOP\n"
 	.string "“Bitter taste--better cure!”$"
-
