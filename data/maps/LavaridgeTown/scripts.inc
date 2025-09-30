@@ -78,7 +78,13 @@ LavaridgeTown_EventScript_BrendanGiveGoGoggles::
 	msgbox LavaridgeTown_Text_BrendanNiceBadgesTakeThis, MSGBOX_DEFAULT
 	giveitem ITEM_GO_GOGGLES
 	setflag FLAG_RECEIVED_GO_GOGGLES
+	goto_if_unset FLAG_MINTS_ENABLED, LavaridgeTown_EventScript_BrendanGiveGoGogglesNoMints
 	msgbox LavaridgeTown_Text_BrendanExplainGoGogglesChallengeDad, MSGBOX_DEFAULT
+	goto LavaridgeTown_EventScript_RivalExit
+	end
+
+LavaridgeTown_EventScript_BrendanGiveGoGogglesNoMints::
+	msgbox LavaridgeTown_Text_BrendanExplainGoGogglesChallengeDadNoMints, MSGBOX_DEFAULT
 	goto LavaridgeTown_EventScript_RivalExit
 	end
 
@@ -340,6 +346,19 @@ LavaridgeTown_Text_BrendanExplainGoGogglesChallengeDad:
 	.string "Oh, and go check the NATURE\n"
 	.string "MINTS in the FLOWERSHOP!\p"
 	.string "See you around!$"
+
+LavaridgeTown_Text_BrendanExplainGoGogglesChallengeDadNoMints:
+	.string "{RIVAL}: Keep those with you if you're\n"
+	.string "planning on going into that desert near\l"
+	.string "ROUTE 111.\p"
+	.string "There should be some POKéMON that\n"
+	.string "are exclusively desert-dwellers.\l"
+	.string "You might look around for those.\p"
+	.string "As for me…\n"
+	.string "I'm considering challenging NORMAN,\l"
+	.string "the GYM LEADER of PETALBURG.\p"
+	.string "Unlike you, {PLAYER}, your dad looks like\n"
+	.string "he really is tough.$
 
 LavaridgeTown_Text_HaveEggWillYouTakeIt:
 	.string "I have here an EGG.\p"
