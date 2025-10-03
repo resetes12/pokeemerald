@@ -31,6 +31,7 @@
 #include "constants/trainers.h"
 #include "constants/trainer_hill.h"
 #include "constants/trainer_types.h"
+#include "money.h"
 
 #define HILL_MAX_TIME 215999 // 60 * 60 * 60 - 1
 
