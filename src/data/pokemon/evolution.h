@@ -87,7 +87,7 @@ const struct Evolution gEvolutionTable[NUM_SPECIES][EVOS_PER_MON] =
                             {EVO_FRIENDSHIP_NIGHT, 0, SPECIES_UMBREON},
                             {EVO_ITEM_HOLD, ITEM_LEAF_STONE, SPECIES_LEAFEON},
                             {EVO_ITEM_HOLD, ITEM_WATER_STONE, SPECIES_GLACEON},
-                            {EVO_MOVE_TYPE, TYPE_FAIRY, SPECIES_SYLVEON}},
+                            {EVO_ITEM_HOLD, ITEM_HEART_SCALE, SPECIES_SYLVEON}},
     [SPECIES_PORYGON]    = {{EVO_TRADE_ITEM, ITEM_UP_GRADE, SPECIES_PORYGON2}},
     [SPECIES_OMANYTE]    = {{EVO_LEVEL, 40, SPECIES_OMASTAR}},
     [SPECIES_KABUTO]     = {{EVO_LEVEL, 40, SPECIES_KABUTOPS}},
