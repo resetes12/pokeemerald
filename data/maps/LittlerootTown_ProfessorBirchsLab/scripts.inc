@@ -179,7 +179,7 @@ LittlerootTown_ProfessorBirchsLab_Movement_PlayerEnterLabForPokedex:
 
 LittlerootTown_ProfessorBirchsLab_EventScript_UpgradeToNationalDex::
 	lockall
-	goto_if_ge VAR_ENCOUNTER_TABLE, 2, LittlerootTown_ProfessorBirchsLab_Text_OtherRegionsUpgradeToNationalSkip
+	goto_if_set setflag FLAG_SYS_NATIONAL_DEX, LittlerootTown_ProfessorBirchsLab_Text_OtherRegionsUpgradeToNationalSkip
 	delay 30
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_OtherRegionsUpgradeToNational, MSGBOX_DEFAULT
 	closemessage
@@ -631,7 +631,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_ReceivePokedex::
 	waitfanfare
 	setflag FLAG_SYS_POKEDEX_GET
 	special SetUnlockedPokedexFlags
-	goto_if_ge VAR_ENCOUNTER_TABLE, 2, LittlerootTown_ProfessorBirchsLab_EventScript_ReceivePokedexAltered
+	goto_if_eq VAR_ENCOUNTER_TABLE, 2, LittlerootTown_ProfessorBirchsLab_EventScript_ReceivePokedexAltered
 	setflag FLAG_RECEIVED_POKEDEX_FROM_BIRCH
 	setvar VAR_CABLE_CLUB_TUTORIAL_STATE, 1
 	return
