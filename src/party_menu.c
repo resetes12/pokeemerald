@@ -4442,6 +4442,13 @@ static bool8 NotUsingHPEVItemOnShedinja(struct Pokemon *mon, u16 item)
     return TRUE;
 }
 
+static bool8 EV_Item_With_EVs_Disabled(u16 item)
+{
+    if (GetItemEffectType(item) == ITEM_EFFECT_HP_EV || ITEM_EFFECT_ATK_EV || ITEM_EFFECT_SPATK_EV || ITEM_EFFECT_SPDEF_EV || ITEM_EFFECT_SPEED_EV || ITEM_EFFECT_DEF_EV)
+        return FALSE;
+    return TRUE;
+}
+
 static bool8 IsItemFlute(u16 item)
 {
     if (item == ITEM_BLUE_FLUTE || item == ITEM_RED_FLUTE || item == ITEM_YELLOW_FLUTE)
@@ -4465,6 +4472,11 @@ void ItemUseCB_Medicine(u8 taskId, TaskFunc task)
     bool8 canHeal, cannotUse;
 
     if (NotUsingHPEVItemOnShedinja(mon, item) == FALSE)
+    {
+        cannotUse = TRUE;
+    }
+    else if ((EV_Item_With_EVs_Disabled(item) == FALSE) && (gSaveBlock1Ptr->tx_Challenges_NoEVs == 1))
+    //Disable the use of EV items with the challenge NO EVs.
     {
         cannotUse = TRUE;
     }
