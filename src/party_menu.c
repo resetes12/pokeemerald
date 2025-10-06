@@ -4444,9 +4444,18 @@ static bool8 NotUsingHPEVItemOnShedinja(struct Pokemon *mon, u16 item)
 
 static bool8 EV_Item_With_EVs_Disabled(u16 item)
 {
-    if (GetItemEffectType(item) == ITEM_EFFECT_HP_EV || ITEM_EFFECT_ATK_EV || ITEM_EFFECT_SPATK_EV || ITEM_EFFECT_SPDEF_EV || ITEM_EFFECT_SPEED_EV || ITEM_EFFECT_DEF_EV)
+    if ((GetItemEffectType(item) == ITEM_EFFECT_HP_EV) || 
+        (GetItemEffectType(item) == ITEM_EFFECT_ATK_EV) ||
+        (GetItemEffectType(item) == ITEM_EFFECT_SPATK_EV) ||
+        (GetItemEffectType(item) == ITEM_EFFECT_SPDEF_EV) ||
+        (GetItemEffectType(item) == ITEM_EFFECT_SPEED_EV ) ||
+        (GetItemEffectType(item) == ITEM_EFFECT_DEF_EV)) {
         return FALSE;
-    return TRUE;
+    }
+    else 
+    {
+        return TRUE;
+    }
 }
 
 static bool8 IsItemFlute(u16 item)
