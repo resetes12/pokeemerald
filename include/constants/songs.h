@@ -531,7 +531,7 @@
 #define MUS_RG_VS_MEWTWO                  507 // MUS_RG_VS_MYU2
 #define MUS_RG_VS_LEGEND                  508 // MUS_RG_VS_DEN
 #define MUS_RG_ENCOUNTER_GYM_LEADER       509 // MUS_RG_EXEYE
-#define MUS_RG_ENCOUNTER_DEOXYS           500 // MUS_RG_DEOEYE
+#define MUS_RG_ENCOUNTER_DEOXYS           510 // MUS_RG_DEOEYE
 #define MUS_RG_TRAINER_TOWER              511 // MUS_RG_T_TOWER
 #define MUS_RG_SLOW_PALLET                512 // MUS_RG_SLOWMASARA
 #define MUS_RG_TEACHY_TV_MENU             513 // MUS_RG_TVNOIZE
