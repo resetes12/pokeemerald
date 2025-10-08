@@ -38,20 +38,24 @@ enum
 
 enum
 {
+    //Preset selector
     MENUITEM_MODE_CLASSIC_MODERN,
+    //Original / Post-game / New encounters
     MENUITEM_MODE_ALTERNATE_SPAWNS,
-    MENUITEM_MODE_MODERN_TYPES,
-    MENUITEM_MODE_FAIRY_TYPES,
-    MENUITEM_MODE_NEW_EFFECTIVENESS,
+    //Original / Modern options
     MENUITEM_MODE_NEW_STATS,
-    MENUITEM_MODE_NEW_LEGENDARIES,
-    MENUITEM_MODE_LEGENDARY_ABILITIES,
+    MENUITEM_MODE_FAIRY_TYPES,
+    MENUITEM_MODE_MODERN_TYPES,
+    MENUITEM_MODE_NEW_EFFECTIVENESS,
     MENUITEM_MODE_MODERN_MOVES,
-    MENUITEM_MODE_MINTS,
     MENUITEM_MODE_SYNCHRONIZE,
     MENUITEM_MODE_STURDY,
-    MENUITEM_MODE_INFINITE_TMS,
     MENUITEM_MODE_NEW_CITRUS,
+    //On / Off options
+    MENUITEM_MODE_NEW_LEGENDARIES,
+    MENUITEM_MODE_LEGENDARY_ABILITIES,
+    MENUITEM_MODE_MINTS,
+    MENUITEM_MODE_INFINITE_TMS,
     MENUITEM_MODE_SURVIVE_POISON,
     MENUITEM_MODE_NEXT,
     MENUITEM_MODE_COUNT,
@@ -479,7 +483,7 @@ static const u8 sText_Synchronize[]         = _("SYNCHRONIZE");
 static const u8 sText_Mints[]               = _("NATURE MINTS");
 static const u8 sText_NewCitrus[]           = _("SITRUS BERRY");
 static const u8 sText_ModernTypes[]         = _("POKéMON TYPES");
-static const u8 sText_FairyTypes[]          = _("ADD FAIRY TYPE");
+static const u8 sText_FairyTypes[]          = _("FAIRY TYPE");
 static const u8 sText_NewStats[]            = _("POKéMON STATS");
 static const u8 sText_Sturdy[]              = _("STURDY");
 static const u8 sText_Modern_Moves[]        = _("{PKMN} MOVEPOOL");
@@ -745,9 +749,9 @@ static bool8 CheckConditions(int selection)
 static const u8 sText_Empty[]               = _("");
 static const u8 sText_Description_Save[]    = _("Save choices and continue...");
 
-static const u8 sText_Description_Mode_Gamemode_Classic[]         = _("Vanilla-like preset.");
-static const u8 sText_Description_Mode_Gamemode_Modern[]          = _("Modernized preset.");
-static const u8 sText_Description_Mode_Gamemode_Custom[]          = _("Choose your own rules.");
+static const u8 sText_Description_Mode_Gamemode_Classic[]         = _("Vanilla-like preset.\n{COLOR 7}{COLOR 8}NOTE: All selections are PERMANENT.");
+static const u8 sText_Description_Mode_Gamemode_Modern[]          = _("Modernized preset.\n{COLOR 7}{COLOR 8}NOTE: All selections are PERMANENT.");
+static const u8 sText_Description_Mode_Gamemode_Custom[]          = _("Choose your own rules.\n{COLOR 7}{COLOR 8}NOTE: All selections are PERMANENT.");
 static const u8 sText_Description_Mode_AlternateSpawns_Vanilla[]        = _("Use VANILLA wild encounters.\nUnchanged from the original.");
 static const u8 sText_Description_Mode_AlternateSpawns_Postgame[]       = _("VANILLA, but after becoming champion,\nall 423 {PKMN} will be available.");
 static const u8 sText_Description_Mode_AlternateSpawns_Modern[]         = _("Use MODERN wild encounters.\nAll 423 {PKMN} will be available.");
@@ -2992,8 +2996,8 @@ static void DrawChoices_Mode_Fairy_Types(int selection, int y)
         gSaveBlock1Ptr->tx_Mode_Fairy_Types = 1; //They do now
     }
 
-    DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
-    DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
+    DrawOptionMenuChoice(sText_Encounters_Vanilla_Long, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_Encounters_Modern_Long, GetStringRightAlignXOffset(1, sText_Encounters_Modern_Long, 198), y, styles[1], active);
 }
 
 static void DrawChoices_Mode_New_Stats(int selection, int y)
