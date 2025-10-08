@@ -42,11 +42,12 @@ enum
     MENUITEM_MODE_CLASSIC_MODERN,
     //Original / Post-game / New encounters
     MENUITEM_MODE_ALTERNATE_SPAWNS,
+    //Gen VI+ / Improved
+    MENUITEM_MODE_NEW_EFFECTIVENESS,
     //Original / Modern options
     MENUITEM_MODE_NEW_STATS,
     MENUITEM_MODE_FAIRY_TYPES,
     MENUITEM_MODE_MODERN_TYPES,
-    MENUITEM_MODE_NEW_EFFECTIVENESS,
     MENUITEM_MODE_MODERN_MOVES,
     MENUITEM_MODE_SYNCHRONIZE,
     MENUITEM_MODE_STURDY,
@@ -779,8 +780,8 @@ static const u8 sText_Description_Mode_Leg_Abilities_Off[]        = _("PRESSURE 
 static const u8 sText_Description_Mode_Leg_Abilities_On[]         = _("Legendaries have PRESSURE changed\nfor a better ability.");
 static const u8 sText_Description_Mode_New_Legendaries_Off[]      = _("No extra legendaries are added.");
 static const u8 sText_Description_Mode_New_Legendaries_On[]       = _("Extra legendaries from GEN I and II\nare added via ingame events.");
-static const u8 sText_Description_Mode_New_Effectiveness_Original[]  = _("Original type effectiveness\nfor all types.");
-static const u8 sText_Description_Mode_New_Effectiveness_Modern[]    = _("New and balanced type effectiveness\nfor certain types.");
+static const u8 sText_Description_Mode_New_Effectiveness_Original[]  = _("Type effectiveness from Gen VI!\nGHOST / DARK do x1 to STEEL.");
+static const u8 sText_Description_Mode_New_Effectiveness_Modern[]    = _("Rebalanced type effectiveness\nfor certain types. Check docs.");
 static const u8 sText_Description_Mode_Next[]                     = _("Continue to Features options.");
 
 static const u8 *const sOptionMenuItemDescriptionsMode[MENUITEM_MODE_COUNT][5] =
@@ -3057,6 +3058,8 @@ static void DrawChoices_Mode_Modern_Moves(int selection, int y)
     DrawOptionMenuChoice(sText_Encounters_Modern_Long, GetStringRightAlignXOffset(1, sText_Encounters_Modern_Long, 198), y, styles[1], active);
 }
 
+static const u8 sText_Encounters_Encounters_Gen6[]   = _("GEN VI+");
+static const u8 sText_Encounters_Encounters_New[]    = _("IMPROVED");
 static void DrawChoices_Mode_New_Effectiveness(int selection, int y)
 {
     bool8 active = CheckConditions(MENUITEM_MODE_NEW_EFFECTIVENESS);
@@ -3072,8 +3075,8 @@ static void DrawChoices_Mode_New_Effectiveness(int selection, int y)
         gSaveBlock1Ptr->tx_Mode_TypeEffectiveness = 1; //New type chart
     }
 
-    DrawOptionMenuChoice(sText_Encounters_Vanilla_Long, 104, y, styles[0], active);
-    DrawOptionMenuChoice(sText_Encounters_Modern_Long, GetStringRightAlignXOffset(1, sText_Encounters_Modern_Long, 198), y, styles[1], active);
+    DrawOptionMenuChoice(sText_Encounters_Encounters_Gen6, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_Encounters_Encounters_New, GetStringRightAlignXOffset(1, sText_Encounters_Encounters_New, 198), y, styles[1], active);
 }
 
 static void DrawChoices_Mode_Legendary_Abilities(int selection, int y)
