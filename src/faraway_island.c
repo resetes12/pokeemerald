@@ -386,10 +386,10 @@ void SetMewAboveGrass(void)
         // Mew emerging from grass when found
         // Also do field effect for grass shaking as it emerges
         VarSet(VAR_FARAWAY_ISLAND_STEP_COUNTER, 0xFFFF);
-        mew->fixedPriority = 1;
+        mew->fixedPriority = 0;
         gSprites[mew->spriteId].subspriteMode = SUBSPRITES_IGNORE_PRIORITY;
         if (gSpecialVar_Facing != DIR_NORTH)
-            gSprites[mew->spriteId].subpriority = 1;
+            gSprites[mew->spriteId].subpriority = 0;
 
         LoadSpritePalette(&gSpritePalette_GeneralFieldEffect1);
         UpdateSpritePaletteWithWeather(IndexOfSpritePaletteTag(gSpritePalette_GeneralFieldEffect1.tag), FALSE);
@@ -402,7 +402,7 @@ void SetMewAboveGrass(void)
         {
             struct Sprite *sprite = &gSprites[sGrassSpriteId];
             sprite->coordOffsetEnabled = 1;
-            sprite->oam.priority = 2;
+            sprite->oam.priority = 0;
             sprite->callback = SpriteCallbackDummy;
         }
     }
