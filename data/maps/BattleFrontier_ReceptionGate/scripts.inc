@@ -440,7 +440,7 @@ BattleFrontier_ReceptionGate_Text_Level50Info:
 
 BattleFrontier_ReceptionGate_Text_OpenLevelInfo:
 	.string "The HARD course is now open!\n"
-	.string "All POKéMON will match your highest Lv.\p"
+	.string "All POKéMON will be set to Lv. 50.\p"
 	.string "This course offers a greater challenge\n"
 	.string "for experienced trainers.\p"
 	.string "We encourage you to enter this course\n"
