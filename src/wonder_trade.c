@@ -299,6 +299,10 @@ static const u16 sIsValidSpecies[] =
     SPECIES_MANTYKE,
     SPECIES_MIME_JR,
     SPECIES_MUNCHLAX,
+    SPECIES_WYRDEER,
+    SPECIES_KLEAVOR,
+    SPECIES_URSALUNA,
+    SPECIES_URSALUNA_BLOODMOON,
 };
 
 static const u16 sIsValidSpeciesVanilla[] =

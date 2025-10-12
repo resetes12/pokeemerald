@@ -2541,3 +2541,26 @@ const u8 gDudunsparcePokedexText[] = _(
     "sucking in enough air to fill its long,\n"
     "narrow lungs, then releasing the air\n"
     "in an intense blast.");
+
+const u8 gWyrdeerPokedexText[] = _(
+    "The black orbs shine with an uncanny light\n"
+    "when it is erecting invisible barriers.\n"
+    "The fur shed from its beard retains heat\n"
+    "and is useful for winter clothing.");
+
+const u8 gUrsalunaPokedexText[] = _(
+    "Swampy terrain gives Ursaluna its burly\n"
+    "physique and newfound capacity to\n"
+    "manipulate peat at will.");
+
+const u8 gUrsaluna_BloodMoonPokedexText[] = _(
+            "It crossed the sea and drifted\n"
+            "ashore in a new land. Surviving in this\n"
+            "place led it to take on a unique\n"
+            "appearance and gain special powers.");
+
+const u8 gKleavorPokedexText[] = _(
+            "A violent creature that fells trees with\n"
+            "its crude axes and shields itself with hard\n"
+            "stone. Should one encounter this Pokémon\n"
+            "in the wild, one's only recourse is to flee.");

@@ -3174,6 +3174,38 @@ extern const u32 gMonStillFrontPic_Dudunsparce[];
 extern const u8 gMonIcon_Dudunsparce[];
 extern const u8 gMonFootprint_Dudunsparce[];
 
+extern const u32 gMonFrontPic_Wyrdeer[];
+extern const u32 gMonPalette_Wyrdeer[];
+extern const u32 gMonBackPic_Wyrdeer[];
+extern const u32 gMonShinyPalette_Wyrdeer[];
+extern const u32 gMonStillFrontPic_Wyrdeer[];
+extern const u8 gMonIcon_Wyrdeer[];
+extern const u8 gMonFootprint_Wyrdeer[];
+
+extern const u32 gMonFrontPic_Ursaluna[];
+extern const u32 gMonPalette_Ursaluna[];
+extern const u32 gMonBackPic_Ursaluna[];
+extern const u32 gMonShinyPalette_Ursaluna[];
+extern const u32 gMonStillFrontPic_Ursaluna[];
+extern const u8 gMonIcon_Ursaluna[];
+extern const u8 gMonFootprint_Ursaluna[];
+
+extern const u32 gMonFrontPic_Ursaluna_BloodMoon[];
+extern const u32 gMonPalette_Ursaluna_BloodMoon[];
+extern const u32 gMonBackPic_Ursaluna_BloodMoon[];
+extern const u32 gMonShinyPalette_Ursaluna_BloodMoon[];
+extern const u32 gMonStillFrontPic_Ursaluna_BloodMoon[];
+extern const u8 gMonIcon_Ursaluna_BloodMoon[];
+extern const u8 gMonFootprint_Ursaluna_BloodMoon[];
+
+extern const u32 gMonFrontPic_Kleavor[];
+extern const u32 gMonPalette_Kleavor[];
+extern const u32 gMonBackPic_Kleavor[];
+extern const u32 gMonShinyPalette_Kleavor[];
+extern const u32 gMonStillFrontPic_Kleavor[];
+extern const u8 gMonIcon_Kleavor[];
+extern const u8 gMonFootprint_Kleavor[];
+
 extern const u8 gMonIcon_Test[];
 extern const u32 gMonFrontPic_Test[];
 extern const u32 gMonPalette_Test[];

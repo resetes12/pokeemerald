@@ -6405,6 +6405,34 @@ const struct FacilityMon gBattleFrontierMonsSplit[NUM_FRONTIER_MONS] =
         .evSpread = F_EV_SPREAD_HP | F_EV_SPREAD_ATTACK,
         .nature = NATURE_ADAMANT
     },
+    [FRONTIER_MON_WYRDEER_1] = {
+        .species = SPECIES_WYRDEER,
+        .moves = {MOVE_PSYCHIC, MOVE_STOMP, MOVE_HYPNOSIS, MOVE_CALM_MIND},
+        .itemTableId = BATTLE_FRONTIER_ITEM_SITRUS_BERRY,
+        .evSpread = F_EV_SPREAD_HP | F_EV_SPREAD_SP_ATTACK,
+        .nature = NATURE_SERIOUS
+    },
+    [FRONTIER_MON_URSALUNA_1] = {
+        .species = SPECIES_URSALUNA,
+        .moves = {MOVE_EARTHQUAKE, MOVE_SLASH, MOVE_ROLLOUT, MOVE_PLAY_ROUGH},
+        .itemTableId = BATTLE_FRONTIER_ITEM_SITRUS_BERRY,
+        .evSpread = F_EV_SPREAD_HP | F_EV_SPREAD_ATTACK,
+        .nature = NATURE_MODEST
+    },
+    [FRONTIER_MON_URSALUNA_BLOODMOON_1] = {
+        .species = SPECIES_URSALUNA_BLOODMOON,
+        .moves = {MOVE_EARTH_POWER, MOVE_FAKE_TEARS, MOVE_DARK_PULSE, MOVE_MOONBLAST},
+        .itemTableId = BATTLE_FRONTIER_ITEM_SITRUS_BERRY,
+        .evSpread = F_EV_SPREAD_HP | F_EV_SPREAD_SP_ATTACK,
+        .nature = NATURE_BASHFUL
+    },
+    [FRONTIER_MON_KLEAVOR_1] = {
+        .species = SPECIES_KLEAVOR,
+        .moves = {MOVE_ROCK_SLIDE, MOVE_SPIKES, MOVE_CRUSH_CLAW, MOVE_TWINEEDLE},
+        .itemTableId = BATTLE_FRONTIER_ITEM_SITRUS_BERRY,
+        .evSpread = F_EV_SPREAD_HP | F_EV_SPREAD_ATTACK,
+        .nature = NATURE_ADAMANT
+    },
 };
 
 const struct FacilityMon gBattleFrontierMons[NUM_FRONTIER_MONS] =
@@ -12810,6 +12838,34 @@ const struct FacilityMon gBattleFrontierMons[NUM_FRONTIER_MONS] =
     [FRONTIER_MON_DUDUNSPARCE_1] = {
         .species = SPECIES_DUDUNSPARCE,
         .moves = {MOVE_THUNDER_WAVE, MOVE_BODY_SLAM, MOVE_DRILL_PECK, MOVE_ROCK_SLIDE},
+        .itemTableId = BATTLE_FRONTIER_ITEM_SITRUS_BERRY,
+        .evSpread = F_EV_SPREAD_HP | F_EV_SPREAD_ATTACK,
+        .nature = NATURE_ADAMANT
+    },
+        [FRONTIER_MON_WYRDEER_1] = {
+        .species = SPECIES_WYRDEER,
+        .moves = {MOVE_PSYCHIC, MOVE_STOMP, MOVE_HYPNOSIS, MOVE_CALM_MIND},
+        .itemTableId = BATTLE_FRONTIER_ITEM_SITRUS_BERRY,
+        .evSpread = F_EV_SPREAD_HP | F_EV_SPREAD_SP_ATTACK,
+        .nature = NATURE_SERIOUS
+    },
+    [FRONTIER_MON_URSALUNA_1] = {
+        .species = SPECIES_URSALUNA,
+        .moves = {MOVE_EARTHQUAKE, MOVE_SLASH, MOVE_ROLLOUT, MOVE_PLAY_ROUGH},
+        .itemTableId = BATTLE_FRONTIER_ITEM_SITRUS_BERRY,
+        .evSpread = F_EV_SPREAD_HP | F_EV_SPREAD_ATTACK,
+        .nature = NATURE_MODEST
+    },
+    [FRONTIER_MON_URSALUNA_BLOODMOON_1] = {
+        .species = SPECIES_URSALUNA_BLOODMOON,
+        .moves = {MOVE_EARTH_POWER, MOVE_FAKE_TEARS, MOVE_SLASH, MOVE_MOONBLAST},
+        .itemTableId = BATTLE_FRONTIER_ITEM_SITRUS_BERRY,
+        .evSpread = F_EV_SPREAD_HP | F_EV_SPREAD_ATTACK,
+        .nature = NATURE_BASHFUL
+    },
+    [FRONTIER_MON_KLEAVOR_1] = {
+        .species = SPECIES_KLEAVOR,
+        .moves = {MOVE_ROCK_SLIDE, MOVE_SPIKES, MOVE_CRUSH_CLAW, MOVE_TWINEEDLE},
         .itemTableId = BATTLE_FRONTIER_ITEM_SITRUS_BERRY,
         .evSpread = F_EV_SPREAD_HP | F_EV_SPREAD_ATTACK,
         .nature = NATURE_ADAMANT
