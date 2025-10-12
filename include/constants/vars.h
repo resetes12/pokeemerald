@@ -117,8 +117,8 @@
 #define VAR_ROUTE102_STATE                               0x4061 // Unused Var
 #define VAR_ROUTE103_STATE                               0x4062 // Unused Var
 #define VAR_ROUTE104_STATE                               0x4063
-#define VAR_ROUTE105_STATE                               0x4064 // Unused Var
-#define VAR_ROUTE106_STATE                               0x4065 // Unused Var
+#define VAR_SURF_MON_SLOT                                0x4064 // Replaced unused 'VAR_ROUTE105_STATE' for Surfing Overworlds
+#define VAR_FREEZE_SURF_BLOB                             0x4065 // Replaced unused 'VAR_ROUTE106_STATE' for Surfing Overworlds - Set on surf init to stop blob overlay being offset incorrectly
 #define VAR_ROUTE107_STATE                               0x4066 // Unused Var
 #define VAR_ROUTE108_STATE                               0x4067 // Unused Var
 #define VAR_ROUTE109_STATE                               0x4068 // Unused Var

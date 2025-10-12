@@ -32,6 +32,7 @@
 #include "constants/metatile_behaviors.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "event_data.h"
 
 #define subsprite_table(ptr) {.subsprites = ptr, .subspriteCount = (sizeof ptr) / (sizeof(struct Subsprite))}
 
@@ -3001,6 +3002,7 @@ u8 FldEff_UseSurf(void)
     u8 taskId = CreateTask(Task_SurfFieldEffect, 0xff);
     gTasks[taskId].tMonId = gFieldEffectArguments[0];
     Overworld_ClearSavedMusic();
+    VarSet(VAR_SURF_MON_SLOT, gFieldEffectArguments[0]);
     if (gSaveBlock2Ptr->optionsSurfMusic == 0)
     {
         Overworld_ChangeMusicTo(MUS_SURF);
@@ -3023,6 +3025,7 @@ static void Task_SurfFieldEffect(u8 taskId)
 
 static void SurfFieldEffect_Init(struct Task *task)
 {
+    VarSet(VAR_FREEZE_SURF_BLOB, 1);
     LockPlayerFieldControls();
     FreezeObjectEvents();
     // Put follower into pokeball before using Surf
@@ -3089,6 +3092,7 @@ static void SurfFieldEffect_End(struct Task *task)
         SetSurfBlob_BobState(objectEvent->fieldEffectSpriteId, BOB_PLAYER_AND_MON);
         UnfreezeObjectEvents();
         UnlockPlayerFieldControls();
+        VarSet(VAR_FREEZE_SURF_BLOB, 0);
         FieldEffectActiveListRemove(FLDEFF_USE_SURF);
         DestroyTask(FindTaskIdByFunc(Task_SurfFieldEffect));
     }

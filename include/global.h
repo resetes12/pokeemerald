@@ -569,6 +569,7 @@ struct SaveBlock2
               u16 optionsAutorunSurf:1;
               u16 optionsAutorunDive:1;
               u8 rivalName[PLAYER_NAME_LENGTH + 1];
+              u16 optionsSurfOverworld:1; // whether to use the original Surf blob or dynamic blob (False to use dynamic)
 }; // sizeof=0xF2C
 
 extern struct SaveBlock2 *gSaveBlock2Ptr;
