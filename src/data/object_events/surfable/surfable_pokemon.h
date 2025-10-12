@@ -462,4 +462,8 @@ const struct RideablePokemon gSurfablePokemon[] =
         .species = SPECIES_ARCEUS,
         .trainerPose = 0,
     },
+    {
+        .species = SPECIES_TEST,
+        .trainerPose = 0,
+    }, 
 };

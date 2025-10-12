@@ -2060,6 +2060,24 @@ const struct SpriteFrameImage gSurfingOverlayPicTable_Arceus[] = {
     overworld_frame(gSurfablePokemonPic_Arceus, 8, 8, 11),
 };
 
+const struct SpriteFrameImage gSurfingOverworldPicTable_Test[] = {
+    overworld_frame(gSurfablePokemonPic_Test, 4, 4, 0),
+    overworld_frame(gSurfablePokemonPic_Test, 4, 4, 1),
+    overworld_frame(gSurfablePokemonPic_Test, 4, 4, 2),
+    overworld_frame(gSurfablePokemonPic_Test, 4, 4, 3),
+    overworld_frame(gSurfablePokemonPic_Test, 4, 4, 4),
+    overworld_frame(gSurfablePokemonPic_Test, 4, 4, 5),
+};
+
+const struct SpriteFrameImage gSurfingOverlayPicTable_Test[] = {
+    overworld_frame(gSurfablePokemonPic_Test, 4, 4, 6),
+    overworld_frame(gSurfablePokemonPic_Test, 4, 4, 7),
+    overworld_frame(gSurfablePokemonPic_Test, 4, 4, 8),
+    overworld_frame(gSurfablePokemonPic_Test, 4, 4, 9),
+    overworld_frame(gSurfablePokemonPic_Test, 4, 4, 10),
+    overworld_frame(gSurfablePokemonPic_Test, 4, 4, 11),
+};
+
 // Shiny PicTables
 
 const struct SpriteFrameImage gSurfingOverworldShinyPicTable_Squirtle[] = {
@@ -4122,4 +4140,22 @@ const struct SpriteFrameImage gSurfingOverlayShinyPicTable_Arceus[] = {
     overworld_frame(gSurfableShinyPokemonPic_Arceus, 8, 8, 9),
     overworld_frame(gSurfableShinyPokemonPic_Arceus, 8, 8, 10),
     overworld_frame(gSurfableShinyPokemonPic_Arceus, 8, 8, 11),
+};
+
+const struct SpriteFrameImage gSurfingOverworldShinyPicTable_Test[] = {
+    overworld_frame(gSurfableShinyPokemonPic_Test, 4, 4, 0),
+    overworld_frame(gSurfableShinyPokemonPic_Test, 4, 4, 1),
+    overworld_frame(gSurfableShinyPokemonPic_Test, 4, 4, 2),
+    overworld_frame(gSurfableShinyPokemonPic_Test, 4, 4, 3),
+    overworld_frame(gSurfableShinyPokemonPic_Test, 4, 4, 4),
+    overworld_frame(gSurfableShinyPokemonPic_Test, 4, 4, 5),
+};
+
+const struct SpriteFrameImage gSurfingOverlayShinyPicTable_Test[] = {
+    overworld_frame(gSurfableShinyPokemonPic_Test, 4, 4, 6),
+    overworld_frame(gSurfableShinyPokemonPic_Test, 4, 4, 7),
+    overworld_frame(gSurfableShinyPokemonPic_Test, 4, 4, 8),
+    overworld_frame(gSurfableShinyPokemonPic_Test, 4, 4, 9),
+    overworld_frame(gSurfableShinyPokemonPic_Test, 4, 4, 10),
+    overworld_frame(gSurfableShinyPokemonPic_Test, 4, 4, 11),
 };

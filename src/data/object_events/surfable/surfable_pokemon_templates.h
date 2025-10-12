@@ -118,6 +118,7 @@ enum
     PAL_TAG_LICKILICKY_SURF,
     PAL_TAG_RHYPERIOR_SURF,
     PAL_TAG_ARCEUS_SURF,
+    PAL_TAG_TEST_SURF,
 };
 
 const struct SpritePalette sSurfablePokemonPalettes[] = {
@@ -239,6 +240,7 @@ const struct SpritePalette sSurfablePokemonPalettes[] = {
     {gSurfablePokemonPalette_Lickilicky,  PAL_TAG_LICKILICKY_SURF},
     {gSurfablePokemonPalette_Rhyperior,   PAL_TAG_RHYPERIOR_SURF},
     {gSurfablePokemonPalette_Arceus,    PAL_TAG_ARCEUS_SURF},
+    {gSurfablePokemonPalette_Test,    PAL_TAG_TEST_SURF},
 };
 
 const struct SpritePalette sSurfablePokemonShinyPalettes[] = {
@@ -360,6 +362,7 @@ const struct SpritePalette sSurfablePokemonShinyPalettes[] = {
     {gSurfablePokemonShinyPalette_Lickilicky,  PAL_TAG_LICKILICKY_SURF},
     {gSurfablePokemonShinyPalette_Rhyperior,   PAL_TAG_RHYPERIOR_SURF},
     {gSurfablePokemonShinyPalette_Arceus,    PAL_TAG_ARCEUS_SURF},
+    {gSurfablePokemonShinyPalette_Test,    PAL_TAG_TEST_SURF},
 };
 
 const union AnimCmd gSurfablePokemonAnim_FaceSouth[] =
@@ -532,6 +535,8 @@ const struct SpriteTemplate gSurfablePokemonOverworldSprites[] =
     {0xFFFF, PAL_TAG_LICKILICKY_SURF,  &gObjectEventBaseOam_32x32, gSurfablePokemonAnimTable, gSurfingOverworldPicTable_Lickilicky,  gDummySpriteAffineAnimTable, UpdateSurfBlobFieldEffect},
     {0xFFFF, PAL_TAG_RHYPERIOR_SURF,   &gObjectEventBaseOam_32x32, gSurfablePokemonAnimTable, gSurfingOverworldPicTable_Rhyperior,   gDummySpriteAffineAnimTable, UpdateSurfBlobFieldEffect},
     {0xFFFF, PAL_TAG_ARCEUS_SURF,    &gObjectEventBaseOam_64x64, gSurfablePokemonAnimTable, gSurfingOverworldPicTable_Arceus,     gDummySpriteAffineAnimTable, UpdateSurfBlobFieldEffect},
+    {0xFFFF, PAL_TAG_TEST_SURF,      &gObjectEventBaseOam_32x32, gSurfablePokemonAnimTable, gSurfingOverworldPicTable_Test,       gDummySpriteAffineAnimTable, UpdateSurfBlobFieldEffect},
+
 };
 
 #define NO_OVERLAY {0, 0, NULL, NULL, NULL, NULL, NULL}
@@ -654,6 +659,7 @@ const struct SpriteTemplate gSurfablePokemonOverlaySprites[] =
     {0xFFFF, PAL_TAG_LICKILICKY_SURF,  &gObjectEventBaseOam_32x32, gSurfablePokemonAnimTable, gSurfingOverlayPicTable_Lickilicky,  gDummySpriteAffineAnimTable, UpdateSurfMonOverlay},
     {0xFFFF, PAL_TAG_RHYPERIOR_SURF,   &gObjectEventBaseOam_32x32, gSurfablePokemonAnimTable, gSurfingOverlayPicTable_Rhyperior,   gDummySpriteAffineAnimTable, UpdateSurfMonOverlay},
     {0xFFFF, PAL_TAG_ARCEUS_SURF,    &gObjectEventBaseOam_64x64, gSurfablePokemonAnimTable, gSurfingOverlayPicTable_Arceus,    gDummySpriteAffineAnimTable, UpdateSurfMonOverlay},
+    {0xFFFF, PAL_TAG_TEST_SURF,      &gObjectEventBaseOam_32x32, gSurfablePokemonAnimTable, gSurfingOverlayPicTable_Test,       gDummySpriteAffineAnimTable, UpdateSurfMonOverlay},
 };
 
 const struct SpriteTemplate gSurfablePokemonOverworldShinySprites[] =
@@ -772,9 +778,10 @@ const struct SpriteTemplate gSurfablePokemonOverworldShinySprites[] =
     {0xFFFF, PAL_TAG_MUNCHLAX_SURF,  &gObjectEventBaseOam_32x32, gSurfablePokemonAnimTable, gSurfingOverworldShinyPicTable_Munchlax,  gDummySpriteAffineAnimTable, UpdateSurfBlobFieldEffect},
     {0xFFFF, PAL_TAG_MANTYKE_SURF,   &gObjectEventBaseOam_32x32, gSurfablePokemonAnimTable, gSurfingOverworldShinyPicTable_Mantyke,   gDummySpriteAffineAnimTable, UpdateSurfBlobFieldEffect},
     {0xFFFF, PAL_TAG_WEAVILE_SURF,   &gObjectEventBaseOam_32x32, gSurfablePokemonAnimTable, gSurfingOverworldShinyPicTable_Weavile,   gDummySpriteAffineAnimTable, UpdateSurfBlobFieldEffect},
-    {0xFFFF, PAL_TAG_LICKILICKY_SURF,  &gObjectEventBaseOam_32x32, gSurfablePokemonAnimTable, gSurfingOverworldShinyPicTable_Lickilicky,  gDummySpriteAffineAnimTable, UpdateSurfBlobFieldEffect},
-    {0xFFFF, PAL_TAG_RHYPERIOR_SURF,   &gObjectEventBaseOam_32x32, gSurfablePokemonAnimTable, gSurfingOverworldShinyPicTable_Rhyperior,   gDummySpriteAffineAnimTable, UpdateSurfBlobFieldEffect},
+    {0xFFFF, PAL_TAG_LICKILICKY_SURF, &gObjectEventBaseOam_32x32, gSurfablePokemonAnimTable, gSurfingOverworldShinyPicTable_Lickilicky,  gDummySpriteAffineAnimTable, UpdateSurfBlobFieldEffect},
+    {0xFFFF, PAL_TAG_RHYPERIOR_SURF, &gObjectEventBaseOam_32x32, gSurfablePokemonAnimTable, gSurfingOverworldShinyPicTable_Rhyperior,   gDummySpriteAffineAnimTable, UpdateSurfBlobFieldEffect},
     {0xFFFF, PAL_TAG_ARCEUS_SURF,    &gObjectEventBaseOam_64x64, gSurfablePokemonAnimTable, gSurfingOverworldShinyPicTable_Arceus,     gDummySpriteAffineAnimTable, UpdateSurfBlobFieldEffect},
+    {0xFFFF, PAL_TAG_TEST_SURF,      &gObjectEventBaseOam_32x32, gSurfablePokemonAnimTable, gSurfingOverworldShinyPicTable_Test,       gDummySpriteAffineAnimTable, UpdateSurfBlobFieldEffect},
 };
 
 #define NO_OVERLAY {0, 0, NULL, NULL, NULL, NULL, NULL}
@@ -897,4 +904,5 @@ const struct SpriteTemplate gSurfablePokemonOverlayShinySprites[] =
     {0xFFFF, PAL_TAG_LICKILICKY_SURF,  &gObjectEventBaseOam_32x32, gSurfablePokemonAnimTable, gSurfingOverlayShinyPicTable_Lickilicky,  gDummySpriteAffineAnimTable, UpdateSurfMonOverlay},
     {0xFFFF, PAL_TAG_RHYPERIOR_SURF,   &gObjectEventBaseOam_32x32, gSurfablePokemonAnimTable, gSurfingOverlayShinyPicTable_Rhyperior,   gDummySpriteAffineAnimTable, UpdateSurfMonOverlay},
     {0xFFFF, PAL_TAG_ARCEUS_SURF,    &gObjectEventBaseOam_64x64, gSurfablePokemonAnimTable, gSurfingOverlayShinyPicTable_Arceus,    gDummySpriteAffineAnimTable, UpdateSurfMonOverlay},
+    {0xFFFF, PAL_TAG_TEST_SURF,      &gObjectEventBaseOam_32x32, gSurfablePokemonAnimTable, gSurfingOverlayShinyPicTable_Test,       gDummySpriteAffineAnimTable, UpdateSurfMonOverlay},
 };
