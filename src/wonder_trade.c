@@ -299,10 +299,6 @@ static const u16 sIsValidSpecies[] =
     SPECIES_MANTYKE,
     SPECIES_MIME_JR,
     SPECIES_MUNCHLAX,
-    SPECIES_WYRDEER,
-    SPECIES_KLEAVOR,
-    SPECIES_URSALUNA,
-    SPECIES_URSALUNA_BLOODMOON,
 };
 
 static const u16 sIsValidSpeciesVanilla[] =
@@ -405,6 +401,58 @@ static u16 PickRandomSpecies() // picks only base forms
 {
     u16 species = sIsValidSpecies[Random() % NELEMS(sIsValidSpecies)];
     u16 speciesVanilla = sIsValidSpeciesVanilla[Random() % NELEMS(sIsValidSpeciesVanilla)];
+
+    //Secret stuff
+    if (((Random() % 99) < 25) && (gSaveBlock1Ptr->tx_Mode_Encounters == 1))
+    {
+        if ((species == SPECIES_SCYTHER) || 
+            (species == SPECIES_SCIZOR))
+        {
+            species = SPECIES_KLEAVOR;
+        }
+        if ((species == SPECIES_TEDDIURSA) || 
+            (species == SPECIES_URSARING))
+        {
+            if ((Random() % 99) < 25)
+            {
+                species = SPECIES_URSALUNA_BLOODMOON;
+            }
+            else
+            {
+                species = SPECIES_URSALUNA;
+            }
+        }
+        if (species == SPECIES_STANTLER)
+        {
+            species = SPECIES_WYRDEER;
+        }
+    }
+    else if (((Random() % 99) < 25) && (gSaveBlock1Ptr->tx_Mode_Encounters == 2) && (FlagGet(FLAG_SYS_GAME_CLEAR) == TRUE))
+    {
+        if ((species == SPECIES_SCYTHER) || 
+            (species == SPECIES_SCIZOR))
+        {
+            species = SPECIES_KLEAVOR;
+        }
+        if ((species == SPECIES_TEDDIURSA) || 
+            (species == SPECIES_URSARING))
+        {
+            if ((Random() % 99) < 25)
+            {
+                species = SPECIES_URSALUNA_BLOODMOON;
+            }
+            else
+            {
+                species = SPECIES_URSALUNA;
+            }
+        }
+        if (species == SPECIES_STANTLER)
+        {
+            species = SPECIES_WYRDEER;
+        }
+    }
+
+    //Encounter modes
     if (gSaveBlock1Ptr->tx_Mode_Encounters == 0) //Vanilla Mode
         return speciesVanilla;
     else if (gSaveBlock1Ptr->tx_Mode_Encounters == 1) //Modern Mode
