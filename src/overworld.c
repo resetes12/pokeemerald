@@ -370,7 +370,7 @@ static void (*const sMovementStatusHandler[])(struct LinkPlayerObjectEvent *, st
 // code
 void DoWhiteOut(void)
 {
-    if (IsNuzlockeActive()) //tx_randomizer_and_challenges
+    if (IsNuzlockeActive() || gSaveBlock1Ptr->tx_Features_PkmnDeath) //tx_randomizer_and_challenges
     {
         if (GetFirstBoxPokemon() == IN_BOX_COUNT * TOTAL_BOXES_COUNT)
             DoSoftReset();
