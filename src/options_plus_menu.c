@@ -33,17 +33,16 @@ enum
 enum
 {
     MENUITEM_MAIN_TEXTSPEED,
-    MENUITEM_MAIN_BATTLESCENE,
     MENUITEM_MAIN_DIFFICULTY,
-    MENUITEM_MAIN_BATTLESTYLE,
     MENUITEM_MAIN_BUTTONMODE,
     MENUITEM_MAIN_FOLLOWER,
     MENUITEM_MAIN_LARGE_FOLLOWER,
+    MENUITEM_MAIN_SURFOVERWORLD,
     MENUITEM_MAIN_MATCHCALL,
     MENUITEM_MAIN_AUTORUN,
     MENUITEM_MAIN_AUTORUN_SURF,
     MENUITEM_MAIN_AUTORUN_DIVE,
-    MENUITEM_CUSTOM_FISHING,
+    MENUITEM_MAIN_FISHING,
     MENUITEM_MAIN_EVEN_FASTER_JOY,
     MENUITEM_MAIN_UNIT_TYPE,
     MENUITEM_MAIN_SKIP_INTRO,
@@ -54,6 +53,8 @@ enum
 //Menu options 2
 enum
 {
+    MENUITEM_BATTLE_BATTLESCENE,
+    MENUITEM_BATTLE_BATTLESTYLE,
     MENUITEM_BATTLE_SPLIT,
     MENUITEM_BATTLE_FAST_INTRO,
     MENUITEM_BATTLE_FAST_BATTLES,
@@ -222,6 +223,7 @@ static void DrawChoices_New_Backgrounds(int selection, int y);
 static void DrawChoices_Run_Type(int selection, int y);
 static void DrawChoices_Autorun_Surf(int selection, int y);
 static void DrawChoices_Autorun_Dive(int selection, int y);
+static void DrawChoices_SurfOverworld(int selection, int y);
 static void DrawBgWindowFrames(void);
 
 // EWRAM vars
@@ -255,9 +257,7 @@ struct // MENU_MAIN
 } static const sItemFunctionsMain[MENUITEM_MAIN_COUNT] =
 {
     [MENUITEM_MAIN_TEXTSPEED]               = {DrawChoices_TextSpeed,        ProcessInput_Options_Four},
-    [MENUITEM_MAIN_BATTLESCENE]             = {DrawChoices_BattleScene,      ProcessInput_Options_Two},
     [MENUITEM_MAIN_DIFFICULTY]              = {DrawChoices_Difficulty,       ProcessInput_Difficulty},
-    [MENUITEM_MAIN_BATTLESTYLE]             = {DrawChoices_BattleStyle,      ProcessInput_BattleStyle},
     [MENUITEM_MAIN_BUTTONMODE]              = {DrawChoices_ButtonMode,       ProcessInput_Options_Three},
     [MENUITEM_MAIN_FOLLOWER]                = {DrawChoices_Follower,         ProcessInput_Options_Two},
     [MENUITEM_MAIN_LARGE_FOLLOWER]          = {DrawChoices_LargeFollower,    ProcessInput_Options_Two},
@@ -265,11 +265,12 @@ struct // MENU_MAIN
     [MENUITEM_MAIN_AUTORUN_SURF]            = {DrawChoices_Autorun_Surf,     ProcessInput_Options_Two},  
     [MENUITEM_MAIN_AUTORUN_DIVE]            = {DrawChoices_Autorun_Dive,     ProcessInput_Options_Two},  
     [MENUITEM_MAIN_MATCHCALL]               = {DrawChoices_MatchCall,        ProcessInput_Options_Two},
-    [MENUITEM_CUSTOM_FISHING]               = {DrawChoices_Fishing,          ProcessInput_Options_Two},
+    [MENUITEM_MAIN_FISHING]                 = {DrawChoices_Fishing,          ProcessInput_Options_Two},
     [MENUITEM_MAIN_EVEN_FASTER_JOY]         = {DrawChoices_EvenFasterJoy,    ProcessInput_Options_Two},
     [MENUITEM_MAIN_SKIP_INTRO]              = {DrawChoices_Skip_Intro,       ProcessInput_Options_Two}, 
     [MENUITEM_MAIN_UNIT_TYPE]               = {DrawChoices_Unit_Type,        ProcessInput_Options_Two},  
     [MENUITEM_MAIN_FRAMETYPE]               = {DrawChoices_FrameType,        ProcessInput_FrameType},
+    [MENUITEM_MAIN_SURFOVERWORLD]           = {DrawChoices_SurfOverworld,    ProcessInput_Options_Two},
 };
 
 struct // MENU_CUSTOM
@@ -278,7 +279,8 @@ struct // MENU_CUSTOM
     int (*processInput)(int selection);
 } static const sItemFunctionsCustom[MENUITEM_BATTLE_COUNT] =
 {
-
+    [MENUITEM_BATTLE_BATTLESCENE]      = {DrawChoices_BattleScene,        ProcessInput_Options_Two},
+    [MENUITEM_BATTLE_BATTLESTYLE]      = {DrawChoices_BattleStyle,        ProcessInput_BattleStyle},
     [MENUITEM_BATTLE_FAST_INTRO]       = {DrawChoices_FastIntro,          ProcessInput_Options_Two},
     [MENUITEM_BATTLE_SPLIT]            = {DrawChoices_Style,              ProcessInput_Options_Two},
     [MENUITEM_BATTLE_TYPE_EFFECTIVE]   = {DrawChoices_TypeEffective,      ProcessInput_Options_Two},
@@ -320,12 +322,11 @@ static const u8 sText_OptionNewBackgrounds[]      = _("BATTLE TERRAIN");
 static const u8 sText_OptionRunType[]             = _("QUICK RUN");
 static const u8 sText_AutorunEnable_Surf[]        = _("AUTORUN (SURF)");
 static const u8 sText_AutorunEnable_Dive[]        = _("AUTORUN (DIVE)");
+static const u8 sText_SurfSprites[]               = _("SURF SPRITES");
 static const u8 *const sOptionMenuItemsNamesMain[MENUITEM_MAIN_COUNT] =
 {
     [MENUITEM_MAIN_TEXTSPEED]           = gText_TextSpeed,
-    [MENUITEM_MAIN_BATTLESCENE]         = gText_BattleScene,
     [MENUITEM_MAIN_DIFFICULTY]          = gText_OptionDifficulty,
-    [MENUITEM_MAIN_BATTLESTYLE]         = gText_BattleStyle,
     [MENUITEM_MAIN_BUTTONMODE]          = gText_ButtonMode,
     [MENUITEM_MAIN_FOLLOWER]            = gText_FollowerEnable,
     [MENUITEM_MAIN_LARGE_FOLLOWER]      = sText_OptionLargeFollower,
@@ -333,15 +334,18 @@ static const u8 *const sOptionMenuItemsNamesMain[MENUITEM_MAIN_COUNT] =
     [MENUITEM_MAIN_AUTORUN_SURF]        = sText_AutorunEnable_Surf,
     [MENUITEM_MAIN_AUTORUN_DIVE]        = sText_AutorunEnable_Dive,
     [MENUITEM_MAIN_MATCHCALL]           = gText_OptionMatchCalls,
-    [MENUITEM_CUSTOM_FISHING]           = sText_OptionFishing,
+    [MENUITEM_MAIN_FISHING]             = sText_OptionFishing,
     [MENUITEM_MAIN_EVEN_FASTER_JOY]     = sText_OptionEvenFasterJoy,
     [MENUITEM_MAIN_SKIP_INTRO]          = sText_OptionSkipIntro,
     [MENUITEM_MAIN_UNIT_TYPE]           = sText_OptionUnitType,
     [MENUITEM_MAIN_FRAMETYPE]           = gText_Frame,
+    [MENUITEM_MAIN_SURFOVERWORLD]       = sText_SurfSprites,
 };
 
 static const u8 *const sOptionMenuItemsNamesCustom[MENUITEM_BATTLE_COUNT] =
 {
+    [MENUITEM_BATTLE_BATTLESTYLE]      = gText_BattleStyle,
+    [MENUITEM_BATTLE_BATTLESCENE]      = gText_BattleScene,
     [MENUITEM_BATTLE_FAST_INTRO]       = sText_OptionFastIntro,
     [MENUITEM_BATTLE_SPLIT]            = gText_OptionStyle,
     [MENUITEM_BATTLE_TYPE_EFFECTIVE]   = sText_OptionTypeEffective,
@@ -390,9 +394,9 @@ static bool8 CheckConditions(int selection)
         switch(selection)
         {
         case MENUITEM_MAIN_TEXTSPEED:         return TRUE;
-        case MENUITEM_MAIN_BATTLESCENE:       return TRUE;
+        
         case MENUITEM_MAIN_DIFFICULTY:        return TRUE;
-        case MENUITEM_MAIN_BATTLESTYLE:       return TRUE;
+        
         case MENUITEM_MAIN_BUTTONMODE:        return TRUE;
         case MENUITEM_MAIN_FRAMETYPE:         return TRUE;
         case MENUITEM_MAIN_FOLLOWER:          return TRUE;
@@ -402,14 +406,17 @@ static bool8 CheckConditions(int selection)
         case MENUITEM_MAIN_AUTORUN_DIVE:      return TRUE;
         case MENUITEM_MAIN_COUNT:             return TRUE;
         case MENUITEM_MAIN_MATCHCALL:         return TRUE;
-        case MENUITEM_CUSTOM_FISHING:         return TRUE;
+        case MENUITEM_MAIN_FISHING:           return TRUE;
         case MENUITEM_MAIN_EVEN_FASTER_JOY:   return TRUE;
         case MENUITEM_MAIN_SKIP_INTRO:        return TRUE;
         case MENUITEM_MAIN_UNIT_TYPE:         return TRUE;
+        case MENUITEM_MAIN_SURFOVERWORLD:     return TRUE;
         }
     case MENU_CUSTOM:
         switch(selection)
         {
+        case MENUITEM_BATTLE_BATTLESCENE:     return TRUE;
+        case MENUITEM_BATTLE_BATTLESTYLE:     return TRUE;
         case MENUITEM_BATTLE_FAST_INTRO:      return TRUE;
         case MENUITEM_BATTLE_SPLIT:           return TRUE;
         case MENUITEM_BATTLE_TYPE_EFFECTIVE:  return TRUE;
@@ -470,24 +477,25 @@ static const u8 sText_Desc_OverworldCallsOn[]      = _("TRAINERs will be able to
 static const u8 sText_Desc_OverworldCallsOff[]     = _("You will not receive calls.\nSpecial events will still occur.");
 static const u8 sText_Desc_Units_Imperial[]        = _("Display BERRY and POKéMON weight\nand size in pounds and inches.");
 static const u8 sText_Desc_Units_Metric[]          = _("Display BERRY and POKéMON weight\nand size in kilograms and meters.");
+static const u8 sText_Desc_SurfOverworldDynamic[]       = _("Use the POKéMON's sprite when\nsurfing.");
+static const u8 sText_Desc_SurfOverworldOriginal[]      = _("Use the original generic sprite when\nsurfing.");
 static const u8 *const sOptionMenuItemDescriptionsMain[MENUITEM_MAIN_COUNT][3] =
 {
-    [MENUITEM_MAIN_TEXTSPEED]   = {sText_Desc_TextSpeed,            sText_Empty,                sText_Empty},
-    [MENUITEM_MAIN_BATTLESCENE] = {sText_Desc_BattleScene_On,       sText_Desc_BattleScene_Off, sText_Empty},
-    [MENUITEM_MAIN_DIFFICULTY]  = {sText_Desc_Difficulty_Easy,      sText_Desc_Difficulty_Normal, sText_Desc_Difficulty_Hard},
-    [MENUITEM_MAIN_BATTLESTYLE] = {sText_Desc_BattleStyle_Shift,    sText_Desc_BattleStyle_Set, sText_Empty},
-    [MENUITEM_MAIN_BUTTONMODE]  = {sText_Desc_ButtonMode,           sText_Desc_ButtonMode_LR,   sText_Desc_ButtonMode_LA},
-    [MENUITEM_MAIN_FRAMETYPE]   = {sText_Desc_FrameType,            sText_Empty,                sText_Empty},
-    [MENUITEM_MAIN_FOLLOWER]    = {sText_Desc_FollowerOn,           sText_Desc_FollowerOff},
-    [MENUITEM_MAIN_LARGE_FOLLOWER]    = {sText_Desc_FollowerLargeOn,           sText_Desc_FollowerLargeOff},
-    [MENUITEM_MAIN_AUTORUN]     = {sText_Desc_AutorunOn,            sText_Desc_AutorunOff},
-    [MENUITEM_MAIN_AUTORUN_SURF]     = {sText_Desc_AutorunSurfOn,            sText_Desc_AutorunSurfOff},
-    [MENUITEM_MAIN_AUTORUN_DIVE]     = {sText_Desc_AutorunDiveOn,            sText_Desc_AutorunDiveOff},
-    [MENUITEM_MAIN_MATCHCALL]   = {sText_Desc_OverworldCallsOn,     sText_Desc_OverworldCallsOff},
-    [MENUITEM_CUSTOM_FISHING]     = {sText_Desc_FishingOn,            sText_Desc_FishingOff},
-    [MENUITEM_MAIN_EVEN_FASTER_JOY]     = {sText_Desc_EvenFasterJoyOn,            sText_Desc_EvenFasterJoyOff},
-    [MENUITEM_MAIN_SKIP_INTRO]     = {sText_Desc_SkipIntroOn,            sText_Desc_SkipIntroOff},
-    [MENUITEM_MAIN_UNIT_TYPE]     = {sText_Desc_Units_Metric,            sText_Desc_Units_Imperial},
+    [MENUITEM_MAIN_TEXTSPEED]         = {sText_Desc_TextSpeed,            sText_Empty,                     sText_Empty},
+    [MENUITEM_MAIN_DIFFICULTY]        = {sText_Desc_Difficulty_Easy,      sText_Desc_Difficulty_Normal,    sText_Desc_Difficulty_Hard},
+    [MENUITEM_MAIN_BUTTONMODE]        = {sText_Desc_ButtonMode,           sText_Desc_ButtonMode_LR,        sText_Desc_ButtonMode_LA},
+    [MENUITEM_MAIN_FRAMETYPE]         = {sText_Desc_FrameType,            sText_Empty,                     sText_Empty},
+    [MENUITEM_MAIN_FOLLOWER]          = {sText_Desc_FollowerOn,           sText_Desc_FollowerOff},
+    [MENUITEM_MAIN_LARGE_FOLLOWER]    = {sText_Desc_FollowerLargeOn,      sText_Desc_FollowerLargeOff},
+    [MENUITEM_MAIN_AUTORUN]           = {sText_Desc_AutorunOn,            sText_Desc_AutorunOff},
+    [MENUITEM_MAIN_AUTORUN_SURF]      = {sText_Desc_AutorunSurfOn,        sText_Desc_AutorunSurfOff},
+    [MENUITEM_MAIN_AUTORUN_DIVE]      = {sText_Desc_AutorunDiveOn,        sText_Desc_AutorunDiveOff},
+    [MENUITEM_MAIN_MATCHCALL]         = {sText_Desc_OverworldCallsOn,     sText_Desc_OverworldCallsOff},
+    [MENUITEM_MAIN_FISHING]           = {sText_Desc_FishingOn,            sText_Desc_FishingOff},
+    [MENUITEM_MAIN_EVEN_FASTER_JOY]   = {sText_Desc_EvenFasterJoyOn,      sText_Desc_EvenFasterJoyOff},
+    [MENUITEM_MAIN_SKIP_INTRO]        = {sText_Desc_SkipIntroOn,          sText_Desc_SkipIntroOff},
+    [MENUITEM_MAIN_UNIT_TYPE]         = {sText_Desc_Units_Metric,         sText_Desc_Units_Imperial},
+    [MENUITEM_MAIN_SURFOVERWORLD]     = {sText_Desc_SurfOverworldDynamic, sText_Desc_SurfOverworldOriginal},
 };
 
 // Custom {PKMN}
@@ -511,7 +519,8 @@ static const u8 sText_Desc_NewBackgrounds_Old[]    = _("Original battle terrain 
 static const u8 sText_Desc_NewBackgrounds_New[]    = _("Modernized battle terrain\nbackgrounds, similar to GEN IV.");
 static const u8 *const sOptionMenuItemDescriptionsCustom[MENUITEM_BATTLE_COUNT][4] =
 {
-
+    [MENUITEM_BATTLE_BATTLESCENE]         = {sText_Desc_BattleScene_On,           sText_Desc_BattleScene_Off,        sText_Empty},
+    [MENUITEM_BATTLE_BATTLESTYLE]         = {sText_Desc_BattleStyle_Shift,        sText_Desc_BattleStyle_Set,        sText_Empty},
     [MENUITEM_BATTLE_FAST_INTRO]          = {sText_Desc_FastIntroOn,              sText_Desc_FastIntroOff},
     [MENUITEM_BATTLE_FAST_BATTLES]        = {sText_Desc_FastBattleOn,             sText_Desc_FastBattleOff},
     [MENUITEM_BATTLE_SPLIT]               = {sText_Desc_StyleOn,                  sText_Desc_StyleOff},
@@ -557,27 +566,28 @@ static const u8 sText_Desc_Disabled_Textspeed[]     = _("Only active if xyz.");
 static const u8 sText_Desc_Disabled_BattleHPBar[]   = _("Only active if xyz.");
 static const u8 *const sOptionMenuItemDescriptionsDisabledMain[MENUITEM_MAIN_COUNT] =
 {
-    [MENUITEM_MAIN_TEXTSPEED]   = sText_Desc_Disabled_Textspeed,
-    [MENUITEM_MAIN_BATTLESCENE] = sText_Empty,
-    [MENUITEM_MAIN_DIFFICULTY]  = sText_Empty,
-    [MENUITEM_MAIN_BATTLESTYLE] = sText_Empty,
-    [MENUITEM_MAIN_BUTTONMODE]  = sText_Empty,
-    [MENUITEM_MAIN_FRAMETYPE]   = sText_Empty,
-    [MENUITEM_MAIN_FOLLOWER]    = sText_Desc_Disabled_BattleHPBar,
+    [MENUITEM_MAIN_TEXTSPEED]         = sText_Desc_Disabled_Textspeed,
+    [MENUITEM_MAIN_DIFFICULTY]        = sText_Empty,
+    [MENUITEM_MAIN_BUTTONMODE]        = sText_Empty,
+    [MENUITEM_MAIN_FRAMETYPE]         = sText_Empty,
+    [MENUITEM_MAIN_FOLLOWER]          = sText_Desc_Disabled_BattleHPBar,
     [MENUITEM_MAIN_LARGE_FOLLOWER]    = sText_Desc_Disabled_BattleHPBar,
-    [MENUITEM_MAIN_AUTORUN]     = sText_Empty,
-    [MENUITEM_MAIN_AUTORUN_SURF]     = sText_Empty,
-    [MENUITEM_MAIN_AUTORUN_DIVE]     = sText_Empty,
-    [MENUITEM_MAIN_MATCHCALL]   = sText_Empty,
-    [MENUITEM_CUSTOM_FISHING]     = sText_Empty,
-    [MENUITEM_MAIN_EVEN_FASTER_JOY]     = sText_Empty,
-    [MENUITEM_MAIN_SKIP_INTRO]     = sText_Empty,
+    [MENUITEM_MAIN_AUTORUN]           = sText_Empty,
+    [MENUITEM_MAIN_AUTORUN_SURF]      = sText_Empty,
+    [MENUITEM_MAIN_AUTORUN_DIVE]      = sText_Empty,
+    [MENUITEM_MAIN_MATCHCALL]         = sText_Empty,
+    [MENUITEM_MAIN_FISHING]           = sText_Empty,
+    [MENUITEM_MAIN_EVEN_FASTER_JOY]   = sText_Empty,
+    [MENUITEM_MAIN_SKIP_INTRO]        = sText_Empty,
+    [MENUITEM_MAIN_SURFOVERWORLD]     = sText_Empty,
 };
 
 // Disabled Custom
 static const u8 sText_Desc_Disabled_LR_Run[]   = _("Only active if L+R is selected above.");
 static const u8 *const sOptionMenuItemDescriptionsDisabledCustom[MENUITEM_BATTLE_COUNT] =
 {
+    [MENUITEM_BATTLE_BATTLESCENE]         = sText_Empty,
+    [MENUITEM_BATTLE_BATTLESTYLE]         = sText_Empty,
     [MENUITEM_BATTLE_FAST_INTRO]          = sText_Empty,
     [MENUITEM_BATTLE_FAST_BATTLES]        = sText_Empty,
     [MENUITEM_BATTLE_SPLIT]               = sText_Empty,
@@ -653,11 +663,11 @@ static void VBlankCB(void)
     TransferPlttBuffer();
 }
 
-static const u8 sText_TopBar_Main[]         = _("OPTIONS");
+static const u8 sText_TopBar_Main[]         = _("MAIN OPTIONS");
 static const u8 sText_TopBar_Main_Right[]   = _("{R_BUTTON}");
 static const u8 sText_TopBar_Custom[]       = _("BATTLE OPTIONS");
 static const u8 sText_TopBar_Custom_Left[]  = _("{L_BUTTON}");
-static const u8 sText_TopBar_Sound[]        = _("SOUND");
+static const u8 sText_TopBar_Sound[]        = _("SOUND OPTIONS");
 static void DrawTopBarText(void)
 {
     const u8 color[3] = { TEXT_DYNAMIC_COLOR_6, TEXT_COLOR_WHITE, TEXT_COLOR_OPTIONS_GRAY_FG };
@@ -666,7 +676,7 @@ static void DrawTopBarText(void)
     switch (sOptions->submenu)
     {
         case MENU_MAIN:
-            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 105, 1, color, 0, sText_TopBar_Main);
+            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 94, 1, color, 0, sText_TopBar_Main);
             AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 222, 1, color, 0, sText_TopBar_Main_Right);
             break;
         case MENU_CUSTOM:
@@ -675,7 +685,7 @@ static void DrawTopBarText(void)
             AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 222, 1, color, 0, sText_TopBar_Main_Right);
             break;
         case MENU_SOUND:
-            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 106, 1, color, 0, sText_TopBar_Sound);
+            AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 94, 1, color, 0, sText_TopBar_Sound);
             AddTextPrinterParameterized3(WIN_TOPBAR, FONT_SMALL, 2, 1, color, 0, sText_TopBar_Custom_Left);
             break;
     }
@@ -836,9 +846,7 @@ void CB2_InitOptionPlusMenu(void)
     case 6:
         sOptions = AllocZeroed(sizeof(*sOptions));
         sOptions->sel[MENUITEM_MAIN_TEXTSPEED]           = gSaveBlock2Ptr->optionsTextSpeed;
-        sOptions->sel[MENUITEM_MAIN_BATTLESCENE]         = gSaveBlock2Ptr->optionsBattleSceneOff;
         sOptions->sel[MENUITEM_MAIN_DIFFICULTY]          = gSaveBlock2Ptr->optionsDifficulty;
-        sOptions->sel[MENUITEM_MAIN_BATTLESTYLE]         = gSaveBlock2Ptr->optionsBattleStyle;
         sOptions->sel[MENUITEM_MAIN_BUTTONMODE]          = gSaveBlock2Ptr->optionsButtonMode;
         sOptions->sel[MENUITEM_MAIN_FOLLOWER]            = gSaveBlock2Ptr->optionsfollowerEnable;
         sOptions->sel[MENUITEM_MAIN_LARGE_FOLLOWER]      = gSaveBlock2Ptr->optionsfollowerLargeEnable;
@@ -847,11 +855,14 @@ void CB2_InitOptionPlusMenu(void)
         sOptions->sel[MENUITEM_MAIN_AUTORUN_DIVE]        = gSaveBlock2Ptr->optionsAutorunDive;
         sOptions->sel[MENUITEM_MAIN_FRAMETYPE]           = gSaveBlock2Ptr->optionsWindowFrameType;
         sOptions->sel[MENUITEM_MAIN_MATCHCALL]           = gSaveBlock2Ptr->optionsDisableMatchCall;
-        sOptions->sel[MENUITEM_CUSTOM_FISHING]           = gSaveBlock2Ptr->optionsFishing;
+        sOptions->sel[MENUITEM_MAIN_FISHING]             = gSaveBlock2Ptr->optionsFishing;
         sOptions->sel[MENUITEM_MAIN_EVEN_FASTER_JOY]     = gSaveBlock2Ptr->optionsEvenFasterJoy;
         sOptions->sel[MENUITEM_MAIN_SKIP_INTRO]          = gSaveBlock2Ptr->optionsSkipIntro;
         sOptions->sel[MENUITEM_MAIN_UNIT_TYPE]           = gSaveBlock2Ptr->optionsUnitSystem;
+        sOptions->sel[MENUITEM_MAIN_SURFOVERWORLD]       = gSaveBlock2Ptr->optionsSurfOverworld;
 
+        sOptions->sel_battle[MENUITEM_BATTLE_BATTLESTYLE]       = gSaveBlock2Ptr->optionsBattleStyle;
+        sOptions->sel_battle[MENUITEM_BATTLE_BATTLESCENE]       = gSaveBlock2Ptr->optionsBattleSceneOff;
         sOptions->sel_battle[MENUITEM_BATTLE_FAST_INTRO]        = gSaveBlock2Ptr->optionsFastIntro;
         sOptions->sel_battle[MENUITEM_BATTLE_FAST_BATTLES]      = gSaveBlock2Ptr->optionsFastBattle;
         sOptions->sel_battle[MENUITEM_BATTLE_SPLIT]             = gSaveBlock2Ptr->optionStyle;
@@ -1072,9 +1083,7 @@ static void Task_OptionMenuProcessInput(u8 taskId)
 static void Task_OptionMenuSave(u8 taskId)
 {
     gSaveBlock2Ptr->optionsTextSpeed             = sOptions->sel[MENUITEM_MAIN_TEXTSPEED];
-    gSaveBlock2Ptr->optionsBattleSceneOff        = sOptions->sel[MENUITEM_MAIN_BATTLESCENE];
     gSaveBlock2Ptr->optionsDifficulty            = sOptions->sel[MENUITEM_MAIN_DIFFICULTY];
-    gSaveBlock2Ptr->optionsBattleStyle           = sOptions->sel[MENUITEM_MAIN_BATTLESTYLE]; 
     gSaveBlock2Ptr->optionsButtonMode            = sOptions->sel[MENUITEM_MAIN_BUTTONMODE];
     gSaveBlock2Ptr->optionsfollowerEnable        = sOptions->sel[MENUITEM_MAIN_FOLLOWER];
     gSaveBlock2Ptr->optionsfollowerLargeEnable   = sOptions->sel[MENUITEM_MAIN_LARGE_FOLLOWER];
@@ -1083,11 +1092,14 @@ static void Task_OptionMenuSave(u8 taskId)
     gSaveBlock2Ptr->optionsAutorunDive           = sOptions->sel[MENUITEM_MAIN_AUTORUN_DIVE];
     gSaveBlock2Ptr->optionsDisableMatchCall      = sOptions->sel[MENUITEM_MAIN_MATCHCALL];
     gSaveBlock2Ptr->optionsWindowFrameType       = sOptions->sel[MENUITEM_MAIN_FRAMETYPE];
-    gSaveBlock2Ptr->optionsFishing               = sOptions->sel[MENUITEM_CUSTOM_FISHING];
+    gSaveBlock2Ptr->optionsFishing               = sOptions->sel[MENUITEM_MAIN_FISHING];
     gSaveBlock2Ptr->optionsEvenFasterJoy         = sOptions->sel[MENUITEM_MAIN_EVEN_FASTER_JOY];
     gSaveBlock2Ptr->optionsSkipIntro             = sOptions->sel[MENUITEM_MAIN_SKIP_INTRO];
     gSaveBlock2Ptr->optionsUnitSystem            = sOptions->sel[MENUITEM_MAIN_UNIT_TYPE];
+    gSaveBlock2Ptr->optionsSurfOverworld         = sOptions->sel[MENUITEM_MAIN_SURFOVERWORLD];
 
+    gSaveBlock2Ptr->optionsBattleStyle      = sOptions->sel_battle[MENUITEM_BATTLE_BATTLESTYLE]; 
+    gSaveBlock2Ptr->optionsBattleSceneOff   = sOptions->sel_battle[MENUITEM_BATTLE_BATTLESCENE];
     gSaveBlock2Ptr->optionsFastIntro        = sOptions->sel_battle[MENUITEM_BATTLE_FAST_INTRO];
     gSaveBlock2Ptr->optionsFastBattle       = sOptions->sel_battle[MENUITEM_BATTLE_FAST_BATTLES];
     gSaveBlock2Ptr->optionStyle             = sOptions->sel_battle[MENUITEM_BATTLE_SPLIT];
@@ -1401,7 +1413,7 @@ static void DrawChoices_TextSpeed(int selection, int y)
 
 static void DrawChoices_BattleScene(int selection, int y)
 {
-    bool8 active = CheckConditions(MENUITEM_MAIN_BATTLESCENE);
+    bool8 active = CheckConditions(MENUITEM_BATTLE_BATTLESCENE);
     u8 styles[2] = {0};
     styles[selection] = 1;
 
@@ -1568,7 +1580,7 @@ static void DrawChoices_Sound_Effects(int selection, int y)
 
 static void DrawChoices_BattleStyle(int selection, int y)
 {
-    bool8 active = CheckConditions(MENUITEM_MAIN_BATTLESTYLE);
+    bool8 active = CheckConditions(MENUITEM_BATTLE_BATTLESTYLE);
     u8 styles[2] = {0};
     styles[selection] = 1;
 
@@ -1729,7 +1741,7 @@ static void DrawChoices_TypeEffective(int selection, int y)
 
 static void DrawChoices_Fishing(int selection, int y)
 {
-    bool8 active = CheckConditions(MENUITEM_CUSTOM_FISHING);
+    bool8 active = CheckConditions(MENUITEM_MAIN_FISHING);
     u8 styles[2] = {0};
     styles[selection] = 1;
 
@@ -2021,6 +2033,27 @@ static void DrawChoices_Autorun_Dive(int selection, int y)
     DrawOptionMenuChoice(gText_BattleSceneOn, 104, y, styles[0], active);
     DrawOptionMenuChoice(gText_BattleSceneOff, GetStringRightAlignXOffset(1, gText_BattleSceneOff, 198), y, styles[1], active);
 }
+
+static const u8 sText_Dynamic[]        = _("DYNAMIC");
+static void DrawChoices_SurfOverworld(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_MAIN_SURFOVERWORLD);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock2Ptr->optionsSurfOverworld = 0; //yeS
+    }
+    else
+    {
+        gSaveBlock2Ptr->optionsSurfOverworld = 1; //no
+    }
+
+    DrawOptionMenuChoice(sText_Dynamic, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_Old, GetStringRightAlignXOffset(1, sText_Old, 198), y, styles[1], active);
+}
+
 
 // Background tilemap
 #define TILE_TOP_CORNER_L 0x1A2 // 418

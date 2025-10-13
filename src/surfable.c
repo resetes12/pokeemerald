@@ -84,7 +84,7 @@ u32 CreateSurfablePokemonSprite(void)
     SetSpritePosToOffsetMapCoords((s16 *)&gFieldEffectArguments[0], (s16 *)&gFieldEffectArguments[1], 8, 8);
 
     sCurrentSurfMon = GetSurfablePokemonSprite();
-    if (sCurrentSurfMon != 0xFFFF)
+    if ((sCurrentSurfMon != 0xFFFF) && !(gSaveBlock2Ptr->optionsSurfOverworld))
     {
         LoadSurfOverworldPalette(isShiny);
 
@@ -100,7 +100,7 @@ u32 CreateSurfablePokemonSprite(void)
     }
     else
     { // Create surf blob
-        LoadObjectEventPalette(FLDEFFOBJ_SURF_BLOB);
+        LoadObjectEventPalette(FLDEFF_PAL_TAG_MAY);
         spriteId = CreateSpriteAtEnd(gFieldEffectObjectTemplatePointers[FLDEFFOBJ_SURF_BLOB], gFieldEffectArguments[0], gFieldEffectArguments[1], 0x96);
     }
 
