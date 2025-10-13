@@ -2128,7 +2128,9 @@ static void Cmd_adjustnormaldamage(void)
     && (gBattleMons[gBattlerTarget].maxHP == gBattleMons[gBattlerTarget].hp) 
     && (gSaveBlock1Ptr->tx_Mode_Sturdy == 1))
     {
-        if ((gBattleMoves[gCurrentMove].effect == EFFECT_DOUBLE_HIT))
+        if ((gBattleMoves[gCurrentMove].effect == EFFECT_DOUBLE_HIT) || 
+            (gBattleMoves[gCurrentMove].effect == EFFECT_MULTI_HIT) || 
+            (gBattleMoves[gCurrentMove].effect == EFFECT_TRIPLE_KICK))
             gProtectStructs[gBattlerTarget].endured = 0;
         else
             gProtectStructs[gBattlerTarget].endured = 1;
@@ -2180,7 +2182,9 @@ static void Cmd_adjustnormaldamage2(void)
     && (gBattleMons[gBattlerTarget].maxHP == gBattleMons[gBattlerTarget].hp) 
     && (gSaveBlock1Ptr->tx_Mode_Sturdy == 1))
     {
-        if ((gBattleMoves[gCurrentMove].effect == EFFECT_DOUBLE_HIT))
+        if ((gBattleMoves[gCurrentMove].effect == EFFECT_DOUBLE_HIT) || 
+            (gBattleMoves[gCurrentMove].effect == EFFECT_MULTI_HIT) || 
+            (gBattleMoves[gCurrentMove].effect == EFFECT_TRIPLE_KICK))
             gProtectStructs[gBattlerTarget].endured = 0;
         else
             gProtectStructs[gBattlerTarget].endured = 1;
@@ -6655,7 +6659,9 @@ static void Cmd_adjustsetdamage(void)
     && (gBattleMons[gBattlerTarget].maxHP == gBattleMons[gBattlerTarget].hp) 
     && (gSaveBlock1Ptr->tx_Mode_Sturdy == 1))
     {
-        if ((gBattleMoves[gCurrentMove].effect == EFFECT_DOUBLE_HIT))
+        if ((gBattleMoves[gCurrentMove].effect == EFFECT_DOUBLE_HIT) || 
+            (gBattleMoves[gCurrentMove].effect == EFFECT_MULTI_HIT) || 
+            (gBattleMoves[gCurrentMove].effect == EFFECT_TRIPLE_KICK))
             gProtectStructs[gBattlerTarget].endured = 0;
         else
             gProtectStructs[gBattlerTarget].endured = 1;
