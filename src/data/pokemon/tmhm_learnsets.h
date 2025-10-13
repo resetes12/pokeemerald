@@ -7430,6 +7430,7 @@ const union {
         .THIEF = TRUE,
         .STEEL_WING = TRUE,
         .FLY = TRUE,
+        .SURF = TRUE,
     } },
 
     [SPECIES_PELIPPER] = { .learnset = {
@@ -7478,6 +7479,7 @@ const union {
         .ATTRACT = TRUE,
         .THIEF = TRUE,
         .FLASH = TRUE,
+        .SURF = TRUE,
     } },
 
     [SPECIES_MASQUERAIN] = { .learnset = {
@@ -7503,6 +7505,7 @@ const union {
         .ATTRACT = TRUE,
         .THIEF = TRUE,
         .FLASH = TRUE,
+        .SURF = TRUE,
     } },
 
     [SPECIES_WAILMER] = { .learnset = {
@@ -9300,6 +9303,7 @@ const union {
         .THIEF = TRUE,
         .STRENGTH = TRUE,
         .ROCK_SMASH = TRUE,
+        .SURF = TRUE,
     } },
 
     [SPECIES_RELICANTH] = { .learnset = {
