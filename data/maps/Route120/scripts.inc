@@ -331,7 +331,12 @@ Route120_EventScript_Jennifer::
 
 Route120_EventScript_Chip::
 	trainerbattle_single TRAINER_CHIP, Route120_Text_ChipIntro, Route120_Text_ChipDefeat
+	goto_if_set FLAG_REGI_DOORS_OPENED, Route120_RegiDoorsOpened
 	msgbox Route120_Text_ChipPostBattle, MSGBOX_AUTOCLOSE
+	end
+
+Route120_RegiDoorsOpened::
+	msgbox Route120_Text_RegiDoorsOpened, MSGBOX_AUTOCLOSE
 	end
 
 Route120_EventScript_Clarissa::
@@ -432,3 +437,7 @@ Route120_Text_RouteSignFortree:
 Route120_Text_RouteSign121:
 	.string "{RIGHT_ARROW} ROUTE 121\n"
 	.string "{LEFT_ARROW} ROUTE 120$"
+
+Route120_Text_RegiDoorsOpened:
+	.string "That giant rock… Has an entrance!\n"
+	.string "But now I'm too scared to go in...$"
