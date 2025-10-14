@@ -53,7 +53,20 @@ BattleFrontier_Lounge9_EV_HP_Yes::
 	clearflag FLAG_NO_SHINY
 	release
 	end
-	
+
+BattleFrontier_Lounge9_EventScript_Wailord::
+	lock
+	faceplayer
+	waitse
+	playmoncry SPECIES_WAILORD, CRY_MODE_NORMAL
+	msgbox BattleFrontier_Lounge9_EventScript_Wailord_Text, MSGBOX_DEFAULT
+	waitmoncry
+	release
+	end
+
+BattleFrontier_Lounge9_EventScript_Wailord_Text:
+	.string "WAILORD: Woooooh!$"
+
 BattleFrontier_Lounge9_EV_ATK::
 	lock
 	faceplayer
@@ -76,6 +89,19 @@ BattleFrontier_Lounge9_EV_ATK_Yes::
 	clearflag FLAG_NO_SHINY
 	release
 	end
+
+BattleFrontier_Lounge9_EventScript_Gallade::
+	lock
+	faceplayer
+	waitse
+	playmoncry SPECIES_GALLADE, CRY_MODE_NORMAL
+	msgbox BattleFrontier_Lounge9_EventScript_Gallade_Text, MSGBOX_DEFAULT
+	waitmoncry
+	release
+	end
+
+BattleFrontier_Lounge9_EventScript_Gallade_Text:
+	.string "GALLADE: Gall!$"
 
 BattleFrontier_Lounge9_EV_SATK::
 	lock
@@ -100,6 +126,19 @@ BattleFrontier_Lounge9_EV_SATK_Yes::
 	release
 	end
 
+BattleFrontier_Lounge9_EventScript_Gardevoir::
+	lock
+	faceplayer
+	waitse
+	playmoncry SPECIES_GARDEVOIR, CRY_MODE_NORMAL
+	msgbox BattleFrontier_Lounge9_EventScript_Gardevoir_Text, MSGBOX_DEFAULT
+	waitmoncry
+	release
+	end
+
+BattleFrontier_Lounge9_EventScript_Gardevoir_Text:
+	.string "GARDEVOIR: Gar, gar!$"
+
 BattleFrontier_Lounge9_EV_DEF::
 	lock
 	faceplayer
@@ -122,6 +161,19 @@ BattleFrontier_Lounge9_EV_DEF_Yes::
 	clearflag FLAG_NO_SHINY
 	release
 	end
+
+BattleFrontier_Lounge9_EventScript_Aggron::
+	lock
+	faceplayer
+	waitse
+	playmoncry SPECIES_AGGRON, CRY_MODE_NORMAL
+	msgbox BattleFrontier_Lounge9_EventScript_Aggron_Text, MSGBOX_DEFAULT
+	waitmoncry
+	release
+	end
+
+BattleFrontier_Lounge9_EventScript_Aggron_Text:
+	.string "AGGRON: Raah!$"
 
 BattleFrontier_Lounge9_EV_SDEF::
 	lock
@@ -146,6 +198,19 @@ BattleFrontier_Lounge9_EV_SDEF_Yes::
 	release
 	end
 
+BattleFrontier_Lounge9_EventScript_Ludicolo::
+	lock
+	faceplayer
+	waitse
+	playmoncry SPECIES_LUDICOLO, CRY_MODE_NORMAL
+	msgbox BattleFrontier_Lounge9_EventScript_Ludicolo_Text, MSGBOX_DEFAULT
+	waitmoncry
+	release
+	end
+
+BattleFrontier_Lounge9_EventScript_Ludicolo_Text:
+	.string "LUDICOLO: Cha, cha!$"
+
 BattleFrontier_Lounge9_EV_SPD::
 	lock
 	faceplayer
@@ -168,6 +233,19 @@ BattleFrontier_Lounge9_EV_SPD_Yes::
 	clearflag FLAG_NO_SHINY
 	release
 	end
+
+BattleFrontier_Lounge9_EventScript_Sceptile::
+	lock
+	faceplayer
+	waitse
+	playmoncry SPECIES_SCEPTILE, CRY_MODE_NORMAL
+	msgbox BattleFrontier_Lounge9_EventScript_Sceptile_Text, MSGBOX_DEFAULT
+	waitmoncry
+	release
+	end
+
+BattleFrontier_Lounge9_EventScript_Sceptile_Text:
+	.string "SCEPTILE: Scep... tile!$"
 
 BattleFrontier_Lounge9_EV_HP_TEXT:
 	.string "Hi ya buddy! I can train your\n"
@@ -357,10 +435,10 @@ BattleFrontier_Lounge9_EV_SetZeroProceed::
 
 BattleFrontier_Lounge9_EV_SetZeroText:
     .string "Greetings, trainer. My name is EVAN,\n"
-    .string "though I am commonly referred to as\n"
+    .string "though I am commonly referred to as\l"
     .string "EV-MAN.\p"
     .string "I am the owner of this facility,\n"
-    .string "where I conduct training alongside my\n"
+    .string "where I conduct training alongside my\l"
     .string "brother, IVAN.\p"
     .string "Should you wish to reset a POKéMON's\n"
     .string "EVs entirely, please speak to me.$"

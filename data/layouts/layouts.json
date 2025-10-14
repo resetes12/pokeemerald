@@ -4294,7 +4294,7 @@
     {
       "id": "LAYOUT_BATTLE_FRONTIER_LOUNGE2",
       "name": "BattleFrontier_Lounge2_Layout",
-      "width": 26,
+      "width": 30,
       "height": 10,
       "primary_tileset": "gTileset_Building",
       "secondary_tileset": "gTileset_DewfordGym",
