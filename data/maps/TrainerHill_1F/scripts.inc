@@ -6,6 +6,7 @@ TrainerHill_1F_MapScripts::
 	.byte 0
 
 TrainerHill1F_OnLoad::
+	setflag FLAG_TEMP_HIDE_FOLLOWER
 	setflag FLAG_LIMIT_TO_50
 	calculatemonstats
 	end
