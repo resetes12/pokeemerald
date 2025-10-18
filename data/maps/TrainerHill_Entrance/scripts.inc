@@ -14,6 +14,7 @@ TrainerHill_Entrance_MapScripts::
 TrainerHill_Entrance_OnTransition:
 	clearflag FLAG_LIMIT_TO_50
 	calculatemonstats
+	setflag FLAG_TEMP_HIDE_FOLLOWER
 	setflag FLAG_LANDMARK_TRAINER_HILL
 	getplayerxy VAR_TEMP_D, VAR_RESULT
 	end
@@ -98,7 +99,6 @@ TrainerHill_Entrance_EventScript_PlayerExitChallenge::
 	waitmovement 0
 	setvar VAR_TRAINER_HILL_IS_ACTIVE, 0
 	special HealPlayerParty
-	callnative UpdateFollowingPokemon
 	releaseall
 TrainerHill_Entrance_EventScript_EndExitChallenge::
 	end
