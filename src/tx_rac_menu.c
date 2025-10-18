@@ -820,7 +820,7 @@ static const u8 sText_Description_Features_Pkmn_Death_Off[]           = _("{PKMN
 static const u8 sText_Description_Features_Unlimited_WT_On[]          = _("Enables a daily limit of 3\nWonderTrades. Recommended.");
 static const u8 sText_Description_Features_Unlimited_WT_Off[]         = _("WonderTrades have no daily limit.");
 static const u8 sText_Description_Features_FrontierBans_Unban[]       = _("All legendaries are allowed to\nparticipate in the BATTLE FRONTIER.");
-static const u8 sText_Description_Features_FrontierBans_Ban[]         = _("According to the chosen difficulty,\nsome lengendaries are banned in BF.");
+static const u8 sText_Description_Features_FrontierBans_Ban[]         = _("According to the chosen difficulty,\nsome legendaries are banned in BF.");
 
 static const u8 sText_Description_Features_Next[]                     = _("Continue to Randomizer options.");
 
