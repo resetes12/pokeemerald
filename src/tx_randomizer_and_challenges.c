@@ -270,6 +270,7 @@ void NuzlockeDeleteFaintedPartyPokemon(void) // @Kurausukun
     u8 i;
     struct Pokemon *pokemon;
     u32 monItem;
+    u16 item = ITEM_NONE;
 
     for (i = 0; i < PARTY_SIZE; i++)
     {
@@ -283,7 +284,7 @@ void NuzlockeDeleteFaintedPartyPokemon(void) // @Kurausukun
                 if (monItem != ITEM_NONE)
                 {
                     AddBagItem(monItem, 1);
-                    SetMonData(pokemon, MON_DATA_HELD_ITEM, ITEM_NONE);
+                    SetMonData(pokemon, MON_DATA_HELD_ITEM, &item);
                 }
                 if ((gSaveBlock1Ptr->tx_Features_PkmnDeath) && (!IsNuzlockeActive()))
                     NuzlockeDeletePartyMonOption(i);
