@@ -1372,7 +1372,7 @@ static void CreateShinyStarObj(u16 tileTag, u16 palTag)
 
     // Position: bottom-left, just below the Poké Ball (ball is at 16,136 in your file).
     // Tweak a couple pixels if you want it tighter/looser.
-    u8 spriteId = CreateSprite(&tmpl, 68, 37, 0); //HnS Shiny star location
+    u8 spriteId = CreateSprite(&tmpl, 12, 37, 0); //HnS Shiny star location
     sShinyStarObjData->sprite = &gSprites[spriteId];
     sShinyStarObjData->tileTag = tileTag;
     sShinyStarObjData->palTag  = palTag;
@@ -1410,7 +1410,7 @@ static void HideShowShinyStar(bool8 invisible)
 
     // Keep it anchored bottom-left. If you later add a page with a different layout,
     // you can branch here like FR and move the icon.
-    sShinyStarObjData->sprite->x = 68;
+    sShinyStarObjData->sprite->x = 12;
     sShinyStarObjData->sprite->y = 37;//HnS Shiny star location
 }
 
