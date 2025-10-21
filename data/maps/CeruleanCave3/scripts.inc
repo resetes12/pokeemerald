@@ -4,6 +4,7 @@ CeruleanCave3_MapScripts::
 	.byte 0
 
 CeruleanCave3_OnResume:
+	callnative ChangeEncounterTable
 	call_if_set FLAG_SYS_CTRL_OBJ_DELETE, CeruleanCave3_EventScript_TryRemoveMewtwo
 	end
 
@@ -14,6 +15,7 @@ CeruleanCave3_EventScript_TryRemoveMewtwo::
 	return
 
 CeruleanCave3_OnTransition:
+	callnative ChangeEncounterTable
 	call_if_unset FLAG_UNLOCK_MEWTWO, CeruleanCave3_EventScript_HideMewtwo
 	call_if_unset FLAG_DEFEATED_MEWTWO, CeruleanCave3_EventScript_ShowMewtwo
 	end
