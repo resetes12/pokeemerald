@@ -538,7 +538,7 @@ const u8 gTypeEffectiveness[351] =
     TYPE_ENDTABLE, TYPE_ENDTABLE, TYPE_MUL_NO_EFFECT
 };
 
-const u8 gTypeEffectiveness_Old[366] = //Original Type match up, but with fairy type added AND Steel doesn't resist ghost / dark
+const u8 gTypeEffectiveness_Old[366] = //Gen 6 type matchup, with fairy type added AND Steel not resisting Ghost or Dark
 {
     TYPE_NORMAL, TYPE_ROCK, TYPE_MUL_NOT_EFFECTIVE,
     TYPE_NORMAL, TYPE_STEEL, TYPE_MUL_NOT_EFFECTIVE,
