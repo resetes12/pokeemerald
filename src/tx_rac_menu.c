@@ -204,7 +204,7 @@ static const struct BgTemplate sOptionMenuBgTemplates[] =
 
 struct OptionMenu
 {
-    u16 submenu;
+    u8 submenu;
     u8 sel_mode[MENUITEM_MODE_COUNT];
     u8 sel_features[MENUITEM_FEATURES_COUNT];
     u8 sel_randomizer[MENUITEM_RANDOM_COUNT];
@@ -774,8 +774,8 @@ static const u8 sText_Description_Mode_New_Stats_Off[]            = _("Original 
 static const u8 sText_Description_Mode_New_Stats_On[]             = _("Modified stats to make certain\n{PKMN} more viable.");
 static const u8 sText_Description_Mode_Sturdy_Off[]               = _("STURDY works as in GEN III. Only\nnegates OHKO moves (GUILLOTINE, etc.)");
 static const u8 sText_Description_Mode_Sturdy_On[]                = _("STURDY works as in GEN V+.\n{PKMN} survive lethal hits with 1HP.");
-static const u8 sText_Description_Mode_Modern_Moves_Off[]         = _("No new MOVES, and original MOVEPOOL\nfor all {PKMN} + new EGG and TUTOR MOVES.");
-static const u8 sText_Description_Mode_Modern_Moves_On[]          = _("13 new MOVES, and improved MOVEPOOL\nfor all {PKMN} + new EGG and TUTOR MOVES.");
+static const u8 sText_Description_Mode_Modern_Moves_Off[]         = _("No new MOVES, original MOVEPOOL for\nall {PKMN}, except TUTOR MOVES.");
+static const u8 sText_Description_Mode_Modern_Moves_On[]          = _("13 new MOVES, and new MOVEPOOL for\nall {PKMN} + new EGG, TUTOR, and TM moves.");
 static const u8 sText_Description_Mode_Leg_Abilities_Off[]        = _("PRESSURE stays as the main\nability of some legendaries.");
 static const u8 sText_Description_Mode_Leg_Abilities_On[]         = _("Legendaries have PRESSURE changed\nfor a better ability.");
 static const u8 sText_Description_Mode_New_Legendaries_Off[]      = _("No extra legendaries are added.");

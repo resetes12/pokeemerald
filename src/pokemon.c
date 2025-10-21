@@ -10113,67 +10113,137 @@ bool8 TryIncrementMonLevel(struct Pokemon *mon)
 
 u32 CanMonLearnTMHM(struct Pokemon *mon, u8 tm)
 {
-    u16 species = GetMonData(mon, MON_DATA_SPECIES_OR_EGG, 0);
-    //tx_randomizer_and_challenges
-    if (gSaveBlock1Ptr->tx_Random_Moves)
-        species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_MOVES, 0);
-
-    if (species == SPECIES_EGG)
+    if (gSaveBlock1Ptr->tx_Mode_Modern_Moves == 0)
     {
-        return 0;
-    }
+        u16 species = GetMonData(mon, MON_DATA_SPECIES_OR_EGG, 0);
+        //tx_randomizer_and_challenges
+        if (gSaveBlock1Ptr->tx_Random_Moves)
+            species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_MOVES, 0);
 
-    // Fewer than 64 moves, use GF's method (for matching).
-    if (sizeof(struct TMHMLearnset) <= 8)
-    {
-        if (tm < 32)
+        if (species == SPECIES_EGG)
         {
-            u32 mask = 1 << tm;
-            return gTMHMLearnsets[species].as_u32s[0] & mask;
+            return 0;
+        }
+
+        // Fewer than 64 moves, use GF's method (for matching).
+        if (sizeof(struct TMHMLearnset) <= 8)
+        {
+            if (tm < 32)
+            {
+                u32 mask = 1 << tm;
+                return gTMHMLearnsets_Old[species].as_u32s[0] & mask;
+            }
+            else
+            {
+                u32 mask = 1 << (tm - 32);
+                return gTMHMLearnsets_Old[species].as_u32s[1] & mask;
+            }
         }
         else
         {
-            u32 mask = 1 << (tm - 32);
-            return gTMHMLearnsets[species].as_u32s[1] & mask;
+            u32 index = tm / 32;
+            u32 mask = 1 << (tm % 32);
+            return gTMHMLearnsets_Old[species].as_u32s[index] & mask;
         }
     }
-    else
+    else if (gSaveBlock1Ptr->tx_Mode_Modern_Moves == 1)
     {
-        u32 index = tm / 32;
-        u32 mask = 1 << (tm % 32);
-        return gTMHMLearnsets[species].as_u32s[index] & mask;
+        u16 species = GetMonData(mon, MON_DATA_SPECIES_OR_EGG, 0);
+        //tx_randomizer_and_challenges
+        if (gSaveBlock1Ptr->tx_Random_Moves)
+            species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_MOVES, 0);
+
+        if (species == SPECIES_EGG)
+        {
+            return 0;
+        }
+
+        // Fewer than 64 moves, use GF's method (for matching).
+        if (sizeof(struct TMHMLearnset) <= 8)
+        {
+            if (tm < 32)
+            {
+                u32 mask = 1 << tm;
+                return gTMHMLearnsets[species].as_u32s[0] & mask;
+            }
+            else
+            {
+                u32 mask = 1 << (tm - 32);
+                return gTMHMLearnsets[species].as_u32s[1] & mask;
+            }
+        }
+        else
+        {
+            u32 index = tm / 32;
+            u32 mask = 1 << (tm % 32);
+            return gTMHMLearnsets[species].as_u32s[index] & mask;
+        }
     }
 }
 
 u32 CanSpeciesLearnTMHM(u16 species, u8 tm)
 {
-    //tx_randomizer_and_challenges
-    if (gSaveBlock1Ptr->tx_Random_Moves)
-        species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_MOVES, 0);
+    if (gSaveBlock1Ptr->tx_Mode_Modern_Moves == 0)
+    {
+        //tx_randomizer_and_challenges
+        if (gSaveBlock1Ptr->tx_Random_Moves)
+            species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_MOVES, 0);
 
-    if (species == SPECIES_EGG)
-    {
-        return 0;
-    }
-    // Fewer than 64 moves, use GF's method (for matching).
-    if (sizeof(struct TMHMLearnset) <= 8)
-    {
-        if (tm < 32)
+        if (species == SPECIES_EGG)
         {
-            u32 mask = 1 << tm;
-            return gTMHMLearnsets[species].as_u32s[0] & mask;
+            return 0;
+        }
+        // Fewer than 64 moves, use GF's method (for matching).
+        if (sizeof(struct TMHMLearnset) <= 8)
+        {
+            if (tm < 32)
+            {
+                u32 mask = 1 << tm;
+                return gTMHMLearnsets_Old[species].as_u32s[0] & mask;
+            }
+            else
+            {
+                u32 mask = 1 << (tm - 32);
+                return gTMHMLearnsets_Old[species].as_u32s[1] & mask;
+            }
         }
         else
         {
-            u32 mask = 1 << (tm - 32);
-            return gTMHMLearnsets[species].as_u32s[1] & mask;
+            u32 index = tm / 32;
+            u32 mask = 1 << (tm % 32);
+            return gTMHMLearnsets_Old[species].as_u32s[index] & mask;
         }
     }
-    else
+    else if (gSaveBlock1Ptr->tx_Mode_Modern_Moves == 1)
     {
-        u32 index = tm / 32;
-        u32 mask = 1 << (tm % 32);
-        return gTMHMLearnsets[species].as_u32s[index] & mask;
+        //tx_randomizer_and_challenges
+        if (gSaveBlock1Ptr->tx_Random_Moves)
+            species = GetSpeciesRandomSeeded(species, TX_RANDOM_T_MOVES, 0);
+
+        if (species == SPECIES_EGG)
+        {
+            return 0;
+        }
+        // Fewer than 64 moves, use GF's method (for matching).
+        if (sizeof(struct TMHMLearnset) <= 8)
+        {
+            if (tm < 32)
+            {
+                u32 mask = 1 << tm;
+                return gTMHMLearnsets[species].as_u32s[0] & mask;
+            }
+            else
+            {
+                u32 mask = 1 << (tm - 32);
+                return gTMHMLearnsets[species].as_u32s[1] & mask;
+            }
+        }
+        else
+        {
+            u32 index = tm / 32;
+            u32 mask = 1 << (tm % 32);
+            return gTMHMLearnsets[species].as_u32s[index] & mask;
+        }
     }
 }
 
