@@ -6416,6 +6416,8 @@ static void PlaceMon(void)
         break;
     case CURSOR_AREA_IN_BOX:
         boxId = StorageGetCurrentBox();
+        if (((gSaveBlock1Ptr->tx_Challenges_PkmnCenter) == 1) || ((gSaveBlock1Ptr->tx_Challenges_PCHeal) == 1))
+            InitSummaryScreenData();
         SetPlacedMonData(boxId, sCursorPosition);
         SetPlacedMonSprite(boxId, sCursorPosition);
         break;
@@ -6522,8 +6524,6 @@ static void SetPlacedMonData(u8 boxId, u8 position)
                 SetMonData(&sStorage->movingMon, MON_DATA_HP, &hp);
                 SetMonData(&sStorage->movingMon, MON_DATA_STATUS, &status);
             }
-            else
-                MonRestorePP(&sStorage->movingMon);
             value = 0;
             SetBoxMonData(&sStorage->movingMon.box, MON_DATA_IN_PC, &value);
             SetBoxMonData(&sStorage->movingMon.box, MON_DATA_BOX_HP, &value);
@@ -6855,14 +6855,42 @@ static s8 RunCanReleaseMon(void)
 
 static void SaveMovingMon(void)
 {
+    u16 hp;
+    u32 status;
+    u8 value;
     if (sIsMonBeingMoved)
+    {
+        if (((gSaveBlock1Ptr->tx_Challenges_PkmnCenter) == 1) || ((gSaveBlock1Ptr->tx_Challenges_PCHeal) == 1))
+        {
+            if(GetMonData(&sStorage->movingMon, MON_DATA_IN_PC))
+            {
+                hp = GetHPFromBoxHP(&sStorage->movingMon);
+                status = GetStatusFromBoxStatus(&sStorage->movingMon);
+                SetMonData(&sStorage->movingMon, MON_DATA_HP, &hp);
+                SetMonData(&sStorage->movingMon, MON_DATA_STATUS, &status);
+            }
+        }
         sSavedMovingMon = sStorage->movingMon;
+    }
 }
 
 static void LoadSavedMovingMon(void)
 {
+    u32 hp;
+    u32 status;
+    u8 value;
     if (sIsMonBeingMoved)
     {
+        if (((gSaveBlock1Ptr->tx_Challenges_PkmnCenter) == 1) || ((gSaveBlock1Ptr->tx_Challenges_PCHeal) == 1))
+        {
+            if(GetMonData(&sStorage->movingMon, MON_DATA_IN_PC))
+            {
+                hp = GetHPFromBoxHP(&sStorage->movingMon);
+                status = GetStatusFromBoxStatus(&sStorage->movingMon);
+                SetMonData(&sStorage->movingMon, MON_DATA_HP, &hp);
+                SetMonData(&sStorage->movingMon, MON_DATA_STATUS, &status);
+            }
+        }
         // If it came from the party load a struct Pokemon,
         // otherwise load a BoxPokemon
         if (sMovingMonOrigBoxId == TOTAL_BOXES_COUNT)
@@ -6890,15 +6918,24 @@ static void InitSummaryScreenData(void)
                 SetMonData(sStorage->summaryMon.mon, MON_DATA_HP, &hp);
                 SetMonData(sStorage->summaryMon.mon, MON_DATA_STATUS, &status);
             }
-            else
-                MonRestorePP(sStorage->summaryMon.mon);
         }
         sStorage->summaryStartPos = 0;
         sStorage->summaryMaxPos = 0;
         sStorage->summaryScreenMode = SUMMARY_MODE_NORMAL;
     }
     else if (sCursorArea == CURSOR_AREA_IN_PARTY)
-    {
+    { 
+        if (((gSaveBlock1Ptr->tx_Challenges_PkmnCenter) == 1) || ((gSaveBlock1Ptr->tx_Challenges_PCHeal) == 1))
+        {
+            if (GetMonData(&sStorage->movingMon, MON_DATA_IN_PC) && sMovingMonOrigBoxId != TOTAL_BOXES_COUNT)
+            // If it did not come from the party
+            {
+                hp = GetHPFromBoxHP(&sStorage->movingMon);
+                status = GetStatusFromBoxStatus(&sStorage->movingMon);
+                SetMonData(sStorage->summaryMon.mon, MON_DATA_HP, &hp);
+                SetMonData(sStorage->summaryMon.mon, MON_DATA_STATUS, &status);
+            }
+        }
         sStorage->summaryMon.mon = gPlayerParty;
         sStorage->summaryStartPos = sCursorPosition;
         sStorage->summaryMaxPos = CountPartyMons() - 1;
@@ -6906,6 +6943,17 @@ static void InitSummaryScreenData(void)
     }
     else
     {
+        if (((gSaveBlock1Ptr->tx_Challenges_PkmnCenter) == 1) || ((gSaveBlock1Ptr->tx_Challenges_PCHeal) == 1))
+        {
+            if (GetMonData(&sStorage->movingMon, MON_DATA_IN_PC) && sMovingMonOrigBoxId != TOTAL_BOXES_COUNT)
+            // If it did not come from the party
+            {
+                hp = GetHPFromBoxHP(&sStorage->movingMon);
+                status = GetStatusFromBoxStatus(&sStorage->movingMon);
+                SetMonData(sStorage->summaryMon.mon, MON_DATA_HP, &hp);
+                SetMonData(sStorage->summaryMon.mon, MON_DATA_STATUS, &status);
+            }
+        }
         sStorage->summaryMon.box = GetBoxedMonPtr(StorageGetCurrentBox(), 0);
         sStorage->summaryStartPos = sCursorPosition;
         sStorage->summaryMaxPos = IN_BOX_COUNT - 1;

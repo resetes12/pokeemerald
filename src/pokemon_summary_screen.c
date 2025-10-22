@@ -1723,8 +1723,6 @@ static void CopyMonToSummaryStruct(struct Pokemon *mon)
                 SetMonData(mon, MON_DATA_HP, &hp);
                 SetMonData(mon, MON_DATA_STATUS, &status);
             }
-            else
-                MonRestorePP(mon);
         }
     }
 }
