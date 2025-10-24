@@ -2906,6 +2906,8 @@ static const struct SpriteFrameImage sPicTable_Krabby[] = {
     overworld_frame(gObjectEventPic_Krabby, 4, 4, 3),
     overworld_frame(gObjectEventPic_Krabby, 4, 4, 4),
     overworld_frame(gObjectEventPic_Krabby, 4, 4, 5),
+    overworld_frame(gObjectEventPic_Krabby, 4, 4, 6),
+    overworld_frame(gObjectEventPic_Krabby, 4, 4, 7),
 };
 static const struct SpriteFrameImage sPicTable_Kingler[] = {
     overworld_frame(gObjectEventPic_Kingler, 4, 4, 0),
@@ -4860,6 +4862,8 @@ static const struct SpriteFrameImage sPicTable_Roselia[] = {
     overworld_frame(gObjectEventPic_Roselia, 4, 4, 3),
     overworld_frame(gObjectEventPic_Roselia, 4, 4, 4),
     overworld_frame(gObjectEventPic_Roselia, 4, 4, 5),
+    overworld_frame(gObjectEventPic_Roselia, 4, 4, 6),
+    overworld_frame(gObjectEventPic_Roselia, 4, 4, 7),
 };
 static const struct SpriteFrameImage sPicTable_Gulpin[] = {
     overworld_frame(gObjectEventPic_Gulpin, 4, 4, 0),
