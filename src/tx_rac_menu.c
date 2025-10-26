@@ -895,7 +895,7 @@ static const u8 *const sOptionMenuItemDescriptionsRandomizer[MENUITEM_RANDOM_COU
 };
 
 static const u8 sText_Description_Nuzlocke_Base[]               = _("Nuzlocke mode is disabled.");
-static const u8 sText_Description_Nuzlocke_Easy[]               = _("Fainted {PKMN} can't be used anymore!\nNo more rules are enfored.");
+static const u8 sText_Description_Nuzlocke_Easy[]               = _("Fainted {PKMN} can't be used anymore!\nNo more rules are enforced.");
 static const u8 sText_Description_Nuzlocke_Normal[]             = _("One catch per route! Fainted POKéMON\ncan't be used anymore.");
 static const u8 sText_Description_Nuzlocke_Hard[]               = _("Same rules as NORMAL but also\n{COLOR 7}{COLOR 8}deletes SAVE on battle loss!");
 static const u8 sText_Description_Nuzlocke_SpeciesClause_Off[]  = _("The player always has to catch the\nfirst POKéMON per route.");
