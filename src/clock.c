@@ -54,6 +54,11 @@ static void UpdatePerDay(struct Time *localTime)
         SetRandomLotteryNumber(daysSince);
         *days = localTime->days;
     }
+    else 
+    {
+        // Clock moved backward resync baseline;
+        *days = localTime->days;
+    }
 }
 
 static void UpdatePerMinute(struct Time *localTime)
