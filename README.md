@@ -35,7 +35,7 @@ Gamemode page:
 * Better Stats: Some Pokémon have their stats changed to buff them (Check docs).
 * Extra Legendaries: Adds new legendaries that weren't available in vanilla Emerald. Check docs for the location, or explore by yourself!
 * Legendary abilities: Buffs some legendaries giving them a better ability than "Pressure".
-* Modern Movepool: Adds 15 new moves, and modifies all Pokémon movepool to add them.
+* Modern Movepool: Adds 15 new moves, and modifies all Pokémon movepool to add them. TM/HMs and egg moves are also modified.
 * Type chart: The type effectiveness has been slightly balanced to slightly power up less useful types. 
     - Dark and Ghost do 1x to Steel
     - Water does 0.5x damage to Ice
@@ -57,7 +57,6 @@ Features page:
 * RTC Type: Choose between using a real clock, or using a fake clock. Fake clock rate is 1h irl, 1 day ingame.
 * Shiny Chance: 8192 (Emerald default) - 4096 (Gen VI+) - 2048 - 1024 - 512.
 * Item Drops: Items held by wild Pokémon, when defeated, will be dropped and obtained by the player. Forget about catching it or using Thief!
-* Permanent Fainting: Like a mini-Nuzlocke, without enforcing rules! Your Pokémon will stay in the FAINTED status, meaning that you can't use them again. Getting to zero Pokémon on the party or PC will make the game Soft-Reset, allowing loading the previous save.
 * Uncapped wondertrade: No 3-daily limit.
 * Easier Feebas: If enabled, Feebas have a 5% chance to appear around the whole Route 119.
 * Frontier bans: Decide if you want legendaries banned or not in Battle Frontier. If enabled, remember that the bans depend on your chosen difficulty!
@@ -67,7 +66,7 @@ Randomizer page:
   For technical reasons, some special or particular Pokémon might not be randomized. 
 
 Nuzlocke page:
-* Any option that any Nuzlocker would want to use.
+* Any option that any Nuzlocker would want to use. Includes EASY, NORMAL, and a HARDCORE mode, plus many options.
 
 Difficulty page:
 * Lock difficulty: locks the current select option that was selected during Birch's Speech and can't be changed in-game. Hard sets "Battle Style" to "Set" always. Beating the game disables the lock.
@@ -115,13 +114,12 @@ Challenges page:
 * Birch's bag can show shiny starters!
 * All the buffs from later generations are in _(Optional)_.
 * Extra buffs for other Pokémon are in. Includes stats, abilities and/or typings. (Ex. Arbok is now POISON / DARK and Meganium is now GRASS / FAIRY) _(Optional)_.
-* Pokémon have new learnsets, which are a mix from Gen 3 and newer generations_(Optional)_.
+* Pokémon have new learnsets, which are a mix from Gen 3 and newer generations _(Optional)_.
 * All Egg moves and tutor moves have been improved with data from later generations, plus some extra ones.
 * New evolution methods.
 * Pokémon inherit 5 IV's from their parents, no item is needed.
 * Everstone works on male or female Pokémon and guarantees nature.
 * Gen. VIII Synchronize _(Optional)_.
-* Kanto fossils are available in Mewtwo's cave (Only available if you have "Extra legendaries" enabled, and affects all Encounter modes).
 * Shuckle can make berry juice just like in Gen. II!! Yay?
 * Nature Mints are available to buy in the Flower Shop after the 4th Gym _(Optional)_, or after becoming champion if not enabled from the start.
 * Deoxys forms can be changed at Birth Island, using the meteorites.
@@ -172,7 +170,7 @@ Challenges page:
 * When the bag is full, items go to the PC.
 * You can change the ball your Pokémon is in using a different ball from the bag.
 * Reusable repel prompt.
-* The time on the clock can be changed (Not recommended, has to be done from the Main Menu).
+* The time on the clock can be changed by pressing R, and time events should work. Can be also changed the official way by pressing R+B+LEFT on the main menu.
 * Three pages with additional options in the options menu.
 * New friendship and shiny indicator in the Summary Page of every Pokémon (ported from Heart and Soul)
 * Debug menu can be enabled by everybody, so you can cheat or modify whatever you want. **BE MINDFUL THAT IT CAN BREAK YOUR SAVE IF USED INCORRECTLY!** Refer to the Faq to learn how.
@@ -222,7 +220,7 @@ Challenges page:
 * PokéMarts' items change with every badge.
 * AI improvements, although nothing too drastic.
 * Amulet coin works always, doesn't matter who has it.
-* New NPC in the Battle Frontier Pokécenter that lets you turn off some enabled challenges from your savegame (EvoLimit, Mirror, Mirror Thief, Limit Difficulty, Pokémon Faint, One Type challenge, Party Limit, PokeCenter Challenge, No Items (Player), No Items (Trainer))
+* New NPC in the Battle Frontier Pokécenter that lets you turn off some enabled challenges from your savegame (EvoLimit, Mirror, Mirror Thief, Limit Difficulty, One Type challenge, Party Limit, PokeCenter Challenge, No Items (Player), No Items (Trainer))
 
 **Map related:**
 * Navel Rock is now a proper dungeon.
