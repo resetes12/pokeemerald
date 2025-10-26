@@ -543,7 +543,7 @@ void DisableChallengesAfterBeatingGameLimitDifficulty(void)
 
 void DisableChallengesAfterBeatingGamePkmnFaint(void)
 {
-    gSaveBlock1Ptr->tx_Features_PkmnDeath = 0;
+    gSaveBlock1Ptr->tx_Nuzlocke_EasyMode = 0;
 }
 
 void DisableChallengesAfterBeatingGameOneType(void)
@@ -573,9 +573,9 @@ void DisableChallengesAfterBeatingGamePkmCenterChallenge(void)
 
 void CheckNuzlockeMode(void)
 {
-    if (!gSaveBlock1Ptr->tx_Features_PkmnDeath)
+    if (!gSaveBlock1Ptr->tx_Nuzlocke_EasyMode)
         VarSet(VAR_UNUSED_0x40DB, 0);
-    else if (gSaveBlock1Ptr->tx_Features_PkmnDeath)
+    else if (gSaveBlock1Ptr->tx_Nuzlocke_EasyMode)
         VarSet(VAR_UNUSED_0x40DB, 1);
 
     if (!gSaveBlock1Ptr->tx_Challenges_Nuzlocke)

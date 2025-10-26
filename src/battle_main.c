@@ -5919,7 +5919,7 @@ static void HandleEndTurn_FinishBattle(void)
         {
             TryPutBreakingNewsOnAir();
         }
-        if ((gSaveBlock1Ptr->tx_Features_PkmnDeath) && (!IsNuzlockeActive()))
+        if ((gSaveBlock1Ptr->tx_Nuzlocke_EasyMode) && (!IsNuzlockeActive()))
         {
             if (!(gBattleTypeFlags &(BATTLE_TYPE_LINK
                                         | BATTLE_TYPE_LINK_IN_BATTLE

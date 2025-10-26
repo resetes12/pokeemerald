@@ -720,22 +720,22 @@ static bool8 CheckConditions(int selection)
         switch(selection)
         {
         case MENUITEM_NUZLOCKE_SPECIES_CLAUSE:
-            if ((gSaveBlock1Ptr->tx_Features_PkmnDeath) == 0)
+            if ((gSaveBlock1Ptr->tx_Nuzlocke_EasyMode) == 0)
                 return sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NUZLOCKE];
             else
                 return !sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NUZLOCKE];
         case MENUITEM_NUZLOCKE_SHINY_CLAUSE:
-            if ((gSaveBlock1Ptr->tx_Features_PkmnDeath) == 0)
+            if ((gSaveBlock1Ptr->tx_Nuzlocke_EasyMode) == 0)
                 return sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NUZLOCKE];
             else
                 return !sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NUZLOCKE];
         case MENUITEM_NUZLOCKE_NICKNAMING:
-            if ((gSaveBlock1Ptr->tx_Features_PkmnDeath) == 0)
+            if ((gSaveBlock1Ptr->tx_Nuzlocke_EasyMode) == 0)
                 return sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NUZLOCKE];
             else
                 return !sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NUZLOCKE];
         case MENUITEM_NUZLOCKE_DELETION:
-            if ((gSaveBlock1Ptr->tx_Features_PkmnDeath) == 0)
+            if ((gSaveBlock1Ptr->tx_Nuzlocke_EasyMode) == 0)
                 return sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NUZLOCKE];
             else
                 return !sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NUZLOCKE];
@@ -1460,7 +1460,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         gSaveBlock1Ptr->tx_Random_Chaos                     = TX_RANDOM_CHAOS_MODE;
         gSaveBlock1Ptr->tx_Challenges_LessEscapes           = TX_CHALLENGES_LESS_ESCAPES;
 
-        gSaveBlock1Ptr->tx_Features_PkmnDeath               = TX_NUZLOCKE_MINI_MODE;
+        gSaveBlock1Ptr->tx_Nuzlocke_EasyMode               = TX_NUZLOCKE_MINI_MODE;
         gSaveBlock1Ptr->tx_Challenges_Nuzlocke              = TX_NUZLOCKE_NUZLOCKE;
         gSaveBlock1Ptr->tx_Challenges_NuzlockeHardcore      = TX_NUZLOCKE_NUZLOCKE_HARDCORE;
         gSaveBlock1Ptr->tx_Nuzlocke_SpeciesClause           = TX_NUZLOCKE_SPECIES_CLAUSE;
@@ -1538,7 +1538,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
             sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NUZLOCKE] = 2;
         else if (gSaveBlock1Ptr->tx_Challenges_Nuzlocke)
             sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NUZLOCKE] = 1;
-        else if (gSaveBlock1Ptr->tx_Features_PkmnDeath)
+        else if (gSaveBlock1Ptr->tx_Nuzlocke_EasyMode)
             sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NUZLOCKE] = 0;
         else
             sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NUZLOCKE] = 0;
@@ -1908,22 +1908,22 @@ void SaveData_TxRandomizerAndChallenges(void)
     switch (sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NUZLOCKE])
     {
     case 0:
-        gSaveBlock1Ptr->tx_Features_PkmnDeath           = FALSE;
+        gSaveBlock1Ptr->tx_Nuzlocke_EasyMode           = FALSE;
         gSaveBlock1Ptr->tx_Challenges_Nuzlocke          = FALSE;
         gSaveBlock1Ptr->tx_Challenges_NuzlockeHardcore  = FALSE;
         break;
     case 1:
-        gSaveBlock1Ptr->tx_Features_PkmnDeath           = TRUE;
+        gSaveBlock1Ptr->tx_Nuzlocke_EasyMode           = TRUE;
         gSaveBlock1Ptr->tx_Challenges_Nuzlocke          = FALSE;
         gSaveBlock1Ptr->tx_Challenges_NuzlockeHardcore  = FALSE;
         break;
     case 2:
-        gSaveBlock1Ptr->tx_Features_PkmnDeath           = FALSE;
+        gSaveBlock1Ptr->tx_Nuzlocke_EasyMode           = FALSE;
         gSaveBlock1Ptr->tx_Challenges_Nuzlocke          = TRUE;
         gSaveBlock1Ptr->tx_Challenges_NuzlockeHardcore  = FALSE;
         break;
     case 3:
-        gSaveBlock1Ptr->tx_Features_PkmnDeath           = FALSE;
+        gSaveBlock1Ptr->tx_Nuzlocke_EasyMode           = FALSE;
         gSaveBlock1Ptr->tx_Challenges_Nuzlocke          = TRUE;
         gSaveBlock1Ptr->tx_Challenges_NuzlockeHardcore  = TRUE;
         break;
@@ -2450,7 +2450,7 @@ static void DrawChoices_Challenges_Nuzlocke(int selection, int y)
         sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_SHINY_CLAUSE]      = !TX_NUZLOCKE_SHINY_CLAUSE; 
         sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NICKNAMING]        = !TX_NUZLOCKE_NICKNAMING;
         sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_DELETION]          = TX_NUZLOCKE_DELETION;
-        gSaveBlock1Ptr->tx_Features_PkmnDeath = 0; //off
+        gSaveBlock1Ptr->tx_Nuzlocke_EasyMode = 0; //off
     }
     else if (selection == 1)
     {
@@ -2458,10 +2458,10 @@ static void DrawChoices_Challenges_Nuzlocke(int selection, int y)
         sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_SHINY_CLAUSE]      = !TX_NUZLOCKE_SHINY_CLAUSE; 
         sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_NICKNAMING]        = !TX_NUZLOCKE_NICKNAMING;
         sOptions->sel_nuzlocke[MENUITEM_NUZLOCKE_DELETION]          = TX_NUZLOCKE_DELETION;
-        gSaveBlock1Ptr->tx_Features_PkmnDeath = 1; //on
+        gSaveBlock1Ptr->tx_Nuzlocke_EasyMode = 1; //on
     }
     else
-        gSaveBlock1Ptr->tx_Features_PkmnDeath = 0; //off
+        gSaveBlock1Ptr->tx_Nuzlocke_EasyMode = 0; //off
     
 }
 

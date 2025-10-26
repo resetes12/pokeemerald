@@ -1153,7 +1153,7 @@ struct SaveBlock1
         u8 tx_Mode_InfiniteTMs:1;
         u8 tx_Mode_PoisonSurvive:1;
         u8 tx_Features_EasierFeebas:1;
-        u8 tx_Features_PkmnDeath:1;
+        u8 tx_Nuzlocke_EasyMode:1;
         u8 tx_Challenges_PCHeal:1;
         u8 tx_Features_RTCType:1;
         u8 tx_Mode_AlternateSpawns:1; //Unused
