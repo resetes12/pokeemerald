@@ -541,7 +541,8 @@ void DisableChallengesAfterBeatingGameLimitDifficulty(void)
     gSaveBlock1Ptr->tx_Features_LimitDifficulty = 0;
 }
 
-void DisableChallengesAfterBeatingGamePkmnFaint(void)
+//Unused
+void DisableChallengesAfterBeatingGameNuzlockeEasy(void)
 {
     gSaveBlock1Ptr->tx_Nuzlocke_EasyMode = 0;
 }
