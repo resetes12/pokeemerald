@@ -142,7 +142,26 @@ Debug_Script_3_SelectFrontierBanOption_Text:
 	.string "{COLOR RED}(YES has been always the default option)$"
 
 Debug_Script_4::
+	callnative CheckNuzlockeMode
+	buffernumberstring STR_VAR_1, VAR_UNUSED_0x40DB
+	msgbox Text_Easy_Mode, MSGBOX_DEFAULT
+	closemessage
+	buffernumberstring STR_VAR_1, VAR_UNUSED_0x40FE
+	msgbox Text_Normal_Mode, MSGBOX_DEFAULT
+	closemessage
+	buffernumberstring STR_VAR_1, VAR_UNUSED_0x40FF
+	msgbox Text_Hard_Mode, MSGBOX_DEFAULT
+	closemessage
 	end
+
+Text_Easy_Mode::
+	.string "Easy mode is {STR_VAR_1}$"
+
+Text_Normal_Mode::
+	.string "Normal mode is {STR_VAR_1}$"
+
+Text_Hard_Mode::
+	.string "Hard mode is {STR_VAR_1}$"
 
 Debug_Script_5::
 	end
