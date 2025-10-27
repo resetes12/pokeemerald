@@ -10552,7 +10552,7 @@ u16 GetBattleBGM(void)
             {
                 if((Random() % 3) == 1)
                     return MUS_DP_VS_GALACTIC_BOSS;
-                if((Random() % 3) == 2)
+                else if((Random() % 3) == 2)
                     return MUS_HG_VS_ROCKET;
                 else
                     return MUS_VS_AQUA_MAGMA_LEADER;
@@ -10574,7 +10574,7 @@ u16 GetBattleBGM(void)
             {
                 if((Random() % 3) == 1)
                     return MUS_DP_VS_GALACTIC;
-                if((Random() % 3) == 2)
+                else if((Random() % 3) == 2)
                     return MUS_HG_VS_ROCKET;
                 else
                     return MUS_VS_AQUA_MAGMA;
@@ -10596,7 +10596,7 @@ u16 GetBattleBGM(void)
             {
                 if((Random() % 3) == 1)
                     return MUS_DP_VS_GALACTIC_COMMANDER;
-                if((Random() % 3) == 2)
+                else if((Random() % 3) == 2)
                     return MUS_HG_VS_ROCKET;
                 else
                     return MUS_VS_AQUA_MAGMA;
@@ -10667,7 +10667,7 @@ u16 GetBattleBGM(void)
                 {
                     if((Random() % 3) == 1)
                         return MUS_DP_VS_RIVAL;
-                    if((Random() % 3) == 2)
+                    else if((Random() % 3) == 2)
                         return MUS_HG_VS_RIVAL;
                     else
                         return MUS_VS_RIVAL;
@@ -10720,7 +10720,7 @@ u16 GetBattleBGM(void)
             {
                 if((Random() % 3) == 1)
                     return MUS_PL_VS_FRONTIER_BRAIN;
-                if((Random() % 3) == 2)
+                else if((Random() % 3) == 2)
                     return MUS_HG_VS_FRONTIER_BRAIN;
                 else
                     return MUS_VS_FRONTIER_BRAIN;
