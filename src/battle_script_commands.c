@@ -826,9 +826,9 @@ static const u16 sRarePickupItems[] =
     ITEM_WHITE_HERB,
     ITEM_NUGGET,
     ITEM_ELIXIR,
-    ITEM_NUGGET,
+    ITEM_BIG_NUGGET,
     ITEM_LEFTOVERS,
-    ITEM_NUGGET,
+    ITEM_BIG_NUGGET,
 };
 
 static const u16 sRarePickupItemsFiniteTMs[] =
