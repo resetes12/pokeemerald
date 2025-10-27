@@ -2790,6 +2790,8 @@ static const struct SpriteFrameImage sPicTable_Farfetchd[] = {
     overworld_frame(gObjectEventPic_Farfetchd, 4, 4, 3),
     overworld_frame(gObjectEventPic_Farfetchd, 4, 4, 4),
     overworld_frame(gObjectEventPic_Farfetchd, 4, 4, 5),
+    overworld_frame(gObjectEventPic_Farfetchd, 4, 4, 6),
+    overworld_frame(gObjectEventPic_Farfetchd, 4, 4, 7),
 };
 static const struct SpriteFrameImage sPicTable_Doduo[] = {
     overworld_frame(gObjectEventPic_Doduo, 4, 4, 0),
