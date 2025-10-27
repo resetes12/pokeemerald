@@ -10642,9 +10642,9 @@ u16 GetBattleBGM(void)
             {
                 if((Random() % 4) == 1)
                     return MUS_RG_VS_CHAMPION;
-                if((Random() % 4) == 2)
+                else if((Random() % 4) == 2)
                     return MUS_DP_VS_CHAMPION;
-                if((Random() % 4) == 3)
+                else if((Random() % 4) == 3)
                     return MUS_HG_VS_CHAMPION;
                 else
                     return MUS_VS_CHAMPION;
