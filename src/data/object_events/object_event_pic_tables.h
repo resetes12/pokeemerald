@@ -4100,6 +4100,8 @@ static const struct SpriteFrameImage sPicTable_Magcargo[] = {
     overworld_frame(gObjectEventPic_Magcargo, 4, 4, 3),
     overworld_frame(gObjectEventPic_Magcargo, 4, 4, 4),
     overworld_frame(gObjectEventPic_Magcargo, 4, 4, 5),
+    overworld_frame(gObjectEventPic_Magcargo, 4, 4, 6),
+    overworld_frame(gObjectEventPic_Magcargo, 4, 4, 7),
 };
 static const struct SpriteFrameImage sPicTable_Swinub[] = {
     overworld_frame(gObjectEventPic_Swinub, 4, 4, 0),
