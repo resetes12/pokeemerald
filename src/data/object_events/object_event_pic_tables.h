@@ -2770,6 +2770,8 @@ static const struct SpriteFrameImage sPicTable_Magnemite[] = {
     overworld_frame(gObjectEventPic_Magnemite, 4, 4, 3),
     overworld_frame(gObjectEventPic_Magnemite, 4, 4, 4),
     overworld_frame(gObjectEventPic_Magnemite, 4, 4, 5),
+    overworld_frame(gObjectEventPic_Magnemite, 4, 4, 6),
+    overworld_frame(gObjectEventPic_Magnemite, 4, 4, 7),
 };
 static const struct SpriteFrameImage sPicTable_Magneton[] = {
     overworld_frame(gObjectEventPic_Magneton, 4, 4, 0),
@@ -2778,6 +2780,8 @@ static const struct SpriteFrameImage sPicTable_Magneton[] = {
     overworld_frame(gObjectEventPic_Magneton, 4, 4, 3),
     overworld_frame(gObjectEventPic_Magneton, 4, 4, 4),
     overworld_frame(gObjectEventPic_Magneton, 4, 4, 5),
+    overworld_frame(gObjectEventPic_Magneton, 4, 4, 6),
+    overworld_frame(gObjectEventPic_Magneton, 4, 4, 7),
 };
 static const struct SpriteFrameImage sPicTable_Farfetchd[] = {
     overworld_frame(gObjectEventPic_Farfetchd, 4, 4, 0),
