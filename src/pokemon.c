@@ -10617,11 +10617,11 @@ u16 GetBattleBGM(void)
             {
                 if((Random() % 5) == 1)
                     return MUS_RG_VS_GYM_LEADER;
-                if((Random() % 5) == 2)
+                else if((Random() % 5) == 2)
                     return MUS_DP_VS_GYM_LEADER;
-                if((Random() % 5) == 3)
+                else if((Random() % 5) == 3)
                     return MUS_HG_VS_GYM_LEADER;
-                if((Random() % 5) == 4)
+                else if((Random() % 5) == 4)
                     return MUS_HG_VS_GYM_LEADER_KANTO;
                 else
                     return MUS_VS_GYM_LEADER;
@@ -10689,11 +10689,11 @@ u16 GetBattleBGM(void)
             {
                 if((Random() % 5) == 1)
                     return MUS_DP_VS_ELITE_FOUR;
-                if((Random() % 5) == 2)
+                else if((Random() % 5) == 2)
                     return MUS_RG_VS_GYM_LEADER;
-                if((Random() % 5) == 3)
+                else if((Random() % 5) == 3)
                     return MUS_HG_VS_GYM_LEADER;
-                if((Random() % 5) == 4)
+                else if((Random() % 5) == 4)
                     return MUS_HG_VS_GYM_LEADER_KANTO;
                 else
                     return MUS_VS_ELITE_FOUR;
@@ -10743,11 +10743,11 @@ u16 GetBattleBGM(void)
                 {
                     if((Random() % 5) == 1)
                         return MUS_DP_VS_TRAINER;
-                    if((Random() % 5) == 2)
+                    else if((Random() % 5) == 2)
                         return MUS_RG_VS_TRAINER;
-                    if((Random() % 5) == 3)
+                    else if((Random() % 5) == 3)
                         return MUS_HG_VS_TRAINER;
-                    if((Random() % 5) == 4)
+                    else if((Random() % 5) == 4)
                         return MUS_HG_VS_TRAINER_KANTO;
                     else
                         return MUS_VS_TRAINER;
@@ -10770,11 +10770,11 @@ u16 GetBattleBGM(void)
                 {
                     if((Random() % 5) == 1)
                         return MUS_DP_VS_TRAINER;
-                    if((Random() % 5) == 2)
+                    else if((Random() % 5) == 2)
                         return MUS_RG_VS_TRAINER;
-                    if((Random() % 5) == 3)
+                    else if((Random() % 5) == 3)
                         return MUS_HG_VS_TRAINER;
-                    if((Random() % 5) == 4)
+                    else if((Random() % 5) == 4)
                         return MUS_HG_VS_TRAINER_KANTO;
                     else
                         return MUS_VS_TRAINER;
@@ -10798,11 +10798,11 @@ u16 GetBattleBGM(void)
         {
             if((Random() % 5) == 1)
                 return MUS_HG_VS_WILD_KANTO;
-            if((Random() % 5) == 2)
+            else if((Random() % 5) == 2)
                 return MUS_RG_VS_WILD;
-            if((Random() % 5) == 3)
+            else if((Random() % 5) == 3)
                 return MUS_DP_VS_WILD;
-            if((Random() % 5) == 4)
+            else if((Random() % 5) == 4)
                 return MUS_HG_VS_WILD;
             else
                 return MUS_VS_WILD;
