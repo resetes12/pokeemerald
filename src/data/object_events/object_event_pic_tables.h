@@ -5248,6 +5248,8 @@ static const struct SpriteFrameImage sPicTable_Absol[] = {
     overworld_frame(gObjectEventPic_Absol, 4, 4, 3),
     overworld_frame(gObjectEventPic_Absol, 4, 4, 4),
     overworld_frame(gObjectEventPic_Absol, 4, 4, 5),
+    overworld_frame(gObjectEventPic_Absol, 4, 4, 6),
+    overworld_frame(gObjectEventPic_Absol, 4, 4, 7),
 };
 static const struct SpriteFrameImage sPicTable_Wynaut[] = {
     overworld_frame(gObjectEventPic_Wynaut, 4, 4, 0),
