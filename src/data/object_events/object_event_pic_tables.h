@@ -5024,6 +5024,8 @@ static const struct SpriteFrameImage sPicTable_Zangoose[] = {
     overworld_frame(gObjectEventPic_Zangoose, 4, 4, 3),
     overworld_frame(gObjectEventPic_Zangoose, 4, 4, 4),
     overworld_frame(gObjectEventPic_Zangoose, 4, 4, 5),
+    overworld_frame(gObjectEventPic_Zangoose, 4, 4, 6),
+    overworld_frame(gObjectEventPic_Zangoose, 4, 4, 7),
 };
 static const struct SpriteFrameImage sPicTable_Seviper[] = {
     overworld_frame(gObjectEventPic_Seviper, 4, 4, 0),
@@ -5032,6 +5034,8 @@ static const struct SpriteFrameImage sPicTable_Seviper[] = {
     overworld_frame(gObjectEventPic_Seviper, 4, 4, 3),
     overworld_frame(gObjectEventPic_Seviper, 4, 4, 4),
     overworld_frame(gObjectEventPic_Seviper, 4, 4, 5),
+    overworld_frame(gObjectEventPic_Seviper, 4, 4, 6),
+    overworld_frame(gObjectEventPic_Seviper, 4, 4, 7),
 };
 static const struct SpriteFrameImage sPicTable_Lunatone[] = {
     overworld_frame(gObjectEventPic_Lunatone, 4, 4, 0),
