@@ -536,9 +536,9 @@ void DisableChallengesAfterBeatingGameMirrorThief(void)
     gSaveBlock1Ptr->tx_Challenges_Mirror_Thief = 0;
 }
 
-void DisableChallengesAfterBeatingGameLimitDifficulty(void)
+void DisableChallengesAfterBeatingGameExpensiveChallenge(void)
 {
-    gSaveBlock1Ptr->tx_Features_LimitDifficulty = 0;
+    gSaveBlock1Ptr->tx_Challenges_Expensive = 0;
 }
 
 //Unused
