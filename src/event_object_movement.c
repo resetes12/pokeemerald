@@ -2087,6 +2087,32 @@ static u8 LoadDynamicFollowerPalette(u16 species, u8 form, bool32 shiny) {
 
     // Use matching front sprite's normal/shiny palettes
     spritePalette.data = (u16*)((shiny ? gMonShinyPaletteTable : gMonPaletteTable)[species].data);
+    if ((species == SPECIES_PIKACHU
+                || species == SPECIES_RAICHU
+                || species == SPECIES_PICHU
+                || species == SPECIES_VAPOREON
+                || species == SPECIES_JOLTEON
+                || species == SPECIES_FLAREON
+                || species == SPECIES_REGICE
+                || species == SPECIES_HERACROSS
+                || species == SPECIES_HAUNTER
+                || species == SPECIES_GENGAR
+                || species == SPECIES_SCYTHER
+                || species == SPECIES_BLAZIKEN
+                || species == SPECIES_XATU
+                || species == SPECIES_PARAS
+                || species == SPECIES_CHINCHOU
+                || species == SPECIES_LANTURN
+                || species == SPECIES_ZAPDOS
+                || species == SPECIES_ELEKID
+                || species == SPECIES_FARFETCHD
+                || species == SPECIES_MAROWAK
+                || species == SPECIES_PHANPY
+                || species == SPECIES_LAPRAS
+                || species == SPECIES_TENTACOOL
+                || species == SPECIES_TENTACRUEL)
+                && (gSaveBlock1Ptr->tx_Mode_New_Stats == 1))
+        spritePalette.data = (u16*)((shiny ? gMonShinyPaletteTable_Modern : gMonPaletteTable)[species].data);
     // Use standalone palette, unless entry is OOB or NULL (fallback to front-sprite-based)
     if (species < ARRAY_COUNT(gFollowerPalettes) && gFollowerPalettes[species][shiny & 1])
         spritePalette.data = gFollowerPalettes[species][shiny & 1];

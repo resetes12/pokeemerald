@@ -3227,6 +3227,37 @@ extern const u32 gMonShinyPalette_DoubleQuestionMark[];
 extern const u32 gMonStillFrontPic_DoubleQuestionMark[];
 extern const u16 gMonIconPalettes[][16];
 
+//Modern Shinies
+extern const u32 gMonShinyPalette_Modern_Pikachu[];
+extern const u32 gMonShinyPalette_Modern_Pichu[];
+extern const u32 gMonShinyPalette_Modern_Raichu[];
+extern const u32 gMonShinyPalette_Modern_Vaporeon[];
+extern const u32 gMonShinyPalette_Modern_Pikachu[];
+extern const u32 gMonShinyPalette_Modern_Raichu[];
+extern const u32 gMonShinyPalette_Modern_Pichu[];
+extern const u32 gMonShinyPalette_Modern_Vaporeon[];
+extern const u32 gMonShinyPalette_Modern_Jolteon[];
+extern const u32 gMonShinyPalette_Modern_Flareon[];
+extern const u32 gMonShinyPalette_Modern_Regice[];
+extern const u32 gMonShinyPalette_Modern_Heracross[];
+extern const u32 gMonShinyPalette_Modern_Haunter[];
+extern const u32 gMonShinyPalette_Modern_Gengar[];
+extern const u32 gMonShinyPalette_Modern_Scyther[];
+extern const u32 gMonShinyPalette_Modern_Blaziken[];
+extern const u32 gMonShinyPalette_Modern_Xatu[];
+extern const u32 gMonShinyPalette_Modern_Paras[];
+extern const u32 gMonShinyPalette_Modern_Chinchou[];
+extern const u32 gMonShinyPalette_Modern_Zapdos[];
+extern const u32 gMonShinyPalette_Modern_Elekid[];
+extern const u32 gMonShinyPalette_Modern_Farfetchd[];
+extern const u32 gMonShinyPalette_Modern_Lanturn[];
+extern const u32 gMonShinyPalette_Modern_Marowak[];
+extern const u32 gMonShinyPalette_Modern_Phanpy[];
+extern const u32 gMonShinyPalette_Modern_Lapras[];
+extern const u32 gMonShinyPalette_Modern_Tentacool[];
+extern const u32 gMonShinyPalette_Modern_Tentacruel[];
+
+
 // trainer sprites
 extern const u32 gTrainerFrontPic_Hiker[];
 extern const u32 gTrainerFrontPic_AquaGruntM[];
