@@ -10898,7 +10898,7 @@ const u32 *GetMonSpritePalFromSpeciesAndPersonality(u16 species, u32 otId, u32 p
                 || species == SPECIES_LAPRAS
                 || species == SPECIES_TENTACOOL
                 || species == SPECIES_TENTACRUEL)
-                && (gSaveBlock1Ptr->tx_Mode_New_Stats == 1))
+                && (gSaveBlock1Ptr->tx_Features_ShinyColors == 1))
                 return gMonShinyPaletteTable_Modern[species].data;
             else
                 return gMonShinyPaletteTable[species].data;
@@ -10936,7 +10936,7 @@ const u32 *GetMonSpritePalFromSpeciesAndPersonality(u16 species, u32 otId, u32 p
                 || species == SPECIES_LAPRAS
                 || species == SPECIES_TENTACOOL
                 || species == SPECIES_TENTACRUEL)
-                && (gSaveBlock1Ptr->tx_Mode_New_Stats == 1))
+                && (gSaveBlock1Ptr->tx_Features_ShinyColors == 1))
                 return gMonShinyPaletteTable_Modern[species].data;
             else
                 return gMonShinyPaletteTable[species].data;
@@ -10974,7 +10974,7 @@ const u32 *GetMonSpritePalFromSpeciesAndPersonality(u16 species, u32 otId, u32 p
                 || species == SPECIES_LAPRAS
                 || species == SPECIES_TENTACOOL
                 || species == SPECIES_TENTACRUEL)
-                && (gSaveBlock1Ptr->tx_Mode_New_Stats == 1))
+                && (gSaveBlock1Ptr->tx_Features_ShinyColors == 1))
                 return gMonShinyPaletteTable_Modern[species].data;
             else
                 return gMonShinyPaletteTable[species].data;
@@ -11012,7 +11012,7 @@ const u32 *GetMonSpritePalFromSpeciesAndPersonality(u16 species, u32 otId, u32 p
                 || species == SPECIES_LAPRAS
                 || species == SPECIES_TENTACOOL
                 || species == SPECIES_TENTACRUEL)
-                && (gSaveBlock1Ptr->tx_Mode_New_Stats == 1))
+                && (gSaveBlock1Ptr->tx_Features_ShinyColors == 1))
                 return gMonShinyPaletteTable_Modern[species].data;
             else
                 return gMonShinyPaletteTable[species].data;
@@ -11050,7 +11050,7 @@ const u32 *GetMonSpritePalFromSpeciesAndPersonality(u16 species, u32 otId, u32 p
                 || species == SPECIES_LAPRAS
                 || species == SPECIES_TENTACOOL
                 || species == SPECIES_TENTACRUEL)
-                && (gSaveBlock1Ptr->tx_Mode_New_Stats == 1))
+                && (gSaveBlock1Ptr->tx_Features_ShinyColors == 1))
                 return gMonShinyPaletteTable_Modern[species].data;
             else
                 return gMonShinyPaletteTable[species].data;
@@ -11103,7 +11103,7 @@ const struct CompressedSpritePalette *GetMonSpritePalStructFromOtIdPersonality(u
                 || species == SPECIES_LAPRAS
                 || species == SPECIES_TENTACOOL
                 || species == SPECIES_TENTACRUEL)
-                && (gSaveBlock1Ptr->tx_Mode_New_Stats == 1))
+                && (gSaveBlock1Ptr->tx_Features_ShinyColors == 1))
                 return &gMonShinyPaletteTable_Modern[species];
             else
                 return &gMonShinyPaletteTable[species];
@@ -11141,7 +11141,7 @@ const struct CompressedSpritePalette *GetMonSpritePalStructFromOtIdPersonality(u
                 || species == SPECIES_LAPRAS
                 || species == SPECIES_TENTACOOL
                 || species == SPECIES_TENTACRUEL)
-                && (gSaveBlock1Ptr->tx_Mode_New_Stats == 1))
+                && (gSaveBlock1Ptr->tx_Features_ShinyColors == 1))
                 return &gMonShinyPaletteTable_Modern[species];
             else
                 return &gMonShinyPaletteTable[species];
@@ -11179,7 +11179,7 @@ const struct CompressedSpritePalette *GetMonSpritePalStructFromOtIdPersonality(u
                 || species == SPECIES_LAPRAS
                 || species == SPECIES_TENTACOOL
                 || species == SPECIES_TENTACRUEL)
-                && (gSaveBlock1Ptr->tx_Mode_New_Stats == 1))
+                && (gSaveBlock1Ptr->tx_Features_ShinyColors == 1))
                 return &gMonShinyPaletteTable_Modern[species];
             else
                 return &gMonShinyPaletteTable[species];
@@ -11217,7 +11217,7 @@ const struct CompressedSpritePalette *GetMonSpritePalStructFromOtIdPersonality(u
                 || species == SPECIES_LAPRAS
                 || species == SPECIES_TENTACOOL
                 || species == SPECIES_TENTACRUEL)
-                && (gSaveBlock1Ptr->tx_Mode_New_Stats == 1))
+                && (gSaveBlock1Ptr->tx_Features_ShinyColors == 1))
                 return &gMonShinyPaletteTable_Modern[species];
             else
                 return &gMonShinyPaletteTable[species];
@@ -11255,7 +11255,7 @@ const struct CompressedSpritePalette *GetMonSpritePalStructFromOtIdPersonality(u
                 || species == SPECIES_LAPRAS
                 || species == SPECIES_TENTACOOL
                 || species == SPECIES_TENTACRUEL)
-                && (gSaveBlock1Ptr->tx_Mode_New_Stats == 1))
+                && (gSaveBlock1Ptr->tx_Features_ShinyColors == 1))
                 return &gMonShinyPaletteTable_Modern[species];
             else
                 return &gMonShinyPaletteTable[species];

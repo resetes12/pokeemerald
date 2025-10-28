@@ -506,9 +506,9 @@ void ChangeEncounterTable(void)
 
 void Update24to30(void)
 {
-    if (gSaveBlock1Ptr->tx_Mode_AlternateSpawns == 0)
+    if (gSaveBlock1Ptr->tx_Features_ShinyColors == 0) //old tx_Mode_AlternateSpawns
         gSaveBlock1Ptr->tx_Mode_Encounters = 0;
-    else if (gSaveBlock1Ptr->tx_Mode_AlternateSpawns == 1)
+    else if (gSaveBlock1Ptr->tx_Features_ShinyColors == 1) //old tx_Mode_AlternateSpawns
         gSaveBlock1Ptr->tx_Mode_Encounters = 1;
 }
 

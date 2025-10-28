@@ -2111,7 +2111,7 @@ static u8 LoadDynamicFollowerPalette(u16 species, u8 form, bool32 shiny) {
                 || species == SPECIES_LAPRAS
                 || species == SPECIES_TENTACOOL
                 || species == SPECIES_TENTACRUEL)
-                && (gSaveBlock1Ptr->tx_Mode_New_Stats == 1))
+                && (gSaveBlock1Ptr->tx_Features_ShinyColors == 1))
         spritePalette.data = (u16*)((shiny ? gMonShinyPaletteTable_Modern : gMonPaletteTable)[species].data);
     // Use standalone palette, unless entry is OOB or NULL (fallback to front-sprite-based)
     if (species < ARRAY_COUNT(gFollowerPalettes) && gFollowerPalettes[species][shiny & 1])
