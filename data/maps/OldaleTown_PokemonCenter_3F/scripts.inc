@@ -204,14 +204,15 @@ EventScript_FirstTimeWonder_Text_Unlimited:
 	.string "Enjoy your WONDERTRADE!$"
 
 EventScript_DoWonderTrade_Text_Welcome:
-	.string "Welcome to the WONDERTRADE\n"
-	.string "STATION of the POKéCENTER!\p"
-	.string "Please select the POKéMON that\n"
-	.string "is going to get WONDERTRADED.$"
+	.string "Welcome to the WONDERTRADE STATION\n"
+	.string "of the POKéCENTER!\p"
+	.string "Before selecting which POKéMON is\n"
+	.string "going to get WONDERTRADED, I need\l"
+	.string "save your game.$"
 
 EventScript_NoMoreForToday_Text:
-	.string "Oh! Seems that you have\n"
-	.string "used all 3 DAILY TRADES.\p"
+	.string "Oh! Seems that you have used all\n"
+	.string "3 DAILY TRADES.\p"
 	.string "Come back tomorrow!$"
 
 EventScript_DoWonderTrade_Text_Done:
