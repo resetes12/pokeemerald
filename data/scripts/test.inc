@@ -170,7 +170,7 @@ Went_Away_U_B_Movement:
 U_B_Text:
 	.string "This vase looks expensive…\n"
 	.string "Peered inside…\p"
-	.string "There a note inside. It reads\n"
+	.string "There's a note inside. It reads\n"
 	.string "as follows:\p" 
 	.string "‘When alone, nothing happens.\n"
 	.string "However, if there are two or more,\l"
@@ -249,7 +249,8 @@ U_C_Text:
 	.string "In the beginning, there was the WORD,\n"
 	.string "and the WORD was with GOD,\l"
 	.string "and the WORD was GOD.\p"
-	.string "There's also a chocolate cake inside.$"
+	.string "There's also a C-shaped chocolate\n"
+	.string "cake inside.$"
 
 U_C_Text_Found:
 	.string "The chocolate cake moved on its own.\n"
@@ -397,7 +398,8 @@ Went_Away_U_E_Movement:
 
 U_E_Text:
 	.string "This rock…\p"
-	.string "There's something about it.$"
+	.string "There's something about it.\p"
+	.string "It's marked with the letter ‘E'.$"
 
 U_E_Text_Found:
 	.string "A POKéMON suddenly jumped from\n"
@@ -477,7 +479,7 @@ U_F_Text:
 
 U_F_Text_Found:
 	.string "There was actually something stuck\n"
-	.string "on the wall. A POKéMON!\p"
+	.string "behind a poster. A POKéMON!\p"
 	.string "{COLOR BLUE}You found UNOWN F!\p"
 	.string "UNOWN F returned to its cave.$"
 
@@ -547,8 +549,9 @@ Went_Away_U_G_Movement:
 U_G_Text:
 	.string "There are strange markings\n"
 	.string "on the wall.\p"
-	.string "Whatever is written on it\n"
-	.string "doesn't make much sense.$"
+	.string "Whatever is written on it doesn't\n"
+	.string "make much sense, but you can\l"
+	.string "distinguish the letter ‘G'.$"
 
 U_G_Text_Found:
 	.string "A creature jumped from the\n"
@@ -620,7 +623,9 @@ Went_Away_U_H_Movement:
 
 U_H_Text:
 	.string "There's something odd about\n"
-	.string "the drawer.$"
+	.string "the drawer.\p"
+	.string "There's a sticker that has the\n"
+	.string "letter ‘H' written on it.$"
 
 U_H_Text_Found:
 	.string "A POKéMON jump from the drawer!\p"
@@ -692,7 +697,7 @@ Went_Away_U_I_Movement:
 U_I_Text:
 	.string "The shelves brim with all sorts of\n"
 	.string "POKéMON merchandise.\p"
-	.string "There's even a strangely shaped\n"
+	.string "There's even a strangely I-shaped\n"
 	.string "plush POKéMON!$"
 
 U_I_Text_Found:
@@ -840,7 +845,9 @@ Went_Away_U_K_Movement:
 U_K_Text:
 	.string "The VENDING MACHINE is pretty\n"
 	.string "much empty. Only one can of\l"
-	.string "coffee remains.$"
+	.string "coffee remains.\p"
+	.string "It looks like the can is moving\n"
+	.string "on its own. That can't be.$"
 
 U_K_Text_Found:
 	.string "The can of coffee moved!\n"
@@ -912,7 +919,9 @@ Went_Away_U_L_Movement:
 
 U_L_Text:
 	.string "There's something odd about\n"
-	.string "the drawer.$"
+	.string "the drawer.\p"
+	.string "There's a label that has an\n"
+	.string "L-shaped drawing.$"
 
 U_L_Text_Found:
 	.string "A POKéMON jump from the drawer!\p"
@@ -1063,7 +1072,8 @@ Went_Away_U_N_Movement:
 	step_end
 
 U_N_Text:
-	.string "There's an oddly shaped fruit!$"
+	.string "There's an oddly shaped fruit!\n"
+	.string "It looks like the ‘N' letter.$" 
 
 U_N_Text_Found:
 	.string "That was no fruit!\n"
@@ -1363,7 +1373,8 @@ Went_Away_U_R_Movement:
 	step_end
 
 U_R_Text:
-	.string "There's a piece of coal on the cabinet.$"
+	.string "There's a piece of coal on the cabinet.\n"
+	.string "Its shape oddly resembles the ‘R' letter.$"
 
 U_R_Text_Found:
 	.string "That was no coal! It was a POKéMON!\p"
@@ -1440,7 +1451,8 @@ U_S_Text:
 	.string "{CLEAR_TO 0x0a}Wanted item{CLEAR_TO 0x7c}Trade item\n"
 	.string "{CLEAR_TO 0x0c}BLUE SHARD{CLEAR_TO 0x59}{LEFT_ARROW}{RIGHT_ARROW}{CLEAR_TO 0x79}WATER STONE{CLEAR_TO 0xc8}\p"
 	.string "{CLEAR_TO 0x0a}Wanted item{CLEAR_TO 0x7c}Trade item\n"
-	.string "{CLEAR_TO 0x08}GREEN SHARD{CLEAR_TO 0x59}{LEFT_ARROW}{RIGHT_ARROW}{CLEAR_TO 0x7b}LEAF STONE$"
+	.string "{CLEAR_TO 0x08}GREEN SHARD{CLEAR_TO 0x59}{LEFT_ARROW}{RIGHT_ARROW}{CLEAR_TO 0x7b}LEAF STONE\p"
+	.string "There's also a big, bold letter ‘S'.$"
 
 U_S_Text_Found:
 	.string "Huh? There's something behind the\n"
@@ -1589,7 +1601,8 @@ Went_Away_U_U_Movement:
 	step_end
 
 U_U_Text:
-	.string "The model ship is incredible!$"
+	.string "The model ship is incredible!\p"
+	.string "It's shaped like the letter ‘U'.$"
 
 U_U_Text_Found:
 	.string "There was actually something else\n"
@@ -1661,7 +1674,8 @@ Went_Away_U_V_Movement:
 
 U_V_Text:
 	.string "There's something odd about\n"
-	.string "the drawer.$"
+	.string "the drawer.\p"
+	.string "There's written ‘V'.$"
 
 U_V_Text_Found:
 	.string "A POKéMON jump from the drawer!\p"
@@ -1802,7 +1816,7 @@ Went_Away_U_X_Movement:
 
 U_X_Text:
 	.string "This rock…\p"
-	.string "There's something about it.$"
+	.string "It's marked with an ‘X'.$"
 
 U_X_Text_Found:
 	.string "A POKéMON suddenly jumped from\n"
@@ -2127,4 +2141,4 @@ Test_Event_All_U_Found::
 
 Test_Event_All_U_Found_Text:
 	.string "{COLOR RED}You found all UNOWN forms!\p"
-	.string "Should I check the UNOWN CHAMBER?$"
+	.string "Checking UNOWN CHAMBER would be wise.$"

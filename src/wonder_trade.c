@@ -119,11 +119,10 @@ static const u16 sIsInvalidItem[] = {
 };
 #endif
 
-static const u16 sIsValidSpecies[] =
+//Total 178
+
+static const u16 sIsValidSpecies_C_Tier[] =
 {
-    SPECIES_BULBASAUR,
-    SPECIES_CHARMANDER,
-    SPECIES_SQUIRTLE,
     SPECIES_CATERPIE,
     SPECIES_WEEDLE,
     SPECIES_PIDGEY,
@@ -133,7 +132,6 @@ static const u16 sIsValidSpecies[] =
     SPECIES_SANDSHREW,
     SPECIES_NIDORAN_F,
     SPECIES_NIDORAN_M,
-    SPECIES_VULPIX,
     SPECIES_ZUBAT,
     SPECIES_ODDISH,
     SPECIES_PARAS,
@@ -142,10 +140,7 @@ static const u16 sIsValidSpecies[] =
     SPECIES_MEOWTH,
     SPECIES_PSYDUCK,
     SPECIES_MANKEY,
-    SPECIES_GROWLITHE,
     SPECIES_POLIWAG,
-    SPECIES_ABRA,
-    SPECIES_MACHOP,
     SPECIES_BELLSPROUT,
     SPECIES_TENTACOOL,
     SPECIES_GEODUDE,
@@ -157,25 +152,137 @@ static const u16 sIsValidSpecies[] =
     SPECIES_SEEL,
     SPECIES_GRIMER,
     SPECIES_SHELLDER,
-    SPECIES_GASTLY,
-    SPECIES_ONIX,
     SPECIES_DROWZEE,
     SPECIES_KRABBY,
     SPECIES_VOLTORB,
     SPECIES_EXEGGCUTE,
     SPECIES_CUBONE,
-    SPECIES_LICKITUNG,
     SPECIES_KOFFING,
-    SPECIES_RHYHORN,
-    SPECIES_TANGELA,
-    SPECIES_KANGASKHAN,
-    SPECIES_HORSEA,
     SPECIES_GOLDEEN,
     SPECIES_STARYU,
+    SPECIES_MAGIKARP,
+    SPECIES_SENTRET,
+    SPECIES_HOOTHOOT,
+    SPECIES_LEDYBA,
+    SPECIES_SPINARAK,
+    SPECIES_CHINCHOU,
+    SPECIES_NATU,
+    SPECIES_MAREEP,
+    SPECIES_HOPPIP,
+    SPECIES_AIPOM,
+    SPECIES_SUNKERN,
+    SPECIES_YANMA,
+    SPECIES_WOOPER,
+    SPECIES_PINECO,
+    SPECIES_SNUBBULL,
+    SPECIES_SLUGMA,
+    SPECIES_SWINUB,
+    SPECIES_REMORAID,
+    SPECIES_PHANPY,
+    SPECIES_POOCHYENA,
+    SPECIES_ZIGZAGOON,
+    SPECIES_WURMPLE,
+    SPECIES_LOTAD,
+    SPECIES_SEEDOT,
+    SPECIES_NINCADA,
+    SPECIES_TAILLOW,
+    SPECIES_SHROOMISH,
+    SPECIES_SPINDA,
+    SPECIES_WINGULL,
+    SPECIES_SURSKIT,
+    SPECIES_SKITTY,
+    SPECIES_BALTOY,
+    SPECIES_BARBOACH,
+    SPECIES_CORPHISH,
+    SPECIES_MAKUHITA,
+    SPECIES_ELECTRIKE,
+    SPECIES_NUMEL,
+    SPECIES_SPHEAL,
+    SPECIES_CACNEA,
+    SPECIES_SNORUNT,
+    SPECIES_SPOINK,
+    SPECIES_PLUSLE,
+    SPECIES_MINUN,
+    SPECIES_MEDITITE,
+    SPECIES_SWABLU,
+    SPECIES_SLAKOTH,
+    SPECIES_GULPIN,
+    SPECIES_WHISMUR,
+    SPECIES_CLAMPERL,
+};
+
+static const u16 sIsValidSpecies_B_Tier[] =
+{
+    SPECIES_VULPIX,
+    SPECIES_GROWLITHE,
+    SPECIES_ABRA,
+    SPECIES_MACHOP,
+    SPECIES_GASTLY,
+    SPECIES_ONIX,
+    SPECIES_LICKITUNG,
+    SPECIES_RHYHORN,
+    SPECIES_TANGELA,
+    SPECIES_HORSEA,
+    SPECIES_PICHU,
+    SPECIES_CLEFFA,
+    SPECIES_IGGLYBUFF,
+    SPECIES_TOGEPI,
+    SPECIES_GIRAFARIG,
+    SPECIES_SHUCKLE,
+    SPECIES_CORSOLA,
+    SPECIES_DELIBIRD,
+    SPECIES_SKARMORY,
+    SPECIES_HOUNDOUR,
+    SPECIES_DUNSPARCE,
+    SPECIES_GLIGAR,
+    SPECIES_QWILFISH,
+    SPECIES_SNEASEL,
+    SPECIES_MISDREAVUS,
+    SPECIES_MURKROW,
+    SPECIES_MILTANK,
+    SPECIES_SMEARGLE,
+    SPECIES_TYROGUE,
+    SPECIES_SMOOCHUM,
+    SPECIES_ELEKID,
+    SPECIES_MAGBY,
+    SPECIES_WAILMER,
+    SPECIES_TRAPINCH,
+    SPECIES_ARON,
+    SPECIES_KECLEON,
+    SPECIES_NOSEPASS,
+    SPECIES_TORKOAL,
+    SPECIES_SABLEYE,
+    SPECIES_LUVDISC,
+    SPECIES_LUNATONE,
+    SPECIES_SOLROCK,
+    SPECIES_AZURILL,
+    SPECIES_CARVANHA,
+    SPECIES_MAWILE,
+    SPECIES_WYNAUT,
+    SPECIES_DUSKULL,
+    SPECIES_TROPIUS,
+    SPECIES_ABSOL,
+    SPECIES_VOLBEAT,
+    SPECIES_ILLUMISE,
+    SPECIES_SHUPPET,
+    SPECIES_BONSLY,
+    SPECIES_BUDEW,
+    SPECIES_CHINGLING,
+    SPECIES_HAPPINY,
+    SPECIES_MANTYKE,
+    SPECIES_MIME_JR,
+    SPECIES_MUNCHLAX,
+};
+
+static const u16 sIsValidSpecies_A_Tier[] =
+{
+    SPECIES_BULBASAUR,
+    SPECIES_CHARMANDER,
+    SPECIES_SQUIRTLE,
+    SPECIES_KANGASKHAN,
     SPECIES_SCYTHER,
     SPECIES_PINSIR,
     SPECIES_TAUROS,
-    SPECIES_MAGIKARP,
     SPECIES_LAPRAS,
     SPECIES_DITTO,
     SPECIES_EEVEE,
@@ -186,130 +293,32 @@ static const u16 sIsValidSpecies[] =
     SPECIES_CHIKORITA,
     SPECIES_CYNDAQUIL,
     SPECIES_TOTODILE,
-    SPECIES_SENTRET,
-    SPECIES_HOOTHOOT,
-    SPECIES_LEDYBA,
-    SPECIES_SPINARAK,
-    SPECIES_CHINCHOU,
-    SPECIES_PICHU,
-    SPECIES_CLEFFA,
-    SPECIES_IGGLYBUFF,
-    SPECIES_TOGEPI,
-    SPECIES_NATU,
-    SPECIES_MAREEP,
-    SPECIES_HOPPIP,
-    SPECIES_AIPOM,
-    SPECIES_SUNKERN,
-    SPECIES_YANMA,
-    SPECIES_WOOPER,
-    SPECIES_MURKROW,
-    SPECIES_MISDREAVUS,
-    SPECIES_GIRAFARIG,
-    SPECIES_PINECO,
-    SPECIES_DUNSPARCE,
-    SPECIES_GLIGAR,
-    SPECIES_SNUBBULL,
-    SPECIES_QWILFISH,
-    SPECIES_SHUCKLE,
-    SPECIES_HERACROSS,
-    SPECIES_SNEASEL,
     SPECIES_TEDDIURSA,
-    SPECIES_SLUGMA,
-    SPECIES_SWINUB,
-    SPECIES_CORSOLA,
-    SPECIES_REMORAID,
-    SPECIES_DELIBIRD,
-    SPECIES_SKARMORY,
-    SPECIES_HOUNDOUR,
-    SPECIES_PHANPY,
     SPECIES_STANTLER,
-    SPECIES_SMEARGLE,
-    SPECIES_TYROGUE,
-    SPECIES_SMOOCHUM,
-    SPECIES_ELEKID,
-    SPECIES_MAGBY,
-    SPECIES_MILTANK,
+    SPECIES_HERACROSS,
     SPECIES_LARVITAR,
     SPECIES_TREECKO,
     SPECIES_TORCHIC,
     SPECIES_MUDKIP,
-    SPECIES_POOCHYENA,
-    SPECIES_ZIGZAGOON,
-    SPECIES_WURMPLE,
-    SPECIES_LOTAD,
-    SPECIES_SEEDOT,
-    SPECIES_NINCADA,
-    SPECIES_TAILLOW,
-    SPECIES_SHROOMISH,
-    SPECIES_SPINDA,
-    SPECIES_WINGULL,
-    SPECIES_SURSKIT,
-    SPECIES_WAILMER,
-    SPECIES_SKITTY,
-    SPECIES_KECLEON,
-    SPECIES_BALTOY,
-    SPECIES_NOSEPASS,
-    SPECIES_TORKOAL,
-    SPECIES_SABLEYE,
-    SPECIES_BARBOACH,
-    SPECIES_LUVDISC,
-    SPECIES_CORPHISH,
     SPECIES_FEEBAS,
-    SPECIES_CARVANHA,
-    SPECIES_TRAPINCH,
-    SPECIES_MAKUHITA,
-    SPECIES_ELECTRIKE,
-    SPECIES_NUMEL,
-    SPECIES_SPHEAL,
-    SPECIES_CACNEA,
-    SPECIES_SNORUNT,
-    SPECIES_LUNATONE,
-    SPECIES_SOLROCK,
-    SPECIES_AZURILL,
-    SPECIES_SPOINK,
-    SPECIES_PLUSLE,
-    SPECIES_MINUN,
-    SPECIES_MAWILE,
-    SPECIES_MEDITITE,
-    SPECIES_SWABLU,
-    SPECIES_WYNAUT,
-    SPECIES_DUSKULL,
-    SPECIES_SLAKOTH,
-    SPECIES_GULPIN,
-    SPECIES_TROPIUS,
-    SPECIES_WHISMUR,
-    SPECIES_CLAMPERL,
-    SPECIES_ABSOL,
-    SPECIES_SHUPPET,
     SPECIES_SEVIPER,
     SPECIES_ZANGOOSE,
-    SPECIES_ARON,
     SPECIES_CASTFORM,
-    SPECIES_VOLBEAT,
-    SPECIES_ILLUMISE,
     SPECIES_LILEEP,
     SPECIES_ANORITH,
     SPECIES_RALTS,
     SPECIES_BAGON,
     SPECIES_BELDUM,
-    SPECIES_BONSLY,
-    SPECIES_BUDEW,
-    SPECIES_CHINGLING,
-    SPECIES_HAPPINY,
-    SPECIES_MANTYKE,
-    SPECIES_MIME_JR,
-    SPECIES_MUNCHLAX,
 };
 
-static const u16 sIsValidSpeciesVanilla[] =
+//Total 94
+
+static const u16 sIsValidSpeciesVanilla_C_Tier[] =
 {
     SPECIES_SANDSHREW,
-    SPECIES_VULPIX,
     SPECIES_ZUBAT,
     SPECIES_ODDISH,
     SPECIES_PSYDUCK,
-    SPECIES_ABRA,
-    SPECIES_MACHOP,
     SPECIES_TENTACOOL,
     SPECIES_GEODUDE,
     SPECIES_MAGNEMITE,
@@ -317,24 +326,13 @@ static const u16 sIsValidSpeciesVanilla[] =
     SPECIES_GRIMER,
     SPECIES_VOLTORB,
     SPECIES_KOFFING,
-    SPECIES_RHYHORN,
-    SPECIES_HORSEA,
     SPECIES_GOLDEEN,
     SPECIES_STARYU,
     SPECIES_MAGIKARP,
     SPECIES_CHINCHOU,
-    SPECIES_PICHU,
-    SPECIES_IGGLYBUFF,
     SPECIES_NATU,
-    SPECIES_GIRAFARIG,
-    SPECIES_HERACROSS,
     SPECIES_SLUGMA,
-    SPECIES_CORSOLA,
-    SPECIES_SKARMORY,
     SPECIES_PHANPY,
-    SPECIES_TREECKO,
-    SPECIES_TORCHIC,
-    SPECIES_MUDKIP,
     SPECIES_POOCHYENA,
     SPECIES_ZIGZAGOON,
     SPECIES_WURMPLE,
@@ -346,121 +344,180 @@ static const u16 sIsValidSpeciesVanilla[] =
     SPECIES_SPINDA,
     SPECIES_WINGULL,
     SPECIES_SURSKIT,
-    SPECIES_WAILMER,
     SPECIES_SKITTY,
-    SPECIES_KECLEON,
     SPECIES_BALTOY,
-    SPECIES_NOSEPASS,
-    SPECIES_TORKOAL,
-    SPECIES_SABLEYE,
     SPECIES_BARBOACH,
-    SPECIES_LUVDISC,
     SPECIES_CORPHISH,
-    SPECIES_FEEBAS,
-    SPECIES_CARVANHA,
-    SPECIES_TRAPINCH,
     SPECIES_MAKUHITA,
     SPECIES_ELECTRIKE,
     SPECIES_NUMEL,
     SPECIES_SPHEAL,
     SPECIES_CACNEA,
     SPECIES_SNORUNT,
-    SPECIES_LUNATONE,
-    SPECIES_SOLROCK,
-    SPECIES_AZURILL,
     SPECIES_SPOINK,
     SPECIES_PLUSLE,
     SPECIES_MINUN,
-    SPECIES_MAWILE,
     SPECIES_MEDITITE,
     SPECIES_SWABLU,
-    SPECIES_WYNAUT,
-    SPECIES_DUSKULL,
     SPECIES_SLAKOTH,
     SPECIES_GULPIN,
-    SPECIES_TROPIUS,
     SPECIES_WHISMUR,
     SPECIES_CLAMPERL,
-    SPECIES_SHUPPET,
-    SPECIES_SEVIPER,
-    SPECIES_ZANGOOSE,
+};
+
+static const u16 sIsValidSpeciesVanilla_B_Tier[] =
+{
+    SPECIES_VULPIX,
+    SPECIES_ABRA,
+    SPECIES_MACHOP,
+    SPECIES_RHYHORN,
+    SPECIES_HORSEA,
+    SPECIES_PICHU,
+    SPECIES_IGGLYBUFF,
+    SPECIES_GIRAFARIG,
+    SPECIES_CORSOLA,
+    SPECIES_SKARMORY,
+    SPECIES_WAILMER,
+    SPECIES_TRAPINCH,
     SPECIES_ARON,
-    SPECIES_CASTFORM,
+    SPECIES_KECLEON,
+    SPECIES_NOSEPASS,
+    SPECIES_TORKOAL,
+    SPECIES_SABLEYE,
+    SPECIES_LUVDISC,
+    SPECIES_LUNATONE,
+    SPECIES_SOLROCK,
+    SPECIES_AZURILL,
+    SPECIES_CARVANHA,
+    SPECIES_MAWILE,
+    SPECIES_WYNAUT,
+    SPECIES_DUSKULL,
+    SPECIES_TROPIUS,
+    SPECIES_ABSOL,
     SPECIES_VOLBEAT,
     SPECIES_ILLUMISE,
+    SPECIES_SHUPPET,
+    SPECIES_BUDEW,
+    SPECIES_CHINGLING,
+};
+
+static const u16 sIsValidSpeciesVanilla_A_Tier[] =
+{
+    SPECIES_PINSIR,
+    SPECIES_HERACROSS,
+    SPECIES_TREECKO,
+    SPECIES_TORCHIC,
+    SPECIES_MUDKIP,
+    SPECIES_FEEBAS,
+    SPECIES_SEVIPER,
+    SPECIES_ZANGOOSE,
+    SPECIES_CASTFORM,
     SPECIES_LILEEP,
     SPECIES_ANORITH,
     SPECIES_RALTS,
     SPECIES_BAGON,
     SPECIES_BELDUM,
-    SPECIES_BUDEW,
-    SPECIES_CHINGLING,
 };
 
 static u16 PickRandomSpecies() // picks only base forms
 {
-    u16 species = sIsValidSpecies[Random() % NELEMS(sIsValidSpecies)];
-    u16 speciesVanilla = sIsValidSpeciesVanilla[Random() % NELEMS(sIsValidSpeciesVanilla)];
+    u16 speciesA = sIsValidSpecies_A_Tier[Random() % NELEMS(sIsValidSpecies_A_Tier)];
+    u16 speciesB = sIsValidSpecies_B_Tier[Random() % NELEMS(sIsValidSpecies_B_Tier)];
+    u16 speciesC = sIsValidSpecies_C_Tier[Random() % NELEMS(sIsValidSpecies_C_Tier)];
+
+    u16 speciesVanillaA = sIsValidSpeciesVanilla_A_Tier[Random() % NELEMS(sIsValidSpeciesVanilla_A_Tier)];
+    u16 speciesVanillaB = sIsValidSpeciesVanilla_B_Tier[Random() % NELEMS(sIsValidSpeciesVanilla_B_Tier)];
+    u16 speciesVanillaC = sIsValidSpeciesVanilla_C_Tier[Random() % NELEMS(sIsValidSpeciesVanilla_C_Tier)];
 
     //Secret stuff
     if (((Random() % 99) < 25) && (gSaveBlock1Ptr->tx_Mode_Encounters == 1))
     {
-        if ((species == SPECIES_SCYTHER) || 
-            (species == SPECIES_SCIZOR))
+        if ((speciesA == SPECIES_SCYTHER) || 
+            (speciesA == SPECIES_SCIZOR))
         {
-            species = SPECIES_KLEAVOR;
+            speciesA = SPECIES_KLEAVOR;
         }
-        if ((species == SPECIES_TEDDIURSA) || 
-            (species == SPECIES_URSARING))
+        if ((speciesA == SPECIES_TEDDIURSA) || 
+            (speciesA == SPECIES_URSARING))
         {
             if ((Random() % 99) < 25)
             {
-                species = SPECIES_URSALUNA_BLOODMOON;
+                speciesA = SPECIES_URSALUNA_BLOODMOON;
             }
             else
             {
-                species = SPECIES_URSALUNA;
+                speciesA = SPECIES_URSALUNA;
             }
         }
-        if (species == SPECIES_STANTLER)
+        if (speciesA == SPECIES_STANTLER)
         {
-            species = SPECIES_WYRDEER;
+            speciesA = SPECIES_WYRDEER;
         }
     }
     else if (((Random() % 99) < 25) && (gSaveBlock1Ptr->tx_Mode_Encounters == 2) && (FlagGet(FLAG_SYS_GAME_CLEAR) == TRUE))
     {
-        if ((species == SPECIES_SCYTHER) || 
-            (species == SPECIES_SCIZOR))
+        if ((speciesA == SPECIES_SCYTHER) || 
+            (speciesA == SPECIES_SCIZOR))
         {
-            species = SPECIES_KLEAVOR;
+            speciesA = SPECIES_KLEAVOR;
         }
-        if ((species == SPECIES_TEDDIURSA) || 
-            (species == SPECIES_URSARING))
+        if ((speciesA == SPECIES_TEDDIURSA) || 
+            (speciesA == SPECIES_URSARING))
         {
             if ((Random() % 99) < 25)
             {
-                species = SPECIES_URSALUNA_BLOODMOON;
+                speciesA = SPECIES_URSALUNA_BLOODMOON;
             }
             else
             {
-                species = SPECIES_URSALUNA;
+                speciesA = SPECIES_URSALUNA;
             }
         }
-        if (species == SPECIES_STANTLER)
+        if (speciesA == SPECIES_STANTLER)
         {
-            species = SPECIES_WYRDEER;
+            speciesA = SPECIES_WYRDEER;
         }
     }
 
     //Encounter modes
+    u8 roll = Random() % 100; // 0–99
+
     if (gSaveBlock1Ptr->tx_Mode_Encounters == 0) //Vanilla Mode
-        return speciesVanilla;
+    {
+        if (roll < 5)
+            return speciesVanillaA; // 5% for Tier A
+        else if (roll < 15)
+            return speciesVanillaB; // 10% for Tier B
+        else
+            return speciesVanillaC; // 75% for Tier C
+    }
     else if (gSaveBlock1Ptr->tx_Mode_Encounters == 1) //Modern Mode
-        return species;
+    {
+        if (roll < 5)
+            return speciesA; // 5% for Tier A
+        else if (roll < 15)
+            return speciesB; // 10% for Tier B
+        else
+            return speciesC; // 75% for Tier C
+    }
     else if ((gSaveBlock1Ptr->tx_Mode_Encounters == 2) && (FlagGet(FLAG_SYS_GAME_CLEAR) == FALSE)) //Post-game mode
-        return speciesVanilla;
+    {
+        if (roll < 5)
+            return speciesVanillaA; // 5% for Tier A
+        else if (roll < 15)
+            return speciesVanillaB; // 10% for Tier B
+        else
+            return speciesVanillaC; // 75% for Tier C
+    }
     else if ((gSaveBlock1Ptr->tx_Mode_Encounters == 2) && (FlagGet(FLAG_SYS_GAME_CLEAR) == TRUE)) //Post-game mode, after champion
-        return species;
+    {
+        if (roll < 5)
+            return speciesA; // 5% for Tier A
+        else if (roll < 15)
+            return speciesB; // 10% for Tier B
+        else
+            return speciesC; // 75% for Tier C
+    }
 }
 
 static u8 GetWonderTradeOT(u8 *name)
