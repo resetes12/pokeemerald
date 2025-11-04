@@ -10612,7 +10612,7 @@ static const struct TrainerMonNoItemDefaultMoves sParty_Makayla[] = {
     {
     .iv = 0,
     .lvl = 33,
-    .species = SPECIES_ROSELIA,
+    .species = SPECIES_ROSERADE,
     },
     {
     .iv = 0,
