@@ -1793,6 +1793,16 @@
 	_dynmultichoice \left, \top, \ignoreBPress, \maxBeforeScroll, \shouldSort, \initialSelected, \callbacks, NULL
 	.endm
 
+	@ Returns 1 if randomizer is active
+	.macro checkrandomizer
+	.byte 0xea
+	.endm
+
+	@ Returns 1 if nuzlocke is active
+	.macro checknuzlocke
+	.byte 0xeb
+	.endm
+
 
 @ Supplementary
 

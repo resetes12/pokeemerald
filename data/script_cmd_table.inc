@@ -234,6 +234,8 @@ gScriptCmdTable::
 	.4byte ScrCmd_callfunc                          @ 0xe7
 	.4byte ScrCmd_dynmultichoice                    @ 0xe8
 	.4byte ScrCmd_dynmultipush                      @ 0xe9
+	.4byte ScrCmd_checkrandomizer                   @ 0xea
+	.4byte ScrCmd_checknuzlocke                     @ 0xeb
 
 gScriptCmdTableEnd::
 	.4byte ScrCmd_nop
