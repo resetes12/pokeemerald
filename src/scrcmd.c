@@ -2578,6 +2578,18 @@ bool8 ScrFunc_hidefollower(struct ScriptContext *ctx) {
     return TRUE;
 }
 
+bool8 ScrCmd_checknuzlocke(struct ScriptContext *ctx) //untested, unused
+{
+    if(gSaveBlock1Ptr->tx_Challenges_Nuzlocke>=1){
+        gSpecialVar_Result = TRUE;
+    }
+    else
+    {
+        gSpecialVar_Result = FALSE;
+    }     
+    return FALSE;
+}
+
 bool8 ScrCmd_checkrandomizer(struct ScriptContext *ctx)
 {
     if((gSaveBlock1Ptr->tx_Random_Chaos) 
