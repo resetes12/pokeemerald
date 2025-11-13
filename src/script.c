@@ -589,3 +589,21 @@ void CheckNuzlockeMode(void)
     else if (gSaveBlock1Ptr->tx_Challenges_NuzlockeHardcore)
         VarSet(VAR_UNUSED_0x40FF, 1);
 }
+
+void DisableStaticRandomizer(void)
+{
+    if (gSaveBlock1Ptr->tx_Random_Static == 1)
+    {
+        FlagSet(FLAG_TEMPORALY_DISABLE_STATIC_RANDOMIZER);
+        gSaveBlock1Ptr->tx_Random_Static = 0;
+    }
+}
+
+void EnableStaticRandomizer(void)
+{
+    if (FlagGet(FLAG_TEMPORALY_DISABLE_STATIC_RANDOMIZER) == 1)
+    {
+        gSaveBlock1Ptr->tx_Random_Static = 1;
+        FlagClear(FLAG_TEMPORALY_DISABLE_STATIC_RANDOMIZER);
+    }
+}

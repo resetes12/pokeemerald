@@ -54,7 +54,7 @@
 #define FLAG_SIDNEY_REMATCH                  0x29 // Elite Four Rematch 1
 #define FLAG_PHOEBE_REMATCH                  0x2A // Elite Four Rematch 2
 #define FLAG_SYS_SET_BATTLE_BGM              0x2B // Changes BGM
-#define FLAG_UNUSED_0x02C                    0x2C // Unused
+#define FLAG_TEMPORALY_DISABLE_STATIC_RANDOMIZER                    0x2C
 #define FLAG_NO_WT_BECAUSE_CHALLENGE         0x2D 
 #define FLAG_GLACIA_REMATCH                  0x2E // Elite Four Rematch 3
 #define FLAG_DOME_FOSSIL_ALTERING_CAVE       0x2F 
