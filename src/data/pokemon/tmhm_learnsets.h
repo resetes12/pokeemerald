@@ -2480,6 +2480,7 @@ const union {
         .STRENGTH = TRUE,
         .ROCK_SMASH = TRUE,
         .DIVE = TRUE,
+        .WATERFALL = TRUE,
     } },
 
     [SPECIES_KINGLER] = { .learnset = {
@@ -2507,6 +2508,7 @@ const union {
         .STRENGTH = TRUE,
         .ROCK_SMASH = TRUE,
         .DIVE = TRUE,
+        .WATERFALL = TRUE,
     } },
 
     [SPECIES_VOLTORB] = { .learnset = {
