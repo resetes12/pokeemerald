@@ -284,15 +284,15 @@ void MPlayExtender(struct CgbChannel *cgbChans)
 
     soundInfo->ident++;
 
-    gMPlayJumpTable[8] = ply_memacc;
-    gMPlayJumpTable[17] = ply_lfos;
-    gMPlayJumpTable[19] = ply_mod;
-    gMPlayJumpTable[28] = ply_xcmd;
-    gMPlayJumpTable[29] = ply_endtie;
-    gMPlayJumpTable[30] = SampleFreqSet;
-    gMPlayJumpTable[31] = TrackStop;
-    gMPlayJumpTable[32] = FadeOutBody;
-    gMPlayJumpTable[33] = TrkVolPitSet;
+    gMPlayJumpTable[8] = (MPlayFunc)ply_memacc;
+    gMPlayJumpTable[17] = (MPlayFunc)ply_lfos;
+    gMPlayJumpTable[19] = (MPlayFunc)ply_mod;
+    gMPlayJumpTable[28] = (MPlayFunc)ply_xcmd;
+    gMPlayJumpTable[29] = (MPlayFunc)ply_endtie;
+    gMPlayJumpTable[30] = (MPlayFunc)SampleFreqSet;
+    gMPlayJumpTable[31] = (MPlayFunc)TrackStop;
+    gMPlayJumpTable[32] = (MPlayFunc)FadeOutBody;
+    gMPlayJumpTable[33] = (MPlayFunc)TrkVolPitSet;
 
     soundInfo->cgbChans = cgbChans;
     soundInfo->CgbSound = CgbSound;
@@ -321,14 +321,12 @@ void MusicPlayerJumpTableCopy(void)
 
 void ClearChain(void *x)
 {
-    void (*func)(void *) = *(&gMPlayJumpTable[34]);
-    func(x);
+    gMPlayJumpTable[34](x);
 }
 
 void Clear64byte(void *x)
 {
-    void (*func)(void *) = *(&gMPlayJumpTable[35]);
-    func(x);
+    gMPlayJumpTable[35](x);
 }
 
 void SoundInit(struct SoundInfo *soundInfo)
