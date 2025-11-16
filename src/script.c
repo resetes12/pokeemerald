@@ -504,6 +504,7 @@ void ChangeEncounterTable(void)
         VarSet(VAR_ENCOUNTER_TABLE, 2);
 }
 
+//Migration scripts from 2.4 to 3.2
 void Update24to30(void)
 {
     if (gSaveBlock1Ptr->tx_Features_ShinyColors == 0) //old tx_Mode_AlternateSpawns
@@ -512,16 +513,38 @@ void Update24to30(void)
         gSaveBlock1Ptr->tx_Mode_Encounters = 1;
 }
 
-void Update24to30_SetFrontierBansToZero(void)
+void Update24to32_SetFrontierBansToZero(void)
 {
     gSaveBlock1Ptr->tx_Features_FrontierBans = 0;
 }
 
-void Update24to30_SetFrontierBansToOne(void)
+void Update24to32_SetFrontierBansToOne(void)
 {
     gSaveBlock1Ptr->tx_Features_FrontierBans = 1;
 }
 
+//Migration scripts from 3.2 to 3.3
+void Update32to33_SetShinyColorsToZero(void)
+{
+    gSaveBlock1Ptr->tx_Features_ShinyColors = 1;
+}
+
+void Update32to33_SetShinyColorsToOne(void)
+{
+    gSaveBlock1Ptr->tx_Features_ShinyColors = 1;
+}
+
+void Update32to33_TypeEffectiveness_GenVI(void)
+{
+    gSaveBlock1Ptr->tx_Mode_TypeEffectiveness = 0;
+}
+
+void Update32to33_TypeEffectiveness_Modern(void)
+{
+    gSaveBlock1Ptr->tx_Mode_TypeEffectiveness = 1;
+}
+
+//Challenge disabler NPC
 void DisableChallengesAfterBeatingGameEvoLimit(void)
 {
     gSaveBlock1Ptr->tx_Challenges_EvoLimit = 0;
@@ -539,12 +562,6 @@ void DisableChallengesAfterBeatingGameMirrorThief(void)
 void DisableChallengesAfterBeatingGameExpensiveChallenge(void)
 {
     gSaveBlock1Ptr->tx_Challenges_Expensive = 0;
-}
-
-//Unused
-void DisableChallengesAfterBeatingGameNuzlockeEasy(void)
-{
-    gSaveBlock1Ptr->tx_Nuzlocke_EasyMode = 0;
 }
 
 void DisableChallengesAfterBeatingGameOneType(void)
@@ -572,6 +589,7 @@ void DisableChallengesAfterBeatingGamePkmCenterChallenge(void)
     gSaveBlock1Ptr->tx_Challenges_PkmnCenter = 0;
 }
 
+//Debug
 void CheckNuzlockeMode(void)
 {
     if (!gSaveBlock1Ptr->tx_Nuzlocke_EasyMode)
@@ -590,6 +608,7 @@ void CheckNuzlockeMode(void)
         VarSet(VAR_UNUSED_0x40FF, 1);
 }
 
+//Unused for now, but useful if used
 void DisableStaticRandomizer(void)
 {
     if (gSaveBlock1Ptr->tx_Random_Static == 1)
@@ -599,6 +618,7 @@ void DisableStaticRandomizer(void)
     }
 }
 
+//Unused for now, but useful if used
 void EnableStaticRandomizer(void)
 {
     if (FlagGet(FLAG_TEMPORALY_DISABLE_STATIC_RANDOMIZER) == 1)

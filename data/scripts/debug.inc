@@ -68,71 +68,69 @@ Debug_Script_1_Text2:
 	.string "OF THE GAME WILL RESET AND YOU\l"
 	.string "WILL HAVE TO ENABLE THEM AGAIN.$"
 
+@Update 2.4 up to 3.2
 Debug_Script_2::
-	callnative Berry_Ready
-	end
-
-Debug_Script_3::
-	msgbox Debug_Script_3_Text, MSGBOX_YESNO
+	msgbox Debug_Script_2_Text, MSGBOX_YESNO
 	switch VAR_RESULT
 	case NO, Debug_Script_1_Closemessage
 	case MULTI_B_PRESSED, Debug_Script_1_Closemessage
 	callnative Update24to30
 	special NameRival
 	waitstate
-	msgbox Debug_Script_3_Text_Which_WT, MSGBOX_YESNO
+	msgbox Debug_Script_2_Text_Which_WT, MSGBOX_YESNO
 	switch VAR_RESULT
-	case YES, Debug_Script_3_Set_Unlimited_WT
-	case NO, Debug_Script_3_Set_Limited_WT
-	case MULTI_B_PRESSED, Debug_Script_3_Set_Limited_WT
+	case YES, Debug_Script_2_Set_Unlimited_WT
+	case NO, Debug_Script_2_Set_Limited_WT
+	case MULTI_B_PRESSED, Debug_Script_2_Set_Limited_WT
 	end
 
-Debug_Script_3_Set_Limited_WT:
+Debug_Script_2_Set_Limited_WT:
 	setvar VAR_WONDERTRADE, 1
-	msgbox Debug_Script_3_SelectFrontierBanOption_Text, MSGBOX_YESNO
+	msgbox Debug_Script_2_SelectFrontierBanOption_Text, MSGBOX_YESNO
 	switch VAR_RESULT
-	case YES, Debug_Script_3_SelectFrontierBanOption_Zero
-	case NO, Debug_Script_3_SelectFrontierBanOption_One
-	case MULTI_B_PRESSED, Debug_Script_3_SelectFrontierBanOption_One
+	case YES, Debug_Script_2_SelectFrontierBanOption_Zero
+	case NO, Debug_Script_2_SelectFrontierBanOption_One
+	case MULTI_B_PRESSED, Debug_Script_2_SelectFrontierBanOption_One
 	end
 
-Debug_Script_3_Set_Unlimited_WT:
+Debug_Script_2_Set_Unlimited_WT:
 	setvar VAR_WONDERTRADE, 0
-	msgbox Debug_Script_3_SelectFrontierBanOption_Text, MSGBOX_YESNO
+	msgbox Debug_Script_2_SelectFrontierBanOption_Text, MSGBOX_YESNO
 	switch VAR_RESULT
-	case YES, Debug_Script_3_SelectFrontierBanOption_Zero
-	case NO, Debug_Script_3_SelectFrontierBanOption_One
-	case MULTI_B_PRESSED, Debug_Script_3_SelectFrontierBanOption_One
+	case YES, Debug_Script_2_SelectFrontierBanOption_Zero
+	case NO, Debug_Script_2_SelectFrontierBanOption_One
+	case MULTI_B_PRESSED, Debug_Script_2_SelectFrontierBanOption_One
 	end
 
-Debug_Script_3_SelectFrontierBanOption_Zero:
-	callnative Update24to30_SetFrontierBansToZero
+Debug_Script_2_SelectFrontierBanOption_Zero:
+	callnative Update24to32_SetFrontierBansToZero
 	closemessage
 	warp MAP_PETALBURG_CITY, 16, 16
 	end
 
-Debug_Script_3_SelectFrontierBanOption_One:
-	callnative Update24to30_SetFrontierBansToOne
+Debug_Script_2_SelectFrontierBanOption_One:
+	callnative Update24to32_SetFrontierBansToOne
 	closemessage
 	warp MAP_PETALBURG_CITY, 16, 16
 	end
 
-Debug_Script_3_Text:
-	.string "{COLOR RED}WARNING! ONLY RUN THIS SCRIPT ONCE.\p"
-	.string "STARTING A NEW GAME IS RECOMMENDED!\p"
-	.string "However, if you are willing to accept\n"
-	.string "possible issues, this script will let you\l"
-	.string "name your rival, fix other stuff, then\l"
-	.string "teleport you to PETALBURG CITY.\p"
+Debug_Script_2_Text:
+	.string "{COLOR RED}WARNING! DON'T RUN THIS SCRIPT IF\n"
+	.string "YOU'RE IN VERSION 3.3 OR UP!\p"
+	.string "ONLY RUN THIS SCRIPT ONCE, FROM VERSION\n"
+	.string "3.0 TO 3.2!\p"
+	.string "This script will let you name your\n"
+	.string "rival, fix other stuff, then teleport\l"
+	.string "you to PETALBURG CITY, to fix maps.\p"
 	.string "Continue?$"
 
-Debug_Script_3_Text_Which_WT:
-	.string "Is UNLIMITED WONDERTRADES\n"
-	.string "in the challenges menu enabled?$"
+Debug_Script_2_Text_Which_WT:
+	.string "UNLIMITED WONDERTRADE option needs to\n"
+	.string "be reset. Will you enable it?$"
 
-Debug_Script_3_SelectFrontierBanOption_Text:
+Debug_Script_2_SelectFrontierBanOption_Text:
 	.string "Would you like to enable the new\n"
-	.string "option FRONTIER BANS?\p"
+	.string "option, FRONTIER BANS?\p"
 	.string "According to your current difficulty,\n"
 	.string "enabling it will ban legendaries from\l"
 	.string "participating in the BATTLE FRONTIER.\p"
@@ -141,7 +139,88 @@ Debug_Script_3_SelectFrontierBanOption_Text:
 	.string "Would you like to enable the bans?\n"
 	.string "{COLOR RED}(YES has been always the default option)$"
 
+@Update 3.2 to 3.3
+Debug_Script_3::
+	msgbox Debug_Script_3_Text, MSGBOX_YESNO
+	switch VAR_RESULT
+	case NO, Debug_Script_1_Closemessage
+	case MULTI_B_PRESSED, Debug_Script_1_Closemessage
+	case YES, Debug_Script_3_Update32to33_ShinyColors
+	end
+
+Debug_Script_3_Text::
+	.string "{COLOR RED}WARNING! Don't run this script\n"
+	.string "if you're NOT in VERSION 3.3 and you're\l"
+	.string "updating FROM VERSION 3.2!\p"
+	.string "Continue?$"
+
+Debug_Script_3_Update32to33_ShinyColors::
+	msgbox Debug_Script_3_Text_Shiny_Colors, MSGBOX_YESNO
+	switch VAR_RESULT
+	case NO, Debug_Script_3_DisableShinyColors
+	case MULTI_B_PRESSED, Debug_Script_3_DisableShinyColors
+	case YES, Debug_Script_3_EnableShinyColors
+	end
+
+Debug_Script_3_DisableShinyColors::
+	callnative Update32to33_SetShinyColorsToZero
+	goto Debug_Script_3_Update32to33_TypeEffectiveness
+	end
+
+Debug_Script_3_EnableShinyColors::
+	callnative Update32to33_SetShinyColorsToOne
+	goto Debug_Script_3_Update32to33_TypeEffectiveness
+	end
+
+Debug_Script_3_Text_Shiny_Colors::
+	.string "This script will let you enable the new\n"
+	.string "SHINY COLORS option, which adds new\l"
+	.string "shiny forms to certain {PKMN} species.\p"
+	.string "Previously, it was always ON, now it's\n"
+	.string "optional. Check online docs for more\l"
+	.string "info and images on new shiny colors.\p"
+	.string "Would you like to enable SHINY COLORS?$"
+
+Debug_Script_3_Update32to33_TypeEffectiveness::
+	msgbox Debug_Script_3_Text_TypeEffectiveness, MSGBOX_YESNO
+	switch VAR_RESULT
+	case NO, Debug_Script_3_SetGenModernChart
+	case MULTI_B_PRESSED, Debug_Script_3_SetGenModernChart
+	case YES, Debug_Script_3_SetGen6Chart
+	end
+
+Debug_Script_3_SetGenModernChart::
+	callnative Update32to33_TypeEffectiveness_Modern
+	closemessage
+	end
+
+Debug_Script_3_SetGen6Chart::
+	callnative Update32to33_TypeEffectiveness_GenVI
+	closemessage
+	end
+
+Debug_Script_3_Text_TypeEffectiveness::
+	.string "TYPE EFFECTIVENESS CHART option\n"
+	.string "needs to be reset.\p"
+	.string "GEN VI TYPE CHART nerfs steel not\n"
+	.string "resisting GHOST and DARK.\p"
+	.string "MODERN TYPE CHART buffs bad types into\n"
+	.string "not so bad, like BUG. Check online docs\l"
+	.string "for more info on this new option.\p"
+	.string "Would you like to use GEN VI TYPE CHART?\p"
+	.string "Selecting YES will enable GEN VI CHART.\n"
+	.string "NO will set it to MODERN TYPE CHART.$"
+
 Debug_Script_4::
+	end
+
+Debug_Script_5::
+	end
+
+Debug_Script_6::
+	end
+
+Debug_Script_7::
 	callnative CheckNuzlockeMode
 	buffernumberstring STR_VAR_1, VAR_UNUSED_0x40DB
 	msgbox Text_Easy_Mode, MSGBOX_DEFAULT
@@ -163,16 +242,8 @@ Text_Normal_Mode::
 Text_Hard_Mode::
 	.string "Hard mode is {STR_VAR_1}$"
 
-Debug_Script_5::
-	end
-
-Debug_Script_6::
-	end
-
-Debug_Script_7::
-	end
-
 Debug_Script_8::
+	callnative Berry_Ready
 	end
 
 Debug_CheckSaveBlock::

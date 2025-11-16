@@ -453,13 +453,13 @@ static const u8 sDebugText_AccessPC[] =         _("Access PC…{CLEAR_TO 110}{RI
 static const u8 sDebugText_Cancel[] =           _("Cancel");
 // Script menu
 static const u8 sDebugText_Util_Script_1[] =               _("Open Challenges Menu");
-static const u8 sDebugText_Util_Script_2[] =               _("Grow Berry Tree");
-static const u8 sDebugText_Util_Script_3[] =               _("Update 2.4 -> 3.0+");
-static const u8 sDebugText_Util_Script_4[] =               _("Nuzlocke Diff. info");
+static const u8 sDebugText_Util_Script_2[] =               _("Update 2.4 -> 3.2");
+static const u8 sDebugText_Util_Script_3[] =               _("Update 3.2 -> 3.3+");
+static const u8 sDebugText_Util_Script_4[] =               _("Script 4 (Empty)");
 static const u8 sDebugText_Util_Script_5[] =               _("Script 5 (Empty)");
 static const u8 sDebugText_Util_Script_6[] =               _("Script 6 (Empty)");
-static const u8 sDebugText_Util_Script_7[] =               _("Script 7 (Empty)");
-static const u8 sDebugText_Util_Script_8[] =               _("Script 8 (Empty)");
+static const u8 sDebugText_Util_Script_7[] =               _("Check Nuzlocke Mode");
+static const u8 sDebugText_Util_Script_8[] =               _("Grow Berry Tree");
 // Util Menu
 static const u8 sDebugText_Util_HealParty[] =               _("Heal Party");
 static const u8 sDebugText_Util_Fly[] =                     _("Fly to map…{CLEAR_TO 110}{RIGHT_ARROW}");
