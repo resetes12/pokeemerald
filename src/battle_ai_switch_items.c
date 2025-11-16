@@ -628,7 +628,7 @@ static void ModulateByTypeEffectiveness(u8 atkType, u8 defType1, u8 defType2, u8
             i += 3;
         }
     }
-    else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Old type effectiveness
+    else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Gen6 type effectiveness
     {
         while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE_OLD(i)) != TYPE_ENDTABLE)
         {

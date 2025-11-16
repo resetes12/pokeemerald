@@ -2997,7 +2997,7 @@ static int GetTypeEffectivenessPoints(int move, int targetSpecies, int mode)
                 i += 3;
             }
         }
-        else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Old type effectiveness
+        else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Gen6 type effectiveness
         {
             // Calculate a "type power" value to determine the benefit of using this type move against the target.
             // This value will then be used to get the number of points to assign to the move.

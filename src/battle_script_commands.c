@@ -1504,7 +1504,7 @@ s32 GetTypeEffectiveness(struct Pokemon *mon, u8 moveType) {
             i += 3;
         }
     }
-    else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Old type effectiveness
+    else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Gen6 type effectiveness
     {
         while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE_OLD(i)) != TYPE_ENDTABLE) {
             if (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE_OLD(i)) == TYPE_FORESIGHT) {
@@ -1647,7 +1647,7 @@ static void Cmd_typecalc(void)
                 i += 3;
             }
         }
-        else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Old type effectiveness
+        else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Gen6 type effectiveness
         {
             while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE_OLD(i)) != TYPE_ENDTABLE)
             {
@@ -1755,7 +1755,7 @@ static void CheckWonderGuardAndLevitate(void)
             i += 3;
         }
     }
-    else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Old type effectiveness
+    else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Gen6 type effectiveness
     {
         while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE_OLD(i)) != TYPE_ENDTABLE)
         {
@@ -1898,7 +1898,7 @@ u8 TypeCalc(u16 move, u8 attacker, u8 defender)
                 i += 3;
             }
         }
-        else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Old type effectiveness
+        else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Gen6 type effectiveness
         {
             while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE_OLD(i)) != TYPE_ENDTABLE)
             {
@@ -1978,7 +1978,7 @@ u8 AI_TypeCalc(u16 move, u16 targetSpecies, u8 targetAbility)
                 i += 3;
             }
         }
-        else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Old type effectiveness
+        else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Gen6 type effectiveness
         {
             while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE_OLD(i)) != TYPE_ENDTABLE)
             {
@@ -2051,7 +2051,7 @@ u8 AI_TypeDisplay(u16 move, u16 targetSpecies, u8 targetAbility)
                 i += 3;
             }
         }
-        else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Old type effectiveness
+        else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Gen6 type effectiveness
         {
             while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE_OLD(i)) != TYPE_ENDTABLE)
             {
@@ -5252,7 +5252,7 @@ static void Cmd_typecalc2(void)
                 i += 3;
             }
         }
-        else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Old type effectiveness
+        else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Gen6 type effectiveness
         {
             while (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE_OLD(i)) != TYPE_ENDTABLE)
             {
@@ -8897,11 +8897,11 @@ static void Cmd_settypetorandomresistance(void)
             }
             gBattlescriptCurrInstr = T1_READ_PTR(gBattlescriptCurrInstr + 1);
         }
-        else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Old type effectiveness
+        else if (gSaveBlock1Ptr->tx_Mode_TypeEffectiveness == 0) //Gen6 type effectiveness
         {
             for (rands = 0; rands < 1000; rands++)
             {
-                while (((i = Random() % 128) > sizeof(gTypeEffectiveness_Old) / 3));
+                while (((i = Random() % 128) > sizeof(gTypeEffectiveness_GenVI) / 3));
 
                 i *= 3;
 
@@ -8917,7 +8917,7 @@ static void Cmd_settypetorandomresistance(void)
                 }
             }
 
-            for (j = 0, rands = 0; rands < sizeof(gTypeEffectiveness_Old); j += 3, rands += 3)
+            for (j = 0, rands = 0; rands < sizeof(gTypeEffectiveness_GenVI); j += 3, rands += 3)
             {
                 switch (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE_OLD(j)))
                 {
