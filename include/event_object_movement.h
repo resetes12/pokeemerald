@@ -233,7 +233,6 @@ void CameraObjectReset2(void);
 u8 GetObjectEventBerryTreeId(u8 objectEventId);
 void SetBerryTreeJustPicked(u8 mapId, u8 mapNumber, u8 mapGroup);
 bool8 IsBerryTreeSparkling(u8 localId, u8 mapNum, u8 mapGroup);
-void LoadObjectEventPaletteSurf(u16);
 
 void MovementType_None(struct Sprite *);
 void MovementType_LookAround(struct Sprite *);
