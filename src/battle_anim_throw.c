@@ -1336,6 +1336,8 @@ static void SpriteCB_Ball_Capture_Step(struct Sprite *sprite)
 
         sprite->sState = 0;
         sprite->callback = SpriteCB_Ball_FadeOut;
+        if (gSaveBlock2Ptr->optionsSoundEffects == 2)
+            PlaySE(MUS_HG_CAUGHT);
     }
 }
 
