@@ -5760,6 +5760,7 @@ void CreateEnemyEventMon(void)
         heldItem[1] = itemId >> 8;
         SetMonData(&gEnemyParty[0], MON_DATA_HELD_ITEM, heldItem);
     }
+    SetNuzlockeChecks();
 }
 
 static u16 CalculateBoxMonChecksum(struct BoxPokemon *boxMon)
