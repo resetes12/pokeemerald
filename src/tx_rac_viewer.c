@@ -455,8 +455,7 @@ static u8 GetSel_Rand_Starter(void)        { return gSaveBlock1Ptr->tx_Random_St
 static u8 GetSel_Rand_Wild(void)           { return gSaveBlock1Ptr->tx_Random_WildPokemon        ? 1 : 0; }
 static u8 GetSel_Rand_Trainer(void)        { return gSaveBlock1Ptr->tx_Random_Trainer            ? 1 : 0; }
 static u8 GetSel_Rand_Static(void)         { return gSaveBlock1Ptr->tx_Random_Static             ? 1 : 0; }
-// Similar Evo Level is defined as the inverse in the menu: sel = !tx_Random_Similar
-static u8 GetSel_Rand_SimilarEvoLvl(void)  { return (!gSaveBlock1Ptr->tx_Random_Similar)         ? 1 : 0; }
+static u8 GetSel_Rand_SimilarEvoLvl(void)  { return gSaveBlock1Ptr->tx_Random_Similar            ? 1 : 0; }
 static u8 GetSel_Rand_IncludeLegends(void) { return gSaveBlock1Ptr->tx_Random_IncludeLegendaries ? 1 : 0; }
 static u8 GetSel_Rand_Type(void)           { return gSaveBlock1Ptr->tx_Random_Type               ? 1 : 0; }
 static u8 GetSel_Rand_Moves(void)          { return gSaveBlock1Ptr->tx_Random_Moves              ? 1 : 0; }
