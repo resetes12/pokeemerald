@@ -2163,6 +2163,8 @@ void BufferStringBattle(u16 stringID)
                         stringPtr = sText_WildPkmnAppeared;
                     else if (gSaveBlock2Ptr->optionsRunType == 3)
                         stringPtr = sText_WildPkmnAppeared_B;
+                    else 
+                        stringPtr = sText_WildPkmnAppearedOld;
                 }
                 else if (gSaveBlock2Ptr->optionsLRtoRun == 1)
                     stringPtr = sText_WildPkmnAppearedOld;
