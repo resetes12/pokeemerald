@@ -143,7 +143,7 @@ static const u8 sText_Rand_Starter[]          = _("STARTER POKéMON");
 static const u8 sText_Rand_Wild[]             = _("WILD POKéMON");
 static const u8 sText_Rand_Trainer[]          = _("TRAINER");
 static const u8 sText_Rand_Static[]           = _("RANDOM STATIC");
-static const u8 sText_Rand_SimilarEvoLvl[]    = _("BALANCE ON TIERS");
+static const u8 sText_Rand_SimilarEvoLvl[]    = _("BALANCING");
 static const u8 sText_Rand_IncludeLegends[]   = _("LEGENDARIES");
 static const u8 sText_Rand_Type[]             = _("TYPE");
 static const u8 sText_Rand_Moves[]            = _("MOVES");
@@ -184,7 +184,7 @@ static const u8 sText_Chk_PCHeal[]            = _("PC HEAL {PKMN}");
 static const u8 sText_Chk_Expensive[]         = _("ULTRA EXPENSIVE!");
 static const u8 sText_Chk_EvoLimit[]          = _("EVO LIMIT");
 static const u8 sText_Chk_OneType[]           = _("ONE TYPE ONLY");
-static const u8 sText_Chk_BaseStatEq[]        = _("STAT EQUALIZER");
+static const u8 sText_Chk_BaseStatEq[]        = _("BST EQUALIZER");
 static const u8 sText_Chk_Mirror[]            = _("MIRROR MODE");
 static const u8 sText_Chk_MirrorThief[]       = _("MIRROR THIEF");
 
