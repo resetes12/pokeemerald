@@ -569,7 +569,7 @@
 #define TRAINER_CATHERINE_5                 565
 #define TRAINER_JULIO                       566
 #define TRAINER_GRUNT_SEAFLOOR_CAVERN_5     567
-#define TRAINER_STEVEN2                     568
+#define TRAINER_STEVEN_2_SINGLE             568 // Steven's Rematch (Singles, only happens if using one Pokémon)
 #define TRAINER_GRUNT_MT_PYRE_4             569
 #define TRAINER_GRUNT_JAGGED_PASS           570
 #define TRAINER_MARC                        571
@@ -853,7 +853,7 @@
 #define TRAINER_ALVARO                      849
 #define TRAINER_EVERETT                     850
 #define TRAINER_RED                         851 //Unused
-#define TRAINER_LEAF                        852 //Unused
+#define TRAINER_STEVEN_2_DOUBLE             852 //854, Steven's Rematch (Doubles, default)
 #define TRAINER_WALLACE_2_DOUBLE            853 //855, Wallace Rematch (Doubles)
 #define TRAINER_DRAKE_2_DOUBLE              854 //856, Drake Rematch (Doubles)
 #define TRAINER_SIDNEY_2_DOUBLE             855 //857, Sidney Rematch (Doubles)
