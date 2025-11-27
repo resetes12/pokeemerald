@@ -48,8 +48,26 @@ EverGrandeCity_GlaciasRoom_EventScript_Glacia::
 	end
 
 EverGrandeCity_GlaciasRoom_EventScript_GlaciaRematch::
+	playbgm MUS_ENCOUNTER_ELITE_FOUR, FALSE
+	msgbox EverGrandeCity_GlaciasRoom_Text_DoublesOrSingles
+	dynmultichoice 20, 8, FALSE, 2, 0, DYN_MULTICHOICE_CB_NONE, EverGrandeCity_SidneysRoom_Text_Doubles, EverGrandeCity_SidneysRoom_Text_Singles
+	switch VAR_RESULT
+	case 0, EverGrandeCity_GlaciasRoom_EventScript_GlaciaRematch_Doubles
+	case 1, EverGrandeCity_GlaciasRoom_EventScript_GlaciaRematch_Singles
+	case MULTI_B_PRESSED, EverGrandeCity_SidneysRoom_EventScript_SidneyRematch_NotReady
+	end
+
+EverGrandeCity_GlaciasRoom_EventScript_GlaciaRematch_Singles::
 	msgbox EverGrandeCity_GlaciasRoom_Text_IntroSpeech2, MSGBOX_DEFAULT
-	trainerbattle_no_intro TRAINER_GLACIA2, EverGrandeCity_GlaciasRoom_Text_Defeat2
+	trainerbattle_no_intro TRAINER_GLACIA_2_SINGLE, EverGrandeCity_GlaciasRoom_Text_Defeat2
+	goto EverGrandeCity_GlaciasRoom_EventScript_Defeated
+	end
+
+EverGrandeCity_GlaciasRoom_EventScript_GlaciaRematch_Doubles::
+	getpartysize
+	goto_if_eq VAR_RESULT, 1, EverGrandeCity_SidneysRoom_EventScript_SidneyRematch_Doubles_CantBattle
+	msgbox EverGrandeCity_GlaciasRoom_Text_IntroSpeech2, MSGBOX_DEFAULT
+	trainerbattle_no_intro  TRAINER_GLACIA_2_DOUBLE, EverGrandeCity_GlaciasRoom_Text_Defeat2
 	goto EverGrandeCity_GlaciasRoom_EventScript_Defeated
 	end
 
@@ -76,16 +94,21 @@ EverGrandeCity_GlaciasRoom_Text_IntroSpeech:
 	.string "It would please me to no end if I could\n"
 	.string "go all out against you!$"
 
-EverGrandeCity_GlaciasRoom_Text_IntroSpeech2:
+EverGrandeCity_GlaciasRoom_Text_DoublesOrSingles:
 	.string "Welcome again, I'm GLACIA. I won't\n"
 	.string "introduce myself again, you know me.\p"
 	.string "I haven't had any challenge since I\n"
 	.string "last battled you and your POKéMON.\p"
 	.string "What about you?\n"
 	.string "Have your skills honed?\p"
+	.string "Before we start, I'll give you the\n"
+	.string "chance to decide whether to fight me\l"
+	.string "in a DOUBLE or a SINGLE BATTLE.$"
+
+EverGrandeCity_GlaciasRoom_Text_IntroSpeech2:
 	.string "It would please me to no end if I could\n"
 	.string "go all out against you!\p"
-	.string "But this time… I will win!$"
+	.string "This time… I will win!$"
 
 EverGrandeCity_GlaciasRoom_Text_Defeat:
 	.string "You and your POKéMON…\n"

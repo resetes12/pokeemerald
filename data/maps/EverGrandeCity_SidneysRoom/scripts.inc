@@ -55,9 +55,40 @@ EverGrandeCity_SidneysRoom_EventScript_Sidney::
 
 EverGrandeCity_SidneysRoom_EventScript_SidneyRematch::
 	playbgm MUS_ENCOUNTER_ELITE_FOUR, FALSE
+	msgbox EverGrandeCity_SidneysRoom_Text_DoublesOrSingles
+	dynmultichoice 20, 8, FALSE, 2, 0, DYN_MULTICHOICE_CB_NONE, EverGrandeCity_SidneysRoom_Text_Doubles, EverGrandeCity_SidneysRoom_Text_Singles
+	switch VAR_RESULT
+	case 0, EverGrandeCity_SidneysRoom_EventScript_SidneyRematch_Doubles
+	case 1, EverGrandeCity_SidneysRoom_EventScript_SidneyRematch_Singles
+	case MULTI_B_PRESSED, EverGrandeCity_SidneysRoom_EventScript_SidneyRematch_NotReady
+	end
+
+EverGrandeCity_SidneysRoom_EventScript_SidneyRematch_Singles::
 	msgbox EverGrandeCity_SidneysRoom_Text_IntroSpeech2, MSGBOX_DEFAULT
-	trainerbattle_no_intro TRAINER_SIDNEY2, EverGrandeCity_SidneysRoom_Text_Defeat2
+	trainerbattle_no_intro TRAINER_SIDNEY_2_SINGLE, EverGrandeCity_SidneysRoom_Text_Defeat2
 	goto EverGrandeCity_SidneysRoom_EventScript_Defeated
+	end
+
+EverGrandeCity_SidneysRoom_EventScript_SidneyRematch_Doubles::
+	getpartysize
+	goto_if_eq VAR_RESULT, 1, EverGrandeCity_SidneysRoom_EventScript_SidneyRematch_Doubles_CantBattle
+	msgbox EverGrandeCity_SidneysRoom_Text_IntroSpeech2, MSGBOX_DEFAULT
+	trainerbattle_no_intro TRAINER_SIDNEY_2_DOUBLE, EverGrandeCity_SidneysRoom_Text_Defeat2
+	goto EverGrandeCity_SidneysRoom_EventScript_Defeated
+	end
+
+EverGrandeCity_SidneysRoom_EventScript_SidneyRematch_NotReady::
+	msgbox EverGrandeCity_SidneysRoom_Text_NotReady, MSGBOX_DEFAULT
+	playbgm MUS_VICTORY_ROAD, FALSE
+	closemessage
+	release
+	end
+
+EverGrandeCity_SidneysRoom_EventScript_SidneyRematch_Doubles_CantBattle::
+	msgbox EverGrandeCity_SidneysRoom_Text_NotEnoughPokemon, MSGBOX_DEFAULT
+	playbgm MUS_VICTORY_ROAD, FALSE
+	closemessage
+	release
 	end
 
 EverGrandeCity_SidneysRoom_EventScript_PostBattleSpeech::
@@ -72,6 +103,12 @@ EverGrandeCity_SidneysRoom_EventScript_Defeated::
 	release
 	end
 
+EverGrandeCity_SidneysRoom_Text_Doubles::
+	.string "DOUBLE BATTLE$"
+
+EverGrandeCity_SidneysRoom_Text_Singles::
+	.string "SINGLE BATTLE$"
+
 EverGrandeCity_SidneysRoom_Text_IntroSpeech:
 	.string "Welcome, challenger!\n"
 	.string "I'm SIDNEY of the ELITE FOUR.\p"
@@ -82,7 +119,7 @@ EverGrandeCity_SidneysRoom_Text_IntroSpeech:
 	.string "a battle that can only be staged\l"
 	.string "here in the POKéMON LEAGUE!$"
 
-EverGrandeCity_SidneysRoom_Text_IntroSpeech2:
+EverGrandeCity_SidneysRoom_Text_DoublesOrSingles::
 	.string "Welcome back, challenger!\n"
 	.string "I'm SIDNEY of the ELITE FOUR.\p"
 	.string "But you already know me!\n"
@@ -91,7 +128,18 @@ EverGrandeCity_SidneysRoom_Text_IntroSpeech2:
 	.string "All right! You and me, let's enjoy\n"
 	.string "a battle that can only be staged\l"
 	.string "here in the POKéMON LEAGUE!\p"
+	.string "You may choose whether to have a\n"
+	.string "DOUBLE BATTLE or a SINGLE BATTLE.$"
+
+EverGrandeCity_SidneysRoom_Text_IntroSpeech2::
 	.string "This time, I won't lose.$"
+
+EverGrandeCity_SidneysRoom_Text_NotEnoughPokemon::
+	.string "You only have one POKéMON. You need\n"
+	.string "two or more POKéMON to battle me.$"
+
+EverGrandeCity_SidneysRoom_Text_NotReady::
+	.string "Let me know when you're ready.$"
 
 EverGrandeCity_SidneysRoom_Text_Defeat:
 	.string "Well, how do you like that? I lost!\n"

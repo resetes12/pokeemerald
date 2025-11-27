@@ -50,8 +50,25 @@ EverGrandeCity_DrakesRoom_EventScript_Drake::
 
 EverGrandeCity_DrakesRoom_EventScript_DrakeRematch::
 	playbgm MUS_ENCOUNTER_ELITE_FOUR, FALSE
+	msgbox EverGrandeCity_DrakesRoom_Text_DoublesOrSingles
+	dynmultichoice 20, 8, FALSE, 2, 0, DYN_MULTICHOICE_CB_NONE, EverGrandeCity_SidneysRoom_Text_Doubles, EverGrandeCity_SidneysRoom_Text_Singles
+	switch VAR_RESULT
+	case 0, EverGrandeCity_DrakesRoom_EventScript_DrakeRematch_Doubles
+	case 1, EverGrandeCity_DrakesRoom_EventScript_DrakeRematch_Singles
+	case MULTI_B_PRESSED, EverGrandeCity_SidneysRoom_EventScript_SidneyRematch_NotReady
+	end
+
+EverGrandeCity_DrakesRoom_EventScript_DrakeRematch_Singles::
 	msgbox EverGrandeCity_DrakesRoom_Text_IntroSpeech2, MSGBOX_DEFAULT
-	trainerbattle_no_intro TRAINER_DRAKE2, EverGrandeCity_DrakesRoom_Text_Defeat2
+	trainerbattle_no_intro TRAINER_DRAKE_2_SINGLE, EverGrandeCity_DrakesRoom_Text_Defeat2
+	goto EverGrandeCity_DrakesRoom_EventScript_Defeated
+	end
+
+EverGrandeCity_DrakesRoom_EventScript_DrakeRematch_Doubles::
+	getpartysize
+	goto_if_eq VAR_RESULT, 1, EverGrandeCity_SidneysRoom_EventScript_SidneyRematch_Doubles_CantBattle
+	msgbox EverGrandeCity_DrakesRoom_Text_IntroSpeech2, MSGBOX_DEFAULT
+	trainerbattle_no_intro TRAINER_DRAKE_2_DOUBLE, EverGrandeCity_DrakesRoom_Text_Defeat2
 	goto EverGrandeCity_DrakesRoom_EventScript_Defeated
 	end
 
@@ -82,14 +99,18 @@ EverGrandeCity_DrakesRoom_Text_IntroSpeech:
 	.string "If you don't, then you will never\n"
 	.string "prevail over me!$"
 
-EverGrandeCity_DrakesRoom_Text_IntroSpeech2:
+EverGrandeCity_DrakesRoom_Text_DoublesOrSingles:
 	.string "I am the last of the POKéMON LEAGUE\n"
 	.string "ELITE FOUR, DRAKE the DRAGON master!\p"
 	.string "How are your POKéMON partners?\n"
 	.string "Did they help you get stronger?\p"
-	.string "I'm sure they did!\p"
+	.string "I'm sure they did! Ready?\p"
+	.string "I'll let you choose. Will you face\n"
+	.string "me in a DOUBLE or a SINGLE BATTLE?$"
+
+EverGrandeCity_DrakesRoom_Text_IntroSpeech2:
 	.string "You seem already fired up. Did the\n"
-	.string "other ELITE FOUR members took a\p"
+	.string "other ELITE FOUR members took a\l"
 	.string "toll on you? Don't falter me now!\p"
 	.string "Prevail over me! Let's dance!$"
 

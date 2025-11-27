@@ -49,8 +49,25 @@ EverGrandeCity_PhoebesRoom_EventScript_Phoebe::
 
 EverGrandeCity_PhoebesRoom_EventScript_PhoebeRematch::
 	playbgm MUS_ENCOUNTER_ELITE_FOUR, FALSE
+	msgbox EverGrandeCity_PhoebesRoom_Text_IntroSpeech_DoublesOrSingles
+	dynmultichoice 20, 8, FALSE, 2, 0, DYN_MULTICHOICE_CB_NONE, EverGrandeCity_SidneysRoom_Text_Doubles, EverGrandeCity_SidneysRoom_Text_Singles
+	switch VAR_RESULT
+	case 0, EverGrandeCity_PhoebesRoom_EventScript_PhoebeRematch_Doubles
+	case 1, EverGrandeCity_PhoebesRoom_EventScript_PhoebeRematch_Singles
+	case MULTI_B_PRESSED, EverGrandeCity_SidneysRoom_EventScript_SidneyRematch_NotReady
+	end
+
+EverGrandeCity_PhoebesRoom_EventScript_PhoebeRematch_Singles::
 	msgbox EverGrandeCity_PhoebesRoom_Text_IntroSpeech2, MSGBOX_DEFAULT
-	trainerbattle_no_intro TRAINER_PHOEBE2, EverGrandeCity_PhoebesRoom_Text_Defeat2
+	trainerbattle_no_intro TRAINER_PHOEBE_2_SINGLE, EverGrandeCity_PhoebesRoom_Text_Defeat2
+	goto EverGrandeCity_PhoebesRoom_EventScript_Defeated
+	end
+
+EverGrandeCity_PhoebesRoom_EventScript_PhoebeRematch_Doubles::
+	getpartysize
+	goto_if_eq VAR_RESULT, 1, EverGrandeCity_SidneysRoom_EventScript_SidneyRematch_Doubles_CantBattle
+	msgbox EverGrandeCity_PhoebesRoom_Text_IntroSpeech2, MSGBOX_DEFAULT
+	trainerbattle_no_intro TRAINER_PHOEBE_2_DOUBLE, EverGrandeCity_PhoebesRoom_Text_Defeat2
 	goto EverGrandeCity_PhoebesRoom_EventScript_Defeated
 	end
 
@@ -77,12 +94,17 @@ EverGrandeCity_PhoebesRoom_Text_IntroSpeech:
 	.string "So, come on, just try and see if you can\n"
 	.string "even inflict damage on my POKéMON!$"
 
-EverGrandeCity_PhoebesRoom_Text_IntroSpeech2:
+EverGrandeCity_PhoebesRoom_Text_IntroSpeech_DoublesOrSingles:
 	.string "Ahahaha! It's you again!\p"
 	.string "I'm PHOEBE of the ELITE FOUR.\n"
 	.string "The bond I developed with my POKéMON\l"
 	.string "has grown even stronger!\p"
-	.string "So just try and see if you can even\n"
+	.string "You may choose between having a\n"
+	.string "DOUBLE BATTLE or a SINGLE BATTLE.\l"
+	.string "Which one will you choose?$"
+
+EverGrandeCity_PhoebesRoom_Text_IntroSpeech2:
+	.string "Just try and see if you can even\n"
 	.string "inflict damage on my POKéMON.\p"
 	.string "Because it won't be like last time!$"
 
