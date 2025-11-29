@@ -131,6 +131,7 @@ static const u8 sText_Extra_Legendaries_Label[]         = _("EXTRA LEGEND.");
 //page 2 Features
 static const u8 sText_RTCType_Label[]      = _("CLOCK TYPE");
 static const u8 sText_ShinyChance_Label[]  = _("SHINY CHANCE");
+static const u8 sText_CatchRate_Label[[]   = _("CATCH RATE");
 static const u8 sText_ItemDrops_Label[]    = _("ITEM DROP");
 static const u8 sText_FrontierBans_Label[] = _("FRONTIER BANS");
 static const u8 sText_ShinyColors_Label[]  = _("SHINY COLORS");
@@ -368,6 +369,13 @@ static const u8 sText_Challenges_ShinyChance_1024[]   = _("1024");
 static const u8 sText_Challenges_ShinyChance_512[]    = _("512");
 static const u8 *const sText_Challenges_ShinyChance_Strings[] = {sText_Challenges_ShinyChance_8192,  sText_Challenges_ShinyChance_4096,  sText_Challenges_ShinyChance_2048,  sText_Challenges_ShinyChance_1024,  sText_Challenges_ShinyChance_512};
 
+static const u8 sText_Challenges_CatchRate_05x[]   = _("0.5x");
+static const u8 sText_Challenges_CatchRate_1x[]   = _("1x");
+static const u8 sText_Challenges_CatchRate_2x[]   = _("2x");
+static const u8 sText_Challenges_CatchRate_3x[]   = _("3x");
+static const u8 *const sText_Challenges_CatchRate_Strings[] = {sText_Challenges_CatchRate_05x,  sText_Challenges_CatchRate_1x,  sText_Challenges_CatchRate_2x,  sText_Challenges_CatchRate_3x};
+
+
 static inline void Viewer_ClearRow(u8 visRow, bool8 selected)
 {
     const int y = visRow * 16;
@@ -437,6 +445,7 @@ static u8 GetSel_ExtraLegends(void)       { return gSaveBlock1Ptr->tx_Mode_New_L
 //Page 2
 static u8 GetSel_Feature_RTCType(void)      { return gSaveBlock1Ptr->tx_Features_RTCType          ? 1 : 0; }
 static u8 GetSel_Feature_ShinyChance(void)  { return gSaveBlock1Ptr->tx_Features_ShinyChance      ? 1 : 0; }
+static u8 GetSel_Feature_CatchRate(void)    { return gSaveBlock1Ptr->tx_Features_CatchRate        ? 1 : 0; }
 static u8 GetSel_Feature_ItemDrops(void)    { return gSaveBlock1Ptr->tx_Features_WildMonDropItems ? 1 : 0; }
 static u8 GetSel_Feature_FrontierBans(void) { return (gSaveBlock1Ptr->tx_Features_FrontierBans==0)     ? 1 : 0; } //reversed from the rest
 static u8 GetSel_Feature_ShinyColors(void)  { return gSaveBlock1Ptr->tx_Features_ShinyColors      ? 1 : 0; }
@@ -557,7 +566,8 @@ static const struct ViewerBoolRow sBoolRows[] = {
 
 static const struct ViewerBoolRow sBoolRows_Page2[] = {
     { sText_RTCType_Label,      GetSel_Feature_RTCType      },
-    { sText_ShinyChance_Label,  GetSel_Feature_ShinyChance  },
+    { sText_ShinyChance_Label,  GetSel_Feature_ShinyChance  },    
+    { sText_CatchRate_Label,    GetSel_Feature_CatchRate    },
     { sText_ShinyColors_Label,  GetSel_Feature_ShinyColors  },
     { sText_ItemDrops_Label,    GetSel_Feature_ItemDrops    },
     { sText_UnlimitedWT_Label,  GetSel_Feature_UnlimitedWT  },
@@ -799,7 +809,15 @@ static void Viewer_DrawRow_Page2(u8 visRow, u16 idx)
                                   sText_Challenges_ShinyChance_Strings[sc], selected);
         break;
     }
-    case 6: // FRONTIER BANS
+    case 2: // CATCH RATE
+    {
+        u8 cr = gSaveBlock1Ptr->tx_Features_CatchRate;
+        if (cr > 3) cr = 0;
+        Viewer_DrawSingleValueRow(visRow, sText_CatchRate_Label,
+                                  sText_Challenges_CatchRate_Strings[cr], selected);
+        break;
+    }
+    case 7: // FRONTIER BANS
     {
         const int y = visRow * 16;
         Viewer_ClearRow(visRow, selected);

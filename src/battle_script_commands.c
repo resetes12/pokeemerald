@@ -10779,7 +10779,24 @@ static void Cmd_handleballthrow(void)
             catchRate = gBattleStruct->safariCatchFactor * 1275 / 100;
         else
             catchRate = gSpeciesInfo[gBattleMons[gBattlerTarget].species].catchRate;
-
+        
+        switch(gSaveBlock1Ptr->tx_Features_CatchRate)
+        {
+        case 0: // 0.5x
+            catchRate = max(catchRate / 2, 3);
+            break;
+        case 1: // 1x, no-op
+            break;
+        case 2: // 2x
+            catchRate = min(catchRate * 2, 255);
+            break;
+        case 3:
+            catchRate = min(catchRate * 3, 255);
+            break;
+        default:
+            break;
+        }
+        
         if ((catchRate == 3) && (catchRateHardMode == 2) && (gSaveBlock2Ptr->optionsDifficulty == 2))
             catchRate = 2;
 

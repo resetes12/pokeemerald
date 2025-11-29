@@ -13,6 +13,7 @@
 bool8 AreFeaturesActivated(void)
 {
     if (gSaveBlock1Ptr->tx_Features_ShinyChance
+        || gSaveBlock1Ptr->tx_Features_CatchRate
         || gSaveBlock1Ptr->tx_Features_WildMonDropItems
         || gSaveBlock1Ptr->tx_Mode_Encounters
         || gSaveBlock1Ptr->tx_Mode_InfiniteTMs
