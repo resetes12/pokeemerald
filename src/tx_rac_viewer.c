@@ -375,6 +375,9 @@ static const u8 sText_Difficulty_CatchRate_2x[]   = _("2x");
 static const u8 sText_Difficulty_CatchRate_3x[]   = _("3x");
 static const u8 *const sText_Difficulty_CatchRate_Strings[] = {sText_Difficulty_CatchRate_1x, sText_Difficulty_CatchRate_05x, sText_Difficulty_CatchRate_2x,  sText_Difficulty_CatchRate_3x};
 
+static const u8 sText_Difficulty_HardmodeExp_Normal[]   = _("NORMAL");
+static const u8 *const sText_Difficulty_HardModeExp_Strings[] = {sText_Difficulty_CatchRate_1x, sText_Difficulty_HardmodeExp_Normal};
+
 static inline void Viewer_ClearRow(u8 visRow, bool8 selected)
 {
     const int y = visRow * 16;
@@ -911,20 +914,12 @@ static void Viewer_DrawRow_Page5(u8 visRow, u16 idx)
         Viewer_DrawSingleValueRow(visRow, sText_Diff_ExpMult, sText_Diff_ExpMult_Strings[v], selected);
         break;
     }
-    case 3: //Hardmode exp. (YES / NO)
+    case 3: //Hardmode exp. (DEFAULT / NORMAL)
     {
-        const int y = visRow * 16;
-        Viewer_ClearRow(visRow, selected);
-        AddTextPrinterParameterized4(WIN_OPTIONS, FONT_NORMAL, 8, y + 1, 0, 0,
-                                     sColorLeftActive, TEXT_SKIP_DRAW, sText_Diff_HardExp);
-        u8 sel = GetSel_Diff_HardExp();
-        const u8 *leftStyle  = (sel == 0) ? sColorRightRed : sColorRightGray; // "YES"
-        const u8 *rightStyle = (sel == 1) ? sColorRightRed : sColorRightGray; // "NO"
-        AddTextPrinterParameterized4(WIN_OPTIONS, FONT_NORMAL, 104, y, 0, 0,
-                                     leftStyle, TEXT_SKIP_DRAW, sText_Yes);
-        int xr = GetStringRightAlignXOffset(1, sText_No, 198);
-        AddTextPrinterParameterized4(WIN_OPTIONS, FONT_NORMAL, xr, y, 0, 0,
-                                     rightStyle, TEXT_SKIP_DRAW, sText_No);
+        u8 cr = gSaveBlock1Ptr->tx_Difficulty_HardExp;
+        if (cr > 2) cr = 0;
+        Viewer_DrawSingleValueRow(visRow, sText_Diff_HardExp,
+                                  sText_Difficulty_HardModeExp_Strings[cr], selected);
         break;
     }
     case 4: // CATCH RATE
