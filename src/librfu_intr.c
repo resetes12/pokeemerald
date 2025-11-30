@@ -7,7 +7,11 @@ static u16 handshake_wait(u16 slot);
 static void STWI_set_timer_in_RAM(u8 count);
 static void STWI_stop_timer_in_RAM(void);
 static void STWI_init_slave(void);
+#if __STDC_VERSION__ < 202311L
 static void Callback_Dummy_M(int reqCommandId, int error, void (*callbackM)());
+#else
+static void Callback_Dummy_M(int reqCommandId, int error, void (*callbackM)(...));
+#endif
 static void Callback_Dummy_S(u16 reqCommandId, void (*callbackS)(u16));
 static void Callback_Dummy_ID(void (*callbackId)(void));
 
@@ -388,7 +392,11 @@ static void STWI_init_slave(void)
 }
 
 NAKED
+#if __STDC_VERSION__ < 202311L
 static void Callback_Dummy_M(int reqCommandId, int error, void (*callbackM)())
+#else
+static void Callback_Dummy_M(int reqCommandId, int error, void (*callbackM)(...))
+#endif
 {
     asm("bx r2");
 }
