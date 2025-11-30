@@ -963,8 +963,8 @@ static const u8 sText_Description_Difficulty_EscapeRopeDig_Off[]        = _("ESC
 static const u8 sText_Description_Difficulty_EscapeRopeDig_On[]         = _("ESCAPE ROPE and DIG can\nbe used to exit dungeons.");
 static const u8 sText_Description_Difficulty_HardExp_Enabled[]          = _("{PKMN} gain 60% of total EXP in HARD.\n{COLOR 7}{COLOR 8}RECOMMENDED, provides good challenge.");
 static const u8 sText_Description_Difficulty_HardExp_Disabled[]         = _("{PKMN} gain the default EXP in HARD. {COLOR 7}{COLOR 8}NOT\nRECOMMENDED, makes HARD MODE easy.");
-static const u8 sText_Description_Difficulty_CatchRate_05x[]            = _("POKéMON are harder to catch than normal.");
-static const u8 sText_Description_Difficulty_CatchRate_1x[]             = _("POKéMON are as easy to catch as normal.");
+static const u8 sText_Description_Difficulty_CatchRate_05x[]            = _("POKéMON are harder to catch\nthan normal.");
+static const u8 sText_Description_Difficulty_CatchRate_1x[]             = _("POKéMON are as easy to catch\nas normal.");
 static const u8 sText_Description_Difficulty_CatchRate_2x[]             = _("POKéMON are easier to catch.");
 static const u8 sText_Description_Difficulty_CatchRate_3x[]             = _("POKéMON are much easier to catch.");
 static const u8 *const sOptionMenuItemDescriptionsDifficulty[MENUITEM_DIFFICULTY_COUNT][4] =
@@ -3252,19 +3252,19 @@ static void DrawChoices_Difficulty_CatchRate(int selection, int y)
     
     if (selection == 0)
     {
-        gSaveBlock1Ptr->tx_Features_CatchRate = 1; // Half, Set to 1 for save compatibiity reasons
+        gSaveBlock1Ptr->tx_Difficulty_CatchRate = 1; // Half, Set to 1 for save compatibiity reasons
     }
     else if (selection == 1)
     {
-        gSaveBlock1Ptr->tx_Features_CatchRate = 0; // Normal, Set to 1 for save compatibiity reasons
+        gSaveBlock1Ptr->tx_Difficulty_CatchRate = 0; // Normal, Set to 1 for save compatibiity reasons
     }
     else if (selection == 2)
     {
-        gSaveBlock1Ptr->tx_Features_CatchRate = 2; // Double
+        gSaveBlock1Ptr->tx_Difficulty_CatchRate = 2; // Double
     }
     else
     {
-        gSaveBlock1Ptr->tx_Features_CatchRate = 3; // Triple
+        gSaveBlock1Ptr->tx_Difficulty_CatchRate = 3; // Triple
     }
 }
 
