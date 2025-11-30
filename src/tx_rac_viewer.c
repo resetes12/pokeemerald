@@ -169,6 +169,7 @@ static const u8 sText_Diff_PartyLimit[]      = _("PARTY LIMIT");
 static const u8 sText_Diff_LevelCap[]        = _("LEVEL CAP");
 static const u8 sText_Diff_ExpMult[]         = _("EXP. MULTIPLIER");
 static const u8 sText_Diff_HardExp[]         = _("HARD MODE EXP.");
+static const u8 sText_Diff_CatchRate[]       = _("CATCH RATE");
 static const u8 sText_Diff_NoItemPlayer[]    = _("PLAYER ITEMS");
 static const u8 sText_Diff_NoItemTrainer[]   = _("TRAINER ITEMS");
 static const u8 sText_Diff_PartyIVs[]        = _("PLAYER IVs");
@@ -368,6 +369,12 @@ static const u8 sText_Challenges_ShinyChance_1024[]   = _("1024");
 static const u8 sText_Challenges_ShinyChance_512[]    = _("512");
 static const u8 *const sText_Challenges_ShinyChance_Strings[] = {sText_Challenges_ShinyChance_8192,  sText_Challenges_ShinyChance_4096,  sText_Challenges_ShinyChance_2048,  sText_Challenges_ShinyChance_1024,  sText_Challenges_ShinyChance_512};
 
+static const u8 sText_Difficulty_CatchRate_05x[]   = _("0.5x");
+static const u8 sText_Difficulty_CatchRate_1x[]   = _("1x");
+static const u8 sText_Difficulty_CatchRate_2x[]   = _("2x");
+static const u8 sText_Difficulty_CatchRate_3x[]   = _("3x");
+static const u8 *const sText_Difficulty_CatchRate_Strings[] = {sText_Difficulty_CatchRate_05x,  sText_Difficulty_CatchRate_1x,  sText_Difficulty_CatchRate_2x,  sText_Difficulty_CatchRate_3x};
+
 static inline void Viewer_ClearRow(u8 visRow, bool8 selected)
 {
     const int y = visRow * 16;
@@ -493,6 +500,7 @@ static u8 GetSel_Diff_ExpMult(void)         { return gSaveBlock1Ptr->tx_Challeng
 static u8 GetSel_Diff_PlayerIVs(void)       { return gSaveBlock1Ptr->tx_Challenges_MaxPartyIVs; }     //0..2 (Yes, No, No(HP))
 static u8 GetSel_Diff_TrainerIVs(void)      { return gSaveBlock1Ptr->tx_Challenges_TrainerScalingIVs; } // 0..2 (Off, Scale, Hard)
 static u8 GetSel_Diff_TrainerEVs(void)      { return gSaveBlock1Ptr->tx_Challenges_TrainerScalingEVs; } // 0..3 (Off, Scale, Hard, Extreme)
+static u8 GetSel_Diff_CatchRate(void)       { return gSaveBlock1Ptr->tx_Difficulty_CatchRate; } // 0..3 (1x, 0.5x, 2x, 3x)
 
 // Plain bool rows (normalize to 0/1 for the shared bool renderer)
 static u8 GetSel_Diff_HardExp(void)         { return gSaveBlock1Ptr->tx_Difficulty_HardExp ? 1 : 0; } //Yes/No
@@ -557,7 +565,7 @@ static const struct ViewerBoolRow sBoolRows[] = {
 
 static const struct ViewerBoolRow sBoolRows_Page2[] = {
     { sText_RTCType_Label,      GetSel_Feature_RTCType      },
-    { sText_ShinyChance_Label,  GetSel_Feature_ShinyChance  },
+    { sText_ShinyChance_Label,  GetSel_Feature_ShinyChance  }, 
     { sText_ShinyColors_Label,  GetSel_Feature_ShinyColors  },
     { sText_ItemDrops_Label,    GetSel_Feature_ItemDrops    },
     { sText_UnlimitedWT_Label,  GetSel_Feature_UnlimitedWT  },
@@ -601,6 +609,7 @@ static const struct ViewerBoolRow sBoolRows_Page5[] = {
     { sText_Diff_LevelCap,      NULL }, // idx 1 — single-value
     { sText_Diff_ExpMult,       NULL }, // idx 2 — single-value
     { sText_Diff_HardExp,       GetSel_Diff_HardExp }, // idx 3 — single-value
+    { sText_Diff_CatchRate,     NULL },
     { sText_Diff_NoItemPlayer,  GetSel_Diff_NoItemPlayer  }, // idx 4
     { sText_Diff_NoItemTrainer, GetSel_Diff_NoItemTrainer }, // idx 5
     { sText_Diff_PartyIVs,      NULL }, // idx 6
@@ -918,7 +927,15 @@ static void Viewer_DrawRow_Page5(u8 visRow, u16 idx)
                                      rightStyle, TEXT_SKIP_DRAW, sText_No);
         break;
     }
-    case 4: //Player items (YES / NO)
+    case 4: // CATCH RATE
+    {
+        u8 cr = gSaveBlock1Ptr->tx_Difficulty_CatchRate;
+        if (cr > 3) cr = 0;
+        Viewer_DrawSingleValueRow(visRow, sText_Diff_CatchRate,
+                                  sText_Difficulty_CatchRate_Strings[cr], selected);
+        break;
+    }
+    case 5: //Player items (YES / NO)
     {
         const int y = visRow * 16;
         Viewer_ClearRow(visRow, selected);
@@ -934,7 +951,7 @@ static void Viewer_DrawRow_Page5(u8 visRow, u16 idx)
                                      rightStyle, TEXT_SKIP_DRAW, sText_No);
         break;
     }
-    case 5: //Trainer items (YES / NO)
+    case 6: //Trainer items (YES / NO)
     {
         const int y = visRow * 16;
         Viewer_ClearRow(visRow, selected);
@@ -950,21 +967,21 @@ static void Viewer_DrawRow_Page5(u8 visRow, u16 idx)
                                      rightStyle, TEXT_SKIP_DRAW, sText_No);
         break;
     }
-    case 6: //Player IVs (YES/NO/NO(HP))
+    case 7: //Player IVs (YES/NO/NO(HP))
     {
         u8 v = GetSel_Diff_PlayerIVs();
         if (v > 2) v = 0;
         Viewer_DrawSingleValueRow(visRow, sText_Diff_PartyIVs, sText_Diff_PlayerIVs_Strings[v], selected);
         break;
     }
-    case 7: // TRAINER IVs (OFF/SCALE/HARD)
+    case 8: // TRAINER IVs (OFF/SCALE/HARD)
     {
         u8 v = GetSel_Diff_TrainerIVs();
         if (v > 2) v = 0;
         Viewer_DrawSingleValueRow(visRow, sText_Diff_TrainerIVs, sText_TrainerEV_Strings[v], selected);
         break;
     }
-    case 8: // PLAYER EVs (Yes/No)
+    case 9: // PLAYER EVs (Yes/No)
     {
 
         const int y = visRow * 16;
@@ -981,14 +998,14 @@ static void Viewer_DrawRow_Page5(u8 visRow, u16 idx)
                                      rightStyle, TEXT_SKIP_DRAW, sText_No);
         break;
     }
-    case 9: // TRAINER EVs (Off/Scale/Hard/Extreme)
+    case 10: // TRAINER EVs (Off/Scale/Hard/Extreme)
     {
         u8 v = GetSel_Diff_TrainerEVs();
         if (v > 3) v = 0;
         Viewer_DrawSingleValueRow(visRow, sText_Diff_TrainerEVs, sText_TrainerEV_Strings[v], selected);
         break;
     }
-    case 11: // Escape Rope & Dig (Yes/No)
+    case 12: // Escape Rope & Dig (Yes/No)
     {
 
         const int y = visRow * 16;

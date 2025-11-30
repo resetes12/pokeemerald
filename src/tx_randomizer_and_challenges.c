@@ -58,7 +58,8 @@ bool8 IsDifficultyOptionsActivated(void)
         || gSaveBlock1Ptr->tx_Challenges_NoItemPlayer
         || gSaveBlock1Ptr->tx_Challenges_NoItemTrainer
         || gSaveBlock1Ptr->tx_Challenges_PkmnCenter
-        || gSaveBlock1Ptr->tx_Difficulty_EscapeRopeDig)
+        || gSaveBlock1Ptr->tx_Difficulty_EscapeRopeDig
+        || gSaveBlock1Ptr->tx_Difficulty_CatchRate)
         return TRUE;
 
     return FALSE;
