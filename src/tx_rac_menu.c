@@ -310,6 +310,7 @@ static void DrawChoices_Challenges_Expensive(int selection, int y);
 static void DrawChoices_Mode_Classic_Modern_Selector(int selection, int y);
 static void DrawChoices_Mode_AlternateSpawns(int selection, int y);
 static void DrawChoices_Features_ShinyChance(int selection, int y);
+static void DrawChoices_Features_CatchRate(int selection, int y);
 static void DrawChoices_Features_ItemDrop(int selection, int y);
 static void DrawChoices_Mode_InfiniteTMs(int selection, int y);
 static void DrawChoices_Mode_SurvivePoison(int selection, int y);
@@ -517,6 +518,7 @@ static const u8 *const sOptionMenuItemsNamesMode[MENUITEM_MODE_COUNT] =
 
 static const u8 sText_RTC_Type[]            = _("CLOCK TYPE");
 static const u8 sText_ShinyChance[]         = _("SHINY CHANCE");
+static const u8 sText_CatchRate[]           = _("CATCH RATE");
 static const u8 sText_ItemDrop[]            = _("ITEM DROP");
 static const u8 sText_EasyFeebas[]          = _("EASIER FEEBAS");
 static const u8 sText_Unlimited_WT[]        = _("UNLIMITED WT");

@@ -131,7 +131,7 @@ static const u8 sText_Extra_Legendaries_Label[]         = _("EXTRA LEGEND.");
 //page 2 Features
 static const u8 sText_RTCType_Label[]      = _("CLOCK TYPE");
 static const u8 sText_ShinyChance_Label[]  = _("SHINY CHANCE");
-static const u8 sText_CatchRate_Label[[]   = _("CATCH RATE");
+static const u8 sText_CatchRate_Label[]    = _("CATCH RATE");
 static const u8 sText_ItemDrops_Label[]    = _("ITEM DROP");
 static const u8 sText_FrontierBans_Label[] = _("FRONTIER BANS");
 static const u8 sText_ShinyColors_Label[]  = _("SHINY COLORS");
