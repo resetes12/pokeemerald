@@ -440,11 +440,14 @@ OldaleTown_Text_TownSign:
 
 OldaleTown_Text_InfiniteItems1:
 	.string "Hey! I got some really good items from\n"
-	.string "a strange guy. They are…\p"
+	.string "a really strange guy. They are…\p"
 	.string "An INFINITE REPEL, a BOX filled with\n"
 	.string "RARE CANDIES, and a HEALING HEART to\l"
 	.string "heal your {PKMN} party infinitely!\p"
-	.string "Cool, right?\n"
+	.string "But that's not all! If you accept all\n"
+	.string "these gifts, you'll be able to EDIT\l"
+	.string "IVs and EVs from the PARTY MENU!\p"
+	.string "Isn't that convenient?\n"
 	.string "Are you interested in them?$"
 
 OldaleTown_Text_InfiniteItems2:
