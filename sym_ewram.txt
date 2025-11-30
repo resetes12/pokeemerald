@@ -160,3 +160,4 @@
 	.include "src/debug_pokemon_creator.o"
 	.include "src/sliding_puzzle.o"
 	.include "src/surfable.o"
+	.include "src/ui_stat_editor.o"
