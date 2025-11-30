@@ -9,7 +9,7 @@ You can the hackrom documentation following [this link](https://docs.google.com/
 Please follow [Pret's guide on how to build the rom](https://github.com/pret/pokeemerald/blob/master/INSTALL.md) but using this branch instead of theirs. 
 When compiling, **use the modern compiler** with the "make modern" command. 
 _Compiling using the old compiler won't work._
-The game was compiled using `(devkitARM release 62) 13.2.0`, but it should work up to `release 65`. Higher versions WON'T probably work, for many reasons, although it may be fixed in the future. For now, you can use those version releases.
+The game was compiled using `(devkitARM release 62) 13.2.0`, but it _should_ work up to `release 65` without any issues. Higher versions may not work, so manual fixes might be required.
 
 # 📃 DOCUMENTATION:
 [Documentation can be found online](https://docs.google.com/spreadsheets/d/1QEFJmFhfaZqgxSUnM7MFpufrnrRk_NMzNoNWl2m3y_0/edit?gid=1310408794#gid=1310408794)
