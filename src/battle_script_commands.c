@@ -10783,10 +10783,10 @@ static void Cmd_handleballthrow(void)
         // 0 is 1x for backwards compatibility reasons
         switch(gSaveBlock1Ptr->tx_Difficulty_CatchRate)
         {
+        case 0: // 1x, no-op
+            break;
         case 1: // 0.5x
             catchRate = max(catchRate / 2, 3);
-            break;
-        case 0: // 1x, no-op
             break;
         case 2: // 2x
             catchRate = min(catchRate * 2, 255);

@@ -370,10 +370,10 @@ static const u8 sText_Challenges_ShinyChance_512[]    = _("512");
 static const u8 *const sText_Challenges_ShinyChance_Strings[] = {sText_Challenges_ShinyChance_8192,  sText_Challenges_ShinyChance_4096,  sText_Challenges_ShinyChance_2048,  sText_Challenges_ShinyChance_1024,  sText_Challenges_ShinyChance_512};
 
 static const u8 sText_Difficulty_CatchRate_05x[]   = _("0.5x");
-static const u8 sText_Difficulty_CatchRate_1x[]   = _("1x");
+static const u8 sText_Difficulty_CatchRate_1x[]   = _("DEFAULT");
 static const u8 sText_Difficulty_CatchRate_2x[]   = _("2x");
 static const u8 sText_Difficulty_CatchRate_3x[]   = _("3x");
-static const u8 *const sText_Difficulty_CatchRate_Strings[] = {sText_Difficulty_CatchRate_05x,  sText_Difficulty_CatchRate_1x,  sText_Difficulty_CatchRate_2x,  sText_Difficulty_CatchRate_3x};
+static const u8 *const sText_Difficulty_CatchRate_Strings[] = {sText_Difficulty_CatchRate_1x, sText_Difficulty_CatchRate_05x, sText_Difficulty_CatchRate_2x,  sText_Difficulty_CatchRate_3x};
 
 static inline void Viewer_ClearRow(u8 visRow, bool8 selected)
 {

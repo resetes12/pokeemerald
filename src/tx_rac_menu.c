@@ -963,8 +963,8 @@ static const u8 sText_Description_Difficulty_EscapeRopeDig_Off[]        = _("ESC
 static const u8 sText_Description_Difficulty_EscapeRopeDig_On[]         = _("ESCAPE ROPE and DIG can\nbe used to exit dungeons.");
 static const u8 sText_Description_Difficulty_HardExp_Enabled[]          = _("{PKMN} gain 60% of total EXP in HARD.\n{COLOR 7}{COLOR 8}RECOMMENDED, provides good challenge.");
 static const u8 sText_Description_Difficulty_HardExp_Disabled[]         = _("{PKMN} gain the default EXP in HARD. {COLOR 7}{COLOR 8}NOT\nRECOMMENDED, makes HARD MODE easy.");
-static const u8 sText_Description_Difficulty_CatchRate_05x[]            = _("POKéMON are harder to catch\nthan normal.");
-static const u8 sText_Description_Difficulty_CatchRate_1x[]             = _("POKéMON are as easy to catch\nas normal.");
+static const u8 sText_Description_Difficulty_CatchRate_05x[]            = _("POKéMON are harder to catch than\nusual.");
+static const u8 sText_Description_Difficulty_CatchRate_1x[]             = _("No change to POKéMON catch rate.");
 static const u8 sText_Description_Difficulty_CatchRate_2x[]             = _("POKéMON are easier to catch.");
 static const u8 sText_Description_Difficulty_CatchRate_3x[]             = _("POKéMON are much easier to catch.");
 static const u8 *const sOptionMenuItemDescriptionsDifficulty[MENUITEM_DIFFICULTY_COUNT][4] =
@@ -983,7 +983,7 @@ static const u8 *const sOptionMenuItemDescriptionsDifficulty[MENUITEM_DIFFICULTY
     [MENUITEM_DIFFICULTY_ESCAPE_ROPE_DIG]       = {sText_Description_Difficulty_EscapeRopeDig_On,  sText_Description_Difficulty_EscapeRopeDig_Off,  sText_Empty,                                        sText_Empty},
     [MENUITEM_DIFFICULTY_MAX_PARTY_IVS]         = {sText_Description_Difficulty_MaxPartyIvs_Off,    sText_Description_Difficulty_MaxPartyIvs_On,    sText_Description_Difficulty_MaxPartyIvs_On_HP,                                        sText_Empty},
     [MENUITEM_DIFFICULTY_HARD_EXP]              = {sText_Description_Difficulty_HardExp_Enabled,    sText_Description_Difficulty_HardExp_Disabled,    sText_Empty,                                        sText_Empty},
-    [MENUITEM_DIFFICULTY_CATCH_RATE]            = {sText_Description_Difficulty_CatchRate_05x,          sText_Description_Difficulty_CatchRate_1x,          sText_Description_Difficulty_CatchRate_2x,            sText_Description_Difficulty_CatchRate_3x,            sText_Empty},
+    [MENUITEM_DIFFICULTY_CATCH_RATE]            = {sText_Description_Difficulty_CatchRate_1x,       sText_Description_Difficulty_CatchRate_05x,          sText_Description_Difficulty_CatchRate_2x,            sText_Description_Difficulty_CatchRate_3x},
 };  
 
 static const u8 sText_Description_Difficulty_Pokecenter_Yes[]           = _("The player can visit Pokécenters and\nother locations to heal their party.");
@@ -3241,10 +3241,10 @@ static void DrawChoices_Difficulty_HardExp(int selection, int y)
 }
 
 static const u8 sText_Difficulty_CatchRate_05x[]  = _("0.5x");
-static const u8 sText_Difficulty_CatchRate_1x[]   = _("1x");
+static const u8 sText_Difficulty_CatchRate_1x[]   = _("DEFAULT");
 static const u8 sText_Difficulty_CatchRate_2x[]   = _("2x");
 static const u8 sText_Difficulty_CatchRate_3x[]   = _("3x");
-static const u8 *const sText_Difficulty_CatchRate_Strings[] = {sText_Difficulty_CatchRate_05x,  sText_Difficulty_CatchRate_1x,  sText_Difficulty_CatchRate_2x,  sText_Difficulty_CatchRate_3x};
+static const u8 *const sText_Difficulty_CatchRate_Strings[] = {sText_Difficulty_CatchRate_1x, sText_Difficulty_CatchRate_05x,  sText_Difficulty_CatchRate_2x,  sText_Difficulty_CatchRate_3x};
 static void DrawChoices_Difficulty_CatchRate(int selection, int y)
 {
     bool8 active = CheckConditions(MENUITEM_DIFFICULTY_CATCH_RATE);
@@ -3252,11 +3252,11 @@ static void DrawChoices_Difficulty_CatchRate(int selection, int y)
     
     if (selection == 0)
     {
-        gSaveBlock1Ptr->tx_Difficulty_CatchRate = 1; // Half, Set to 1 for save compatibiity reasons
+        gSaveBlock1Ptr->tx_Difficulty_CatchRate = 0; // Normal, Set to 1 for save compatibiity reasons
     }
     else if (selection == 1)
     {
-        gSaveBlock1Ptr->tx_Difficulty_CatchRate = 0; // Normal, Set to 1 for save compatibiity reasons
+        gSaveBlock1Ptr->tx_Difficulty_CatchRate = 1; // Half, Set to 1 for save compatibiity reasons
     }
     else if (selection == 2)
     {
