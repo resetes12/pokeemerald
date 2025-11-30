@@ -22,6 +22,7 @@ Includes:
 # ✨FEATURES
 
 **Selectable options (at the start of the game):**
+Check which options are enabled or disabled by going to any Pokécenter PC and opening the "CHALLENGES" option.
 
 Gamemode page:
 
@@ -56,6 +57,7 @@ Gamemode page:
 Features page:
 * RTC Type: Choose between using a real clock, or using a fake clock. Fake clock rate is 1h irl, 1 day ingame.
 * Shiny Chance: 8192 (Emerald default) - 4096 (Gen VI+) - 2048 - 1024 - 512.
+* Shiny Colors: Enables or disables new shiny colored forms for 24 Pokémon.
 * Item Drops: Items held by wild Pokémon, when defeated, will be dropped and obtained by the player. Forget about catching it or using Thief!
 * Uncapped wondertrade: No 3-daily limit.
 * Easier Feebas: If enabled, Feebas have a 5% chance to appear around the whole Route 119.
@@ -89,7 +91,7 @@ Challenges page:
 * Ultra expensive challenge: Don't you always have spare money? Maybe not anymore. Offers x5, x10, and x50.
 * Evolution limits.
 * One type only challenges: You can catch only one type of Pokémon.
-* Stat equalizers.
+* BST equalizers.
 * Mirror Mode.
 * Mirror Mode Thief.
 
@@ -97,7 +99,7 @@ Challenges page:
 * You can now name your rival!
 * Mom gives you a new "Outfit box" so you can switch between the Emerald outfit and the Ruby and Sapphire outfits.
 * Gym rematches are easier to trigger. After 10 wild battles or 5 trainer battles won, there is a 50% chance of getting a rematch.
-* The Elite Four can be rematched after battling with Steven, and they are double battles.
+* The Elite Four can be rematched after battling with Steven, and they can be single or double battles (you choose!)
 * After completing the Elite Four Rematch, a rematch with Steven will be available. You will get a unique, special prize.
 * The Sealed Chambers puzzles have changed slightly. Learn Braille and find out what changed!
 * Also, there are 6 Regis. Try to discover where the new 3!
@@ -123,7 +125,6 @@ Challenges page:
 * Shuckle can make berry juice just like in Gen. II!! Yay?
 * Nature Mints are available to buy in the Flower Shop after the 4th Gym _(Optional)_, or after becoming champion if not enabled from the start.
 * Deoxys forms can be changed at Birth Island, using the meteorites.
-* Custom Shiny forms for some Pokémon (Pichu, Pikachu, Raichu, Haunter, Gengar, Paras, Flareon, Vaporeon, Jolteon, Scyther, Heracross, Regice, Xatu, and Blaziken).
 * All Hoenn and National Dex Pokémon need to be obtained to obtain the Completion Diploma, or it won't count as completed.
 
 
@@ -179,6 +180,7 @@ Challenges page:
 **Gameplay related:**
 * RNG is fixed and properly works.
 * Wonder Trade is available on the basement floor of every Pokémon Center, available after the 5th badge (unless you are doing a randomizer, which makes it available from the start, or a challenge, which enables WT after beating the game). The number of Wonder-trades is 3 per day, unless using the "Unlimited Wondertrades" option.
+* Wonder Trade uses a tier system, so rare Pokémon are rare to obtain as well. 
 * 3 difficulty modes (EASY, NORMAL and HARD). Selected at the start of the game, can be changed anytime from the options menu (unless using the "Limit difficulty" option).
 
     EASY mode: Makes the game quite a lot easier by scaling levels down, and obtaining more EXP (+20%).
@@ -206,7 +208,6 @@ Challenges page:
 * One-time tutors are infinite, but you have to pay now (only if Infinite TMs is on).
 * Trainer Hill prizes are the berries that were not available in the GBA games.
 * Match and Acro Bike are now one. Change between them by pressing "R".
-* Chain fishing has been added.
 * Easier fishing has been added to the options menu (FR/LG fishing).
 * All tickets are available to buy in the Battle Frontier.
 * Faster nurse Joy healing, and now with an even faster version in the options menu (with a confirmation sound).
