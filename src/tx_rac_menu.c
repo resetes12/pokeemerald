@@ -930,7 +930,7 @@ static const u8 *const sOptionMenuItemDescriptionsNuzlocke[MENUITEM_NUZLOCKE_COU
     [MENUITEM_NUZLOCKE_NEXT]                = {sText_Description_Nuzlocke_Next,                 sText_Empty,                                        sText_Empty,                        sText_Empty},
 };
 
-static const u8 sText_Description_Difficulty_Party_Limit[]              = _("Limit the amount of POKéMON in the\nplayers party.");
+static const u8 sText_Description_Difficulty_Party_Limit[]              = _("Limits the amount of {PKMN} in the party.\n{COLOR 7}{COLOR 8}“1” has visual bugs in DOUBLE BATTLES.");
 static const u8 sText_Description_Difficulty_LevelCap_Base[]            = _("No level cap. Overleveling possible.\n");
 static const u8 sText_Description_Difficulty_LevelCap_Normal[]          = _("Maximum level is based on the\nnext gym's highest POKéMON level.");
 static const u8 sText_Description_Difficulty_LevelCap_Hard[]            = _("Maximum level is based on the\nnext gym's {COLOR 7}{COLOR 8}lowest POKéMON level.");
