@@ -45,6 +45,8 @@ bool8 IsRandomizerActivated(void)
 
 bool8 IsRandomItemsActivated(void)
 {
+    if (!FlagGet(FLAG_ADVENTURE_STARTED))   //Don't randomize starting items
+        return FALSE;
     return gSaveBlock1Ptr->tx_Random_Items;
 }
 
