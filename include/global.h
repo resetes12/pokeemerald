@@ -1159,7 +1159,6 @@ struct SaveBlock1
         u8 tx_Features_ShinyColors:1;
         u8 tx_Features_LimitDifficulty:1;
         u8 tx_Features_ShinyChance:4;
-        u8 tx_Features_CatchRate:3;
         u8 tx_Features_WildMonDropItems:1;
         u8 tx_Features_Unlimited_WT:1;
         u8 tx_Mode_Synchronize:1;
@@ -1178,6 +1177,7 @@ struct SaveBlock1
         u8 tx_Features_FrontierBans:1;
         u8 tx_Difficulty_HardExp:1;
         u8 tx_Mode_TypeEffectiveness:1;
+        u8 tx_Difficulty_CatchRate:3;
 };
 
 extern struct SaveBlock1* gSaveBlock1Ptr;

@@ -67,7 +67,6 @@ enum
     MENUITEM_FEATURES_RTC_TYPE,
     MENUITEM_FEATURES_SHINY_CHANCE,
     MENUITEM_FEATURES_SHINY_COLOR,
-    MENUITEM_FEATURES_CATCH_RATE,
     MENUITEM_FEATURES_ITEM_DROP,
     MENUITEM_FEATURES_UNLIMITED_WT,
     MENUITEM_FEATURES_EASY_FEEBAS,
@@ -115,6 +114,7 @@ enum
     MENUITEM_DIFFICULTY_LEVEL_CAP,
     MENUITEM_DIFFICULTY_EXP_MULTIPLIER,
     MENUITEM_DIFFICULTY_HARD_EXP,
+    MENUITEM_DIFFICULTY_CATCH_RATE,
     MENUITEM_DIFFICULTY_ITEM_PLAYER,
     MENUITEM_DIFFICULTY_ITEM_TRAINER,
     MENUITEM_DIFFICULTY_MAX_PARTY_IVS,
@@ -310,7 +310,6 @@ static void DrawChoices_Challenges_Expensive(int selection, int y);
 static void DrawChoices_Mode_Classic_Modern_Selector(int selection, int y);
 static void DrawChoices_Mode_AlternateSpawns(int selection, int y);
 static void DrawChoices_Features_ShinyChance(int selection, int y);
-static void DrawChoices_Features_CatchRate(int selection, int y);
 static void DrawChoices_Features_ItemDrop(int selection, int y);
 static void DrawChoices_Mode_InfiniteTMs(int selection, int y);
 static void DrawChoices_Mode_SurvivePoison(int selection, int y);
@@ -329,6 +328,7 @@ static void DrawChoices_Mode_Legendary_Abilities(int selection, int y);
 static void DrawChoices_Mode_New_Legendaries(int selection, int y);
 static void DrawChoices_Features_FrontierBans(int selection, int y);
 static void DrawChoices_Difficulty_HardExp(int selection, int y);
+static void DrawChoices_Difficulty_CatchRate(int selection, int y);
 static void DrawChoices_Mode_New_Effectiveness(int selection, int y);
 static void DrawChoices_Features_Shiny_Colors(int selection, int y);
 
@@ -391,7 +391,6 @@ struct // MENU_FEATURES
 {
     [MENUITEM_FEATURES_RTC_TYPE]              = {DrawChoices_Features_Rtc_Type,             ProcessInput_Options_Two},
     [MENUITEM_FEATURES_SHINY_CHANCE]          = {DrawChoices_Features_ShinyChance,          ProcessInput_Options_Five},
-    [MENUITEM_FEATURES_CATCH_RATE]            = {DrawChoices_Features_CatchRate,            ProcessInput_Options_Four},
     [MENUITEM_FEATURES_ITEM_DROP]             = {DrawChoices_Features_ItemDrop,             ProcessInput_Options_Two},
     [MENUITEM_FEATURES_EASY_FEEBAS]           = {DrawChoices_Features_EasyFeebas,           ProcessInput_Options_Two},
     [MENUITEM_FEATURES_UNLIMITED_WT]          = {DrawChoices_Features_Unlimited_WT,         ProcessInput_Options_Two},
@@ -458,6 +457,7 @@ struct // MENU_DIFFICULTY
     [MENUITEM_DIFFICULTY_LESS_ESCAPES]          = {DrawChoices_Challenges_LessEscapes,      ProcessInput_Options_Two},
     [MENUITEM_DIFFICULTY_ESCAPE_ROPE_DIG]       = {DrawChoices_Difficulty_Escape_Rope_Dig,  ProcessInput_Options_Two},
     [MENUITEM_DIFFICULTY_HARD_EXP]              = {DrawChoices_Difficulty_HardExp,          ProcessInput_Options_Two},
+    [MENUITEM_DIFFICULTY_CATCH_RATE]            = {DrawChoices_Difficulty_CatchRate,        ProcessInput_Options_Four},
     [MENUITEM_DIFFICULTY_NEXT] = {NULL, NULL},
 };
 
@@ -518,7 +518,6 @@ static const u8 *const sOptionMenuItemsNamesMode[MENUITEM_MODE_COUNT] =
 
 static const u8 sText_RTC_Type[]            = _("CLOCK TYPE");
 static const u8 sText_ShinyChance[]         = _("SHINY CHANCE");
-static const u8 sText_CatchRate[]           = _("CATCH RATE");
 static const u8 sText_ItemDrop[]            = _("ITEM DROP");
 static const u8 sText_EasyFeebas[]          = _("EASIER FEEBAS");
 static const u8 sText_Unlimited_WT[]        = _("UNLIMITED WT");
@@ -529,7 +528,6 @@ static const u8 *const sOptionMenuItemsNamesFeatures[MENUITEM_FEATURES_COUNT] =
 {
     [MENUITEM_FEATURES_RTC_TYPE]                  = sText_RTC_Type,
     [MENUITEM_FEATURES_SHINY_CHANCE]              = sText_ShinyChance,
-    [MENUITEM_FEATURES_CATCH_RATE]                = sText_CatchRate,
     [MENUITEM_FEATURES_ITEM_DROP]                 = sText_ItemDrop,
     [MENUITEM_FEATURES_EASY_FEEBAS]               = sText_EasyFeebas,
     [MENUITEM_FEATURES_UNLIMITED_WT]              = sText_Unlimited_WT,
@@ -602,6 +600,7 @@ static const u8 sText_ScalingIVs[]          = _("TRAINER IVs");
 static const u8 sText_ScalingEVs[]          = _("TRAINER EVs");
 static const u8 sText_LimitDifficulty[]     = _("LOCK DIFFICULTY");
 static const u8 sText_HardExp[]             = _("HARD MODE EXP.");
+static const u8 sText_CatchRate[]           = _("CATCH RATE");
 static const u8 sText_MaxPartyIvs[]         = _("PLAYER IVs");
 static const u8 sText_DigRope[]             = _("ESC. ROPE / DIG");
 static const u8 *const sOptionMenuItemsNamesDifficulty[MENUITEM_DIFFICULTY_COUNT] =
@@ -616,6 +615,7 @@ static const u8 *const sOptionMenuItemsNamesDifficulty[MENUITEM_DIFFICULTY_COUNT
     [MENUITEM_DIFFICULTY_SCALING_EVS]           = sText_ScalingEVs,
     [MENUITEM_DIFFICULTY_LIMIT_DIFFICULTY]      = sText_LimitDifficulty,
     [MENUITEM_DIFFICULTY_HARD_EXP]              = sText_HardExp,
+    [MENUITEM_DIFFICULTY_CATCH_RATE]            = sText_CatchRate,
     [MENUITEM_DIFFICULTY_MAX_PARTY_IVS]         = sText_MaxPartyIvs,
     [MENUITEM_DIFFICULTY_LESS_ESCAPES]          = sText_LessEscapes,
     [MENUITEM_DIFFICULTY_ESCAPE_ROPE_DIG]       = sText_DigRope,
@@ -833,10 +833,6 @@ static const u8 sText_Description_Features_ShinyChance_4096[]         = _("Low c
 static const u8 sText_Description_Features_ShinyChance_2048[]         = _("Decent chance of SHINY encounter.");
 static const u8 sText_Description_Features_ShinyChance_1024[]         = _("High chance of SHINY encounter.");
 static const u8 sText_Description_Features_ShinyChance_512[]          = _("Very high chance of SHINY encounter.");
-static const u8 sText_Description_Features_CatchRate_05x[]            = _("POKéMON are harder to catch than normal.");
-static const u8 sText_Description_Features_CatchRate_1x[]             = _("POKéMON are as easy to catch as normal.");
-static const u8 sText_Description_Features_CatchRate_2x[]             = _("POKéMON are easier to catch.");
-static const u8 sText_Description_Features_CatchRate_3x[]             = _("POKéMON are much easier to catch.");
 static const u8 sText_Description_Features_EasyFeebas_On[]            = _("FEEBAS is easier to catch and spawns\neverywhere in ROUTE 119.");
 static const u8 sText_Description_Features_EasyFeebas_Off[]           = _("FEEBAS is encountered in random\nspots in ROUTE 119.");
 static const u8 sText_Description_Features_Unlimited_WT_On[]          = _("Enables a daily limit of 3\nWonderTrades. Recommended.");
@@ -852,7 +848,6 @@ static const u8 *const sOptionMenuItemDescriptionsFeatures[MENUITEM_FEATURES_COU
 {
     [MENUITEM_FEATURES_RTC_TYPE]              = {sText_Description_Features_RTC_Type_RTC,           sText_Description_Features_RTC_Type_FakeRTC,      sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_SHINY_CHANCE]          = {sText_Description_Features_ShinyChance_8192,       sText_Description_Features_ShinyChance_4096,      sText_Description_Features_ShinyChance_2048,        sText_Description_Features_ShinyChance_1024,        sText_Description_Features_ShinyChance_512},
-    [MENUITEM_FEATURES_CATCH_RATE]            = {sText_Description_Features_CatchRate_05x,          sText_Description_Features_CatchRate_1x,          sText_Description_Features_CatchRate_2x,            sText_Description_Features_CatchRate_3x,            sText_Empty},
     [MENUITEM_FEATURES_ITEM_DROP]             = {sText_Description_Features_ItemDrop_Off,           sText_Description_Features_ItemDrop_On,           sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_EASY_FEEBAS]           = {sText_Description_Features_EasyFeebas_Off,         sText_Description_Features_EasyFeebas_On,         sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_UNLIMITED_WT]          = {sText_Description_Features_Unlimited_WT_On,        sText_Description_Features_Unlimited_WT_Off,      sText_Empty,                                        sText_Empty,                                        sText_Empty},
@@ -968,6 +963,10 @@ static const u8 sText_Description_Difficulty_EscapeRopeDig_Off[]        = _("ESC
 static const u8 sText_Description_Difficulty_EscapeRopeDig_On[]         = _("ESCAPE ROPE and DIG can\nbe used to exit dungeons.");
 static const u8 sText_Description_Difficulty_HardExp_Enabled[]          = _("{PKMN} gain 60% of total EXP in HARD.\n{COLOR 7}{COLOR 8}RECOMMENDED, provides good challenge.");
 static const u8 sText_Description_Difficulty_HardExp_Disabled[]         = _("{PKMN} gain the default EXP in HARD. {COLOR 7}{COLOR 8}NOT\nRECOMMENDED, makes HARD MODE easy.");
+static const u8 sText_Description_Difficulty_CatchRate_05x[]            = _("POKéMON are harder to catch than normal.");
+static const u8 sText_Description_Difficulty_CatchRate_1x[]             = _("POKéMON are as easy to catch as normal.");
+static const u8 sText_Description_Difficulty_CatchRate_2x[]             = _("POKéMON are easier to catch.");
+static const u8 sText_Description_Difficulty_CatchRate_3x[]             = _("POKéMON are much easier to catch.");
 static const u8 *const sOptionMenuItemDescriptionsDifficulty[MENUITEM_DIFFICULTY_COUNT][4] =
 {
     [MENUITEM_DIFFICULTY_PARTY_LIMIT]           = {sText_Description_Difficulty_Party_Limit,        sText_Empty,                                        sText_Empty,                                    sText_Empty},
@@ -984,6 +983,7 @@ static const u8 *const sOptionMenuItemDescriptionsDifficulty[MENUITEM_DIFFICULTY
     [MENUITEM_DIFFICULTY_ESCAPE_ROPE_DIG]       = {sText_Description_Difficulty_EscapeRopeDig_On,  sText_Description_Difficulty_EscapeRopeDig_Off,  sText_Empty,                                        sText_Empty},
     [MENUITEM_DIFFICULTY_MAX_PARTY_IVS]         = {sText_Description_Difficulty_MaxPartyIvs_Off,    sText_Description_Difficulty_MaxPartyIvs_On,    sText_Description_Difficulty_MaxPartyIvs_On_HP,                                        sText_Empty},
     [MENUITEM_DIFFICULTY_HARD_EXP]              = {sText_Description_Difficulty_HardExp_Enabled,    sText_Description_Difficulty_HardExp_Disabled,    sText_Empty,                                        sText_Empty},
+    [MENUITEM_DIFFICULTY_CATCH_RATE]            = {sText_Description_Difficulty_CatchRate_05x,          sText_Description_Difficulty_CatchRate_1x,          sText_Description_Difficulty_CatchRate_2x,            sText_Description_Difficulty_CatchRate_3x,            sText_Empty},
 };  
 
 static const u8 sText_Description_Difficulty_Pokecenter_Yes[]           = _("The player can visit Pokécenters and\nother locations to heal their party.");
@@ -1047,7 +1047,6 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledFeatures[MENUITEM_FEAT
 {
     [MENUITEM_FEATURES_RTC_TYPE]              = sText_Empty,
     [MENUITEM_FEATURES_SHINY_CHANCE]          = sText_Empty,
-    [MENUITEM_FEATURES_CATCH_RATE]            = sText_Empty,
     [MENUITEM_FEATURES_ITEM_DROP]             = sText_Empty,
     [MENUITEM_FEATURES_EASY_FEEBAS]           = sText_Empty,
     [MENUITEM_FEATURES_UNLIMITED_WT]          = sText_Empty,
@@ -1101,6 +1100,7 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledDifficulty[MENUITEM_DI
     [MENUITEM_DIFFICULTY_NO_EVS]                = sText_Empty,
     [MENUITEM_DIFFICULTY_SCALING_IVS]           = sText_Empty,
     [MENUITEM_DIFFICULTY_SCALING_EVS]           = sText_Empty,
+    [MENUITEM_DIFFICULTY_CATCH_RATE]            = sText_Empty,
     [MENUITEM_DIFFICULTY_NEXT]                  = sText_Empty,
 };  
 
@@ -1532,7 +1532,6 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         //MENU FEATURES
         sOptions->sel_features[MENUITEM_FEATURES_RTC_TYPE]               = gSaveBlock1Ptr->tx_Features_RTCType;
         sOptions->sel_features[MENUITEM_FEATURES_SHINY_CHANCE]           = gSaveBlock1Ptr->tx_Features_ShinyChance;
-        sOptions->sel_features[MENUITEM_FEATURES_CATCH_RATE]             = gSaveBlock1Ptr->tx_Features_CatchRate;
         sOptions->sel_features[MENUITEM_FEATURES_ITEM_DROP]              = gSaveBlock1Ptr->tx_Features_WildMonDropItems;
         sOptions->sel_features[MENUITEM_FEATURES_EASY_FEEBAS]            = gSaveBlock1Ptr->tx_Features_EasierFeebas;
         sOptions->sel_features[MENUITEM_FEATURES_UNLIMITED_WT]           = gSaveBlock1Ptr->tx_Features_Unlimited_WT;
@@ -1584,6 +1583,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         sOptions->sel_difficulty[MENUITEM_DIFFICULTY_MAX_PARTY_IVS]         = gSaveBlock1Ptr->tx_Challenges_MaxPartyIVs;
         sOptions->sel_difficulty[MENUITEM_DIFFICULTY_ESCAPE_ROPE_DIG]       = gSaveBlock1Ptr->tx_Difficulty_EscapeRopeDig;
         sOptions->sel_difficulty[MENUITEM_DIFFICULTY_HARD_EXP]              = gSaveBlock1Ptr->tx_Difficulty_HardExp;
+        sOptions->sel_difficulty[MENUITEM_DIFFICULTY_CATCH_RATE]             = gSaveBlock1Ptr->tx_Difficulty_CatchRate;
         // MENU_CHALLENGES
         sOptions->sel_challenges[MENUITEM_DIFFICULTY_POKECENTER]             = gSaveBlock1Ptr->tx_Challenges_PkmnCenter;
         sOptions->sel_challenges[MENUITEM_CHALLENGES_PCHEAL]                 = gSaveBlock1Ptr->tx_Challenges_PCHeal;
@@ -1887,7 +1887,6 @@ void SaveData_TxRandomizerAndChallenges(void)
     //MENU FEAUTRES
     gSaveBlock1Ptr->tx_Features_RTCType                     = sOptions->sel_features[MENUITEM_FEATURES_RTC_TYPE]; 
     gSaveBlock1Ptr->tx_Features_ShinyChance                 = sOptions->sel_features[MENUITEM_FEATURES_SHINY_CHANCE]; 
-    gSaveBlock1Ptr->tx_Features_CatchRate                   = sOptions->sel_features[MENUITEM_FEATURES_CATCH_RATE]; 
     gSaveBlock1Ptr->tx_Features_WildMonDropItems            = sOptions->sel_features[MENUITEM_FEATURES_ITEM_DROP]; 
     gSaveBlock1Ptr->tx_Features_EasierFeebas                = sOptions->sel_features[MENUITEM_FEATURES_EASY_FEEBAS]; 
     gSaveBlock1Ptr->tx_Features_Unlimited_WT                = sOptions->sel_features[MENUITEM_FEATURES_UNLIMITED_WT]; 
@@ -1996,6 +1995,7 @@ void SaveData_TxRandomizerAndChallenges(void)
     gSaveBlock1Ptr->tx_Challenges_Expensive            = sOptions->sel_challenges[MENUITEM_CHALLENGES_EXPENSIVE];
     gSaveBlock1Ptr->tx_Difficulty_EscapeRopeDig        = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_ESCAPE_ROPE_DIG];
     gSaveBlock1Ptr->tx_Difficulty_HardExp              = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_HARD_EXP];
+    gSaveBlock1Ptr->tx_Difficulty_CatchRate            = sOptions->sel_difficulty[MENUITEM_DIFFICULTY_CATCH_RATE]; 
 
     PrintTXSaveData();
 
@@ -2913,34 +2913,6 @@ static void DrawChoices_Features_ShinyChance(int selection, int y)
     }
 }
 
-static const u8 sText_Challenges_CatchRate_05x[]  = _("0.5x");
-static const u8 sText_Challenges_CatchRate_1x[]   = _("1x");
-static const u8 sText_Challenges_CatchRate_2x[]   = _("2x");
-static const u8 sText_Challenges_CatchRate_3x[]   = _("3x");
-static const u8 *const sText_Challenges_CatchRate_Strings[] = {sText_Challenges_CatchRate_05x,  sText_Challenges_CatchRate_1x,  sText_Challenges_CatchRate_2x,  sText_Challenges_CatchRate_3x};
-static void DrawChoices_Features_CatchRate(int selection, int y)
-{
-    bool8 active = CheckConditions(MENUITEM_FEATURES_CATCH_RATE);
-    DrawChoices_Options_Four(sText_Challenges_CatchRate_Strings, selection, y, active);
-    
-    if (selection == 0)
-    {
-        gSaveBlock1Ptr->tx_Features_CatchRate = 0; // Half
-    }
-    else if (selection == 1)
-    {
-        gSaveBlock1Ptr->tx_Features_CatchRate = 1; // Normal
-    }
-    else if (selection == 2)
-    {
-        gSaveBlock1Ptr->tx_Features_CatchRate = 2; // Double
-    }
-    else
-    {
-        gSaveBlock1Ptr->tx_Features_CatchRate = 3; // Triple
-    }
-}
-
 static void DrawChoices_Features_Unlimited_WT(int selection, int y)
 {
     bool8 active = CheckConditions(MENUITEM_FEATURES_UNLIMITED_WT);
@@ -3266,6 +3238,34 @@ static void DrawChoices_Difficulty_HardExp(int selection, int y)
 
     DrawOptionMenuChoice(sText_Difficulty_HardExp_Enabled, 104, y, styles[0], active);
     DrawOptionMenuChoice(sText_Difficulty_HardExp_Disabled, GetStringRightAlignXOffset(1, sText_Difficulty_HardExp_Disabled, 198), y, styles[1], active);
+}
+
+static const u8 sText_Difficulty_CatchRate_05x[]  = _("0.5x");
+static const u8 sText_Difficulty_CatchRate_1x[]   = _("1x");
+static const u8 sText_Difficulty_CatchRate_2x[]   = _("2x");
+static const u8 sText_Difficulty_CatchRate_3x[]   = _("3x");
+static const u8 *const sText_Difficulty_CatchRate_Strings[] = {sText_Difficulty_CatchRate_05x,  sText_Difficulty_CatchRate_1x,  sText_Difficulty_CatchRate_2x,  sText_Difficulty_CatchRate_3x};
+static void DrawChoices_Difficulty_CatchRate(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_DIFFICULTY_CATCH_RATE);
+    DrawChoices_Options_Four(sText_Difficulty_CatchRate_Strings, selection, y, active);
+    
+    if (selection == 0)
+    {
+        gSaveBlock1Ptr->tx_Features_CatchRate = 1; // Half, Set to 1 for save compatibiity reasons
+    }
+    else if (selection == 1)
+    {
+        gSaveBlock1Ptr->tx_Features_CatchRate = 0; // Normal, Set to 1 for save compatibiity reasons
+    }
+    else if (selection == 2)
+    {
+        gSaveBlock1Ptr->tx_Features_CatchRate = 2; // Double
+    }
+    else
+    {
+        gSaveBlock1Ptr->tx_Features_CatchRate = 3; // Triple
+    }
 }
 
 static void DrawChoices_Features_Shiny_Colors(int selection, int y)
