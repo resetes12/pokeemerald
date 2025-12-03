@@ -10,8 +10,8 @@ PacifidlogTown_House1_EventScript_Woman::
 	end
 
 PacifidlogTown_House1_Text_RegiStory:
-	.string "In the HOENN region, there are five\n"
-	.string "POKéMON that represent the power of\l"
+	.string "In the Hoenn region, there are five\n"
+	.string "Pokémon that represent the power of\l"
 	.string "rock, ice, steel, electricity,\l"
 	.string "and dragon energy.\p"
 	.string "Each of them is said to hide away deep\n"

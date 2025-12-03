@@ -91,7 +91,7 @@ AquaHideout_UnusedRubyMap2_EventScript_CloseBrailleMsgText::
 	.string "inside it.$"
 
 AquaHideout_UnusedRubyMap2_EventScript_CloseBrailleMsgText2::
-	.string "The SAPPHIRE fits perfectly\n"
+	.string "The Sapphire fits perfectly\n"
 	.string "into the hole!$"
 
 AquaHideout_UnusedRubyMap2_EventScript_CloseBrailleMsgText3::

@@ -32,7 +32,7 @@ NavelRock_UnownChamber_U_A::
 	end
 
 NavelRock_UnownChamber_U_A_Text:
-	.string "You feel as though this UNOWN\n"
+	.string "You feel as though this Unown\n"
 	.string "is urging you to follow it.\p"
 	.string "Accept its offering?$"
 

@@ -28,12 +28,12 @@ Route125_FroslassEvo::
 
 Route125_FroslassEvo_Text:
 	.string "What happened to my cute little baby?\p"
-	.string "My SNORUNT evolved into…\n"
+	.string "My Snorunt evolved into…\n"
 	.string "Something I didn't expect!\p"
-	.string "I wanted a GLALIE, yet I got a\n"
-	.string "FROSLASS. How? SHE just evolved out\l"
+	.string "I wanted a Glalie, yet I got a\n"
+	.string "Froslass. How? She just evolved out\l"
 	.string "of nowhere, when we were training\l"
-	.string "during the MORNING!\p"
+	.string "during the Morning!\p"
 	.string "I want my baby back!$"
 
 Route125_EventScript_Nolen::

@@ -16,8 +16,8 @@ SafariZone_Southwest_EventScript_Happiny::
 	end
 
 SafariZone_Southwest_EventScript_Happiny_Text:
-	.string "CHANSEY evolves by FRIENDSHIP to\n"
-	.string "BLISSEY. What about HAPPINNY?\l"
+	.string "Chansey evolves by Friendship to\n"
+	.string "Blissey. What about Happinny?\l"
 	.string "How does it evolve?\p"
 	.string "Well, turns out that they have to hold\n"
-	.string "a LUCKY EGG while leveling up!$"
+	.string "a Lucky Egg while leveling up!$"
