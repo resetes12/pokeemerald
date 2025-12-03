@@ -155,17 +155,17 @@ enum { // Battle 1 AI FLags
     DEBUG_BATTLE_1_MENU_ITEM_CONTINUE,
 };
 enum { // Battle 2 Terrain
-    DEBUG_BATTLE_2_MENU_ITEM_TERRAIN_0,   
-    DEBUG_BATTLE_2_MENU_ITEM_TERRAIN_1,   
-    DEBUG_BATTLE_2_MENU_ITEM_TERRAIN_2,   
-    DEBUG_BATTLE_2_MENU_ITEM_TERRAIN_3,   
-    DEBUG_BATTLE_2_MENU_ITEM_TERRAIN_4,   
-    DEBUG_BATTLE_2_MENU_ITEM_TERRAIN_5,   
-    DEBUG_BATTLE_2_MENU_ITEM_TERRAIN_6,   
-    DEBUG_BATTLE_2_MENU_ITEM_TERRAIN_7,   
-    DEBUG_BATTLE_2_MENU_ITEM_TERRAIN_8,   
+    DEBUG_BATTLE_2_MENU_ITEM_TERRAIN_0,
+    DEBUG_BATTLE_2_MENU_ITEM_TERRAIN_1,
+    DEBUG_BATTLE_2_MENU_ITEM_TERRAIN_2,
+    DEBUG_BATTLE_2_MENU_ITEM_TERRAIN_3,
+    DEBUG_BATTLE_2_MENU_ITEM_TERRAIN_4,
+    DEBUG_BATTLE_2_MENU_ITEM_TERRAIN_5,
+    DEBUG_BATTLE_2_MENU_ITEM_TERRAIN_6,
+    DEBUG_BATTLE_2_MENU_ITEM_TERRAIN_7,
+    DEBUG_BATTLE_2_MENU_ITEM_TERRAIN_8,
     DEBUG_BATTLE_2_MENU_ITEM_TERRAIN_9,
-};   
+};
 enum { // Give
     DEBUG_GIVE_MENU_ITEM_ITEM_X,
     DEBUG_GIVE_MENU_ITEM_ALLTMS,
@@ -386,7 +386,7 @@ static void DebugAction_PkmCreator_Enemy_Party_Edit_Debug(u8 taskId);
 static void DebugAction_PkmCreator_Debug_Edit(u8 taskid);
 static void DebugAction_PkmCreator_Enemy_Party_Add(u8 taskid);
 static void DebugAction_PkmCreator_Testing(u8 taskid);
-static void DebugAction_PkmCreator_Testing_Copy(u8 taskid); 
+static void DebugAction_PkmCreator_Testing_Copy(u8 taskid);
 
 static void DebugAction_Fill_PCBoxes_Fast(u8 taskId);
 static void DebugAction_Fill_PCBoxes_Slow(u8 taskId);
@@ -433,10 +433,10 @@ static const u8 MAP_GROUP_COUNT[] = {57, 5, 5, 6, 7, 8, 9, 7, 7, 14, 8, 17, 10, 
 
 // Text
 // General
-static const u8 sDebugText_True[] =          _("TRUE");
-static const u8 sDebugText_False[] =         _("FALSE");
-static const u8 sDebugText_Colored_True[] =  _("{COLOR GREEN}TRUE");
-static const u8 sDebugText_Colored_False[] = _("{COLOR RED}FALSE");
+static const u8 sDebugText_True[] =          _("True");
+static const u8 sDebugText_False[] =         _("False");
+static const u8 sDebugText_Colored_True[] =  _("{COLOR GREEN}True");
+static const u8 sDebugText_Colored_False[] = _("{COLOR RED}False");
 static const u8 sDebugText_Dashes[] =        _("---");
 static const u8 sDebugText_Empty[] =         _("");
 static const u8 sDebugText_Continue[] =      _("Continue…{CLEAR_TO 110}{RIGHT_ARROW}");
@@ -478,7 +478,7 @@ static const u8 sDebugText_Util_WatchCredits[] =            _("Watch Credits…{
 static const u8 sDebugText_Util_Trainer_Name[] =            _("Trainer name");
 static const u8 sDebugText_Util_Trainer_Gender[] =          _("Toggle T. Gender");
 static const u8 sDebugText_Util_Trainer_Id[] =              _("New Trainer Id");
-static const u8 sDebugText_Util_CheatStart[] =              _("CHEAT Start");
+static const u8 sDebugText_Util_CheatStart[] =              _("Cheat Start");
 // Flags/Vars Menu
 static const u8 sDebugText_FlagsVars_Flags[] =                  _("Set Flag XYZ…{CLEAR_TO 110}{RIGHT_ARROW}");
 static const u8 sDebugText_FlagsVars_Flag[] =                   _("Flag: {STR_VAR_1}{CLEAR_TO 90}\n{STR_VAR_2}{CLEAR_TO 90}\n{STR_VAR_3}");
@@ -1184,7 +1184,7 @@ static u8 Debug_CheckToggleFlags(u8 id)
             break;
         case DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_ENCOUNTER:
             result = FlagGet(FLAG_SYS_NO_ENCOUNTER);
-            break; 
+            break;
         case DEBUG_FLAGVAR_MENU_ITEM_TOGGLE_TRAINER_SEE:
             result = FlagGet(FLAG_SYS_NO_TRAINER_SEE);
             break;
@@ -1208,7 +1208,7 @@ static void Debug_InitDebugBattleData(void)
     sDebugBattleData->submenu       = 0;
     sDebugBattleData->battleType    = 0xFF;
     sDebugBattleData->battleTerrain = 0xFF;
-    
+
 #ifdef BATTLE_ENGINE
     for (i = 0; i < 17; i++)
         sDebugBattleData->aiFlags[i] = FALSE;
@@ -1247,7 +1247,7 @@ static void Debug_RefreshListMenu(u8 taskId)
     // Copy item names for all entries but the last (which is Cancel)
     for(i = 0; i < totalItems; i++)
     {
-        
+
         if (sDebugMenuListData->listId == 1 && sDebugBattleData->submenu > 1)
         {
             u16 species;
@@ -1281,7 +1281,7 @@ static void Debug_RefreshListMenu(u8 taskId)
                     flagResult == 0xFF;
                 name = sDebugMenu_Items_Battle_1[i].name;
             }
-        
+
             if (flagResult == 0xFF)
             {
                 StringCopy(&sDebugMenuListData->itemNames[i][0], name);
@@ -1396,7 +1396,7 @@ static void DebugTask_HandleMenuInput_FlagsVars(u8 taskId)
     u32 input = ListMenu_ProcessInput(gTasks[taskId].data[0]);
 
     if (gMain.newKeys & A_BUTTON)
-    {        
+    {
         PlaySE(SE_SELECT);
         if ((func = sDebugMenu_Actions_Flags[input]) != NULL)
         {
@@ -1408,7 +1408,7 @@ static void DebugTask_HandleMenuInput_FlagsVars(u8 taskId)
     {
         PlaySE(SE_SELECT);
         Debug_DestroyMenu(taskId);
-        
+
         ClearStdWindowAndFrame(gTasks[taskId].data[2], TRUE);
         RemoveWindow(gTasks[taskId].data[2]);
 
@@ -1449,7 +1449,7 @@ static void DebugTask_HandleMenuInput_Battle(u8 taskId)
     ListMenuGetCurrentItemArrayId(listTaskId, &idx);
 
     if (gMain.newKeys & A_BUTTON)
-    {        
+    {
         PlaySE(SE_SELECT);
 
         switch (sDebugBattleData->submenu)
@@ -1485,7 +1485,7 @@ static void DebugTask_HandleMenuInput_Battle(u8 taskId)
                 sDebugBattleData->aiFlags[idx] = !sDebugBattleData->aiFlags[idx];
                 Debug_RedrawListMenu(taskId);
             }
-                
+
             break;
         case 2: // Terrain
             sDebugBattleData->submenu++;
@@ -1522,7 +1522,7 @@ static void DebugTask_HandleMenuInput_Battle(u8 taskId)
             Debug_ReShowMainMenu();
             break;
         case 2: // Skip AI Flag selection if wild battle
-            if (sDebugBattleData->battleType == DEBUG_BATTLE_0_MENU_ITEM_WILD 
+            if (sDebugBattleData->battleType == DEBUG_BATTLE_0_MENU_ITEM_WILD
                 #ifdef BATTLE_ENGINE
                 || sDebugBattleData->battleType == DEBUG_BATTLE_0_MENU_ITEM_WILD_DOUBLE
                 #endif
@@ -1561,7 +1561,7 @@ static void Debug_InitializeBattle(u8 taskId)
         gBattleTypeFlags = (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_TWO_OPPONENTS | BATTLE_TYPE_TRAINER | BATTLE_TYPE_INGAME_PARTNER);
         break;
     }
-    
+
     // Set terrain
     gBattleTerrain = sDebugBattleData->battleTerrain;
 
@@ -2049,7 +2049,7 @@ static void DebugAction_Util_Weather_SelectId(u8 taskId)
         if (gTasks[taskId].data[3] <= 15 || gTasks[taskId].data[3] >= 20)
             StringCopyPadded(gStringVar1, sWeatherNames[gTasks[taskId].data[3]], CHAR_SPACE, 30);
         else
-            StringCopyPadded(gStringVar1, sText_WeatherNotDefined, CHAR_SPACE, 30); 
+            StringCopyPadded(gStringVar1, sText_WeatherNotDefined, CHAR_SPACE, 30);
 
         StringExpandPlaceholders(gStringVar4, sDebugText_Util_Weather_ID);
         AddTextPrinterParameterized(gTasks[taskId].data[2], 1, gStringVar4, 1, 1, 0, NULL);
@@ -2558,7 +2558,7 @@ static void DebugAction_FlagsVars_ToggleFlyFlags(u8 taskId)
     else
     {
         PlaySE(SE_PC_LOGIN);
-    
+
         FlagSet(FLAG_VISITED_LITTLEROOT_TOWN);
         FlagSet(FLAG_VISITED_OLDALE_TOWN);
         FlagSet(FLAG_VISITED_DEWFORD_TOWN);
@@ -3619,7 +3619,7 @@ static void DebugAction_Give_Pokemon_ComplexCreateMon(u8 taskId) //https://githu
     }
 
     //Pokedex entry
-    nationalDexNum = SpeciesToNationalPokedexNum(species); 
+    nationalDexNum = SpeciesToNationalPokedexNum(species);
     switch(sentToPc)
     {
     case MON_GIVEN_TO_PARTY:

@@ -98,39 +98,39 @@ ChangeDeoxysForm_End_Nothing_Happened::
 	end
 
 ChangeDeoxysForm_Text_NormalForm:
-	.string "Looks like a NORMAL meteorite.\n"
+	.string "Looks like a Normal meteorite.\n"
 	.string "It has a rough, dry surface.$"
 
 ChangeDeoxysForm_Text_DefenseForm:
-	.string "Looks like a STURDY meteorite.\n"
+	.string "Looks like a Sturdy meteorite.\n"
 	.string "Seems unbreakeable, like a diamond.$"
 
 ChangeDeoxysForm_Text_AttackForm:
-	.string "Looks like a POWERFUL meteorite.\n"
+	.string "Looks like a Powerful meteorite.\n"
 	.string "It's hot to the touch.$"
 
 ChangeDeoxysForm_Text_SpeedForm:
-	.string "Looks like a LIGHTWEIGHT meteorite.\n"
+	.string "Looks like a Lightweight meteorite.\n"
 	.string "I can lift it very easily!$"
 
 ChangeDeoxysForm_Text_Beginning:
-	.string "One of my POKéMON reacted to the it!$"
+	.string "One of my Pokémon reacted to the it!$"
 
 ChangeDeoxysForm_Text_End:
 	.string "I should get going.$"
 
 ChangeDeoxysForm_Text_End_Wrong_Pokemon:
-	.string "My POKéMON enjoyed touching the\n"
+	.string "My Pokémon enjoyed touching the\n"
 	.string "meteorite more than I expected!\p"
 	.string "But nothing happened…\n"
 	.string "I should get going.$"
 
 ChangeDeoxysForm_Text_Select:
-	.string "Should I let any of my POKéMON\n"
+	.string "Should I let any of my Pokémon\n"
 	.string "touch this meteorite?$"
 
 ChangeDeoxysForm_Text_Success:
-	.string "Something has happened to DEOXYS!$"
+	.string "Something has happened to Deoxys!$"
 
 ChangeDeoxysForm_Movement:
 	emote_question_mark

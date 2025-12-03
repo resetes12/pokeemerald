@@ -93,17 +93,17 @@ Went_Away_U_A_Movement:
 	step_end
 
 U_A_Text:
-	.string "POKéMON magazines!\n"
-	.string "POKéMON PAL…\p"
-	.string "POKéMON HANDBOOK…\n"
-	.string "ADORABLE POKéMON…\p"
-	.string "The 28 forms of UNOWN…\n"
+	.string "Pokémon magazines!\n"
+	.string "Pokémon pal…\p"
+	.string "Pokémon handbook…\n"
+	.string "Adorable Pokémon…\p"
+	.string "The 28 forms of Unown…\n"
 	.string "The first one is A.$"
 
 U_A_Text_Found:
 	.string "A strange creature appeared.\p"
-	.string "{COLOR BLUE}You found UNOWN A!\p"
-	.string "UNOWN A returned to its cave.$"
+	.string "{COLOR BLUE}You found Unown A!\p"
+	.string "Unown A returned to its cave.$"
 
 @B
 
@@ -171,15 +171,15 @@ U_B_Text:
 	.string "This vase looks expensive…\n"
 	.string "Peered inside…\p"
 	.string "There's a note inside. It reads\n"
-	.string "as follows:\p" 
+	.string "as follows:\p"
 	.string "‘When alone, nothing happens.\n"
 	.string "However, if there are two or more,\l"
 	.string "an odd power is said to emerge.'$"
 
 U_B_Text_Found:
 	.string "A strange creature appeared.\p"
-	.string "{COLOR BLUE}You found UNOWN B!\p"
-	.string "UNOWN B returned to its cave.$"
+	.string "{COLOR BLUE}You found Unown B!\p"
+	.string "Unown B returned to its cave.$"
 
 @C
 
@@ -246,17 +246,17 @@ Went_Away_U_C_Movement:
 U_C_Text:
 	.string "There's a note on the fridge. It reads\n"
 	.string "as follows:\p"
-	.string "In the beginning, there was the WORD,\n"
-	.string "and the WORD was with GOD,\l"
-	.string "and the WORD was GOD.\p"
+	.string "In the beginning, there was the Word,\n"
+	.string "and the Word was with God,\l"
+	.string "and the Word was God.\p"
 	.string "There's also a C-shaped chocolate\n"
 	.string "cake inside.$"
 
 U_C_Text_Found:
 	.string "The chocolate cake moved on its own.\n"
-	.string "It was actually a POKéMON!\p"
-	.string "{COLOR BLUE}You found UNOWN C!\p"
-	.string "UNOWN C returned to its cave.$"
+	.string "It was actually a Pokémon!\p"
+	.string "{COLOR BLUE}You found Unown C!\p"
+	.string "Unown C returned to its cave.$"
 
 @D
 
@@ -330,9 +330,9 @@ U_D_Text:
 
 U_D_Text_Found:
 	.string "There was actually something else\n"
-	.string "behind the diary. A POKéMON!\p"
-	.string "{COLOR BLUE}You found UNOWN D!\p"
-	.string "UNOWN D returned to its cave.$"
+	.string "behind the diary. A Pokémon!\p"
+	.string "{COLOR BLUE}You found Unown D!\p"
+	.string "Unown D returned to its cave.$"
 
 @E
 
@@ -402,10 +402,10 @@ U_E_Text:
 	.string "It's marked with the letter ‘E'.$"
 
 U_E_Text_Found:
-	.string "A POKéMON suddenly jumped from\n"
+	.string "A Pokémon suddenly jumped from\n"
 	.string "behind the rock!\p"
-	.string "{COLOR BLUE}You found UNOWN E!\p"
-	.string "UNOWN E returned to its cave.$"
+	.string "{COLOR BLUE}You found Unown E!\p"
+	.string "Unown E returned to its cave.$"
 
 @F
 
@@ -479,9 +479,9 @@ U_F_Text:
 
 U_F_Text_Found:
 	.string "There was actually something stuck\n"
-	.string "behind a poster. A POKéMON!\p"
-	.string "{COLOR BLUE}You found UNOWN F!\p"
-	.string "UNOWN F returned to its cave.$"
+	.string "behind a poster. A Pokémon!\p"
+	.string "{COLOR BLUE}You found Unown F!\p"
+	.string "Unown F returned to its cave.$"
 
 @G
 
@@ -556,8 +556,8 @@ U_G_Text:
 U_G_Text_Found:
 	.string "A creature jumped from the\n"
 	.string "left counter!\p"
-	.string "{COLOR BLUE}You found UNOWN G!\p"
-	.string "UNOWN G returned to its cave.$"
+	.string "{COLOR BLUE}You found Unown G!\p"
+	.string "Unown G returned to its cave.$"
 
 @H
 
@@ -628,9 +628,9 @@ U_H_Text:
 	.string "letter ‘H' written on it.$"
 
 U_H_Text_Found:
-	.string "A POKéMON jump from the drawer!\p"
-	.string "{COLOR BLUE}You found UNOWN H!\p"
-	.string "UNOWN H returned to its cave.$"
+	.string "A Pokémon jump from the drawer!\p"
+	.string "{COLOR BLUE}You found Unown H!\p"
+	.string "Unown H returned to its cave.$"
 
 @I
 
@@ -696,14 +696,14 @@ Went_Away_U_I_Movement:
 
 U_I_Text:
 	.string "The shelves brim with all sorts of\n"
-	.string "POKéMON merchandise.\p"
+	.string "Pokémon merchandise.\p"
 	.string "There's even a strangely I-shaped\n"
-	.string "plush POKéMON!$"
+	.string "plush Pokémon!$"
 
 U_I_Text_Found:
-	.string "The plush was actually a POKéMON!\p"
-	.string "{COLOR BLUE}You found UNOWN I!\p"
-	.string "UNOWN I returned to its cave.$"
+	.string "The plush was actually a Pokémon!\p"
+	.string "{COLOR BLUE}You found Unown I!\p"
+	.string "Unown I returned to its cave.$"
 
 @J
 
@@ -776,9 +776,9 @@ U_J_Text:
 
 U_J_Text_Found:
 	.string "There was actually something else\n"
-	.string "behind the boxes. A POKéMON!\p"
-	.string "{COLOR BLUE}You found UNOWN J!\p"
-	.string "UNOWN J returned to its cave.$"
+	.string "behind the boxes. A Pokémon!\p"
+	.string "{COLOR BLUE}You found Unown J!\p"
+	.string "Unown J returned to its cave.$"
 
 @K
 
@@ -843,7 +843,7 @@ Went_Away_U_K_Movement:
 	step_end
 
 U_K_Text:
-	.string "The VENDING MACHINE is pretty\n"
+	.string "The Vending Machine is pretty\n"
 	.string "much empty. Only one can of\l"
 	.string "coffee remains.\p"
 	.string "It looks like the can is moving\n"
@@ -851,9 +851,9 @@ U_K_Text:
 
 U_K_Text_Found:
 	.string "The can of coffee moved!\n"
-	.string "It was a POKéMON all along!\p"
-	.string "{COLOR BLUE}You found UNOWN K!\p"
-	.string "UNOWN K returned to its cave.$"
+	.string "It was a Pokémon all along!\p"
+	.string "{COLOR BLUE}You found Unown K!\p"
+	.string "Unown K returned to its cave.$"
 
 @L
 
@@ -924,9 +924,9 @@ U_L_Text:
 	.string "L-shaped drawing.$"
 
 U_L_Text_Found:
-	.string "A POKéMON jump from the drawer!\p"
-	.string "{COLOR BLUE}You found UNOWN L!\p"
-	.string "UNOWN L returned to its cave.$"
+	.string "A Pokémon jump from the drawer!\p"
+	.string "{COLOR BLUE}You found Unown L!\p"
+	.string "Unown L returned to its cave.$"
 
 @M
 
@@ -995,15 +995,15 @@ U_M_Text:
 	.string "There's an insteresting book about\n"
 	.string "ancient writings.\p"
 	.string "‘They are shaped like ancient writing.\n"
-	.string "It is a mystery as to which came first.\l" 
+	.string "It is a mystery as to which came first.\l"
 	.string "Research into this topic is ongoing\l"
 	.string "but nothing is known.'$"
 
 U_M_Text_Found:
 	.string "There was actually something else\n"
-	.string "behind the bookshelf. A POKéMON!\p"
-	.string "{COLOR BLUE}You found UNOWN M!\p"
-	.string "UNOWN M returned to its cave.$"
+	.string "behind the bookshelf. A Pokémon!\p"
+	.string "{COLOR BLUE}You found Unown M!\p"
+	.string "Unown M returned to its cave.$"
 
 @N
 
@@ -1073,13 +1073,13 @@ Went_Away_U_N_Movement:
 
 U_N_Text:
 	.string "There's an oddly shaped fruit!\n"
-	.string "It looks like the ‘N' letter.$" 
+	.string "It looks like the ‘N' letter.$"
 
 U_N_Text_Found:
 	.string "That was no fruit!\n"
-	.string "It was a POKéMON!\p"
-	.string "{COLOR BLUE}You found UNOWN N!\p"
-	.string "UNOWN N returned to its cave.$"
+	.string "It was a Pokémon!\p"
+	.string "{COLOR BLUE}You found Unown N!\p"
+	.string "Unown N returned to its cave.$"
 
 @O
 
@@ -1154,9 +1154,9 @@ U_O_Text:
 	.string "shaped not by matter, but by ideas.'$"
 
 U_O_Text_Found:
-	.string "A POKéMON was behind the grave!\p"
-	.string "{COLOR BLUE}You found UNOWN O!\p"
-	.string "UNOWN O returned to its cave.$"
+	.string "A Pokémon was behind the grave!\p"
+	.string "{COLOR BLUE}You found Unown O!\p"
+	.string "Unown O returned to its cave.$"
 
 @P
 
@@ -1225,9 +1225,9 @@ U_P_Text:
 	.string "as messengers.’$"
 
 U_P_Text_Found:
-	.string "A POKéMON suddenly appeared!\p"
-	.string "{COLOR BLUE}You found UNOWN P!\p"
-	.string "UNOWN P returned to its cave.$"
+	.string "A Pokémon suddenly appeared!\p"
+	.string "{COLOR BLUE}You found Unown P!\p"
+	.string "Unown P returned to its cave.$"
 
 @Q
 
@@ -1303,9 +1303,9 @@ U_Q_Text:
 
 U_Q_Text_Found:
 	.string "There was actually something else\n"
-	.string "behind the furniture. A POKéMON!\p"
-	.string "{COLOR BLUE}You found UNOWN Q!\p"
-	.string "UNOWN Q returned to its cave.$"
+	.string "behind the furniture. A Pokémon!\p"
+	.string "{COLOR BLUE}You found Unown Q!\p"
+	.string "Unown Q returned to its cave.$"
 
 @R
 
@@ -1377,9 +1377,9 @@ U_R_Text:
 	.string "Its shape oddly resembles the ‘R' letter.$"
 
 U_R_Text_Found:
-	.string "That was no coal! It was a POKéMON!\p"
-	.string "{COLOR BLUE}You found UNOWN R!\p"
-	.string "UNOWN R returned to its cave.$"
+	.string "That was no coal! It was a Pokémon!\p"
+	.string "{COLOR BLUE}You found Unown R!\p"
+	.string "Unown R returned to its cave.$"
 
 @S
 
@@ -1445,20 +1445,20 @@ Went_Away_U_S_Movement:
 
 U_S_Text:
 	.string "{CLEAR_TO 0x0a}Wanted item{CLEAR_TO 0x7c}Trade item\n"
-	.string "{CLEAR_TO 0x0f}RED SHARD{CLEAR_TO 0x59}{LEFT_ARROW}{RIGHT_ARROW}{CLEAR_TO 0x7b}FIRE STONE{CLEAR_TO 0xc8}\p"
+	.string "{CLEAR_TO 0x0f}Red Shard{CLEAR_TO 0x59}{LEFT_ARROW}{RIGHT_ARROW}{CLEAR_TO 0x7b}Fire Stone{CLEAR_TO 0xc8}\p"
 	.string "{CLEAR_TO 0x0a}Wanted item{CLEAR_TO 0x7c}Trade item\n"
-	.string "{CLEAR_TO 0x06}YELLOW SHARD{CLEAR_TO 0x59}{LEFT_ARROW}{RIGHT_ARROW}{CLEAR_TO 0x73}THUNDERSTONE{CLEAR_TO 0xc8}\p"
+	.string "{CLEAR_TO 0x06}Yellow Shard{CLEAR_TO 0x59}{LEFT_ARROW}{RIGHT_ARROW}{CLEAR_TO 0x73}ThunderStone{CLEAR_TO 0xc8}\p"
 	.string "{CLEAR_TO 0x0a}Wanted item{CLEAR_TO 0x7c}Trade item\n"
-	.string "{CLEAR_TO 0x0c}BLUE SHARD{CLEAR_TO 0x59}{LEFT_ARROW}{RIGHT_ARROW}{CLEAR_TO 0x79}WATER STONE{CLEAR_TO 0xc8}\p"
+	.string "{CLEAR_TO 0x0c}Blue Shard{CLEAR_TO 0x59}{LEFT_ARROW}{RIGHT_ARROW}{CLEAR_TO 0x79}Water Stone{CLEAR_TO 0xc8}\p"
 	.string "{CLEAR_TO 0x0a}Wanted item{CLEAR_TO 0x7c}Trade item\n"
-	.string "{CLEAR_TO 0x08}GREEN SHARD{CLEAR_TO 0x59}{LEFT_ARROW}{RIGHT_ARROW}{CLEAR_TO 0x7b}LEAF STONE\p"
+	.string "{CLEAR_TO 0x08}Green Shard{CLEAR_TO 0x59}{LEFT_ARROW}{RIGHT_ARROW}{CLEAR_TO 0x7b}Leaf Stone\p"
 	.string "There's also a big, bold letter ‘S'.$"
 
 U_S_Text_Found:
 	.string "Huh? There's something behind the\n"
-	.string "poster. A POKéMON!\p"
-	.string "{COLOR BLUE}You found UNOWN S!\p"
-	.string "UNOWN S returned to its cave.$"
+	.string "poster. A Pokémon!\p"
+	.string "{COLOR BLUE}You found Unown S!\p"
+	.string "Unown S returned to its cave.$"
 
 @T
 
@@ -1534,9 +1534,9 @@ U_T_Text:
 
 U_T_Text_Found:
 	.string "There was actually something else\n"
-	.string "behind the machine. A POKéMON!\p"
-	.string "{COLOR BLUE}You found UNOWN T!\p"
-	.string "UNOWN T returned to its cave.$"
+	.string "behind the machine. A Pokémon!\p"
+	.string "{COLOR BLUE}You found Unown T!\p"
+	.string "Unown T returned to its cave.$"
 
 @U
 
@@ -1606,9 +1606,9 @@ U_U_Text:
 
 U_U_Text_Found:
 	.string "There was actually something else\n"
-	.string "behind the model. A POKéMON!\p"
-	.string "{COLOR BLUE}You found UNOWN U!\p"
-	.string "UNOWN U returned to its cave.$"
+	.string "behind the model. A Pokémon!\p"
+	.string "{COLOR BLUE}You found Unown U!\p"
+	.string "Unown U returned to its cave.$"
 
 @V
 
@@ -1678,9 +1678,9 @@ U_V_Text:
 	.string "There's written ‘V'.$"
 
 U_V_Text_Found:
-	.string "A POKéMON jump from the drawer!\p"
-	.string "{COLOR BLUE}You found UNOWN V!\p"
-	.string "UNOWN V returned to its cave.$"
+	.string "A Pokémon jump from the drawer!\p"
+	.string "{COLOR BLUE}You found Unown V!\p"
+	.string "Unown V returned to its cave.$"
 
 @W
 
@@ -1745,16 +1745,16 @@ Went_Away_U_W_Movement:
 	step_end
 
 U_W_Text:
-	.string "POKéMON magazines!\n"
-	.string "POKéMON PAL…\p"
-	.string "POKéMON HANDBOOK…\n"
-	.string "ADORABLE POKéMON…\p"
-	.string "THE STRANGE SHAPES OF UNOWN…$"
+	.string "Pokémon magazines!\n"
+	.string "Pokémon pal…\p"
+	.string "Pokémon handbook…\n"
+	.string "Adorable Pokémon…\p"
+	.string "The strange shapes of Unown…$"
 
 U_W_Text_Found:
 	.string "A strange creature appeared.\p"
-	.string "{COLOR BLUE}You found UNOWN W!\p"
-	.string "UNOWN W returned to its cave.$"
+	.string "{COLOR BLUE}You found Unown W!\p"
+	.string "Unown W returned to its cave.$"
 
 @X
 
@@ -1819,10 +1819,10 @@ U_X_Text:
 	.string "It's marked with an ‘X'.$"
 
 U_X_Text_Found:
-	.string "A POKéMON suddenly jumped from\n"
+	.string "A Pokémon suddenly jumped from\n"
 	.string "behind the rock!\p"
-	.string "{COLOR BLUE}You found UNOWN X!\p"
-	.string "UNOWN X returned to its cave.$"
+	.string "{COLOR BLUE}You found Unown X!\p"
+	.string "Unown X returned to its cave.$"
 
 @Y
 
@@ -1893,9 +1893,9 @@ U_Y_Text:
 
 U_Y_Text_Found:
 	.string "There was actually something else\n"
-	.string "behind the tree. A POKéMON!\p"
-	.string "{COLOR BLUE}You found UNOWN Y!\p"
-	.string "UNOWN Y returned to its cave.$"
+	.string "behind the tree. A Pokémon!\p"
+	.string "{COLOR BLUE}You found Unown Y!\p"
+	.string "Unown Y returned to its cave.$"
 
 @Z
 
@@ -1961,14 +1961,14 @@ Went_Away_U_Z_Movement:
 
 U_Z_Text:
 	.string "The box reads, in bright red letters:\n"
-	.string "{COLOR RED}‘DO NOT OPEN! DANGER!'$"
+	.string "{COLOR RED}‘Do Not Open! Danger!'$"
 
 U_Z_Text_Found:
 	.string "Curiosity got the better of you!\p"
 	.string "And after opening the box, something\n"
-	.string "leapt out with force. A POKéMON!\p"
-	.string "{COLOR BLUE}You found UNOWN Z!\p"
-	.string "UNOWN Z returned to its cave.$"
+	.string "leapt out with force. A Pokémon!\p"
+	.string "{COLOR BLUE}You found Unown Z!\p"
+	.string "Unown Z returned to its cave.$"
 
 @EM
 
@@ -2038,9 +2038,9 @@ U_EM_Text:
 	.string "‘This room is a mirror!'$"
 
 U_EM_Text_Found:
-	.string "A POKéMON suddently appeared!\p"
-	.string "{COLOR BLUE}You found UNOWN ‘!'!\p"
-	.string "UNOWN ‘!' returned to its cave.$"
+	.string "A Pokémon suddently appeared!\p"
+	.string "{COLOR BLUE}You found Unown ‘!'!\p"
+	.string "Unown ‘!' returned to its cave.$"
 
 @QM
 
@@ -2110,9 +2110,9 @@ U_QM_Text:
 	.string "‘This room is a mirror?'$"
 
 U_QM_Text_Found:
-	.string "A POKéMON suddently appeared!\p"
-	.string "{COLOR BLUE}You found UNOWN ‘?'!\p"
-	.string "UNOWN ‘?' returned to its cave.$"
+	.string "A Pokémon suddently appeared!\p"
+	.string "{COLOR BLUE}You found Unown ‘?'!\p"
+	.string "Unown ‘?' returned to its cave.$"
 
 @COMMON SCRIPTS
 
@@ -2128,7 +2128,7 @@ Test_Event_Check_U_Remaining::
 	return
 
 Test_Event_Check_U_Remaining_Text:
-	.string "{COLOR RED}There are {STR_VAR_1} UNOWN remaining.$"
+	.string "{COLOR RED}There are {STR_VAR_1} Unown remaining.$"
 
 Test_Event_All_U_Found::
 	playmoncry SPECIES_UNOWN, CRY_MODE_NORMAL
@@ -2140,5 +2140,5 @@ Test_Event_All_U_Found::
 	end
 
 Test_Event_All_U_Found_Text:
-	.string "{COLOR RED}You found all UNOWN forms!\p"
-	.string "Checking UNOWN CHAMBER would be wise.$"
+	.string "{COLOR RED}You found all Unown forms!\p"
+	.string "Checking Unown Chamber would be wise.$"
