@@ -492,7 +492,7 @@ BattleFrontier_Lounge7_Text_ThunderWaveDesc::
 BattleFrontier_Lounge7_Text_SwordsDanceDesc::
 	.string "A fighting dance\n"
 	.string "that sharply\n"
-	.string "raises ATTACK.$"
+	.string "raises Attack.$"
 
 BattleFrontier_Lounge7_Text_DefenseCurlDesc::
 	.string "Curls up to con-\n"

@@ -506,7 +506,7 @@ BattleFrontier_BattleTowerBattleRoom_Text_ReadyForSalonMaiden:
 
 BattleFrontier_BattleTowerBattleRoom_Text_GreetingsImAnabel:
 	.string "Greetings…\n"
-	.string "My name is ANABEL.\p"
+	.string "My name is Anabel.\p"
 	.string "I am the SALON MAIDEN, and I am in\n"
 	.string "charge of running the BATTLE TOWER…\p"
 	.string "I have heard several rumors\n"
@@ -521,7 +521,7 @@ BattleFrontier_BattleTowerBattleRoom_Text_LetMeSeeYourTalent:
 	.string "its entirety…$"
 
 BattleFrontier_BattleTowerBattleRoom_Text_AnabelTalentShallBeRecognized:
-	.string "ANABEL: Fufufu, nicely done…\p"
+	.string "Anabel: Fufufu, nicely done…\p"
 	.string "Your FRONTIER PASS, please…\n"
 	.string "Your talent shall be recognized.$"
 
@@ -539,7 +539,7 @@ BattleFrontier_BattleTowerBattleRoom_Text_UntilNextTime:
 	.string "Until the next time we meet…$"
 
 BattleFrontier_BattleTowerBattleRoom_Text_AnabelYouCameBack:
-	.string "ANABEL: You really did come back to\n"
+	.string "Anabel: You really did come back to\n"
 	.string "see me…\p"
 	.string "… … … … … …\p"
 	.string "You've won straight matches to see me…\n"
@@ -552,7 +552,7 @@ BattleFrontier_BattleTowerBattleRoom_Text_LetsBeginShallWe:
 	.string "Let's begin, shall we?$"
 
 BattleFrontier_BattleTowerBattleRoom_Text_AnabelCongratsYourPassPlease:
-	.string "ANABEL: Fufu, congratulations…\n"
+	.string "Anabel: Fufu, congratulations…\n"
 	.string "Your FRONTIER PASS, please…$"
 
 BattleFrontier_BattleTowerBattleRoom_Text_AbilitySymbolTookGoldenShine:

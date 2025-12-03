@@ -111,8 +111,8 @@ BattleFrontier_RankingHall_Text_DomePikeFactoryRecords:
 	.string "and BATTLE FACTORY Records$"
 
 BattleFrontier_RankingHall_Text_PalaceArenaPyramidRecords:
-	.string "BATTLE PALACE, BATTLE ARENA,\n"
-	.string "and BATTLE PYRAMID Records$"
+	.string "Battle Palace, Battle Arena,\n"
+	.string "and Battle Pyramid Records$"
 
 BattleFrontier_RankingHall_Text_IsYourNameOnThisList:
 	.string "Hi, is your name on this list?$"

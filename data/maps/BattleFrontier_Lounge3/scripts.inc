@@ -288,7 +288,7 @@ BattleFrontier_Lounge3_Text_ChallengeBattlePalaceDouble::
 BattleFrontier_Lounge3_Text_ChallengeBattleArena::
 	.string "What I'm looking for is a TRAINER who's\n"
 	.string "going to be entering the BATTLE\l"
-	.string "ARENA's Set KO Tourney.\p"
+	.string "Arena's Set KO Tourney.\p"
 	.string "But so far, I haven't seen a TRAINER\n"
 	.string "that has that winning quality.$"
 
@@ -396,7 +396,7 @@ BattleFrontier_Lounge3_Text_GetToBattlePalaceDouble::
 	.string "Both of our futures depend on you!$"
 
 BattleFrontier_Lounge3_Text_GetToBattleArena::
-	.string "Get to the BATTLE ARENA's\n"
+	.string "Get to the BATTLE Arena's\n"
 	.string "Set KO Tourney pronto!\p"
 	.string "It's a must-win situation!\n"
 	.string "Don't blow your chance!\l"

@@ -248,7 +248,7 @@ Route128_EventScript_Carlee::
 	end
 
 Route128_Text_ArchieWhatHappened:
-	.string "ARCHIE: What happened…\n"
+	.string "Archie: What happened…\n"
 	.string "What is this wretched scene…\p"
 	.string "Did I…make a horrible mistake?$"
 
@@ -258,7 +258,7 @@ Route128_Text_ArchieIOnlyWanted:
 
 Route128_Text_MaxieDoYouUnderstandNow:
 	.string "MAXIE: Do you understand now,\n"
-	.string "ARCHIE?\p"
+	.string "Archie?\p"
 	.string "Do you finally see how disastrous\n"
 	.string "your dream turned out to be?\p"
 	.string "We have to hurry! We have to do\n"
@@ -268,14 +268,14 @@ Route128_Text_MaxieDoYouUnderstandNow:
 Route128_Text_MaxieResposibilityFallsToArchieAndMe:
 	.string "MAXIE: {PLAYER}, don't say anything.\p"
 	.string "I know that I have no right to be\n"
-	.string "critical of ARCHIE…\p"
+	.string "critical of Archie…\p"
 	.string "But the way things are now, I doubt\n"
 	.string "that we humans will be capable of\l"
 	.string "doing anything about it.\p"
 	.string "But neither can we stand by and\n"
 	.string "just watch helplessly.\p"
 	.string "The responsibility for putting an end\n"
-	.string "to this falls to ARCHIE and me…$"
+	.string "to this falls to Archie and me…$"
 
 Route128_Text_MaxieThisDefiesBelief:
 	.string "MAXIE: This defies belief…\p"
