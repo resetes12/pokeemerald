@@ -3135,20 +3135,6 @@ static void PrintNotEggInfo(void)
         }
         PutWindowTilemap(PSS_LABEL_WINDOW_PORTRAIT_DEX_NUMBER);
     }
-    else if (species == SPECIES_TEST)
-    {
-        if (!IsMonShiny(mon))
-        {
-            PrintTextOnWindow(PSS_LABEL_WINDOW_PORTRAIT_DEX_NUMBER, sText_Test_Number, 0, 1, 0, 1);
-            SetMonPicBackgroundPalette(FALSE);
-        }
-        else
-        {
-            PrintTextOnWindow(PSS_LABEL_WINDOW_PORTRAIT_DEX_NUMBER, sText_Test_Number, 0, 1, 0, 7);
-            SetMonPicBackgroundPalette(TRUE);
-        }
-        PutWindowTilemap(PSS_LABEL_WINDOW_PORTRAIT_DEX_NUMBER);
-    }
     else if (dexNum != 0xFFFF)
     {
         StringCopy(gStringVar1, &gText_NumberClear01[0]);
