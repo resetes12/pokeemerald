@@ -118,14 +118,14 @@ static const u8 sText_SurvivePoison_Label[] = _("SURVIVE POISON");
 static const u8 sText_Synchronize_Label[]   = _("SYNCHRONIZE");
 static const u8 sText_Mints_Label[]         = _("NATURE MINTS");
 static const u8 sText_NewCitrus_Label[]     = _("SITRUS BERRY");
-static const u8 sText_FairyTypes_Label[]    = _("ADD FAIRY TYPE");
+static const u8 sText_FairyTypes_Label[]    = _("FAIRY TYPE");
 static const u8 sText_Sturdy_Label[]        = _("STURDY");
 static const u8 sText_ModernMoves_Label[]   = _("{PKMN} MOVEPOOL");
 static const u8 sText_LegendaryAbils_Label[]= _("LEGEN. ABILITIES");
 static const u8 sText_Encounters_Label[]    = _("ENCOUNTERS");
 static const u8 sText_TypeChart_Label[]     = _("TYPE CHART");
 static const u8 sText_Stats_Label[]         = _("POKéMON STATS");
-static const u8 sText_Types_Label[]         = _("POKéMON TYPE");
+static const u8 sText_Types_Label[]         = _("POKéMON TYPES");
 static const u8 sText_Extra_Legendaries_Label[]         = _("EXTRA LEGEND.");
 
 //page 2 Features
@@ -706,7 +706,23 @@ static void Viewer_DrawRow_Page1(u8 visRow, u16 idx)
                                      rightStyle, TEXT_SKIP_DRAW, sText_Modern);
         break;
     }
-    case 4: // PKM MOVEPOOL
+    case 4: // PKM types
+    {
+        const int y = visRow * 16;
+        Viewer_ClearRow(visRow, selected);
+        AddTextPrinterParameterized4(WIN_OPTIONS, FONT_NORMAL, 8, y + 1, 0, 0,
+                                     sColorLeftActive, TEXT_SKIP_DRAW, sText_Types_Label);
+        u8 sel = GetSel_Types();
+        const u8 *leftStyle  = (sel == 0) ? sColorRightRed : sColorRightGray; // "ORIGINAL"
+        const u8 *rightStyle = (sel == 1) ? sColorRightRed : sColorRightGray; // "MODERN"
+        AddTextPrinterParameterized4(WIN_OPTIONS, FONT_NORMAL, 104, y, 0, 0,
+                                     leftStyle, TEXT_SKIP_DRAW, sText_Original);
+        int xr = GetStringRightAlignXOffset(1, sText_Modern, 198);
+        AddTextPrinterParameterized4(WIN_OPTIONS, FONT_NORMAL, xr, y, 0, 0,
+                                     rightStyle, TEXT_SKIP_DRAW, sText_Modern);
+        break;
+    }
+    case 5: // PKM MOVEPOOL
     {
         const int y = visRow * 16;
         Viewer_ClearRow(visRow, selected);
@@ -722,7 +738,7 @@ static void Viewer_DrawRow_Page1(u8 visRow, u16 idx)
                                      rightStyle, TEXT_SKIP_DRAW, sText_Modern);
         break;
     }
-    case 5: // SYNCHRONIZE
+    case 6: // SYNCHRONIZE
     {
         const int y = visRow * 16;
         Viewer_ClearRow(visRow, selected);
@@ -738,7 +754,7 @@ static void Viewer_DrawRow_Page1(u8 visRow, u16 idx)
                                      rightStyle, TEXT_SKIP_DRAW, sText_Modern);
         break;
     }
-    case 6: // STURDY
+    case 7: // STURDY
     {
         const int y = visRow * 16;
         Viewer_ClearRow(visRow, selected);
@@ -754,7 +770,7 @@ static void Viewer_DrawRow_Page1(u8 visRow, u16 idx)
                                      rightStyle, TEXT_SKIP_DRAW, sText_Modern);
         break;
     }
-    case 7: // SITRUS BERRY
+    case 8: // SITRUS BERRY
     {
         const int y = visRow * 16;
         Viewer_ClearRow(visRow, selected);
