@@ -2020,4 +2020,4 @@ const u8 gText_FORMS_Buttons_Submenu_PE[]           = _("{DPAD_NONE}FORMs {A_BUT
 const u8 gText_FORMS_Buttons_Submenu_Decapped_PE[]  = _("{START_BUTTON}Evos");
 const u8 gText_FORMS_NONE[]                         = _("{STR_VAR_1} has no alternate forms.");
 const u8 gText_Var1DotVar2_Metric[]                 = _("{STR_VAR_1}.{STR_VAR_2}cm");
-const u8 gText_StatEditor[] = _("EDIT IV/EVs");
+const u8 gText_StatEditor[] = _("EDIT IVs/EVs");
