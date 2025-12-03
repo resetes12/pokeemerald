@@ -575,7 +575,7 @@ gTVMassOutbreakText00::
 
 gTV3CheersForPokeblocksText00::
 	.string "Mc: We hope you're in good cheer,\n"
-	.string "“3 Cheers For {POKEBLOCK}S” is here!\p"
+	.string "“3 Cheers For {POKEBLOCK}s” is here!\p"
 	.string "Today, we examine the {POKEBLOCK} blended\n"
 	.string "by {STR_VAR_1} and associates.\p"
 	.string "Without any delay, let me feed it\n"
@@ -610,7 +610,7 @@ gTV3CheersForPokeblocksText04::
 
 gTV3CheersForPokeblocksText05::
 	.string "Tune in next time!\n"
-	.string "Our slogan is “3 Cheers For {POKEBLOCK}S!”$"
+	.string "Our slogan is “3 Cheers For {POKEBLOCK}s!”$"
 
 LilycoveCity_PokemonTrainerFanClub_Text_WhatsYourOpinionOfTrainer::
 	.string "Hi, there!\p"
@@ -1029,7 +1029,7 @@ gTVPokemonTodaySuccessfulText11::
 
 SmartShopper_Text_Intro::
 	.string "Hello!\p"
-	.string "It's time for Today'S Smart Shopper.\p"
+	.string "It's time for Today's Smart Shopper.\p"
 	.string "Interviewer: How are you, viewers?\p"
 	.string "Today we're visiting a shop\n"
 	.string "in {STR_VAR_2}.\p"
@@ -1048,11 +1048,11 @@ SmartShopper_Text_ClerkNormal::
 
 SmartShopper_Text_RandomComment1::
 	.string "Interviewer: The Trainer bought\n"
-	.string "{STR_VAR_3} {STR_VAR_2}S? That's a haul!\p"
+	.string "{STR_VAR_3} {STR_VAR_2}s? That's a haul!\p"
 	.string "If I may say so, {STR_VAR_1} must have\n"
 	.string "been stocking up for a long journey\l"
 	.string "to far-off places.\p"
-	.string "For traveling, {STR_VAR_2}S are so\n"
+	.string "For traveling, {STR_VAR_2}s are so\n"
 	.string "important!$"
 
 SmartShopper_Text_RandomComment2::
@@ -1115,9 +1115,9 @@ SmartShopper_Text_ClerkMax::
 	.string "Recently, a Trainer named {STR_VAR_1}\n"
 	.string "bought the item {STR_VAR_2} in bulk.\p"
 	.string "The Trainer almost cleared out our\n"
-	.string "entire stock of {STR_VAR_2}S.\p"
+	.string "entire stock of {STR_VAR_2}s.\p"
 	.string "I never dreamt that any customer\n"
-	.string "would ever need so many {STR_VAR_2}S.\l"
+	.string "would ever need so many {STR_VAR_2}s.\l"
 	.string "It's just unheard of!\p"
 	.string "Interviewer: So that would be like 100\n"
 	.string "or 200 sold?\p"
@@ -1168,7 +1168,7 @@ gTVWorldOfMastersText02::
 	.string "Please tune in next time.$"
 
 gTVTodaysRivalTrainerText00::
-	.string "Today'S Rival Trainer!\p"
+	.string "Today's Rival Trainer!\p"
 	.string "Hello, fellow Pokémon Trainers!\n"
 	.string "How are we all doing today?\p"
 	.string "Today, like every other day,\n"
@@ -1230,7 +1230,7 @@ gTVTodaysRivalTrainerText06::
 	.string "and ahead of our rivals!$"
 
 TrendWatcher_Text_Intro::
-	.string "Dewford Trend-WATCHER Network!\p"
+	.string "Dewford Trend-Watcher Network!\p"
 	.string "Mc: Wassup?\n"
 	.string "We'll keep it real with the latest on\l"
 	.string "what's hip and happening in Dewford.\p"
@@ -2005,7 +2005,7 @@ gTVPokemonNewsBattleFrontierText18::
 	.string "That's the news on Pokémon News!$"
 
 gTVWhatsNo1InHoennTodayText00::
-	.string "What'S No. 1 In Hoenn Today?\n"
+	.string "What's No. 1 In Hoenn Today?\n"
 	.string "Yes, it's that time again!\p"
 	.string "Hello, viewers! Are you giving your\n"
 	.string "best at whatever you do?\p"
@@ -2384,7 +2384,7 @@ gTVSafariFanClubText01::
 	.string "{STR_VAR_2} Pokémon.$"
 
 gTVSafariFanClubText02::
-	.string "The Trainer is clever with {POKEBLOCK}S.\n"
+	.string "The Trainer is clever with {POKEBLOCK}s.\n"
 	.string "Used {STR_VAR_2} that time, I think.$"
 
 gTVSafariFanClubText03::
@@ -2414,14 +2414,14 @@ gTVSafariFanClubText06::
 	.string "catch one Pokémon. Not a one!$"
 
 gTVSafariFanClubText07::
-	.string "The Trainer does use {POKEBLOCK}S.\n"
+	.string "The Trainer does use {POKEBLOCK}s.\n"
 	.string "Used {STR_VAR_2} that time, I think.\p"
 	.string "But, boy, I wish the Trainer would\n"
 	.string "get a bit better at this.$"
 
 gTVSafariFanClubText08::
 	.string "I think the Trainer would have better\n"
-	.string "luck using {POKEBLOCK}S, which weren't\l"
+	.string "luck using {POKEBLOCK}s, which weren't\l"
 	.string "used at all that time.$"
 
 gTVSafariFanClubText09::
@@ -2439,7 +2439,7 @@ gTVSafariFanClubText10::
 	.string "Until next time, cheerio!$"
 
 ContestLiveUpdates_Text_Intro::
-	.string "“POKéMON Contest Live Updates!”\p"
+	.string "“Pokémon Contest Live Updates!”\p"
 	.string "Mc: Thanks for joining us!\p"
 	.string "We're live from the just-ended\n"
 	.string "{STR_VAR_1} site.\p"
@@ -2647,7 +2647,7 @@ ContestLiveUpdates_Text_Outro::
 	.string "You're the Contest winner!$"
 
 gTVPokemonBattleUpdateText00::
-	.string "“POKéMON Battle Update!”\p"
+	.string "“Pokémon Battle Update!”\p"
 	.string "Bringing you the results of Pokémon\n"
 	.string "battles as they come in!$"
 
@@ -2673,7 +2673,7 @@ gTVPokemonBattleUpdateText04::
 	.string "And for the defeated {STR_VAR_2},\n"
 	.string "we hope for a better result next time!\p"
 	.string "This concludes this episode of\n"
-	.string "“POKéMON Battle Update!”$"
+	.string "“Pokémon Battle Update!”$"
 
 gTVPokemonBattleUpdateText05::
 	.string "The teams of Trainers {STR_VAR_1} and\n"
@@ -2694,7 +2694,7 @@ gTVPokemonBattleUpdateText07::
 	.string "As for the defeated {STR_VAR_2}'s team,\n"
 	.string "we hope for a better result next time!\p"
 	.string "This concludes this episode of\n"
-	.string "“POKéMON Battle Update!”$"
+	.string "“Pokémon Battle Update!”$"
 
 GabbyAndTy_Text_GabbyPreFirstBattle:
 	.string "Gabby: Oh! We've just spotted a tough-\n"
@@ -2926,7 +2926,7 @@ gTVInSearchOfTrainersText08::
 	.string "See you again on our next broadcast!$"
 
 ContestLadyShow_Text_Intro::
-	.string "“POKéMON Contest Live Updates!”\p"
+	.string "“Pokémon Contest Live Updates!”\p"
 	.string "Mc: Sorry to interrupt the regular\n"
 	.string "programming, and thanks for joining us!\p"
 	.string "We bring you this live from\n"

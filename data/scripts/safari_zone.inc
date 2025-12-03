@@ -157,7 +157,7 @@ Route121_SafariZoneEntrance_Text_YouNeedPokeblockCase:
 	.string "Excuse me!\n"
 	.string "You seem to be without a {POKEBLOCK} Case.\p"
 	.string "Your Safari Game will be much more\n"
-	.string "fruitful if you use {POKEBLOCK}S.\p"
+	.string "fruitful if you use {POKEBLOCK}s.\p"
 	.string "Please come back with a {POKEBLOCK} Case.\p"
 	.string "You may obtain a {POKEBLOCK} Case from\n"
 	.string "the Lilycove Contest Hall.$"
@@ -239,7 +239,7 @@ SafariZone_RestHouse_Text_Youngster:
 SafariZone_RestHouse_Text_PsychicM:
 	.string "If you use {POKEBLOCK}s, wild Pokémon won't\n"
 	.string "be so quick to run away.\p"
-	.string "It's not much use to give {POKEBLOCK}S to\n"
+	.string "It's not much use to give {POKEBLOCK}s to\n"
 	.string "Pokémon that don't flee easily.$"
 
 SafariZone_RestHouse_Text_FatMan:
