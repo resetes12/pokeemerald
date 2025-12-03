@@ -207,37 +207,37 @@ SCRIPT_SelfTrade_DeclineTrade::
 	end
 
 SCRIPT_SelfTrade_Text_IllTradeIfYouWant:
-	.string "Welcome to the DEVON CORPORATION\n"
-	.string "SELF-TRADER app.\p"
-	.string "One of your POKéMON will be self-traded.\n"
+	.string "Welcome to the Devon Corporation\n"
+	.string "Self-Trader app.\p"
+	.string "One of your Pokémon will be self-traded.\n"
 	.string "A single operation costs 10.000¥.\p"
 	.string "Do you want to continue to\n"
-	.string "the POKéMON selection?$"
+	.string "the Pokémon selection?$"
 
 SCRIPT_SelfTrade_Text_ComeBack:
 	.string "Thank you using\n"
-	.string "DEVON CORP. products.$"
+	.string "Devon Corp. products.$"
 
 SCRIPT_SelfTrade_Text_YouDontWantToThatsOkay:
 	.string "Thank you for using\n"
-	.string "DEVON CORP. products.$"
+	.string "Devon Corp. products.$"
 
 LilycoveCity_DepartmentStore_1F_Machine_NoMoney_Text:
 	.string "Sorry, you don't have enough money.\n"
 	.string "10.000¥ are required for one use.\p"
 	.string "Thank you for using\n"
-	.string "DEVON CORP. products.$"
+	.string "Devon Corp. products.$"
 
 LilycoveCity_DepartmentStore_1F_TraderWoman_Text:
-	.string "Welcome to LILYCOVE DEPARTMENT STORE!\p"
+	.string "Welcome to Lilycove Department Store!\p"
 	.string "Would you like to know about the new\n"
-	.string "technology developed by DEVON CORP.?\p"
-	.string "It's a SELF-TRADER app!\p"
+	.string "technology developed by Devon Corp.?\p"
+	.string "It's a Self-Trader app!\p"
 	.string "With the help of a simple computer\n"
-	.string "program, you can send one POKéMON to\l"
-	.string "a DEVON CORP. server and get it back\l"
+	.string "program, you can send one Pokémon to\l"
+	.string "a Devon Corp. server and get it back\l"
 	.string "in just a few seconds!\p"
-	.string "This can trigger the EVOLUTION\n"
+	.string "This can trigger the Evolution\n"
 	.string "conditions of certain species.\p"
 	.string "However, maintaining such a complex\n"
 	.string "system can be expensive.\p"
@@ -247,15 +247,15 @@ LilycoveCity_DepartmentStore_1F_TraderWoman_Text:
 	.string "usage, which costs 10.000¥.\p"
 	.string "If you want to try it out, just use\n"
 	.string "the computer on your right!\p"
-	.string "Thank you for using DEVON\n"
-	.string "CORP. products!$"
+	.string "Thank you for using Devon\n"
+	.string "Corp. products!$"
 
 LilycoveCity_DepartmentStore_1F_Text_WelcomeToDeptStore:
-	.string "Welcome to LILYCOVE DEPARTMENT STORE.$"
+	.string "Welcome to Lilycove Department Store.$"
 
 LilycoveCity_DepartmentStore_1F_Text_IBuyAllSortsOfThings:
-	.string "Whenever I come to the DEPARTMENT\n"
-	.string "STORE, I always end up buying all sorts\l"
+	.string "Whenever I come to the Department\n"
+	.string "Store, I always end up buying all sorts\l"
 	.string "of things because it's so fun.$"
 
 LilycoveCity_DepartmentStore_1F_Text_MomBuyingMeFurniture:
@@ -263,20 +263,20 @@ LilycoveCity_DepartmentStore_1F_Text_MomBuyingMeFurniture:
 	.string "nice furniture.$"
 
 LilycoveCity_DepartmentStore_1F_Text_BuyingSomethingForAzumarill:
-	.string "I'm buying something for my AZUMARILL\n"
-	.string "as a reward for winning a CONTEST.$"
+	.string "I'm buying something for my Azumarill\n"
+	.string "as a reward for winning a Contest.$"
 
 LilycoveCity_DepartmentStore_1F_Text_Azumarill:
-	.string "AZUMARILL: Maririroo!$"
+	.string "Azumarill: Maririroo!$"
 
 LilycoveCity_DepartmentStore_1F_Text_FloorNamesSign:
-	.string "1F: SERVICE COUNTER\n"
-	.string "    LOTTERY CORNER\p"
-	.string "2F: TRAINER'S ZONE\p"
-	.string "3F: BATTLE COLLECTION\p"
-	.string "4F: TM CORNER\p"
-	.string "5F: POKé DOLL FLOOR\p"
-	.string "ROOFTOP: ROOFTOP PLAZA$"
+	.string "1F: Service Counter\n"
+	.string "    Lottery Corner\p"
+	.string "2F: Trainer's Zone\p"
+	.string "3F: Battle Collection\p"
+	.string "4F: TM Corner\p"
+	.string "5F: Poké Doll Floor\p"
+	.string "Rooftop: Rooftop Plaza$"
 
 @ Unused
 LilycoveCity_DepartmentStore_1F_Text_WirelessCommIsFun:

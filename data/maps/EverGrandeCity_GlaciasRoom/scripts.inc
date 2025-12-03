@@ -84,26 +84,26 @@ EverGrandeCity_GlaciasRoom_EventScript_Defeated::
 	end
 
 EverGrandeCity_GlaciasRoom_Text_IntroSpeech:
-	.string "Welcome, my name is GLACIA\n"
-	.string "of the ELITE FOUR.\p"
-	.string "I've traveled from afar to HOENN\n"
+	.string "Welcome, my name is Glacia\n"
+	.string "of the Elite Four.\p"
+	.string "I've traveled from afar to Hoenn\n"
 	.string "so that I may hone my ice skills.\p"
 	.string "But all I have seen are challenges by\n"
-	.string "weak TRAINERS and their POKéMON.\p"
+	.string "weak Trainers and their Pokémon.\p"
 	.string "What about you?\p"
 	.string "It would please me to no end if I could\n"
 	.string "go all out against you!$"
 
 EverGrandeCity_GlaciasRoom_Text_DoublesOrSingles:
-	.string "Welcome again, I'm GLACIA. I won't\n"
+	.string "Welcome again, I'm Glacia. I won't\n"
 	.string "introduce myself again, you know me.\p"
 	.string "I haven't had any challenge since I\n"
-	.string "last battled you and your POKéMON.\p"
+	.string "last battled you and your Pokémon.\p"
 	.string "What about you?\n"
 	.string "Have your skills honed?\p"
 	.string "Before we start, I'll give you the\n"
 	.string "chance to decide whether to fight me\l"
-	.string "in a DOUBLE or a SINGLE BATTLE.$"
+	.string "in a Double or a Single Battle.$"
 
 EverGrandeCity_GlaciasRoom_Text_IntroSpeech2:
 	.string "It would please me to no end if I could\n"
@@ -111,7 +111,7 @@ EverGrandeCity_GlaciasRoom_Text_IntroSpeech2:
 	.string "This time… I will win!$"
 
 EverGrandeCity_GlaciasRoom_Text_Defeat:
-	.string "You and your POKéMON…\n"
+	.string "You and your Pokémon…\n"
 	.string "How hot your spirits burn!\p"
 	.string "The all-consuming heat overwhelms.\p"
 	.string "It's no surprise that my icy skills\n"
@@ -124,4 +124,4 @@ EverGrandeCity_GlaciasRoom_Text_Defeat2:
 EverGrandeCity_GlaciasRoom_Text_PostBattleSpeech:
 	.string "Advance to the next room.\p"
 	.string "And there, confirm the truly fearsome\n"
-	.string "side of the POKéMON LEAGUE.$"
+	.string "side of the Pokémon League.$"

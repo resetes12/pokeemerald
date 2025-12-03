@@ -124,7 +124,7 @@ NavelRock_Fork_Puzzle_Ho_Oh_Already_Solved::
 	setvar VAR_0x8005, TRUE // or TRUE if you want to display the solved puzzle
 	special DoSlidingPuzzle
 	waitstate
-	
+
 NavelRock_Fork_Puzzle_Kabuto_Puzzle_Completed::
 	goto_if_set FLAG_OMANYTE_PUZZLE_SOLVED, NavelRock_Fork_Puzzle_Omanyte_Puzzle_Completed
 	end
@@ -153,4 +153,4 @@ NavelRock_Fork_Puzzle_All_Puzzles_Completed::
 
 Puzzle_Complete_Text:
 	.string "The puzzle now displays an\n"
-	.string "ancient POKéMON.$"
+	.string "ancient Pokémon.$"

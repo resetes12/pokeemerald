@@ -118,4 +118,4 @@ Lugia_Text:
 
 Lugia_Legendaries_Text:
 	.string "Three mighty cries echoed\n"
-	.string "through NAVEL ROCK.$"
+	.string "through Navel Rock.$"

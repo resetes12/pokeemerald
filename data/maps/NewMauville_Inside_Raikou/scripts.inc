@@ -23,7 +23,7 @@ NewMauville_Inside_Raikou_EntranceTrigger::
 
 NewMauville_Inside_Raikou_EntranceTrigger_Text:
 	.string "A thunderous roar rumbles through\n"
-	.string "the halls of NEW MAUVILLE.$"
+	.string "the halls of New Mauville.$"
 
 NewMauville_Inside_Raikou_EntranceTrigger_Movement:
 	delay_16
@@ -82,12 +82,12 @@ NewMauville_Inside_Raikou_RaikouBattle_1_Movement:
 	step_end
 
 NewMauville_Inside_Raikou_RaikouBattle_CantCatch_Text:
-	.string "RAIKOU's power is surging wildly!\p"
+	.string "Raikou's power is surging wildly!\p"
 	.string "Its power prevents the use of\n"
-	.string "POKéBALLS.$"
+	.string "Pokéballs.$"
 
 NewMauville_Inside_Raikou_RaikouBattle_1_Text:
-	.string "RAIKOU ran away swiftly!$"
+	.string "Raikou ran away swiftly!$"
 
 @@Second encounter with Raikou. Level 70, 400 speed, 300hp
 
@@ -138,7 +138,7 @@ NewMauville_Inside_Raikou_RaikouBattle_2_Movement:
 	step_end
 
 NewMauville_Inside_Raikou_RaikouBattle_2_Text:
-	.string "RAIKOU swiftly escaped again!$"
+	.string "Raikou swiftly escaped again!$"
 
 @@ Final battle with Raikou, has 600hp and 400 speed, with magnet
 NewMauville_Inside_Raikou_RaikouBattle::
@@ -173,8 +173,8 @@ NewMauville_Inside_Raikou_RaikouBattle_3_Stats::
 	return
 
 NewMauville_Inside_Raikou_RaikouBattle_Text::
-	.string "RAIKOU stopped running away.\p"
-	.string "POKéBALLS seem to work again.$"
+	.string "Raikou stopped running away.\p"
+	.string "Pokéballs seem to work again.$"
 
 NewMauville_Inside_Raikou_Won::
 	setflag FLAG_DEFEATED_RAIKOU

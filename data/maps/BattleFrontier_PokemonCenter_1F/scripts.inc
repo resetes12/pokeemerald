@@ -65,10 +65,10 @@ BattleFrontier_PokemonCenter_1F_EventScript_DisableChallenges_EvoLimit:
 	end
 
 EventScript_MultichoiceDisableChallenge_Text_Challenge_EvoLimit:
-	.string "EVOLUTION LIMIT$"
+	.string "Evolution Limit$"
 
 EventScript_MultichoiceDisableChallenge_Text_Challenge_EvoLimit_Disable:
-	.string "Disable EVOLUTION LIMIT?$"
+	.string "Disable Evolution Limit?$"
 
 @mirror
 BattleFrontier_PokemonCenter_1F_EventScript_DisableChallenges_Mirror_Ask:
@@ -87,10 +87,10 @@ BattleFrontier_PokemonCenter_1F_EventScript_DisableChallenges_Mirror:
 	end
 
 EventScript_MultichoiceDisableChallenge_Text_Challenge_Mirror:
-	.string "MIRROR$"
+	.string "Mirror$"
 
 EventScript_MultichoiceDisableChallenge_Text_Challenge_Mirror_Disable:
-	.string "Disable MIRROR challenge?$"
+	.string "Disable Mirror challenge?$"
 
 @mirror thief
 BattleFrontier_PokemonCenter_1F_EventScript_DisableChallenges_MirrorThief_Ask:
@@ -109,10 +109,10 @@ BattleFrontier_PokemonCenter_1F_EventScript_DisableChallenges_MirrorThief:
 	end
 
 EventScript_MultichoiceDisableChallenge_Text_Challenge_MirrorThief:
-	.string "MIRROR THIEF$"
+	.string "Mirror Thief$"
 
 EventScript_MultichoiceDisableChallenge_Text_Challenge_MirrorThief_Disable:
-	.string "Disable MIRROR THIEF challenge?$"
+	.string "Disable Mirror Thief challenge?$"
 
 @Expensive Challenge
 BattleFrontier_PokemonCenter_1F_EventScript_DisableChallenges_Expensive_Ask:
@@ -131,10 +131,10 @@ BattleFrontier_PokemonCenter_1F_EventScript_DisableChallenges_Expensive:
 	end
 
 EventScript_MultichoiceDisableChallenge_Text_Challenge_Expensive:
-	.string "ULTRA EXPENSIVE!$"
+	.string "Ultra Expensive!$"
 
 EventScript_MultichoiceDisableChallenge_Text_Challenge_Expensive_Disable:
-	.string "Disable ULTRA EXPENSIVE?$"
+	.string "Disable Ultra Expensive?$"
 
 @one type
 BattleFrontier_PokemonCenter_1F_EventScript_DisableChallenges_OneType_Ask:
@@ -153,10 +153,10 @@ BattleFrontier_PokemonCenter_1F_EventScript_DisableChallenges_OneType:
 	end
 
 EventScript_MultichoiceDisableChallenge_Text_Challenge_OneType:
-	.string "ONE TYPE CHALLENGE$"
+	.string "One Type Challenge$"
 
 EventScript_MultichoiceDisableChallenge_Text_Challenge_OneType_Disable:
-	.string "Disable ONE TYPE CHALLENGE?$"
+	.string "Disable One Type Challenge?$"
 
 @party limit
 BattleFrontier_PokemonCenter_1F_EventScript_DisableChallenges_PartyLimit_Ask:
@@ -175,10 +175,10 @@ BattleFrontier_PokemonCenter_1F_EventScript_DisableChallenges_PartyLimit:
 	end
 
 EventScript_MultichoiceDisableChallenge_Text_Challenge_PartyLimit:
-	.string "PARTY LIMIT$"
+	.string "Party Limit$"
 
 EventScript_MultichoiceDisableChallenge_Text_Challenge_PartyLimit_Disable:
-	.string "Disable PARTY LIMIT?$"
+	.string "Disable Party Limit?$"
 
 @no item player
 BattleFrontier_PokemonCenter_1F_EventScript_DisableChallenges_NoItemPlayer_Ask:
@@ -197,10 +197,10 @@ BattleFrontier_PokemonCenter_1F_EventScript_DisableChallenges_NoItemPlayer:
 	end
 
 EventScript_MultichoiceDisableChallenge_Text_Challenge_NoItemPlayer:
-	.string "NO ITEM (PLAYER)$"
+	.string "No Item (Player)$"
 
 EventScript_MultichoiceDisableChallenge_Text_Challenge_NoItemPlayer_Disable:
-	.string "Disable NO ITEM (PLAYER)?$"
+	.string "Disable No Item (Player)?$"
 
 @no item TRAINER
 BattleFrontier_PokemonCenter_1F_EventScript_DisableChallenges_NoItemTrainer_Ask:
@@ -219,10 +219,10 @@ BattleFrontier_PokemonCenter_1F_EventScript_DisableChallenges_NoItemTrainer:
 	end
 
 EventScript_MultichoiceDisableChallenge_Text_Challenge_NoItemTrainer:
-	.string "NO ITEM (PLAYER)$"
+	.string "No Item (Player)$"
 
 EventScript_MultichoiceDisableChallenge_Text_Challenge_NoItemTrainer_Disable:
-	.string "Disable NO ITEM (PLAYER)?$"
+	.string "Disable No Item (Player)?$"
 
 @pkcenter challenge
 BattleFrontier_PokemonCenter_1F_EventScript_DisableChallenges_PokecenterChal_Ask:
@@ -241,10 +241,10 @@ BattleFrontier_PokemonCenter_1F_EventScript_DisableChallenges_PokecenterChal:
 	end
 
 EventScript_MultichoiceDisableChallenge_Text_Challenge_PokecenterChal:
-	.string "POKéCENTER CHALLENGE$"
+	.string "Pokécenter Challenge$"
 
 EventScript_MultichoiceDisableChallenge_Text_Challenge_PokecenterChal_Disable:
-	.string "Disable POKéCENTER CHALLENGE?$"
+	.string "Disable Pokécenter Challenge?$"
 
 BattleFrontier_PokemonCenter_1F_EventScript_SchoolKid::
 	msgbox BattleFrontier_PokemonCenter_1F_Text_NeverSeenPokemon, MSGBOX_NPC
@@ -270,15 +270,15 @@ BattleFrontier_PokemonCenter_1F_EventScript_Skitty::
 
 BattleFrontier_PokemonCenter_1F_Text_NeverSeenPokemon:
 	.string "There was someone here using a \n"
-	.string "POKéMON I've never seen before.\p"
+	.string "Pokémon I've never seen before.\p"
 	.string "I never learned about it at\n"
-	.string "TRAINER'S SCHOOL at least.\p"
-	.string "I wonder where you can catch POKéMON\n"
+	.string "Trainer's School at least.\p"
+	.string "I wonder where you can catch Pokémon\n"
 	.string "like that.$"
 
 BattleFrontier_PokemonCenter_1F_Text_NextStopBattleArena:
-	.string "Okay! Next stop, the BATTLE ARENA!\n"
-	.string "I'd better get the right POKéMON from\l"
+	.string "Okay! Next stop, the Battle Arena!\n"
+	.string "I'd better get the right Pokémon from\l"
 	.string "the PC Storage System.$"
 
 BattleFrontier_PokemonCenter_1F_Text_GoingThroughEveryChallenge:
@@ -286,5 +286,5 @@ BattleFrontier_PokemonCenter_1F_Text_GoingThroughEveryChallenge:
 	.string "challenge with just this baby!$"
 
 BattleFrontier_PokemonCenter_1F_Text_Skitty:
-	.string "SKITTY: Mya myaaah!$"
+	.string "Skitty: Mya myaaah!$"
 
