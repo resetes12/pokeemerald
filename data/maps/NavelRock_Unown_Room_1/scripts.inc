@@ -265,14 +265,14 @@ LOCALID_ARC_Movement_Talk:
 	step_end
 
 NavelRock_Unown_Room_1_Talk_Arceus_Text1:
-	.string "ARCEUS is letting me pass.$"
+	.string "Arceus is letting me pass.$"
 
 NavelRock_Unown_Room_1_Talk_Arceus_Text2:
-	.string "The wild ARCEUS reacted to the\n"
-	.string "ARCEUS in my party!\p"
+	.string "The wild Arceus reacted to the\n"
+	.string "Arceus in my party!\p"
 	.string "Somehow, I understood that it was\n"
 	.string "strangely surprised to find another\l"
-	.string "ARCEUS in this same dimension.\p"
+	.string "Arceus in this same dimension.\p"
 	.string "Where did the EGG that STEVEN has\n"
 	.string "given me come from?$"
 

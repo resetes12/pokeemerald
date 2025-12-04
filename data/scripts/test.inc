@@ -93,17 +93,17 @@ Went_Away_U_A_Movement:
 	step_end
 
 U_A_Text:
-	.string "POKéMON magazines!\n"
-	.string "POKéMON PAL…\p"
-	.string "POKéMON HANDBOOK…\n"
-	.string "ADORABLE POKéMON…\p"
-	.string "The 28 forms of UNOWN…\n"
+	.string "Pokémon magazines!\n"
+	.string "Pokémon pal…\p"
+	.string "Pokémon handbook…\n"
+	.string "Adorable Pokémon…\p"
+	.string "The 28 forms of Unown…\n"
 	.string "The first one is A.$"
 
 U_A_Text_Found:
 	.string "A strange creature appeared.\p"
-	.string "{COLOR BLUE}You found UNOWN A!\p"
-	.string "UNOWN A returned to its cave.$"
+	.string "{COLOR BLUE}You found Unown A!\p"
+	.string "Unown A returned to its cave.$"
 
 @B
 
@@ -171,7 +171,7 @@ U_B_Text:
 	.string "This vase looks expensive…\n"
 	.string "Peered inside…\p"
 	.string "There's a note inside. It reads\n"
-	.string "as follows:\p" 
+	.string "as follows:\p"
 	.string "‘When alone, nothing happens.\n"
 	.string "However, if there are two or more,\l"
 	.string "an odd power is said to emerge.'$"
@@ -995,7 +995,7 @@ U_M_Text:
 	.string "There's an insteresting book about\n"
 	.string "ancient writings.\p"
 	.string "‘They are shaped like ancient writing.\n"
-	.string "It is a mystery as to which came first.\l" 
+	.string "It is a mystery as to which came first.\l"
 	.string "Research into this topic is ongoing\l"
 	.string "but nothing is known.'$"
 
@@ -1073,7 +1073,7 @@ Went_Away_U_N_Movement:
 
 U_N_Text:
 	.string "There's an oddly shaped fruit!\n"
-	.string "It looks like the ‘N' letter.$" 
+	.string "It looks like the ‘N' letter.$"
 
 U_N_Text_Found:
 	.string "That was no fruit!\n"
@@ -1745,16 +1745,16 @@ Went_Away_U_W_Movement:
 	step_end
 
 U_W_Text:
-	.string "POKéMON magazines!\n"
-	.string "POKéMON PAL…\p"
-	.string "POKéMON HANDBOOK…\n"
-	.string "ADORABLE POKéMON…\p"
-	.string "THE STRANGE SHAPES OF UNOWN…$"
+	.string "Pokémon magazines!\n"
+	.string "Pokémon pal…\p"
+	.string "Pokémon handbook…\n"
+	.string "Adorable Pokémon…\p"
+	.string "The strange shapes of Unown…$"
 
 U_W_Text_Found:
 	.string "A strange creature appeared.\p"
-	.string "{COLOR BLUE}You found UNOWN W!\p"
-	.string "UNOWN W returned to its cave.$"
+	.string "{COLOR BLUE}You found Unown W!\p"
+	.string "Unown W returned to its cave.$"
 
 @X
 

@@ -358,19 +358,19 @@ BattleFrontier_BattleArenaLobby_EventScript_ExitRules::
 BattleFrontier_BattleArenaLobby_Text_WelcomeToBattleArena:
 	.string "Where the battling spirit of TRAINERS\n"
 	.string "is put to the test!\p"
-	.string "I welcome you to the BATTLE ARENA!\p"
+	.string "I welcome you to the BATTLE Arena!\p"
 	.string "I am your guide to the Set KO Tourney!$"
 
 BattleFrontier_BattleArenaLobby_Text_WishToTakeChallenge:
 	.string "Now, do you wish to take\n"
-	.string "the BATTLE ARENA challenge?$"
+	.string "the BATTLE Arena challenge?$"
 
 BattleFrontier_BattleArenaLobby_Text_AwaitAnotherChallenge:
 	.string "We await your challenge on\n"
 	.string "another occasion!$"
 
 BattleFrontier_BattleArenaLobby_Text_ExplainChallenge:
-	.string "In the BATTLE ARENA, we undertake\n"
+	.string "In the BATTLE Arena, we undertake\n"
 	.string "the Set KO Tourney.\p"
 	.string "All participants enter with a team of\n"
 	.string "three POKéMON.\p"
@@ -392,10 +392,10 @@ BattleFrontier_BattleArenaLobby_Text_ExplainChallenge:
 
 BattleFrontier_BattleArenaLobby_Text_OkayToSave:
 	.string "Before showing you to the BATTLE\n"
-	.string "ARENA, you must save. Is that okay?$"
+	.string "Arena, you must save. Is that okay?$"
 
 BattleFrontier_BattleArenaLobby_Text_WhichLevelMode:
-	.string "The BATTLE ARENA offers two levels\n"
+	.string "The BATTLE Arena offers two levels\n"
 	.string "of challenge, NORMAL and HARD.\l"
 	.string "Which is your choice?$"
 
@@ -429,7 +429,7 @@ BattleFrontier_BattleArenaLobby_Text_NotEnoughValidMonsLv50:
 
 BattleFrontier_BattleArenaLobby_Text_GuideYouToArena:
 	.string "I shall now guide you to\n"
-	.string "the BATTLE ARENA.$"
+	.string "the BATTLE Arena.$"
 
 BattleFrontier_BattleArenaLobby_Text_DidntSaveBeforeShuttingDown:
 	.string "My dear challenger!\p"
@@ -478,11 +478,11 @@ BattleFrontier_BattleArenaLobby_Text_LookingForwardToArrivalSaveGame:
 	.string "We have been looking forward to\n"
 	.string "your arrival.\p"
 	.string "Before I show you to the BATTLE\n"
-	.string "ARENA, I must save the game.\l"
+	.string "Arena, I must save the game.\l"
 	.string "Please wait.$"
 
 BattleFrontier_BattleArenaLobby_Text_RecordLastMatch:
-	.string "Shall I record your last BATTLE ARENA\n"
+	.string "Shall I record your last BATTLE Arena\n"
 	.string "match on your FRONTIER PASS?$"
 
 BattleFrontier_BattleArenaLobby_Text_BadIdeaToNotAttack:
@@ -502,7 +502,7 @@ BattleFrontier_BattleArenaLobby_Text_MatchWasDeclaredDraw:
 	.string "the same amount of HP left.$"
 
 BattleFrontier_BattleArenaLobby_Text_OrderOfMonsImportant:
-	.string "In the BATTLE ARENA, the order of\n"
+	.string "In the BATTLE Arena, the order of\n"
 	.string "POKéMON is totally important.\p"
 	.string "For example, if your first POKéMON\n"
 	.string "has certain type disadvantages,\l"
@@ -566,7 +566,7 @@ BattleFrontier_BattleArenaLobby_Text_ExplainBodyRules:
 	.string "battle, and what remained at the end.$"
 
 BattleFrontier_BattleArenaLobby_Text_CongratsOnDefeatingTycoon:
-	.string "A victory snatched from the ARENA\n"
+	.string "A victory snatched from the Arena\n"
 	.string "TYCOON, and a seven-TRAINER sweep!\p"
 	.string "We congratulate you on your most\n"
 	.string "splendid challenge!$"

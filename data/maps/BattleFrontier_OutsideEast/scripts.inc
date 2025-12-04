@@ -243,7 +243,7 @@ BattleFrontier_OutsideEast_Text_BattlePalaceSign:
 	.string "Keep your eyes on POKéMON battles!$"
 
 BattleFrontier_OutsideEast_Text_BattleArenaSign:
-	.string "This is the BATTLE ARENA!\n"
+	.string "This is the BATTLE Arena!\n"
 	.string "Let the toughest teams gather!$"
 
 BattleFrontier_OutsideEast_Text_BattlePyramidSign:
@@ -290,7 +290,7 @@ BattleFrontier_OutsideEast_Text_PutTogetherUltimateTeam:
 	.string "I didn't sleep for a week, but then\n"
 	.string "I put together the ultimate team!\p"
 	.string "I can't see myself losing, no joke.\n"
-	.string "We're storming the BATTLE ARENA!$"
+	.string "We're storming the BATTLE Arena!$"
 
 BattleFrontier_OutsideEast_Text_DidScottBringYouHere:
 	.string "Did SCOTT bring you here, too?\n"
@@ -343,7 +343,7 @@ BattleFrontier_OutsideEast_Text_GoRackUpSomeWinsForDaddy:
 BattleFrontier_OutsideEast_Text_HeardPrettyGirlAtBattleArena:
 	.string "It wasn't easy getting here,\n"
 	.string "but I'd heard about this knockout\l"
-	.string "pretty girl at the BATTLE ARENA.\p"
+	.string "pretty girl at the BATTLE Arena.\p"
 	.string "Instead of her, do you know what\n"
 	.string "I found?\p"
 	.string "A whole teeming mob of sweaty,\n"

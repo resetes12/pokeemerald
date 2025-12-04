@@ -531,8 +531,8 @@ BattleFrontier_ExchangeServiceCorner_Text_ConfirmMysticTicket:
 	.string "TICKET. Is that correct?$"
 
 BattleFrontier_ExchangeServiceCorner_Text_ConfirmAuroraTicket:
-	.string "You've chosen the AURORA\n"
-	.string "TICKET Is that correct?$"
+	.string "You've chosen the Aurora\n"
+	.string "Ticket Is that correct?$"
 
 BattleFrontier_ExchangeServiceCorner_Text_ConfirmOldMap:
 	.string "You've chosen the OLD MAP.\n"
@@ -703,7 +703,7 @@ BattleFrontier_ExchangeServiceCorner_Text_CarbosDesc::
 
 BattleFrontier_ExchangeServiceCorner_Text_HPUpDesc::
 	.string "A peculiar box made\n"
-	.string "by SILPH CO.$"  
+	.string "by Silph Co.$"
 
 BattleFrontier_ExchangeServiceCorner_Text_LeftoversDesc::
 	.string "A hold item that gradually restores\n"
