@@ -89,7 +89,7 @@ gText_Birch_ChallengeHard::
     .string "Enemy and wild {PKMN} level scale\n"
     .string "with your BADGES.\p"
     .string "All BADGE BOOSTS removed.\p"
-    .string "Certain foes get temp. STAT buffs.\p"
+    .string "Certain foes get temporal STAT buffs.\p"
     .string "EXP. SHARE is nerfed.\p"
     .string "Damage taken rises as BADGES are\n"
     .string "earned.\p"
