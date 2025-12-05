@@ -165,6 +165,7 @@ static const u8 sText_Nuz_Nicknaming[]       = _("NICKNAMES");
 static const u8 sText_Nuz_Fainting[]         = _("FAINTING");
 
 // page 5 (Difficulty) — labels
+static const u8 sText_Diff_LimitDifficulty[] = _("LOCK DIFFICULTY");
 static const u8 sText_Diff_PartyLimit[]      = _("PARTY LIMIT");
 static const u8 sText_Diff_LevelCap[]        = _("LEVEL CAP");
 static const u8 sText_Diff_ExpMult[]         = _("EXP. MULTIPLIER");
@@ -506,6 +507,7 @@ static u8 GetSel_Diff_TrainerEVs(void)      { return gSaveBlock1Ptr->tx_Challeng
 static u8 GetSel_Diff_CatchRate(void)       { return gSaveBlock1Ptr->tx_Difficulty_CatchRate; } // 0..3 (1x, 0.5x, 2x, 3x)
 
 // Plain bool rows (normalize to 0/1 for the shared bool renderer)
+static u8 GetSel_Diff_LimitDifficulty(void) { return gSaveBlock1Ptr->tx_Features_LimitDifficulty; }      // 0..5 (OFF,5,4,3,2,1)
 static u8 GetSel_Diff_HardExp(void)         { return gSaveBlock1Ptr->tx_Difficulty_HardExp ? 1 : 0; } //Yes/No
 static u8 GetSel_Diff_NoItemPlayer(void)    { return gSaveBlock1Ptr->tx_Challenges_NoItemPlayer ? 1 : 0; } //Yes/No
 static u8 GetSel_Diff_NoItemTrainer(void)   { return gSaveBlock1Ptr->tx_Challenges_NoItemTrainer ? 1 : 0; } //Yes/No
@@ -608,19 +610,20 @@ static const struct ViewerBoolRow sBoolRows_Page4[] = {
 // Page 5 (Difficulty) — for the bool-style rows we reuse the generic bool renderer.
 // The multi-choice rows will be handled in the page draw switch.
 static const struct ViewerBoolRow sBoolRows_Page5[] = {
-    { sText_Diff_PartyLimit,    NULL }, // idx 0 — single-value
-    { sText_Diff_LevelCap,      NULL }, // idx 1 — single-value
-    { sText_Diff_ExpMult,       NULL }, // idx 2 — single-value
-    { sText_Diff_HardExp,       GetSel_Diff_HardExp }, // idx 3 — single-value
-    { sText_Diff_CatchRate,     NULL },
-    { sText_Diff_NoItemPlayer,  GetSel_Diff_NoItemPlayer  }, // idx 4
-    { sText_Diff_NoItemTrainer, GetSel_Diff_NoItemTrainer }, // idx 5
-    { sText_Diff_PartyIVs,      NULL }, // idx 6
-    { sText_Diff_TrainerIVs,    NULL }, // idx 7 — single-value
-    { sText_Diff_PlayerEVs,     GetSel_Diff_PlayerEVs }, // idx 8 — single-value
-    { sText_Diff_TrainerEVs,    NULL }, // idx 9 — single-value
-    { sText_Diff_LessEscapes,   GetSel_Diff_LessEscapes  }, // idx 10
-    { sText_Diff_EscapeRopeDig, GetSel_Diff_EscapeRopeDig}, // idx 11
+    { sText_Diff_LimitDifficulty, GetSel_Diff_LimitDifficulty}, // idx 0
+    { sText_Diff_PartyLimit,    NULL },                         // idx 1 — single-value
+    { sText_Diff_LevelCap,      NULL },                         // idx 2 — single-value
+    { sText_Diff_ExpMult,       NULL },                         // idx 3 — single-value
+    { sText_Diff_HardExp,       GetSel_Diff_HardExp },          // idx 4 — single-value
+    { sText_Diff_CatchRate,     NULL },                         // idx 5
+    { sText_Diff_NoItemPlayer,  GetSel_Diff_NoItemPlayer  },    // idx 6
+    { sText_Diff_NoItemTrainer, GetSel_Diff_NoItemTrainer },    // idx 7
+    { sText_Diff_PartyIVs,      NULL },                         // idx 8
+    { sText_Diff_TrainerIVs,    NULL },                         // idx 9 — single-value
+    { sText_Diff_PlayerEVs,     GetSel_Diff_PlayerEVs },        // idx 10 — single-value
+    { sText_Diff_TrainerEVs,    NULL },                         // idx 11 — single-value
+    { sText_Diff_LessEscapes,   GetSel_Diff_LessEscapes  },     // idx 12
+    { sText_Diff_EscapeRopeDig, GetSel_Diff_EscapeRopeDig},     // idx 13
 };
 
 static const struct ViewerBoolRow sBoolRows_Page6[] = {
@@ -909,28 +912,28 @@ static void Viewer_DrawRow_Page5(u8 visRow, u16 idx)
 
     switch (idx)
     {
-    case 0: // PARTY LIMIT
+    case 1: // PARTY LIMIT
     {
         u8 v = GetSel_Diff_PartyLimit();
         if (v > 5) v = 0;
         Viewer_DrawSingleValueRow(visRow, sText_Diff_PartyLimit, sText_Diff_PartyLimit_Strings[v], selected);
         break;
     }
-    case 1: // LEVEL CAP
+    case 2: // LEVEL CAP
     {
         u8 v = GetSel_Diff_LevelCap();
         if (v > 2) v = 0;
         Viewer_DrawSingleValueRow(visRow, sText_Diff_LevelCap, sText_Diff_LevelCap_Strings[v], selected);
         break;
     }
-    case 2: // EXP MULTIPLIER
+    case 3: // EXP MULTIPLIER
     {
         u8 v = GetSel_Diff_ExpMult();
         if (v > 3) v = 0;
         Viewer_DrawSingleValueRow(visRow, sText_Diff_ExpMult, sText_Diff_ExpMult_Strings[v], selected);
         break;
     }
-    case 3: //Hardmode exp. (DEFAULT / NORMAL)
+    case 4: //Hardmode exp. (DEFAULT / NORMAL)
     {
         u8 cr = gSaveBlock1Ptr->tx_Difficulty_HardExp;
         if (cr > 2) cr = 0;
@@ -938,7 +941,7 @@ static void Viewer_DrawRow_Page5(u8 visRow, u16 idx)
                                   sText_Difficulty_HardModeExp_Strings[cr], selected);
         break;
     }
-    case 4: // CATCH RATE
+    case 5: // CATCH RATE
     {
         u8 cr = gSaveBlock1Ptr->tx_Difficulty_CatchRate;
         if (cr > 3) cr = 0;
@@ -946,7 +949,7 @@ static void Viewer_DrawRow_Page5(u8 visRow, u16 idx)
                                   sText_Difficulty_CatchRate_Strings[cr], selected);
         break;
     }
-    case 5: //Player items (YES / NO)
+    case 6: //Player items (YES / NO)
     {
         const int y = visRow * 16;
         Viewer_ClearRow(visRow, selected);
@@ -962,7 +965,7 @@ static void Viewer_DrawRow_Page5(u8 visRow, u16 idx)
                                      rightStyle, TEXT_SKIP_DRAW, sText_No);
         break;
     }
-    case 6: //Trainer items (YES / NO)
+    case 7: //Trainer items (YES / NO)
     {
         const int y = visRow * 16;
         Viewer_ClearRow(visRow, selected);
@@ -978,21 +981,21 @@ static void Viewer_DrawRow_Page5(u8 visRow, u16 idx)
                                      rightStyle, TEXT_SKIP_DRAW, sText_No);
         break;
     }
-    case 7: //Player IVs (YES/NO/NO(HP))
+    case 8: //Player IVs (YES/NO/NO(HP))
     {
         u8 v = GetSel_Diff_PlayerIVs();
         if (v > 2) v = 0;
         Viewer_DrawSingleValueRow(visRow, sText_Diff_PartyIVs, sText_Diff_PlayerIVs_Strings[v], selected);
         break;
     }
-    case 8: // TRAINER IVs (OFF/SCALE/HARD)
+    case 9: // TRAINER IVs (OFF/SCALE/HARD)
     {
         u8 v = GetSel_Diff_TrainerIVs();
         if (v > 2) v = 0;
         Viewer_DrawSingleValueRow(visRow, sText_Diff_TrainerIVs, sText_TrainerEV_Strings[v], selected);
         break;
     }
-    case 9: // PLAYER EVs (Yes/No)
+    case 10: // PLAYER EVs (Yes/No)
     {
 
         const int y = visRow * 16;
@@ -1009,14 +1012,14 @@ static void Viewer_DrawRow_Page5(u8 visRow, u16 idx)
                                      rightStyle, TEXT_SKIP_DRAW, sText_No);
         break;
     }
-    case 10: // TRAINER EVs (Off/Scale/Hard/Extreme)
+    case 11: // TRAINER EVs (Off/Scale/Hard/Extreme)
     {
         u8 v = GetSel_Diff_TrainerEVs();
         if (v > 3) v = 0;
         Viewer_DrawSingleValueRow(visRow, sText_Diff_TrainerEVs, sText_TrainerEV_Strings[v], selected);
         break;
     }
-    case 12: // Escape Rope & Dig (Yes/No)
+    case 13: // Escape Rope & Dig (Yes/No)
     {
 
         const int y = visRow * 16;
