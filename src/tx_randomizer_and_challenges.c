@@ -114,6 +114,7 @@ bool8 IsPokecenterChallengeActivated(void)
 bool8 HMsOverwriteOptionActive(void)
 {
     return (gSaveBlock1Ptr->tx_Challenges_Nuzlocke 
+            || gSaveBlock1Ptr->tx_Nuzlocke_EasyMode 
             || gSaveBlock1Ptr->tx_Challenges_Mirror 
             || gSaveBlock1Ptr->tx_Random_Moves
             || IsOneTypeChallengeActive());
