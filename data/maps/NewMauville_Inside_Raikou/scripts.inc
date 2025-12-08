@@ -39,6 +39,8 @@ NewMauville_Inside_Raikou_RaikouBattle_1::
 	playmoncry SPECIES_RAIKOU, CRY_MODE_ENCOUNTER
 	delay 40
 	waitmoncry
+	msgbox NewMauville_Inside_Raikou_RaikouBattle_CantCatch_Text, MSGBOX_DEFAULT
+	closemessage
 	setwildbattle SPECIES_RAIKOU, 70
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	setflag FLAG_SYS_NO_CATCHING
@@ -78,6 +80,11 @@ NewMauville_Inside_Raikou_RaikouBattle_1_Movement:
 	delay_16
 	walk_fast_down
 	step_end
+
+NewMauville_Inside_Raikou_RaikouBattle_CantCatch_Text:
+	.string "RAIKOU's power is surging wildly!\p"
+	.string "Its power prevents the use of\n"
+	.string "POKéBALLS.$"
 
 NewMauville_Inside_Raikou_RaikouBattle_1_Text:
 	.string "RAIKOU ran away swiftly!$"
@@ -166,7 +173,8 @@ NewMauville_Inside_Raikou_RaikouBattle_3_Stats::
 	return
 
 NewMauville_Inside_Raikou_RaikouBattle_Text::
-	.string "RAIKOU stopped running away.$"
+	.string "RAIKOU stopped running away.\p"
+	.string "POKéBALLS seem to work again.$"
 
 NewMauville_Inside_Raikou_Won::
 	setflag FLAG_DEFEATED_RAIKOU

@@ -45,6 +45,8 @@ ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle1::
 	playmoncry SPECIES_SUICUNE, CRY_MODE_ENCOUNTER
 	delay 40
 	waitmoncry
+	msgbox ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle_CantCatch_Text, MSGBOX_DEFAULT
+	closemessage
 	setwildbattle SPECIES_SUICUNE, 90
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	setflag FLAG_SYS_NO_CATCHING
@@ -90,6 +92,11 @@ ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle1_Movement:
 	walk_fast_right
 	walk_fast_down
 	step_end
+
+ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle_CantCatch_Text:
+	.string "SUICUNE radiates an overwhelming aura!\p"
+	.string "Its power prevents the use of\n"
+	.string "POKéBALLS.$"
 
 ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle1_Text:
 	.string "SUICUNE swiftly ran away!$"
@@ -187,7 +194,8 @@ ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle3_Stats::
 	return
 
 ShoalCave_LowTideIceRoom_Suicune_SuicuneFinalBattle_Text:
-	.string "SUICUNE has nowhere left to run.$"
+	.string "SUICUNE has nowhere left to run.\p"
+	.string "POKéBALLS seem to work again.$"
 
 ShoalCave_LowTideIceRoom_Suicune_SuicuneFinalBattle_Won::
 	setflag FLAG_DEFEATED_SUICUNE

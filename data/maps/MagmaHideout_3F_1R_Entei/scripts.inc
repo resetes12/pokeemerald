@@ -39,13 +39,7 @@ MagmaHideout_3F_1R_EntranceTrigger::
 	end
 
 MagmaHideout_3F_1R_EntranceTrigger_Text:
-	.string "A deep roar shakes the MAGMA HIDEOUT.\n"
-	.string "The sound belongs to a menacing\n"
-	.string "POKéMON, yet something feels off.\p"
-	.string "The POKéMON senses your intent\n"
-	.string "to capture it…\p"
-	.string "Using POKé BALLS now might\n"
-	.string "just be a waste.$"
+	.string "A deep roar shakes the MAGMA HIDEOUT.$"
 
 MagmaHideout_3F_1R_EntranceTriggerMovement:
 	face_right
@@ -62,6 +56,8 @@ MagmaHideout_3F_1R_Entei_EnteiBattle1::
 	playmoncry SPECIES_ENTEI, CRY_MODE_ENCOUNTER
 	delay 40
 	waitmoncry
+	msgbox MagmaHideout_3F_1R_Entei_EnteiBattle_CantCatch_Text, MSGBOX_DEFAULT
+	closemessage
 	setwildbattle SPECIES_ENTEI, 40
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	setflag FLAG_SYS_NO_CATCHING
@@ -108,6 +104,11 @@ MagmaHideout_3F_1R_EnteiBattle1_Movement:
 	walk_fast_down
 	walk_fast_down
 	step_end
+
+MagmaHideout_3F_1R_Entei_EnteiBattle_CantCatch_Text:
+	.string "ENTEI roars with immense power!\p"
+	.string "Its power prevents the use of\n"
+	.string "POKéBALLS.$"
 
 MagmaHideout_3F_1R_EnteiBattle1_Text:
 	.string "ENTEI ran away!$"
@@ -295,10 +296,9 @@ MagmaHideout_3F_1R_Entei_EnteiBattle4_Stats::
 	return
 
 MagmaHideout_3F_1R_EnteiBattleFinal_Text:
-	.string "It seems ENTEI wasn't using its\n"
-	.string "full power.\p"
-	.string "Now that it focusing on it, capture\n"
-	.string "might finally be possible.$"
+	.string "A blazing aura erupts from ENTEI,\n"
+	.string "now at its full power!\p"
+	.string "POKéBALLS seem to work again.$"
 
 MagmaHideout_3F_1R_EnteiFinalBattle_Won::
 	setflag FLAG_DEFEATED_ENTEI
