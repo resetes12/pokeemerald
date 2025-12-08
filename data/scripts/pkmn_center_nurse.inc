@@ -152,6 +152,10 @@ Movement_PkmnCenterNurse_Bow:
 	delay_4
 	step_end
 
+Movement_PkmnCenterNurse_Bow_Faster:
+	nurse_joy_bow
+	step_end
+
 EventScript_PkmnCenterNurse_PlayerTurn::
 	closemessage
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown
@@ -168,6 +172,8 @@ EventScript_PkmnCenterNurse_PlayerTurnFast::
   	callnative UpdateFollowingPokemon
 	waitse
 	playse SE_M_MORNING_SUN
+	applymovement VAR_0x800B, Movement_PkmnCenterNurse_Bow_Faster
+	waitmovement 0
 	applymovement OBJ_EVENT_ID_PLAYER, Common_Movement_FaceDown
 	waitmovement 0
 	release
