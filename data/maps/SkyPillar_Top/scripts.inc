@@ -93,7 +93,7 @@ SkyPillar_Top_EventScript_RayquazaHard_Stats::
 	setvar VAR_0x8002, 150 @DEF
 	setvar VAR_0x8003, 170 @SPD
 	setvar VAR_0x8005, 240 @SP. ATK
-	setvar VAR_0x8006, 150 @SP. ATK
+	setvar VAR_0x8006, 150 @SP. DEF
 	special SetHpStat
 	special SetAtkStat
 	special SetDefStat

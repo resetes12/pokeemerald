@@ -62,10 +62,12 @@ NavelRock_Top_EventScript_HoOh::
 	special RemoveCameraObject
 	seteventmon SPECIES_HO_OH, 70
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
+	call_if_set FLAG_DIFFICULTY_HARD, NavelRock_Top_EventScript_HoOh_Hard_Stats
 	special BattleSetup_StartLegendaryBattle
 	waitstate
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
 	setvar VAR_LAST_TALKED, LOCALID_HO_OH
+	calculatemonstats
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, NavelRock_Top_EventScript_DefeatedHoOh
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, NavelRock_Top_EventScript_RanFromHoOh
@@ -76,6 +78,13 @@ NavelRock_Top_EventScript_HoOh::
 	call_if_set FLAG_EXTRA_LEGENDARIES, NavelRock_Top_Enable_Johto_Legendaries
 	releaseall
 	end
+
+NavelRock_Top_EventScript_HoOh_Hard_Stats::
+	setvar VAR_0x8001, 450 @ATK
+	setvar VAR_0x8003, 500 @SPD
+	special SetAtkStat
+	special SetSpdStat
+	return
 
 NavelRock_Top_Enable_Johto_Legendaries::
 	setflag FLAG_UNLOCK_DOGS

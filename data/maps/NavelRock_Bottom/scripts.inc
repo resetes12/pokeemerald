@@ -60,9 +60,11 @@ NavelRock_Bottom_EventScript_Lugia::
 	delay 20
 	seteventmon SPECIES_LUGIA, 70
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
+	call_if_set FLAG_DIFFICULTY_HARD, NavelRock_Bottom_EventScript_Lugia_Hard_Stats
 	special BattleSetup_StartLegendaryBattle
 	waitstate
 	clearflag FLAG_SYS_CTRL_OBJ_DELETE
+	calculatemonstats
 	specialvar VAR_RESULT, GetBattleOutcome
 	goto_if_eq VAR_RESULT, B_OUTCOME_WON, NavelRock_Bottom_EventScript_DefeatedLugia
 	goto_if_eq VAR_RESULT, B_OUTCOME_RAN, NavelRock_Bottom_EventScript_RanFromLugia
@@ -73,6 +75,15 @@ NavelRock_Bottom_EventScript_Lugia::
 	call_if_set FLAG_EXTRA_LEGENDARIES, NavelRock_Bottom_Enable_Kanto_Legendaries
 	release
 	end
+
+NavelRock_Bottom_EventScript_Lugia_Hard_Stats::
+	setvar VAR_0x8000, 555 @HP
+	setvar VAR_0x8002, 350 @DEF
+	setvar VAR_0x8006, 350 @SP. DEF
+	special SetHpStat
+	special SetDefStat
+	special SetSpDefStat
+	return
 
 NavelRock_Bottom_Enable_Kanto_Legendaries::
 	setflag FLAG_UNLOCK_BIRDS
