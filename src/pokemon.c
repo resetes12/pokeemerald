@@ -10485,6 +10485,21 @@ u16 GetBattleBGM(void)
         return MUS_VS_REGI;
     else if (gBattleTypeFlags & (BATTLE_TYPE_LINK | BATTLE_TYPE_RECORDED_LINK))
         return MUS_VS_TRAINER;
+    else if (gBattleTypeFlags & BATTLE_TYPE_ROAMER)
+    {
+        // Distinguish which roamer we just ran into.
+        // Enemy party should already be populated for the encounter.
+        u16 species = GetMonData(&gEnemyParty[0], MON_DATA_SPECIES);
+        switch (species)
+        {
+        case SPECIES_LATIOS:
+        case SPECIES_LATIAS:
+            return MUS_BW_VS_LEGEND;
+        default:
+            // Fallback to existing behavior if species couldn't be read.
+            return MUS_BW_VS_LEGEND;
+        }
+    }
     else if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
     {
         u8 trainerClass;
