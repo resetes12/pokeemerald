@@ -26,7 +26,7 @@ MossdeepCity_EventScript_Evo::
 	end
 
 MossdeepCity_EventScript_Evo_Text:
-	.string "The Pokémon Eeveee evolves in\n"
+	.string "The Pokémon Eevee evolves in\n"
 	.string "many different ways.\p"
 	.string "Using a Thunder Stone, Fire Stone,\n"
 	.string "Water Stone… Just like, to name a\l"
