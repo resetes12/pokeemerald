@@ -31,10 +31,10 @@ NavelRock_Unown_Room_1_U_Guide::
 	end
 
 NavelRock_Unown_Room_1_U_Guide_Text:
-	.string "You feel as though this UNOWN\n"
+	.string "You feel as though this Unown\n"
 	.string "is urging you to follow it.\p"
 	.string "Accept its offering and go\n"
-	.string "back to the UNOWN CHAMBER?$"
+	.string "back to the Unown Chamber?$"
 
 @GOD
 
@@ -265,15 +265,15 @@ LOCALID_ARC_Movement_Talk:
 	step_end
 
 NavelRock_Unown_Room_1_Talk_Arceus_Text1:
-	.string "ARCEUS is letting me pass.$"
+	.string "Arceus is letting me pass.$"
 
 NavelRock_Unown_Room_1_Talk_Arceus_Text2:
-	.string "The wild ARCEUS reacted to the\n"
-	.string "ARCEUS in my party!\p"
+	.string "The wild Arceus reacted to the\n"
+	.string "Arceus in my party!\p"
 	.string "Somehow, I understood that it was\n"
 	.string "strangely surprised to find another\l"
-	.string "ARCEUS in this same dimension.\p"
-	.string "Where did the EGG that STEVEN has\n"
+	.string "Arceus in this same dimension.\p"
+	.string "Where did the Egg that Steven has\n"
 	.string "given me come from?$"
 
 
@@ -514,14 +514,14 @@ NavelRock_Unown_Room_1_Ending_Trigger::
 	end
 
 NavelRock_Unown_Room_1_Ending_Trigger_Text:
-	.string "{COLOR GREEN}CONGRATULATIONS! You beat the\n"
+	.string "{COLOR GREEN}Congratulations! You beat the\n"
 	.string "secret event! If you got here there's\l"
 	.string "not much else to do.\p"
-	.string "Enjoy your newly discovered POKéMON\n"
+	.string "Enjoy your newly discovered Pokémon\n"
 	.string "and don't spoil too much this event\l"
 	.string "to others! You can leave them hints!\p"
-	.string "Thank you for playing POKéMON\n"
-	.string "MODERN EMERALD,\p"
+	.string "Thank you for playing Pokémon\n"
+	.string "Modern Emerald,\p"
 	.string "with gratitude,\p"
 	.string "its creator,\p"
 	.string "Resetes12.$"

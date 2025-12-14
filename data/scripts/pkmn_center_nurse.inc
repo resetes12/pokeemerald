@@ -25,12 +25,12 @@ EventScript_PkmnCenterNurse_WTHasBeenEnabledExplain::
 
 EventScript_PkmnCenterNurse_WTHasBeenEnabledExplain_Text:
 	.string "Hello, and welcome to\n"
-	.string "the POKéMON CENTER.\p"
+	.string "the Pokémon Center.\p"
 	.string "We are proud to announce that\n"
-	.string "the WONDERTRADE SYSTEM is now\l"
+	.string "the Wondertrade System is now\l"
 	.string "operational.\p"
 	.string "Please be sure to visit the\n"
-	.string "second floor of the POKéCENTER!$"
+	.string "second floor of the Pokécenter!$"
 
 EventScript_PkmnCenterNurse_Goodbye::
 	message gText_WeHopeToSeeYouAgain

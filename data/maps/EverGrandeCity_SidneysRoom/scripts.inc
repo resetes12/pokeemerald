@@ -104,39 +104,39 @@ EverGrandeCity_SidneysRoom_EventScript_Defeated::
 	end
 
 EverGrandeCity_SidneysRoom_Text_Doubles::
-	.string "DOUBLE BATTLE$"
+	.string "Double Battle$"
 
 EverGrandeCity_SidneysRoom_Text_Singles::
-	.string "SINGLE BATTLE$"
+	.string "Single Battle$"
 
 EverGrandeCity_SidneysRoom_Text_IntroSpeech:
 	.string "Welcome, challenger!\n"
-	.string "I'm SIDNEY of the ELITE FOUR.\p"
+	.string "I'm Sidney of the Elite Four.\p"
 	.string "I like that look you're giving me.\n"
 	.string "I guess you'll give me a good match.\l"
 	.string "That's good! Looking real good!\p"
 	.string "All right! You and me, let's enjoy\n"
 	.string "a battle that can only be staged\l"
-	.string "here in the POKéMON LEAGUE!$"
+	.string "here in the Pokémon League!$"
 
 EverGrandeCity_SidneysRoom_Text_DoublesOrSingles::
 	.string "Welcome back, challenger!\n"
-	.string "I'm SIDNEY of the ELITE FOUR.\p"
+	.string "I'm Sidney of the Elite Four.\p"
 	.string "But you already know me!\n"
 	.string "I guess you'll give me a good match\l"
 	.string "again. Looking real good!\p"
 	.string "All right! You and me, let's enjoy\n"
 	.string "a battle that can only be staged\l"
-	.string "here in the POKéMON LEAGUE!\p"
+	.string "here in the Pokémon League!\p"
 	.string "You may choose whether to have a\n"
-	.string "DOUBLE BATTLE or a SINGLE BATTLE.$"
+	.string "Double Battle or a Single Battle.$"
 
 EverGrandeCity_SidneysRoom_Text_IntroSpeech2::
 	.string "This time, I won't lose.$"
 
 EverGrandeCity_SidneysRoom_Text_NotEnoughPokemon::
-	.string "You only have one POKéMON. You need\n"
-	.string "two or more POKéMON to battle me.$"
+	.string "You only have one Pokémon. You need\n"
+	.string "two or more Pokémon to battle me.$"
 
 EverGrandeCity_SidneysRoom_Text_NotReady::
 	.string "Let me know when you're ready.$"
