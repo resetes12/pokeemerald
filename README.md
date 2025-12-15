@@ -123,6 +123,8 @@ Challenges page:
 * Everstone works on male or female Pokémon and guarantees nature.
 * Gen. VIII Synchronize _(Optional)_.
 * Shuckle can make berry juice just like in Gen. II!! Yay?
+* Groudon has STAB with Fire moves, but retains its Ground-only typing.
+* Spinda has a 2% chance of multiplying by two the damage of moves.
 * Nature Mints are available to buy in the Flower Shop after the 4th Gym _(Optional)_, or after becoming champion if not enabled from the start.
 * Deoxys forms can be changed at Birth Island, using the meteorites.
 * All Hoenn and National Dex Pokémon need to be obtained to obtain the Completion Diploma, or it won't count as completed.
