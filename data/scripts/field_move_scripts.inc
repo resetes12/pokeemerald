@@ -98,6 +98,12 @@ EventScript_SmashRock:: @ fallthrough
 	special RockSmashWildEncounter
 	goto_if_eq VAR_RESULT, FALSE, EventScript_EndSmash
 	waitstate
+	random 20
+	call_if_eq VAR_RESULT, 1, EventScript_RockSmashHeartscale
+	call_if_eq VAR_RESULT, 2, EventScript_RockSmashBlueShard
+	call_if_eq VAR_RESULT, 3, EventScript_RockSmashRedShard
+	call_if_eq VAR_RESULT, 4, EventScript_RockSmashGreenShard
+	call_if_eq VAR_RESULT, 5, EventScript_RockSmashYellowShard
 	releaseall
 	end
 
@@ -176,8 +182,34 @@ EventScript_FollowerJumpWest:
 	return
 
 EventScript_EndSmash::
+	random 20
+	call_if_eq VAR_RESULT, 1, EventScript_RockSmashHeartscale
+	call_if_eq VAR_RESULT, 2, EventScript_RockSmashBlueShard
+	call_if_eq VAR_RESULT, 3, EventScript_RockSmashRedShard
+	call_if_eq VAR_RESULT, 4, EventScript_RockSmashGreenShard
+	call_if_eq VAR_RESULT, 5, EventScript_RockSmashYellowShard
 	releaseall
 	end
+
+EventScript_RockSmashHeartscale::
+	giveitem ITEM_HEART_SCALE
+	return
+
+EventScript_RockSmashBlueShard::
+	giveitem ITEM_BLUE_SHARD
+	return
+
+EventScript_RockSmashRedShard::
+	giveitem ITEM_RED_SHARD
+	return
+
+EventScript_RockSmashGreenShard::
+	giveitem ITEM_GREEN_SHARD
+	return
+
+EventScript_RockSmashYellowShard::
+	giveitem ITEM_YELLOW_SHARD
+	return
 
 Movement_WalkUp:
 	walk_up
