@@ -92,7 +92,7 @@ PetalburgWoods_CelebiBattle::
 	applymovement OBJ_EVENT_ID_PLAYER, Movement_PetalburgWoods_Celebi1
 	waitmovement 0
 	msgbox Text_PetalburgWoods_Celebi4, MSGBOX_DEFAULT
-	setwildbattle SPECIES_CELEBI, 50
+	seteventmon SPECIES_CELEBI, 50
 	waitse
 	playmoncry SPECIES_CELEBI, CRY_MODE_ENCOUNTER
 	delay 40

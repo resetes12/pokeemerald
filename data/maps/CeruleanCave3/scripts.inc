@@ -36,7 +36,7 @@ CeruleanCave3_EventScript_Mewtwo::
 	playmoncry SPECIES_MEWTWO, CRY_MODE_ENCOUNTER
 	delay 40
 	waitmoncry
-	setwildbattle SPECIES_MEWTWO, 70
+	seteventmon SPECIES_MEWTWO, 70
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	call_if_set FLAG_DIFFICULTY_HARD, CeruleanCave3_EventScript_Mewtwo_Hard_Stats
 	special BattleSetup_StartLegendaryBattle

@@ -38,7 +38,7 @@ MeteorFalls_Articuno_EventScript_Articuno::
 	playmoncry SPECIES_ARTICUNO, CRY_MODE_ENCOUNTER
 	delay 40
 	waitmoncry
-	setwildbattle SPECIES_ARTICUNO, 70
+	seteventmon SPECIES_ARTICUNO, 70
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	call_if_set FLAG_DIFFICULTY_HARD, MeteorFalls_Articuno_EventScript_Articuno_Stats
 	special BattleSetup_StartLegendaryBattle

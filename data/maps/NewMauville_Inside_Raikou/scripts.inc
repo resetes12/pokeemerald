@@ -150,7 +150,7 @@ NewMauville_Inside_Raikou_RaikouBattle::
 	waitmoncry
 	msgbox NewMauville_Inside_Raikou_RaikouBattle_Text, MSGBOX_DEFAULT
 	closemessage
-	setwildbattle SPECIES_RAIKOU, 70, ITEM_MAGNET
+	seteventmon SPECIES_RAIKOU, 70, ITEM_MAGNET
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	call_if_set FLAG_DIFFICULTY_HARD, NewMauville_Inside_Raikou_RaikouBattle_3_Stats
 	special BattleSetup_StartLegendaryBattle

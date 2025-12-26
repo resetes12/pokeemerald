@@ -271,7 +271,7 @@ MagmaHideout_3F_1R_Entei_EnteiFinalBattle::
 	waitmoncry
 	msgbox MagmaHideout_3F_1R_EnteiBattleFinal_Text, MSGBOX_DEFAULT
 	closemessage
-	setwildbattle SPECIES_ENTEI, 70, ITEM_CHARCOAL
+	seteventmon SPECIES_ENTEI, 70, ITEM_CHARCOAL
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	call_if_set FLAG_DIFFICULTY_HARD, MagmaHideout_3F_1R_Entei_EnteiBattle4_Stats
 	special BattleSetup_StartLegendaryBattle

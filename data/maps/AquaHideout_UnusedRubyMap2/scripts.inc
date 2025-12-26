@@ -105,7 +105,7 @@ AquaHideout_UnusedRubyMap2_EventScript_Regieleki::
 	playmoncry SPECIES_REGIELEKI, CRY_MODE_ENCOUNTER
 	delay 40
 	waitmoncry
-	setwildbattle SPECIES_REGIELEKI, 40
+	seteventmon SPECIES_REGIELEKI, 40
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	call_if_set FLAG_DIFFICULTY_HARD, AquaHideout_UnusedRubyMap2_EventScript_Regieleki_Stats
 	special StartRegiBattle

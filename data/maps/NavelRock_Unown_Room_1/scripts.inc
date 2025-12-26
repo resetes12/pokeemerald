@@ -411,7 +411,7 @@ NavelRock_Unown_Room_1_Final_Trigger::
 	playmoncry SPECIES_UNOWN, CRY_MODE_ENCOUNTER
 	delay 40
 	waitmoncry
-	setwildbattle SPECIES_TEST, 80
+	seteventmon SPECIES_TEST, 80
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	setvar VAR_0x8000, 999 @HP
 	setvar VAR_0x8002, 200 @DEF

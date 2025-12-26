@@ -40,7 +40,7 @@ VictoryRoad_Moltres2_EventScript_Moltres::
 	playmoncry SPECIES_MOLTRES, CRY_MODE_ENCOUNTER
 	delay 40
 	waitmoncry
-	setwildbattle SPECIES_MOLTRES, 70
+	seteventmon SPECIES_MOLTRES, 70
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	call_if_set FLAG_DIFFICULTY_HARD, VictoryRoad_Moltres2_EventScript_Moltres_Stats
 	special BattleSetup_StartLegendaryBattle

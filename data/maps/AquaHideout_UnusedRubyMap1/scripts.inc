@@ -85,7 +85,7 @@ AquaHideout_UnusedRubyMap1_EventScript_Regidrago::
 	playmoncry SPECIES_REGIDRAGO, CRY_MODE_ENCOUNTER
 	delay 40
 	waitmoncry
-	setwildbattle SPECIES_REGIDRAGO, 40
+	seteventmon SPECIES_REGIDRAGO, 40
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	call_if_set FLAG_DIFFICULTY_HARD, AquaHideout_UnusedRubyMap1_EventScript_Regidrago_Stats
 	special StartRegiBattle

@@ -95,7 +95,7 @@ IslandCave_EventScript_Regice::
 	playmoncry SPECIES_REGICE, CRY_MODE_ENCOUNTER
 	delay 40
 	waitmoncry
-	setwildbattle SPECIES_REGICE, 40
+	seteventmon SPECIES_REGICE, 40
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	call_if_set FLAG_DIFFICULTY_HARD, IslandCave_EventScript_Regice_Stats
 	special StartRegiBattle

@@ -36,7 +36,7 @@ ScorchedSlab_Zapdos_EventScript_Zapdos::
 	playmoncry SPECIES_ZAPDOS, CRY_MODE_ENCOUNTER
 	delay 40
 	waitmoncry
-	setwildbattle SPECIES_ZAPDOS, 70
+	seteventmon SPECIES_ZAPDOS, 70
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	call_if_set FLAG_DIFFICULTY_HARD, ScorchedSlab_Zapdos_EventScript_Zapdos_Stats
 	special BattleSetup_StartLegendaryBattle

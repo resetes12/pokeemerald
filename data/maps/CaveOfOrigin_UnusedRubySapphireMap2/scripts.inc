@@ -28,7 +28,7 @@ CaveOfOrigin_UnusedRubySapphireMap2_EventScript_Regigigas::
 	playmoncry SPECIES_REGIGIGAS, CRY_MODE_ENCOUNTER
 	delay 40
 	waitmoncry
-	setwildbattle SPECIES_REGIGIGAS, 70
+	seteventmon SPECIES_REGIGIGAS, 70
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	call_if_set FLAG_DIFFICULTY_HARD, CaveOfOrigin_UnusedRubySapphireMap2_EventScript_Regigigas_Stats
 	special BattleSetup_StartLegendaryBattle

@@ -171,7 +171,7 @@ ShoalCave_LowTideIceRoom_Suicune_SuicuneFinalBattle::
 	waitmoncry
 	msgbox ShoalCave_LowTideIceRoom_Suicune_SuicuneFinalBattle_Text, MSGBOX_DEFAULT
 	closemessage
-	setwildbattle SPECIES_SUICUNE, 70, ITEM_MYSTIC_WATER
+	seteventmon SPECIES_SUICUNE, 70, ITEM_MYSTIC_WATER
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	call_if_set FLAG_DIFFICULTY_HARD, ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle3_Stats
 	special BattleSetup_StartLegendaryBattle

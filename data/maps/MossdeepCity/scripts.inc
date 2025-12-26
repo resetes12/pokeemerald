@@ -123,7 +123,7 @@ MossdeepCity_EventScript_Jirachi::
 	playmoncry SPECIES_JIRACHI, CRY_MODE_ENCOUNTER
 	delay 40
 	waitmoncry
-	setwildbattle SPECIES_JIRACHI, 50
+	seteventmon SPECIES_JIRACHI, 50
 	setflag FLAG_SYS_CTRL_OBJ_DELETE
 	applymovement LOCALID_JIRACHI, MossdeepCity_EventScript_JirachiMoves3
 	waitmovement 0
