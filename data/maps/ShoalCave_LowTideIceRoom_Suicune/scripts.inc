@@ -28,7 +28,7 @@ ShoalCave_LowTideIceRoom_Suicune_EntranceTrigger::
 
 ShoalCave_LowTideIceRoom_Suicune_EntranceTrigger_Text:
 	.string "A chilling roar reverberates\n"
-	.string "through SHOAL CAVE’s depths.$"
+	.string "through Shoal Cave’s depths.$"
 
 ShoalCave_LowTideIceRoom_Suicune_EntranceTriggerMovement:
 	face_right
@@ -94,12 +94,12 @@ ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle1_Movement:
 	step_end
 
 ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle_CantCatch_Text:
-	.string "SUICUNE radiates an overwhelming aura!\p"
+	.string "Suicune radiates an overwhelming aura!\p"
 	.string "Its power prevents the use of\n"
-	.string "POKéBALLS.$"
+	.string "Pokéballs.$"
 
 ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle1_Text:
-	.string "SUICUNE swiftly ran away!$"
+	.string "Suicune swiftly ran away!$"
 
 @@Second encounter with Suicune. Level 80. High defenses
 
@@ -158,7 +158,7 @@ ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle2_Movement:
 	step_end
 
 ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle2_Text:
-	.string "SUICUNE swiftly ran away again!$"
+	.string "Suicune swiftly ran away again!$"
 
 @@Final battle with Suicune, now you can catch it. Level 70, holds Mystic water, and has high defenses
 
@@ -194,8 +194,8 @@ ShoalCave_LowTideIceRoom_Suicune_SuicuneBattle3_Stats::
 	return
 
 ShoalCave_LowTideIceRoom_Suicune_SuicuneFinalBattle_Text:
-	.string "SUICUNE has nowhere left to run.\p"
-	.string "POKéBALLS seem to work again.$"
+	.string "Suicune has nowhere left to run.\p"
+	.string "Pokéballs seem to work again.$"
 
 ShoalCave_LowTideIceRoom_Suicune_SuicuneFinalBattle_Won::
 	setflag FLAG_DEFEATED_SUICUNE

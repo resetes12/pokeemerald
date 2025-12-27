@@ -85,27 +85,27 @@ EverGrandeCity_PhoebesRoom_EventScript_Defeated::
 
 EverGrandeCity_PhoebesRoom_Text_IntroSpeech:
 	.string "Ahahaha!\p"
-	.string "I'm PHOEBE of the ELITE FOUR.\n"
-	.string "I did my training on MT. PYRE.\p"
+	.string "I'm Phoebe of the Elite Four.\n"
+	.string "I did my training on Mt. Pyre.\p"
 	.string "While I trained, I gained the ability\n"
-	.string "to commune with GHOST-type POKéMON.\p"
-	.string "Yes, the bond I developed with POKéMON\n"
+	.string "to commune with Ghost-type Pokémon.\p"
+	.string "Yes, the bond I developed with Pokémon\n"
 	.string "is extremely tight.\p"
 	.string "So, come on, just try and see if you can\n"
-	.string "even inflict damage on my POKéMON!$"
+	.string "even inflict damage on my Pokémon!$"
 
 EverGrandeCity_PhoebesRoom_Text_IntroSpeech_DoublesOrSingles:
 	.string "Ahahaha! It's you again!\p"
-	.string "I'm PHOEBE of the ELITE FOUR.\n"
-	.string "The bond I developed with my POKéMON\l"
+	.string "I'm Phoebe of the Elite Four.\n"
+	.string "The bond I developed with my Pokémon\l"
 	.string "has grown even stronger!\p"
 	.string "You may choose between having a\n"
-	.string "DOUBLE BATTLE or a SINGLE BATTLE.\l"
+	.string "Double Battle or a Single Battle.\l"
 	.string "Which one will you choose?$"
 
 EverGrandeCity_PhoebesRoom_Text_IntroSpeech2:
 	.string "Just try and see if you can even\n"
-	.string "inflict damage on my POKéMON.\p"
+	.string "inflict damage on my Pokémon.\p"
 	.string "Because it won't be like last time!$"
 
 EverGrandeCity_PhoebesRoom_Text_Defeat:
@@ -118,7 +118,7 @@ EverGrandeCity_PhoebesRoom_Text_Defeat2:
 
 EverGrandeCity_PhoebesRoom_Text_PostBattleSpeech:
 	.string "There's a definite bond between you\n"
-	.string "and your POKéMON, too.\p"
+	.string "and your Pokémon, too.\p"
 	.string "I didn't recognize it, so it's only\n"
 	.string "natural that I lost.\p"
 	.string "Yup, I'd like to see how far your bond\n"

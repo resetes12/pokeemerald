@@ -66,16 +66,16 @@ SurfPichu_Slot5:
 
 sText_MysteryGiftEgg:
 	.string "Congratulations on becoming\n"
-	.string "CHAMPION!\p"
-	.string "From the POKéMON CENTER we\n"
-	.string "have a gift--a POKéMON EGG!\p"
+	.string "Champion!\p"
+	.string "From the Pokémon Center we\n"
+	.string "have a gift--a Pokémon Egg!\p"
 	.string "Please raise it with love and\n"
 	.string "kindness.$"
 
 sText_FullParty:
 	.string "Oh, your party appears to be full.\p"
 	.string "Please come see me after storing\n"
-	.string "a POKéMON on a PC.$"
+	.string "a Pokémon on a PC.$"
 
 MysteryGiftEggObtained_Text:
 	.string "Please raise it with love and\n"
