@@ -113,82 +113,82 @@ static u16 sCurIndex;   // absolute row index on current page
 
 // --- Viewer-only text/colors (keep local; do not export) ---
 //page 1 Mode
-static const u8 sText_InfiniteTMs_Label[]   = _("Reusable TMs");
-static const u8 sText_SurvivePoison_Label[] = _("Survive Poison");
-static const u8 sText_Synchronize_Label[]   = _("Synchronize");
-static const u8 sText_Mints_Label[]         = _("Nature Mints");
-static const u8 sText_NewCitrus_Label[]     = _("Sitrus Berry");
-static const u8 sText_FairyTypes_Label[]    = _("Fairy Type");
-static const u8 sText_Sturdy_Label[]        = _("Sturdy");
-static const u8 sText_ModernMoves_Label[]   = _("{PKMN} Movepool");
-static const u8 sText_LegendaryAbils_Label[]= _("Legen. Abilities");
-static const u8 sText_Encounters_Label[]    = _("Encounters");
-static const u8 sText_TypeChart_Label[]     = _("Type Chart");
-static const u8 sText_Stats_Label[]         = _("Pokémon Stats");
-static const u8 sText_Types_Label[]         = _("Pokémon Types");
-static const u8 sText_Extra_Legendaries_Label[]         = _("Extra Legend.");
+static const u8 sText_InfiniteTMs_Label[]   = _("REUSABLE TMS");
+static const u8 sText_SurvivePoison_Label[] = _("SURVIVE POISON");
+static const u8 sText_Synchronize_Label[]   = _("SYNCHRONIZE");
+static const u8 sText_Mints_Label[]         = _("NATURE MINTS");
+static const u8 sText_NewCitrus_Label[]     = _("SITRUS BERRY");
+static const u8 sText_FairyTypes_Label[]    = _("FAIRY TYPE");
+static const u8 sText_Sturdy_Label[]        = _("STURDY");
+static const u8 sText_ModernMoves_Label[]   = _("{PKMN} MOVEPOOL");
+static const u8 sText_LegendaryAbils_Label[]= _("LEGEN. ABILITIES");
+static const u8 sText_Encounters_Label[]    = _("ENCOUNTERS");
+static const u8 sText_TypeChart_Label[]     = _("TYPE CHART");
+static const u8 sText_Stats_Label[]         = _("POKéMON STATS");
+static const u8 sText_Types_Label[]         = _("POKéMON TYPES");
+static const u8 sText_Extra_Legendaries_Label[]         = _("EXTRA LEGEND.");
 
 //page 2 Features
-static const u8 sText_RTCType_Label[]      = _("Clock Type");
-static const u8 sText_ShinyChance_Label[]  = _("Shiny Chance");
-static const u8 sText_ItemDrops_Label[]    = _("Item Drop");
-static const u8 sText_FrontierBans_Label[] = _("Frontier Bans");
-static const u8 sText_ShinyColors_Label[]  = _("Shiny Colors");
-static const u8 sText_UnlimitedWT_Label[]  = _("Unlimited WT");
-static const u8 sText_Feebas_Label[]       = _("Easier Feebas");
+static const u8 sText_RTCType_Label[]      = _("CLOCK TYPE");
+static const u8 sText_ShinyChance_Label[]  = _("SHINY CHANCE");
+static const u8 sText_ItemDrops_Label[]    = _("ITEM DROP");
+static const u8 sText_FrontierBans_Label[] = _("FRONTIER BANS");
+static const u8 sText_ShinyColors_Label[]  = _("SHINY COLORS");
+static const u8 sText_UnlimitedWT_Label[]  = _("UNLIMITED WT");
+static const u8 sText_Feebas_Label[]       = _("EASIER FEEBAS");
 
 // page 3 (Randomizer)
-static const u8 sText_Randomizer[]            = _("Randomizer");
-static const u8 sText_Rand_Starter[]          = _("Starter Pokémon");
-static const u8 sText_Rand_Wild[]             = _("Wild Pokémon");
-static const u8 sText_Rand_Trainer[]          = _("Trainer");
-static const u8 sText_Rand_Static[]           = _("Random Static");
-static const u8 sText_Rand_SimilarEvoLvl[]    = _("Balancing");
-static const u8 sText_Rand_IncludeLegends[]   = _("Legendaries");
-static const u8 sText_Rand_Type[]             = _("Type");
-static const u8 sText_Rand_Moves[]            = _("Moves");
-static const u8 sText_Rand_Abilities[]        = _("Abilities");
-static const u8 sText_Rand_Evolutions[]       = _("Evolutions");
-static const u8 sText_Rand_EvoMethods[]       = _("Evo Lines");
-static const u8 sText_Rand_TypeEffect[]       = _("Effectiveness");
-static const u8 sText_Rand_Items[]            = _("Items");
-static const u8 sText_Rand_Chaos[]            = _("Chaos");
+static const u8 sText_Randomizer[]            = _("RANDOMIZER");
+static const u8 sText_Rand_Starter[]          = _("STARTER POKéMON");
+static const u8 sText_Rand_Wild[]             = _("WILD POKéMON");
+static const u8 sText_Rand_Trainer[]          = _("TRAINER");
+static const u8 sText_Rand_Static[]           = _("RANDOM STATIC");
+static const u8 sText_Rand_SimilarEvoLvl[]    = _("BALANCING");
+static const u8 sText_Rand_IncludeLegends[]   = _("LEGENDARIES");
+static const u8 sText_Rand_Type[]             = _("TYPE");
+static const u8 sText_Rand_Moves[]            = _("MOVES");
+static const u8 sText_Rand_Abilities[]        = _("ABILITIES");
+static const u8 sText_Rand_Evolutions[]       = _("EVOLUTIONS");
+static const u8 sText_Rand_EvoMethods[]       = _("EVO LINES");
+static const u8 sText_Rand_TypeEffect[]       = _("EFFECTIVENESS");
+static const u8 sText_Rand_Items[]            = _("ITEMS");
+static const u8 sText_Rand_Chaos[]            = _("CHAOS");
 
 
 // page 4 (Nuzlocke)
-static const u8 sText_Nuz_Nuzlocke[]         = _("Nuzlocke");
-static const u8 sText_Nuz_Hardcore[]         = _("Nuzlocke Hardcore");
-static const u8 sText_Nuz_Mode[]             = _("Nuzlocke Mode");
-static const u8 sText_Nuz_SpeciesClause[]    = _("Dupes Clause");
-static const u8 sText_Nuz_ShinyClause[]      = _("Shiny Clause");
-static const u8 sText_Nuz_Nicknaming[]       = _("Nicknames");
-static const u8 sText_Nuz_Fainting[]         = _("Fainting");
+static const u8 sText_Nuz_Nuzlocke[]         = _("NUZLOCKE");
+static const u8 sText_Nuz_Hardcore[]         = _("NUZLOCKE HARDCORE");
+static const u8 sText_Nuz_Mode[]             = _("NUZLOCKE MODE");
+static const u8 sText_Nuz_SpeciesClause[]    = _("DUPES CLAUSE");
+static const u8 sText_Nuz_ShinyClause[]      = _("SHINY CLAUSE");
+static const u8 sText_Nuz_Nicknaming[]       = _("NICKNAMES");
+static const u8 sText_Nuz_Fainting[]         = _("FAINTING");
 
 // page 5 (Difficulty) — labels
-static const u8 sText_Diff_LimitDifficulty[] = _("Lock Difficulty");
-static const u8 sText_Diff_PartyLimit[]      = _("Party Limit");
-static const u8 sText_Diff_LevelCap[]        = _("Level Cap");
-static const u8 sText_Diff_ExpMult[]         = _("Exp. Multiplier");
-static const u8 sText_Diff_HardExp[]         = _("Hard Mode Exp.");
-static const u8 sText_Diff_CatchRate[]       = _("Catch Rate");
-static const u8 sText_Diff_NoItemPlayer[]    = _("Player Items");
-static const u8 sText_Diff_NoItemTrainer[]   = _("Trainer Items");
-static const u8 sText_Diff_PartyIVs[]        = _("Player IVs");
-static const u8 sText_Diff_TrainerIVs[]      = _("Trainer IVs");
-static const u8 sText_Diff_PlayerEVs[]       = _("Player EVs");
-static const u8 sText_Diff_TrainerEVs[]      = _("Trainer EVs");
-static const u8 sText_Diff_LessEscapes[]     = _("Less Escapes");
-static const u8 sText_Diff_EscapeRopeDig[]   = _("Esc. Rope / Dig");
+static const u8 sText_Diff_LimitDifficulty[] = _("LOCK DIFFICULTY");
+static const u8 sText_Diff_PartyLimit[]      = _("PARTY LIMIT");
+static const u8 sText_Diff_LevelCap[]        = _("LEVEL CAP");
+static const u8 sText_Diff_ExpMult[]         = _("EXP. MULTIPLIER");
+static const u8 sText_Diff_HardExp[]         = _("HARD MODE EXP.");
+static const u8 sText_Diff_CatchRate[]       = _("CATCH RATE");
+static const u8 sText_Diff_NoItemPlayer[]    = _("PLAYER ITEMS");
+static const u8 sText_Diff_NoItemTrainer[]   = _("TRAINER ITEMS");
+static const u8 sText_Diff_PartyIVs[]        = _("PLAYER IVs");
+static const u8 sText_Diff_TrainerIVs[]      = _("TRAINER IVs");
+static const u8 sText_Diff_PlayerEVs[]       = _("PLAYER EVs");
+static const u8 sText_Diff_TrainerEVs[]      = _("TRAINER EVs");
+static const u8 sText_Diff_LessEscapes[]     = _("LESS ESCAPES");
+static const u8 sText_Diff_EscapeRopeDig[]   = _("ESC. ROPE / DIG");
 
 // page 6 (Other Challenges) — labels
-static const u8 sText_Chk_PkmnCenter[]        = _("Pokécenter");
-static const u8 sText_Chk_PCHeal[]            = _("PC Heal {PKMN}");
-static const u8 sText_Chk_Expensive[]         = _("Ultra Expensive!");
-static const u8 sText_Chk_EvoLimit[]          = _("Evo Limit");
-static const u8 sText_Chk_OneType[]           = _("One Type Only");
-static const u8 sText_Chk_BaseStatEq[]        = _("BST Equalizer");
-static const u8 sText_Chk_Mirror[]            = _("Mirror Mode");
-static const u8 sText_Chk_MirrorThief[]       = _("Mirror Thief");
+static const u8 sText_Chk_PkmnCenter[]        = _("POKéCENTER");
+static const u8 sText_Chk_PCHeal[]            = _("PC HEAL {PKMN}");
+static const u8 sText_Chk_Expensive[]         = _("ULTRA EXPENSIVE!");
+static const u8 sText_Chk_EvoLimit[]          = _("EVO LIMIT");
+static const u8 sText_Chk_OneType[]           = _("ONE TYPE ONLY");
+static const u8 sText_Chk_BaseStatEq[]        = _("BST EQUALIZER");
+static const u8 sText_Chk_Mirror[]            = _("MIRROR MODE");
+static const u8 sText_Chk_MirrorThief[]       = _("MIRROR THIEF");
 
 //Options
 static const u8 sText_On[]  = _("On");

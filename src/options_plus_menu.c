@@ -308,21 +308,21 @@ struct // MENU_SOUND
 };
 
 // Menu left side option names text
-static const u8 sText_OptionTypeEffective[]       = _("Show Effective");
-static const u8 sText_OptionFishing[]             = _("Easier Fishing");
-static const u8 sText_OptionFastIntro[]           = _("Fast Intro");
-static const u8 sText_OptionLargeFollower[]       = _("Big Followers");
-static const u8 sText_OptionFastBattles[]         = _("Fast Battles");
-static const u8 sText_OptionEvenFasterJoy[]       = _("Even Faster Joy");
-static const u8 sText_OptionSkipIntro[]           = _("Skip Intro");
-static const u8 sText_OptionLR_Run[]              = _("Run Prompt");
-static const u8 sText_OptionBallPrompt[]          = _("Ball Prompt");
-static const u8 sText_OptionUnitType[]            = _("Unit System");
-static const u8 sText_OptionNewBackgrounds[]      = _("Battle Terrain");
-static const u8 sText_OptionRunType[]             = _("Quick Run");
-static const u8 sText_AutorunEnable_Surf[]        = _("Autorun (Surf)");
-static const u8 sText_AutorunEnable_Dive[]        = _("Autorun (Dive)");
-static const u8 sText_SurfSprites[]               = _("Surf Sprites");
+static const u8 sText_OptionTypeEffective[]       = _("SHOW EFFECTIVE");
+static const u8 sText_OptionFishing[]             = _("EASIER FISHING");
+static const u8 sText_OptionFastIntro[]           = _("FAST INTRO");
+static const u8 sText_OptionLargeFollower[]       = _("BIG FOLLOWERS");
+static const u8 sText_OptionFastBattles[]         = _("FAST BATTLES");
+static const u8 sText_OptionEvenFasterJoy[]       = _("EVEN FASTER JOY");
+static const u8 sText_OptionSkipIntro[]           = _("SKIP INTRO");
+static const u8 sText_OptionLR_Run[]              = _("RUN PROMPT");
+static const u8 sText_OptionBallPrompt[]          = _("BALL PROMPT");
+static const u8 sText_OptionUnitType[]            = _("UNIT SYSTEM");
+static const u8 sText_OptionNewBackgrounds[]      = _("BATTLE TERRAIN");
+static const u8 sText_OptionRunType[]             = _("QUICK RUN");
+static const u8 sText_AutorunEnable_Surf[]        = _("AUTORUN (SURF)");
+static const u8 sText_AutorunEnable_Dive[]        = _("AUTORUN (DIVE)");
+static const u8 sText_SurfSprites[]               = _("SURF SPRITES");
 static const u8 *const sOptionMenuItemsNamesMain[MENUITEM_MAIN_COUNT] =
 {
     [MENUITEM_MAIN_TEXTSPEED]           = gText_TextSpeed,
@@ -356,13 +356,13 @@ static const u8 *const sOptionMenuItemsNamesCustom[MENUITEM_BATTLE_COUNT] =
     [MENUITEM_BATTLE_NEW_BACKGROUNDS]  = sText_OptionNewBackgrounds,
 };
 
-static const u8 sText_OptionMusic[]                  = _("Music");
-static const u8 sText_OptionSurfMusic[]              = _("Surf Music");
-static const u8 sText_OptionBikeMusic[]              = _("Bike Music");
-static const u8 sText_OptionWildMonMusic[]           = _("Wild Music");
-static const u8 sText_OptionTrainerBattleMusic[]     = _("Trainer Music");
-static const u8 sText_OptionFrontierTrainerBattleMusic[]     = _("Frontier Music");
-static const u8 sText_OptionSoundEffects[]           = _("Sound Effects");
+static const u8 sText_OptionMusic[]                  = _("MUSIC");
+static const u8 sText_OptionSurfMusic[]              = _("SURF MUSIC");
+static const u8 sText_OptionBikeMusic[]              = _("BIKE MUSIC");
+static const u8 sText_OptionWildMonMusic[]           = _("WILD MUSIC");
+static const u8 sText_OptionTrainerBattleMusic[]     = _("TRAINER MUSIC");
+static const u8 sText_OptionFrontierTrainerBattleMusic[]     = _("FRONTIER MUSIC");
+static const u8 sText_OptionSoundEffects[]           = _("SOUND EFFECTS");
 static const u8 *const sOptionMenuItemsNamesSound[MENUITEM_SOUND_COUNT] =
 {
     [MENUITEM_SOUND_SOUND]                           = gText_Sound,
