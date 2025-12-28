@@ -2754,7 +2754,7 @@ static void DrawChoices_Challenges_LimitDifficulty(int selection, int y)
     DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
 }
 
-static const u8 sText_Max_Party_IVs_30_31[]   = _("NO (HP)");
+static const u8 sText_Max_Party_IVs_30_31[]   = _("No (HP)");
 static void DrawChoices_Challenges_MaxPartyIVs(int selection, int y)
 {
     bool8 active = CheckConditions(MENUITEM_DIFFICULTY_MAX_PARTY_IVS);
