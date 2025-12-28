@@ -18,12 +18,12 @@ EverGrandeCity_PokemonLeague_1F_AncientPower::
 	end
 
 EverGrandeCity_PokemonLeague_1F_AncientPower_Text:
-	.string "There are three POKéMON that\n"
-	.string "evolve using a certain MOVE.\p"
-	.string "They are YANMA, PILOSWINE and TANGELA.\p"
+	.string "There are three Pokémon that\n"
+	.string "evolve using a certain Move.\p"
+	.string "They are Yanma, Piloswine and Tangela.\p"
 	.string "Now… the move… I don't remember\n"
 	.string "exactly… Something about an\l"
-	.string "ANCIENT MOVE…$"
+	.string "Ancient Move…$"
 
 EverGrandeCity_PokemonLeague_1F_EventScript_GuardsBlockDoor::
 	setobjectxyperm LOCALID_GUARD_1, 9, 2
@@ -138,18 +138,18 @@ EverGrandeCity_PokemonLeague_1F_Movement_RightGuardOutOfWay:
 	step_end
 
 EverGrandeCity_PokemonLeague_1F_Text_MustHaveAllGymBadges:
-	.string "Beyond this point, only those TRAINERS\n"
-	.string "who have collected all the GYM BADGES\l"
+	.string "Beyond this point, only those Trainers\n"
+	.string "who have collected all the Gym Badges\l"
 	.string "are permitted to enter.\p"
-	.string "TRAINER, let us confirm that you have\n"
-	.string "all the GYM BADGES.$"
+	.string "Trainer, let us confirm that you have\n"
+	.string "all the Gym Badges.$"
 
 EverGrandeCity_PokemonLeague_1F_Text_HaventObtainedAllBadges:
-	.string "You haven't obtained all the BADGES.\p"
-	.string "If you're bound for the POKéMON\n"
-	.string "LEAGUE, you must return with them.$"
+	.string "You haven't obtained all the Badges.\p"
+	.string "If you're bound for the Pokémon\n"
+	.string "League, you must return with them.$"
 
 EverGrandeCity_PokemonLeague_1F_Text_GoForth:
-	.string "TRAINER! Believe in yourself and your\n"
-	.string "POKéMON, and go forth!$"
+	.string "Trainer! Believe in yourself and your\n"
+	.string "Pokémon, and go forth!$"
 

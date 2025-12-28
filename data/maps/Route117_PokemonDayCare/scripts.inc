@@ -11,9 +11,9 @@ Route117_PokemonDayCare_Incense::
 	end
 
 Route117_PokemonDayCare_Incense_Text:
-	.string "Some POKéMON can only be obtained\n"
+	.string "Some Pokémon can only be obtained\n"
 	.string "by breeding while holding an item\l"
-	.string "called INCENSE. There are 2 kinds.\p"
+	.string "called Incense. There are 2 kinds.\p"
 	.string "How many can you get this way?\n"
-	.string "Right now, 9 different POKéMON\l"
-	.string "can be bred using INCENSE.$"
+	.string "Right now, 9 different Pokémon\l"
+	.string "can be bred using Incense.$"

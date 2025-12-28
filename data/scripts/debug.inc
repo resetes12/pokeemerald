@@ -57,16 +57,16 @@ Debug_Script_1_Closemessage::
 	end
 
 Debug_Script_1_Text:
-	.string "{COLOR RED}WARNING! ENTERING THE CHALLENGES\n"
-	.string "MENU COULD MESS YOUR SAVE DATA.\p"
-	.string "SOME OPTIONS MAY NOT WORK UNLESS A\n"
-	.string "NEW GAME IS STARTED. PLEASE BACKUP\p"
-	.string "YOUR DATA BEFORE PRESSING YES.$"
+	.string "{COLOR RED}Warning! Entering the challenges\n"
+	.string "menu could mess your Save Data.\p"
+	.string "Some options may not work unless a\n"
+	.string "New Game is started. Please backup\p"
+	.string "your data before pressing Yes.$"
 
 Debug_Script_1_Text2:
-	.string "{COLOR RED}ALL OPTIONS YOU CHOSE AT THE START\n"
-	.string "OF THE GAME WILL RESET AND YOU\l"
-	.string "WILL HAVE TO ENABLE THEM AGAIN.$"
+	.string "{COLOR RED}All options you chose at the start\n"
+	.string "of the game will reset and you\l"
+	.string "will have to enable them again.$"
 
 @Update 2.4 up to 3.2
 Debug_Script_2::
@@ -115,29 +115,29 @@ Debug_Script_2_SelectFrontierBanOption_One:
 	end
 
 Debug_Script_2_Text:
-	.string "{COLOR RED}WARNING! DON'T RUN THIS SCRIPT IF\n"
-	.string "YOU'RE IN VERSION 3.3 OR UP!\p"
-	.string "ONLY RUN THIS SCRIPT ONCE, FROM VERSION\n"
-	.string "3.0 TO 3.2!\p"
+	.string "{COLOR RED}Warning! Don't run this script if\n"
+	.string "you're in Version 3.3 or up!\p"
+	.string "Only run this script once, from Version\n"
+	.string "3.0 to 3.2!\p"
 	.string "This script will let you name your\n"
 	.string "rival, fix other stuff, then teleport\l"
-	.string "you to PETALBURG CITY, to fix maps.\p"
+	.string "you to Petalburg City, to fix maps.\p"
 	.string "Continue?$"
 
 Debug_Script_2_Text_Which_WT:
-	.string "UNLIMITED WONDERTRADE option needs to\n"
+	.string "Unlimited Wondertrade option needs to\n"
 	.string "be reset. Will you enable it?$"
 
 Debug_Script_2_SelectFrontierBanOption_Text:
 	.string "Would you like to enable the new\n"
-	.string "option, FRONTIER BANS?\p"
+	.string "option, Frontier Bans?\p"
 	.string "According to your current difficulty,\n"
 	.string "enabling it will ban legendaries from\l"
-	.string "participating in the BATTLE FRONTIER.\p"
+	.string "participating in the Battle Frontier.\p"
 	.string "Disabling it will let lengendaries in,\n"
 	.string "no matter your chosen difficulty.\p"
 	.string "Would you like to enable the bans?\n"
-	.string "{COLOR RED}(YES has been always the default option)$"
+	.string "{COLOR RED}(Yes has been always the default option)$"
 
 @Update 3.2 to 3.3
 Debug_Script_3::
@@ -174,12 +174,12 @@ Debug_Script_3_EnableShinyColors::
 
 Debug_Script_3_Text_Shiny_Colors::
 	.string "This script will let you enable the new\n"
-	.string "SHINY COLORS option, which adds new\l"
+	.string "Shiny Colors option, which adds new\l"
 	.string "shiny forms to certain {PKMN} species.\p"
 	.string "Previously, it was always ON, now it's\n"
 	.string "optional. Check online docs for more\l"
 	.string "info and images on new shiny colors.\p"
-	.string "Would you like to enable SHINY COLORS?$"
+	.string "Would you like to enable Shiny Colors?$"
 
 Debug_Script_3_Update32to33_TypeEffectiveness::
 	msgbox Debug_Script_3_Text_TypeEffectiveness, MSGBOX_YESNO
@@ -200,16 +200,16 @@ Debug_Script_3_SetGen6Chart::
 	end
 
 Debug_Script_3_Text_TypeEffectiveness::
-	.string "TYPE EFFECTIVENESS CHART option\n"
+	.string "Type Effectiveness Chart option\n"
 	.string "needs to be reset.\p"
-	.string "GEN VI TYPE CHART nerfs steel not\n"
-	.string "resisting GHOST and DARK.\p"
-	.string "MODERN TYPE CHART buffs bad types into\n"
-	.string "not so bad, like BUG. Check online docs\l"
+	.string "Gen VI Type Chart nerfs Steel not\n"
+	.string "resisting Ghost and Dark.\p"
+	.string "Modern Type Chart buffs bad types into\n"
+	.string "not so bad, like Bug. Check online docs\l"
 	.string "for more info on this new option.\p"
-	.string "Would you like to use GEN VI TYPE CHART?\p"
-	.string "Selecting YES will enable GEN VI CHART.\n"
-	.string "NO will set it to MODERN TYPE CHART.$"
+	.string "Would you like to use Gen VI Type Chart?\p"
+	.string "Selecting Yes will enable Gen VI Chart.\n"
+	.string "No will set it to Modern Type Chart.$"
 
 Debug_Script_4::
 	end

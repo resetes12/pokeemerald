@@ -39,7 +39,7 @@ MagmaHideout_3F_1R_EntranceTrigger::
 	end
 
 MagmaHideout_3F_1R_EntranceTrigger_Text:
-	.string "A deep roar shakes the MAGMA HIDEOUT.$"
+	.string "A deep roar shakes the Magma Hideout.$"
 
 MagmaHideout_3F_1R_EntranceTriggerMovement:
 	face_right
@@ -106,12 +106,12 @@ MagmaHideout_3F_1R_EnteiBattle1_Movement:
 	step_end
 
 MagmaHideout_3F_1R_Entei_EnteiBattle_CantCatch_Text:
-	.string "ENTEI roars with immense power!\p"
+	.string "Entei roars with immense power!\p"
 	.string "Its power prevents the use of\n"
-	.string "POKéBALLS.$"
+	.string "Pokéballs.$"
 
 MagmaHideout_3F_1R_EnteiBattle1_Text:
-	.string "ENTEI ran away!$"
+	.string "Entei ran away!$"
 
 @@Second encounter with Entei. Has 750HP and is now level 50. Atk and Sp.Atk are getting stronger.
 
@@ -174,7 +174,7 @@ MagmaHideout_3F_1R_EnteiBattle2_Movement:
 	step_end
 
 MagmaHideout_3F_1R_EnteiBattle2_Text:
-	.string "ENTEI ran away, but not\n"
+	.string "Entei ran away, but not\n"
 	.string "as fast as before.$"
 
 @@Third and last encounter with Entei before catching it. Has 800HP and is now level 60, and it's sunny. More atk and sp.atk.
@@ -241,7 +241,7 @@ MagmaHideout_3F_1R_EnteiBattle3_Movement:
 	step_end
 
 MagmaHideout_3F_1R_EnteiBattle3_Text:
-	.string "ENTEI fled, but far more\n"
+	.string "Entei fled, but far more\n"
 	.string "slowly than before.$"
 
 @@Final battle with Entei, now you can catch it. Has 900HP, holds charcoal and it's sunny. Way stronger as well.
@@ -296,9 +296,9 @@ MagmaHideout_3F_1R_Entei_EnteiBattle4_Stats::
 	return
 
 MagmaHideout_3F_1R_EnteiBattleFinal_Text:
-	.string "A blazing aura erupts from ENTEI,\n"
+	.string "A blazing aura erupts from Entei,\n"
 	.string "now at its full power!\p"
-	.string "POKéBALLS seem to work again.$"
+	.string "Pokéballs seem to work again.$"
 
 MagmaHideout_3F_1R_EnteiFinalBattle_Won::
 	setflag FLAG_DEFEATED_ENTEI

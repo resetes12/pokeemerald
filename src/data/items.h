@@ -15,7 +15,7 @@ const struct Item gItems[] =
 
     [ITEM_MASTER_BALL] =
     {
-        .name = _("MASTER BALL"),
+        .name = _("Master Ball"),
         .itemId = ITEM_MASTER_BALL,
         .price = 0,
         .description = sMasterBallDesc,
@@ -29,7 +29,7 @@ const struct Item gItems[] =
 
     [ITEM_ULTRA_BALL] =
     {
-        .name = _("ULTRA BALL"),
+        .name = _("Ultra Ball"),
         .itemId = ITEM_ULTRA_BALL,
         .price = 1200,
         .description = sUltraBallDesc,
@@ -43,7 +43,7 @@ const struct Item gItems[] =
 
     [ITEM_GREAT_BALL] =
     {
-        .name = _("GREAT BALL"),
+        .name = _("Great Ball"),
         .itemId = ITEM_GREAT_BALL,
         .price = 600,
         .description = sGreatBallDesc,
@@ -57,7 +57,7 @@ const struct Item gItems[] =
 
     [ITEM_POKE_BALL] =
     {
-        .name = _("POKé BALL"),
+        .name = _("Poké Ball"),
         .itemId = ITEM_POKE_BALL,
         .price = 200,
         .description = sPokeBallDesc,
@@ -71,7 +71,7 @@ const struct Item gItems[] =
 
     [ITEM_SAFARI_BALL] =
     {
-        .name = _("SAFARI BALL"),
+        .name = _("Safari Ball"),
         .itemId = ITEM_SAFARI_BALL,
         .price = 200,
         .description = sSafariBallDesc,
@@ -85,7 +85,7 @@ const struct Item gItems[] =
 
     [ITEM_NET_BALL] =
     {
-        .name = _("NET BALL"),
+        .name = _("Net Ball"),
         .itemId = ITEM_NET_BALL,
         .price = 1000,
         .description = sNetBallDesc,
@@ -99,7 +99,7 @@ const struct Item gItems[] =
 
     [ITEM_DIVE_BALL] =
     {
-        .name = _("DIVE BALL"),
+        .name = _("Dive Ball"),
         .itemId = ITEM_DIVE_BALL,
         .price = 1000,
         .description = sDiveBallDesc,
@@ -113,7 +113,7 @@ const struct Item gItems[] =
 
     [ITEM_NEST_BALL] =
     {
-        .name = _("NEST BALL"),
+        .name = _("Nest Ball"),
         .itemId = ITEM_NEST_BALL,
         .price = 1000,
         .description = sNestBallDesc,
@@ -127,7 +127,7 @@ const struct Item gItems[] =
 
     [ITEM_REPEAT_BALL] =
     {
-        .name = _("REPEAT BALL"),
+        .name = _("Repeat Ball"),
         .itemId = ITEM_REPEAT_BALL,
         .price = 1000,
         .description = sRepeatBallDesc,
@@ -141,7 +141,7 @@ const struct Item gItems[] =
 
     [ITEM_TIMER_BALL] =
     {
-        .name = _("TIMER BALL"),
+        .name = _("Timer Ball"),
         .itemId = ITEM_TIMER_BALL,
         .price = 1000,
         .description = sTimerBallDesc,
@@ -155,7 +155,7 @@ const struct Item gItems[] =
 
     [ITEM_LUXURY_BALL] =
     {
-        .name = _("LUXURY BALL"),
+        .name = _("Luxury Ball"),
         .itemId = ITEM_LUXURY_BALL,
         .price = 1000,
         .description = sLuxuryBallDesc,
@@ -169,7 +169,7 @@ const struct Item gItems[] =
 
     [ITEM_PREMIER_BALL] =
     {
-        .name = _("PREMIER BALL"),
+        .name = _("Premier Ball"),
         .itemId = ITEM_PREMIER_BALL,
         .price = 200,
         .description = sPremierBallDesc,
@@ -185,7 +185,7 @@ const struct Item gItems[] =
 
     [ITEM_POTION] =
     {
-        .name = _("POTION"),
+        .name = _("Potion"),
         .itemId = ITEM_POTION,
         .price = 300,
         .holdEffectParam = 20,
@@ -199,7 +199,7 @@ const struct Item gItems[] =
 
     [ITEM_ANTIDOTE] =
     {
-        .name = _("ANTIDOTE"),
+        .name = _("Antidote"),
         .itemId = ITEM_ANTIDOTE,
         .price = 100,
         .description = sAntidoteDesc,
@@ -212,7 +212,7 @@ const struct Item gItems[] =
 
     [ITEM_BURN_HEAL] =
     {
-        .name = _("BURN HEAL"),
+        .name = _("Burn Heal"),
         .itemId = ITEM_BURN_HEAL,
         .price = 250,
         .description = sBurnHealDesc,
@@ -225,7 +225,7 @@ const struct Item gItems[] =
 
     [ITEM_ICE_HEAL] =
     {
-        .name = _("ICE HEAL"),
+        .name = _("Ice Heal"),
         .itemId = ITEM_ICE_HEAL,
         .price = 250,
         .description = sIceHealDesc,
@@ -238,7 +238,7 @@ const struct Item gItems[] =
 
     [ITEM_AWAKENING] =
     {
-        .name = _("AWAKENING"),
+        .name = _("Awakening"),
         .itemId = ITEM_AWAKENING,
         .price = 250,
         .description = sAwakeningDesc,
@@ -251,7 +251,7 @@ const struct Item gItems[] =
 
     [ITEM_PARALYZE_HEAL] =
     {
-        .name = _("PARLYZ HEAL"),
+        .name = _("Parlyz Heal"),
         .itemId = ITEM_PARALYZE_HEAL,
         .price = 200,
         .description = sParalyzeHealDesc,
@@ -264,7 +264,7 @@ const struct Item gItems[] =
 
     [ITEM_FULL_RESTORE] =
     {
-        .name = _("FULL RESTORE"),
+        .name = _("Full Restore"),
         .itemId = ITEM_FULL_RESTORE,
         .price = 3000,
         .holdEffectParam = 255,
@@ -278,7 +278,7 @@ const struct Item gItems[] =
 
     [ITEM_MAX_POTION] =
     {
-        .name = _("MAX POTION"),
+        .name = _("Max Potion"),
         .itemId = ITEM_MAX_POTION,
         .price = 2500,
         .holdEffectParam = 255,
@@ -292,7 +292,7 @@ const struct Item gItems[] =
 
     [ITEM_HYPER_POTION] =
     {
-        .name = _("HYPER POTION"),
+        .name = _("Hyper Potion"),
         .itemId = ITEM_HYPER_POTION,
         .price = 1200,
         .holdEffectParam = 200,
@@ -306,7 +306,7 @@ const struct Item gItems[] =
 
     [ITEM_SUPER_POTION] =
     {
-        .name = _("SUPER POTION"),
+        .name = _("Super Potion"),
         .itemId = ITEM_SUPER_POTION,
         .price = 700,
         .holdEffectParam = 50,
@@ -320,7 +320,7 @@ const struct Item gItems[] =
 
     [ITEM_FULL_HEAL] =
     {
-        .name = _("FULL HEAL"),
+        .name = _("Full Heal"),
         .itemId = ITEM_FULL_HEAL,
         .price = 600,
         .description = sFullHealDesc,
@@ -333,7 +333,7 @@ const struct Item gItems[] =
 
     [ITEM_REVIVE] =
     {
-        .name = _("REVIVE"),
+        .name = _("Revive"),
         .itemId = ITEM_REVIVE,
         .price = 1500,
         .description = sReviveDesc,
@@ -346,7 +346,7 @@ const struct Item gItems[] =
 
     [ITEM_MAX_REVIVE] =
     {
-        .name = _("MAX REVIVE"),
+        .name = _("Max Revive"),
         .itemId = ITEM_MAX_REVIVE,
         .price = 4000,
         .description = sMaxReviveDesc,
@@ -359,7 +359,7 @@ const struct Item gItems[] =
 
     [ITEM_FRESH_WATER] =
     {
-        .name = _("FRESH WATER"),
+        .name = _("Fresh Water"),
         .itemId = ITEM_FRESH_WATER,
         .price = 200,
         .holdEffectParam = 50,
@@ -373,7 +373,7 @@ const struct Item gItems[] =
 
     [ITEM_SODA_POP] =
     {
-        .name = _("SODA POP"),
+        .name = _("Soda Pop"),
         .itemId = ITEM_SODA_POP,
         .price = 300,
         .holdEffectParam = 60,
@@ -387,7 +387,7 @@ const struct Item gItems[] =
 
     [ITEM_LEMONADE] =
     {
-        .name = _("LEMONADE"),
+        .name = _("Lemonade"),
         .itemId = ITEM_LEMONADE,
         .price = 350,
         .holdEffectParam = 80,
@@ -401,7 +401,7 @@ const struct Item gItems[] =
 
     [ITEM_MOOMOO_MILK] =
     {
-        .name = _("MOOMOO MILK"),
+        .name = _("Moomoo Milk"),
         .itemId = ITEM_MOOMOO_MILK,
         .price = 500,
         .holdEffectParam = 100,
@@ -415,7 +415,7 @@ const struct Item gItems[] =
 
     [ITEM_ENERGY_POWDER] =
     {
-        .name = _("ENERGYPOWDER"),
+        .name = _("EnergyPowder"),
         .itemId = ITEM_ENERGY_POWDER,
         .price = 500,
         .description = sEnergyPowderDesc,
@@ -428,7 +428,7 @@ const struct Item gItems[] =
 
     [ITEM_ENERGY_ROOT] =
     {
-        .name = _("ENERGY ROOT"),
+        .name = _("Energy Root"),
         .itemId = ITEM_ENERGY_ROOT,
         .price = 800,
         .description = sEnergyRootDesc,
@@ -441,7 +441,7 @@ const struct Item gItems[] =
 
     [ITEM_HEAL_POWDER] =
     {
-        .name = _("HEAL POWDER"),
+        .name = _("Heal Powder"),
         .itemId = ITEM_HEAL_POWDER,
         .price = 450,
         .description = sHealPowderDesc,
@@ -454,7 +454,7 @@ const struct Item gItems[] =
 
     [ITEM_REVIVAL_HERB] =
     {
-        .name = _("REVIVAL HERB"),
+        .name = _("Revival Herb"),
         .itemId = ITEM_REVIVAL_HERB,
         .price = 2800,
         .description = sRevivalHerbDesc,
@@ -467,7 +467,7 @@ const struct Item gItems[] =
 
     [ITEM_ETHER] =
     {
-        .name = _("ETHER"),
+        .name = _("Ether"),
         .itemId = ITEM_ETHER,
         .price = 2000,
         .holdEffectParam = 10,
@@ -481,7 +481,7 @@ const struct Item gItems[] =
 
     [ITEM_MAX_ETHER] =
     {
-        .name = _("MAX ETHER"),
+        .name = _("Max Ether"),
         .itemId = ITEM_MAX_ETHER,
         .price = 4000,
         .holdEffectParam = 255,
@@ -495,7 +495,7 @@ const struct Item gItems[] =
 
     [ITEM_ELIXIR] =
     {
-        .name = _("ELIXIR"),
+        .name = _("Elixir"),
         .itemId = ITEM_ELIXIR,
         .price = 6000,
         .holdEffectParam = 10,
@@ -509,7 +509,7 @@ const struct Item gItems[] =
 
     [ITEM_MAX_ELIXIR] =
     {
-        .name = _("MAX ELIXIR"),
+        .name = _("Max Elixir"),
         .itemId = ITEM_MAX_ELIXIR,
         .price = 12000,
         .holdEffectParam = 255,
@@ -523,7 +523,7 @@ const struct Item gItems[] =
 
     [ITEM_LAVA_COOKIE] =
     {
-        .name = _("LAVA COOKIE"),
+        .name = _("Lava Cookie"),
         .itemId = ITEM_LAVA_COOKIE,
         .price = 200,
         .description = sLavaCookieDesc,
@@ -536,7 +536,7 @@ const struct Item gItems[] =
 
     [ITEM_BLUE_FLUTE] =
     {
-        .name = _("BLUE FLUTE"),
+        .name = _("Blue Flute"),
         .itemId = ITEM_BLUE_FLUTE,
         .price = 100,
         .description = sBlueFluteDesc,
@@ -549,7 +549,7 @@ const struct Item gItems[] =
 
     [ITEM_YELLOW_FLUTE] =
     {
-        .name = _("YELLOW FLUTE"),
+        .name = _("Yellow Flute"),
         .itemId = ITEM_YELLOW_FLUTE,
         .price = 200,
         .description = sYellowFluteDesc,
@@ -562,7 +562,7 @@ const struct Item gItems[] =
 
     [ITEM_RED_FLUTE] =
     {
-        .name = _("RED FLUTE"),
+        .name = _("Red Flute"),
         .itemId = ITEM_RED_FLUTE,
         .price = 300,
         .description = sRedFluteDesc,
@@ -575,7 +575,7 @@ const struct Item gItems[] =
 
     [ITEM_BLACK_FLUTE] =
     {
-        .name = _("BLACK FLUTE"),
+        .name = _("Black Flute"),
         .itemId = ITEM_BLACK_FLUTE,
         .price = 400,
         .holdEffectParam = 50,
@@ -587,7 +587,7 @@ const struct Item gItems[] =
 
     [ITEM_WHITE_FLUTE] =
     {
-        .name = _("WHITE FLUTE"),
+        .name = _("White Flute"),
         .itemId = ITEM_WHITE_FLUTE,
         .price = 500,
         .holdEffectParam = 150,
@@ -599,7 +599,7 @@ const struct Item gItems[] =
 
     [ITEM_BERRY_JUICE] =
     {
-        .name = _("BERRY JUICE"),
+        .name = _("Berry Juice"),
         .itemId = ITEM_BERRY_JUICE,
         .price = 100,
         .holdEffect = HOLD_EFFECT_RESTORE_HP,
@@ -614,7 +614,7 @@ const struct Item gItems[] =
 
     [ITEM_SACRED_ASH] =
     {
-        .name = _("SACRED ASH"),
+        .name = _("Sacred Ash"),
         .itemId = ITEM_SACRED_ASH,
         .price = 200,
         .description = sSacredAshDesc,
@@ -627,7 +627,7 @@ const struct Item gItems[] =
 
     [ITEM_SHOAL_SALT] =
     {
-        .name = _("SHOAL SALT"),
+        .name = _("Shoal Salt"),
         .itemId = ITEM_SHOAL_SALT,
         .price = 20,
         .description = sShoalSaltDesc,
@@ -638,7 +638,7 @@ const struct Item gItems[] =
 
     [ITEM_SHOAL_SHELL] =
     {
-        .name = _("SHOAL SHELL"),
+        .name = _("Shoal Shell"),
         .itemId = ITEM_SHOAL_SHELL,
         .price = 20,
         .description = sShoalShellDesc,
@@ -649,7 +649,7 @@ const struct Item gItems[] =
 
     [ITEM_RED_SHARD] =
     {
-        .name = _("RED SHARD"),
+        .name = _("Red Shard"),
         .itemId = ITEM_RED_SHARD,
         .price = 200,
         .description = sRedShardDesc,
@@ -660,7 +660,7 @@ const struct Item gItems[] =
 
     [ITEM_BLUE_SHARD] =
     {
-        .name = _("BLUE SHARD"),
+        .name = _("Blue Shard"),
         .itemId = ITEM_BLUE_SHARD,
         .price = 200,
         .description = sBlueShardDesc,
@@ -671,7 +671,7 @@ const struct Item gItems[] =
 
     [ITEM_YELLOW_SHARD] =
     {
-        .name = _("YELLOW SHARD"),
+        .name = _("Yellow Shard"),
         .itemId = ITEM_YELLOW_SHARD,
         .price = 200,
         .description = sYellowShardDesc,
@@ -682,7 +682,7 @@ const struct Item gItems[] =
 
     [ITEM_GREEN_SHARD] =
     {
-        .name = _("GREEN SHARD"),
+        .name = _("Green Shard"),
         .itemId = ITEM_GREEN_SHARD,
         .price = 200,
         .description = sGreenShardDesc,
@@ -693,7 +693,7 @@ const struct Item gItems[] =
 
     [ITEM_FERTILIZER] =
     {
-        .name = _("GROWTH MULCH"),
+        .name = _("Growth Mulch"),
         .itemId = ITEM_FERTILIZER,
         .price = 2500,
         .description = sFertilizerDesc,
@@ -704,7 +704,7 @@ const struct Item gItems[] =
 
     [ITEM_HEALING_HEART] =
     {
-        .name = _("HEALING HEART"),
+        .name = _("Healing Heart"),
         .itemId = ITEM_HEALING_HEART,
         .price = 0,
         .description = sHealingHeart,
@@ -817,7 +817,7 @@ const struct Item gItems[] =
 
     [ITEM_HP_UP] =
     {
-        .name = _("HP UP"),
+        .name = _("HP Up"),
         .itemId = ITEM_HP_UP,
         .price = 1350,
         .description = sHPUpDesc,
@@ -828,7 +828,7 @@ const struct Item gItems[] =
 
     [ITEM_PROTEIN] =
     {
-        .name = _("PROTEIN"),
+        .name = _("Protein"),
         .itemId = ITEM_PROTEIN,
         .price = 1350,
         .description = sProteinDesc,
@@ -839,7 +839,7 @@ const struct Item gItems[] =
 
     [ITEM_IRON] =
     {
-        .name = _("IRON"),
+        .name = _("Iron"),
         .itemId = ITEM_IRON,
         .price = 1350,
         .description = sIronDesc,
@@ -850,7 +850,7 @@ const struct Item gItems[] =
 
     [ITEM_CARBOS] =
     {
-        .name = _("CARBOS"),
+        .name = _("Carbos"),
         .itemId = ITEM_CARBOS,
         .price = 1350,
         .description = sCarbosDesc,
@@ -861,7 +861,7 @@ const struct Item gItems[] =
 
     [ITEM_CALCIUM] =
     {
-        .name = _("CALCIUM"),
+        .name = _("Calcium"),
         .itemId = ITEM_CALCIUM,
         .price = 1350,
         .description = sCalciumDesc,
@@ -872,7 +872,7 @@ const struct Item gItems[] =
 
     [ITEM_RARE_CANDY] =
     {
-        .name = _("RARE CANDY"),
+        .name = _("Rare Candy"),
         .itemId = ITEM_RARE_CANDY,
         .price = 4800,
         .description = sRareCandyDesc,
@@ -883,7 +883,7 @@ const struct Item gItems[] =
 
     [ITEM_PP_UP] =
     {
-        .name = _("PP UP"),
+        .name = _("PP Up"),
         .itemId = ITEM_PP_UP,
         .price = 20000,
         .description = sPPUpDesc,
@@ -894,7 +894,7 @@ const struct Item gItems[] =
 
     [ITEM_ZINC] =
     {
-        .name = _("ZINC"),
+        .name = _("Zinc"),
         .itemId = ITEM_ZINC,
         .price = 1350,
         .description = sZincDesc,
@@ -905,7 +905,7 @@ const struct Item gItems[] =
 
     [ITEM_PP_MAX] =
     {
-        .name = _("PP MAX"),
+        .name = _("PP Max"),
         .itemId = ITEM_PP_MAX,
         .price = 20000,
         .description = sPPMaxDesc,
@@ -929,7 +929,7 @@ const struct Item gItems[] =
 
     [ITEM_GUARD_SPEC] =
     {
-        .name = _("GUARD SPEC."),
+        .name = _("Guard Spec."),
         .itemId = ITEM_GUARD_SPEC,
         .price = 700,
         .description = sGuardSpecDesc,
@@ -942,7 +942,7 @@ const struct Item gItems[] =
 
     [ITEM_DIRE_HIT] =
     {
-        .name = _("DIRE HIT"),
+        .name = _("Dire Hit"),
         .itemId = ITEM_DIRE_HIT,
         .price = 650,
         .description = sDireHitDesc,
@@ -955,7 +955,7 @@ const struct Item gItems[] =
 
     [ITEM_X_ATTACK] =
     {
-        .name = _("X ATTACK"),
+        .name = _("X Attack"),
         .itemId = ITEM_X_ATTACK,
         .price = 500,
         .description = sXAttackDesc,
@@ -968,7 +968,7 @@ const struct Item gItems[] =
 
     [ITEM_X_DEFEND] =
     {
-        .name = _("X DEFEND"),
+        .name = _("X Defend"),
         .itemId = ITEM_X_DEFEND,
         .price = 550,
         .description = sXDefendDesc,
@@ -981,7 +981,7 @@ const struct Item gItems[] =
 
     [ITEM_X_SPEED] =
     {
-        .name = _("X SPEED"),
+        .name = _("X Speed"),
         .itemId = ITEM_X_SPEED,
         .price = 350,
         .description = sXSpeedDesc,
@@ -994,7 +994,7 @@ const struct Item gItems[] =
 
     [ITEM_X_ACCURACY] =
     {
-        .name = _("X ACCURACY"),
+        .name = _("X Accuracy"),
         .itemId = ITEM_X_ACCURACY,
         .price = 950,
         .description = sXAccuracyDesc,
@@ -1007,7 +1007,7 @@ const struct Item gItems[] =
 
     [ITEM_X_SPECIAL] =
     {
-        .name = _("X SPECIAL"),
+        .name = _("X Special"),
         .itemId = ITEM_X_SPECIAL,
         .price = 350,
         .description = sXSpecialDesc,
@@ -1020,7 +1020,7 @@ const struct Item gItems[] =
 
     [ITEM_POKE_DOLL] =
     {
-        .name = _("POKé DOLL"),
+        .name = _("Poké Doll"),
         .itemId = ITEM_POKE_DOLL,
         .price = 1000,
         .description = sPokeDollDesc,
@@ -1033,7 +1033,7 @@ const struct Item gItems[] =
 
     [ITEM_FLUFFY_TAIL] =
     {
-        .name = _("FLUFFY TAIL"),
+        .name = _("Fluffy Tail"),
         .itemId = ITEM_FLUFFY_TAIL,
         .price = 1000,
         .description = sFluffyTailDesc,
@@ -1046,7 +1046,7 @@ const struct Item gItems[] =
 
     [ITEM_BIG_NUGGET] =
     {
-        .name = _("BIG NUGGET"),
+        .name = _("Big Nugget"),
         .itemId = ITEM_BIG_NUGGET,
         .price = 60000,
         .description = sBigNuggetDesc,
@@ -1059,7 +1059,7 @@ const struct Item gItems[] =
 
     [ITEM_SUPER_REPEL] =
     {
-        .name = _("SUPER REPEL"),
+        .name = _("Super Repel"),
         .itemId = ITEM_SUPER_REPEL,
         .price = 500,
         .holdEffectParam = 200,
@@ -1071,7 +1071,7 @@ const struct Item gItems[] =
 
     [ITEM_MAX_REPEL] =
     {
-        .name = _("MAX REPEL"),
+        .name = _("Max Repel"),
         .itemId = ITEM_MAX_REPEL,
         .price = 700,
         .holdEffectParam = 250,
@@ -1083,7 +1083,7 @@ const struct Item gItems[] =
 
     [ITEM_ESCAPE_ROPE] =
     {
-        .name = _("ESCAPE ROPE"),
+        .name = _("Escape Rope"),
         .itemId = ITEM_ESCAPE_ROPE,
         .price = 550,
         .description = sEscapeRopeDesc,
@@ -1094,7 +1094,7 @@ const struct Item gItems[] =
 
     [ITEM_REPEL] =
     {
-        .name = _("REPEL"),
+        .name = _("Repel"),
         .itemId = ITEM_REPEL,
         .price = 350,
         .holdEffectParam = 100,
@@ -1174,7 +1174,7 @@ const struct Item gItems[] =
 
     [ITEM_SUN_STONE] =
     {
-        .name = _("SUN STONE"),
+        .name = _("Sun Stone"),
         .itemId = ITEM_SUN_STONE,
         .price = 2100,
         .description = sSunStoneDesc,
@@ -1185,7 +1185,7 @@ const struct Item gItems[] =
 
     [ITEM_MOON_STONE] =
     {
-        .name = _("MOON STONE"),
+        .name = _("Moon Stone"),
         .itemId = ITEM_MOON_STONE,
         .price = 2100,
         .description = sMoonStoneDesc,
@@ -1196,7 +1196,7 @@ const struct Item gItems[] =
 
     [ITEM_FIRE_STONE] =
     {
-        .name = _("FIRE STONE"),
+        .name = _("Fire Stone"),
         .itemId = ITEM_FIRE_STONE,
         .price = 2100,
         .description = sFireStoneDesc,
@@ -1207,7 +1207,7 @@ const struct Item gItems[] =
 
     [ITEM_THUNDER_STONE] =
     {
-        .name = _("THUNDERSTONE"),
+        .name = _("ThunderStone"),
         .itemId = ITEM_THUNDER_STONE,
         .price = 2100,
         .description = sThunderStoneDesc,
@@ -1218,7 +1218,7 @@ const struct Item gItems[] =
 
     [ITEM_WATER_STONE] =
     {
-        .name = _("WATER STONE"),
+        .name = _("Water Stone"),
         .itemId = ITEM_WATER_STONE,
         .price = 2100,
         .description = sWaterStoneDesc,
@@ -1229,7 +1229,7 @@ const struct Item gItems[] =
 
     [ITEM_LEAF_STONE] =
     {
-        .name = _("LEAF STONE"),
+        .name = _("Leaf Stone"),
         .itemId = ITEM_LEAF_STONE,
         .price = 2100,
         .description = sLeafStoneDesc,
@@ -1286,7 +1286,7 @@ const struct Item gItems[] =
 
     [ITEM_TINY_MUSHROOM] =
     {
-        .name = _("TINYMUSHROOM"),
+        .name = _("TinyMushroom"),
         .itemId = ITEM_TINY_MUSHROOM,
         .price = 500,
         .description = sTinyMushroomDesc,
@@ -1297,7 +1297,7 @@ const struct Item gItems[] =
 
     [ITEM_BIG_MUSHROOM] =
     {
-        .name = _("BIG MUSHROOM"),
+        .name = _("Big Mushroom"),
         .itemId = ITEM_BIG_MUSHROOM,
         .price = 5000,
         .description = sBigMushroomDesc,
@@ -1319,7 +1319,7 @@ const struct Item gItems[] =
 
     [ITEM_PEARL] =
     {
-        .name = _("PEARL"),
+        .name = _("Pearl"),
         .itemId = ITEM_PEARL,
         .price = 1400,
         .description = sPearlDesc,
@@ -1330,7 +1330,7 @@ const struct Item gItems[] =
 
     [ITEM_BIG_PEARL] =
     {
-        .name = _("BIG PEARL"),
+        .name = _("Big Pearl"),
         .itemId = ITEM_BIG_PEARL,
         .price = 7500,
         .description = sBigPearlDesc,
@@ -1341,7 +1341,7 @@ const struct Item gItems[] =
 
     [ITEM_STARDUST] =
     {
-        .name = _("STARDUST"),
+        .name = _("Stardust"),
         .itemId = ITEM_STARDUST,
         .price = 2000,
         .description = sStardustDesc,
@@ -1352,7 +1352,7 @@ const struct Item gItems[] =
 
     [ITEM_STAR_PIECE] =
     {
-        .name = _("STAR PIECE"),
+        .name = _("Star Piece"),
         .itemId = ITEM_STAR_PIECE,
         .price = 9800,
         .description = sStarPieceDesc,
@@ -1363,7 +1363,7 @@ const struct Item gItems[] =
 
     [ITEM_NUGGET] =
     {
-        .name = _("NUGGET"),
+        .name = _("Nugget"),
         .itemId = ITEM_NUGGET,
         .price = 10000,
         .description = sNuggetDesc,
@@ -1374,7 +1374,7 @@ const struct Item gItems[] =
 
     [ITEM_HEART_SCALE] =
     {
-        .name = _("HEART SCALE"),
+        .name = _("Heart Scale"),
         .itemId = ITEM_HEART_SCALE,
         .price = 100,
         .description = sHeartScaleDesc,
@@ -1385,7 +1385,7 @@ const struct Item gItems[] =
 
     [ITEM_EXP_SHARE_SMALL] =
     {
-        .name = _("EXP. SHARE S"),
+        .name = _("Exp. Share S"),
         .itemId = ITEM_EXP_SHARE_SMALL,
         .price = 6000,
         .holdEffect = HOLD_EFFECT_EXP_SHARE,
@@ -1397,7 +1397,7 @@ const struct Item gItems[] =
 
     [ITEM_FAIRY_GEM] =
     {
-        .name = _("FAIRY GEM"),
+        .name = _("Fairy Gem"),
         .itemId = ITEM_FAIRY_GEM,
         .price = 100,
         .holdEffect = HOLD_EFFECT_FAIRY_POWER,
@@ -1410,7 +1410,7 @@ const struct Item gItems[] =
 
     [ITEM_072] =
     {
-        .name = _("COOL PENDANT"),
+        .name = _("Cool Pendant"),
         .itemId = ITEM_072,
         .price = 0,
         .holdEffect = HOLD_EFFECT_HARD_MODE_MODIFIER,
@@ -1422,7 +1422,7 @@ const struct Item gItems[] =
 
     [ITEM_073] =
     {
-        .name = _("SITRUS BERRY"),
+        .name = _("Sitrus Berry"),
         .itemId = ITEM_073,
         .price = 0,
         .holdEffect = HOLD_EFFECT_HARD_MODE_MODIFIER_SITRUS,
@@ -1435,7 +1435,7 @@ const struct Item gItems[] =
 
     [ITEM_074] =
     {
-        .name = _("CHESTO BERRY"),
+        .name = _("Chesto Berry"),
         .itemId = ITEM_074,
         .price = 0,
         .holdEffect = HOLD_EFFECT_HARD_MODE_MODIFIER_CHESTO,
@@ -1447,7 +1447,7 @@ const struct Item gItems[] =
 
     [ITEM_075] =
     {
-        .name = _("LEFTOVERS"),
+        .name = _("Leftovers"),
         .itemId = ITEM_075,
         .price = 0,
         .holdEffect = HOLD_EFFECT_HARD_MODE_MODIFIER_LEFTOVERS,
@@ -1460,7 +1460,7 @@ const struct Item gItems[] =
 
     [ITEM_076] =
     {
-        .name = _("LIECHI BERRY"),
+        .name = _("Liechi Berry"),
         .itemId = ITEM_076,
         .price = 0,
         .holdEffect = HOLD_EFFECT_HARD_MODE_MODIFIER_LIECHI,
@@ -1496,7 +1496,7 @@ const struct Item gItems[] =
 // Mail
     [ITEM_ORANGE_MAIL] =
     {
-        .name = _("ORANGE MAIL"),
+        .name = _("Orange Mail"),
         .itemId = ITEM_ORANGE_MAIL,
         .price = 50,
         .description = sOrangeMailDesc,
@@ -1508,7 +1508,7 @@ const struct Item gItems[] =
 
     [ITEM_HARBOR_MAIL] =
     {
-        .name = _("HARBOR MAIL"),
+        .name = _("Harbor Mail"),
         .itemId = ITEM_HARBOR_MAIL,
         .price = 50,
         .description = sHarborMailDesc,
@@ -1520,7 +1520,7 @@ const struct Item gItems[] =
 
     [ITEM_GLITTER_MAIL] =
     {
-        .name = _("GLITTER MAIL"),
+        .name = _("Glitter Mail"),
         .itemId = ITEM_GLITTER_MAIL,
         .price = 50,
         .description = sGlitterMailDesc,
@@ -1532,7 +1532,7 @@ const struct Item gItems[] =
 
     [ITEM_MECH_MAIL] =
     {
-        .name = _("MECH MAIL"),
+        .name = _("Mech Mail"),
         .itemId = ITEM_MECH_MAIL,
         .price = 50,
         .description = sMechMailDesc,
@@ -1544,7 +1544,7 @@ const struct Item gItems[] =
 
     [ITEM_WOOD_MAIL] =
     {
-        .name = _("WOOD MAIL"),
+        .name = _("Wood Mail"),
         .itemId = ITEM_WOOD_MAIL,
         .price = 50,
         .description = sWoodMailDesc,
@@ -1556,7 +1556,7 @@ const struct Item gItems[] =
 
     [ITEM_WAVE_MAIL] =
     {
-        .name = _("WAVE MAIL"),
+        .name = _("Wave Mail"),
         .itemId = ITEM_WAVE_MAIL,
         .price = 50,
         .description = sWaveMailDesc,
@@ -1568,7 +1568,7 @@ const struct Item gItems[] =
 
     [ITEM_BEAD_MAIL] =
     {
-        .name = _("BEAD MAIL"),
+        .name = _("Bead Mail"),
         .itemId = ITEM_BEAD_MAIL,
         .price = 50,
         .description = sBeadMailDesc,
@@ -1580,7 +1580,7 @@ const struct Item gItems[] =
 
     [ITEM_SHADOW_MAIL] =
     {
-        .name = _("SHADOW MAIL"),
+        .name = _("Shadow Mail"),
         .itemId = ITEM_SHADOW_MAIL,
         .price = 50,
         .description = sShadowMailDesc,
@@ -1592,7 +1592,7 @@ const struct Item gItems[] =
 
     [ITEM_TROPIC_MAIL] =
     {
-        .name = _("TROPIC MAIL"),
+        .name = _("Tropic Mail"),
         .itemId = ITEM_TROPIC_MAIL,
         .price = 50,
         .description = sTropicMailDesc,
@@ -1604,7 +1604,7 @@ const struct Item gItems[] =
 
     [ITEM_DREAM_MAIL] =
     {
-        .name = _("DREAM MAIL"),
+        .name = _("Dream Mail"),
         .itemId = ITEM_DREAM_MAIL,
         .price = 50,
         .description = sDreamMailDesc,
@@ -1616,7 +1616,7 @@ const struct Item gItems[] =
 
     [ITEM_FAB_MAIL] =
     {
-        .name = _("FAB MAIL"),
+        .name = _("Fab Mail"),
         .itemId = ITEM_FAB_MAIL,
         .price = 50,
         .description = sFabMailDesc,
@@ -1628,7 +1628,7 @@ const struct Item gItems[] =
 
     [ITEM_RETRO_MAIL] =
     {
-        .name = _("RETRO MAIL"),
+        .name = _("Retro Mail"),
         .itemId = ITEM_RETRO_MAIL,
         .price = 5000,
         .description = sRetroMailDesc,
@@ -1642,7 +1642,7 @@ const struct Item gItems[] =
 
     [ITEM_CHERI_BERRY] =
     {
-        .name = _("CHERI BERRY"),
+        .name = _("Cheri Berry"),
         .itemId = ITEM_CHERI_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_CURE_PAR,
@@ -1656,7 +1656,7 @@ const struct Item gItems[] =
 
     [ITEM_CHESTO_BERRY] =
     {
-        .name = _("CHESTO BERRY"),
+        .name = _("Chesto Berry"),
         .itemId = ITEM_CHESTO_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_CURE_SLP,
@@ -1670,7 +1670,7 @@ const struct Item gItems[] =
 
     [ITEM_PECHA_BERRY] =
     {
-        .name = _("PECHA BERRY"),
+        .name = _("Pecha Berry"),
         .itemId = ITEM_PECHA_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_CURE_PSN,
@@ -1684,7 +1684,7 @@ const struct Item gItems[] =
 
     [ITEM_RAWST_BERRY] =
     {
-        .name = _("RAWST BERRY"),
+        .name = _("Rawst Berry"),
         .itemId = ITEM_RAWST_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_CURE_BRN,
@@ -1698,7 +1698,7 @@ const struct Item gItems[] =
 
     [ITEM_ASPEAR_BERRY] =
     {
-        .name = _("ASPEAR BERRY"),
+        .name = _("Aspear Berry"),
         .itemId = ITEM_ASPEAR_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_CURE_FRZ,
@@ -1712,7 +1712,7 @@ const struct Item gItems[] =
 
     [ITEM_LEPPA_BERRY] =
     {
-        .name = _("LEPPA BERRY"),
+        .name = _("Leppa Berry"),
         .itemId = ITEM_LEPPA_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_RESTORE_PP,
@@ -1727,7 +1727,7 @@ const struct Item gItems[] =
 
     [ITEM_ORAN_BERRY] =
     {
-        .name = _("ORAN BERRY"),
+        .name = _("Oran Berry"),
         .itemId = ITEM_ORAN_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_RESTORE_HP,
@@ -1742,7 +1742,7 @@ const struct Item gItems[] =
 
     [ITEM_PERSIM_BERRY] =
     {
-        .name = _("PERSIM BERRY"),
+        .name = _("Persim Berry"),
         .itemId = ITEM_PERSIM_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_CURE_CONFUSION,
@@ -1756,7 +1756,7 @@ const struct Item gItems[] =
 
     [ITEM_LUM_BERRY] =
     {
-        .name = _("LUM BERRY"),
+        .name = _("Lum Berry"),
         .itemId = ITEM_LUM_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_CURE_STATUS,
@@ -1770,7 +1770,7 @@ const struct Item gItems[] =
 
     [ITEM_SITRUS_BERRY] =
     {
-        .name = _("SITRUS BERRY"),
+        .name = _("Sitrus Berry"),
         .itemId = ITEM_SITRUS_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_RESTORE_PCT_HP,
@@ -1785,7 +1785,7 @@ const struct Item gItems[] =
 
     [ITEM_FIGY_BERRY] =
     {
-        .name = _("FIGY BERRY"),
+        .name = _("Figy Berry"),
         .itemId = ITEM_FIGY_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_CONFUSE_SPICY,
@@ -1798,7 +1798,7 @@ const struct Item gItems[] =
 
     [ITEM_WIKI_BERRY] =
     {
-        .name = _("WIKI BERRY"),
+        .name = _("Wiki Berry"),
         .itemId = ITEM_WIKI_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_CONFUSE_DRY,
@@ -1811,7 +1811,7 @@ const struct Item gItems[] =
 
     [ITEM_MAGO_BERRY] =
     {
-        .name = _("MAGO BERRY"),
+        .name = _("Mago Berry"),
         .itemId = ITEM_MAGO_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_CONFUSE_SWEET,
@@ -1824,7 +1824,7 @@ const struct Item gItems[] =
 
     [ITEM_AGUAV_BERRY] =
     {
-        .name = _("AGUAV BERRY"),
+        .name = _("Aguav Berry"),
         .itemId = ITEM_AGUAV_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_CONFUSE_BITTER,
@@ -1837,7 +1837,7 @@ const struct Item gItems[] =
 
     [ITEM_IAPAPA_BERRY] =
     {
-        .name = _("IAPAPA BERRY"),
+        .name = _("Iapapa Berry"),
         .itemId = ITEM_IAPAPA_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_CONFUSE_SOUR,
@@ -1850,7 +1850,7 @@ const struct Item gItems[] =
 
     [ITEM_RAZZ_BERRY] =
     {
-        .name = _("RAZZ BERRY"),
+        .name = _("Razz Berry"),
         .itemId = ITEM_RAZZ_BERRY,
         .price = 20,
         .description = sRazzBerryDesc,
@@ -1861,7 +1861,7 @@ const struct Item gItems[] =
 
     [ITEM_BLUK_BERRY] =
     {
-        .name = _("BLUK BERRY"),
+        .name = _("Bluk Berry"),
         .itemId = ITEM_BLUK_BERRY,
         .price = 20,
         .description = sBlukBerryDesc,
@@ -1872,7 +1872,7 @@ const struct Item gItems[] =
 
     [ITEM_NANAB_BERRY] =
     {
-        .name = _("NANAB BERRY"),
+        .name = _("Nanab Berry"),
         .itemId = ITEM_NANAB_BERRY,
         .price = 20,
         .description = sNanabBerryDesc,
@@ -1883,7 +1883,7 @@ const struct Item gItems[] =
 
     [ITEM_WEPEAR_BERRY] =
     {
-        .name = _("WEPEAR BERRY"),
+        .name = _("Wepear Berry"),
         .itemId = ITEM_WEPEAR_BERRY,
         .price = 20,
         .description = sWepearBerryDesc,
@@ -1894,7 +1894,7 @@ const struct Item gItems[] =
 
     [ITEM_PINAP_BERRY] =
     {
-        .name = _("PINAP BERRY"),
+        .name = _("Pinap Berry"),
         .itemId = ITEM_PINAP_BERRY,
         .price = 20,
         .description = sPinapBerryDesc,
@@ -1905,7 +1905,7 @@ const struct Item gItems[] =
 
     [ITEM_POMEG_BERRY] =
     {
-        .name = _("POMEG BERRY"),
+        .name = _("Pomeg Berry"),
         .itemId = ITEM_POMEG_BERRY,
         .price = 20,
         .description = sPomegBerryDesc,
@@ -1916,7 +1916,7 @@ const struct Item gItems[] =
 
     [ITEM_KELPSY_BERRY] =
     {
-        .name = _("KELPSY BERRY"),
+        .name = _("Kelpsy Berry"),
         .itemId = ITEM_KELPSY_BERRY,
         .price = 20,
         .description = sKelpsyBerryDesc,
@@ -1927,7 +1927,7 @@ const struct Item gItems[] =
 
     [ITEM_QUALOT_BERRY] =
     {
-        .name = _("QUALOT BERRY"),
+        .name = _("Qualot Berry"),
         .itemId = ITEM_QUALOT_BERRY,
         .price = 20,
         .description = sQualotBerryDesc,
@@ -1938,7 +1938,7 @@ const struct Item gItems[] =
 
     [ITEM_HONDEW_BERRY] =
     {
-        .name = _("HONDEW BERRY"),
+        .name = _("Hondew Berry"),
         .itemId = ITEM_HONDEW_BERRY,
         .price = 20,
         .description = sHondewBerryDesc,
@@ -1949,7 +1949,7 @@ const struct Item gItems[] =
 
     [ITEM_GREPA_BERRY] =
     {
-        .name = _("GREPA BERRY"),
+        .name = _("Grepa Berry"),
         .itemId = ITEM_GREPA_BERRY,
         .price = 20,
         .description = sGrepaBerryDesc,
@@ -1960,7 +1960,7 @@ const struct Item gItems[] =
 
     [ITEM_TAMATO_BERRY] =
     {
-        .name = _("TAMATO BERRY"),
+        .name = _("Tamato Berry"),
         .itemId = ITEM_TAMATO_BERRY,
         .price = 20,
         .description = sTamatoBerryDesc,
@@ -1971,7 +1971,7 @@ const struct Item gItems[] =
 
     [ITEM_CORNN_BERRY] =
     {
-        .name = _("CORNN BERRY"),
+        .name = _("Cornn Berry"),
         .itemId = ITEM_CORNN_BERRY,
         .price = 20,
         .description = sCornnBerryDesc,
@@ -1982,7 +1982,7 @@ const struct Item gItems[] =
 
     [ITEM_MAGOST_BERRY] =
     {
-        .name = _("MAGOST BERRY"),
+        .name = _("Magost Berry"),
         .itemId = ITEM_MAGOST_BERRY,
         .price = 20,
         .description = sMagostBerryDesc,
@@ -1993,7 +1993,7 @@ const struct Item gItems[] =
 
     [ITEM_RABUTA_BERRY] =
     {
-        .name = _("RABUTA BERRY"),
+        .name = _("Rabuta Berry"),
         .itemId = ITEM_RABUTA_BERRY,
         .price = 20,
         .description = sRabutaBerryDesc,
@@ -2004,7 +2004,7 @@ const struct Item gItems[] =
 
     [ITEM_NOMEL_BERRY] =
     {
-        .name = _("NOMEL BERRY"),
+        .name = _("Nomel Berry"),
         .itemId = ITEM_NOMEL_BERRY,
         .price = 20,
         .description = sNomelBerryDesc,
@@ -2015,7 +2015,7 @@ const struct Item gItems[] =
 
     [ITEM_SPELON_BERRY] =
     {
-        .name = _("SPELON BERRY"),
+        .name = _("Spelon Berry"),
         .itemId = ITEM_SPELON_BERRY,
         .price = 20,
         .description = sSpelonBerryDesc,
@@ -2026,7 +2026,7 @@ const struct Item gItems[] =
 
     [ITEM_PAMTRE_BERRY] =
     {
-        .name = _("PAMTRE BERRY"),
+        .name = _("Pamtre Berry"),
         .itemId = ITEM_PAMTRE_BERRY,
         .price = 20,
         .description = sPamtreBerryDesc,
@@ -2037,7 +2037,7 @@ const struct Item gItems[] =
 
     [ITEM_WATMEL_BERRY] =
     {
-        .name = _("WATMEL BERRY"),
+        .name = _("Watmel Berry"),
         .itemId = ITEM_WATMEL_BERRY,
         .price = 20,
         .description = sWatmelBerryDesc,
@@ -2048,7 +2048,7 @@ const struct Item gItems[] =
 
     [ITEM_DURIN_BERRY] =
     {
-        .name = _("DURIN BERRY"),
+        .name = _("Durin Berry"),
         .itemId = ITEM_DURIN_BERRY,
         .price = 20,
         .description = sDurinBerryDesc,
@@ -2059,7 +2059,7 @@ const struct Item gItems[] =
 
     [ITEM_BELUE_BERRY] =
     {
-        .name = _("BELUE BERRY"),
+        .name = _("Belue Berry"),
         .itemId = ITEM_BELUE_BERRY,
         .price = 20,
         .description = sBelueBerryDesc,
@@ -2070,7 +2070,7 @@ const struct Item gItems[] =
 
     [ITEM_LIECHI_BERRY] =
     {
-        .name = _("LIECHI BERRY"),
+        .name = _("Liechi Berry"),
         .itemId = ITEM_LIECHI_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_ATTACK_UP,
@@ -2083,7 +2083,7 @@ const struct Item gItems[] =
 
     [ITEM_GANLON_BERRY] =
     {
-        .name = _("GANLON BERRY"),
+        .name = _("Ganlon Berry"),
         .itemId = ITEM_GANLON_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_DEFENSE_UP,
@@ -2096,7 +2096,7 @@ const struct Item gItems[] =
 
     [ITEM_SALAC_BERRY] =
     {
-        .name = _("SALAC BERRY"),
+        .name = _("Salac Berry"),
         .itemId = ITEM_SALAC_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_SPEED_UP,
@@ -2109,7 +2109,7 @@ const struct Item gItems[] =
 
     [ITEM_PETAYA_BERRY] =
     {
-        .name = _("PETAYA BERRY"),
+        .name = _("Petaya Berry"),
         .itemId = ITEM_PETAYA_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_SP_ATTACK_UP,
@@ -2122,7 +2122,7 @@ const struct Item gItems[] =
 
     [ITEM_APICOT_BERRY] =
     {
-        .name = _("APICOT BERRY"),
+        .name = _("Apicot Berry"),
         .itemId = ITEM_APICOT_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_SP_DEFENSE_UP,
@@ -2135,7 +2135,7 @@ const struct Item gItems[] =
 
     [ITEM_LANSAT_BERRY] =
     {
-        .name = _("LANSAT BERRY"),
+        .name = _("Lansat Berry"),
         .itemId = ITEM_LANSAT_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_CRITICAL_UP,
@@ -2148,7 +2148,7 @@ const struct Item gItems[] =
 
     [ITEM_STARF_BERRY] =
     {
-        .name = _("STARF BERRY"),
+        .name = _("Starf Berry"),
         .itemId = ITEM_STARF_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_RANDOM_STAT_UP,
@@ -2161,7 +2161,7 @@ const struct Item gItems[] =
 
     [ITEM_ENIGMA_BERRY] =
     {
-        .name = _("ENIGMA BERRY"),
+        .name = _("Enigma Berry"),
         .itemId = ITEM_ENIGMA_BERRY,
         .price = 20,
         .description = sEnigmaBerryDesc,
@@ -2174,7 +2174,7 @@ const struct Item gItems[] =
 
     [ITEM_UNUSED_BERRY_1] =
     {
-        .name = _("SITRUS BERRY"),
+        .name = _("Sitrus Berry"),
         .itemId = ITEM_SITRUS_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_RESTORE_HP,
@@ -2214,7 +2214,7 @@ const struct Item gItems[] =
 
     [ITEM_BRIGHT_POWDER] =
     {
-        .name = _("BRIGHTPOWDER"),
+        .name = _("BrightPowder"),
         .itemId = ITEM_BRIGHT_POWDER,
         .price = 10,
         .holdEffect = HOLD_EFFECT_EVASION_UP,
@@ -2227,7 +2227,7 @@ const struct Item gItems[] =
 
     [ITEM_WHITE_HERB] =
     {
-        .name = _("WHITE HERB"),
+        .name = _("White Herb"),
         .itemId = ITEM_WHITE_HERB,
         .price = 100,
         .holdEffect = HOLD_EFFECT_RESTORE_STATS,
@@ -2239,7 +2239,7 @@ const struct Item gItems[] =
 
     [ITEM_MACHO_BRACE] =
     {
-        .name = _("MACHO BRACE"),
+        .name = _("Macho Brace"),
         .itemId = ITEM_MACHO_BRACE,
         .price = 3000,
         .holdEffect = HOLD_EFFECT_MACHO_BRACE,
@@ -2251,7 +2251,7 @@ const struct Item gItems[] =
 
     [ITEM_EXP_SHARE] =
     {
-        .name = _("EXP. SHARE"),
+        .name = _("Exp. Share"),
         .itemId = ITEM_EXP_SHARE,
         .price = 0,
         //.holdEffect = HOLD_EFFECT_EXP_SHARE,
@@ -2265,7 +2265,7 @@ const struct Item gItems[] =
 
     [ITEM_QUICK_CLAW] =
     {
-        .name = _("QUICK CLAW"),
+        .name = _("Quick Claw"),
         .itemId = ITEM_QUICK_CLAW,
         .price = 100,
         .holdEffect = HOLD_EFFECT_QUICK_CLAW,
@@ -2278,7 +2278,7 @@ const struct Item gItems[] =
 
     [ITEM_SOOTHE_BELL] =
     {
-        .name = _("SOOTHE BELL"),
+        .name = _("Soothe Bell"),
         .itemId = ITEM_SOOTHE_BELL,
         .price = 100,
         .holdEffect = HOLD_EFFECT_FRIENDSHIP_UP,
@@ -2290,7 +2290,7 @@ const struct Item gItems[] =
 
     [ITEM_MENTAL_HERB] =
     {
-        .name = _("MENTAL HERB"),
+        .name = _("Mental Herb"),
         .itemId = ITEM_MENTAL_HERB,
         .price = 100,
         .holdEffect = HOLD_EFFECT_CURE_ATTRACT,
@@ -2302,7 +2302,7 @@ const struct Item gItems[] =
 
     [ITEM_CHOICE_BAND] =
     {
-        .name = _("CHOICE BAND"),
+        .name = _("Choice Band"),
         .itemId = ITEM_CHOICE_BAND,
         .price = 100,
         .holdEffect = HOLD_EFFECT_CHOICE_BAND,
@@ -2314,7 +2314,7 @@ const struct Item gItems[] =
 
     [ITEM_KINGS_ROCK] =
     {
-        .name = _("KING'S ROCK"),
+        .name = _("King's Rock"),
         .itemId = ITEM_KINGS_ROCK,
         .price = 100,
         .holdEffect = HOLD_EFFECT_FLINCH,
@@ -2327,7 +2327,7 @@ const struct Item gItems[] =
 
     [ITEM_SILVER_POWDER] =
     {
-        .name = _("SILVERPOWDER"),
+        .name = _("SilverPowder"),
         .itemId = ITEM_SILVER_POWDER,
         .price = 100,
         .holdEffect = HOLD_EFFECT_BUG_POWER,
@@ -2340,7 +2340,7 @@ const struct Item gItems[] =
 
     [ITEM_AMULET_COIN] =
     {
-        .name = _("AMULET COIN"),
+        .name = _("Amulet Coin"),
         .itemId = ITEM_AMULET_COIN,
         .price = 100,
         .holdEffect = HOLD_EFFECT_DOUBLE_PRIZE,
@@ -2353,7 +2353,7 @@ const struct Item gItems[] =
 
     [ITEM_CLEANSE_TAG] =
     {
-        .name = _("CLEANSE TAG"),
+        .name = _("Cleanse Tag"),
         .itemId = ITEM_CLEANSE_TAG,
         .price = 200,
         .holdEffect = HOLD_EFFECT_REPEL,
@@ -2365,7 +2365,7 @@ const struct Item gItems[] =
 
     [ITEM_SOUL_DEW] =
     {
-        .name = _("SOUL DEW"),
+        .name = _("Soul Dew"),
         .itemId = ITEM_SOUL_DEW,
         .price = 200,
         .holdEffect = HOLD_EFFECT_SOUL_DEW,
@@ -2377,7 +2377,7 @@ const struct Item gItems[] =
 
     [ITEM_DEEP_SEA_TOOTH] =
     {
-        .name = _("DEEPSEATOOTH"),
+        .name = _("DeepSeaTooth"),
         .itemId = ITEM_DEEP_SEA_TOOTH,
         .price = 200,
         .holdEffect = HOLD_EFFECT_DEEP_SEA_TOOTH,
@@ -2389,7 +2389,7 @@ const struct Item gItems[] =
 
     [ITEM_DEEP_SEA_SCALE] =
     {
-        .name = _("DEEPSEASCALE"),
+        .name = _("DeepSeaScale"),
         .itemId = ITEM_DEEP_SEA_SCALE,
         .price = 200,
         .holdEffect = HOLD_EFFECT_DEEP_SEA_SCALE,
@@ -2401,7 +2401,7 @@ const struct Item gItems[] =
 
     [ITEM_SMOKE_BALL] =
     {
-        .name = _("SMOKE BALL"),
+        .name = _("Smoke Ball"),
         .itemId = ITEM_SMOKE_BALL,
         .price = 200,
         .holdEffect = HOLD_EFFECT_CAN_ALWAYS_RUN,
@@ -2413,7 +2413,7 @@ const struct Item gItems[] =
 
     [ITEM_EVERSTONE] =
     {
-        .name = _("EVERSTONE"),
+        .name = _("Everstone"),
         .itemId = ITEM_EVERSTONE,
         .price = 200,
         .holdEffect = HOLD_EFFECT_PREVENT_EVOLVE,
@@ -2425,7 +2425,7 @@ const struct Item gItems[] =
 
     [ITEM_FOCUS_BAND] =
     {
-        .name = _("FOCUS BAND"),
+        .name = _("Focus Band"),
         .itemId = ITEM_FOCUS_BAND,
         .price = 200,
         .holdEffect = HOLD_EFFECT_FOCUS_BAND,
@@ -2438,7 +2438,7 @@ const struct Item gItems[] =
 
     [ITEM_LUCKY_EGG] =
     {
-        .name = _("LUCKY EGG"),
+        .name = _("Lucky Egg"),
         .itemId = ITEM_LUCKY_EGG,
         .price = 200,
         .holdEffect = HOLD_EFFECT_LUCKY_EGG,
@@ -2450,7 +2450,7 @@ const struct Item gItems[] =
 
     [ITEM_SCOPE_LENS] =
     {
-        .name = _("SCOPE LENS"),
+        .name = _("Scope Lens"),
         .itemId = ITEM_SCOPE_LENS,
         .price = 200,
         .holdEffect = HOLD_EFFECT_SCOPE_LENS,
@@ -2462,7 +2462,7 @@ const struct Item gItems[] =
 
     [ITEM_METAL_COAT] =
     {
-        .name = _("METAL COAT"),
+        .name = _("Metal Coat"),
         .itemId = ITEM_METAL_COAT,
         .price = 100,
         .holdEffect = HOLD_EFFECT_STEEL_POWER,
@@ -2475,7 +2475,7 @@ const struct Item gItems[] =
 
     [ITEM_LEFTOVERS] =
     {
-        .name = _("LEFTOVERS"),
+        .name = _("Leftovers"),
         .itemId = ITEM_LEFTOVERS,
         .price = 200,
         .holdEffect = HOLD_EFFECT_LEFTOVERS,
@@ -2488,7 +2488,7 @@ const struct Item gItems[] =
 
     [ITEM_DRAGON_SCALE] =
     {
-        .name = _("DRAGON SCALE"),
+        .name = _("Dragon Scale"),
         .itemId = ITEM_DRAGON_SCALE,
         .price = 2100,
         .holdEffect = HOLD_EFFECT_DRAGON_SCALE,
@@ -2501,7 +2501,7 @@ const struct Item gItems[] =
 
     [ITEM_LIGHT_BALL] =
     {
-        .name = _("LIGHT BALL"),
+        .name = _("Light Ball"),
         .itemId = ITEM_LIGHT_BALL,
         .price = 100,
         .holdEffect = HOLD_EFFECT_LIGHT_BALL,
@@ -2513,7 +2513,7 @@ const struct Item gItems[] =
 
     [ITEM_SOFT_SAND] =
     {
-        .name = _("SOFT SAND"),
+        .name = _("Soft Sand"),
         .itemId = ITEM_SOFT_SAND,
         .price = 100,
         .holdEffect = HOLD_EFFECT_GROUND_POWER,
@@ -2526,7 +2526,7 @@ const struct Item gItems[] =
 
     [ITEM_HARD_STONE] =
     {
-        .name = _("HARD STONE"),
+        .name = _("Hard Stone"),
         .itemId = ITEM_HARD_STONE,
         .price = 100,
         .holdEffect = HOLD_EFFECT_ROCK_POWER,
@@ -2539,7 +2539,7 @@ const struct Item gItems[] =
 
     [ITEM_MIRACLE_SEED] =
     {
-        .name = _("MIRACLE SEED"),
+        .name = _("Miracle Seed"),
         .itemId = ITEM_MIRACLE_SEED,
         .price = 100,
         .holdEffect = HOLD_EFFECT_GRASS_POWER,
@@ -2552,7 +2552,7 @@ const struct Item gItems[] =
 
     [ITEM_BLACK_GLASSES] =
     {
-        .name = _("BLACKGLASSES"),
+        .name = _("BlackGlasses"),
         .itemId = ITEM_BLACK_GLASSES,
         .price = 100,
         .holdEffect = HOLD_EFFECT_DARK_POWER,
@@ -2565,7 +2565,7 @@ const struct Item gItems[] =
 
     [ITEM_BLACK_BELT] =
     {
-        .name = _("BLACK BELT"),
+        .name = _("Black Belt"),
         .itemId = ITEM_BLACK_BELT,
         .price = 100,
         .holdEffect = HOLD_EFFECT_FIGHTING_POWER,
@@ -2578,7 +2578,7 @@ const struct Item gItems[] =
 
     [ITEM_MAGNET] =
     {
-        .name = _("MAGNET"),
+        .name = _("Magnet"),
         .itemId = ITEM_MAGNET,
         .price = 100,
         .holdEffect = HOLD_EFFECT_ELECTRIC_POWER,
@@ -2591,7 +2591,7 @@ const struct Item gItems[] =
 
     [ITEM_MYSTIC_WATER] =
     {
-        .name = _("MYSTIC WATER"),
+        .name = _("Mystic Water"),
         .itemId = ITEM_MYSTIC_WATER,
         .price = 100,
         .holdEffect = HOLD_EFFECT_WATER_POWER,
@@ -2604,7 +2604,7 @@ const struct Item gItems[] =
 
     [ITEM_SHARP_BEAK] =
     {
-        .name = _("SHARP BEAK"),
+        .name = _("Sharp Beak"),
         .itemId = ITEM_SHARP_BEAK,
         .price = 100,
         .holdEffect = HOLD_EFFECT_FLYING_POWER,
@@ -2617,7 +2617,7 @@ const struct Item gItems[] =
 
     [ITEM_POISON_BARB] =
     {
-        .name = _("POISON BARB"),
+        .name = _("Poison Barb"),
         .itemId = ITEM_POISON_BARB,
         .price = 100,
         .holdEffect = HOLD_EFFECT_POISON_POWER,
@@ -2630,7 +2630,7 @@ const struct Item gItems[] =
 
     [ITEM_NEVER_MELT_ICE] =
     {
-        .name = _("NEVERMELTICE"),
+        .name = _("NeverMeltIce"),
         .itemId = ITEM_NEVER_MELT_ICE,
         .price = 100,
         .holdEffect = HOLD_EFFECT_ICE_POWER,
@@ -2643,7 +2643,7 @@ const struct Item gItems[] =
 
     [ITEM_SPELL_TAG] =
     {
-        .name = _("SPELL TAG"),
+        .name = _("Spell Tag"),
         .itemId = ITEM_SPELL_TAG,
         .price = 100,
         .holdEffect = HOLD_EFFECT_GHOST_POWER,
@@ -2656,7 +2656,7 @@ const struct Item gItems[] =
 
     [ITEM_TWISTED_SPOON] =
     {
-        .name = _("TWISTEDSPOON"),
+        .name = _("TwistedSpoon"),
         .itemId = ITEM_TWISTED_SPOON,
         .price = 100,
         .holdEffect = HOLD_EFFECT_PSYCHIC_POWER,
@@ -2669,7 +2669,7 @@ const struct Item gItems[] =
 
     [ITEM_CHARCOAL] =
     {
-        .name = _("CHARCOAL"),
+        .name = _("Charcoal"),
         .itemId = ITEM_CHARCOAL,
         .price = 9800,
         .holdEffect = HOLD_EFFECT_FIRE_POWER,
@@ -2682,7 +2682,7 @@ const struct Item gItems[] =
 
     [ITEM_DRAGON_FANG] =
     {
-        .name = _("DRAGON FANG"),
+        .name = _("Dragon Fang"),
         .itemId = ITEM_DRAGON_FANG,
         .price = 100,
         .holdEffect = HOLD_EFFECT_DRAGON_POWER,
@@ -2695,7 +2695,7 @@ const struct Item gItems[] =
 
     [ITEM_SILK_SCARF] =
     {
-        .name = _("SILK SCARF"),
+        .name = _("Silk Scarf"),
         .itemId = ITEM_SILK_SCARF,
         .price = 100,
         .holdEffect = HOLD_EFFECT_NORMAL_POWER,
@@ -2708,7 +2708,7 @@ const struct Item gItems[] =
 
     [ITEM_UP_GRADE] =
     {
-        .name = _("UP-GRADE"),
+        .name = _("Up-Grade"),
         .itemId = ITEM_UP_GRADE,
         .price = 2100,
         .holdEffect = HOLD_EFFECT_UP_GRADE,
@@ -2720,7 +2720,7 @@ const struct Item gItems[] =
 
     [ITEM_SHELL_BELL] =
     {
-        .name = _("SHELL BELL"),
+        .name = _("Shell Bell"),
         .itemId = ITEM_SHELL_BELL,
         .price = 200,
         .holdEffect = HOLD_EFFECT_SHELL_BELL,
@@ -2733,7 +2733,7 @@ const struct Item gItems[] =
 
     [ITEM_SEA_INCENSE] =
     {
-        .name = _("BLUE INCENSE"),
+        .name = _("Blue Incense"),
         .itemId = ITEM_SEA_INCENSE,
         .price = 9600,
         .holdEffect = HOLD_EFFECT_WATER_POWER,
@@ -2746,7 +2746,7 @@ const struct Item gItems[] =
 
     [ITEM_LAX_INCENSE] =
     {
-        .name = _("LAX INCENSE"),
+        .name = _("Lax Incense"),
         .itemId = ITEM_LAX_INCENSE,
         .price = 9600,
         .holdEffect = HOLD_EFFECT_EVASION_UP,
@@ -2759,7 +2759,7 @@ const struct Item gItems[] =
 
     [ITEM_LUCKY_PUNCH] =
     {
-        .name = _("LUCKY PUNCH"),
+        .name = _("Lucky Punch"),
         .itemId = ITEM_LUCKY_PUNCH,
         .price = 10,
         .holdEffect = HOLD_EFFECT_LUCKY_PUNCH,
@@ -2771,7 +2771,7 @@ const struct Item gItems[] =
 
     [ITEM_METAL_POWDER] =
     {
-        .name = _("METAL POWDER"),
+        .name = _("Metal Powder"),
         .itemId = ITEM_METAL_POWDER,
         .price = 10,
         .holdEffect = HOLD_EFFECT_METAL_POWDER,
@@ -2783,7 +2783,7 @@ const struct Item gItems[] =
 
     [ITEM_THICK_CLUB] =
     {
-        .name = _("THICK CLUB"),
+        .name = _("Thick Club"),
         .itemId = ITEM_THICK_CLUB,
         .price = 500,
         .holdEffect = HOLD_EFFECT_THICK_CLUB,
@@ -2795,7 +2795,7 @@ const struct Item gItems[] =
 
     [ITEM_STICK] =
     {
-        .name = _("STICK"),
+        .name = _("Stick"),
         .itemId = ITEM_STICK,
         .price = 200,
         .holdEffect = HOLD_EFFECT_STICK,
@@ -2807,7 +2807,7 @@ const struct Item gItems[] =
 
     [ITEM_INFINITE_REPEL] =
     {
-        .name = _("INFIN. REPEL"),
+        .name = _("Infin. Repel"),
         .itemId = ITEM_INFINITE_REPEL,
         .price = 0,
         .description = sInfiniteRepel,
@@ -2819,7 +2819,7 @@ const struct Item gItems[] =
 
     [ITEM_INFINITE_RARE_CANDIES] =
     {
-        .name = _("RARECANDY BOX"),
+        .name = _("Rarecandy Box"),
         .itemId = ITEM_INFINITE_RARE_CANDIES,
         .price = 0,
         .description = sInfiniteRareCandy,
@@ -3117,7 +3117,7 @@ const struct Item gItems[] =
 
     [ITEM_RED_SCARF] =
     {
-        .name = _("RED SCARF"),
+        .name = _("Red Scarf"),
         .itemId = ITEM_RED_SCARF,
         .price = 100,
         .description = sRedScarfDesc,
@@ -3128,7 +3128,7 @@ const struct Item gItems[] =
 
     [ITEM_BLUE_SCARF] =
     {
-        .name = _("BLUE SCARF"),
+        .name = _("Blue Scarf"),
         .itemId = ITEM_BLUE_SCARF,
         .price = 100,
         .description = sBlueScarfDesc,
@@ -3139,7 +3139,7 @@ const struct Item gItems[] =
 
     [ITEM_PINK_SCARF] =
     {
-        .name = _("PINK SCARF"),
+        .name = _("Pink Scarf"),
         .itemId = ITEM_PINK_SCARF,
         .price = 100,
         .description = sPinkScarfDesc,
@@ -3150,7 +3150,7 @@ const struct Item gItems[] =
 
     [ITEM_GREEN_SCARF] =
     {
-        .name = _("GREEN SCARF"),
+        .name = _("Green Scarf"),
         .itemId = ITEM_GREEN_SCARF,
         .price = 100,
         .description = sGreenScarfDesc,
@@ -3161,7 +3161,7 @@ const struct Item gItems[] =
 
     [ITEM_YELLOW_SCARF] =
     {
-        .name = _("YELLOW SCARF"),
+        .name = _("Yellow Scarf"),
         .itemId = ITEM_YELLOW_SCARF,
         .price = 100,
         .description = sYellowScarfDesc,
@@ -3174,7 +3174,7 @@ const struct Item gItems[] =
 
     [ITEM_MACH_BIKE] =
     {
-        .name = _("BIKE"),
+        .name = _("Bike"),
         .itemId = ITEM_MACH_BIKE,
         .price = 0,
         .description = sMachBikeDesc,
@@ -3188,7 +3188,7 @@ const struct Item gItems[] =
 
     [ITEM_COIN_CASE] =
     {
-        .name = _("COIN CASE"),
+        .name = _("Coin Case"),
         .itemId = ITEM_COIN_CASE,
         .price = 0,
         .description = sCoinCaseDesc,
@@ -3200,7 +3200,7 @@ const struct Item gItems[] =
 
     [ITEM_ITEMFINDER] =
     {
-        .name = _("ITEMFINDER"),
+        .name = _("Itemfinder"),
         .itemId = ITEM_ITEMFINDER,
         .price = 0,
         .description = sItemfinderDesc,
@@ -3213,7 +3213,7 @@ const struct Item gItems[] =
 
     [ITEM_OLD_ROD] =
     {
-        .name = _("OLD ROD"),
+        .name = _("Old Rod"),
         .itemId = ITEM_OLD_ROD,
         .price = 0,
         .description = sOldRodDesc,
@@ -3227,7 +3227,7 @@ const struct Item gItems[] =
 
     [ITEM_GOOD_ROD] =
     {
-        .name = _("GOOD ROD"),
+        .name = _("Good Rod"),
         .itemId = ITEM_GOOD_ROD,
         .price = 0,
         .description = sGoodRodDesc,
@@ -3241,7 +3241,7 @@ const struct Item gItems[] =
 
     [ITEM_SUPER_ROD] =
     {
-        .name = _("SUPER ROD"),
+        .name = _("Super Rod"),
         .itemId = ITEM_SUPER_ROD,
         .price = 0,
         .description = sSuperRodDesc,
@@ -3255,7 +3255,7 @@ const struct Item gItems[] =
 
     [ITEM_SS_TICKET] =
     {
-        .name = _("S.S. TICKET"),
+        .name = _("S.S. Ticket"),
         .itemId = ITEM_SS_TICKET,
         .price = 0,
         .description = sSSTicketDesc,
@@ -3267,7 +3267,7 @@ const struct Item gItems[] =
 
     [ITEM_CONTEST_PASS] =
     {
-        .name = _("CONTEST PASS"),
+        .name = _("Contest Pass"),
         .itemId = ITEM_CONTEST_PASS,
         .price = 0,
         .description = sContestPassDesc,
@@ -3290,7 +3290,7 @@ const struct Item gItems[] =
 
     [ITEM_WAILMER_PAIL] =
     {
-        .name = _("WAILMER PAIL"),
+        .name = _("Wailmer Pail"),
         .itemId = ITEM_WAILMER_PAIL,
         .price = 0,
         .description = sWailmerPailDesc,
@@ -3302,7 +3302,7 @@ const struct Item gItems[] =
 
     [ITEM_DEVON_GOODS] =
     {
-        .name = _("DEVON GOODS"),
+        .name = _("Devon Goods"),
         .itemId = ITEM_DEVON_GOODS,
         .price = 0,
         .description = sDevonGoodsDesc,
@@ -3314,7 +3314,7 @@ const struct Item gItems[] =
 
     [ITEM_SOOT_SACK] =
     {
-        .name = _("SOOT SACK"),
+        .name = _("Soot Sack"),
         .itemId = ITEM_SOOT_SACK,
         .price = 0,
         .description = sSootSackDesc,
@@ -3326,7 +3326,7 @@ const struct Item gItems[] =
 
     [ITEM_BASEMENT_KEY] =
     {
-        .name = _("BASEMENT KEY"),
+        .name = _("Basement Key"),
         .itemId = ITEM_BASEMENT_KEY,
         .price = 0,
         .description = sBasementKeyDesc,
@@ -3338,7 +3338,7 @@ const struct Item gItems[] =
 
     [ITEM_ACRO_BIKE] =
     {
-        .name = _("ACRO BIKE"),
+        .name = _("Acro Bike"),
         .itemId = ITEM_ACRO_BIKE,
         .price = 0,
         .description = sAcroBikeDesc,
@@ -3352,7 +3352,7 @@ const struct Item gItems[] =
 
     [ITEM_POKEBLOCK_CASE] =
     {
-        .name = _("{POKEBLOCK} CASE"),
+        .name = _("{POKEBLOCK} Case"),
         .itemId = ITEM_POKEBLOCK_CASE,
         .price = 0,
         .description = sPokeblockCaseDesc,
@@ -3365,7 +3365,7 @@ const struct Item gItems[] =
 
     [ITEM_LETTER] =
     {
-        .name = _("LETTER"),
+        .name = _("Letter"),
         .itemId = ITEM_LETTER,
         .price = 0,
         .description = sLetterDesc,
@@ -3377,7 +3377,7 @@ const struct Item gItems[] =
 
     [ITEM_EON_TICKET] =
     {
-        .name = _("EON TICKET"),
+        .name = _("Eon Ticket"),
         .itemId = ITEM_EON_TICKET,
         .price = 0,
         .description = sEonTicketDesc,
@@ -3390,7 +3390,7 @@ const struct Item gItems[] =
 
     [ITEM_RED_ORB] =
     {
-        .name = _("RED ORB"),
+        .name = _("Red Orb"),
         .itemId = ITEM_RED_ORB,
         .price = 0,
         .description = sRedOrbDesc,
@@ -3402,7 +3402,7 @@ const struct Item gItems[] =
 
     [ITEM_BLUE_ORB] =
     {
-        .name = _("BLUE ORB"),
+        .name = _("Blue Orb"),
         .itemId = ITEM_BLUE_ORB,
         .price = 0,
         .description = sBlueOrbDesc,
@@ -3414,7 +3414,7 @@ const struct Item gItems[] =
 
     [ITEM_SCANNER] =
     {
-        .name = _("SCANNER"),
+        .name = _("Scanner"),
         .itemId = ITEM_SCANNER,
         .price = 0,
         .description = sScannerDesc,
@@ -3426,7 +3426,7 @@ const struct Item gItems[] =
 
     [ITEM_GO_GOGGLES] =
     {
-        .name = _("GO-GOGGLES"),
+        .name = _("Go-Goggles"),
         .itemId = ITEM_GO_GOGGLES,
         .price = 0,
         .description = sGoGogglesDesc,
@@ -3438,7 +3438,7 @@ const struct Item gItems[] =
 
     [ITEM_METEORITE] =
     {
-        .name = _("METEORITE"),
+        .name = _("Meteorite"),
         .itemId = ITEM_METEORITE,
         .price = 0,
         .description = sMeteoriteDesc,
@@ -3450,7 +3450,7 @@ const struct Item gItems[] =
 
     [ITEM_ROOM_1_KEY] =
     {
-        .name = _("RM. 1 KEY"),
+        .name = _("Rm. 1 Key"),
         .itemId = ITEM_ROOM_1_KEY,
         .price = 0,
         .description = sRoom1KeyDesc,
@@ -3462,7 +3462,7 @@ const struct Item gItems[] =
 
     [ITEM_ROOM_2_KEY] =
     {
-        .name = _("RM. 2 KEY"),
+        .name = _("Rm. 2 Key"),
         .itemId = ITEM_ROOM_2_KEY,
         .price = 0,
         .description = sRoom2KeyDesc,
@@ -3474,7 +3474,7 @@ const struct Item gItems[] =
 
     [ITEM_ROOM_4_KEY] =
     {
-        .name = _("RM. 4 KEY"),
+        .name = _("Rm. 4 Key"),
         .itemId = ITEM_ROOM_4_KEY,
         .price = 0,
         .description = sRoom4KeyDesc,
@@ -3486,7 +3486,7 @@ const struct Item gItems[] =
 
     [ITEM_ROOM_6_KEY] =
     {
-        .name = _("RM. 6 KEY"),
+        .name = _("Rm. 6 Key"),
         .itemId = ITEM_ROOM_6_KEY,
         .price = 0,
         .description = sRoom6KeyDesc,
@@ -3498,7 +3498,7 @@ const struct Item gItems[] =
 
     [ITEM_STORAGE_KEY] =
     {
-        .name = _("STORAGE KEY"),
+        .name = _("Storage Key"),
         .itemId = ITEM_STORAGE_KEY,
         .price = 0,
         .description = sStorageKeyDesc,
@@ -3510,7 +3510,7 @@ const struct Item gItems[] =
 
     [ITEM_ROOT_FOSSIL] =
     {
-        .name = _("ROOT FOSSIL"),
+        .name = _("Root Fossil"),
         .itemId = ITEM_ROOT_FOSSIL,
         .price = 0,
         .description = sRootFossilDesc,
@@ -3522,7 +3522,7 @@ const struct Item gItems[] =
 
     [ITEM_CLAW_FOSSIL] =
     {
-        .name = _("CLAW FOSSIL"),
+        .name = _("Claw Fossil"),
         .itemId = ITEM_CLAW_FOSSIL,
         .price = 0,
         .description = sClawFossilDesc,
@@ -3534,7 +3534,7 @@ const struct Item gItems[] =
 
     [ITEM_DEVON_SCOPE] =
     {
-        .name = _("DEVON SCOPE"),
+        .name = _("Devon Scope"),
         .itemId = ITEM_DEVON_SCOPE,
         .price = 0,
         .description = sDevonScopeDesc,
@@ -4268,7 +4268,7 @@ const struct Item gItems[] =
 
     [ITEM_OAKS_PARCEL] =
     {
-        .name = _("OUTFIT BOX"),
+        .name = _("Outfit Box"),
         .itemId = ITEM_OAKS_PARCEL,
         .price = 0,
         .description = sOaksParcelDesc,
@@ -4280,7 +4280,7 @@ const struct Item gItems[] =
 
     [ITEM_POKE_FLUTE] =
     {
-        .name = _("POKé FLUTE"),
+        .name = _("Poké Flute"),
         .itemId = ITEM_POKE_FLUTE,
         .price = 0,
         .description = sPokeFluteDesc,
@@ -4292,7 +4292,7 @@ const struct Item gItems[] =
 
     [ITEM_SECRET_KEY] =
     {
-        .name = _("SECRET KEY"),
+        .name = _("Secret Key"),
         .itemId = ITEM_SECRET_KEY,
         .price = 0,
         .description = sSecretKeyDesc,
@@ -4304,7 +4304,7 @@ const struct Item gItems[] =
 
     [ITEM_BIKE_VOUCHER] =
     {
-        .name = _("BIKE VOUCHER"),
+        .name = _("Bike Voucher"),
         .itemId = ITEM_BIKE_VOUCHER,
         .price = 0,
         .description = sBikeVoucherDesc,
@@ -4316,7 +4316,7 @@ const struct Item gItems[] =
 
     [ITEM_GOLD_TEETH] =
     {
-        .name = _("GOLD TEETH"),
+        .name = _("Gold Teeth"),
         .itemId = ITEM_GOLD_TEETH,
         .price = 0,
         .description = sGoldTeethDesc,
@@ -4328,7 +4328,7 @@ const struct Item gItems[] =
 
     [ITEM_OLD_AMBER] =
     {
-        .name = _("OLD AMBER"),
+        .name = _("Old Amber"),
         .itemId = ITEM_OLD_AMBER,
         .price = 0,
         .description = sOldAmberDesc,
@@ -4340,7 +4340,7 @@ const struct Item gItems[] =
 
     [ITEM_CARD_KEY] =
     {
-        .name = _("CARD KEY"),
+        .name = _("Card Key"),
         .itemId = ITEM_CARD_KEY,
         .price = 0,
         .description = sCardKeyDesc,
@@ -4352,7 +4352,7 @@ const struct Item gItems[] =
 
     [ITEM_LIFT_KEY] =
     {
-        .name = _("LIFT KEY"),
+        .name = _("Lift Key"),
         .itemId = ITEM_LIFT_KEY,
         .price = 0,
         .description = sLiftKeyDesc,
@@ -4364,7 +4364,7 @@ const struct Item gItems[] =
 
     [ITEM_HELIX_FOSSIL] =
     {
-        .name = _("HELIX FOSSIL"),
+        .name = _("Helix Fossil"),
         .itemId = ITEM_HELIX_FOSSIL,
         .price = 0,
         .description = sHelixFossilDesc,
@@ -4376,7 +4376,7 @@ const struct Item gItems[] =
 
     [ITEM_DOME_FOSSIL] =
     {
-        .name = _("DOME FOSSIL"),
+        .name = _("Dome Fossil"),
         .itemId = ITEM_DOME_FOSSIL,
         .price = 0,
         .description = sDomeFossilDesc,
@@ -4388,7 +4388,7 @@ const struct Item gItems[] =
 
     [ITEM_SILPH_SCOPE] =
     {
-        .name = _("SILPH SCOPE"),
+        .name = _("Silph Scope"),
         .itemId = ITEM_SILPH_SCOPE,
         .price = 0,
         .description = sSilphScopeDesc,
@@ -4400,7 +4400,7 @@ const struct Item gItems[] =
 
     [ITEM_BICYCLE] =
     {
-        .name = _("BICYCLE"),
+        .name = _("Bicycle"),
         .itemId = ITEM_BICYCLE,
         .price = 0,
         .description = sBicycleDesc,
@@ -4413,7 +4413,7 @@ const struct Item gItems[] =
 
     [ITEM_TOWN_MAP] =
     {
-        .name = _("TOWN MAP"),
+        .name = _("Town Map"),
         .itemId = ITEM_TOWN_MAP,
         .price = 0,
         .description = sTownMapDesc,
@@ -4426,7 +4426,7 @@ const struct Item gItems[] =
 
     [ITEM_VS_SEEKER] =
     {
-        .name = _("VS SEEKER"),
+        .name = _("VS Seeker"),
         .itemId = ITEM_VS_SEEKER,
         .price = 0,
         .description = sVSSeekerDesc,
@@ -4439,7 +4439,7 @@ const struct Item gItems[] =
 
     [ITEM_FAME_CHECKER] =
     {
-        .name = _("FAME CHECKER"),
+        .name = _("Fame Checker"),
         .itemId = ITEM_FAME_CHECKER,
         .price = 0,
         .description = sFameCheckerDesc,
@@ -4452,7 +4452,7 @@ const struct Item gItems[] =
 
     [ITEM_TM_CASE] =
     {
-        .name = _("TM CASE"),
+        .name = _("TM Case"),
         .itemId = ITEM_TM_CASE,
         .price = 0,
         .description = sTMCaseDesc,
@@ -4465,7 +4465,7 @@ const struct Item gItems[] =
 
     [ITEM_BERRY_POUCH] =
     {
-        .name = _("BERRY POUCH"),
+        .name = _("Berry Pouch"),
         .itemId = ITEM_BERRY_POUCH,
         .price = 0,
         .description = sBerryPouchDesc,
@@ -4478,7 +4478,7 @@ const struct Item gItems[] =
 
     [ITEM_TEACHY_TV] =
     {
-        .name = _("TEACHY TV"),
+        .name = _("Teachy TV"),
         .itemId = ITEM_TEACHY_TV,
         .price = 0,
         .description = sTeachyTVDesc,
@@ -4491,7 +4491,7 @@ const struct Item gItems[] =
 
     [ITEM_TRI_PASS] =
     {
-        .name = _("TRI-PASS"),
+        .name = _("Tri-Pass"),
         .itemId = ITEM_TRI_PASS,
         .price = 0,
         .description = sTriPassDesc,
@@ -4504,7 +4504,7 @@ const struct Item gItems[] =
 
     [ITEM_RAINBOW_PASS] =
     {
-        .name = _("RAINBOW PASS"),
+        .name = _("Rainbow Pass"),
         .itemId = ITEM_RAINBOW_PASS,
         .price = 0,
         .description = sRainbowPassDesc,
@@ -4517,7 +4517,7 @@ const struct Item gItems[] =
 
     [ITEM_TEA] =
     {
-        .name = _("TEA"),
+        .name = _("Tea"),
         .itemId = ITEM_TEA,
         .price = 0,
         .description = sTeaDesc,
@@ -4530,7 +4530,7 @@ const struct Item gItems[] =
 
     [ITEM_MYSTIC_TICKET] =
     {
-        .name = _("MYSTICTICKET"),
+        .name = _("MysticTicket"),
         .itemId = ITEM_MYSTIC_TICKET,
         .price = 0,
         .description = sMysticTicketDesc,
@@ -4543,7 +4543,7 @@ const struct Item gItems[] =
 
     [ITEM_AURORA_TICKET] =
     {
-        .name = _("AURORATICKET"),
+        .name = _("AuroraTicket"),
         .itemId = ITEM_AURORA_TICKET,
         .price = 0,
         .description = sAuroraTicketDesc,
@@ -4556,7 +4556,7 @@ const struct Item gItems[] =
 
     [ITEM_POWDER_JAR] =
     {
-        .name = _("POWDER JAR"),
+        .name = _("Powder Jar"),
         .itemId = ITEM_POWDER_JAR,
         .price = 0,
         .description = sPowderJarDesc,
@@ -4569,7 +4569,7 @@ const struct Item gItems[] =
 
     [ITEM_RUBY] =
     {
-        .name = _("RUBY"),
+        .name = _("Ruby"),
         .itemId = ITEM_RUBY,
         .price = 0,
         .description = sRubyDesc,
@@ -4582,7 +4582,7 @@ const struct Item gItems[] =
 
     [ITEM_SAPPHIRE] =
     {
-        .name = _("SAPPHIRE"),
+        .name = _("Sapphire"),
         .itemId = ITEM_SAPPHIRE,
         .price = 0,
         .description = sSapphireDesc,
@@ -4597,7 +4597,7 @@ const struct Item gItems[] =
 
     [ITEM_MAGMA_EMBLEM] =
     {
-        .name = _("MAGMA EMBLEM"),
+        .name = _("Magma Emblem"),
         .itemId = ITEM_MAGMA_EMBLEM,
         .price = 0,
         .description = sMagmaEmblemDesc,
@@ -4610,7 +4610,7 @@ const struct Item gItems[] =
 
     [ITEM_OLD_SEA_MAP] =
     {
-        .name = _("OLD SEA MAP"),
+        .name = _("Old Sea Map"),
         .itemId = ITEM_OLD_SEA_MAP,
         .price = 0,
         .description = sOldSeaMapDesc,
@@ -4621,9 +4621,9 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
     },
     //mints
-    [ITEM_ADAMANT_MINT] = 
+    [ITEM_ADAMANT_MINT] =
     {
-        .name = _("ADAMANT MINT"),
+        .name = _("Adamant Mint"),
         .itemId = ITEM_ADAMANT_MINT,
         .price = 20000,
         .description = sAdamantMintDesc,
@@ -4632,9 +4632,9 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_ADAMANT,
     },
-    [ITEM_BOLD_MINT] = 
+    [ITEM_BOLD_MINT] =
     {
-        .name = _("BOLD MINT"),
+        .name = _("Bold Mint"),
         .itemId = ITEM_BOLD_MINT,
         .price = 20000,
         .description = sBoldMintDesc,
@@ -4643,9 +4643,9 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_BOLD,
     },
-    [ITEM_BRAVE_MINT] = 
+    [ITEM_BRAVE_MINT] =
     {
-        .name = _("BRAVE MINT"),
+        .name = _("Brave Mint"),
         .itemId = ITEM_BRAVE_MINT,
         .price = 20000,
         .description = sBraveMintDesc,
@@ -4654,9 +4654,9 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_BRAVE,
     },
-    [ITEM_CALM_MINT] = 
+    [ITEM_CALM_MINT] =
     {
-        .name = _("CALM MINT"),
+        .name = _("Calm Mint"),
         .itemId = ITEM_CALM_MINT,
         .price = 20000,
         .description = sCalmMintDesc,
@@ -4665,9 +4665,9 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_CALM,
     },
-    [ITEM_CAREFUL_MINT] = 
+    [ITEM_CAREFUL_MINT] =
     {
-        .name = _("CAREFUL MINT"),
+        .name = _("Careful Mint"),
         .itemId = ITEM_CAREFUL_MINT,
         .price = 20000,
         .description = sCarefulMintDesc,
@@ -4676,9 +4676,9 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_CAREFUL,
     },
-    [ITEM_GENTLE_MINT] = 
+    [ITEM_GENTLE_MINT] =
     {
-        .name = _("GENTLE MINT"),
+        .name = _("Gentle Mint"),
         .itemId = ITEM_GENTLE_MINT,
         .price = 20000,
         .description = sGentleMintDesc,
@@ -4687,9 +4687,9 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_GENTLE,
     },
-    [ITEM_HASTY_MINT] = 
+    [ITEM_HASTY_MINT] =
     {
-        .name = _("HASTY MINT"),
+        .name = _("Hasty Mint"),
         .itemId = ITEM_HASTY_MINT,
         .price = 20000,
         .description = sHastyMintDesc,
@@ -4698,9 +4698,9 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_HASTY,
     },
-    [ITEM_IMPISH_MINT] = 
+    [ITEM_IMPISH_MINT] =
     {
-        .name = _("IMPISH MINT"),
+        .name = _("Impish Mint"),
         .itemId = ITEM_IMPISH_MINT,
         .price = 20000,
         .description = sImpishMintDesc,
@@ -4709,9 +4709,9 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_IMPISH,
     },
-    [ITEM_JOLLY_MINT] = 
+    [ITEM_JOLLY_MINT] =
     {
-        .name = _("JOLLY MINT"),
+        .name = _("Jolly Mint"),
         .itemId = ITEM_JOLLY_MINT,
         .price = 20000,
         .description = sJollyMintDesc,
@@ -4720,9 +4720,9 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_JOLLY,
     },
-    [ITEM_LAX_MINT] = 
+    [ITEM_LAX_MINT] =
     {
-        .name = _("LAX MINT"),
+        .name = _("Lax Mint"),
         .itemId = ITEM_LAX_MINT,
         .price = 20000,
         .description = sLaxMintDesc,
@@ -4731,9 +4731,9 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_LAX,
     },
-    [ITEM_LONELY_MINT] = 
+    [ITEM_LONELY_MINT] =
     {
-        .name = _("LONELY MINT"),
+        .name = _("Lonely Mint"),
         .itemId = ITEM_LONELY_MINT,
         .price = 20000,
         .description = sLonelyMintDesc,
@@ -4742,9 +4742,9 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_LONELY,
     },
-    [ITEM_MILD_MINT] = 
+    [ITEM_MILD_MINT] =
     {
-        .name = _("MILD MINT"),
+        .name = _("Mild Mint"),
         .itemId = ITEM_MILD_MINT,
         .price = 20000,
         .description = sMildMintDesc,
@@ -4753,9 +4753,9 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_MILD,
     },
-    [ITEM_MODEST_MINT] = 
+    [ITEM_MODEST_MINT] =
     {
-        .name = _("MODEST MINT"),
+        .name = _("Modest Mint"),
         .itemId = ITEM_MODEST_MINT,
         .price = 20000,
         .description = sModestMintDesc,
@@ -4764,9 +4764,9 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_MODEST,
     },
-    [ITEM_NAIVE_MINT] = 
+    [ITEM_NAIVE_MINT] =
     {
-        .name = _("NAIVE MINT"),
+        .name = _("Naive Mint"),
         .itemId = ITEM_NAIVE_MINT,
         .price = 20000,
         .description = sNaiveMintDesc,
@@ -4775,9 +4775,9 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_NAIVE,
     },
-    [ITEM_NAUGHTY_MINT] = 
+    [ITEM_NAUGHTY_MINT] =
     {
-        .name = _("NAUGHTY MINT"),
+        .name = _("Naughty Mint"),
         .itemId = ITEM_NAUGHTY_MINT,
         .price = 20000,
         .description = sNaughtyMintDesc,
@@ -4786,9 +4786,9 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_NAUGHTY,
     },
-    [ITEM_QUIET_MINT] = 
+    [ITEM_QUIET_MINT] =
     {
-        .name = _("QUIET MINT"),
+        .name = _("Quiet Mint"),
         .itemId = ITEM_QUIET_MINT,
         .price = 20000,
         .description = sQuietMintDesc,
@@ -4797,9 +4797,9 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_QUIET,
     },
-    [ITEM_RASH_MINT] = 
+    [ITEM_RASH_MINT] =
     {
-        .name = _("RASH MINT"),
+        .name = _("Rash Mint"),
         .itemId = ITEM_RASH_MINT,
         .price = 20000,
         .description = sRashMintDesc,
@@ -4808,9 +4808,9 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_RASH,
     },
-    [ITEM_RELAXED_MINT] = 
+    [ITEM_RELAXED_MINT] =
     {
-        .name = _("RELAXED MINT"),
+        .name = _("Relaxed Mint"),
         .itemId = ITEM_RELAXED_MINT,
         .price = 20000,
         .description = sRelaxedMintDesc,
@@ -4819,9 +4819,9 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_RELAXED,
     },
-    [ITEM_SASSY_MINT] = 
+    [ITEM_SASSY_MINT] =
     {
-        .name = _("SASSY MINT"),
+        .name = _("Sassy Mint"),
         .itemId = ITEM_SASSY_MINT,
         .price = 20000,
         .description = sSassyMintDesc,
@@ -4830,9 +4830,9 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_SASSY,
     },
-    [ITEM_SERIOUS_MINT] = 
+    [ITEM_SERIOUS_MINT] =
     {
-        .name = _("SERIOUS MINT"),
+        .name = _("Serious Mint"),
         .itemId = ITEM_SERIOUS_MINT,
         .price = 20000,
         .description = sSeriousMintDesc,
@@ -4841,9 +4841,9 @@ const struct Item gItems[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_SERIOUS,
     },
-    [ITEM_TIMID_MINT] = 
+    [ITEM_TIMID_MINT] =
     {
-        .name = _("TIMID MINT"),
+        .name = _("Timid Mint"),
         .itemId = ITEM_TIMID_MINT,
         .price = 20000,
         .description = sTimidMintDesc,
@@ -4871,7 +4871,7 @@ const struct Item gItems2[] =
 
     [ITEM_MASTER_BALL] =
     {
-        .name = _("MASTER BALL"),
+        .name = _("Master Ball"),
         .itemId = ITEM_MASTER_BALL,
         .price = 0,
         .description = sMasterBallDesc,
@@ -4885,7 +4885,7 @@ const struct Item gItems2[] =
 
     [ITEM_ULTRA_BALL] =
     {
-        .name = _("ULTRA BALL"),
+        .name = _("Ultra Ball"),
         .itemId = ITEM_ULTRA_BALL,
         .price = 1200,
         .description = sUltraBallDesc,
@@ -4899,7 +4899,7 @@ const struct Item gItems2[] =
 
     [ITEM_GREAT_BALL] =
     {
-        .name = _("GREAT BALL"),
+        .name = _("Great Ball"),
         .itemId = ITEM_GREAT_BALL,
         .price = 600,
         .description = sGreatBallDesc,
@@ -4913,7 +4913,7 @@ const struct Item gItems2[] =
 
     [ITEM_POKE_BALL] =
     {
-        .name = _("POKé BALL"),
+        .name = _("Poké Ball"),
         .itemId = ITEM_POKE_BALL,
         .price = 200,
         .description = sPokeBallDesc,
@@ -4927,7 +4927,7 @@ const struct Item gItems2[] =
 
     [ITEM_SAFARI_BALL] =
     {
-        .name = _("SAFARI BALL"),
+        .name = _("Safari Ball"),
         .itemId = ITEM_SAFARI_BALL,
         .price = 200,
         .description = sSafariBallDesc,
@@ -4941,7 +4941,7 @@ const struct Item gItems2[] =
 
     [ITEM_NET_BALL] =
     {
-        .name = _("NET BALL"),
+        .name = _("Net Ball"),
         .itemId = ITEM_NET_BALL,
         .price = 1000,
         .description = sNetBallDesc,
@@ -4955,7 +4955,7 @@ const struct Item gItems2[] =
 
     [ITEM_DIVE_BALL] =
     {
-        .name = _("DIVE BALL"),
+        .name = _("Dive Ball"),
         .itemId = ITEM_DIVE_BALL,
         .price = 1000,
         .description = sDiveBallDesc,
@@ -4969,7 +4969,7 @@ const struct Item gItems2[] =
 
     [ITEM_NEST_BALL] =
     {
-        .name = _("NEST BALL"),
+        .name = _("Nest Ball"),
         .itemId = ITEM_NEST_BALL,
         .price = 1000,
         .description = sNestBallDesc,
@@ -4983,7 +4983,7 @@ const struct Item gItems2[] =
 
     [ITEM_REPEAT_BALL] =
     {
-        .name = _("REPEAT BALL"),
+        .name = _("Repeat Ball"),
         .itemId = ITEM_REPEAT_BALL,
         .price = 1000,
         .description = sRepeatBallDesc,
@@ -4997,7 +4997,7 @@ const struct Item gItems2[] =
 
     [ITEM_TIMER_BALL] =
     {
-        .name = _("TIMER BALL"),
+        .name = _("Timer Ball"),
         .itemId = ITEM_TIMER_BALL,
         .price = 1000,
         .description = sTimerBallDesc,
@@ -5011,7 +5011,7 @@ const struct Item gItems2[] =
 
     [ITEM_LUXURY_BALL] =
     {
-        .name = _("LUXURY BALL"),
+        .name = _("Luxury Ball"),
         .itemId = ITEM_LUXURY_BALL,
         .price = 1000,
         .description = sLuxuryBallDesc,
@@ -5025,7 +5025,7 @@ const struct Item gItems2[] =
 
     [ITEM_PREMIER_BALL] =
     {
-        .name = _("PREMIER BALL"),
+        .name = _("Premier Ball"),
         .itemId = ITEM_PREMIER_BALL,
         .price = 200,
         .description = sPremierBallDesc,
@@ -5041,7 +5041,7 @@ const struct Item gItems2[] =
 
     [ITEM_POTION] =
     {
-        .name = _("POTION"),
+        .name = _("Potion"),
         .itemId = ITEM_POTION,
         .price = 300,
         .holdEffectParam = 20,
@@ -5055,7 +5055,7 @@ const struct Item gItems2[] =
 
     [ITEM_ANTIDOTE] =
     {
-        .name = _("ANTIDOTE"),
+        .name = _("Antidote"),
         .itemId = ITEM_ANTIDOTE,
         .price = 100,
         .description = sAntidoteDesc,
@@ -5068,7 +5068,7 @@ const struct Item gItems2[] =
 
     [ITEM_BURN_HEAL] =
     {
-        .name = _("BURN HEAL"),
+        .name = _("Burn Heal"),
         .itemId = ITEM_BURN_HEAL,
         .price = 250,
         .description = sBurnHealDesc,
@@ -5081,7 +5081,7 @@ const struct Item gItems2[] =
 
     [ITEM_ICE_HEAL] =
     {
-        .name = _("ICE HEAL"),
+        .name = _("Ice Heal"),
         .itemId = ITEM_ICE_HEAL,
         .price = 250,
         .description = sIceHealDesc,
@@ -5094,7 +5094,7 @@ const struct Item gItems2[] =
 
     [ITEM_AWAKENING] =
     {
-        .name = _("AWAKENING"),
+        .name = _("Awakening"),
         .itemId = ITEM_AWAKENING,
         .price = 250,
         .description = sAwakeningDesc,
@@ -5107,7 +5107,7 @@ const struct Item gItems2[] =
 
     [ITEM_PARALYZE_HEAL] =
     {
-        .name = _("PARLYZ HEAL"),
+        .name = _("Parlyz Heal"),
         .itemId = ITEM_PARALYZE_HEAL,
         .price = 200,
         .description = sParalyzeHealDesc,
@@ -5120,7 +5120,7 @@ const struct Item gItems2[] =
 
     [ITEM_FULL_RESTORE] =
     {
-        .name = _("FULL RESTORE"),
+        .name = _("Full Restore"),
         .itemId = ITEM_FULL_RESTORE,
         .price = 3000,
         .holdEffectParam = 255,
@@ -5134,7 +5134,7 @@ const struct Item gItems2[] =
 
     [ITEM_MAX_POTION] =
     {
-        .name = _("MAX POTION"),
+        .name = _("Max Potion"),
         .itemId = ITEM_MAX_POTION,
         .price = 2500,
         .holdEffectParam = 255,
@@ -5148,7 +5148,7 @@ const struct Item gItems2[] =
 
     [ITEM_HYPER_POTION] =
     {
-        .name = _("HYPER POTION"),
+        .name = _("Hyper Potion"),
         .itemId = ITEM_HYPER_POTION,
         .price = 1200,
         .holdEffectParam = 200,
@@ -5162,7 +5162,7 @@ const struct Item gItems2[] =
 
     [ITEM_SUPER_POTION] =
     {
-        .name = _("SUPER POTION"),
+        .name = _("Super Potion"),
         .itemId = ITEM_SUPER_POTION,
         .price = 700,
         .holdEffectParam = 50,
@@ -5176,7 +5176,7 @@ const struct Item gItems2[] =
 
     [ITEM_FULL_HEAL] =
     {
-        .name = _("FULL HEAL"),
+        .name = _("Full Heal"),
         .itemId = ITEM_FULL_HEAL,
         .price = 600,
         .description = sFullHealDesc,
@@ -5189,7 +5189,7 @@ const struct Item gItems2[] =
 
     [ITEM_REVIVE] =
     {
-        .name = _("REVIVE"),
+        .name = _("Revive"),
         .itemId = ITEM_REVIVE,
         .price = 1500,
         .description = sReviveDesc,
@@ -5202,7 +5202,7 @@ const struct Item gItems2[] =
 
     [ITEM_MAX_REVIVE] =
     {
-        .name = _("MAX REVIVE"),
+        .name = _("Max Revive"),
         .itemId = ITEM_MAX_REVIVE,
         .price = 4000,
         .description = sMaxReviveDesc,
@@ -5215,7 +5215,7 @@ const struct Item gItems2[] =
 
     [ITEM_FRESH_WATER] =
     {
-        .name = _("FRESH WATER"),
+        .name = _("Fresh Water"),
         .itemId = ITEM_FRESH_WATER,
         .price = 200,
         .holdEffectParam = 50,
@@ -5229,7 +5229,7 @@ const struct Item gItems2[] =
 
     [ITEM_SODA_POP] =
     {
-        .name = _("SODA POP"),
+        .name = _("Soda Pop"),
         .itemId = ITEM_SODA_POP,
         .price = 300,
         .holdEffectParam = 60,
@@ -5243,7 +5243,7 @@ const struct Item gItems2[] =
 
     [ITEM_LEMONADE] =
     {
-        .name = _("LEMONADE"),
+        .name = _("Lemonade"),
         .itemId = ITEM_LEMONADE,
         .price = 350,
         .holdEffectParam = 80,
@@ -5257,7 +5257,7 @@ const struct Item gItems2[] =
 
     [ITEM_MOOMOO_MILK] =
     {
-        .name = _("MOOMOO MILK"),
+        .name = _("Moomoo Milk"),
         .itemId = ITEM_MOOMOO_MILK,
         .price = 500,
         .holdEffectParam = 100,
@@ -5271,7 +5271,7 @@ const struct Item gItems2[] =
 
     [ITEM_ENERGY_POWDER] =
     {
-        .name = _("ENERGYPOWDER"),
+        .name = _("EnergyPowder"),
         .itemId = ITEM_ENERGY_POWDER,
         .price = 500,
         .description = sEnergyPowderDesc,
@@ -5284,7 +5284,7 @@ const struct Item gItems2[] =
 
     [ITEM_ENERGY_ROOT] =
     {
-        .name = _("ENERGY ROOT"),
+        .name = _("Energy Root"),
         .itemId = ITEM_ENERGY_ROOT,
         .price = 800,
         .description = sEnergyRootDesc,
@@ -5297,7 +5297,7 @@ const struct Item gItems2[] =
 
     [ITEM_HEAL_POWDER] =
     {
-        .name = _("HEAL POWDER"),
+        .name = _("Heal Powder"),
         .itemId = ITEM_HEAL_POWDER,
         .price = 450,
         .description = sHealPowderDesc,
@@ -5310,7 +5310,7 @@ const struct Item gItems2[] =
 
     [ITEM_REVIVAL_HERB] =
     {
-        .name = _("REVIVAL HERB"),
+        .name = _("Revival Herb"),
         .itemId = ITEM_REVIVAL_HERB,
         .price = 2800,
         .description = sRevivalHerbDesc,
@@ -5323,7 +5323,7 @@ const struct Item gItems2[] =
 
     [ITEM_ETHER] =
     {
-        .name = _("ETHER"),
+        .name = _("Ether"),
         .itemId = ITEM_ETHER,
         .price = 2000,
         .holdEffectParam = 10,
@@ -5337,7 +5337,7 @@ const struct Item gItems2[] =
 
     [ITEM_MAX_ETHER] =
     {
-        .name = _("MAX ETHER"),
+        .name = _("Max Ether"),
         .itemId = ITEM_MAX_ETHER,
         .price = 4000,
         .holdEffectParam = 255,
@@ -5351,7 +5351,7 @@ const struct Item gItems2[] =
 
     [ITEM_ELIXIR] =
     {
-        .name = _("ELIXIR"),
+        .name = _("Elixir"),
         .itemId = ITEM_ELIXIR,
         .price = 6000,
         .holdEffectParam = 10,
@@ -5365,7 +5365,7 @@ const struct Item gItems2[] =
 
     [ITEM_MAX_ELIXIR] =
     {
-        .name = _("MAX ELIXIR"),
+        .name = _("Max Elixir"),
         .itemId = ITEM_MAX_ELIXIR,
         .price = 12000,
         .holdEffectParam = 255,
@@ -5379,7 +5379,7 @@ const struct Item gItems2[] =
 
     [ITEM_LAVA_COOKIE] =
     {
-        .name = _("LAVA COOKIE"),
+        .name = _("Lava Cookie"),
         .itemId = ITEM_LAVA_COOKIE,
         .price = 200,
         .description = sLavaCookieDesc,
@@ -5392,7 +5392,7 @@ const struct Item gItems2[] =
 
     [ITEM_BLUE_FLUTE] =
     {
-        .name = _("BLUE FLUTE"),
+        .name = _("Blue Flute"),
         .itemId = ITEM_BLUE_FLUTE,
         .price = 100,
         .description = sBlueFluteDesc,
@@ -5405,7 +5405,7 @@ const struct Item gItems2[] =
 
     [ITEM_YELLOW_FLUTE] =
     {
-        .name = _("YELLOW FLUTE"),
+        .name = _("Yellow Flute"),
         .itemId = ITEM_YELLOW_FLUTE,
         .price = 200,
         .description = sYellowFluteDesc,
@@ -5418,7 +5418,7 @@ const struct Item gItems2[] =
 
     [ITEM_RED_FLUTE] =
     {
-        .name = _("RED FLUTE"),
+        .name = _("Red Flute"),
         .itemId = ITEM_RED_FLUTE,
         .price = 300,
         .description = sRedFluteDesc,
@@ -5431,7 +5431,7 @@ const struct Item gItems2[] =
 
     [ITEM_BLACK_FLUTE] =
     {
-        .name = _("BLACK FLUTE"),
+        .name = _("Black Flute"),
         .itemId = ITEM_BLACK_FLUTE,
         .price = 400,
         .holdEffectParam = 50,
@@ -5443,7 +5443,7 @@ const struct Item gItems2[] =
 
     [ITEM_WHITE_FLUTE] =
     {
-        .name = _("WHITE FLUTE"),
+        .name = _("White Flute"),
         .itemId = ITEM_WHITE_FLUTE,
         .price = 500,
         .holdEffectParam = 150,
@@ -5455,7 +5455,7 @@ const struct Item gItems2[] =
 
     [ITEM_BERRY_JUICE] =
     {
-        .name = _("BERRY JUICE"),
+        .name = _("Berry Juice"),
         .itemId = ITEM_BERRY_JUICE,
         .price = 100,
         .holdEffect = HOLD_EFFECT_RESTORE_HP,
@@ -5470,7 +5470,7 @@ const struct Item gItems2[] =
 
     [ITEM_SACRED_ASH] =
     {
-        .name = _("SACRED ASH"),
+        .name = _("Sacred Ash"),
         .itemId = ITEM_SACRED_ASH,
         .price = 200,
         .description = sSacredAshDesc,
@@ -5483,7 +5483,7 @@ const struct Item gItems2[] =
 
     [ITEM_SHOAL_SALT] =
     {
-        .name = _("SHOAL SALT"),
+        .name = _("Shoal Salt"),
         .itemId = ITEM_SHOAL_SALT,
         .price = 20,
         .description = sShoalSaltDesc,
@@ -5494,7 +5494,7 @@ const struct Item gItems2[] =
 
     [ITEM_SHOAL_SHELL] =
     {
-        .name = _("SHOAL SHELL"),
+        .name = _("Shoal Shell"),
         .itemId = ITEM_SHOAL_SHELL,
         .price = 20,
         .description = sShoalShellDesc,
@@ -5505,7 +5505,7 @@ const struct Item gItems2[] =
 
     [ITEM_RED_SHARD] =
     {
-        .name = _("RED SHARD"),
+        .name = _("Red Shard"),
         .itemId = ITEM_RED_SHARD,
         .price = 200,
         .description = sRedShardDesc,
@@ -5516,7 +5516,7 @@ const struct Item gItems2[] =
 
     [ITEM_BLUE_SHARD] =
     {
-        .name = _("BLUE SHARD"),
+        .name = _("Blue Shard"),
         .itemId = ITEM_BLUE_SHARD,
         .price = 200,
         .description = sBlueShardDesc,
@@ -5527,7 +5527,7 @@ const struct Item gItems2[] =
 
     [ITEM_YELLOW_SHARD] =
     {
-        .name = _("YELLOW SHARD"),
+        .name = _("Yellow Shard"),
         .itemId = ITEM_YELLOW_SHARD,
         .price = 200,
         .description = sYellowShardDesc,
@@ -5538,7 +5538,7 @@ const struct Item gItems2[] =
 
     [ITEM_GREEN_SHARD] =
     {
-        .name = _("GREEN SHARD"),
+        .name = _("Green Shard"),
         .itemId = ITEM_GREEN_SHARD,
         .price = 200,
         .description = sGreenShardDesc,
@@ -5549,7 +5549,7 @@ const struct Item gItems2[] =
 
     [ITEM_FERTILIZER] =
     {
-        .name = _("GROWTH MULCH"),
+        .name = _("Growth Mulch"),
         .itemId = ITEM_FERTILIZER,
         .price = 2500,
         .description = sFertilizerDesc,
@@ -5560,7 +5560,7 @@ const struct Item gItems2[] =
 
     [ITEM_HEALING_HEART] =
     {
-        .name = _("HEALING HEART"),
+        .name = _("Healing Heart"),
         .itemId = ITEM_HEALING_HEART,
         .price = 0,
         .description = sHealingHeart,
@@ -5673,7 +5673,7 @@ const struct Item gItems2[] =
 
     [ITEM_HP_UP] =
     {
-        .name = _("HP UP"),
+        .name = _("HP Up"),
         .itemId = ITEM_HP_UP,
         .price = 1350,
         .description = sHPUpDesc,
@@ -5684,7 +5684,7 @@ const struct Item gItems2[] =
 
     [ITEM_PROTEIN] =
     {
-        .name = _("PROTEIN"),
+        .name = _("Protein"),
         .itemId = ITEM_PROTEIN,
         .price = 1350,
         .description = sProteinDesc,
@@ -5695,7 +5695,7 @@ const struct Item gItems2[] =
 
     [ITEM_IRON] =
     {
-        .name = _("IRON"),
+        .name = _("Iron"),
         .itemId = ITEM_IRON,
         .price = 1350,
         .description = sIronDesc,
@@ -5706,7 +5706,7 @@ const struct Item gItems2[] =
 
     [ITEM_CARBOS] =
     {
-        .name = _("CARBOS"),
+        .name = _("Carbos"),
         .itemId = ITEM_CARBOS,
         .price = 1350,
         .description = sCarbosDesc,
@@ -5717,7 +5717,7 @@ const struct Item gItems2[] =
 
     [ITEM_CALCIUM] =
     {
-        .name = _("CALCIUM"),
+        .name = _("Calcium"),
         .itemId = ITEM_CALCIUM,
         .price = 1350,
         .description = sCalciumDesc,
@@ -5728,7 +5728,7 @@ const struct Item gItems2[] =
 
     [ITEM_RARE_CANDY] =
     {
-        .name = _("RARE CANDY"),
+        .name = _("Rare Candy"),
         .itemId = ITEM_RARE_CANDY,
         .price = 4800,
         .description = sRareCandyDesc,
@@ -5739,7 +5739,7 @@ const struct Item gItems2[] =
 
     [ITEM_PP_UP] =
     {
-        .name = _("PP UP"),
+        .name = _("PP Up"),
         .itemId = ITEM_PP_UP,
         .price = 20000,
         .description = sPPUpDesc,
@@ -5750,7 +5750,7 @@ const struct Item gItems2[] =
 
     [ITEM_ZINC] =
     {
-        .name = _("ZINC"),
+        .name = _("Zinc"),
         .itemId = ITEM_ZINC,
         .price = 1350,
         .description = sZincDesc,
@@ -5761,7 +5761,7 @@ const struct Item gItems2[] =
 
     [ITEM_PP_MAX] =
     {
-        .name = _("PP MAX"),
+        .name = _("PP Max"),
         .itemId = ITEM_PP_MAX,
         .price = 20000,
         .description = sPPMaxDesc,
@@ -5785,7 +5785,7 @@ const struct Item gItems2[] =
 
     [ITEM_GUARD_SPEC] =
     {
-        .name = _("GUARD SPEC."),
+        .name = _("Guard Spec."),
         .itemId = ITEM_GUARD_SPEC,
         .price = 700,
         .description = sGuardSpecDesc,
@@ -5798,7 +5798,7 @@ const struct Item gItems2[] =
 
     [ITEM_DIRE_HIT] =
     {
-        .name = _("DIRE HIT"),
+        .name = _("Dire Hit"),
         .itemId = ITEM_DIRE_HIT,
         .price = 650,
         .description = sDireHitDesc,
@@ -5811,7 +5811,7 @@ const struct Item gItems2[] =
 
     [ITEM_X_ATTACK] =
     {
-        .name = _("X ATTACK"),
+        .name = _("X Attack"),
         .itemId = ITEM_X_ATTACK,
         .price = 500,
         .description = sXAttackDesc,
@@ -5824,7 +5824,7 @@ const struct Item gItems2[] =
 
     [ITEM_X_DEFEND] =
     {
-        .name = _("X DEFEND"),
+        .name = _("X Defend"),
         .itemId = ITEM_X_DEFEND,
         .price = 550,
         .description = sXDefendDesc,
@@ -5837,7 +5837,7 @@ const struct Item gItems2[] =
 
     [ITEM_X_SPEED] =
     {
-        .name = _("X SPEED"),
+        .name = _("X Speed"),
         .itemId = ITEM_X_SPEED,
         .price = 350,
         .description = sXSpeedDesc,
@@ -5850,7 +5850,7 @@ const struct Item gItems2[] =
 
     [ITEM_X_ACCURACY] =
     {
-        .name = _("X ACCURACY"),
+        .name = _("X Accuracy"),
         .itemId = ITEM_X_ACCURACY,
         .price = 950,
         .description = sXAccuracyDesc,
@@ -5863,7 +5863,7 @@ const struct Item gItems2[] =
 
     [ITEM_X_SPECIAL] =
     {
-        .name = _("X SPECIAL"),
+        .name = _("X Special"),
         .itemId = ITEM_X_SPECIAL,
         .price = 350,
         .description = sXSpecialDesc,
@@ -5876,7 +5876,7 @@ const struct Item gItems2[] =
 
     [ITEM_POKE_DOLL] =
     {
-        .name = _("POKé DOLL"),
+        .name = _("Poké Doll"),
         .itemId = ITEM_POKE_DOLL,
         .price = 1000,
         .description = sPokeDollDesc,
@@ -5889,7 +5889,7 @@ const struct Item gItems2[] =
 
     [ITEM_FLUFFY_TAIL] =
     {
-        .name = _("FLUFFY TAIL"),
+        .name = _("Fluffy Tail"),
         .itemId = ITEM_FLUFFY_TAIL,
         .price = 1000,
         .description = sFluffyTailDesc,
@@ -5902,7 +5902,7 @@ const struct Item gItems2[] =
 
     [ITEM_BIG_NUGGET] =
     {
-        .name = _("BIG NUGGET"),
+        .name = _("Big Nugget"),
         .itemId = ITEM_BIG_NUGGET,
         .price = 60000,
         .description = sBigNuggetDesc,
@@ -5915,7 +5915,7 @@ const struct Item gItems2[] =
 
     [ITEM_SUPER_REPEL] =
     {
-        .name = _("SUPER REPEL"),
+        .name = _("Super Repel"),
         .itemId = ITEM_SUPER_REPEL,
         .price = 500,
         .holdEffectParam = 200,
@@ -5927,7 +5927,7 @@ const struct Item gItems2[] =
 
     [ITEM_MAX_REPEL] =
     {
-        .name = _("MAX REPEL"),
+        .name = _("Max Repel"),
         .itemId = ITEM_MAX_REPEL,
         .price = 700,
         .holdEffectParam = 250,
@@ -5939,7 +5939,7 @@ const struct Item gItems2[] =
 
     [ITEM_ESCAPE_ROPE] =
     {
-        .name = _("ESCAPE ROPE"),
+        .name = _("Escape Rope"),
         .itemId = ITEM_ESCAPE_ROPE,
         .price = 550,
         .description = sEscapeRopeDesc,
@@ -5950,7 +5950,7 @@ const struct Item gItems2[] =
 
     [ITEM_REPEL] =
     {
-        .name = _("REPEL"),
+        .name = _("Repel"),
         .itemId = ITEM_REPEL,
         .price = 350,
         .holdEffectParam = 100,
@@ -6030,7 +6030,7 @@ const struct Item gItems2[] =
 
     [ITEM_SUN_STONE] =
     {
-        .name = _("SUN STONE"),
+        .name = _("Sun Stone"),
         .itemId = ITEM_SUN_STONE,
         .price = 2100,
         .description = sSunStoneDesc,
@@ -6041,7 +6041,7 @@ const struct Item gItems2[] =
 
     [ITEM_MOON_STONE] =
     {
-        .name = _("MOON STONE"),
+        .name = _("Moon Stone"),
         .itemId = ITEM_MOON_STONE,
         .price = 2100,
         .description = sMoonStoneDesc,
@@ -6052,7 +6052,7 @@ const struct Item gItems2[] =
 
     [ITEM_FIRE_STONE] =
     {
-        .name = _("FIRE STONE"),
+        .name = _("Fire Stone"),
         .itemId = ITEM_FIRE_STONE,
         .price = 2100,
         .description = sFireStoneDesc,
@@ -6063,7 +6063,7 @@ const struct Item gItems2[] =
 
     [ITEM_THUNDER_STONE] =
     {
-        .name = _("THUNDERSTONE"),
+        .name = _("ThunderStone"),
         .itemId = ITEM_THUNDER_STONE,
         .price = 2100,
         .description = sThunderStoneDesc,
@@ -6074,7 +6074,7 @@ const struct Item gItems2[] =
 
     [ITEM_WATER_STONE] =
     {
-        .name = _("WATER STONE"),
+        .name = _("Water Stone"),
         .itemId = ITEM_WATER_STONE,
         .price = 2100,
         .description = sWaterStoneDesc,
@@ -6085,7 +6085,7 @@ const struct Item gItems2[] =
 
     [ITEM_LEAF_STONE] =
     {
-        .name = _("LEAF STONE"),
+        .name = _("Leaf Stone"),
         .itemId = ITEM_LEAF_STONE,
         .price = 2100,
         .description = sLeafStoneDesc,
@@ -6142,7 +6142,7 @@ const struct Item gItems2[] =
 
     [ITEM_TINY_MUSHROOM] =
     {
-        .name = _("TINYMUSHROOM"),
+        .name = _("TinyMushroom"),
         .itemId = ITEM_TINY_MUSHROOM,
         .price = 500,
         .description = sTinyMushroomDesc,
@@ -6153,7 +6153,7 @@ const struct Item gItems2[] =
 
     [ITEM_BIG_MUSHROOM] =
     {
-        .name = _("BIG MUSHROOM"),
+        .name = _("Big Mushroom"),
         .itemId = ITEM_BIG_MUSHROOM,
         .price = 5000,
         .description = sBigMushroomDesc,
@@ -6175,7 +6175,7 @@ const struct Item gItems2[] =
 
     [ITEM_PEARL] =
     {
-        .name = _("PEARL"),
+        .name = _("Pearl"),
         .itemId = ITEM_PEARL,
         .price = 1400,
         .description = sPearlDesc,
@@ -6186,7 +6186,7 @@ const struct Item gItems2[] =
 
     [ITEM_BIG_PEARL] =
     {
-        .name = _("BIG PEARL"),
+        .name = _("Big Pearl"),
         .itemId = ITEM_BIG_PEARL,
         .price = 7500,
         .description = sBigPearlDesc,
@@ -6197,7 +6197,7 @@ const struct Item gItems2[] =
 
     [ITEM_STARDUST] =
     {
-        .name = _("STARDUST"),
+        .name = _("Stardust"),
         .itemId = ITEM_STARDUST,
         .price = 2000,
         .description = sStardustDesc,
@@ -6208,7 +6208,7 @@ const struct Item gItems2[] =
 
     [ITEM_STAR_PIECE] =
     {
-        .name = _("STAR PIECE"),
+        .name = _("Star Piece"),
         .itemId = ITEM_STAR_PIECE,
         .price = 9800,
         .description = sStarPieceDesc,
@@ -6219,7 +6219,7 @@ const struct Item gItems2[] =
 
     [ITEM_NUGGET] =
     {
-        .name = _("NUGGET"),
+        .name = _("Nugget"),
         .itemId = ITEM_NUGGET,
         .price = 10000,
         .description = sNuggetDesc,
@@ -6230,7 +6230,7 @@ const struct Item gItems2[] =
 
     [ITEM_HEART_SCALE] =
     {
-        .name = _("HEART SCALE"),
+        .name = _("Heart Scale"),
         .itemId = ITEM_HEART_SCALE,
         .price = 100,
         .description = sHeartScaleDesc,
@@ -6241,7 +6241,7 @@ const struct Item gItems2[] =
 
     [ITEM_EXP_SHARE_SMALL] =
     {
-        .name = _("EXP. SHARE S"),
+        .name = _("Exp. Share S"),
         .itemId = ITEM_EXP_SHARE_SMALL,
         .price = 6000,
         .holdEffect = HOLD_EFFECT_EXP_SHARE,
@@ -6253,7 +6253,7 @@ const struct Item gItems2[] =
 
     [ITEM_FAIRY_GEM] =
     {
-        .name = _("FAIRY GEM"),
+        .name = _("Fairy Gem"),
         .itemId = ITEM_FAIRY_GEM,
         .price = 100,
         .holdEffect = HOLD_EFFECT_FAIRY_POWER,
@@ -6266,7 +6266,7 @@ const struct Item gItems2[] =
 
     [ITEM_072] =
     {
-        .name = _("COOL PENDANT"),
+        .name = _("Cool Pendant"),
         .itemId = ITEM_072,
         .price = 0,
         .holdEffect = HOLD_EFFECT_HARD_MODE_MODIFIER,
@@ -6278,7 +6278,7 @@ const struct Item gItems2[] =
 
     [ITEM_073] =
     {
-        .name = _("SITRUS BERRY"),
+        .name = _("Sitrus Berry"),
         .itemId = ITEM_073,
         .price = 0,
         .holdEffect = HOLD_EFFECT_HARD_MODE_MODIFIER_SITRUS,
@@ -6291,7 +6291,7 @@ const struct Item gItems2[] =
 
     [ITEM_074] =
     {
-        .name = _("CHESTO BERRY"),
+        .name = _("Chesto Berry"),
         .itemId = ITEM_074,
         .price = 0,
         .holdEffect = HOLD_EFFECT_HARD_MODE_MODIFIER_CHESTO,
@@ -6303,7 +6303,7 @@ const struct Item gItems2[] =
 
     [ITEM_075] =
     {
-        .name = _("LEFTOVERS"),
+        .name = _("Leftovers"),
         .itemId = ITEM_075,
         .price = 0,
         .holdEffect = HOLD_EFFECT_HARD_MODE_MODIFIER_LEFTOVERS,
@@ -6316,7 +6316,7 @@ const struct Item gItems2[] =
 
     [ITEM_076] =
     {
-        .name = _("LIECHI BERRY"),
+        .name = _("Liechi Berry"),
         .itemId = ITEM_076,
         .price = 0,
         .holdEffect = HOLD_EFFECT_HARD_MODE_MODIFIER_LIECHI,
@@ -6352,7 +6352,7 @@ const struct Item gItems2[] =
 // Mail
     [ITEM_ORANGE_MAIL] =
     {
-        .name = _("ORANGE MAIL"),
+        .name = _("Orange Mail"),
         .itemId = ITEM_ORANGE_MAIL,
         .price = 50,
         .description = sOrangeMailDesc,
@@ -6364,7 +6364,7 @@ const struct Item gItems2[] =
 
     [ITEM_HARBOR_MAIL] =
     {
-        .name = _("HARBOR MAIL"),
+        .name = _("Harbor Mail"),
         .itemId = ITEM_HARBOR_MAIL,
         .price = 50,
         .description = sHarborMailDesc,
@@ -6376,7 +6376,7 @@ const struct Item gItems2[] =
 
     [ITEM_GLITTER_MAIL] =
     {
-        .name = _("GLITTER MAIL"),
+        .name = _("Glitter Mail"),
         .itemId = ITEM_GLITTER_MAIL,
         .price = 50,
         .description = sGlitterMailDesc,
@@ -6388,7 +6388,7 @@ const struct Item gItems2[] =
 
     [ITEM_MECH_MAIL] =
     {
-        .name = _("MECH MAIL"),
+        .name = _("Mech Mail"),
         .itemId = ITEM_MECH_MAIL,
         .price = 50,
         .description = sMechMailDesc,
@@ -6400,7 +6400,7 @@ const struct Item gItems2[] =
 
     [ITEM_WOOD_MAIL] =
     {
-        .name = _("WOOD MAIL"),
+        .name = _("Wood Mail"),
         .itemId = ITEM_WOOD_MAIL,
         .price = 50,
         .description = sWoodMailDesc,
@@ -6412,7 +6412,7 @@ const struct Item gItems2[] =
 
     [ITEM_WAVE_MAIL] =
     {
-        .name = _("WAVE MAIL"),
+        .name = _("Wave Mail"),
         .itemId = ITEM_WAVE_MAIL,
         .price = 50,
         .description = sWaveMailDesc,
@@ -6424,7 +6424,7 @@ const struct Item gItems2[] =
 
     [ITEM_BEAD_MAIL] =
     {
-        .name = _("BEAD MAIL"),
+        .name = _("Bead Mail"),
         .itemId = ITEM_BEAD_MAIL,
         .price = 50,
         .description = sBeadMailDesc,
@@ -6436,7 +6436,7 @@ const struct Item gItems2[] =
 
     [ITEM_SHADOW_MAIL] =
     {
-        .name = _("SHADOW MAIL"),
+        .name = _("Shadow Mail"),
         .itemId = ITEM_SHADOW_MAIL,
         .price = 50,
         .description = sShadowMailDesc,
@@ -6448,7 +6448,7 @@ const struct Item gItems2[] =
 
     [ITEM_TROPIC_MAIL] =
     {
-        .name = _("TROPIC MAIL"),
+        .name = _("Tropic Mail"),
         .itemId = ITEM_TROPIC_MAIL,
         .price = 50,
         .description = sTropicMailDesc,
@@ -6460,7 +6460,7 @@ const struct Item gItems2[] =
 
     [ITEM_DREAM_MAIL] =
     {
-        .name = _("DREAM MAIL"),
+        .name = _("Dream Mail"),
         .itemId = ITEM_DREAM_MAIL,
         .price = 50,
         .description = sDreamMailDesc,
@@ -6472,7 +6472,7 @@ const struct Item gItems2[] =
 
     [ITEM_FAB_MAIL] =
     {
-        .name = _("FAB MAIL"),
+        .name = _("Fab Mail"),
         .itemId = ITEM_FAB_MAIL,
         .price = 50,
         .description = sFabMailDesc,
@@ -6484,7 +6484,7 @@ const struct Item gItems2[] =
 
     [ITEM_RETRO_MAIL] =
     {
-        .name = _("RETRO MAIL"),
+        .name = _("Retro Mail"),
         .itemId = ITEM_RETRO_MAIL,
         .price = 5000,
         .description = sRetroMailDesc,
@@ -6498,7 +6498,7 @@ const struct Item gItems2[] =
 
     [ITEM_CHERI_BERRY] =
     {
-        .name = _("CHERI BERRY"),
+        .name = _("Cheri Berry"),
         .itemId = ITEM_CHERI_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_CURE_PAR,
@@ -6512,7 +6512,7 @@ const struct Item gItems2[] =
 
     [ITEM_CHESTO_BERRY] =
     {
-        .name = _("CHESTO BERRY"),
+        .name = _("Chesto Berry"),
         .itemId = ITEM_CHESTO_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_CURE_SLP,
@@ -6526,7 +6526,7 @@ const struct Item gItems2[] =
 
     [ITEM_PECHA_BERRY] =
     {
-        .name = _("PECHA BERRY"),
+        .name = _("Pecha Berry"),
         .itemId = ITEM_PECHA_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_CURE_PSN,
@@ -6540,7 +6540,7 @@ const struct Item gItems2[] =
 
     [ITEM_RAWST_BERRY] =
     {
-        .name = _("RAWST BERRY"),
+        .name = _("Rawst Berry"),
         .itemId = ITEM_RAWST_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_CURE_BRN,
@@ -6554,7 +6554,7 @@ const struct Item gItems2[] =
 
     [ITEM_ASPEAR_BERRY] =
     {
-        .name = _("ASPEAR BERRY"),
+        .name = _("Aspear Berry"),
         .itemId = ITEM_ASPEAR_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_CURE_FRZ,
@@ -6568,7 +6568,7 @@ const struct Item gItems2[] =
 
     [ITEM_LEPPA_BERRY] =
     {
-        .name = _("LEPPA BERRY"),
+        .name = _("Leppa Berry"),
         .itemId = ITEM_LEPPA_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_RESTORE_PP,
@@ -6583,7 +6583,7 @@ const struct Item gItems2[] =
 
     [ITEM_ORAN_BERRY] =
     {
-        .name = _("ORAN BERRY"),
+        .name = _("Oran Berry"),
         .itemId = ITEM_ORAN_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_RESTORE_HP,
@@ -6598,7 +6598,7 @@ const struct Item gItems2[] =
 
     [ITEM_PERSIM_BERRY] =
     {
-        .name = _("PERSIM BERRY"),
+        .name = _("Persim Berry"),
         .itemId = ITEM_PERSIM_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_CURE_CONFUSION,
@@ -6612,7 +6612,7 @@ const struct Item gItems2[] =
 
     [ITEM_LUM_BERRY] =
     {
-        .name = _("LUM BERRY"),
+        .name = _("Lum Berry"),
         .itemId = ITEM_LUM_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_CURE_STATUS,
@@ -6626,7 +6626,7 @@ const struct Item gItems2[] =
 
     [ITEM_SITRUS_BERRY] =
     {
-        .name = _("SITRUS BERRY"),
+        .name = _("Sitrus Berry"),
         .itemId = ITEM_SITRUS_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_RESTORE_PCT_HP,
@@ -6641,7 +6641,7 @@ const struct Item gItems2[] =
 
     [ITEM_FIGY_BERRY] =
     {
-        .name = _("FIGY BERRY"),
+        .name = _("Figy Berry"),
         .itemId = ITEM_FIGY_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_CONFUSE_SPICY,
@@ -6654,7 +6654,7 @@ const struct Item gItems2[] =
 
     [ITEM_WIKI_BERRY] =
     {
-        .name = _("WIKI BERRY"),
+        .name = _("Wiki Berry"),
         .itemId = ITEM_WIKI_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_CONFUSE_DRY,
@@ -6667,7 +6667,7 @@ const struct Item gItems2[] =
 
     [ITEM_MAGO_BERRY] =
     {
-        .name = _("MAGO BERRY"),
+        .name = _("Mago Berry"),
         .itemId = ITEM_MAGO_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_CONFUSE_SWEET,
@@ -6680,7 +6680,7 @@ const struct Item gItems2[] =
 
     [ITEM_AGUAV_BERRY] =
     {
-        .name = _("AGUAV BERRY"),
+        .name = _("Aguav Berry"),
         .itemId = ITEM_AGUAV_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_CONFUSE_BITTER,
@@ -6693,7 +6693,7 @@ const struct Item gItems2[] =
 
     [ITEM_IAPAPA_BERRY] =
     {
-        .name = _("IAPAPA BERRY"),
+        .name = _("Iapapa Berry"),
         .itemId = ITEM_IAPAPA_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_CONFUSE_SOUR,
@@ -6706,7 +6706,7 @@ const struct Item gItems2[] =
 
     [ITEM_RAZZ_BERRY] =
     {
-        .name = _("RAZZ BERRY"),
+        .name = _("Razz Berry"),
         .itemId = ITEM_RAZZ_BERRY,
         .price = 20,
         .description = sRazzBerryDesc,
@@ -6717,7 +6717,7 @@ const struct Item gItems2[] =
 
     [ITEM_BLUK_BERRY] =
     {
-        .name = _("BLUK BERRY"),
+        .name = _("Bluk Berry"),
         .itemId = ITEM_BLUK_BERRY,
         .price = 20,
         .description = sBlukBerryDesc,
@@ -6728,7 +6728,7 @@ const struct Item gItems2[] =
 
     [ITEM_NANAB_BERRY] =
     {
-        .name = _("NANAB BERRY"),
+        .name = _("Nanab Berry"),
         .itemId = ITEM_NANAB_BERRY,
         .price = 20,
         .description = sNanabBerryDesc,
@@ -6739,7 +6739,7 @@ const struct Item gItems2[] =
 
     [ITEM_WEPEAR_BERRY] =
     {
-        .name = _("WEPEAR BERRY"),
+        .name = _("Wepear Berry"),
         .itemId = ITEM_WEPEAR_BERRY,
         .price = 20,
         .description = sWepearBerryDesc,
@@ -6750,7 +6750,7 @@ const struct Item gItems2[] =
 
     [ITEM_PINAP_BERRY] =
     {
-        .name = _("PINAP BERRY"),
+        .name = _("Pinap Berry"),
         .itemId = ITEM_PINAP_BERRY,
         .price = 20,
         .description = sPinapBerryDesc,
@@ -6761,7 +6761,7 @@ const struct Item gItems2[] =
 
     [ITEM_POMEG_BERRY] =
     {
-        .name = _("POMEG BERRY"),
+        .name = _("Pomeg Berry"),
         .itemId = ITEM_POMEG_BERRY,
         .price = 20,
         .description = sPomegBerryDesc,
@@ -6772,7 +6772,7 @@ const struct Item gItems2[] =
 
     [ITEM_KELPSY_BERRY] =
     {
-        .name = _("KELPSY BERRY"),
+        .name = _("Kelpsy Berry"),
         .itemId = ITEM_KELPSY_BERRY,
         .price = 20,
         .description = sKelpsyBerryDesc,
@@ -6783,7 +6783,7 @@ const struct Item gItems2[] =
 
     [ITEM_QUALOT_BERRY] =
     {
-        .name = _("QUALOT BERRY"),
+        .name = _("Qualot Berry"),
         .itemId = ITEM_QUALOT_BERRY,
         .price = 20,
         .description = sQualotBerryDesc,
@@ -6794,7 +6794,7 @@ const struct Item gItems2[] =
 
     [ITEM_HONDEW_BERRY] =
     {
-        .name = _("HONDEW BERRY"),
+        .name = _("Hondew Berry"),
         .itemId = ITEM_HONDEW_BERRY,
         .price = 20,
         .description = sHondewBerryDesc,
@@ -6805,7 +6805,7 @@ const struct Item gItems2[] =
 
     [ITEM_GREPA_BERRY] =
     {
-        .name = _("GREPA BERRY"),
+        .name = _("Grepa Berry"),
         .itemId = ITEM_GREPA_BERRY,
         .price = 20,
         .description = sGrepaBerryDesc,
@@ -6816,7 +6816,7 @@ const struct Item gItems2[] =
 
     [ITEM_TAMATO_BERRY] =
     {
-        .name = _("TAMATO BERRY"),
+        .name = _("Tamato Berry"),
         .itemId = ITEM_TAMATO_BERRY,
         .price = 20,
         .description = sTamatoBerryDesc,
@@ -6827,7 +6827,7 @@ const struct Item gItems2[] =
 
     [ITEM_CORNN_BERRY] =
     {
-        .name = _("CORNN BERRY"),
+        .name = _("Cornn Berry"),
         .itemId = ITEM_CORNN_BERRY,
         .price = 20,
         .description = sCornnBerryDesc,
@@ -6838,7 +6838,7 @@ const struct Item gItems2[] =
 
     [ITEM_MAGOST_BERRY] =
     {
-        .name = _("MAGOST BERRY"),
+        .name = _("Magost Berry"),
         .itemId = ITEM_MAGOST_BERRY,
         .price = 20,
         .description = sMagostBerryDesc,
@@ -6849,7 +6849,7 @@ const struct Item gItems2[] =
 
     [ITEM_RABUTA_BERRY] =
     {
-        .name = _("RABUTA BERRY"),
+        .name = _("Rabuta Berry"),
         .itemId = ITEM_RABUTA_BERRY,
         .price = 20,
         .description = sRabutaBerryDesc,
@@ -6860,7 +6860,7 @@ const struct Item gItems2[] =
 
     [ITEM_NOMEL_BERRY] =
     {
-        .name = _("NOMEL BERRY"),
+        .name = _("Nomel Berry"),
         .itemId = ITEM_NOMEL_BERRY,
         .price = 20,
         .description = sNomelBerryDesc,
@@ -6871,7 +6871,7 @@ const struct Item gItems2[] =
 
     [ITEM_SPELON_BERRY] =
     {
-        .name = _("SPELON BERRY"),
+        .name = _("Spelon Berry"),
         .itemId = ITEM_SPELON_BERRY,
         .price = 20,
         .description = sSpelonBerryDesc,
@@ -6882,7 +6882,7 @@ const struct Item gItems2[] =
 
     [ITEM_PAMTRE_BERRY] =
     {
-        .name = _("PAMTRE BERRY"),
+        .name = _("Pamtre Berry"),
         .itemId = ITEM_PAMTRE_BERRY,
         .price = 20,
         .description = sPamtreBerryDesc,
@@ -6893,7 +6893,7 @@ const struct Item gItems2[] =
 
     [ITEM_WATMEL_BERRY] =
     {
-        .name = _("WATMEL BERRY"),
+        .name = _("Watmel Berry"),
         .itemId = ITEM_WATMEL_BERRY,
         .price = 20,
         .description = sWatmelBerryDesc,
@@ -6904,7 +6904,7 @@ const struct Item gItems2[] =
 
     [ITEM_DURIN_BERRY] =
     {
-        .name = _("DURIN BERRY"),
+        .name = _("Durin Berry"),
         .itemId = ITEM_DURIN_BERRY,
         .price = 20,
         .description = sDurinBerryDesc,
@@ -6915,7 +6915,7 @@ const struct Item gItems2[] =
 
     [ITEM_BELUE_BERRY] =
     {
-        .name = _("BELUE BERRY"),
+        .name = _("Belue Berry"),
         .itemId = ITEM_BELUE_BERRY,
         .price = 20,
         .description = sBelueBerryDesc,
@@ -6926,7 +6926,7 @@ const struct Item gItems2[] =
 
     [ITEM_LIECHI_BERRY] =
     {
-        .name = _("LIECHI BERRY"),
+        .name = _("Liechi Berry"),
         .itemId = ITEM_LIECHI_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_ATTACK_UP,
@@ -6939,7 +6939,7 @@ const struct Item gItems2[] =
 
     [ITEM_GANLON_BERRY] =
     {
-        .name = _("GANLON BERRY"),
+        .name = _("Ganlon Berry"),
         .itemId = ITEM_GANLON_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_DEFENSE_UP,
@@ -6952,7 +6952,7 @@ const struct Item gItems2[] =
 
     [ITEM_SALAC_BERRY] =
     {
-        .name = _("SALAC BERRY"),
+        .name = _("Salac Berry"),
         .itemId = ITEM_SALAC_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_SPEED_UP,
@@ -6965,7 +6965,7 @@ const struct Item gItems2[] =
 
     [ITEM_PETAYA_BERRY] =
     {
-        .name = _("PETAYA BERRY"),
+        .name = _("Petaya Berry"),
         .itemId = ITEM_PETAYA_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_SP_ATTACK_UP,
@@ -6978,7 +6978,7 @@ const struct Item gItems2[] =
 
     [ITEM_APICOT_BERRY] =
     {
-        .name = _("APICOT BERRY"),
+        .name = _("Apicot Berry"),
         .itemId = ITEM_APICOT_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_SP_DEFENSE_UP,
@@ -6991,7 +6991,7 @@ const struct Item gItems2[] =
 
     [ITEM_LANSAT_BERRY] =
     {
-        .name = _("LANSAT BERRY"),
+        .name = _("Lansat Berry"),
         .itemId = ITEM_LANSAT_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_CRITICAL_UP,
@@ -7004,7 +7004,7 @@ const struct Item gItems2[] =
 
     [ITEM_STARF_BERRY] =
     {
-        .name = _("STARF BERRY"),
+        .name = _("Starf Berry"),
         .itemId = ITEM_STARF_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_RANDOM_STAT_UP,
@@ -7017,7 +7017,7 @@ const struct Item gItems2[] =
 
     [ITEM_ENIGMA_BERRY] =
     {
-        .name = _("ENIGMA BERRY"),
+        .name = _("Enigma Berry"),
         .itemId = ITEM_ENIGMA_BERRY,
         .price = 20,
         .description = sEnigmaBerryDesc,
@@ -7030,7 +7030,7 @@ const struct Item gItems2[] =
 
     [ITEM_UNUSED_BERRY_1] =
     {
-        .name = _("SITRUS BERRY"),
+        .name = _("Sitrus Berry"),
         .itemId = ITEM_SITRUS_BERRY,
         .price = 20,
         .holdEffect = HOLD_EFFECT_RESTORE_HP,
@@ -7069,7 +7069,7 @@ const struct Item gItems2[] =
 
     [ITEM_BRIGHT_POWDER] =
     {
-        .name = _("BRIGHTPOWDER"),
+        .name = _("BrightPowder"),
         .itemId = ITEM_BRIGHT_POWDER,
         .price = 10,
         .holdEffect = HOLD_EFFECT_EVASION_UP,
@@ -7082,7 +7082,7 @@ const struct Item gItems2[] =
 
     [ITEM_WHITE_HERB] =
     {
-        .name = _("WHITE HERB"),
+        .name = _("White Herb"),
         .itemId = ITEM_WHITE_HERB,
         .price = 100,
         .holdEffect = HOLD_EFFECT_RESTORE_STATS,
@@ -7094,7 +7094,7 @@ const struct Item gItems2[] =
 
     [ITEM_MACHO_BRACE] =
     {
-        .name = _("MACHO BRACE"),
+        .name = _("Macho Brace"),
         .itemId = ITEM_MACHO_BRACE,
         .price = 3000,
         .holdEffect = HOLD_EFFECT_MACHO_BRACE,
@@ -7106,7 +7106,7 @@ const struct Item gItems2[] =
 
     [ITEM_EXP_SHARE] =
     {
-        .name = _("EXP. SHARE"),
+        .name = _("Exp. Share"),
         .itemId = ITEM_EXP_SHARE,
         .price = 0,
         //.holdEffect = HOLD_EFFECT_EXP_SHARE,
@@ -7120,7 +7120,7 @@ const struct Item gItems2[] =
 
     [ITEM_QUICK_CLAW] =
     {
-        .name = _("QUICK CLAW"),
+        .name = _("Quick Claw"),
         .itemId = ITEM_QUICK_CLAW,
         .price = 100,
         .holdEffect = HOLD_EFFECT_QUICK_CLAW,
@@ -7133,7 +7133,7 @@ const struct Item gItems2[] =
 
     [ITEM_SOOTHE_BELL] =
     {
-        .name = _("SOOTHE BELL"),
+        .name = _("Soothe Bell"),
         .itemId = ITEM_SOOTHE_BELL,
         .price = 100,
         .holdEffect = HOLD_EFFECT_FRIENDSHIP_UP,
@@ -7145,7 +7145,7 @@ const struct Item gItems2[] =
 
     [ITEM_MENTAL_HERB] =
     {
-        .name = _("MENTAL HERB"),
+        .name = _("Mental Herb"),
         .itemId = ITEM_MENTAL_HERB,
         .price = 100,
         .holdEffect = HOLD_EFFECT_CURE_ATTRACT,
@@ -7157,7 +7157,7 @@ const struct Item gItems2[] =
 
     [ITEM_CHOICE_BAND] =
     {
-        .name = _("CHOICE BAND"),
+        .name = _("Choice Band"),
         .itemId = ITEM_CHOICE_BAND,
         .price = 100,
         .holdEffect = HOLD_EFFECT_CHOICE_BAND,
@@ -7169,7 +7169,7 @@ const struct Item gItems2[] =
 
     [ITEM_KINGS_ROCK] =
     {
-        .name = _("KING'S ROCK"),
+        .name = _("King's Rock"),
         .itemId = ITEM_KINGS_ROCK,
         .price = 100,
         .holdEffect = HOLD_EFFECT_FLINCH,
@@ -7182,7 +7182,7 @@ const struct Item gItems2[] =
 
     [ITEM_SILVER_POWDER] =
     {
-        .name = _("SILVERPOWDER"),
+        .name = _("SilverPowder"),
         .itemId = ITEM_SILVER_POWDER,
         .price = 100,
         .holdEffect = HOLD_EFFECT_BUG_POWER,
@@ -7195,7 +7195,7 @@ const struct Item gItems2[] =
 
     [ITEM_AMULET_COIN] =
     {
-        .name = _("AMULET COIN"),
+        .name = _("Amulet Coin"),
         .itemId = ITEM_AMULET_COIN,
         .price = 100,
         .holdEffect = HOLD_EFFECT_DOUBLE_PRIZE,
@@ -7208,7 +7208,7 @@ const struct Item gItems2[] =
 
     [ITEM_CLEANSE_TAG] =
     {
-        .name = _("CLEANSE TAG"),
+        .name = _("Cleanse Tag"),
         .itemId = ITEM_CLEANSE_TAG,
         .price = 200,
         .holdEffect = HOLD_EFFECT_REPEL,
@@ -7220,7 +7220,7 @@ const struct Item gItems2[] =
 
     [ITEM_SOUL_DEW] =
     {
-        .name = _("SOUL DEW"),
+        .name = _("Soul Dew"),
         .itemId = ITEM_SOUL_DEW,
         .price = 200,
         .holdEffect = HOLD_EFFECT_SOUL_DEW,
@@ -7232,7 +7232,7 @@ const struct Item gItems2[] =
 
     [ITEM_DEEP_SEA_TOOTH] =
     {
-        .name = _("DEEPSEATOOTH"),
+        .name = _("DeepSeaTooth"),
         .itemId = ITEM_DEEP_SEA_TOOTH,
         .price = 200,
         .holdEffect = HOLD_EFFECT_DEEP_SEA_TOOTH,
@@ -7244,7 +7244,7 @@ const struct Item gItems2[] =
 
     [ITEM_DEEP_SEA_SCALE] =
     {
-        .name = _("DEEPSEASCALE"),
+        .name = _("DeepSeaScale"),
         .itemId = ITEM_DEEP_SEA_SCALE,
         .price = 200,
         .holdEffect = HOLD_EFFECT_DEEP_SEA_SCALE,
@@ -7256,7 +7256,7 @@ const struct Item gItems2[] =
 
     [ITEM_SMOKE_BALL] =
     {
-        .name = _("SMOKE BALL"),
+        .name = _("Smoke Ball"),
         .itemId = ITEM_SMOKE_BALL,
         .price = 200,
         .holdEffect = HOLD_EFFECT_CAN_ALWAYS_RUN,
@@ -7268,7 +7268,7 @@ const struct Item gItems2[] =
 
     [ITEM_EVERSTONE] =
     {
-        .name = _("EVERSTONE"),
+        .name = _("Everstone"),
         .itemId = ITEM_EVERSTONE,
         .price = 200,
         .holdEffect = HOLD_EFFECT_PREVENT_EVOLVE,
@@ -7280,7 +7280,7 @@ const struct Item gItems2[] =
 
     [ITEM_FOCUS_BAND] =
     {
-        .name = _("FOCUS BAND"),
+        .name = _("Focus Band"),
         .itemId = ITEM_FOCUS_BAND,
         .price = 200,
         .holdEffect = HOLD_EFFECT_FOCUS_BAND,
@@ -7293,7 +7293,7 @@ const struct Item gItems2[] =
 
     [ITEM_LUCKY_EGG] =
     {
-        .name = _("LUCKY EGG"),
+        .name = _("Lucky Egg"),
         .itemId = ITEM_LUCKY_EGG,
         .price = 200,
         .holdEffect = HOLD_EFFECT_LUCKY_EGG,
@@ -7305,7 +7305,7 @@ const struct Item gItems2[] =
 
     [ITEM_SCOPE_LENS] =
     {
-        .name = _("SCOPE LENS"),
+        .name = _("Scope Lens"),
         .itemId = ITEM_SCOPE_LENS,
         .price = 200,
         .holdEffect = HOLD_EFFECT_SCOPE_LENS,
@@ -7317,7 +7317,7 @@ const struct Item gItems2[] =
 
     [ITEM_METAL_COAT] =
     {
-        .name = _("METAL COAT"),
+        .name = _("Metal Coat"),
         .itemId = ITEM_METAL_COAT,
         .price = 100,
         .holdEffect = HOLD_EFFECT_STEEL_POWER,
@@ -7330,7 +7330,7 @@ const struct Item gItems2[] =
 
     [ITEM_LEFTOVERS] =
     {
-        .name = _("LEFTOVERS"),
+        .name = _("Leftovers"),
         .itemId = ITEM_LEFTOVERS,
         .price = 200,
         .holdEffect = HOLD_EFFECT_LEFTOVERS,
@@ -7343,7 +7343,7 @@ const struct Item gItems2[] =
 
     [ITEM_DRAGON_SCALE] =
     {
-        .name = _("DRAGON SCALE"),
+        .name = _("Dragon Scale"),
         .itemId = ITEM_DRAGON_SCALE,
         .price = 2100,
         .holdEffect = HOLD_EFFECT_DRAGON_SCALE,
@@ -7356,7 +7356,7 @@ const struct Item gItems2[] =
 
     [ITEM_LIGHT_BALL] =
     {
-        .name = _("LIGHT BALL"),
+        .name = _("Light Ball"),
         .itemId = ITEM_LIGHT_BALL,
         .price = 100,
         .holdEffect = HOLD_EFFECT_LIGHT_BALL,
@@ -7368,7 +7368,7 @@ const struct Item gItems2[] =
 
     [ITEM_SOFT_SAND] =
     {
-        .name = _("SOFT SAND"),
+        .name = _("Soft Sand"),
         .itemId = ITEM_SOFT_SAND,
         .price = 100,
         .holdEffect = HOLD_EFFECT_GROUND_POWER,
@@ -7381,7 +7381,7 @@ const struct Item gItems2[] =
 
     [ITEM_HARD_STONE] =
     {
-        .name = _("HARD STONE"),
+        .name = _("Hard Stone"),
         .itemId = ITEM_HARD_STONE,
         .price = 100,
         .holdEffect = HOLD_EFFECT_ROCK_POWER,
@@ -7394,7 +7394,7 @@ const struct Item gItems2[] =
 
     [ITEM_MIRACLE_SEED] =
     {
-        .name = _("MIRACLE SEED"),
+        .name = _("Miracle Seed"),
         .itemId = ITEM_MIRACLE_SEED,
         .price = 100,
         .holdEffect = HOLD_EFFECT_GRASS_POWER,
@@ -7407,7 +7407,7 @@ const struct Item gItems2[] =
 
     [ITEM_BLACK_GLASSES] =
     {
-        .name = _("BLACKGLASSES"),
+        .name = _("BlackGlasses"),
         .itemId = ITEM_BLACK_GLASSES,
         .price = 100,
         .holdEffect = HOLD_EFFECT_DARK_POWER,
@@ -7420,7 +7420,7 @@ const struct Item gItems2[] =
 
     [ITEM_BLACK_BELT] =
     {
-        .name = _("BLACK BELT"),
+        .name = _("Black Belt"),
         .itemId = ITEM_BLACK_BELT,
         .price = 100,
         .holdEffect = HOLD_EFFECT_FIGHTING_POWER,
@@ -7433,7 +7433,7 @@ const struct Item gItems2[] =
 
     [ITEM_MAGNET] =
     {
-        .name = _("MAGNET"),
+        .name = _("Magnet"),
         .itemId = ITEM_MAGNET,
         .price = 100,
         .holdEffect = HOLD_EFFECT_ELECTRIC_POWER,
@@ -7446,7 +7446,7 @@ const struct Item gItems2[] =
 
     [ITEM_MYSTIC_WATER] =
     {
-        .name = _("MYSTIC WATER"),
+        .name = _("Mystic Water"),
         .itemId = ITEM_MYSTIC_WATER,
         .price = 100,
         .holdEffect = HOLD_EFFECT_WATER_POWER,
@@ -7459,7 +7459,7 @@ const struct Item gItems2[] =
 
     [ITEM_SHARP_BEAK] =
     {
-        .name = _("SHARP BEAK"),
+        .name = _("Sharp Beak"),
         .itemId = ITEM_SHARP_BEAK,
         .price = 100,
         .holdEffect = HOLD_EFFECT_FLYING_POWER,
@@ -7472,7 +7472,7 @@ const struct Item gItems2[] =
 
     [ITEM_POISON_BARB] =
     {
-        .name = _("POISON BARB"),
+        .name = _("Poison Barb"),
         .itemId = ITEM_POISON_BARB,
         .price = 100,
         .holdEffect = HOLD_EFFECT_POISON_POWER,
@@ -7485,7 +7485,7 @@ const struct Item gItems2[] =
 
     [ITEM_NEVER_MELT_ICE] =
     {
-        .name = _("NEVERMELTICE"),
+        .name = _("NeverMeltIce"),
         .itemId = ITEM_NEVER_MELT_ICE,
         .price = 100,
         .holdEffect = HOLD_EFFECT_ICE_POWER,
@@ -7498,7 +7498,7 @@ const struct Item gItems2[] =
 
     [ITEM_SPELL_TAG] =
     {
-        .name = _("SPELL TAG"),
+        .name = _("Spell Tag"),
         .itemId = ITEM_SPELL_TAG,
         .price = 100,
         .holdEffect = HOLD_EFFECT_GHOST_POWER,
@@ -7511,7 +7511,7 @@ const struct Item gItems2[] =
 
     [ITEM_TWISTED_SPOON] =
     {
-        .name = _("TWISTEDSPOON"),
+        .name = _("TwistedSpoon"),
         .itemId = ITEM_TWISTED_SPOON,
         .price = 100,
         .holdEffect = HOLD_EFFECT_PSYCHIC_POWER,
@@ -7524,7 +7524,7 @@ const struct Item gItems2[] =
 
     [ITEM_CHARCOAL] =
     {
-        .name = _("CHARCOAL"),
+        .name = _("Charcoal"),
         .itemId = ITEM_CHARCOAL,
         .price = 9800,
         .holdEffect = HOLD_EFFECT_FIRE_POWER,
@@ -7537,7 +7537,7 @@ const struct Item gItems2[] =
 
     [ITEM_DRAGON_FANG] =
     {
-        .name = _("DRAGON FANG"),
+        .name = _("Dragon Fang"),
         .itemId = ITEM_DRAGON_FANG,
         .price = 100,
         .holdEffect = HOLD_EFFECT_DRAGON_POWER,
@@ -7550,7 +7550,7 @@ const struct Item gItems2[] =
 
     [ITEM_SILK_SCARF] =
     {
-        .name = _("SILK SCARF"),
+        .name = _("Silk Scarf"),
         .itemId = ITEM_SILK_SCARF,
         .price = 100,
         .holdEffect = HOLD_EFFECT_NORMAL_POWER,
@@ -7563,7 +7563,7 @@ const struct Item gItems2[] =
 
     [ITEM_UP_GRADE] =
     {
-        .name = _("UP-GRADE"),
+        .name = _("Up-Grade"),
         .itemId = ITEM_UP_GRADE,
         .price = 2100,
         .holdEffect = HOLD_EFFECT_UP_GRADE,
@@ -7575,7 +7575,7 @@ const struct Item gItems2[] =
 
     [ITEM_SHELL_BELL] =
     {
-        .name = _("SHELL BELL"),
+        .name = _("Shell Bell"),
         .itemId = ITEM_SHELL_BELL,
         .price = 200,
         .holdEffect = HOLD_EFFECT_SHELL_BELL,
@@ -7588,7 +7588,7 @@ const struct Item gItems2[] =
 
     [ITEM_SEA_INCENSE] =
     {
-        .name = _("BLUE INCENSE"),
+        .name = _("Blue Incense"),
         .itemId = ITEM_SEA_INCENSE,
         .price = 9600,
         .holdEffect = HOLD_EFFECT_WATER_POWER,
@@ -7601,7 +7601,7 @@ const struct Item gItems2[] =
 
     [ITEM_LAX_INCENSE] =
     {
-        .name = _("LAX INCENSE"),
+        .name = _("Lax Incense"),
         .itemId = ITEM_LAX_INCENSE,
         .price = 9600,
         .holdEffect = HOLD_EFFECT_EVASION_UP,
@@ -7614,7 +7614,7 @@ const struct Item gItems2[] =
 
     [ITEM_LUCKY_PUNCH] =
     {
-        .name = _("LUCKY PUNCH"),
+        .name = _("Lucky Punch"),
         .itemId = ITEM_LUCKY_PUNCH,
         .price = 10,
         .holdEffect = HOLD_EFFECT_LUCKY_PUNCH,
@@ -7626,7 +7626,7 @@ const struct Item gItems2[] =
 
     [ITEM_METAL_POWDER] =
     {
-        .name = _("METAL POWDER"),
+        .name = _("Metal Powder"),
         .itemId = ITEM_METAL_POWDER,
         .price = 10,
         .holdEffect = HOLD_EFFECT_METAL_POWDER,
@@ -7638,7 +7638,7 @@ const struct Item gItems2[] =
 
     [ITEM_THICK_CLUB] =
     {
-        .name = _("THICK CLUB"),
+        .name = _("Thick Club"),
         .itemId = ITEM_THICK_CLUB,
         .price = 500,
         .holdEffect = HOLD_EFFECT_THICK_CLUB,
@@ -7650,7 +7650,7 @@ const struct Item gItems2[] =
 
     [ITEM_STICK] =
     {
-        .name = _("STICK"),
+        .name = _("Stick"),
         .itemId = ITEM_STICK,
         .price = 200,
         .holdEffect = HOLD_EFFECT_STICK,
@@ -7662,7 +7662,7 @@ const struct Item gItems2[] =
 
     [ITEM_INFINITE_REPEL] =
     {
-        .name = _("INFIN. REPEL"),
+        .name = _("Infin. Repel"),
         .itemId = ITEM_INFINITE_REPEL,
         .price = 0,
         .description = sInfiniteRepel,
@@ -7674,7 +7674,7 @@ const struct Item gItems2[] =
 
     [ITEM_INFINITE_RARE_CANDIES] =
     {
-        .name = _("RARECANDY BOX"),
+        .name = _("Rarecandy Box"),
         .itemId = ITEM_INFINITE_RARE_CANDIES,
         .price = 0,
         .description = sInfiniteRareCandy,
@@ -7972,7 +7972,7 @@ const struct Item gItems2[] =
 
     [ITEM_RED_SCARF] =
     {
-        .name = _("RED SCARF"),
+        .name = _("Red Scarf"),
         .itemId = ITEM_RED_SCARF,
         .price = 100,
         .description = sRedScarfDesc,
@@ -7983,7 +7983,7 @@ const struct Item gItems2[] =
 
     [ITEM_BLUE_SCARF] =
     {
-        .name = _("BLUE SCARF"),
+        .name = _("Blue Scarf"),
         .itemId = ITEM_BLUE_SCARF,
         .price = 100,
         .description = sBlueScarfDesc,
@@ -7994,7 +7994,7 @@ const struct Item gItems2[] =
 
     [ITEM_PINK_SCARF] =
     {
-        .name = _("PINK SCARF"),
+        .name = _("Pink Scarf"),
         .itemId = ITEM_PINK_SCARF,
         .price = 100,
         .description = sPinkScarfDesc,
@@ -8005,7 +8005,7 @@ const struct Item gItems2[] =
 
     [ITEM_GREEN_SCARF] =
     {
-        .name = _("GREEN SCARF"),
+        .name = _("Green Scarf"),
         .itemId = ITEM_GREEN_SCARF,
         .price = 100,
         .description = sGreenScarfDesc,
@@ -8016,7 +8016,7 @@ const struct Item gItems2[] =
 
     [ITEM_YELLOW_SCARF] =
     {
-        .name = _("YELLOW SCARF"),
+        .name = _("Yellow Scarf"),
         .itemId = ITEM_YELLOW_SCARF,
         .price = 100,
         .description = sYellowScarfDesc,
@@ -8029,7 +8029,7 @@ const struct Item gItems2[] =
 
     [ITEM_MACH_BIKE] =
     {
-        .name = _("BIKE"),
+        .name = _("Bike"),
         .itemId = ITEM_MACH_BIKE,
         .price = 0,
         .description = sMachBikeDesc,
@@ -8043,7 +8043,7 @@ const struct Item gItems2[] =
 
     [ITEM_COIN_CASE] =
     {
-        .name = _("COIN CASE"),
+        .name = _("Coin Case"),
         .itemId = ITEM_COIN_CASE,
         .price = 0,
         .description = sCoinCaseDesc,
@@ -8055,7 +8055,7 @@ const struct Item gItems2[] =
 
     [ITEM_ITEMFINDER] =
     {
-        .name = _("ITEMFINDER"),
+        .name = _("Itemfinder"),
         .itemId = ITEM_ITEMFINDER,
         .price = 0,
         .description = sItemfinderDesc,
@@ -8068,7 +8068,7 @@ const struct Item gItems2[] =
 
     [ITEM_OLD_ROD] =
     {
-        .name = _("OLD ROD"),
+        .name = _("Old Rod"),
         .itemId = ITEM_OLD_ROD,
         .price = 0,
         .description = sOldRodDesc,
@@ -8082,7 +8082,7 @@ const struct Item gItems2[] =
 
     [ITEM_GOOD_ROD] =
     {
-        .name = _("GOOD ROD"),
+        .name = _("Good Rod"),
         .itemId = ITEM_GOOD_ROD,
         .price = 0,
         .description = sGoodRodDesc,
@@ -8096,7 +8096,7 @@ const struct Item gItems2[] =
 
     [ITEM_SUPER_ROD] =
     {
-        .name = _("SUPER ROD"),
+        .name = _("Super Rod"),
         .itemId = ITEM_SUPER_ROD,
         .price = 0,
         .description = sSuperRodDesc,
@@ -8110,7 +8110,7 @@ const struct Item gItems2[] =
 
     [ITEM_SS_TICKET] =
     {
-        .name = _("S.S. TICKET"),
+        .name = _("S.S. Ticket"),
         .itemId = ITEM_SS_TICKET,
         .price = 0,
         .description = sSSTicketDesc,
@@ -8122,7 +8122,7 @@ const struct Item gItems2[] =
 
     [ITEM_CONTEST_PASS] =
     {
-        .name = _("CONTEST PASS"),
+        .name = _("Contest Pass"),
         .itemId = ITEM_CONTEST_PASS,
         .price = 0,
         .description = sContestPassDesc,
@@ -8145,7 +8145,7 @@ const struct Item gItems2[] =
 
     [ITEM_WAILMER_PAIL] =
     {
-        .name = _("WAILMER PAIL"),
+        .name = _("Wailmer Pail"),
         .itemId = ITEM_WAILMER_PAIL,
         .price = 0,
         .description = sWailmerPailDesc,
@@ -8157,7 +8157,7 @@ const struct Item gItems2[] =
 
     [ITEM_DEVON_GOODS] =
     {
-        .name = _("DEVON GOODS"),
+        .name = _("Devon Goods"),
         .itemId = ITEM_DEVON_GOODS,
         .price = 0,
         .description = sDevonGoodsDesc,
@@ -8169,7 +8169,7 @@ const struct Item gItems2[] =
 
     [ITEM_SOOT_SACK] =
     {
-        .name = _("SOOT SACK"),
+        .name = _("Soot Sack"),
         .itemId = ITEM_SOOT_SACK,
         .price = 0,
         .description = sSootSackDesc,
@@ -8181,7 +8181,7 @@ const struct Item gItems2[] =
 
     [ITEM_BASEMENT_KEY] =
     {
-        .name = _("BASEMENT KEY"),
+        .name = _("Basement Key"),
         .itemId = ITEM_BASEMENT_KEY,
         .price = 0,
         .description = sBasementKeyDesc,
@@ -8193,7 +8193,7 @@ const struct Item gItems2[] =
 
     [ITEM_ACRO_BIKE] =
     {
-        .name = _("ACRO BIKE"),
+        .name = _("Acro Bike"),
         .itemId = ITEM_ACRO_BIKE,
         .price = 0,
         .description = sAcroBikeDesc,
@@ -8207,7 +8207,7 @@ const struct Item gItems2[] =
 
     [ITEM_POKEBLOCK_CASE] =
     {
-        .name = _("{POKEBLOCK} CASE"),
+        .name = _("{POKEBLOCK} Case"),
         .itemId = ITEM_POKEBLOCK_CASE,
         .price = 0,
         .description = sPokeblockCaseDesc,
@@ -8220,7 +8220,7 @@ const struct Item gItems2[] =
 
     [ITEM_LETTER] =
     {
-        .name = _("LETTER"),
+        .name = _("Letter"),
         .itemId = ITEM_LETTER,
         .price = 0,
         .description = sLetterDesc,
@@ -8232,7 +8232,7 @@ const struct Item gItems2[] =
 
     [ITEM_EON_TICKET] =
     {
-        .name = _("EON TICKET"),
+        .name = _("Eon Ticket"),
         .itemId = ITEM_EON_TICKET,
         .price = 0,
         .description = sEonTicketDesc,
@@ -8245,7 +8245,7 @@ const struct Item gItems2[] =
 
     [ITEM_RED_ORB] =
     {
-        .name = _("RED ORB"),
+        .name = _("Red Orb"),
         .itemId = ITEM_RED_ORB,
         .price = 0,
         .description = sRedOrbDesc,
@@ -8257,7 +8257,7 @@ const struct Item gItems2[] =
 
     [ITEM_BLUE_ORB] =
     {
-        .name = _("BLUE ORB"),
+        .name = _("Blue Orb"),
         .itemId = ITEM_BLUE_ORB,
         .price = 0,
         .description = sBlueOrbDesc,
@@ -8269,7 +8269,7 @@ const struct Item gItems2[] =
 
     [ITEM_SCANNER] =
     {
-        .name = _("SCANNER"),
+        .name = _("Scanner"),
         .itemId = ITEM_SCANNER,
         .price = 0,
         .description = sScannerDesc,
@@ -8281,7 +8281,7 @@ const struct Item gItems2[] =
 
     [ITEM_GO_GOGGLES] =
     {
-        .name = _("GO-GOGGLES"),
+        .name = _("Go-Goggles"),
         .itemId = ITEM_GO_GOGGLES,
         .price = 0,
         .description = sGoGogglesDesc,
@@ -8293,7 +8293,7 @@ const struct Item gItems2[] =
 
     [ITEM_METEORITE] =
     {
-        .name = _("METEORITE"),
+        .name = _("Meteorite"),
         .itemId = ITEM_METEORITE,
         .price = 0,
         .description = sMeteoriteDesc,
@@ -8305,7 +8305,7 @@ const struct Item gItems2[] =
 
     [ITEM_ROOM_1_KEY] =
     {
-        .name = _("RM. 1 KEY"),
+        .name = _("Rm. 1 Key"),
         .itemId = ITEM_ROOM_1_KEY,
         .price = 0,
         .description = sRoom1KeyDesc,
@@ -8317,7 +8317,7 @@ const struct Item gItems2[] =
 
     [ITEM_ROOM_2_KEY] =
     {
-        .name = _("RM. 2 KEY"),
+        .name = _("Rm. 2 Key"),
         .itemId = ITEM_ROOM_2_KEY,
         .price = 0,
         .description = sRoom2KeyDesc,
@@ -8329,7 +8329,7 @@ const struct Item gItems2[] =
 
     [ITEM_ROOM_4_KEY] =
     {
-        .name = _("RM. 4 KEY"),
+        .name = _("Rm. 4 Key"),
         .itemId = ITEM_ROOM_4_KEY,
         .price = 0,
         .description = sRoom4KeyDesc,
@@ -8341,7 +8341,7 @@ const struct Item gItems2[] =
 
     [ITEM_ROOM_6_KEY] =
     {
-        .name = _("RM. 6 KEY"),
+        .name = _("Rm. 6 Key"),
         .itemId = ITEM_ROOM_6_KEY,
         .price = 0,
         .description = sRoom6KeyDesc,
@@ -8353,7 +8353,7 @@ const struct Item gItems2[] =
 
     [ITEM_STORAGE_KEY] =
     {
-        .name = _("STORAGE KEY"),
+        .name = _("Storage Key"),
         .itemId = ITEM_STORAGE_KEY,
         .price = 0,
         .description = sStorageKeyDesc,
@@ -8365,7 +8365,7 @@ const struct Item gItems2[] =
 
     [ITEM_ROOT_FOSSIL] =
     {
-        .name = _("ROOT FOSSIL"),
+        .name = _("Root Fossil"),
         .itemId = ITEM_ROOT_FOSSIL,
         .price = 0,
         .description = sRootFossilDesc,
@@ -8377,7 +8377,7 @@ const struct Item gItems2[] =
 
     [ITEM_CLAW_FOSSIL] =
     {
-        .name = _("CLAW FOSSIL"),
+        .name = _("Claw Fossil"),
         .itemId = ITEM_CLAW_FOSSIL,
         .price = 0,
         .description = sClawFossilDesc,
@@ -8389,7 +8389,7 @@ const struct Item gItems2[] =
 
     [ITEM_DEVON_SCOPE] =
     {
-        .name = _("DEVON SCOPE"),
+        .name = _("Devon Scope"),
         .itemId = ITEM_DEVON_SCOPE,
         .price = 0,
         .description = sDevonScopeDesc,
@@ -9073,7 +9073,7 @@ const struct Item gItems2[] =
 
     [ITEM_OAKS_PARCEL] =
     {
-        .name = _("OUTFIT BOX"),
+        .name = _("Outfit Box"),
         .itemId = ITEM_OAKS_PARCEL,
         .price = 0,
         .description = sOaksParcelDesc,
@@ -9085,7 +9085,7 @@ const struct Item gItems2[] =
 
     [ITEM_POKE_FLUTE] =
     {
-        .name = _("POKé FLUTE"),
+        .name = _("Poké Flute"),
         .itemId = ITEM_POKE_FLUTE,
         .price = 0,
         .description = sPokeFluteDesc,
@@ -9097,7 +9097,7 @@ const struct Item gItems2[] =
 
     [ITEM_SECRET_KEY] =
     {
-        .name = _("SECRET KEY"),
+        .name = _("Secret Key"),
         .itemId = ITEM_SECRET_KEY,
         .price = 0,
         .description = sSecretKeyDesc,
@@ -9109,7 +9109,7 @@ const struct Item gItems2[] =
 
     [ITEM_BIKE_VOUCHER] =
     {
-        .name = _("BIKE VOUCHER"),
+        .name = _("Bike Voucher"),
         .itemId = ITEM_BIKE_VOUCHER,
         .price = 0,
         .description = sBikeVoucherDesc,
@@ -9121,7 +9121,7 @@ const struct Item gItems2[] =
 
     [ITEM_GOLD_TEETH] =
     {
-        .name = _("GOLD TEETH"),
+        .name = _("Gold Teeth"),
         .itemId = ITEM_GOLD_TEETH,
         .price = 0,
         .description = sGoldTeethDesc,
@@ -9133,7 +9133,7 @@ const struct Item gItems2[] =
 
     [ITEM_OLD_AMBER] =
     {
-        .name = _("OLD AMBER"),
+        .name = _("Old Amber"),
         .itemId = ITEM_OLD_AMBER,
         .price = 0,
         .description = sOldAmberDesc,
@@ -9145,7 +9145,7 @@ const struct Item gItems2[] =
 
     [ITEM_CARD_KEY] =
     {
-        .name = _("CARD KEY"),
+        .name = _("Card Key"),
         .itemId = ITEM_CARD_KEY,
         .price = 0,
         .description = sCardKeyDesc,
@@ -9157,7 +9157,7 @@ const struct Item gItems2[] =
 
     [ITEM_LIFT_KEY] =
     {
-        .name = _("LIFT KEY"),
+        .name = _("Lift Key"),
         .itemId = ITEM_LIFT_KEY,
         .price = 0,
         .description = sLiftKeyDesc,
@@ -9169,7 +9169,7 @@ const struct Item gItems2[] =
 
     [ITEM_HELIX_FOSSIL] =
     {
-        .name = _("HELIX FOSSIL"),
+        .name = _("Helix Fossil"),
         .itemId = ITEM_HELIX_FOSSIL,
         .price = 0,
         .description = sHelixFossilDesc,
@@ -9181,7 +9181,7 @@ const struct Item gItems2[] =
 
     [ITEM_DOME_FOSSIL] =
     {
-        .name = _("DOME FOSSIL"),
+        .name = _("Dome Fossil"),
         .itemId = ITEM_DOME_FOSSIL,
         .price = 0,
         .description = sDomeFossilDesc,
@@ -9193,7 +9193,7 @@ const struct Item gItems2[] =
 
     [ITEM_SILPH_SCOPE] =
     {
-        .name = _("SILPH SCOPE"),
+        .name = _("Silph Scope"),
         .itemId = ITEM_SILPH_SCOPE,
         .price = 0,
         .description = sSilphScopeDesc,
@@ -9205,7 +9205,7 @@ const struct Item gItems2[] =
 
     [ITEM_BICYCLE] =
     {
-        .name = _("BICYCLE"),
+        .name = _("Bicycle"),
         .itemId = ITEM_BICYCLE,
         .price = 0,
         .description = sBicycleDesc,
@@ -9218,7 +9218,7 @@ const struct Item gItems2[] =
 
     [ITEM_TOWN_MAP] =
     {
-        .name = _("TOWN MAP"),
+        .name = _("Town Map"),
         .itemId = ITEM_TOWN_MAP,
         .price = 0,
         .description = sTownMapDesc,
@@ -9231,7 +9231,7 @@ const struct Item gItems2[] =
 
     [ITEM_VS_SEEKER] =
     {
-        .name = _("VS SEEKER"),
+        .name = _("VS Seeker"),
         .itemId = ITEM_VS_SEEKER,
         .price = 0,
         .description = sVSSeekerDesc,
@@ -9244,7 +9244,7 @@ const struct Item gItems2[] =
 
     [ITEM_FAME_CHECKER] =
     {
-        .name = _("FAME CHECKER"),
+        .name = _("Fame Checker"),
         .itemId = ITEM_FAME_CHECKER,
         .price = 0,
         .description = sFameCheckerDesc,
@@ -9257,7 +9257,7 @@ const struct Item gItems2[] =
 
     [ITEM_TM_CASE] =
     {
-        .name = _("TM CASE"),
+        .name = _("TM Case"),
         .itemId = ITEM_TM_CASE,
         .price = 0,
         .description = sTMCaseDesc,
@@ -9270,7 +9270,7 @@ const struct Item gItems2[] =
 
     [ITEM_BERRY_POUCH] =
     {
-        .name = _("BERRY POUCH"),
+        .name = _("Berry Pouch"),
         .itemId = ITEM_BERRY_POUCH,
         .price = 0,
         .description = sBerryPouchDesc,
@@ -9283,7 +9283,7 @@ const struct Item gItems2[] =
 
     [ITEM_TEACHY_TV] =
     {
-        .name = _("TEACHY TV"),
+        .name = _("Teachy TV"),
         .itemId = ITEM_TEACHY_TV,
         .price = 0,
         .description = sTeachyTVDesc,
@@ -9296,7 +9296,7 @@ const struct Item gItems2[] =
 
     [ITEM_TRI_PASS] =
     {
-        .name = _("TRI-PASS"),
+        .name = _("Tri-Pass"),
         .itemId = ITEM_TRI_PASS,
         .price = 0,
         .description = sTriPassDesc,
@@ -9309,7 +9309,7 @@ const struct Item gItems2[] =
 
     [ITEM_RAINBOW_PASS] =
     {
-        .name = _("RAINBOW PASS"),
+        .name = _("Rainbow Pass"),
         .itemId = ITEM_RAINBOW_PASS,
         .price = 0,
         .description = sRainbowPassDesc,
@@ -9322,7 +9322,7 @@ const struct Item gItems2[] =
 
     [ITEM_TEA] =
     {
-        .name = _("TEA"),
+        .name = _("Tea"),
         .itemId = ITEM_TEA,
         .price = 0,
         .description = sTeaDesc,
@@ -9335,7 +9335,7 @@ const struct Item gItems2[] =
 
     [ITEM_MYSTIC_TICKET] =
     {
-        .name = _("MYSTICTICKET"),
+        .name = _("MysticTicket"),
         .itemId = ITEM_MYSTIC_TICKET,
         .price = 0,
         .description = sMysticTicketDesc,
@@ -9348,7 +9348,7 @@ const struct Item gItems2[] =
 
     [ITEM_AURORA_TICKET] =
     {
-        .name = _("AURORATICKET"),
+        .name = _("AuroraTicket"),
         .itemId = ITEM_AURORA_TICKET,
         .price = 0,
         .description = sAuroraTicketDesc,
@@ -9361,7 +9361,7 @@ const struct Item gItems2[] =
 
     [ITEM_POWDER_JAR] =
     {
-        .name = _("POWDER JAR"),
+        .name = _("Powder Jar"),
         .itemId = ITEM_POWDER_JAR,
         .price = 0,
         .description = sPowderJarDesc,
@@ -9374,7 +9374,7 @@ const struct Item gItems2[] =
 
     [ITEM_RUBY] =
     {
-        .name = _("RUBY"),
+        .name = _("Ruby"),
         .itemId = ITEM_RUBY,
         .price = 0,
         .description = sRubyDesc,
@@ -9387,7 +9387,7 @@ const struct Item gItems2[] =
 
     [ITEM_SAPPHIRE] =
     {
-        .name = _("SAPPHIRE"),
+        .name = _("Sapphire"),
         .itemId = ITEM_SAPPHIRE,
         .price = 0,
         .description = sSapphireDesc,
@@ -9402,7 +9402,7 @@ const struct Item gItems2[] =
 
     [ITEM_MAGMA_EMBLEM] =
     {
-        .name = _("MAGMA EMBLEM"),
+        .name = _("Magma Emblem"),
         .itemId = ITEM_MAGMA_EMBLEM,
         .price = 0,
         .description = sMagmaEmblemDesc,
@@ -9415,7 +9415,7 @@ const struct Item gItems2[] =
 
     [ITEM_OLD_SEA_MAP] =
     {
-        .name = _("OLD SEA MAP"),
+        .name = _("Old Sea Map"),
         .itemId = ITEM_OLD_SEA_MAP,
         .price = 0,
         .description = sOldSeaMapDesc,
@@ -9426,9 +9426,9 @@ const struct Item gItems2[] =
         .fieldUseFunc = ItemUseOutOfBattle_CannotUse,
     },
     //mints
-    [ITEM_ADAMANT_MINT] = 
+    [ITEM_ADAMANT_MINT] =
     {
-        .name = _("ADAMANT MINT"),
+        .name = _("Adamant Mint"),
         .itemId = ITEM_ADAMANT_MINT,
         .price = 20000,
         .description = sAdamantMintDesc,
@@ -9437,9 +9437,9 @@ const struct Item gItems2[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_ADAMANT,
     },
-    [ITEM_BOLD_MINT] = 
+    [ITEM_BOLD_MINT] =
     {
-        .name = _("BOLD MINT"),
+        .name = _("Bold Mint"),
         .itemId = ITEM_BOLD_MINT,
         .price = 20000,
         .description = sBoldMintDesc,
@@ -9448,9 +9448,9 @@ const struct Item gItems2[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_BOLD,
     },
-    [ITEM_BRAVE_MINT] = 
+    [ITEM_BRAVE_MINT] =
     {
-        .name = _("BRAVE MINT"),
+        .name = _("Brave Mint"),
         .itemId = ITEM_BRAVE_MINT,
         .price = 20000,
         .description = sBraveMintDesc,
@@ -9459,9 +9459,9 @@ const struct Item gItems2[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_BRAVE,
     },
-    [ITEM_CALM_MINT] = 
+    [ITEM_CALM_MINT] =
     {
-        .name = _("CALM MINT"),
+        .name = _("Calm Mint"),
         .itemId = ITEM_CALM_MINT,
         .price = 20000,
         .description = sCalmMintDesc,
@@ -9470,9 +9470,9 @@ const struct Item gItems2[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_CALM,
     },
-    [ITEM_CAREFUL_MINT] = 
+    [ITEM_CAREFUL_MINT] =
     {
-        .name = _("CAREFUL MINT"),
+        .name = _("Careful Mint"),
         .itemId = ITEM_CAREFUL_MINT,
         .price = 20000,
         .description = sCarefulMintDesc,
@@ -9481,9 +9481,9 @@ const struct Item gItems2[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_CAREFUL,
     },
-    [ITEM_GENTLE_MINT] = 
+    [ITEM_GENTLE_MINT] =
     {
-        .name = _("GENTLE MINT"),
+        .name = _("Gentle Mint"),
         .itemId = ITEM_GENTLE_MINT,
         .price = 20000,
         .description = sGentleMintDesc,
@@ -9492,9 +9492,9 @@ const struct Item gItems2[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_GENTLE,
     },
-    [ITEM_HASTY_MINT] = 
+    [ITEM_HASTY_MINT] =
     {
-        .name = _("HASTY MINT"),
+        .name = _("Hasty Mint"),
         .itemId = ITEM_HASTY_MINT,
         .price = 20000,
         .description = sHastyMintDesc,
@@ -9503,9 +9503,9 @@ const struct Item gItems2[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_HASTY,
     },
-    [ITEM_IMPISH_MINT] = 
+    [ITEM_IMPISH_MINT] =
     {
-        .name = _("IMPISH MINT"),
+        .name = _("Impish Mint"),
         .itemId = ITEM_IMPISH_MINT,
         .price = 20000,
         .description = sImpishMintDesc,
@@ -9514,9 +9514,9 @@ const struct Item gItems2[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_IMPISH,
     },
-    [ITEM_JOLLY_MINT] = 
+    [ITEM_JOLLY_MINT] =
     {
-        .name = _("JOLLY MINT"),
+        .name = _("Jolly Mint"),
         .itemId = ITEM_JOLLY_MINT,
         .price = 20000,
         .description = sJollyMintDesc,
@@ -9525,9 +9525,9 @@ const struct Item gItems2[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_JOLLY,
     },
-    [ITEM_LAX_MINT] = 
+    [ITEM_LAX_MINT] =
     {
-        .name = _("LAX MINT"),
+        .name = _("Lax Mint"),
         .itemId = ITEM_LAX_MINT,
         .price = 20000,
         .description = sLaxMintDesc,
@@ -9536,9 +9536,9 @@ const struct Item gItems2[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_LAX,
     },
-    [ITEM_LONELY_MINT] = 
+    [ITEM_LONELY_MINT] =
     {
-        .name = _("LONELY MINT"),
+        .name = _("Lonely Mint"),
         .itemId = ITEM_LONELY_MINT,
         .price = 20000,
         .description = sLonelyMintDesc,
@@ -9547,9 +9547,9 @@ const struct Item gItems2[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_LONELY,
     },
-    [ITEM_MILD_MINT] = 
+    [ITEM_MILD_MINT] =
     {
-        .name = _("MILD MINT"),
+        .name = _("Mild Mint"),
         .itemId = ITEM_MILD_MINT,
         .price = 20000,
         .description = sMildMintDesc,
@@ -9558,9 +9558,9 @@ const struct Item gItems2[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_MILD,
     },
-    [ITEM_MODEST_MINT] = 
+    [ITEM_MODEST_MINT] =
     {
-        .name = _("MODEST MINT"),
+        .name = _("Modest Mint"),
         .itemId = ITEM_MODEST_MINT,
         .price = 20000,
         .description = sModestMintDesc,
@@ -9569,9 +9569,9 @@ const struct Item gItems2[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_MODEST,
     },
-    [ITEM_NAIVE_MINT] = 
+    [ITEM_NAIVE_MINT] =
     {
-        .name = _("NAIVE MINT"),
+        .name = _("Naive Mint"),
         .itemId = ITEM_NAIVE_MINT,
         .price = 20000,
         .description = sNaiveMintDesc,
@@ -9580,9 +9580,9 @@ const struct Item gItems2[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_NAIVE,
     },
-    [ITEM_NAUGHTY_MINT] = 
+    [ITEM_NAUGHTY_MINT] =
     {
-        .name = _("NAUGHTY MINT"),
+        .name = _("Naughty Mint"),
         .itemId = ITEM_NAUGHTY_MINT,
         .price = 20000,
         .description = sNaughtyMintDesc,
@@ -9591,9 +9591,9 @@ const struct Item gItems2[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_NAUGHTY,
     },
-    [ITEM_QUIET_MINT] = 
+    [ITEM_QUIET_MINT] =
     {
-        .name = _("QUIET MINT"),
+        .name = _("Quiet Mint"),
         .itemId = ITEM_QUIET_MINT,
         .price = 20000,
         .description = sQuietMintDesc,
@@ -9602,9 +9602,9 @@ const struct Item gItems2[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_QUIET,
     },
-    [ITEM_RASH_MINT] = 
+    [ITEM_RASH_MINT] =
     {
-        .name = _("RASH MINT"),
+        .name = _("Rash Mint"),
         .itemId = ITEM_RASH_MINT,
         .price = 20000,
         .description = sRashMintDesc,
@@ -9613,9 +9613,9 @@ const struct Item gItems2[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_RASH,
     },
-    [ITEM_RELAXED_MINT] = 
+    [ITEM_RELAXED_MINT] =
     {
-        .name = _("RELAXED MINT"),
+        .name = _("Relaxed Mint"),
         .itemId = ITEM_RELAXED_MINT,
         .price = 20000,
         .description = sRelaxedMintDesc,
@@ -9624,9 +9624,9 @@ const struct Item gItems2[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_RELAXED,
     },
-    [ITEM_SASSY_MINT] = 
+    [ITEM_SASSY_MINT] =
     {
-        .name = _("SASSY MINT"),
+        .name = _("Sassy Mint"),
         .itemId = ITEM_SASSY_MINT,
         .price = 20000,
         .description = sSassyMintDesc,
@@ -9635,9 +9635,9 @@ const struct Item gItems2[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_SASSY,
     },
-    [ITEM_SERIOUS_MINT] = 
+    [ITEM_SERIOUS_MINT] =
     {
-        .name = _("SERIOUS MINT"),
+        .name = _("Serious Mint"),
         .itemId = ITEM_SERIOUS_MINT,
         .price = 20000,
         .description = sSeriousMintDesc,
@@ -9646,9 +9646,9 @@ const struct Item gItems2[] =
         .fieldUseFunc = ItemUseOutOfBattle_Mints,
         .secondaryId = NATURE_SERIOUS,
     },
-    [ITEM_TIMID_MINT] = 
+    [ITEM_TIMID_MINT] =
     {
-        .name = _("TIMID MINT"),
+        .name = _("Timid Mint"),
         .itemId = ITEM_TIMID_MINT,
         .price = 20000,
         .description = sTimidMintDesc,

@@ -153,4 +153,4 @@ Ho_Oh_Text:
 
 Ho_Oh_Legendaries_Text:
 	.string "Three unknown roars echoed\n"
-	.string "through NAVEL ROCK.$"
+	.string "through Navel Rock.$"
