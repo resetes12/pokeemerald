@@ -1403,7 +1403,9 @@ static void HideShowShinyStar(bool8 invisible)
     if (sShinyStarObjData == NULL || sShinyStarObjData->sprite == NULL)
         return;
 
-    if (IsMonShiny(&sMonSummaryScreen->currentMon) && !sMonSummaryScreen->summary.isEgg)
+    if (IsMonShiny(&sMonSummaryScreen->currentMon))
+        sShinyStarObjData->sprite->invisible = invisible;
+    else if (IsMonShiny(&sMonSummaryScreen->currentMon) && (sMonSummaryScreen->summary.isEgg))
         sShinyStarObjData->sprite->invisible = invisible;
     else
         sShinyStarObjData->sprite->invisible = TRUE;
@@ -1419,7 +1421,9 @@ static void ShowShinyStarObjIfMonShiny(void)
     if (sShinyStarObjData == NULL || sShinyStarObjData->sprite == NULL)
         return;
 
-    if (IsMonShiny(&sMonSummaryScreen->currentMon) && !sMonSummaryScreen->summary.isEgg)
+    if (IsMonShiny(&sMonSummaryScreen->currentMon))
+        HideShowShinyStar(FALSE);
+    else if (IsMonShiny(&sMonSummaryScreen->currentMon) && (sMonSummaryScreen->summary.isEgg))
         HideShowShinyStar(FALSE);
     else
         HideShowShinyStar(TRUE);
