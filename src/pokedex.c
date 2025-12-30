@@ -4529,9 +4529,9 @@ bool16 HasAllMons(void)
             return FALSE;
     }
 
-    // -4 excludes Wyrdeer, Ursaluna (2 forms) and Kleavor
+    // -5 excludes Wyrdeer, Ursaluna (2 forms), Kleavor and Test
     //for (i = JOHTO_DEX_COUNT; i < NATIONAL_DEX_COUNT - 2; i++)
-    for (i = JOHTO_DEX_COUNT; i < NATIONAL_DEX_COUNT - 4; i++)
+    for (i = JOHTO_DEX_COUNT; i < NATIONAL_DEX_COUNT - 5; i++)
     {
         if (!GetSetPokedexFlag(i + 1, FLAG_GET_CAUGHT))
             return FALSE;
