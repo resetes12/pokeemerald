@@ -86,11 +86,11 @@ bool8 AreAnyChallengesActive(void)
 
 bool8 IsNuzlockeActive(void)
 {
+    if (!FlagGet(FLAG_SYS_POKEMON_GET))     //Nuzlocke has not started
+        return FALSE;
+    if (!FlagGet(FLAG_ADVENTURE_STARTED))   //Nuzlocke has not started
+        return FALSE;
     if (FlagGet(FLAG_IS_CHAMPION))          //Player is champion and Nuzlocke stopped
-        return FALSE;
-    else if (!FlagGet(FLAG_SYS_POKEMON_GET))     //Nuzlocke has not started
-        return FALSE;
-    else if (!FlagGet(FLAG_ADVENTURE_STARTED))   //Nuzlocke has not started
         return FALSE;
 
     return gSaveBlock1Ptr->tx_Challenges_Nuzlocke;
