@@ -2633,7 +2633,9 @@ static void Task_OnSelectedMon(u8 taskId)
             }
             break;
         case MENU_PLACE:
-            if (sIsMonBeingMoved && sCursorArea == CURSOR_AREA_IN_PARTY && GetMonData(&sStorage->movingMon, MON_DATA_NUZLOCKE_RIBBON)) //tx_randomizer_and_challenges
+            if (sIsMonBeingMoved && sCursorArea == CURSOR_AREA_IN_PARTY 
+                && GetMonData(&sStorage->movingMon, MON_DATA_NUZLOCKE_RIBBON) 
+                && (FlagGet(FLAG_IS_CHAMPION) == FALSE)) //tx_randomizer_and_challenges
             {
                 sStorage->state = 7;
                 break;
@@ -2647,7 +2649,9 @@ static void Task_OnSelectedMon(u8 taskId)
             {
                 sStorage->state = 3;
             }
-            else if (sIsMonBeingMoved && sCursorArea == CURSOR_AREA_IN_PARTY && GetMonData(&sStorage->movingMon, MON_DATA_NUZLOCKE_RIBBON)) //tx_randomizer_and_challenges
+            else if (sIsMonBeingMoved && sCursorArea == CURSOR_AREA_IN_PARTY 
+                && GetMonData(&sStorage->movingMon, MON_DATA_NUZLOCKE_RIBBON)
+                && (FlagGet(FLAG_IS_CHAMPION) == FALSE)) //tx_randomizer_and_challenges
             {
                 sStorage->state = 7;
             }
@@ -2711,7 +2715,8 @@ static void Task_OnSelectedMon(u8 taskId)
             SetPokeStorageTask(Task_TakeItemForMoving);
             break;
         case MENU_GIVE:
-            if (GetCurrentBoxMonData(sCursorPosition, MON_DATA_NUZLOCKE_RIBBON))
+            if (GetCurrentBoxMonData(sCursorPosition, MON_DATA_NUZLOCKE_RIBBON) 
+            && (FlagGet(FLAG_IS_CHAMPION) == FALSE))
             {
                 sStorage->state = 7;
                 break;
@@ -2727,7 +2732,8 @@ static void Task_OnSelectedMon(u8 taskId)
             SetPokeStorageTask(Task_SwitchSelectedItem);
             break;
         case MENU_GIVE_2:
-            if (GetCurrentBoxMonData(sCursorPosition, MON_DATA_NUZLOCKE_RIBBON))
+            if (GetCurrentBoxMonData(sCursorPosition, MON_DATA_NUZLOCKE_RIBBON)
+            && (FlagGet(FLAG_IS_CHAMPION) == FALSE))
             {
                 sStorage->state = 7;
                 break;
@@ -2765,7 +2771,7 @@ static void Task_OnSelectedMon(u8 taskId)
     case 7: //tx_randomizer_and_challenges
         PlaySE(SE_FAILURE);
         if ((gSaveBlock1Ptr->tx_Nuzlocke_EasyMode) && (!IsNuzlockeActive()))
-            PrintMessage(MSG_FAINTED_FOREVER);
+            PrintMessage(MSG_NUZLOCKE);
         else
             PrintMessage(MSG_NUZLOCKE);
         sStorage->state = 6;
@@ -2841,18 +2847,18 @@ static void Task_WithdrawMon(u8 taskId)
             PrintMessage(MSG_PARTY_FULL);
             sStorage->state = 1;
         }
-        else if (GetCurrentBoxMonData(sCursorPosition, MON_DATA_NUZLOCKE_RIBBON)) //tx_randomizer_and_challenges
+        else if (GetCurrentBoxMonData(sCursorPosition, MON_DATA_NUZLOCKE_RIBBON) && (FlagGet(FLAG_IS_CHAMPION) == FALSE)) //tx_randomizer_and_challenges
         {
             if ((gSaveBlock1Ptr->tx_Nuzlocke_EasyMode) && (!IsNuzlockeActive()))
-                PrintMessage(MSG_FAINTED_FOREVER);
+                PrintMessage(MSG_NUZLOCKE);
             else
                 PrintMessage(MSG_NUZLOCKE);
             sStorage->state = 1;
         }
-        else if (sIsMonBeingMoved && GetMonData(&sStorage->movingMon, MON_DATA_NUZLOCKE_RIBBON))
+        else if (sIsMonBeingMoved && GetMonData(&sStorage->movingMon, MON_DATA_NUZLOCKE_RIBBON) && (FlagGet(FLAG_IS_CHAMPION) == FALSE))
         {
             if ((gSaveBlock1Ptr->tx_Nuzlocke_EasyMode) && (!IsNuzlockeActive()))
-                PrintMessage(MSG_FAINTED_FOREVER);
+                PrintMessage(MSG_NUZLOCKE);
             else
                 PrintMessage(MSG_NUZLOCKE);
             sStorage->state = 1;
@@ -4527,7 +4533,7 @@ static void InitBoxMonSprites(u8 boxId)
                 personality = GetBoxMonDataAt(boxId, boxPosition, MON_DATA_PERSONALITY);
                 sStorage->boxMonsSprites[count] = CreateMonIconSprite(species, personality, 8 * (3 * j) + 100, 8 * (3 * i) + 44, 2, 19 - j);
                 // Locked nuzlocke mons should be transparent
-                if (GetBoxMonDataAt(boxId, boxPosition, MON_DATA_NUZLOCKE_RIBBON))
+                if (GetBoxMonDataAt(boxId, boxPosition, MON_DATA_NUZLOCKE_RIBBON) && (FlagGet(FLAG_IS_CHAMPION) == FALSE))
                     sStorage->boxMonsSprites[count]->oam.objMode = ST_OAM_OBJ_BLEND;
             }
             else
@@ -4564,7 +4570,7 @@ static void CreateBoxMonIconAtPos(u8 boxPosition)
         if (sStorage->boxOption == OPTION_MOVE_ITEMS)
             sStorage->boxMonsSprites[boxPosition]->oam.objMode = ST_OAM_OBJ_BLEND;
         // Locked nuzlocke mons should be transparent
-        if (GetCurrentBoxMonData(boxPosition, MON_DATA_NUZLOCKE_RIBBON))
+        if (GetCurrentBoxMonData(boxPosition, MON_DATA_NUZLOCKE_RIBBON) && (FlagGet(FLAG_IS_CHAMPION) == FALSE))
             sStorage->boxMonsSprites[boxPosition]->oam.objMode = ST_OAM_OBJ_BLEND;
     }
 }
@@ -4670,7 +4676,7 @@ static u8 CreateBoxMonIconsInColumn(u8 column, u16 distance, s16 speed)
                     sStorage->boxMonsSprites[boxPosition]->sScrollInDestX = xDest;
                     sStorage->boxMonsSprites[boxPosition]->callback = SpriteCB_BoxMonIconScrollIn;
                     // Locked nuzlocke mons should be transparent
-                    if (GetBoxMonDataAt(sStorage->incomingBoxId, boxPosition, MON_DATA_NUZLOCKE_RIBBON))
+                    if (GetBoxMonDataAt(sStorage->incomingBoxId, boxPosition, MON_DATA_NUZLOCKE_RIBBON) && (FlagGet(FLAG_IS_CHAMPION) == FALSE))
                         sStorage->boxMonsSprites[boxPosition]->oam.objMode = ST_OAM_OBJ_BLEND;
                     iconsCreated++;
                 }
