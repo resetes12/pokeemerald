@@ -930,7 +930,6 @@ const u8 gText_ItemIsNowHeld[] = _("{DYNAMIC 0} is now held.");
 const u8 gText_ChangedToNewItem[] = _("Changed to {DYNAMIC 0}.");
 const u8 gText_MailCantBeStored[] = _("Mail can't be stored!");
 const u8 gText_NuzlockeFainted[] = _("{PKMN} fainted in Nuzlocke!");
-const u8 gText_FaintedForever[] = _("{PKMN} fainted forever!");
 const u8 gPCText_Cancel[] = _("Cancel");
 const u8 gPCText_Store[] = _("Store");
 const u8 gPCText_Withdraw[] = _("Withdraw");

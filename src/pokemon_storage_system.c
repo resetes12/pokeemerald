@@ -97,7 +97,6 @@ enum {
     MSG_CHANGED_TO_ITEM,
     MSG_CANT_STORE_MAIL,
     MSG_NUZLOCKE,
-    MSG_FAINTED_FOREVER,
 };
 
 // IDs for how to resolve variables in the above messages
@@ -1100,8 +1099,7 @@ static const struct StorageMessage sMessages[] =
     [MSG_ITEM_IS_HELD]         = {gText_ItemIsNowHeld,           MSG_VAR_ITEM_NAME},
     [MSG_CHANGED_TO_ITEM]      = {gText_ChangedToNewItem,        MSG_VAR_ITEM_NAME},
     [MSG_CANT_STORE_MAIL]      = {gText_MailCantBeStored,        MSG_VAR_NONE},
-    [MSG_NUZLOCKE]             = {gText_NuzlockeFainted,         MSG_VAR_NONE},
-    [MSG_FAINTED_FOREVER]      = {gText_FaintedForever,          MSG_VAR_NONE},
+    [MSG_NUZLOCKE]             = {gText_NuzlockeFainted,         MSG_VAR_NONE}
 };
 
 static const struct WindowTemplate sYesNoWindowTemplate =
