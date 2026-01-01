@@ -212,12 +212,15 @@ Debug_Script_3_Text_TypeEffectiveness::
 	.string "NO will set it to MODERN TYPE CHART.$"
 
 Debug_Script_4::
+	goto AquaHideout_UnusedRubyMap1_EventScript_Regidrago
 	end
 
 Debug_Script_5::
+	goto AquaHideout_UnusedRubyMap2_EventScript_Regieleki
 	end
 
 Debug_Script_6::
+	goto IslandCave_EventScript_Regice
 	end
 
 Debug_Script_7::

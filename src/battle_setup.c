@@ -687,10 +687,10 @@ void StartRegiBattle(void)
         CreateBattleStartTask(B_TRANSITION_REGISTEEL, MUS_VS_REGI);
         break;
     case SPECIES_REGIELEKI:
-        CreateBattleStartTask(B_TRANSITION_SHRED_SPLIT, MUS_PL_VS_REGI);
+        CreateBattleStartTask(B_TRANSITION_REGIELEKI, MUS_PL_VS_REGI);
         break;
     case SPECIES_REGIDRAGO:
-        CreateBattleStartTask(B_TRANSITION_SHRED_SPLIT, MUS_PL_VS_REGI);
+        CreateBattleStartTask(B_TRANSITION_REGIDRAGO, MUS_PL_VS_REGI);
         break;
     }
 
