@@ -100,7 +100,7 @@ static const u8 Str_Beauty[] = _("Beauty");
 static const u8 Str_Smart[] = _("Smart");
 static const u8 Str_Sheen[] = _("Sheen");
 static const u8 Str_Fateful[] = _("Fateful");
-static const u8 Str_Fateful2[] = _("Unused Ribbons");
+static const u8 Str_Nuzlocke[] = _("Nuzlocke Ribbon");
 static const u8 Str_CoolRibbon[] = _("Cool Ribbons");
 static const u8 Str_CuteRibbon[] = _("Cute Ribbons");
 static const u8 Str_ToughRibbon[] = _("Tough Ribbons");
@@ -346,7 +346,7 @@ static const struct EditPokemonStruct DebugPkmCreator_Options[] =
         [VAL_RIBBON_TOUGHRIBBON]   = {Str_ToughRibbon, EDIT_NORMAL, 0, 3, 0, MON_DATA_TOUGH_RIBBON, 1},
         [VAL_RIBBON_GIFTRIBBON]    = {Str_GiftRibbon, EDIT_HEX, 0, 127, 0, MON_DATA_MARINE_RIBBON, 2},
         [VAL_RIBBON_FATEFUL]       = {Str_Fateful, EDIT_BOOL, 0, 1, 0, MON_DATA_MODERN_FATEFUL_ENCOUNTER, 1},
-        [VAL_RIBBON_FATEFUL2]      = {Str_Fateful2, EDIT_NORMAL, 0, 3, 0, MON_DATA_UNUSED_RIBBONS, 1},
+        [VAL_RIBBON_FATEFUL2]      = {Str_Nuzlocke, EDIT_NORMAL, 0, 3, 0, MON_DATA_NUZLOCKE_RIBBON, 1},
         // Move data
         [VAL_MOVE_1]               = {Str_Move, EDIT_NORMAL, 0, MOVES_COUNT - 1, MOVE_POUND, MON_DATA_MOVE1, 3},
         [VAL_MOVE_2]               = {Str_Move, EDIT_NORMAL, 0, MOVES_COUNT - 1, 0, MON_DATA_MOVE2, 3},
