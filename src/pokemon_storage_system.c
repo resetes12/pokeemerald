@@ -4042,7 +4042,7 @@ static void LoadDisplayMonGfx(u16 species, u32 pid)
         LZ77UnCompWram(sStorage->displayMonPalette, sStorage->displayMonPalBuffer);
         CpuCopy32(sStorage->tileBuffer, sStorage->displayMonTilePtr, MON_PIC_SIZE);
         LoadPalette(sStorage->displayMonPalBuffer, sStorage->displayMonPalOffset, PLTT_SIZE_4BPP);
-        if (sStorage->displayMonNuzlockeRibbon)
+        if ((sStorage->displayMonNuzlockeRibbon) && (FlagGet(FLAG_IS_CHAMPION) == FALSE))
         {
             if (TX_NUZLOCKE_CEMETERY_ICON_GRAY)
             {
