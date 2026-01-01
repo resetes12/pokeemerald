@@ -1421,7 +1421,7 @@ static const u8 sHM05Desc[] = _(
 static const u8 sHM06Desc[] = _(
     "A rock-crushingly\n"
     "tough attack that\n"
-    "may lower Sp. Def.");
+    "may lower Def.");
 
 static const u8 sHM07Desc[] = _(
     "Attacks the foe\n"

@@ -203,7 +203,7 @@ static const u8 sDisableDescription[] = _(
 
 static const u8 sAcidDescription[] = _(
     "Sprays a hide-melting acid.\n"
-    "May lower Defense.");
+    "May lower Sp. Defense.");
 
 static const u8 sEmberDescription[] = _(
     "A weak fire attack that may\n"
