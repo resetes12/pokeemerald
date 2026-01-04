@@ -1683,8 +1683,18 @@ static void OverworldBasic(void)
             || cachedBlend.time1 != currentTimeBlend.time1
             || cachedBlend.weight != currentTimeBlend.weight)
         {
-           UpdateAltBgPalettes(PALETTES_BG);
-           UpdatePalettesWithTime(PALETTES_ALL);
+            // Temp fix for Weather Shade. Blending palette when updating time is stopped in the overworld,
+            // so the shade remains, instead of fading with the new blended time.
+
+            // Blending resumes after opening a menu or battling, so it kinda works.
+
+            // It mostly affects FakeRTC, as normal RTC overworld palette change don't happen as often,
+            // and only affects three maps (Petalburg Woods, Souther Island interior and Faraway Island interior).
+            if (GetSavedWeather() != WEATHER_SHADE)
+            {
+                UpdateAltBgPalettes(PALETTES_BG);
+                UpdatePalettesWithTime(PALETTES_ALL);
+            }
         }
     }
 }
