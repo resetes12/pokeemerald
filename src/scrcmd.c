@@ -55,6 +55,7 @@
 #include "constants/event_objects.h"
 #include "tx_randomizer_and_challenges.h"
 #include "constants/items.h"
+#include "constants/battle_frontier.h"
 
 typedef u16 (*SpecialFunc)(void);
 typedef void (*NativeFunc)(void);
@@ -2613,5 +2614,34 @@ bool8 ScrCmd_checkrandomizer(struct ScriptContext *ctx)
     {
         gSpecialVar_Result = FALSE;
     }     
+    return FALSE;
+}
+
+//Ported from HnS
+bool8 ScrCmd_givebp(struct ScriptContext *ctx)
+{
+    u16 add = VarGet(ScriptReadHalfword(ctx));   // supports immediates or VARs
+    u32 total;
+
+    // Update total BP
+    total = gSaveBlock2Ptr->frontier.battlePoints;
+    if (total + add > MAX_BATTLE_FRONTIER_POINTS)
+        total = MAX_BATTLE_FRONTIER_POINTS;
+    else
+        total += add;
+    gSaveBlock2Ptr->frontier.battlePoints = total;
+
+    // Store the awarded amount into gStringVar1 (for use in msgboxes)
+    ConvertIntToDecimalStringN(gStringVar1, add, STR_CONV_MODE_LEFT_ALIGN, 3);
+
+    // Update the card BP (16-bit) and daily counter
+    {
+        u32 card = gSaveBlock2Ptr->frontier.cardBattlePoints + add;
+        if (card > 0xFFFF)
+            card = 0xFFFF;
+        gSaveBlock2Ptr->frontier.cardBattlePoints = card;
+    }
+    IncrementDailyBattlePoints(add);
+
     return FALSE;
 }

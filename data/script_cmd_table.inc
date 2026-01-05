@@ -236,6 +236,7 @@ gScriptCmdTable::
 	.4byte ScrCmd_dynmultipush                      @ 0xe9
 	.4byte ScrCmd_checkrandomizer                   @ 0xea
 	.4byte ScrCmd_checknuzlocke                     @ 0xeb
+	.4byte ScrCmd_givebp							@ 0xec
 
 gScriptCmdTableEnd::
 	.4byte ScrCmd_nop
