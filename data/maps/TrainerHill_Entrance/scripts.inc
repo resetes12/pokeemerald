@@ -423,7 +423,8 @@ TrainerHill_Roof_Text_YouFinallyCameBravo:
 TrainerHill_Roof_Text_HaveTheMostMarvelousGift:
 	.string "For a marvelous someone like you,\n"
 	.string "I have the most marvelous gift,\l"
-	.string "plus some money for your effort!$"
+	.string "20 Battle Points, and some money\l"
+	.string "for your effort!$"
 
 TrainerHill_Roof_Text_FullUpBeBackLaterForThis:
 	.string "Oh, no, full up with things!\n"
