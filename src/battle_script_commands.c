@@ -3800,8 +3800,11 @@ static void Cmd_getexp(void)
 
             for (viaSentIn = 0, i = 0; i < PARTY_SIZE; i++)
             {
-                if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) == SPECIES_NONE || GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG)
-                    || GetMonData(&gPlayerParty[i], MON_DATA_HP) == 0)
+                if (GetMonData(&gPlayerParty[i], MON_DATA_SPECIES) == SPECIES_NONE
+                || GetMonData(&gPlayerParty[i], MON_DATA_IS_EGG)
+                || GetMonData(&gPlayerParty[i], MON_DATA_HP) == 0
+                || GetMonData(&gPlayerParty[i], MON_DATA_LEVEL) == MAX_LEVEL //lvl 100 Pokémon don't absorb Exp.
+                || ((gBattleTypeFlags & BATTLE_TYPE_INGAME_PARTNER) && i >= 3)) //Steven doesn't get Exp. Sorry.
                     continue;
                 if (gBitTable[i] & sentIn)
                     viaSentIn++;
@@ -3969,7 +3972,7 @@ static void Cmd_getexp(void)
                 gBattleScripting.getexpState = 5;
                 gBattleMoveDamage = 0; // used for exp
             }
-            else if (GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_LEVEL) >= GetCurrentPartyLevelCap())
+            else if ((GetMonData(&gPlayerParty[gBattleStruct->expGetterMonId], MON_DATA_LEVEL) >= GetCurrentPartyLevelCap()) || (gBattleTypeFlags & BATTLE_TYPE_INGAME_PARTNER && gBattleStruct->expGetterMonId >= 3))
             {
                 if ((FlagGet(FLAG_EXP_SHARE) == FALSE))
                     *(&gBattleStruct->sentInPokes) >>= 1;
