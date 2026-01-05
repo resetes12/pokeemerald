@@ -84,6 +84,9 @@
                                              | BATTLE_TYPE_KYOGRE_GROUDON | BATTLE_TYPE_LEGENDARY | BATTLE_TYPE_REGI            \
                                              | BATTLE_TYPE_RECORDED | BATTLE_TYPE_TRAINER_HILL | BATTLE_TYPE_SECRET_BASE        \
                                              | BATTLE_TYPE_GROUDON | BATTLE_TYPE_KYOGRE | BATTLE_TYPE_RAYQUAZA))
+// Added to check normal, not link, trainer battles in code 
+#define BATTLE_TYPE_NORMAL_BATTLES          (BATTLE_TYPE_DOUBLE | BATTLE_TYPE_TRAINER | BATTLE_TYPE_TWO_OPPONENTS | BATTLE_TYPE_TRAINER_HILL | BATTLE_TYPE_INGAME_PARTNER)    
+                                 
 
 // Battle Outcome defines
 #define B_OUTCOME_WON                  1
