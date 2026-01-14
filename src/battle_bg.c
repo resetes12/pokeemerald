@@ -944,8 +944,8 @@ void DrawMainBattleBackground(void)
         }
         else
         {
-            LZDecompressVram(gBattleTerrainTiles_Building_2, (void *)(BG_CHAR_ADDR(2)));
-            LZDecompressVram(gBattleTerrainTilemap_Building_2, (void *)(BG_SCREEN_ADDR(26)));
+            LZDecompressVram(gBattleTerrainTiles_Frontier_2, (void *)(BG_CHAR_ADDR(2)));
+            LZDecompressVram(gBattleTerrainTilemap_Frontier_2, (void *)(BG_SCREEN_ADDR(26)));
             LoadCompressedPalette(gBattleTerrainPalette_Frontier_2, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
         }
     }
@@ -1260,8 +1260,8 @@ void DrawMainBattleBackground(void)
             }
             else
             {
-                LZDecompressVram(gBattleTerrainTiles_Building_2, (void *)(BG_CHAR_ADDR(2)));
-                LZDecompressVram(gBattleTerrainTilemap_Building_2, (void *)(BG_SCREEN_ADDR(26)));
+                LZDecompressVram(gBattleTerrainTiles_Frontier_2, (void *)(BG_CHAR_ADDR(2)));
+                LZDecompressVram(gBattleTerrainTilemap_Frontier_2, (void *)(BG_SCREEN_ADDR(26)));
                 LoadCompressedPalette(gBattleTerrainPalette_Frontier_2, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
             }
             break;
@@ -1692,7 +1692,10 @@ bool8 LoadChosenBattleElement(u8 caseId)
                 LZDecompressVram(gBattleTerrainTiles_Stadium, (void *)(BG_CHAR_ADDR(2)));
                 break;
             case MAP_BATTLE_SCENE_FRONTIER:
+            if (gSaveBlock2Ptr->optionsNewBackgrounds == 0)
                 LZDecompressVram(gBattleTerrainTiles_Building, (void *)(BG_CHAR_ADDR(2)));
+            else
+                LZDecompressVram(gBattleTerrainTiles_Frontier_2, (void *)(BG_CHAR_ADDR(2)));
                 break;
             }
         }
@@ -1757,7 +1760,10 @@ bool8 LoadChosenBattleElement(u8 caseId)
                 LZDecompressVram(gBattleTerrainTilemap_Stadium, (void *)(BG_SCREEN_ADDR(26)));
                 break;
             case MAP_BATTLE_SCENE_FRONTIER:
+            if (gSaveBlock2Ptr->optionsNewBackgrounds == 0)
                 LZDecompressVram(gBattleTerrainTilemap_Building, (void *)(BG_SCREEN_ADDR(26)));
+            else
+                LZDecompressVram(gBattleTerrainTilemap_Frontier_2, (void *)(BG_SCREEN_ADDR(26)));
                 break;
             }
         }
@@ -1828,7 +1834,10 @@ bool8 LoadChosenBattleElement(u8 caseId)
                 LoadCompressedPalette(gBattleTerrainPalette_StadiumDrake, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
                 break;
             case MAP_BATTLE_SCENE_FRONTIER:
+            if (gSaveBlock2Ptr->optionsNewBackgrounds == 0)
                 LoadCompressedPalette(gBattleTerrainPalette_Frontier, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
+            else
+                LoadCompressedPalette(gBattleTerrainPalette_Frontier_2, BG_PLTT_ID(2), 3 * PLTT_SIZE_4BPP);
                 break;
             }
         }

@@ -1045,7 +1045,7 @@ static void WallyHandleDrawTrainerPic(void)
     gSprites[gBattlerSpriteIds[gActiveBattler]].sSpeedX = -2;
     if (gSaveBlock2Ptr->optionsFastIntro == 1)
         gSprites[gBattlerSpriteIds[gActiveBattler]].callback = SpriteCB_TrainerSlideIn;
-    if (gSaveBlock2Ptr->optionsFastIntro == 0)
+    else if (gSaveBlock2Ptr->optionsFastIntro == 0)
         gSprites[gBattlerSpriteIds[gActiveBattler]].callback = SpriteCB_TrainerSpawn;
     gBattlerControllerFuncs[gActiveBattler] = CompleteOnBattlerSpriteCallbackDummy;
 }
