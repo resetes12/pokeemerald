@@ -1118,7 +1118,10 @@ static u8 SetUpCopyrightScreen(void)
         if (UpdatePaletteFade())
             break;
         CreateTask(Task_Scene1_Load, 0);
-        SetMainCallback2(MainCB2_Intro);
+        if (gSaveBlock2Ptr->optionsSkipIntro == 1)
+            SetMainCallback2(MainCB2_Intro);
+        else
+            SetMainCallback2(CB2_InitMainMenu);
         if (gMultibootProgramStruct.gcmb_field_2 != 0)
         {
             if (gMultibootProgramStruct.gcmb_field_2 == 2)
@@ -1156,10 +1159,8 @@ void CB2_InitCopyrightScreenAfterBootup(void)
         SetPokemonCryStereo(gSaveBlock2Ptr->optionsSound);
         InitHeap(gHeap, HEAP_SIZE);
     }
-    if (gSaveBlock2Ptr->optionsSkipIntro == 0)
-        CB2_InitMainMenu();
-    else
-        SetUpCopyrightScreen();
+
+    SetUpCopyrightScreen();
 }
 
 void CB2_InitCopyrightScreenAfterTitleScreen(void)
