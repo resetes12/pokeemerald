@@ -11,7 +11,6 @@
 #include "battle_setup.h"
 #include "coins.h"
 #include "credits.h"
-#include "money.h"
 #include "data.h"
 #include "daycare.h"
 #include "debug.h"
@@ -62,8 +61,6 @@
 #include "constants/species.h"
 #include "constants/weather.h"
 #include "save.h"
-
-#define MAX_MONEY 9999999
 
 #if TX_DEBUG_SYSTEM_ENABLE == TRUE
 // *******************************
