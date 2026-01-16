@@ -11,6 +11,7 @@
 #include "battle_setup.h"
 #include "coins.h"
 #include "credits.h"
+#include "money.h"
 #include "data.h"
 #include "daycare.h"
 #include "debug.h"
@@ -62,6 +63,7 @@
 #include "constants/weather.h"
 #include "save.h"
 
+#define MAX_MONEY 9999999
 
 #if TX_DEBUG_SYSTEM_ENABLE == TRUE
 // *******************************
@@ -3637,7 +3639,7 @@ static void DebugAction_Give_Pokemon_ComplexCreateMon(u8 taskId) //https://githu
 
 static void DebugAction_Give_MaxMoney(u8 taskId)
 {
-    SetMoney(&gSaveBlock1Ptr->money, 999999);
+    SetMoney(&gSaveBlock1Ptr->money, MAX_MONEY);
 }
 
 static void DebugAction_Give_MaxCoins(u8 taskId)
