@@ -12,7 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Install dependencies
-        run: sudo apt-get install binutils-arm-none-eabi gcc-arm-none-eabi
+        run: |
+          sudo apt-get update
+          sudo apt-get install binutils-arm-none-eabi gcc-arm-none-eabi libpng-dev
       - name: Build & install agbcc
         run: |
           cd ..
