@@ -3844,13 +3844,16 @@ static void Cmd_getexp(void)
 
             if (gSaveBlock2Ptr->optionsDifficulty == 2) //Only if playing HARD MODE
             {
-                if (gSaveBlock1Ptr->tx_Difficulty_HardExp == 0) //Exp decrease for HARD MODE
+                if ((gSaveBlock1Ptr->tx_Difficulty_HardExp == 0) && (FlagGet(FLAG_IS_CHAMPION) == FALSE)) 
+                //Exp decrease for HARD MODE (60%)
                     calculatedExp *= 0.60;
-                else if (gSaveBlock1Ptr->tx_Difficulty_HardExp == 1) //Maintain default exp. gain for HARD MODE
+                else if ((gSaveBlock1Ptr->tx_Difficulty_HardExp == 1) || (gSaveBlock1Ptr->tx_Difficulty_HardExp == 0) && (FlagGet(FLAG_IS_CHAMPION) == TRUE)) 
+                //Maintain default exp. gain for HARD MODE
+                //Also the option gets disabled after becoming champion because there's easy access to EXP. training.
                     calculatedExp *= 1;
             }
             else if (gSaveBlock2Ptr->optionsDifficulty == 0) //exp increase for easy mode
-                calculatedExp *= 1.2;
+                calculatedExp *= 1.3;
 
             if (FlagGet(FLAG_EXP_SHARE) == FALSE)
             {
