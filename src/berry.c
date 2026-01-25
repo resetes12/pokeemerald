@@ -1216,10 +1216,26 @@ static u8 GetNumStagesWateredByBerryTreeId(u8 id)
 // However, this function actually skews towards higher berry yields, because
 // it rounds `extraYield` to the nearest whole number.
 //
-// See resulting yields: https://gist.github.com/hondew/2a099dbe54aa91414decdbfaa524327d,
-// and bug fix: https://gist.github.com/hondew/0f0164e5b9dadfd72d24f30f2c049a0b.
+// See resulting yields: https://gist.github.com/abaresk/2a099dbe54aa91414decdbfaa524327d
 static u8 CalcBerryYieldInternal(u16 max, u16 min, u8 water)
 {
+    #ifdef BUGFIX
+    u16 diff;
+    u32 minRand;
+    u32 rand;
+    u16 currentMap = gMapHeader.regionMapSectionId;
+
+    if (currentMap == MAP_ROUTE119 || currentMap == MAP_ROUTE120 || currentMap == MAP_ROUTE123)
+        water = 4;
+
+    if (water == 0)
+        return min;
+
+    diff = max - min + 1;
+    minRand = (water - 1) * diff;
+    rand = minRand + Random() % diff;
+    return min + rand / NUM_WATER_STAGES;
+    #else
     u32 randMin;
     u32 randMax;
     u32 rand;
@@ -1244,6 +1260,7 @@ static u8 CalcBerryYieldInternal(u16 max, u16 min, u8 water)
             extraYield = rand / NUM_WATER_STAGES;
         return extraYield + min;
     }
+    #endif
 }
 
 static u8 CalcBerryYield(struct BerryTree *tree)
