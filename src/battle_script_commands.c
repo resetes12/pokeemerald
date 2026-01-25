@@ -3850,6 +3850,7 @@ static void Cmd_getexp(void)
                 else if ((gSaveBlock1Ptr->tx_Difficulty_HardExp == 1) || (gSaveBlock1Ptr->tx_Difficulty_HardExp == 0) && (FlagGet(FLAG_IS_CHAMPION) == TRUE)) 
                 //Maintain default exp. gain for HARD MODE
                 //Also the option gets disabled after becoming champion because there's easy access to EXP. training.
+                //The Flag checks ensure save compatibility, as you'd need to become champion again in old saves for this to activate.
                     calculatedExp *= 1;
             }
             else if (gSaveBlock2Ptr->optionsDifficulty == 0) //exp increase for easy mode
