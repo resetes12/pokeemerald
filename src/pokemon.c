@@ -6419,7 +6419,6 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     for (i = 0; i < ARRAY_COUNT(sHoldEffectToType); i++)
     {
         if (gSaveBlock2Ptr->optionStyle == 1)
-        {
             if (attackerHoldEffect == sHoldEffectToType[i][0]
                 && type == sHoldEffectToType[i][1])
             {
@@ -6429,9 +6428,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
                     spAttack = (spAttack * (attackerHoldEffectParam + 100)) / 100;
                 break;
             }
-        }
-        else if (gSaveBlock2Ptr->optionStyle == 0)
-        {
+        if (gSaveBlock2Ptr->optionStyle == 0)
             if (attackerHoldEffect == sHoldEffectToType[i][0]
                 && type == sHoldEffectToType[i][1])
             {
@@ -6439,7 +6436,6 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
                 spAttack = (spAttack * (attackerHoldEffectParam + 100)) / 100;
                 break;
             }
-        }
     }
 
     // Apply boosts from hold items
@@ -6559,7 +6555,7 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
     if (gSaveBlock2Ptr->optionStyle == 0)
         if (defender->ability == ABILITY_THICK_FAT && (type == TYPE_FIRE || type == TYPE_ICE))
             gBattleMovePower /= 2;
-    else if (gSaveBlock2Ptr->optionStyle == 1)
+    if (gSaveBlock2Ptr->optionStyle == 1)
         if (defender->ability == ABILITY_THICK_FAT && (type == TYPE_FIRE || type == TYPE_ICE))
             spAttack /= 2;
     if ((defender->ability != ABILITY_NONE) 
