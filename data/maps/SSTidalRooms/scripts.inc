@@ -30,8 +30,11 @@ SSTidalRooms_EventScript_Bed::
 	end
 
 SSTidalRooms_EventScript_Bed_PokecenterChallenge::
+	lockall
 	msgbox SSTidalRooms_Text_TakeRestOnBed_PokecenterChallenge, MSGBOX_DEFAULT
 	closemessage
+	call SSTidalRooms_EventScript_ProgessCruiseAfterBed
+	releaseall
 	end
 
 SSTidalRooms_EventScript_Colton::
