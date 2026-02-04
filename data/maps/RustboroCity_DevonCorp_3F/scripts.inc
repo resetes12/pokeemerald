@@ -164,6 +164,8 @@ RustboroCity_DevonCorp_3F_EventScript_GiveExpShare::
 	msgbox RustboroCity_DevonCorp_3F_Text_ThankYouForDeliveringLetter, MSGBOX_DEFAULT
 	giveitem ITEM_EXP_SHARE
 	goto_if_eq VAR_RESULT, FALSE, Common_EventScript_ShowBagIsFull
+	giveitem ITEM_EXP_SHARE_SMALL
+	goto_if_eq VAR_RESULT, FALSE, Common_EventScript_ShowBagIsFull
 	setflag FLAG_RECEIVED_EXP_SHARE
 	msgbox RustboroCity_DevonCorp_3F_Text_ExplainExpShare, MSGBOX_DEFAULT
 	closemessage
@@ -251,9 +253,19 @@ RustboroCity_DevonCorp_3F_Text_ThankYouForDeliveringLetter:
 	.string "It should help you, a Trainer.$"
 
 RustboroCity_DevonCorp_3F_Text_ExplainExpShare:
-	.string "Mr. Stone: If you turn Exp. Share on,\n"
-	.string "all Pokémon in the party will gain\l"
+	.string "Mr. Stone: There are two types of\n"
+	.string "Exp. Share items:\l"
+	.string "the Key Item and the Held Item.\p"
+	.string "If you turn the Key Item Exp. Share\n"
+	.string "on, all Pokémon in the party will gain\l"
 	.string "half the Exp Points from battle.\p"
+	.string "Exp. Share S, on the other hand, will\n"
+	.string "only share half of the Exp points with\l"
+	.string "the Pokémon that holds it, not the\l"
+	.string "whole party.\p"
+	.string "You'll have to choose the one that\n"
+	.string "fits your playstyle better, as both\l"
+	.string "Exp Shares don't stack up!\p"
 	.string "I would say Exp. Share is quite useful\n"
 	.string "for raising weak Pokémon.$"
 
