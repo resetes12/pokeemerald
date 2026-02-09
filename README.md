@@ -143,7 +143,7 @@ Challenges page:
 * A new ability tutor, after becoming champion, is available in Lilycove.
 * EV Training is available in Lilycove.
 * IV Maximizer is available in Lylicove, after beating the game, with the option to set IVs to 30 or 31 to allow different Hidden Potentials. Needs a level 100 Pokémon.
-* A nurse NPC is available after beating the game to farm EXP in Lilycove.
+* A nurse NPC is available after beating the game to farm EXP. in Lilycove.
 * New battle backgrounds, completely optional, in the options menu.
 * Faster battle intros. Enable "Fast Intros" option in the options menu.
 * Faster-paced battles. Enable "Fast Battles" option in the options menu.
@@ -187,7 +187,7 @@ Challenges page:
 * Wonder Trade uses a tier system, so rare Pokémon are rare to obtain as well. 
 * 3 difficulty modes (EASY, NORMAL and HARD). Selected at the start of the game, can be changed anytime from the options menu (unless using the "Limit difficulty" option).
 
-    EASY mode: Makes the game quite a lot easier by scaling levels down, and obtaining more EXP (+20%).
+    EASY mode: Makes the game quite a lot easier by scaling levels down, and obtaining more EXP. (+20%).
     - Trainer Pokémon and Wild Pokémon scale down to 10 levels compared to the original game. More badges, lower levels.
     - There are no restrictions on the Battle Frontier.
 

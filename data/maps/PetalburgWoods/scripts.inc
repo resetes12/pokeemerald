@@ -732,11 +732,11 @@ PetalburgWoods_Text_MiracleSeedExplanation:
 PetalburgWoods_Text_TrainerTipsExperience:
 	.string "Trainer Tips\p"
 	.string "Any Pokémon that appears even once\n"
-	.string "in a battle is awarded Exp Points.\p"
+	.string "in a battle is awarded Exp. Points.\p"
 	.string "To raise a weak Pokémon, put it at the\n"
 	.string "left of the team list.\p"
 	.string "As soon as a battle starts, switch it\n"
-	.string "out. It will earn Exp Points without\l"
+	.string "out. It will earn Exp. Points without\l"
 	.string "being exposed to any harm.$"
 
 PetalburgWoods_Text_TrainerTipsPP:
