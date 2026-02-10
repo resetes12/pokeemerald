@@ -127,6 +127,8 @@ u8 AddScrollIndicatorArrowPairParameterized(u32 arrowType, s32 commonPos, s32 fi
 void RemoveScrollIndicatorArrowPair(u8 taskId);
 void Task_ScrollIndicatorArrowPairOnMainMenu(u8 taskId);
 bool8 ListMenuChangeSelection(struct ListMenu *list, bool8 updateCursorAndCallCallback, u8 count, bool8 movingDown);
+bool8 ListMenuChangeSelectionLoop(struct ListMenu *list, bool8 updateCursorAndCallCallback, bool8 movingDown);
 bool8 ListMenuChangeSelectionFull(struct ListMenu *list, bool32 updateCursor, bool32 callCallback, u8 count, bool8 movingDown);
+bool8 ListMenuChangeSelectionFullLoop(struct ListMenu *list, bool32 updateCursor, bool32 callCallback, bool8 movingDown);
 
 #endif //GUARD_LIST_MENU_H
