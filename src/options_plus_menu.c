@@ -33,6 +33,7 @@ enum
 enum
 {
     MENUITEM_MAIN_TEXTSPEED,
+    MENUITEM_MAIN_FONT,
     MENUITEM_MAIN_DIFFICULTY,
     MENUITEM_MAIN_BUTTONMODE,
     MENUITEM_MAIN_FOLLOWER,
@@ -224,6 +225,7 @@ static void DrawChoices_Run_Type(int selection, int y);
 static void DrawChoices_Autorun_Surf(int selection, int y);
 static void DrawChoices_Autorun_Dive(int selection, int y);
 static void DrawChoices_SurfOverworld(int selection, int y);
+static void DrawChoices_Font(int selection, int y);
 static void DrawBgWindowFrames(void);
 
 // EWRAM vars
@@ -257,6 +259,7 @@ struct // MENU_MAIN
 } static const sItemFunctionsMain[MENUITEM_MAIN_COUNT] =
 {
     [MENUITEM_MAIN_TEXTSPEED]               = {DrawChoices_TextSpeed,        ProcessInput_Options_Four},
+    [MENUITEM_MAIN_FONT]                    = {DrawChoices_Font,             ProcessInput_Options_Two},
     [MENUITEM_MAIN_DIFFICULTY]              = {DrawChoices_Difficulty,       ProcessInput_Difficulty},
     [MENUITEM_MAIN_BUTTONMODE]              = {DrawChoices_ButtonMode,       ProcessInput_Options_Three},
     [MENUITEM_MAIN_FOLLOWER]                = {DrawChoices_Follower,         ProcessInput_Options_Two},
@@ -323,9 +326,11 @@ static const u8 sText_OptionRunType[]             = _("QUICK RUN");
 static const u8 sText_AutorunEnable_Surf[]        = _("AUTORUN (SURF)");
 static const u8 sText_AutorunEnable_Dive[]        = _("AUTORUN (DIVE)");
 static const u8 sText_SurfSprites[]               = _("SURF SPRITES");
+static const u8 sText_FontType[]                  = _("FONT TYPE");
 static const u8 *const sOptionMenuItemsNamesMain[MENUITEM_MAIN_COUNT] =
 {
     [MENUITEM_MAIN_TEXTSPEED]           = gText_TextSpeed,
+    [MENUITEM_MAIN_FONT]                = sText_FontType,
     [MENUITEM_MAIN_DIFFICULTY]          = gText_OptionDifficulty,
     [MENUITEM_MAIN_BUTTONMODE]          = gText_ButtonMode,
     [MENUITEM_MAIN_FOLLOWER]            = gText_FollowerEnable,
@@ -394,7 +399,7 @@ static bool8 CheckConditions(int selection)
         switch(selection)
         {
         case MENUITEM_MAIN_TEXTSPEED:         return TRUE;
-
+        case MENUITEM_MAIN_FONT:              return TRUE;
         case MENUITEM_MAIN_DIFFICULTY:        return TRUE;
 
         case MENUITEM_MAIN_BUTTONMODE:        return TRUE;
@@ -446,6 +451,8 @@ static bool8 CheckConditions(int selection)
 static const u8 sText_Empty[]                   = _("");
 static const u8 sText_Desc_Save[]               = _("Save your settings.");
 static const u8 sText_Desc_TextSpeed[]          = _("Choose one of the four text-display\nspeeds.");
+static const u8 sText_Desc_Font_Em[]            = _("{COLOR 9}{COLOR 10}Emerald{COLOR 2} font type. Exit the Options\nMenu to properly apply the option.");
+static const u8 sText_Desc_Font_FRLG[]          = _("{COLOR 7}{COLOR 8}FR{COLOR 9}{COLOR 10}LG{COLOR 2} font type. Exit the Options Menu\nto properly apply the option.");
 static const u8 sText_Desc_BattleScene_On[]     = _("Show the Pokémon animations\nand attack animations.");
 static const u8 sText_Desc_BattleScene_Off[]    = _("Skip the Pokémon animations\nand attack animations.");
 static const u8 sText_Desc_Difficulty_Easy[]    = _("Change the difficulty to Easy.\nEverything is easier.");
@@ -482,6 +489,7 @@ static const u8 sText_Desc_SurfOverworldOriginal[]      = _("Use the original ge
 static const u8 *const sOptionMenuItemDescriptionsMain[MENUITEM_MAIN_COUNT][3] =
 {
     [MENUITEM_MAIN_TEXTSPEED]         = {sText_Desc_TextSpeed,            sText_Empty,                     sText_Empty},
+    [MENUITEM_MAIN_FONT]              = {sText_Desc_Font_Em,              sText_Desc_Font_FRLG,            sText_Empty},
     [MENUITEM_MAIN_DIFFICULTY]        = {sText_Desc_Difficulty_Easy,      sText_Desc_Difficulty_Normal,    sText_Desc_Difficulty_Hard},
     [MENUITEM_MAIN_BUTTONMODE]        = {sText_Desc_ButtonMode,           sText_Desc_ButtonMode_LR,        sText_Desc_ButtonMode_LA},
     [MENUITEM_MAIN_FRAMETYPE]         = {sText_Desc_FrameType,            sText_Empty,                     sText_Empty},
@@ -567,6 +575,7 @@ static const u8 sText_Desc_Disabled_BattleHPBar[]   = _("Only active if xyz.");
 static const u8 *const sOptionMenuItemDescriptionsDisabledMain[MENUITEM_MAIN_COUNT] =
 {
     [MENUITEM_MAIN_TEXTSPEED]         = sText_Desc_Disabled_Textspeed,
+    [MENUITEM_MAIN_FONT]              = sText_Empty,
     [MENUITEM_MAIN_DIFFICULTY]        = sText_Empty,
     [MENUITEM_MAIN_BUTTONMODE]        = sText_Empty,
     [MENUITEM_MAIN_FRAMETYPE]         = sText_Empty,
@@ -846,6 +855,7 @@ void CB2_InitOptionPlusMenu(void)
     case 6:
         sOptions = AllocZeroed(sizeof(*sOptions));
         sOptions->sel[MENUITEM_MAIN_TEXTSPEED]           = gSaveBlock2Ptr->optionsTextSpeed;
+        sOptions->sel[MENUITEM_MAIN_FONT]                = gSaveBlock2Ptr->optionsFontType;
         sOptions->sel[MENUITEM_MAIN_DIFFICULTY]          = gSaveBlock2Ptr->optionsDifficulty;
         sOptions->sel[MENUITEM_MAIN_BUTTONMODE]          = gSaveBlock2Ptr->optionsButtonMode;
         sOptions->sel[MENUITEM_MAIN_FOLLOWER]            = gSaveBlock2Ptr->optionsfollowerEnable;
@@ -1083,6 +1093,7 @@ static void Task_OptionMenuProcessInput(u8 taskId)
 static void Task_OptionMenuSave(u8 taskId)
 {
     gSaveBlock2Ptr->optionsTextSpeed             = sOptions->sel[MENUITEM_MAIN_TEXTSPEED];
+    gSaveBlock2Ptr->optionsFontType              = sOptions->sel[MENUITEM_MAIN_FONT];
     gSaveBlock2Ptr->optionsDifficulty            = sOptions->sel[MENUITEM_MAIN_DIFFICULTY];
     gSaveBlock2Ptr->optionsButtonMode            = sOptions->sel[MENUITEM_MAIN_BUTTONMODE];
     gSaveBlock2Ptr->optionsfollowerEnable        = sOptions->sel[MENUITEM_MAIN_FOLLOWER];
@@ -2053,6 +2064,28 @@ static void DrawChoices_SurfOverworld(int selection, int y)
     DrawOptionMenuChoice(sText_Dynamic, 104, y, styles[0], active);
     DrawOptionMenuChoice(sText_Old, GetStringRightAlignXOffset(1, sText_Old, 198), y, styles[1], active);
 }
+
+static const u8 sText_Em[]          = _("Emerald");
+static const u8 sText_FRLG[]        = _("FRLG");
+static void DrawChoices_Font(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_MAIN_FONT);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock2Ptr->optionsFontType = 0; //Emerald Font
+    }
+    else
+    {
+        gSaveBlock2Ptr->optionsFontType = 1; //FRLG Font
+    }
+
+    DrawOptionMenuChoice(sText_Em, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_FRLG, GetStringRightAlignXOffset(1, sText_FRLG, 198), y, styles[1], active);
+}
+
 
 
 // Background tilemap
