@@ -456,7 +456,7 @@ static const u8 sText_Desc_BattleStyle_Set[]    = _("No free switch after fainti
 static const u8 sText_Desc_ButtonMode[]         = _("All buttons work as normal.");
 static const u8 sText_Desc_ButtonMode_LR[]      = _("On some screens the L and R buttons\nact as left and right.");
 static const u8 sText_Desc_ButtonMode_LA[]      = _("The L button acts as another A\nbutton for one-handed play.");
-static const u8 sText_Desc_FrameType[]          = _("Choose the frame surrounding the\nwindows.");
+static const u8 sText_Desc_FrameType[]          = _("Choose the frame surrounding the\nwindows. Frames 21-28 are from {COLOR 7}{COLOR 8}FR{COLOR 9}{COLOR 10}LG{COLOR 2}.");
 static const u8 sText_Desc_FollowerOn[]            = _("Let the first Pokémon in your\nparty follow you.");
 static const u8 sText_Desc_FollowerOff[]           = _("Walk alone.");
 static const u8 sText_Desc_FollowerLargeOn[]       = _("Enable large {PKMN} followers.\n{COLOR 7}{COLOR 8}Can cause graphical issues.");
@@ -540,14 +540,14 @@ static const u8 sText_Desc_BikeMusicOff[]                    = _("Disables Bike 
 static const u8 sText_Desc_SurfMusicOn[]                     = _("Enables Surf music.");
 static const u8 sText_Desc_SurfMusicOff[]                    = _("Disables Surf music.");
 static const u8 sText_Desc_WildMonMusic_Hoenn[]              = _("Default music from Hoenn.");
-static const u8 sText_Desc_WildMonMusic_Kanto_Old[]          = _("Music from Fire Red and Leaf Green.");
+static const u8 sText_Desc_WildMonMusic_Kanto_Old[]          = _("Music from {COLOR 7}{COLOR 8}Fire Red{COLOR 2} and {COLOR 9}{COLOR 10}Leaf Green{COLOR 2}.");
 static const u8 sText_Desc_WildMonMusic_Sinnoh[]             = _("Music from Diamond, Pearl and\nPlatinum.");
-static const u8 sText_Desc_WildMonMusic_Johto[]              = _("Music from Heart Gold and Soul Silver,\nbut from Johto.");
-static const u8 sText_Desc_WildMonMusic_Kanto_New[]          = _("Music from Heart Gold and Soul Silver,\nbut from Kanto.");
+static const u8 sText_Desc_WildMonMusic_Johto[]              = _("Music from {COLOR 5}{COLOR 6}Heart Gold{COLOR 2} and {COLOR 3}{COLOR 4}Soul Silver{COLOR 2},\nbut from Johto.");
+static const u8 sText_Desc_WildMonMusic_Kanto_New[]          = _("Music from {COLOR 5}{COLOR 6}Heart Gold{COLOR 2} and {COLOR 3}{COLOR 4}Soul Silver{COLOR 2},\nbut from Kanto.");
 static const u8 sText_Desc_WildMonMusic_Random[]             = _("Randomizes music from all available\ngames.");
 static const u8 sText_Desc_SoundEffects_Gen3[]               = _("Default sound effects from Gen III.");
 static const u8 sText_Desc_SoundEffects_DP[]                 = _("Sound effects from Diamond, Pearl\nand Platinum.");
-static const u8 sText_Desc_SoundEffects_HGSS[]               = _("Sound effects from Heart Gold and\nSoul Silver.");
+static const u8 sText_Desc_SoundEffects_HGSS[]               = _("Sound effects from {COLOR 5}{COLOR 6}Heart Gold{COLOR 2} and\n{COLOR 3}{COLOR 4}Soul Silver{COLOR 2}.");
 
 static const u8 *const sOptionMenuItemDescriptionsSound[MENUITEM_SOUND_COUNT][6] =
 {
