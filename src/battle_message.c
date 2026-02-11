@@ -2077,10 +2077,594 @@ static const struct BattleWindowText sTextOnWindowsInfo_Arena[] =
     },
 };
 
+static const struct BattleWindowText sTextOnWindowsInfo_Normal_FRLGFont[] =
+{
+    [B_WIN_MSG] = {
+        .fillValue = PIXEL_FILL(0xF),
+        .fontId = FONT_NORMAL,
+        .x = 0,
+        .y = 1,
+        .speed = 1,
+        .fgColor = 1,
+        .bgColor = 15,
+        .shadowColor = 6,
+    },
+    [B_WIN_ACTION_PROMPT] = {
+        .fillValue = PIXEL_FILL(0xF),
+        .fontId = FONT_NORMAL,
+        .x = 1,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 1,
+        .bgColor = 15,
+        .shadowColor = 6,
+    },
+    [B_WIN_ACTION_MENU] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = 0,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_MOVE_NAME_1] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_SMALL,
+        .x = 0,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_MOVE_NAME_2] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_SMALL,
+        .x = 0,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_MOVE_NAME_3] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_SMALL,
+        .x = 0,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_MOVE_NAME_4] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_SMALL,
+        .x = 0,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_PP] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_SMALL,
+        .x = 0,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 12,
+        .bgColor = 14,
+        .shadowColor = 11,
+    },
+    [B_WIN_PSS_ICON] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = 0,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_PP_REMAINING] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = 2,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 12,
+        .bgColor = 14,
+        .shadowColor = 11,
+    },
+    [B_WIN_MOVE_TYPE] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_SMALL,
+        .x = 0,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_SWITCH_PROMPT] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = 0,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_YESNO] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = 0,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_LEVEL_UP_BOX] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = 0,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_LEVEL_UP_BANNER] = {
+        .fillValue = PIXEL_FILL(0),
+        .fontId = FONT_NORMAL,
+        .x = 32,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 1,
+        .shadowColor = 2,
+    },
+    [B_WIN_VS_PLAYER] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = -1,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_VS_OPPONENT] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = -1,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_VS_MULTI_PLAYER_1] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = -1,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_VS_MULTI_PLAYER_2] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = -1,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_VS_MULTI_PLAYER_3] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = -1,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_VS_MULTI_PLAYER_4] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = -1,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_VS_OUTCOME_DRAW] = {
+        .fillValue = PIXEL_FILL(0),
+        .fontId = FONT_NORMAL,
+        .x = -1,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 1,
+        .shadowColor = 6,
+    },
+    [B_WIN_VS_OUTCOME_LEFT] = {
+        .fillValue = PIXEL_FILL(0),
+        .fontId = FONT_NORMAL,
+        .x = -1,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 1,
+        .shadowColor = 6,
+    },
+    [B_WIN_VS_OUTCOME_RIGHT] = {
+        .fillValue = PIXEL_FILL(0x0),
+        .fontId = FONT_NORMAL,
+        .x = -1,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 1,
+        .shadowColor = 6,
+    },
+    [24] = { // 24 "type" super-effective
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_SMALL,
+        .x = 0,
+        .y = 1,
+        .letterSpacing = 0,
+        .lineSpacing = 0,
+        .speed = 0,
+        .fgColor = 6,
+        .bgColor = 14,
+        .shadowColor = 5,
+    },
+    [25] = { // 25 "type" not very effective
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_SMALL,
+        .x = 0,
+        .y = 1,
+        .letterSpacing = 0,
+        .lineSpacing = 0,
+        .speed = 0,
+        .fgColor = 1,
+        .bgColor = 14,
+        .shadowColor = 3,
+    },
+    [26] = { // 26 "type" no effect
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_SMALL,
+        .x = 0,
+        .y = 1,
+        .letterSpacing = 0,
+        .lineSpacing = 0,
+        .speed = 0,
+        .fgColor = 7,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_MOVE_DESCRIPTION] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = 0,
+        .y = 1,
+        .letterSpacing = 0,
+        .lineSpacing = 0,
+        .speed = 0,
+        .fgColor = TEXT_DYNAMIC_COLOR_4,
+        .bgColor = TEXT_DYNAMIC_COLOR_5,
+        .shadowColor = TEXT_DYNAMIC_COLOR_6,
+    },
+};
+
+static const struct BattleWindowText sTextOnWindowsInfo_Arena_FRLGFont[] =
+{
+    [B_WIN_MSG] = {
+        .fillValue = PIXEL_FILL(0xF),
+        .fontId = FONT_NORMAL,
+        .x = 0,
+        .y = 1,
+        .speed = 1,
+        .fgColor = 1,
+        .bgColor = 15,
+        .shadowColor = 6,
+    },
+    [B_WIN_ACTION_PROMPT] = {
+        .fillValue = PIXEL_FILL(0xF),
+        .fontId = FONT_NORMAL,
+        .x = 1,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 1,
+        .bgColor = 15,
+        .shadowColor = 6,
+    },
+    [B_WIN_ACTION_MENU] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = 0,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_MOVE_NAME_1] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_SMALL,
+        .x = 0,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_MOVE_NAME_2] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_SMALL,
+        .x = 0,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_MOVE_NAME_3] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_SMALL,
+        .x = 0,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_MOVE_NAME_4] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_SMALL,
+        .x = 0,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_PP] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_SMALL,
+        .x = 0,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 12,
+        .bgColor = 14,
+        .shadowColor = 11,
+    },
+    [B_WIN_PSS_ICON] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = 0,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_PP_REMAINING] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = 2,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 12,
+        .bgColor = 14,
+        .shadowColor = 11,
+    },
+    [B_WIN_MOVE_TYPE] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_SMALL,
+        .x = 0,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_SWITCH_PROMPT] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = 0,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_YESNO] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = 0,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_LEVEL_UP_BOX] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = 0,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_LEVEL_UP_BANNER] = {
+        .fillValue = PIXEL_FILL(0),
+        .fontId = FONT_NORMAL,
+        .x = 32,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 1,
+        .shadowColor = 2,
+    },
+    [ARENA_WIN_PLAYER_NAME] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = -1,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 1,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [ARENA_WIN_VS] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = -1,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [ARENA_WIN_OPPONENT_NAME] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = -1,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [ARENA_WIN_MIND] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = -1,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [ARENA_WIN_SKILL] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = -1,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [ARENA_WIN_BODY] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = -1,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [ARENA_WIN_JUDGMENT_TITLE] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = -1,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 13,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [ARENA_WIN_JUDGMENT_TEXT] = {
+        .fillValue = PIXEL_FILL(0x1),
+        .fontId = FONT_NORMAL,
+        .x = 0,
+        .y = 1,
+        .speed = 1,
+        .fgColor = 2,
+        .bgColor = 1,
+        .shadowColor = 3,
+    },
+    [B_WIN_VS_OUTCOME_RIGHT] = {
+        .fillValue = PIXEL_FILL(0x0),
+        .fontId = FONT_NORMAL,
+        .x = -1,
+        .y = 1,
+        .speed = 0,
+        .fgColor = 1,
+        .shadowColor = 6,
+    },
+    [24] = { // 24 "type" super-effective
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_SMALL,
+        .x = 0,
+        .y = 1,
+        .letterSpacing = 0,
+        .lineSpacing = 0,
+        .speed = 0,
+        .fgColor = 6,
+        .bgColor = 14,
+        .shadowColor = 5,
+    },
+    [25] = { // 25 "type" not very effective
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_SMALL,
+        .x = 0,
+        .y = 1,
+        .letterSpacing = 0,
+        .lineSpacing = 0,
+        .speed = 0,
+        .fgColor = 1,
+        .bgColor = 14,
+        .shadowColor = 3,
+    },
+    [26] = { // 26 "type" no effect
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_SMALL,
+        .x = 0,
+        .y = 1,
+        .letterSpacing = 0,
+        .lineSpacing = 0,
+        .speed = 0,
+        .fgColor = 7,
+        .bgColor = 14,
+        .shadowColor = 15,
+    },
+    [B_WIN_MOVE_DESCRIPTION] = {
+        .fillValue = PIXEL_FILL(0xE),
+        .fontId = FONT_NORMAL,
+        .x = 0,
+        .y = 1,
+        .letterSpacing = 0,
+        .lineSpacing = 0,
+        .speed = 0,
+        .fgColor = TEXT_DYNAMIC_COLOR_4,
+        .bgColor = TEXT_DYNAMIC_COLOR_5,
+        .shadowColor = TEXT_DYNAMIC_COLOR_6,
+    },
+};
+
 static const struct BattleWindowText *const sBattleTextOnWindowsInfo[] =
 {
     [B_WIN_TYPE_NORMAL] = sTextOnWindowsInfo_Normal,
     [B_WIN_TYPE_ARENA]  = sTextOnWindowsInfo_Arena
+};
+
+static const struct BattleWindowText *const sBattleTextOnWindowsInfo_FRLGFont[] =
+{
+    [B_WIN_TYPE_NORMAL] = sTextOnWindowsInfo_Normal_FRLGFont,
+    [B_WIN_TYPE_ARENA]  = sTextOnWindowsInfo_Arena_FRLGFont
 };
 
 static const u8 sRecordedBattleTextSpeeds[] = {8, 4, 1, 0};
@@ -3101,6 +3685,7 @@ static void ChooseTypeOfMoveUsedString(u8 *dst)
 void BattlePutTextOnWindow(const u8 *text, u8 windowId)
 {
     const struct BattleWindowText *textInfo = sBattleTextOnWindowsInfo[gBattleScripting.windowsType];
+    const struct BattleWindowText *textInfo_FRLG = sBattleTextOnWindowsInfo_FRLGFont[gBattleScripting.windowsType];
     bool32 copyToVram;
     struct TextPrinterTemplate printerTemplate;
     u8 speed;
@@ -3116,19 +3701,38 @@ void BattlePutTextOnWindow(const u8 *text, u8 windowId)
         copyToVram = TRUE;
     }
 
-    printerTemplate.currentChar = text;
-    printerTemplate.windowId = windowId;
-    printerTemplate.fontId = textInfo[windowId].fontId;
-    printerTemplate.x = textInfo[windowId].x;
-    printerTemplate.y = textInfo[windowId].y;
-    printerTemplate.currentX = printerTemplate.x;
-    printerTemplate.currentY = printerTemplate.y;
-    printerTemplate.letterSpacing = textInfo[windowId].letterSpacing;
-    printerTemplate.lineSpacing = textInfo[windowId].lineSpacing;
-    printerTemplate.unk = 0;
-    printerTemplate.fgColor = textInfo[windowId].fgColor;
-    printerTemplate.bgColor = textInfo[windowId].bgColor;
-    printerTemplate.shadowColor = textInfo[windowId].shadowColor;
+    if (!(gSaveBlock2Ptr->optionsFontType))
+    {
+        printerTemplate.currentChar = text;
+        printerTemplate.windowId = windowId;
+        printerTemplate.fontId = textInfo[windowId].fontId;
+        printerTemplate.x = textInfo[windowId].x;
+        printerTemplate.y = textInfo[windowId].y;
+        printerTemplate.currentX = printerTemplate.x;
+        printerTemplate.currentY = printerTemplate.y;
+        printerTemplate.letterSpacing = textInfo[windowId].letterSpacing;
+        printerTemplate.lineSpacing = textInfo[windowId].lineSpacing;
+        printerTemplate.unk = 0;
+        printerTemplate.fgColor = textInfo[windowId].fgColor;
+        printerTemplate.bgColor = textInfo[windowId].bgColor;
+        printerTemplate.shadowColor = textInfo[windowId].shadowColor;
+    }
+    else if (gSaveBlock2Ptr->optionsFontType)
+    {
+        printerTemplate.currentChar = text;
+        printerTemplate.windowId = windowId;
+        printerTemplate.fontId = textInfo_FRLG[windowId].fontId;
+        printerTemplate.x = textInfo_FRLG[windowId].x;
+        printerTemplate.y = textInfo_FRLG[windowId].y;
+        printerTemplate.currentX = printerTemplate.x;
+        printerTemplate.currentY = printerTemplate.y;
+        printerTemplate.letterSpacing = textInfo_FRLG[windowId].letterSpacing;
+        printerTemplate.lineSpacing = textInfo_FRLG[windowId].lineSpacing;
+        printerTemplate.unk = 0;
+        printerTemplate.fgColor = textInfo_FRLG[windowId].fgColor;
+        printerTemplate.bgColor = textInfo_FRLG[windowId].bgColor;
+        printerTemplate.shadowColor = textInfo_FRLG[windowId].shadowColor;
+    }
 
     if (printerTemplate.x == 0xFF)
     {
@@ -3160,7 +3764,10 @@ void BattlePutTextOnWindow(const u8 *text, u8 windowId)
     }
     else
     {
-        speed = textInfo[windowId].speed;
+        if (!(gSaveBlock2Ptr->optionsFontType))
+            speed = textInfo[windowId].speed;
+        else if (gSaveBlock2Ptr->optionsFontType)
+            speed = textInfo_FRLG[windowId].speed;
         gTextFlags.canABSpeedUpPrint = 0;
     }
 

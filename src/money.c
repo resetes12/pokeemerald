@@ -130,7 +130,10 @@ void SubtractMoneyFromVar0x8005(void)
 
 void PrintMoneyAmountInMoneyBox(u8 windowId, int amount, u8 speed)
 {
-    PrintMoneyAmount(windowId, 32, 1, amount, speed);
+    if (!(gSaveBlock2Ptr->optionsFontType)) //Emerald Font
+        PrintMoneyAmount(windowId, 32, 1, amount, speed);
+    else if (gSaveBlock2Ptr->optionsFontType)//FRLG Font
+        PrintMoneyAmount(windowId, 26, 1, amount, speed);
 }
 
 void PrintMoneyAmount(u8 windowId, u8 x, u8 y, int amount, u8 speed)
