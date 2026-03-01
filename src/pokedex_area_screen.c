@@ -1112,8 +1112,11 @@ static void Task_HandlePokedexAreaScreenInput(u8 taskId)
     case 1:
         if (JOY_NEW(B_BUTTON))
         {
-            gTasks[taskId].data[1] = 1;
-            PlaySE(SE_DEX_PAGE);
+            // This was originally intended to go back to the info screen (Original Emerald Behavior),
+            // gTasks[taskId].data[1] = 1;
+            // PlaySE(SE_DEX_PAGE);
+            gTasks[taskId].data[1] = 3;
+            PlaySE(SE_PC_OFF);
         }
         else if (JOY_NEW(DPAD_LEFT) || (JOY_NEW(L_BUTTON) && gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_LR))
         {

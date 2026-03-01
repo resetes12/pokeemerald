@@ -8,5 +8,6 @@ extern void (*gPokedexVBlankCB)(void);
 void CB2_OpenPokedexPlusHGSS(void);
 u16 NationalPokedexNumToSpeciesHGSS(u16 nationalNum);
 void Task_DisplayCaughtMonDexPageHGSS(u8);
+void OpenPokedexInfoScreen(u16 species, void (*returnCallback)(void));
 
 #endif // GUARD_POKEDEX_PLUS_HGSS_H
