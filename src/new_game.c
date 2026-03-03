@@ -262,14 +262,20 @@ void NewGameInitData(void)
 }
 void CheckIfChallengesAreActive(void)
 {
-    if (((gSaveBlock1Ptr->tx_Challenges_Nuzlocke) == 1)
-    || (gSaveBlock1Ptr->tx_Challenges_EvoLimit == 1)
-    || (gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer == 1)
-    || (gSaveBlock1Ptr->tx_Challenges_Mirror == 1)
-    || (gSaveBlock1Ptr->tx_Challenges_Mirror_Thief == 1)
-    || (gSaveBlock1Ptr->tx_Challenges_PkmnCenter == 1)
-    || (IsOneTypeChallengeActive()))
-        FlagSet(FLAG_NO_WT_BECAUSE_CHALLENGE);       
+    if (FlagGet(FLAG_SYS_GAME_CLEAR) == FALSE)
+    {
+        if (((gSaveBlock1Ptr->tx_Challenges_Nuzlocke) == 1)
+        || (gSaveBlock1Ptr->tx_Nuzlocke_EasyMode == 1)
+        || (gSaveBlock1Ptr->tx_Challenges_EvoLimit == 1)
+        || (gSaveBlock1Ptr->tx_Challenges_BaseStatEqualizer == 1)
+        || (gSaveBlock1Ptr->tx_Challenges_Mirror == 1)
+        || (gSaveBlock1Ptr->tx_Challenges_Mirror_Thief == 1)
+        || (gSaveBlock1Ptr->tx_Challenges_PkmnCenter == 1)
+        || (IsOneTypeChallengeActive()))
+            FlagSet(FLAG_NO_WT_BECAUSE_CHALLENGE);
+    }
+    else
+        FlagClear(FLAG_NO_WT_BECAUSE_CHALLENGE);
 }
 
 void CheckIfRandomizerIsActive(void)
