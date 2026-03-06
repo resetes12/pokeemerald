@@ -14,6 +14,14 @@ static const u32 sPokedexAreaMap_Tilemap[] = INCBIN_U32("graphics/pokedex/region
 static const u32 sPokedexAreaMapAffine_Gfx[] = INCBIN_U32("graphics/pokedex/region_map_affine.8bpp.lz");
 static const u32 sPokedexAreaMapAffine_Tilemap[] = INCBIN_U32("graphics/pokedex/region_map_affine.bin.lz");
 
+// Returns a pointer to the ROM palette for the currently-active region-map art
+// Callers that need the untinted base palette can
+// read directly from ROM rather than caching a copy in EWRAM.
+const u16 *GetPokedexAreaMapPal(void)
+{
+    return sPokedexAreaMap_Pal; // single shared palette regardless of map variant
+}
+
 void LoadPokedexAreaMapGfx(const struct PokedexAreaMapTemplate *template)
 {
     u8 mode;

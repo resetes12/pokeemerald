@@ -13,5 +13,6 @@ void LoadPokedexAreaMapGfx(const struct PokedexAreaMapTemplate *);
 bool32 TryShowPokedexAreaMap(void);
 void PokedexAreaMapChangeBgY(u32);
 void FreePokedexAreaMapBgNum(void);
+const u16 *GetPokedexAreaMapPal(void);
 
 #endif // GUARD_POKEDEX_AREA_REGION_MAP_H
