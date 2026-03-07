@@ -605,8 +605,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_GivePokedex::
 	setvar VAR_OLDALE_TOWN_STATE, 1
 	setvar VAR_LITTLEROOT_RIVAL_STATE, 4
 	setvar VAR_LITTLEROOT_TOWN_STATE, 3
-	goto_if_unset FLAG_UNLIMITIED_WONDERTRADE, SetWonderTradeModeLimited
-	closemessage
+	call_if_unset FLAG_UNLIMITIED_WONDERTRADE, SetWonderTradeModeLimited
 	releaseall
 	end
 
@@ -615,6 +614,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_MayGivePokeBalls::
 	giveitem ITEM_POKE_BALL, 5
 	call_if_eq VAR_RESULT, FALSE, LittlerootTown_ProfessorBirchsLab_EventScript_MayNoRoomForPokeBalls
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_CatchCutePokemonWithPokeBalls, MSGBOX_DEFAULT
+	closemessage
 	setvar VAR_RESULT, 0
 	return
 
@@ -623,6 +623,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_BrendanGivePokeBalls::
 	giveitem ITEM_POKE_BALL, 5
 	call_if_eq VAR_RESULT, FALSE, LittlerootTown_ProfessorBirchsLab_EventScript_BrendanNoRoomForPokeBalls
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_CatchCoolPokemonWithPokeBalls, MSGBOX_DEFAULT
+	closemessage
 	setvar VAR_RESULT, 1
 	return
 
