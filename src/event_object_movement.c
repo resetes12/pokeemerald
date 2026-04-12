@@ -2230,8 +2230,19 @@ static bool8 GetMonInfo(struct Pokemon * mon, u16 *species, u8 *form, u8 *shiny)
 // Retrieve graphic information about the following pokemon, if any
 static bool8 GetFollowerInfo(u16 *species, u8 *form, u8 *shiny) 
 {
-    if (gSaveBlock2Ptr->optionsfollowerEnable == 0) 
+    if (gSaveBlock2Ptr->optionsfollowerEnable == 0)
+    {
+        u8 df = gSaveBlock1Ptr->designatedFollower; // 0 = none, 1-6 = slot+1
+        if (df != 0 && df <= PARTY_SIZE
+            && GetMonData(&gPlayerParty[df - 1], MON_DATA_SPECIES) != SPECIES_NONE
+            && GetMonData(&gPlayerParty[df - 1], MON_DATA_HP) > 0
+            && !GetMonData(&gPlayerParty[df - 1], MON_DATA_IS_EGG))
+        {
+            return GetMonInfo(&gPlayerParty[df - 1], species, form, shiny);
+        }
+        // Fallback to first live mon
         return GetMonInfo(GetFirstLiveMon(), species, form, shiny);
+    }
     else
         return FALSE;
 }
