@@ -1805,7 +1805,7 @@ static void MoveSelectionDisplaySTAB(void) //Displays STAB icon
     *txtPtr++ = EXT_CTRL_CODE_FONT;
     *txtPtr++ = FONT_NORMAL;
 	
-	if (move != MOVE_NONE && IsMoveSTAB(move, gActiveBattler))
+	if ((move != MOVE_NONE && IsMoveSTAB(move, gActiveBattler)) && (gSaveBlock2Ptr->optionTypeEffective == 0))
     {
         StringCopy(txtPtr, gText_MoveInterface_STAB_Icon);
     }
