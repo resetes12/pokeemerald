@@ -1254,7 +1254,10 @@ static void Task_HandlePokedexAreaScreenInput(u8 taskId)
             ContinueTimeModeRefresh(taskId);
             return;
         }
-        if (JOY_NEW(START_BUTTON))
+        //REMOVE "/*" & "*/" IF YOU WANT DAY/NIGHT BUTTON FUNCTINALITY. DISABLED BY DEFAULT SINCE MODERN EMERALD
+        //DOESN'T CURRENTLY HAVE DAY/NIGHT ENCOUNTERS ANYMORE.
+        
+        /*if (JOY_NEW(START_BUTTON))
         {
             // Toggle day/night encounter view.  Play failure sound if the time
             // system is not active for this save.
@@ -1267,8 +1270,8 @@ static void Task_HandlePokedexAreaScreenInput(u8 taskId)
             PlaySE(SE_DEX_PAGE);
             gTasks[taskId].data[2] = 1; // kick off multi-frame refresh
             return;
-        }
-        else if (JOY_NEW(B_BUTTON))
+        }*/
+        if (JOY_NEW(B_BUTTON))
         {
             // This was originally intended to go back to the info screen (Original Emerald Behavior),
             // gTasks[taskId].data[1] = 1;
@@ -1443,9 +1446,12 @@ static void CreateAreaIndicatorSprites(void)
     if (VarGet(VAR_ENCOUNTER_TABLE) == 0)
         return;
 
+    //REMOVE "/*" & "*/" IF YOU WANT DAY/NIGHT BUTTON INDICATOR. DISABLED BY DEFAULT SINCE MODERN EMERALD
+    //DOESN'T CURRENTLY HAVE DAY/NIGHT ENCOUNTERS ANYMORE.
+    
     // Day indicator — 32x32 PNG stores two stacked 32x16 halves (left on top, right below).
     // Palette shared with TAG_AREA_UNKNOWN (loaded before the fade)
-    sheet = (struct SpriteSheet){ sDayIndicatorTiles, 0x200, TAG_AREA_DAY_IND };
+    /*sheet = (struct SpriteSheet){ sDayIndicatorTiles, 0x200, TAG_AREA_DAY_IND };
     LoadSpriteSheet(&sheet);
     sPokedexAreaScreen->indDaySpriteId = CreateSprite(&sDayIndicatorTemplate, 20, 148, 0);
     spriteId = CreateSprite(&sDayIndicatorTemplate, 52, 148, 0); // right half
@@ -1469,7 +1475,7 @@ static void CreateAreaIndicatorSprites(void)
         gSprites[sPokedexAreaScreen->indDaySpriteId + 1].invisible   = dayInvis;
         gSprites[sPokedexAreaScreen->indNightSpriteId].invisible     = nightInvis;
         gSprites[sPokedexAreaScreen->indNightSpriteId + 1].invisible = nightInvis;
-    }
+    }*/
 }
 
 // Applies the correct day/night tint to the region-map BG palettes (slots 7+8).
