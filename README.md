@@ -36,7 +36,7 @@ Gamemode page:
 * Better Stats: Some Pokémon have their stats changed to buff them (Check docs).
 * Extra Legendaries: Adds new legendaries that weren't available in vanilla Emerald. Check docs for the location, or explore by yourself!
 * Legendary abilities: Buffs some legendaries giving them a better ability than "Pressure".
-* Pokémon Movepool: Adds 15 new moves, and modifies all Pokémon movepool to add them. TM/HMs and egg moves are also modified.
+* Pokémon Movepool: Adds 14 new moves, and modifies all Pokémon movepool to add them. TM/HMs and egg moves are also modified.
 * Type chart: The type effectiveness has been slightly balanced to slightly power up less useful types. 
     - Dark and Ghost do 1x to Steel
     - Water does 0.5x damage to Ice
