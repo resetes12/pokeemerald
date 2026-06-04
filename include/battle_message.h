@@ -240,8 +240,13 @@ extern const u8 gText_WhatWillWallyDo[];
 extern const u8 gText_LinkStandby[];
 extern const u8 gText_BattleMenu[];
 extern const u8 gText_SafariZoneMenu[];
-extern const u8 gText_MoveInterfacePP[];
-extern const u8 gText_MoveInterfaceType[];
+extern const u8 gText_MoveInterfacePP[]; //WORPTODO Delte me :)
+extern const u8 gText_MoveInterfaceType[]; //WORPTODO Delte me :)
+extern const u8 gText_MoveInterface_Effective_Up[];
+extern const u8 gText_MoveInterface_Effective_Down[];
+extern const u8 gText_MoveInterface_Effective_X[];
+extern const u8 gText_MoveInterface_Effective_Null[];
+extern const u8 gText_MoveInterface_STAB_Icon[];
 extern const u8 gText_MoveInterfacePpType[];
 extern const u8 gText_MoveInterfaceDynamicColors[];
 extern const u8 gText_WhichMoveToForget4[];

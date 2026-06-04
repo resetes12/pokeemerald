@@ -341,10 +341,10 @@
 #define B_WIN_MOVE_NAME_2         4 // Top right
 #define B_WIN_MOVE_NAME_3         5 // Bottom left
 #define B_WIN_MOVE_NAME_4         6 // Bottom right
-#define B_WIN_PP                  7
+#define B_WIN_MOVE_TYPE_ICON      7
 #define B_WIN_PSS_ICON            8
 #define B_WIN_PP_REMAINING        9
-#define B_WIN_MOVE_TYPE          10
+#define B_WIN_STAB        		 10
 #define B_WIN_SWITCH_PROMPT      11 // "Switch which?"
 #define B_WIN_YESNO              12
 #define B_WIN_LEVEL_UP_BOX       13
@@ -358,6 +358,9 @@
 #define B_WIN_VS_OUTCOME_DRAW    21
 #define B_WIN_VS_OUTCOME_LEFT    22
 #define B_WIN_VS_OUTCOME_RIGHT   23
+#define B_WIN_EFFECTIVENESS_UP   24
+#define B_WIN_EFFECTIVENESS_DOWN 25
+#define B_WIN_EFFECTIVENESS_NONE 26
 #define B_WIN_MOVE_DESCRIPTION   27
 
 // The following are duplicate id values for windows that Battle Arena uses differently.
