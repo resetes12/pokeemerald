@@ -311,7 +311,7 @@ struct // MENU_SOUND
 };
 
 // Menu left side option names text
-static const u8 sText_OptionTypeEffective[]       = _("SHOW EFFECTIVE");
+static const u8 sText_OptionTypeEffective[]       = _("STAB/EFFECTIVE");
 static const u8 sText_OptionFishing[]             = _("EASIER FISHING");
 static const u8 sText_OptionFastIntro[]           = _("FAST INTRO");
 static const u8 sText_OptionLargeFollower[]       = _("BIG FOLLOWERS");
@@ -509,8 +509,8 @@ static const u8 *const sOptionMenuItemDescriptionsMain[MENUITEM_MAIN_COUNT][3] =
 // Custom {PKMN}
 static const u8 sText_Desc_StyleOn[]               = _("Physical and Special Moves\nare Move specific.");
 static const u8 sText_Desc_StyleOff[]              = _("Physical and Special Moves\ndepend on the Pokémon Type.");
-static const u8 sText_Desc_TypeEffectiveOn[]       = _("Type effectiveness will be\nshown in battles.");
-static const u8 sText_Desc_TypeEffectiveOff[]      = _("Type effectiveness won't be\nshown in battles.");
+static const u8 sText_Desc_TypeEffectiveOn[]       = _("Show effectiveness and STAB ({COLOR 3}{COLOR 4}Same\n{COLOR 3}{COLOR 4}Type Attack Bonus{COLOR 2}) in battles.");
+static const u8 sText_Desc_TypeEffectiveOff[]      = _("Type effectiveness and STAB\nwon't be shown in battles.");
 static const u8 sText_Desc_FastIntroOn[]           = _("Skip the sliding animation\nand enter battles faster.");
 static const u8 sText_Desc_FastIntroOff[]          = _("Battles load at the usual speed.");
 static const u8 sText_Desc_FastBattleOn[]          = _("Skips all delays in battles, which\nmakes them faster.");
