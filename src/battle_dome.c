@@ -512,6 +512,7 @@ static const u8 sBattleStyleMovePoints[MOVES_COUNT][NUM_MOVE_POINT_TYPES] =
     [MOVE_PLAY_ROUGH]    = {[MOVE_POINTS_ACCURATE] = 1},
     [MOVE_MOONBLAST]     = {[MOVE_POINTS_RARE] = 1, [MOVE_POINTS_ACCURATE] = 1, [MOVE_POINTS_LUCK] = 1},
     [MOVE_POISON_JAB]    = {[MOVE_POINTS_DMG] = 1, [MOVE_POINTS_EFFECT] = 1},
+    [MOVE_HEAL_PULSE]    = {[MOVE_POINTS_RARE] = 1, [MOVE_POINTS_HEAL] = 1, [MOVE_POINTS_ACCURATE] = 1},
 };
 
 // This array is searched in-order to determine what battle style a tourney trainer uses.

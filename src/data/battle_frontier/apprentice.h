@@ -940,6 +940,7 @@ static const bool8 sValidApprenticeMoves[MOVES_COUNT] =
     [MOVE_PLAY_ROUGH] = TRUE,
     [MOVE_MOONBLAST] = TRUE,
     [MOVE_POISON_JAB] = TRUE,
+    [MOVE_HEAL_PULSE] = TRUE,
 };
 
 // The possible questions to ask after the initial 3 WHICH MON questions. Retrieved from here and shuffled
