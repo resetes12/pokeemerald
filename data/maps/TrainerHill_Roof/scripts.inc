@@ -22,11 +22,20 @@ TrainerHill_Roof_EventScript_GivePrize::
 	case 1, TrainerHill_Roof_EventScript_NoRoomForPrize
 	case 2, TrainerHill_Roof_EventScript_CheckFinalTime
 TrainerHill_Roof_EventScript_ReceivePrize::
+	goto_if_unset FLAG_SYS_FRONTIER_PASS, TrainerHill_Roof_EventScript_ReceivePrize_NoBP
 	msgbox TrainerHill_Roof_Text_HaveTheMostMarvelousGift, MSGBOX_DEFAULT
 	givebp 20	
 	playfanfare MUS_OBTAIN_B_POINTS
 	msgbox BattleFrontier_Text_ObtainedXBattlePoints, MSGBOX_DEFAULT
 	waitfanfare
+	playfanfare MUS_LEVEL_UP
+	message gText_ObtainedTheItem
+	waitfanfare
+	waitmessage
+	goto TrainerHill_Roof_EventScript_CheckFinalTime
+
+TrainerHill_Roof_EventScript_ReceivePrize_NoBP::
+	msgbox TrainerHill_Roof_Text_HaveTheMostMarvelousGift_NoBP, MSGBOX_DEFAULT
 	playfanfare MUS_LEVEL_UP
 	message gText_ObtainedTheItem
 	waitfanfare
