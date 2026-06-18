@@ -486,7 +486,7 @@ static const struct WindowTemplate sBattleArenaWindowTemplates[] =
     },
     [B_WIN_MOVE_TYPE_ICON] = {
         .bg = 0,
-        .tilemapLeft = 22,  //21 is farthest left on the screen
+        .tilemapLeft = 21,  //21 is farthest left on the screen
         .tilemapTop = 55, //55 is first row
         .width = 4,
         .height = 2,
@@ -495,12 +495,12 @@ static const struct WindowTemplate sBattleArenaWindowTemplates[] =
     },
     [B_WIN_PSS_ICON] = {
         .bg = 0,
-        .tilemapLeft = 27, //should display hugging the right sude
+        .tilemapLeft = 25,
         .tilemapTop = 55,
         .width = 4,
         .height = 2,
         .paletteNum = 10,
-        .baseBlock = 0x0298,
+        .baseBlock = 0x02B0,
     },
     [B_WIN_PP_REMAINING] = {
         .bg = 0,
@@ -509,7 +509,7 @@ static const struct WindowTemplate sBattleArenaWindowTemplates[] =
         .width = 4,
         .height = 2,
         .paletteNum = 5,
-        .baseBlock = 0x029C,
+        .baseBlock = 0x02F0,
     },
 	[B_WIN_STAB] = {
         .bg = 0,
