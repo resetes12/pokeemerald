@@ -4156,11 +4156,23 @@ static void BattleIntroPrintTrainerWantsToBattle(void)
     }
 }
 
+static void BattleIntroSafariQuickRun(void);
+
+#define RUN_HOLD_FRAMES 30  // Frames button B needs to be hold in order to run away from battle
+
 static void BattleIntroPrintWildMonAttacked(void)
 {
     if (gBattleControllerExecFlags == 0)
     {
-        if ((gSaveBlock2Ptr->optionsRunType == 1) || (gSaveBlock2Ptr->optionsRunType == 3))
+        if (gBattleTypeFlags & BATTLE_TYPE_SAFARI)
+        {
+            // Safari Zone: route to dedicated handler that bypasses escape checks
+            if ((gSaveBlock2Ptr->optionsRunType == 1) || (gSaveBlock2Ptr->optionsRunType == 3))
+                gBattleMainFunc = BattleIntroSafariQuickRun;
+            else
+                gBattleMainFunc = BattleIntroPrintPlayerSendsOut;
+        }
+        else if ((gSaveBlock2Ptr->optionsRunType == 1) || (gSaveBlock2Ptr->optionsRunType == 3))
             gBattleMainFunc = BattleIntroQuickRun;
         else
             gBattleMainFunc = BattleIntroPrintPlayerSendsOut;
@@ -4168,7 +4180,54 @@ static void BattleIntroPrintWildMonAttacked(void)
     }
 }
 
-#define RUN_HOLD_FRAMES 30  // Frames button B needs to be hold in order to run away from battle
+// In the Safari Zone, running is always allowed — skip IsRunningFromBattleImpossible
+// and TryRunFromBattle entirely (both rely on gBattleMons which is zeroed for Safari).
+static void BattleIntroSafariQuickRun(void)
+{
+    if (gSaveBlock2Ptr->optionsRunType == 1)
+    {
+        if (gBattleControllerExecFlags == 0)
+        {
+            if ((JOY_HELD(R_BUTTON)) && (JOY_HELD(L_BUTTON)))
+            {
+                PlaySE(SE_FLEE);
+                gBattlerAttacker = gBattlerByTurnOrder[gCurrentTurnActionNumber];
+                gBattleOutcome = B_OUTCOME_RAN;
+                gBattleMainFunc = HandleEndTurn_RanFromBattle;
+                return;
+            }
+            gBattleMainFunc = BattleIntroPrintPlayerSendsOut;
+        }
+    }
+    else if (gSaveBlock2Ptr->optionsRunType == 3)
+    {
+        static u8 sSafariRunHoldCounter = 0;
+
+        if (gBattleControllerExecFlags == 0)
+        {
+            if (JOY_HELD(B_BUTTON))
+            {
+                if (sSafariRunHoldCounter < 0xFF)
+                    sSafariRunHoldCounter++;
+
+                if (sSafariRunHoldCounter < RUN_HOLD_FRAMES)
+                    return;
+
+                sSafariRunHoldCounter = 0;
+                PlaySE(SE_FLEE);
+                gBattlerAttacker = gBattlerByTurnOrder[gCurrentTurnActionNumber];
+                gBattleOutcome = B_OUTCOME_RAN;
+                gBattleMainFunc = HandleEndTurn_RanFromBattle;
+                return;
+            }
+            else
+            {
+                sSafariRunHoldCounter = 0;
+                gBattleMainFunc = BattleIntroPrintPlayerSendsOut;
+            }
+        }
+    }
+}
 
 static void BattleIntroQuickRun(void)
 {
