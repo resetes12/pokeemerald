@@ -27,6 +27,7 @@
 #include "pokeball.h"
 #include "pokedex.h"
 #include "pokemon_icon.h"
+#include "pokemon.h"
 #include "pokemon_summary_screen.h"
 #include "pokemon_storage_system.h"
 #include "random.h"
@@ -571,7 +572,7 @@ static void CB2_CreateTradeMenu(void)
                                                          (sTradeMonSpriteCoords[i][1] * 8) - 12,
                                                          1,
                                                          GetMonData(mon, MON_DATA_PERSONALITY),
-                                                         TRUE);
+                                                         TRUE, IsMonShiny(mon));
         }
 
         for (i = 0; i < sTradeMenu->partyCounts[TRADE_PARTNER]; i++)
@@ -583,7 +584,7 @@ static void CB2_CreateTradeMenu(void)
                                                          (sTradeMonSpriteCoords[i + PARTY_SIZE][1] * 8) - 12,
                                                          1,
                                                          GetMonData(mon, MON_DATA_PERSONALITY),
-                                                         FALSE);
+                                                         FALSE, IsMonShiny(mon));
         }
         gMain.state++;
         break;
@@ -762,7 +763,7 @@ static void CB2_ReturnToTradeMenu(void)
                                                          (sTradeMonSpriteCoords[i][1] * 8) - 12,
                                                          1,
                                                          GetMonData(mon, MON_DATA_PERSONALITY),
-                                                         TRUE);
+                                                         TRUE, IsMonShiny(mon));
         }
 
         for (i = 0; i < sTradeMenu->partyCounts[TRADE_PARTNER]; i++)
@@ -774,7 +775,7 @@ static void CB2_ReturnToTradeMenu(void)
                                                          (sTradeMonSpriteCoords[i + PARTY_SIZE][1] * 8) - 12,
                                                          1,
                                                          GetMonData(mon, MON_DATA_PERSONALITY),
-                                                         FALSE);
+                                                         FALSE, IsMonShiny(mon));
         }
         gMain.state++;
         break;

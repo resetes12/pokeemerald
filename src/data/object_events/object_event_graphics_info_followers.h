@@ -484,6 +484,8 @@ const void* const gFollowerPalettes[][2] =
     [SPECIES_NONE] = {gMonPalette_CircledQuestionMark, gMonShinyPalette_CircledQuestionMark},
 };
 
+const u32 gFollowerPalettesSize = ARRAY_COUNT(gFollowerPalettes);
+
 #if OW_MON_POKEBALLS
 
 #define POKEBALL_GFX_INFO(NAME)                                     \

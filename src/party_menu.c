@@ -97,6 +97,7 @@ enum {
     MENU_TRADE1,
     MENU_TRADE2,
     MENU_TOSS,
+    MENU_FOLLOW,
     MENU_FIELD_MOVES
 };
 
@@ -282,7 +283,7 @@ static void DisplayPartyPokemonGender(u8, u16, u8 *, struct PartyMenuBox *);
 static void DisplayPartyPokemonHP(u16, struct PartyMenuBox *);
 static void DisplayPartyPokemonMaxHP(u16, struct PartyMenuBox *);
 static void DisplayPartyPokemonHPBar(u16, u16, struct PartyMenuBox *);
-static void CreatePartyMonIconSpriteParameterized(u16, u32, struct PartyMenuBox *, u8, u32);
+static void CreatePartyMonIconSpriteParameterized(u16, u32, struct PartyMenuBox *, u8, u32, bool32);
 static void CreatePartyMonHeldItemSpriteParameterized(u16, u16, struct PartyMenuBox *);
 static void CreatePartyMonPokeballSpriteParameterized(u16, struct PartyMenuBox *);
 static void CreatePartyMonStatusSpriteParameterized(u16, u8, struct PartyMenuBox *);
@@ -481,6 +482,7 @@ static void CursorCb_Register(u8);
 static void CursorCb_Trade1(u8);
 static void CursorCb_Trade2(u8);
 static void CursorCb_Toss(u8);
+static void CursorCb_Follow(u8);
 static void CursorCb_FieldMove(u8);
 static bool8 SetUpFieldMove_Surf(void);
 static bool8 SetUpFieldMove_Fly(void);
@@ -583,6 +585,7 @@ static bool8 ShowPartyMenu(void)
         gMain.state++;
         break;
     case 3:
+        FreeAllMonIconTileAllocations();
         ResetSpriteData();
         gMain.state++;
         break;
@@ -1072,7 +1075,7 @@ static void CreatePartyMonSprites(u8 slot)
 
         if (gMultiPartnerParty[actualSlot].species != SPECIES_NONE)
         {
-            CreatePartyMonIconSpriteParameterized(gMultiPartnerParty[actualSlot].species, gMultiPartnerParty[actualSlot].personality, &sPartyMenuBoxes[slot], 0, FALSE);
+            CreatePartyMonIconSpriteParameterized(gMultiPartnerParty[actualSlot].species, gMultiPartnerParty[actualSlot].personality, &sPartyMenuBoxes[slot], 0, FALSE, FALSE);
             CreatePartyMonHeldItemSpriteParameterized(gMultiPartnerParty[actualSlot].species, gMultiPartnerParty[actualSlot].heldItem, &sPartyMenuBoxes[slot]);
             CreatePartyMonPokeballSpriteParameterized(gMultiPartnerParty[actualSlot].species, &sPartyMenuBoxes[slot]);
             if (gMultiPartnerParty[actualSlot].hp == 0)
@@ -1246,6 +1249,7 @@ static void Task_ClosePartyMenuAndSetCB2(u8 taskId)
         else
             SetMainCallback2(gPartyMenu.exitCallback);
 
+        FreeAllMonIconTileAllocations();
         ResetSpriteData();
         FreePartyPointers();
         DestroyTask(taskId);
@@ -2602,7 +2606,8 @@ static u8 DisplaySelectionWindow(u8 windowType)
 
     for (i = 0; i < sPartyMenuInternal->numActions; i++)
     {
-        u8 fontColorsId = (sPartyMenuInternal->actions[i] >= MENU_FIELD_MOVES) ? 4 : 3;
+        u8 fontColorsId = (sPartyMenuInternal->actions[i] >= MENU_FIELD_MOVES) ? 4
+                       : (sPartyMenuInternal->actions[i] == MENU_FOLLOW) ? 5 : 3;
         AddTextPrinterParameterized4(sPartyMenuInternal->windowId[0], FONT_NORMAL, cursorDimension, (i * 16) + 1, letterSpacing, 0, sFontColorTable[fontColorsId], 0, sCursorOptions[sPartyMenuInternal->actions[i]].text);
     }
 
@@ -2732,6 +2737,21 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
     }
     if (!InBattlePike())
     {
+        // Add "Follow" option if followers are enabled, mon is alive, not an egg,
+        // and not already the active follower (designated or fallback)
+        if (gSaveBlock2Ptr->optionsfollowerEnable == 0
+            && GetMonData(&mons[slotId], MON_DATA_HP) > 0
+            && !GetMonData(&mons[slotId], MON_DATA_IS_EGG)
+            && gSaveBlock1Ptr->designatedFollower != slotId + 1)
+        {
+            u8 df = gSaveBlock1Ptr->designatedFollower;
+            bool8 designatedValid = df != 0 && df <= PARTY_SIZE
+                && GetMonData(&mons[df - 1], MON_DATA_SPECIES) != SPECIES_NONE
+                && GetMonData(&mons[df - 1], MON_DATA_HP) > 0
+                && !GetMonData(&mons[df - 1], MON_DATA_IS_EGG);
+            if (designatedValid || &mons[slotId] != GetFirstLiveMon())
+                AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_FOLLOW);
+        }
         if (GetMonData(&mons[1], MON_DATA_SPECIES) != SPECIES_NONE)
             AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_SWITCH);
         if (ItemIsMail(GetMonData(&mons[slotId], MON_DATA_HELD_ITEM)))
@@ -3138,6 +3158,12 @@ static void SwitchPartyMon(void)
     SwitchMenuBoxSprites(&menuBoxes[0]->itemSpriteId, &menuBoxes[1]->itemSpriteId);
     SwitchMenuBoxSprites(&menuBoxes[0]->monSpriteId, &menuBoxes[1]->monSpriteId);
     SwitchMenuBoxSprites(&menuBoxes[0]->statusSpriteId, &menuBoxes[1]->statusSpriteId);
+
+    // Track designated follower through party swaps (0=none, 1-6=slot+1)
+    if (gSaveBlock1Ptr->designatedFollower == gPartyMenu.slotId + 1)
+        gSaveBlock1Ptr->designatedFollower = gPartyMenu.slotId2 + 1;
+    else if (gSaveBlock1Ptr->designatedFollower == gPartyMenu.slotId2 + 1)
+        gSaveBlock1Ptr->designatedFollower = gPartyMenu.slotId + 1;
 }
 
 // Finish switching mons or using Softboiled
@@ -3805,6 +3831,37 @@ static void Task_HandleSpinTradeYesNoInput(u8 taskId)
     }
 }
 
+static void Task_FollowConfirmReturnToChooseMon(u8 taskId)
+{
+    if (IsPartyMenuTextPrinterActive() != TRUE)
+    {
+        ClearStdWindowAndFrameToTransparent(6, FALSE);
+        ClearWindowTilemap(6);
+        gPartyMenu.action = PARTY_ACTION_CHOOSE_MON;
+        AnimatePartySlot(gPartyMenu.slotId, 1);
+        DisplayPartyMenuStdMessage(PARTY_MSG_CHOOSE_MON);
+        gTasks[taskId].func = Task_HandleChooseMonInput;
+    }
+}
+
+static void CursorCb_Follow(u8 taskId)
+{
+    struct Pokemon *mon = &gPlayerParty[gPartyMenu.slotId];
+
+    PlaySE(SE_SELECT);
+    PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[0]);
+    PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[1]);
+
+    // Set designated follower to the selected party slot (stored as slot+1, 0=none)
+    gSaveBlock1Ptr->designatedFollower = gPartyMenu.slotId + 1;
+
+    // Show confirmation message
+    GetMonNickname(mon, gStringVar1);
+    StringExpandPlaceholders(gStringVar4, gText_PkmnWillFollowYou);
+    DisplayPartyMenuMessage(gStringVar4, TRUE);
+    gTasks[taskId].func = Task_FollowConfirmReturnToChooseMon;
+}
+
 static void CursorCb_FieldMove(u8 taskId)
 {
     u8 fieldMove = sPartyMenuInternal->actions[Menu_GetCursorPos()] - MENU_FIELD_MOVES;
@@ -4052,6 +4109,7 @@ static bool8 SetUpFieldMove_Dive(void)
 static void CreatePartyMonIconSprite(struct Pokemon *mon, struct PartyMenuBox *menuBox, u32 slot)
 {
     bool32 handleDeoxys = TRUE;
+    bool32 isShiny;
     u16 species2;
 
     // If in a multi battle, show partners Deoxys icon as Normal forme
@@ -4059,15 +4117,16 @@ static void CreatePartyMonIconSprite(struct Pokemon *mon, struct PartyMenuBox *m
         handleDeoxys = (sMultiBattlePartnersPartyMask[slot] ^ handleDeoxys) ? TRUE : FALSE;
 
     species2 = GetMonData(mon, MON_DATA_SPECIES_OR_EGG);
-    CreatePartyMonIconSpriteParameterized(species2, GetMonData(mon, MON_DATA_PERSONALITY), menuBox, 1, handleDeoxys);
+    isShiny = IsMonShiny(mon);
+    CreatePartyMonIconSpriteParameterized(species2, GetMonData(mon, MON_DATA_PERSONALITY), menuBox, 1, handleDeoxys, isShiny);
     UpdatePartyMonHPBar(menuBox->monSpriteId, mon);
 }
 
-static void CreatePartyMonIconSpriteParameterized(u16 species, u32 pid, struct PartyMenuBox *menuBox, u8 priority, bool32 handleDeoxys)
+static void CreatePartyMonIconSpriteParameterized(u16 species, u32 pid, struct PartyMenuBox *menuBox, u8 priority, bool32 handleDeoxys, bool32 isShiny)
 {
     if (species != SPECIES_NONE)
     {
-        menuBox->monSpriteId = CreateMonIcon(species, SpriteCB_MonIcon, menuBox->spriteCoords[0], menuBox->spriteCoords[1], 4, pid, handleDeoxys);
+        menuBox->monSpriteId = CreateMonIcon(species, SpriteCB_MonIcon, menuBox->spriteCoords[0], menuBox->spriteCoords[1], 4, pid, handleDeoxys, isShiny);
         gSprites[menuBox->monSpriteId].oam.priority = priority;
     }
 }
@@ -4104,6 +4163,10 @@ static void AnimateSelectedPartyIcon(u8 spriteId, u8 animNum)
     gSprites[spriteId].data[0] = 0;
     if (animNum == 0)
     {
+        // Deselected: slow walk forward (anim 4 = frames 0-1 slow)
+        gSprites[spriteId].animNum = 4;
+        gSprites[spriteId].animCmdIndex = 0;
+        gSprites[spriteId].animDelayCounter = 0;
         if (gSprites[spriteId].x == 16)
         {
             gSprites[spriteId].x2 = 0;
@@ -4118,6 +4181,10 @@ static void AnimateSelectedPartyIcon(u8 spriteId, u8 animNum)
     }
     else
     {
+        // Selected: full rotation animation (anim 0 = all 6 frames)
+        gSprites[spriteId].animNum = 0;
+        gSprites[spriteId].animCmdIndex = 0;
+        gSprites[spriteId].animDelayCounter = 0;
         gSprites[spriteId].x2 = 0;
         gSprites[spriteId].y2 = 0;
         gSprites[spriteId].callback = SpriteCB_BouncePartyMonIcon;
@@ -4126,15 +4193,7 @@ static void AnimateSelectedPartyIcon(u8 spriteId, u8 animNum)
 
 static void SpriteCB_BouncePartyMonIcon(struct Sprite *sprite)
 {
-    u8 animCmd = UpdateMonIconFrame(sprite);
-
-    if (animCmd != 0)
-    {
-        if (animCmd & 1) // % 2 also matches
-            sprite->y2 = -3;
-        else
-            sprite->y2 = 1;
-    }
+    UpdateMonIconFrame(sprite);
 }
 
 static void SpriteCB_UpdatePartyMonIcon(struct Sprite *sprite)

@@ -3216,5 +3216,7 @@ extern const u8 gText_BattleRules_NoItems_Player[];
 extern const u8 gText_UnitSystemMetric[];   //tx_optionsPlus
 extern const u8 gText_UnitSystemImperial[]; //tx_optionsPlus
 extern const u8 gText_Var1DotVar2_Metric[];
+extern const u8 gText_Follow[];
+extern const u8 gText_PkmnWillFollowYou[];
 
 #endif // GUARD_STRINGS_H

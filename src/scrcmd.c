@@ -1747,11 +1747,29 @@ bool8 ScrCmd_bufferleadmonspeciesname(struct ScriptContext *ctx)
     return FALSE;
 }
 
+// Return the pokemon that is currently following the player.
+// Uses the designated follower if valid, otherwise falls back to first live mon.
+static struct Pokemon *GetFollowerMon(void)
+{
+    if (gSaveBlock2Ptr->optionsfollowerEnable == 0)
+    {
+        u8 df = gSaveBlock1Ptr->designatedFollower;
+        if (df != 0 && df <= PARTY_SIZE
+            && GetMonData(&gPlayerParty[df - 1], MON_DATA_SPECIES) != SPECIES_NONE
+            && GetMonData(&gPlayerParty[df - 1], MON_DATA_HP) > 0
+            && !GetMonData(&gPlayerParty[df - 1], MON_DATA_IS_EGG))
+        {
+            return &gPlayerParty[df - 1];
+        }
+    }
+    return GetFirstLiveMon();
+}
+
 bool8 ScrFunc_bufferlivemonnickname(struct ScriptContext *ctx)
 {
     u8 stringVarIndex = ScriptReadByte(ctx);
 
-    GetMonData(GetFirstLiveMon(), MON_DATA_NICKNAME, sScriptStringVars[stringVarIndex]);
+    GetMonData(GetFollowerMon(), MON_DATA_NICKNAME, sScriptStringVars[stringVarIndex]);
     StringGet_Nickname(sScriptStringVars[stringVarIndex]);
     return FALSE;
 }
@@ -2246,7 +2264,7 @@ bool8 ScrCmd_playmoncry(struct ScriptContext *ctx)
 
 bool8   ScrFunc_playfirstmoncry(struct ScriptContext *ctx)
 {
-    u16 species = GetMonData(GetFirstLiveMon(), MON_DATA_SPECIES);
+    u16 species = GetMonData(GetFollowerMon(), MON_DATA_SPECIES);
     PlayCry_Script(species, 0);
     return FALSE;
 }
