@@ -623,6 +623,28 @@ static const u8 sSelectedMonLevelGenderCoords[3][2] =
 
 static const u16 sPokeball_Pal[] = INCBIN_U16("graphics/trade/pokeball.gbapal");
 static const u8 sPokeball_Gfx[] = INCBIN_U8("graphics/trade/pokeball.4bpp");
+static const u16 sPokeballGreat_Pal[] = INCBIN_U16("graphics/trade/pokeball_great.gbapal");
+static const u8 sPokeballGreat_Gfx[] = INCBIN_U8("graphics/trade/pokeball_great.4bpp");
+static const u16 sPokeballSafari_Pal[] = INCBIN_U16("graphics/trade/pokeball_safari.gbapal");
+static const u8 sPokeballSafari_Gfx[] = INCBIN_U8("graphics/trade/pokeball_safari.4bpp");
+static const u16 sPokeballUltra_Pal[] = INCBIN_U16("graphics/trade/pokeball_ultra.gbapal");
+static const u8 sPokeballUltra_Gfx[] = INCBIN_U8("graphics/trade/pokeball_ultra.4bpp");
+static const u16 sPokeballMaster_Pal[] = INCBIN_U16("graphics/trade/pokeball_master.gbapal");
+static const u8 sPokeballMaster_Gfx[] = INCBIN_U8("graphics/trade/pokeball_master.4bpp");
+static const u16 sPokeballNet_Pal[] = INCBIN_U16("graphics/trade/pokeball_net.gbapal");
+static const u8 sPokeballNet_Gfx[] = INCBIN_U8("graphics/trade/pokeball_net.4bpp");
+static const u16 sPokeballDive_Pal[] = INCBIN_U16("graphics/trade/pokeball_dive.gbapal");
+static const u8 sPokeballDive_Gfx[] = INCBIN_U8("graphics/trade/pokeball_dive.4bpp");
+static const u16 sPokeballNest_Pal[] = INCBIN_U16("graphics/trade/pokeball_nest.gbapal");
+static const u8 sPokeballNest_Gfx[] = INCBIN_U8("graphics/trade/pokeball_nest.4bpp");
+static const u16 sPokeballRepeat_Pal[] = INCBIN_U16("graphics/trade/pokeball_repeat.gbapal");
+static const u8 sPokeballRepeat_Gfx[] = INCBIN_U8("graphics/trade/pokeball_repeat.4bpp");
+static const u16 sPokeballTimer_Pal[] = INCBIN_U16("graphics/trade/pokeball_timer.gbapal");
+static const u8 sPokeballTimer_Gfx[] = INCBIN_U8("graphics/trade/pokeball_timer.4bpp");
+static const u16 sPokeballLuxury_Pal[] = INCBIN_U16("graphics/trade/pokeball_luxury.gbapal");
+static const u8 sPokeballLuxury_Gfx[] = INCBIN_U8("graphics/trade/pokeball_luxury.4bpp");
+static const u16 sPokeballPremier_Pal[] = INCBIN_U16("graphics/trade/pokeball_premier.gbapal");
+static const u8 sPokeballPremier_Gfx[] = INCBIN_U8("graphics/trade/pokeball_premier.4bpp");
 static const u8 sPokeballSymbol_Gfx[] = INCBIN_U8("graphics/trade/pokeball_symbol.8bpp"); // unused
 static const u16 sCableCloseup_Map[] = INCBIN_U16("graphics/trade/crossing_highlight_cable.bin");
 static const u16 sPokeballSymbol_Map[] = INCBIN_U16("graphics/trade/pokeball_symbol_map.bin"); // unused?
@@ -749,6 +771,39 @@ static const struct SpriteTemplate sSpriteTemplate_Pokeball =
     .images = NULL,
     .affineAnims = sAffineAnims_Pokeball,
     .callback = SpriteCB_BouncingPokeball
+};
+
+// Lookup tables for trade pokeball gfx/pal by ball ID
+static const u8 *const sTradeBallGfxTable[POKEBALL_COUNT] =
+{
+    [BALL_POKE]    = sPokeball_Gfx,
+    [BALL_GREAT]   = sPokeballGreat_Gfx,
+    [BALL_SAFARI]  = sPokeballSafari_Gfx,
+    [BALL_ULTRA]   = sPokeballUltra_Gfx,
+    [BALL_MASTER]  = sPokeballMaster_Gfx,
+    [BALL_NET]     = sPokeballNet_Gfx,
+    [BALL_DIVE]    = sPokeballDive_Gfx,
+    [BALL_NEST]    = sPokeballNest_Gfx,
+    [BALL_REPEAT]  = sPokeballRepeat_Gfx,
+    [BALL_TIMER]   = sPokeballTimer_Gfx,
+    [BALL_LUXURY]  = sPokeballLuxury_Gfx,
+    [BALL_PREMIER] = sPokeballPremier_Gfx,
+};
+
+static const u16 *const sTradeBallPalTable[POKEBALL_COUNT] =
+{
+    [BALL_POKE]    = sPokeball_Pal,
+    [BALL_GREAT]   = sPokeballGreat_Pal,
+    [BALL_SAFARI]  = sPokeballSafari_Pal,
+    [BALL_ULTRA]   = sPokeballUltra_Pal,
+    [BALL_MASTER]  = sPokeballMaster_Pal,
+    [BALL_NET]     = sPokeballNet_Pal,
+    [BALL_DIVE]    = sPokeballDive_Pal,
+    [BALL_NEST]    = sPokeballNest_Pal,
+    [BALL_REPEAT]  = sPokeballRepeat_Pal,
+    [BALL_TIMER]   = sPokeballTimer_Pal,
+    [BALL_LUXURY]  = sPokeballLuxury_Pal,
+    [BALL_PREMIER] = sPokeballPremier_Pal,
 };
 
 static const struct OamData sOamData_LinkMonGlow =
