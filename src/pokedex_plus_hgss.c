@@ -358,6 +358,7 @@ struct PokedexView
     s16 menuY;     //Menu Y position (inverted because we use REG_BG0VOFS for this)
     u8 unkArr2[8]; // Cleared, never read
     u8 unkArr3[8]; // Cleared, never read
+    bool8 isShowingShiny;
 };
 
 
@@ -519,6 +520,7 @@ static void PrintStatsScreen_Abilities(u8 taskId);
 static void PrintInfoScreenTextWhite(const u8* str, u8 left, u8 top);
 static void PrintInfoScreenTextSmall(const u8* str, u8 left, u8 top);
 static void PrintInfoScreenTextSmallWhite(const u8* str, u8 left, u8 top);
+static void PrintShinyToggleLabel(bool8 isShowingShiny);
 static void Task_LoadEvolutionScreen(u8 taskId);
 static void Task_HandleEvolutionScreenInput(u8 taskId);
 static void Task_SwitchScreensFromEvolutionScreen(u8 taskId);
@@ -3818,6 +3820,7 @@ static u8 StartInfoScreenScroll(struct PokedexListItem *item, u8 taskId)
     gTasks[taskId].tMonSpriteDone = FALSE;
     gTasks[taskId].tBgLoaded = FALSE;
     gTasks[taskId].tSkipCry = FALSE;
+    sPokedexView->isShowingShiny = FALSE; // Reset shiny toggle when changing entries
     return taskId;
 }
 
@@ -3870,6 +3873,9 @@ static void Task_LoadInfoScreen(u8 taskId)
         PrintMonInfo(sPokedexListItem->dexNum, sPokedexView->dexMode == DEX_MODE_HOENN ? FALSE : TRUE, sPokedexListItem->owned, 0);
         if (!sPokedexListItem->owned)
             LoadPalette(gPlttBufferUnfaded + 1, BG_PLTT_ID(3) + 1, PLTT_SIZEOF(16 - 1));
+        // Show shiny toggle label if this species has a shiny unlocked
+        if (GetShinySeenFlag(sPokedexListItem->dexNum))
+            PrintShinyToggleLabel(FALSE);
         CopyWindowToVram(WIN_INFO, COPYWIN_FULL);
         CopyBgTilemapBufferToVram(1);
         CopyBgTilemapBufferToVram(2);
@@ -3932,6 +3938,7 @@ static void Task_LoadInfoScreen(u8 taskId)
         gTasks[taskId].tMonSpriteDone = FALSE; // Reload next time screen comes up
         gTasks[taskId].tBgLoaded = TRUE;
         gTasks[taskId].tSkipCry = TRUE;
+        sPokedexView->isShowingShiny = FALSE; // Reset shiny toggle when returning from sub-screens
         gTasks[taskId].func = Task_HandleInfoScreenInput;
         gMain.state = 0;
         break;
@@ -3976,6 +3983,29 @@ static void Task_HandleInfoScreenInput(u8 taskId)
         else
             gTasks[taskId].func = Task_ExitInfoScreen;
         PlaySE(SE_PC_OFF);
+        return;
+    }
+
+    // Shiny toggle on A button (only if shiny has been seen for this species)
+    if (JOY_NEW(A_BUTTON))
+    {
+        u16 species = NationalPokedexNumToSpecies(sPokedexListItem->dexNum);
+        if (GetShinySeenFlag(sPokedexListItem->dexNum))
+        {
+            u8 paletteNum = gSprites[gTasks[taskId].tMonSpriteId].oam.paletteNum;
+            const u32 *palData;
+
+            sPokedexView->isShowingShiny = !sPokedexView->isShowingShiny;
+
+            if (sPokedexView->isShowingShiny)
+                palData = GetMonSpritePalFromSpeciesAndPersonality(species, 0, 0); // otId=0, personality=0 forces shiny
+            else
+                palData = gMonPaletteTable[species].data;
+
+            LoadCompressedPalette(palData, OBJ_PLTT_ID(paletteNum), PLTT_SIZE_4BPP);
+            PrintShinyToggleLabel(sPokedexView->isShowingShiny);
+            PlaySE(SE_DEX_PAGE);
+        }
         return;
     }
 
@@ -4523,6 +4553,36 @@ static void PrintInfoScreenTextSmallWhite(const u8* str, u8 left, u8 top)
 
     AddTextPrinterParameterized4(0, 0, left, top, 0, 0, color, 0, str);
 }
+
+// Draws or redraws the shiny toggle indicator using tileset tiles on BG3
+static void PrintShinyToggleLabel(bool8 isShowingShiny)
+{
+    u16 *tilemapBuf = (u16 *)GetBgTilemapBuffer(3);
+    // Box position: 3 rows × 4 cols
+    u8 startRow = 9;
+    u8 startCol = 14;
+
+    // Top row
+    tilemapBuf[(startRow) * 32 + startCol]     = 208;
+    tilemapBuf[(startRow) * 32 + startCol + 1] = 209;
+    tilemapBuf[(startRow) * 32 + startCol + 2] = 210;
+    tilemapBuf[(startRow) * 32 + startCol + 3] = 211;
+
+    // Middle row
+    tilemapBuf[(startRow + 1) * 32 + startCol]     = 212;
+    tilemapBuf[(startRow + 1) * 32 + startCol + 1] = 213;
+    tilemapBuf[(startRow + 1) * 32 + startCol + 2] = isShowingShiny ? 220 : 214;
+    tilemapBuf[(startRow + 1) * 32 + startCol + 3] = 215;
+
+    // Bottom row
+    tilemapBuf[(startRow + 2) * 32 + startCol]     = 216;
+    tilemapBuf[(startRow + 2) * 32 + startCol + 1] = 217;
+    tilemapBuf[(startRow + 2) * 32 + startCol + 2] = 218;
+    tilemapBuf[(startRow + 2) * 32 + startCol + 3] = 219;
+
+    CopyBgTilemapBufferToVram(3);
+}
+
 //Stats screen
 static void PrintStatsScreenTextSmall(u8 windowId, const u8* str, u8 left, u8 top)
 {

@@ -578,6 +578,14 @@ static void CreateShedinja(u16 preEvoSpecies, struct Pokemon *mon)
         GetSetPokedexFlag(SpeciesToNationalPokedexNum(gEvolutionTable[preEvoSpecies][1].targetSpecies), FLAG_SET_SEEN);
         GetSetPokedexFlag(SpeciesToNationalPokedexNum(gEvolutionTable[preEvoSpecies][1].targetSpecies), FLAG_SET_CAUGHT);
 
+        // Set shiny flag for Shedinja if the source Nincada was shiny
+        {
+            u32 otId = GetMonData(shedinja, MON_DATA_OT_ID, NULL);
+            u32 personality = GetMonData(shedinja, MON_DATA_PERSONALITY, NULL);
+            if (IsPersonalityShiny(otId, personality))
+                SetShinySeenFlag(SpeciesToNationalPokedexNum(gEvolutionTable[preEvoSpecies][1].targetSpecies));
+        }
+
         if (GetMonData(shedinja, MON_DATA_SPECIES) == SPECIES_SHEDINJA
             && GetMonData(shedinja, MON_DATA_LANGUAGE) == LANGUAGE_JAPANESE
             && GetMonData(mon, MON_DATA_SPECIES) == SPECIES_NINJASK)
@@ -769,6 +777,12 @@ static void Task_EvolutionScene(u8 taskId)
             EvolutionRenameMon(mon, gTasks[taskId].tPreEvoSpecies, gTasks[taskId].tPostEvoSpecies);
             GetSetPokedexFlag(SpeciesToNationalPokedexNum(gTasks[taskId].tPostEvoSpecies), FLAG_SET_SEEN);
             GetSetPokedexFlag(SpeciesToNationalPokedexNum(gTasks[taskId].tPostEvoSpecies), FLAG_SET_CAUGHT);
+            {
+                u32 otId = GetMonData(mon, MON_DATA_OT_ID, NULL);
+                u32 personality = GetMonData(mon, MON_DATA_PERSONALITY, NULL);
+                if (IsPersonalityShiny(otId, personality))
+                    SetShinySeenFlag(SpeciesToNationalPokedexNum(gTasks[taskId].tPostEvoSpecies));
+            }
             IncrementGameStat(GAME_STAT_EVOLVED_POKEMON);
         }
         break;
@@ -1198,6 +1212,12 @@ static void Task_TradeEvolutionScene(u8 taskId)
             EvolutionRenameMon(mon, gTasks[taskId].tPreEvoSpecies, gTasks[taskId].tPostEvoSpecies);
             GetSetPokedexFlag(SpeciesToNationalPokedexNum(gTasks[taskId].tPostEvoSpecies), FLAG_SET_SEEN);
             GetSetPokedexFlag(SpeciesToNationalPokedexNum(gTasks[taskId].tPostEvoSpecies), FLAG_SET_CAUGHT);
+            {
+                u32 otId = GetMonData(mon, MON_DATA_OT_ID, NULL);
+                u32 personality = GetMonData(mon, MON_DATA_PERSONALITY, NULL);
+                if (IsPersonalityShiny(otId, personality))
+                    SetShinySeenFlag(SpeciesToNationalPokedexNum(gTasks[taskId].tPostEvoSpecies));
+            }
             IncrementGameStat(GAME_STAT_EVOLVED_POKEMON);
         }
         break;

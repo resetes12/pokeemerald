@@ -17,6 +17,8 @@
 #include "pokedex_plus_hgss.h"
 #include "pokedex_area_screen.h"
 #include "pokedex_cry_screen.h"
+#include "pokemon.h"
+#include "pokemon_storage_system.h"
 #include "scanline_effect.h"
 #include "sound.h"
 #include "sprite.h"
@@ -27,6 +29,7 @@
 #include "trainer_pokemon_sprites.h"
 #include "trig.h"
 #include "window.h"
+#include "constants/pokemon.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
 
@@ -4413,6 +4416,105 @@ s8 GetSetPokedexFlag(u16 nationalDexNo, u8 caseID)
         break;
     }
     return retVal;
+}
+
+// Returns TRUE if the given otId + personality combination is shiny
+// under the current game's shiny odds setting.
+bool8 IsPersonalityShiny(u32 otId, u32 personality)
+{
+    u32 shinyValue = GET_SHINY_VALUE(otId, personality);
+
+    switch (gSaveBlock1Ptr->tx_Features_ShinyChance)
+    {
+    case 0: // 1/8192
+        return shinyValue < SHINY_ODDS;
+    case 1: // 1/4096
+        return shinyValue < 16;
+    case 2: // 1/2048
+        return shinyValue < 32;
+    case 3: // 1/1024
+        return shinyValue < 64;
+    case 4: // 1/512
+        return shinyValue < 128;
+    default:
+        return shinyValue < SHINY_ODDS;
+    }
+}
+
+// Sets the shiny-seen flag for a species. Call when encountering or catching a shiny.
+void SetShinySeenFlag(u16 nationalDexNo)
+{
+    u8 index;
+    u8 bit;
+
+    if (nationalDexNo == 0)
+        return;
+    nationalDexNo--;
+    index = nationalDexNo / 8;
+    bit = nationalDexNo % 8;
+    gSaveBlock2Ptr->shinySeen[index] |= (1 << bit);
+}
+
+// Returns TRUE if the trainer has ever seen/caught a shiny of this species.
+bool8 GetShinySeenFlag(u16 nationalDexNo)
+{
+    u8 index;
+    u8 bit;
+
+    if (nationalDexNo == 0)
+        return FALSE;
+    nationalDexNo--;
+    index = nationalDexNo / 8;
+    bit = nationalDexNo % 8;
+    return (gSaveBlock2Ptr->shinySeen[index] >> bit) & 1;
+}
+
+// Scans the player's party and PC boxes to retroactively set shiny flags
+// for any shiny Pokémon currently owned. Safe to call on every load.
+void ScanOwnedMonsForShinies(void)
+{
+    u16 i, j;
+    u16 species;
+    u32 otId, personality;
+
+    // Scan party
+    for (i = 0; i < PARTY_SIZE; i++)
+    {
+        species = GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, NULL);
+        if (species == SPECIES_NONE || species == SPECIES_EGG)
+            continue;
+        otId = GetMonData(&gPlayerParty[i], MON_DATA_OT_ID, NULL);
+        personality = GetMonData(&gPlayerParty[i], MON_DATA_PERSONALITY, NULL);
+        if (IsPersonalityShiny(otId, personality))
+            SetShinySeenFlag(SpeciesToNationalPokedexNum(species));
+    }
+
+    // Scan PC boxes
+    for (i = 0; i < TOTAL_BOXES_COUNT; i++)
+    {
+        for (j = 0; j < IN_BOX_COUNT; j++)
+        {
+            species = GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_SPECIES, NULL);
+            if (species == SPECIES_NONE || species == SPECIES_EGG)
+                continue;
+            otId = GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_OT_ID, NULL);
+            personality = GetBoxMonData(&gPokemonStoragePtr->boxes[i][j], MON_DATA_PERSONALITY, NULL);
+            if (IsPersonalityShiny(otId, personality))
+                SetShinySeenFlag(SpeciesToNationalPokedexNum(species));
+        }
+    }
+
+    // Scan daycare
+    for (i = 0; i < DAYCARE_MON_COUNT; i++)
+    {
+        species = GetBoxMonData(&gSaveBlock1Ptr->daycare.mons[i].mon, MON_DATA_SPECIES, NULL);
+        if (species == SPECIES_NONE || species == SPECIES_EGG)
+            continue;
+        otId = GetBoxMonData(&gSaveBlock1Ptr->daycare.mons[i].mon, MON_DATA_OT_ID, NULL);
+        personality = GetBoxMonData(&gSaveBlock1Ptr->daycare.mons[i].mon, MON_DATA_PERSONALITY, NULL);
+        if (IsPersonalityShiny(otId, personality))
+            SetShinySeenFlag(SpeciesToNationalPokedexNum(species));
+    }
 }
 
 u16 GetNationalPokedexCount(u8 caseID)

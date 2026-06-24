@@ -11693,7 +11693,7 @@ u16 PlayerGenderToFrontTrainerPicId(u8 playerGender)
         return FacilityClassToPicIndex(FACILITY_CLASS_BRENDAN);
 }
 
-void HandleSetPokedexFlag(u16 nationalNum, u8 caseId, u32 personality)
+void HandleSetPokedexFlag(u16 nationalNum, u8 caseId, u32 personality, u32 otId)
 {
     u8 getFlagCaseId = (caseId == FLAG_SET_SEEN) ? FLAG_GET_SEEN : FLAG_GET_CAUGHT;
     if (!GetSetPokedexFlag(nationalNum, getFlagCaseId)) // don't set if it's already set
@@ -11704,6 +11704,9 @@ void HandleSetPokedexFlag(u16 nationalNum, u8 caseId, u32 personality)
         if (NationalPokedexNumToSpecies(nationalNum) == SPECIES_SPINDA)
             gSaveBlock2Ptr->pokedex.spindaPersonality = personality;
     }
+    // Always check shininess regardless of whether this is a first sighting
+    if (IsPersonalityShiny(otId, personality))
+        SetShinySeenFlag(nationalNum);
 }
 
 const u8 *GetTrainerClassNameFromId(u16 trainerId)

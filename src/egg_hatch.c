@@ -380,6 +380,14 @@ static void AddHatchedMonToParty(u8 id)
     GetSetPokedexFlag(species, FLAG_SET_SEEN);
     GetSetPokedexFlag(species, FLAG_SET_CAUGHT);
 
+    // Set shiny flag if hatched mon is shiny
+    {
+        u32 otId = GetMonData(mon, MON_DATA_OT_ID, NULL);
+        u32 personality = GetMonData(mon, MON_DATA_PERSONALITY, NULL);
+        if (IsPersonalityShiny(otId, personality))
+            SetShinySeenFlag(species);
+    }
+
     GetMonNickname2(mon, gStringVar1);
 
     ball = ITEM_POKE_BALL;

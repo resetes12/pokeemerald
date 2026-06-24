@@ -42,5 +42,9 @@ bool16 HasAllHoennMons(void);
 void ResetPokedexScrollPositions(void);
 bool16 HasAllMons(void);
 void CB2_OpenPokedex(void);
+bool8 IsPersonalityShiny(u32 otId, u32 personality);
+void SetShinySeenFlag(u16 nationalDexNo);
+bool8 GetShinySeenFlag(u16 nationalDexNo);
+void ScanOwnedMonsForShinies(void);
 
 #endif // GUARD_POKEDEX_H
