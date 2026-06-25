@@ -33,6 +33,7 @@ extern const struct CompressedSpriteSheet gSpriteSheet_EnemyShadow;
 extern const struct SpriteTemplate gSpriteTemplate_EnemyShadow;
 
 // this file's functions
+static u8 GetBattlePalaceNature(u8 battlerId);
 static u8 GetBattlePalaceMoveGroup(u16 move);
 static u16 GetBattlePalaceTarget(void);
 static void SpriteCB_TrainerSlideVertical(struct Sprite *sprite);
@@ -110,6 +111,20 @@ void FreeBattleSpritesData(void)
     FREE_AND_SET_NULL(gBattleSpritesDataPtr);
 }
 
+// Returns the effective nature for Battle Palace move selection.
+// Uses the minted nature if one has been applied, otherwise the original personality nature.
+static u8 GetBattlePalaceNature(u8 battlerId)
+{
+    struct Pokemon *mon;
+
+    if (GetBattlerSide(battlerId) == B_SIDE_PLAYER)
+        mon = &gPlayerParty[gBattlerPartyIndexes[battlerId]];
+    else
+        mon = &gEnemyParty[gBattlerPartyIndexes[battlerId]];
+
+    return GetNature(mon, TRUE);
+}
+
 // Pokémon chooses move to use in Battle Palace rather than player
 u16 ChooseMoveAndTargetInBattlePalace(void)
 {
@@ -143,7 +158,7 @@ u16 ChooseMoveAndTargetInBattlePalace(void)
     // Otherwise use move from "Support" group
     for (; i < maxGroupNum; i++)
     {
-        if (gBattlePalaceNatureToMoveGroupLikelihood[GetNatureFromPersonality(gBattleMons[gActiveBattler].personality)][i] > percent)
+        if (gBattlePalaceNatureToMoveGroupLikelihood[GetBattlePalaceNature(gActiveBattler)][i] > percent)
             break;
     }
     selectedGroup = i - minGroupNum;
@@ -342,7 +357,7 @@ static u16 GetBattlePalaceTarget(void)
         if (gBattleMons[opposing1].hp == gBattleMons[opposing2].hp)
             return (BATTLE_OPPOSITE(gActiveBattler & BIT_SIDE) + (Random() & 2)) << 8;
 
-        switch (gBattlePalaceNatureToMoveTarget[GetNatureFromPersonality(gBattleMons[gActiveBattler].personality)])
+        switch (gBattlePalaceNatureToMoveTarget[GetBattlePalaceNature(gActiveBattler)])
         {
         case PALACE_TARGET_STRONGER:
             if (gBattleMons[opposing1].hp > gBattleMons[opposing2].hp)

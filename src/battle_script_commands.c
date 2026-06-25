@@ -7188,9 +7188,18 @@ static void Cmd_various(void)
             && gBattleMons[gActiveBattler].hp != 0
             && !(gBattleMons[gActiveBattler].status1 & STATUS1_SLEEP))
         {
+            u8 palaceNature;
+            struct Pokemon *mon;
+
+            if (GetBattlerSide(gActiveBattler) == B_SIDE_PLAYER)
+                mon = &gPlayerParty[gBattlerPartyIndexes[gActiveBattler]];
+            else
+                mon = &gEnemyParty[gBattlerPartyIndexes[gActiveBattler]];
+            palaceNature = GetNature(mon, TRUE);
+
             gBattleStruct->palaceFlags |= gBitTable[gActiveBattler];
             gBattleCommunication[0] = TRUE;
-            gBattleCommunication[MULTISTRING_CHOOSER] = sBattlePalaceNatureToFlavorTextId[GetNatureFromPersonality(gBattleMons[gActiveBattler].personality)];
+            gBattleCommunication[MULTISTRING_CHOOSER] = sBattlePalaceNatureToFlavorTextId[palaceNature];
         }
         break;
     case VARIOUS_ARENA_JUDGMENT_WINDOW:
