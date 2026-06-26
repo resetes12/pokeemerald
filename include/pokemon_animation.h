@@ -3,6 +3,7 @@
 
 u8 GetSpeciesBackAnimSet(u16 species);
 void LaunchAnimationTaskForFrontSprite(struct Sprite *sprite, u8 frontAnimId);
+void StopMonFrontSpriteAnimationTask(void);
 void StartMonSummaryAnimation(struct Sprite *sprite, u8 frontAnimId);
 void LaunchAnimationTaskForBackSprite(struct Sprite *sprite, u8 backAnimSet);
 void SetSpriteCB_MonAnimDummy(struct Sprite *sprite);
