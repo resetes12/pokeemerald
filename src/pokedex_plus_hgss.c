@@ -3979,6 +3979,10 @@ static void Task_LoadInfoScreen(u8 taskId)
                 u16 species = NationalPokedexNumToSpecies(sPokedexListItem->dexNum);
                 u8 spriteId = gTasks[taskId].tMonSpriteId;
                 struct Sprite *monSprite = &gSprites[spriteId];
+                // Swap anim table from the generic gAnims_MonPic to the per-species
+                // front anim table so that frame 0/1 switching uses species-specific
+                // timing (matches battle/summary behavior)
+                monSprite->anims = gMonFrontAnimsPtrTable[species];
                 if (HasTwoFramesAnimation(species))
                     StartSpriteAnim(monSprite, 1);
                 DoMonFrontSpriteAnimation(monSprite, species, TRUE, 0);
