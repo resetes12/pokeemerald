@@ -18,6 +18,8 @@
 #include "international_string_util.h" // for GetStringRightAlignXOffset
 #include "strings.h"
 #include "gba/m4a_internal.h"
+
+extern struct MusicPlayerInfo *gMPlay_PokemonCry;
 #include "constants/rgb.h"
 #include "event_data.h"
 #include "tx_randomizer_and_challenges.h"
@@ -1220,6 +1222,8 @@ void CB2_InitChallengeViewer(void)
     case 2:
         ResetPaletteFade();
         ScanlineEffect_Stop();
+        if (gMPlay_PokemonCry != NULL)
+            StopCryAndClearCrySongs();
         ResetTasks();
         ResetSpriteData();
         gMain.state++;
