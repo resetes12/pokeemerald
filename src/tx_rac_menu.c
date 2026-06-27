@@ -17,6 +17,8 @@
 #include "strings.h"
 #include "string_util.h"
 #include "gba/m4a_internal.h"
+
+extern struct MusicPlayerInfo *gMPlay_PokemonCry;
 #include "constants/rgb.h"
 #include "battle_main.h"
 #include "tx_randomizer_and_challenges.h"
@@ -1422,6 +1424,8 @@ void CB2_InitTxRandomizerChallengesMenu(void)
     case 2:
         ResetPaletteFade();
         ScanlineEffect_Stop();
+        if (gMPlay_PokemonCry != NULL)
+            StopCryAndClearCrySongs();
         ResetTasks();
         ResetSpriteData();
         gMain.state++;
