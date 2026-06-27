@@ -11611,6 +11611,13 @@ void StopPokemonAnimationDelayTask(void)
         DestroyTask(delayTaskId);
 }
 
+void StopFrontSpriteAnimationDelayTask(void)
+{
+    u8 delayTaskId = FindTaskIdByFunc(Task_AnimateAfterDelay);
+    if (delayTaskId != TASK_NONE)
+        DestroyTask(delayTaskId);
+}
+
 void BattleAnimateBackSprite(struct Sprite *sprite, u16 species)
 {
     if (gSaveBlock2Ptr->optionsBattleSceneOff == 1)

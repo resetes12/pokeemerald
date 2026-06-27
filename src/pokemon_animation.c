@@ -996,6 +996,13 @@ void LaunchAnimationTaskForFrontSprite(struct Sprite *sprite, u8 frontAnimId)
     gTasks[taskId].tAnimId = frontAnimId;
 }
 
+void StopMonFrontSpriteAnimationTask(void)
+{
+    u8 taskId = FindTaskIdByFunc(Task_HandleMonAnimation);
+    if (taskId != TASK_NONE)
+        DestroyTask(taskId);
+}
+
 void StartMonSummaryAnimation(struct Sprite *sprite, u8 frontAnimId)
 {
     // sDontFlip is expected to still be FALSE here, not explicitly cleared

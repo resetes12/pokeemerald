@@ -26,6 +26,7 @@
 #include "pokedex_area_screen.h"
 #include "pokedex_cry_screen.h"
 #include "pokemon_icon.h"
+#include "pokemon_animation.h"
 #include "pokemon_summary_screen.h"
 #ifdef POKEMON_EXPANSION
 #include "region_map.h"
@@ -3822,6 +3823,56 @@ static u8 StartInfoScreenScroll(struct PokedexListItem *item, u8 taskId)
     return taskId;
 }
 
+// Task that waits for the front sprite animation to finish, then resets to frame 0
+#define tSpriteId data[0]
+static void Task_ResetSpriteAnimAfterDone(u8 taskId)
+{
+    u8 spriteId = gTasks[taskId].tSpriteId;
+    struct Sprite *sprite = &gSprites[spriteId];
+
+    if (!sprite->inUse)
+    {
+        DestroyTask(taskId);
+        return;
+    }
+    if (sprite->callback == SpriteCallbackDummy)
+    {
+        StartSpriteAnim(sprite, 0);
+        DestroyTask(taskId);
+    }
+}
+#undef tSpriteId
+
+// Stop any running sprite animation and destroy all associated tasks before freeing.
+static void StopMonSpriteAnimation(u8 spriteId)
+{
+    struct Sprite *sprite = &gSprites[spriteId];
+    u8 taskIdToDestroy;
+    u16 paletteIndex;
+    u16 i;
+
+    // Reset sprite position offset in case animation was mid-shake
+    sprite->x2 = 0;
+    sprite->y2 = 0;
+    sprite->callback = SpriteCallbackDummy;
+
+    // Restore sprite palette in case a glow/flash animation was mid-blend
+    paletteIndex = OBJ_PLTT_ID(sprite->oam.paletteNum);
+    for (i = 0; i < 16; i++)
+        gPlttBufferFaded[paletteIndex + i] = gPlttBufferUnfaded[paletteIndex + i];
+
+    // Directly destroy Task_HandleMonAnimation (the persistent animation driver)
+    StopMonFrontSpriteAnimationTask();
+
+    // Kill the delay task if the movement animation hasn't started yet
+    StopFrontSpriteAnimationDelayTask();
+
+    // Destroy the reset-after-done task
+    taskIdToDestroy = FindTaskIdByFunc(Task_ResetSpriteAnimAfterDone);
+    if (taskIdToDestroy != TASK_NONE)
+        DestroyTask(taskIdToDestroy);
+}
+
 static void Task_LoadInfoScreen(u8 taskId)
 {
     switch (gMain.state)
@@ -3922,6 +3973,26 @@ static void Task_LoadInfoScreen(u8 taskId)
             {
                 gMain.state++;
             }
+            // Play the front sprite animation (use DoMonFrontSpriteAnimation
+            // instead of PokemonSummaryDoMonAnimation to avoid flipping the sprite,
+            // since the Pokedex shows mons facing the same way as battle)
+            {
+                u16 species = NationalPokedexNumToSpecies(sPokedexListItem->dexNum);
+                u8 spriteId = gTasks[taskId].tMonSpriteId;
+                struct Sprite *monSprite = &gSprites[spriteId];
+                // Swap anim table from the generic gAnims_MonPic to the per-species
+                // front anim table so that frame 0/1 switching uses species-specific
+                // timing (matches battle/summary behavior)
+                monSprite->anims = gMonFrontAnimsPtrTable[species];
+                if (HasTwoFramesAnimation(species))
+                    StartSpriteAnim(monSprite, 1);
+                DoMonFrontSpriteAnimation(monSprite, species, TRUE, 0);
+                // Create a task to reset sprite back to frame 0 after animation ends
+                {
+                    u8 resetTaskId = CreateTask(Task_ResetSpriteAnimAfterDone, 10);
+                    gTasks[resetTaskId].data[0] = spriteId;
+                }
+            }
         }
         break;
     case 9:
@@ -3963,6 +4034,7 @@ static void Task_HandleInfoScreenInput(u8 taskId)
     if (gTasks[taskId].tScrolling)
     {
         // Scroll up/down
+        StopMonSpriteAnimation(gTasks[taskId].tMonSpriteId);
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
         gTasks[taskId].func = Task_LoadInfoScreenWaitForFade;
         PlaySE(SE_DEX_SCROLL);
@@ -3970,6 +4042,7 @@ static void Task_HandleInfoScreenInput(u8 taskId)
     }
     if (JOY_NEW(B_BUTTON))
     {
+        StopMonSpriteAnimation(gTasks[taskId].tMonSpriteId);
         BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
         // Use special exit handler if called from party menu
         if (sExternalReturnCallback != NULL)
@@ -3983,6 +4056,7 @@ static void Task_HandleInfoScreenInput(u8 taskId)
     if ((JOY_NEW(DPAD_RIGHT) || (JOY_NEW(R_BUTTON) && gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_LR)))
     {
         sPokedexView->selectedScreen = AREA_SCREEN;
+        StopMonSpriteAnimation(gTasks[taskId].tMonSpriteId);
         BeginNormalPaletteFade(0xFFFFFFEB, 0, 0, 0x10, RGB_BLACK);
         sPokedexView->screenSwitchState = 1;
         gTasks[taskId].func = Task_SwitchScreensFromInfoScreen;
@@ -3995,6 +4069,7 @@ static void Task_SwitchScreensFromInfoScreen(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
+        StopMonSpriteAnimation(gTasks[taskId].tMonSpriteId);
         FreeAndDestroyMonPicSprite(gTasks[taskId].tMonSpriteId);
         switch (sPokedexView->screenSwitchState)
         {
@@ -4016,6 +4091,7 @@ static void Task_LoadInfoScreenWaitForFade(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
+        StopMonSpriteAnimation(gTasks[taskId].tMonSpriteId);
         FreeAndDestroyMonPicSprite(gTasks[taskId].tMonSpriteId);
         gTasks[taskId].func = Task_LoadInfoScreen;
     }
@@ -4025,6 +4101,7 @@ static void Task_ExitInfoScreen(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
+        StopMonSpriteAnimation(gTasks[taskId].tMonSpriteId);
         FreeAndDestroyMonPicSprite(gTasks[taskId].tMonSpriteId);
         FreeInfoScreenWindowAndBgBuffers();
         DestroyTask(taskId);
@@ -4035,6 +4112,7 @@ static void Task_ExitInfoScreenToExternal(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
+        StopMonSpriteAnimation(gTasks[taskId].tMonSpriteId);
         FreeAndDestroyMonPicSprite(gTasks[taskId].tMonSpriteId);
         FreeInfoScreenWindowAndBgBuffers();
         DestroyTask(taskId);
