@@ -2363,6 +2363,7 @@ static void Task_WaitForExitInfoScreen(u8 taskId)
     else
     {
         // Exiting, back to list view
+        sPokedexView->sEvoScreenData.fromEvoPage = FALSE;
         sLastSelectedPokemon = sPokedexView->selectedPokemon;
         sPokeBallRotation = sPokedexView->pokeBallRotation;
         gTasks[taskId].func = Task_OpenPokedexMainPage;
@@ -8202,6 +8203,7 @@ static void Task_WaitForExitSearchResultsInfoScreen(u8 taskId)
     else
     {
         // Exiting, back to search results
+        sPokedexView->sEvoScreenData.fromEvoPage = FALSE;
         gTasks[taskId].func = Task_OpenSearchResults;
     }
 }
