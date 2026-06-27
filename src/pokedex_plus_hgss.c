@@ -4076,6 +4076,19 @@ void OpenPokedexInfoScreen(u16 species, void (*returnCallback)(void))
     // Store the return callback
     sExternalReturnCallback = returnCallback;
     
+    // Clear video hardware to prevent artifacts from the previous screen
+    // (matches the full init sequence used when opening Pokedex from the menu)
+    ResetOtherVideoRegisters(0);
+    DmaFillLarge16(3, 0, (u8 *)VRAM, VRAM_SIZE, 0x1000);
+    DmaClear32(3, OAM, OAM_SIZE);
+    DmaClear16(3, PLTT, PLTT_SIZE);
+    ScanlineEffect_Stop();
+    ResetSpriteData();
+    ResetPaletteFade();
+    FreeAllSpritePalettes();
+    gReservedSpritePaletteCount = 8;
+    ResetAllPicSprites();
+    
     // Convert species to dex number
     dexNum = SpeciesToNationalPokedexNum(species);
     
@@ -4130,6 +4143,7 @@ void OpenPokedexInfoScreen(u16 species, void (*returnCallback)(void))
     sPokedexView->currentPage = PAGE_INFO;
     sPokedexView->selectedScreen = INFO_SCREEN;
     
+    SetVBlankCallback(VBlankCB_Pokedex);
     SetMainCallback2(CB2_PartyPokedexInfoScreen);
 }
 
