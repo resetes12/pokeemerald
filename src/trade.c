@@ -248,6 +248,7 @@ static EWRAM_DATA struct {
     u16 alpha;
     bool8 isLinkTrade;
     u16 monSpecies[2];
+    u8 monBallIds[2];
     u16 cachedMapMusic;
     u8 textColors[3];
     u8 filler_F9;
@@ -298,6 +299,7 @@ static void TradeAnimInit_LoadGfx(void);
 static void CB2_InGameTrade(void);
 static void SetTradeSequenceBgGpuRegs(u8);
 static void LoadTradeSequenceSpriteSheetsAndPalettes(void);
+static void LoadTradeBallGfx(u8 ballId);
 static void BufferTradeSceneStrings(void);
 static bool8 DoTradeAnim(void);
 static bool8 DoTradeAnim_Cable(void);
@@ -2815,6 +2817,7 @@ static void LoadTradeMonPic(u8 whichParty, u8 state)
         LoadCompressedSpritePalette(GetMonSpritePalStruct(mon));
         sTradeAnim->monSpecies[whichParty] = species;
         sTradeAnim->monPersonalities[whichParty] = personality;
+        sTradeAnim->monBallIds[whichParty] = ItemIdToBallId(GetMonData(mon, MON_DATA_POKEBALL));
         break;
     case 1:
         SetMultiuseSpriteTemplateToPokemon(GetMonSpritePalStruct(mon)->tag, pos);
@@ -2926,6 +2929,7 @@ void CB2_LinkTrade(void)
         LoadTradeSequenceSpriteSheetsAndPalettes();
         LoadSpriteSheet(&sPokeBallSpriteSheet);
         LoadSpritePalette(&sPokeBallSpritePalette);
+        LoadTradeBallGfx(sTradeAnim->monBallIds[TRADE_PLAYER]);
         gMain.state++;
         break;
     case 10:
@@ -3053,6 +3057,7 @@ static void CB2_InitInGameTrade(void)
         LoadTradeSequenceSpriteSheetsAndPalettes();
         LoadSpriteSheet(&sPokeBallSpriteSheet);
         LoadSpritePalette(&sPokeBallSpritePalette);
+        LoadTradeBallGfx(sTradeAnim->monBallIds[TRADE_PLAYER]);
         gMain.state++;
         break;
     case 10:
@@ -3327,6 +3332,27 @@ static void LoadTradeSequenceSpriteSheetsAndPalettes(void)
     LoadSpritePalette(&sSpritePalette_Gba);
 }
 
+static void LoadTradeBallGfx(u8 ballId)
+{
+    struct SpriteSheet sheet;
+    struct SpritePalette palette;
+
+    if (ballId >= POKEBALL_COUNT)
+        ballId = BALL_POKE;
+
+    sheet.data = sTradeBallGfxTable[ballId];
+    sheet.size = 1536; // 12 frames * 16x16 4bpp tiles
+    sheet.tag = GFXTAG_POKEBALL;
+
+    palette.data = sTradeBallPalTable[ballId];
+    palette.tag = PALTAG_POKEBALL;
+
+    FreeSpriteTilesByTag(GFXTAG_POKEBALL);
+    FreeSpritePaletteByTag(PALTAG_POKEBALL);
+    LoadSpriteSheet(&sheet);
+    LoadSpritePalette(&palette);
+}
+
 // Buffers "[Pokemon] will be sent to [Trainer]" strings
 static void BufferTradeSceneStrings(void)
 {
@@ -3478,7 +3504,7 @@ static bool8 DoTradeAnim_Cable(void)
     case STATE_BYE_BYE:
         if (++sTradeAnim->timer == 80)
         {
-            sTradeAnim->releasePokeballSpriteId = CreateTradePokeballSprite(sTradeAnim->monSpriteIds[TRADE_PLAYER], gSprites[sTradeAnim->monSpriteIds[TRADE_PLAYER]].oam.paletteNum, 120, 32, 2, 1, 0x14, 0xfffff);
+            sTradeAnim->releasePokeballSpriteId = CreateTradePokeballSprite(sTradeAnim->monSpriteIds[TRADE_PLAYER], gSprites[sTradeAnim->monSpriteIds[TRADE_PLAYER]].oam.paletteNum, 120, 32, 2, 1, 0x14, 0xfffff, sTradeAnim->monBallIds[TRADE_PLAYER]);
             sTradeAnim->state++;
             StringExpandPlaceholders(gStringVar4, gText_ByeByeVar1);
             DrawTextOnTradeWindow(0, gStringVar4, 0);
@@ -3789,6 +3815,7 @@ static bool8 DoTradeAnim_Cable(void)
             sTradeAnim->state++;
         break;
     case STATE_POKEBALL_ARRIVE:
+        LoadTradeBallGfx(sTradeAnim->monBallIds[TRADE_PARTNER]);
         sTradeAnim->bouncingPokeballSpriteId = CreateSprite(&sSpriteTemplate_Pokeball, 120, -8, 0);
         gSprites[sTradeAnim->bouncingPokeballSpriteId].data[3] = 74;
         gSprites[sTradeAnim->bouncingPokeballSpriteId].callback = SpriteCB_BouncingPokeballArrive;
@@ -3818,7 +3845,7 @@ static bool8 DoTradeAnim_Cable(void)
         gSprites[sTradeAnim->monSpriteIds[TRADE_PARTNER]].x2 = 0;
         gSprites[sTradeAnim->monSpriteIds[TRADE_PARTNER]].y2 = 0;
         StartSpriteAnim(&gSprites[sTradeAnim->monSpriteIds[TRADE_PARTNER]], 0);
-        CreatePokeballSpriteToReleaseMon(sTradeAnim->monSpriteIds[TRADE_PARTNER], gSprites[sTradeAnim->monSpriteIds[TRADE_PARTNER]].oam.paletteNum, 120, 84, 2, 1, 20, PALETTES_BG | (0xF << 16), sTradeAnim->monSpecies[TRADE_PARTNER]);
+        CreatePokeballSpriteToReleaseMon(sTradeAnim->monSpriteIds[TRADE_PARTNER], gSprites[sTradeAnim->monSpriteIds[TRADE_PARTNER]].oam.paletteNum, 120, 84, 2, 1, 20, PALETTES_BG | (0xF << 16), sTradeAnim->monSpecies[TRADE_PARTNER], sTradeAnim->monBallIds[TRADE_PARTNER]);
         FreeSpriteOamMatrix(&gSprites[sTradeAnim->bouncingPokeballSpriteId]);
         DestroySprite(&gSprites[sTradeAnim->bouncingPokeballSpriteId]);
         sTradeAnim->state++;
@@ -3949,7 +3976,7 @@ static bool8 DoTradeAnim_Wireless(void)
     case STATE_BYE_BYE:
         if (++sTradeAnim->timer == 80)
         {
-            sTradeAnim->releasePokeballSpriteId = CreateTradePokeballSprite(sTradeAnim->monSpriteIds[TRADE_PLAYER], gSprites[sTradeAnim->monSpriteIds[TRADE_PLAYER]].oam.paletteNum, 120, 32, 2, 1, 0x14, 0xfffff);
+            sTradeAnim->releasePokeballSpriteId = CreateTradePokeballSprite(sTradeAnim->monSpriteIds[TRADE_PLAYER], gSprites[sTradeAnim->monSpriteIds[TRADE_PLAYER]].oam.paletteNum, 120, 32, 2, 1, 0x14, 0xfffff, sTradeAnim->monBallIds[TRADE_PLAYER]);
             sTradeAnim->state++;
             StringExpandPlaceholders(gStringVar4, gText_ByeByeVar1);
             DrawTextOnTradeWindow(0, gStringVar4, 0);
@@ -4286,6 +4313,7 @@ static bool8 DoTradeAnim_Wireless(void)
             sTradeAnim->state++;
         break;
     case STATE_POKEBALL_ARRIVE:
+        LoadTradeBallGfx(sTradeAnim->monBallIds[TRADE_PARTNER]);
         sTradeAnim->bouncingPokeballSpriteId = CreateSprite(&sSpriteTemplate_Pokeball, 120, -8, 0);
         gSprites[sTradeAnim->bouncingPokeballSpriteId].data[3] = 74;
         gSprites[sTradeAnim->bouncingPokeballSpriteId].callback = SpriteCB_BouncingPokeballArrive;
@@ -4315,7 +4343,7 @@ static bool8 DoTradeAnim_Wireless(void)
         gSprites[sTradeAnim->monSpriteIds[TRADE_PARTNER]].x2 = 0;
         gSprites[sTradeAnim->monSpriteIds[TRADE_PARTNER]].y2 = 0;
         StartSpriteAnim(&gSprites[sTradeAnim->monSpriteIds[TRADE_PARTNER]], 0);
-        CreatePokeballSpriteToReleaseMon(sTradeAnim->monSpriteIds[TRADE_PARTNER], gSprites[sTradeAnim->monSpriteIds[TRADE_PARTNER]].oam.paletteNum, 120, 84, 2, 1, 20, PALETTES_BG | (0xF << 16), sTradeAnim->monSpecies[TRADE_PARTNER]);
+        CreatePokeballSpriteToReleaseMon(sTradeAnim->monSpriteIds[TRADE_PARTNER], gSprites[sTradeAnim->monSpriteIds[TRADE_PARTNER]].oam.paletteNum, 120, 84, 2, 1, 20, PALETTES_BG | (0xF << 16), sTradeAnim->monSpecies[TRADE_PARTNER], sTradeAnim->monBallIds[TRADE_PARTNER]);
         FreeSpriteOamMatrix(&gSprites[sTradeAnim->bouncingPokeballSpriteId]);
         DestroySprite(&gSprites[sTradeAnim->bouncingPokeballSpriteId]);
         sTradeAnim->state++;
