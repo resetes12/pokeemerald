@@ -123,6 +123,12 @@ u8 ScriptGiveMon(u16 species, u8 level, u16 item, u32 unused1, u32 unused2, u8 u
     case MON_GIVEN_TO_PC:
         GetSetPokedexFlag(nationalDexNum, FLAG_SET_SEEN);
         GetSetPokedexFlag(nationalDexNum, FLAG_SET_CAUGHT);
+        {
+            u32 otId = GetMonData(&mon, MON_DATA_OT_ID, NULL);
+            u32 personality = GetMonData(&mon, MON_DATA_PERSONALITY, NULL);
+            if (IsPersonalityShiny(otId, personality))
+                SetShinySeenFlag(nationalDexNum);
+        }
         break;
     }
     return sentToPc;

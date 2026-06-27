@@ -571,7 +571,8 @@ struct SaveBlock2
               u8 rivalName[PLAYER_NAME_LENGTH + 1];
               u16 optionsSurfOverworld:1; // whether to use the original Surf blob or dynamic blob (False to use dynamic)
               u16 optionsFontType:1;
-}; // sizeof=0xF2C
+              u8 shinySeen[NUM_DEX_FLAG_BYTES]; // Tracks whether trainer has ever seen/caught a shiny of each species
+}; // sizeof=0xF2C + NUM_DEX_FLAG_BYTES
 
 extern struct SaveBlock2 *gSaveBlock2Ptr;
 
