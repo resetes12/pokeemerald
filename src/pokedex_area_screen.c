@@ -1174,15 +1174,15 @@ static void Task_ShowPokedexAreaScreen(u8 taskId)
         // BlendPalettes reads unfaded and writes faded; copy faded back as the new target.
         if (sPokedexAreaScreen->areaViewTimeMode == 1)
         {
-            BlendPalettes((1 << 7) | (1 << 8), 8, RGB(2, 4, 10));
-            CpuCopy32(&gPlttBufferFaded[BG_PLTT_ID(7)], &gPlttBufferUnfaded[BG_PLTT_ID(7)], 32 * sizeof(u16));
+            BlendPalettes((1 << 7) | (1 << 8) | (1 << 9), 8, RGB(2, 4, 10));
+            CpuCopy32(&gPlttBufferFaded[BG_PLTT_ID(7)], &gPlttBufferUnfaded[BG_PLTT_ID(7)], 48 * sizeof(u16));
             // BlendPalettes wrote the tinted result into gPlttBufferFaded, which the
             // VBlank DMA would transfer to hardware -- causing a one-frame flash of the
             // half-tinted map at the top of the screen before BeginNormalPaletteFade
             // (next state) resets faded to black.  Restore faded to black here so the
             // screen stays dark; gPlttBufferUnfaded already holds the correct tinted
             // target for the subsequent fade-in.
-            CpuFill16(0, &gPlttBufferFaded[BG_PLTT_ID(7)], 32 * sizeof(u16));
+            CpuFill16(0, &gPlttBufferFaded[BG_PLTT_ID(7)], 48 * sizeof(u16));
         }
         break;
     case 9:
@@ -1217,9 +1217,9 @@ static void Task_HandlePokedexAreaScreenInput(u8 taskId)
     case 0:
         if (gPaletteFade.active)
             return;
-        // Fade-in just completed — restore BG 7+8 from ROM, re-apply any night
+        // Fade-in just completed — restore BG 7–9 from ROM, re-apply any night
         // tint (idempotent for day mode), and sync the OBJ area-marker palette.
-        // Night mode: BG 7+8 unfaded was pre-tinted so the fade targeted the
+        // Night mode: BG 7–9 unfaded was pre-tinted so the fade targeted the
         // correct colors; ApplyTimeModeToAreaMapPalette re-tints both buffers.
         // Day mode: no pre-tint was applied; function restores ROM palette and
         // skips tinting, leaving both buffers clean.
@@ -1441,17 +1441,17 @@ static void CreateAreaIndicatorSprites(void)
     }*/
 }
 
-// Applies the correct day/night tint to the region-map BG palettes (slots 7+8).
-// Always restores BG 7+8 from ROM (via GetPokedexAreaMapPal) before tinting so
-// the function is idempotent and safe to call regardless of previous tinting.
+// Applies the correct day/night tint to the region-map BG palettes (slots 7–9).
+// Always restores from ROM (via GetPokedexAreaMapPal) before tinting so the
+// function is idempotent and safe to call regardless of previous tinting.
 static void ApplyTimeModeToAreaMapPalette(void)
 {
     u8 markerSlot;
 
-    // Always restore BG 7+8 from ROM directly so this function is idempotent
+    // Always restore BG 7–9 from ROM directly so this function is idempotent
     // regardless of any previous tinting applied to gPlttBufferUnfaded/Faded.
-    CpuCopy32(GetPokedexAreaMapPal(), &gPlttBufferUnfaded[BG_PLTT_ID(7)], 32 * sizeof(u16));
-    CpuCopy32(GetPokedexAreaMapPal(), &gPlttBufferFaded[BG_PLTT_ID(7)], 32 * sizeof(u16));
+    CpuCopy32(GetPokedexAreaMapPal(), &gPlttBufferUnfaded[BG_PLTT_ID(7)], 48 * sizeof(u16));
+    CpuCopy32(GetPokedexAreaMapPal(), &gPlttBufferFaded[BG_PLTT_ID(7)], 48 * sizeof(u16));
 
     // Restore the area-marker sprite palette from unfaded (always clean) as a base.
     markerSlot = IndexOfSpritePaletteTag(TAG_AREA_MARKER);
@@ -1460,10 +1460,10 @@ static void ApplyTimeModeToAreaMapPalette(void)
 
     if (sPokedexAreaScreen->areaViewTimeMode == 1)
     {
-        // Blend BG palette slots toward a dark cool blue for night mode.
-        BlendPalettes((1 << 7) | (1 << 8), 8, RGB(2, 4, 10));
+        // Blend BG palette slots 7–9 toward a dark cool blue for night mode.
+        BlendPalettes((1 << 7) | (1 << 8) | (1 << 9), 8, RGB(2, 4, 10));
         // Keep unfaded in sync so future fades also target the tinted palette.
-        CpuCopy32(&gPlttBufferFaded[BG_PLTT_ID(7)], &gPlttBufferUnfaded[BG_PLTT_ID(7)], 32 * sizeof(u16));
+        CpuCopy32(&gPlttBufferFaded[BG_PLTT_ID(7)], &gPlttBufferUnfaded[BG_PLTT_ID(7)], 48 * sizeof(u16));
     }
     // Day mode: the cache copies above are already the correct unmodified palettes.
 }
