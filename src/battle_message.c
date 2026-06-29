@@ -2720,6 +2720,8 @@ void BufferStringBattle(u16 stringID)
                 stringPtr = sText_WildPkmnAppearedPause;
             else if (gBattleTypeFlags & BATTLE_TYPE_SAFARI)
                 stringPtr = sText_WildPkmnAppearedOld;
+            else if (gBattleTypeFlags & BATTLE_TYPE_FIRST_BATTLE)
+                stringPtr = sText_WildPkmnAppearedOld;
             else
                 if (gSaveBlock2Ptr->optionsLRtoRun == 0)
                 {
