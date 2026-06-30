@@ -248,46 +248,88 @@ static void CompleteOnBankSpritePosX_0(void)
 }
 static u16 GetPrevBall(u16 ballId)
 {
-    u16 ballPrev;
-    s32 i, j;
+    s32 i, count, current;
+    u16 distinctBalls[BAG_POKEBALLS_COUNT];
+
     CompactItemsInBagPocket(&gBagPockets[BALLS_POCKET]);
+
+    // Build a list of distinct ball types in pocket order.
+    count = 0;
+    current = -1;
     for (i = 0; i < gBagPockets[BALLS_POCKET].capacity; i++)
     {
-        if (ballId == gBagPockets[BALLS_POCKET].itemSlots[i].itemId)
-        {
-            if (i <= 0)
-            {
-                for (j = gBagPockets[BALLS_POCKET].capacity - 1; j >= 0; j--)
-                {
-                    ballPrev = gBagPockets[BALLS_POCKET].itemSlots[j].itemId;
-                    if (ballPrev != ITEM_NONE)
-                        return ballPrev;
-                }
-            }
-            i--;
+        u16 id = gBagPockets[BALLS_POCKET].itemSlots[i].itemId;
+        s32 j;
+        bool8 alreadySeen;
+
+        if (id == ITEM_NONE)
             break;
+
+        alreadySeen = FALSE;
+        for (j = 0; j < count; j++)
+        {
+            if (distinctBalls[j] == id)
+            {
+                alreadySeen = TRUE;
+                break;
+            }
+        }
+        if (!alreadySeen)
+        {
+            if (id == ballId)
+                current = count;
+            distinctBalls[count++] = id;
         }
     }
-    return gBagPockets[BALLS_POCKET].itemSlots[i].itemId;
+
+    if (count <= 1 || current < 0)
+        return ballId;
+
+    // Previous distinct ball, wrapping around.
+    return distinctBalls[(current + count - 1) % count];
 }
 
 static u32 GetNextBall(u32 ballId)
 {
-    u32 ballNext = ITEM_NONE;
-    s32 i;
+    s32 i, count, current;
+    u16 distinctBalls[BAG_POKEBALLS_COUNT];
+
     CompactItemsInBagPocket(&gBagPockets[BALLS_POCKET]);
-    for (i = 1; i < gBagPockets[BALLS_POCKET].capacity; i++)
+
+    // Build a list of distinct ball types in pocket order.
+    count = 0;
+    current = -1;
+    for (i = 0; i < gBagPockets[BALLS_POCKET].capacity; i++)
     {
-        if (ballId == gBagPockets[BALLS_POCKET].itemSlots[i-1].itemId)
-        {
-            ballNext = gBagPockets[BALLS_POCKET].itemSlots[i].itemId;
+        u16 id = gBagPockets[BALLS_POCKET].itemSlots[i].itemId;
+        s32 j;
+        bool8 alreadySeen;
+
+        if (id == ITEM_NONE)
             break;
+
+        alreadySeen = FALSE;
+        for (j = 0; j < count; j++)
+        {
+            if (distinctBalls[j] == id)
+            {
+                alreadySeen = TRUE;
+                break;
+            }
+        }
+        if (!alreadySeen)
+        {
+            if (id == (u16)ballId)
+                current = count;
+            distinctBalls[count++] = id;
         }
     }
-    if (ballNext == ITEM_NONE)
-        return gBagPockets[BALLS_POCKET].itemSlots[0].itemId; // Zeroth slot
-    else
-        return ballNext;
+
+    if (count <= 1 || current < 0)
+        return ballId;
+
+    // Next distinct ball, wrapping around.
+    return distinctBalls[(current + 1) % count];
 }
 
 static void HandleInputChooseAction(void)
