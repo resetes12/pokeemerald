@@ -1261,10 +1261,11 @@ static void PrintItemQuantity(u8 windowId, s16 quantity)
 static void PrintItemSoldAmount(int windowId, int numSold, int moneyEarned)
 {
     u8 numDigits = (gBagPosition.pocket == BERRIES_POCKET) ? BERRY_CAPACITY_DIGITS : BAG_ITEM_CAPACITY_DIGITS;
+    u8 moneyX = (gSaveBlock2Ptr->optionsFontType) ? 30 : 32;
     ConvertIntToDecimalStringN(gStringVar1, numSold, STR_CONV_MODE_LEADING_ZEROS, numDigits);
     StringExpandPlaceholders(gStringVar4, gText_xVar1);
     AddTextPrinterParameterized(windowId, FONT_NORMAL, gStringVar4, 0, 1, TEXT_SKIP_DRAW, 0);
-    PrintMoneyAmount(windowId, 32, 1, moneyEarned, 0);
+    PrintMoneyAmount(windowId, moneyX, 1, moneyEarned, 0);
 }
 
 static void Task_BagMenu_HandleInput(u8 taskId)
