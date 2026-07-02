@@ -1282,16 +1282,21 @@ void ItemUseOutOfBattle_Fertilizer(u8 taskId)
 {  
     if (TryToWaterBerryTree() == TRUE)
     {
-        RemoveUsedItem();
-        FadeInFromBlack();
-        CB2_ReturnToField();
-        LockPlayerFieldControls();
-        ScriptContext_SetupScript(BerryTree_EventScript_BerryTree);
+        sItemUseOnFieldCB = ItemUseOnFieldCB_Fertilizer;
+        SetUpItemUseOnFieldCallback(taskId);
     }
     else
     {
         DisplayDadsAdviceCannotUseItemMessage(taskId, gTasks[taskId].tUsingRegisteredKeyItem);
     }
+}
+
+static void ItemUseOnFieldCB_Fertilizer(u8 taskId)
+{
+    RemoveUsedItem();
+    LockPlayerFieldControls();
+    ScriptContext_SetupScript(BerryTree_EventScript_BerryTree);
+    DestroyTask(taskId);
 }
 
 void ItemUseOutOfBattle_CannotUse(u8 taskId)
