@@ -1750,8 +1750,9 @@ bool8 ScrCmd_bufferleadmonspeciesname(struct ScriptContext *ctx)
 bool8 ScrFunc_bufferlivemonnickname(struct ScriptContext *ctx)
 {
     u8 stringVarIndex = ScriptReadByte(ctx);
+    struct Pokemon *mon = GetDesignatedFollowerMon();
 
-    GetMonData(GetFirstLiveMon(), MON_DATA_NICKNAME, sScriptStringVars[stringVarIndex]);
+    GetMonData(mon, MON_DATA_NICKNAME, sScriptStringVars[stringVarIndex]);
     StringGet_Nickname(sScriptStringVars[stringVarIndex]);
     return FALSE;
 }
@@ -2246,7 +2247,7 @@ bool8 ScrCmd_playmoncry(struct ScriptContext *ctx)
 
 bool8   ScrFunc_playfirstmoncry(struct ScriptContext *ctx)
 {
-    u16 species = GetMonData(GetFirstLiveMon(), MON_DATA_SPECIES);
+    u16 species = GetMonData(GetDesignatedFollowerMon(), MON_DATA_SPECIES);
     PlayCry_Script(species, 0);
     return FALSE;
 }

@@ -97,6 +97,7 @@ enum {
     MENU_TRADE1,
     MENU_TRADE2,
     MENU_TOSS,
+    MENU_FOLLOW,
     MENU_FIELD_MOVES
 };
 
@@ -198,7 +199,7 @@ struct PartyMenuInternal
     u32 spriteIdCancelPokeball:7;
     u32 messageId:14;
     u8 windowId[3];
-    u8 actions[9];
+    u8 actions[10];
     u8 numActions;
     // In vanilla Emerald, only the first 0xB0 hwords (0x160 bytes) are actually used.
     // However, a full 0x100 hwords (0x200 bytes) are allocated.
@@ -481,6 +482,7 @@ static void CursorCb_Register(u8);
 static void CursorCb_Trade1(u8);
 static void CursorCb_Trade2(u8);
 static void CursorCb_Toss(u8);
+static void CursorCb_Follow(u8);
 static void CursorCb_FieldMove(u8);
 static bool8 SetUpFieldMove_Surf(void);
 static bool8 SetUpFieldMove_Fly(void);
@@ -2602,7 +2604,8 @@ static u8 DisplaySelectionWindow(u8 windowType)
 
     for (i = 0; i < sPartyMenuInternal->numActions; i++)
     {
-        u8 fontColorsId = (sPartyMenuInternal->actions[i] >= MENU_FIELD_MOVES) ? 4 : 3;
+        u8 fontColorsId = (sPartyMenuInternal->actions[i] >= MENU_FIELD_MOVES) ? 4
+                         : (sPartyMenuInternal->actions[i] == MENU_FOLLOW) ? 5 : 3;
         AddTextPrinterParameterized4(sPartyMenuInternal->windowId[0], FONT_NORMAL, cursorDimension, (i * 16) + 1, letterSpacing, 0, sFontColorTable[fontColorsId], 0, sCursorOptions[sPartyMenuInternal->actions[i]].text);
     }
 
@@ -2732,6 +2735,26 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
     }
     if (!InBattlePike())
     {
+        // Add "Follow" option if followers are enabled, mon is alive, not an egg,
+        // not already the active follower, and not a large mon when big followers is off
+        if (gSaveBlock2Ptr->optionsfollowerEnable == 0
+            && !InBattlePyramid()
+            && sPartyMenuInternal->numActions < 6
+            && GetMonData(&mons[slotId], MON_DATA_HP) > 0
+            && !GetMonData(&mons[slotId], MON_DATA_IS_EGG)
+            && gSaveBlock1Ptr->designatedFollower != slotId + 1
+            && !(gSaveBlock2Ptr->optionsfollowerLargeEnable == 1
+                 && IsFollowerSpeciesLarge(GetMonData(&mons[slotId], MON_DATA_SPECIES))))
+        {
+            // Don't show if this is already the effective follower (first live mon with no designation)
+            u8 df = gSaveBlock1Ptr->designatedFollower;
+            bool8 designatedValid = df != 0 && df <= PARTY_SIZE
+                && GetMonData(&mons[df - 1], MON_DATA_SPECIES) != SPECIES_NONE
+                && GetMonData(&mons[df - 1], MON_DATA_HP) > 0
+                && !GetMonData(&mons[df - 1], MON_DATA_IS_EGG);
+            if (designatedValid || &mons[slotId] != GetFirstLiveMon())
+                AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_FOLLOW);
+        }
         if (GetMonData(&mons[1], MON_DATA_SPECIES) != SPECIES_NONE)
             AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, MENU_SWITCH);
         if (ItemIsMail(GetMonData(&mons[slotId], MON_DATA_HELD_ITEM)))
@@ -3138,6 +3161,12 @@ static void SwitchPartyMon(void)
     SwitchMenuBoxSprites(&menuBoxes[0]->itemSpriteId, &menuBoxes[1]->itemSpriteId);
     SwitchMenuBoxSprites(&menuBoxes[0]->monSpriteId, &menuBoxes[1]->monSpriteId);
     SwitchMenuBoxSprites(&menuBoxes[0]->statusSpriteId, &menuBoxes[1]->statusSpriteId);
+
+    // Track designated follower through party swaps (0=none, 1-6=slot+1)
+    if (gSaveBlock1Ptr->designatedFollower == gPartyMenu.slotId + 1)
+        gSaveBlock1Ptr->designatedFollower = gPartyMenu.slotId2 + 1;
+    else if (gSaveBlock1Ptr->designatedFollower == gPartyMenu.slotId2 + 1)
+        gSaveBlock1Ptr->designatedFollower = gPartyMenu.slotId + 1;
 }
 
 // Finish switching mons or using Softboiled
@@ -3803,6 +3832,24 @@ static void Task_HandleSpinTradeYesNoInput(u8 taskId)
         Task_ReturnToChooseMonAfterText(taskId);
         break;
     }
+}
+
+static void CursorCb_Follow(u8 taskId)
+{
+    struct Pokemon *mon = &gPlayerParty[gPartyMenu.slotId];
+
+    PlaySE(SE_SELECT);
+    PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[0]);
+    PartyMenuRemoveWindow(&sPartyMenuInternal->windowId[1]);
+
+    // Set designated follower to the selected party slot (stored as slot+1, 0=none)
+    gSaveBlock1Ptr->designatedFollower = gPartyMenu.slotId + 1;
+
+    // Show confirmation message
+    GetMonNickname(mon, gStringVar1);
+    StringExpandPlaceholders(gStringVar4, gText_PkmnWillFollowYou);
+    DisplayPartyMenuMessage(gStringVar4, TRUE);
+    gTasks[taskId].func = Task_ReturnToChooseMonAfterText;
 }
 
 static void CursorCb_FieldMove(u8 taskId)
