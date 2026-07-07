@@ -3606,12 +3606,51 @@ void BeginBattleIntro(void)
     gBattleMainFunc = BattleIntroGetMonsData;
 }
 
+static bool8 IsPlayerStillChoosing(void)
+{
+    // STATE_WAIT_ACTION_CONFIRMED = 5 (from HandleTurnActionSelectionState enum)
+    #define STATE_CONFIRMED 5
+    u8 playerLeft = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
+    u8 playerRight = GetBattlerAtPosition(B_POSITION_PLAYER_RIGHT);
+
+    if (gBattleCommunication[playerLeft] != STATE_CONFIRMED)
+        return TRUE;
+    if (!(gAbsentBattlerFlags & gBitTable[playerRight])
+        && gBattleCommunication[playerRight] != STATE_CONFIRMED)
+        return TRUE;
+    return FALSE;
+    #undef STATE_CONFIRMED
+}
+
 static void BattleMainCB1(void)
 {
     gBattleMainFunc();
 
     for (gActiveBattler = 0; gActiveBattler < gBattlersCount; gActiveBattler++)
+    {
+        // In double battles during action selection, defer opponent controllers
+        // while any player battler hasn't confirmed their action yet.
+        // This prevents heavy AI computation from stalling player input.
+        if ((gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
+            && GetBattlerSide(gActiveBattler) == B_SIDE_OPPONENT
+            && gBattleMainFunc == HandleTurnActionSelectionState
+            && IsPlayerStillChoosing())
+        {
+            continue;
+        }
         gBattlerControllerFuncs[gActiveBattler]();
+    }
+
+    // When player is done choosing in doubles, immediately dismiss the menu
+    // When player is done choosing in doubles, immediately dismiss the menu
+    // so the screen doesn't appear frozen during opponent AI computation.
+    if ((gBattleTypeFlags & BATTLE_TYPE_DOUBLE) && !IsPlayerStillChoosing()
+        && gBattle_BG0_Y != 0)
+    {
+        gBattle_BG0_X = 0;
+        gBattle_BG0_Y = 0;
+        BattlePutTextOnWindow(gText_EmptyString2, B_WIN_MSG);
+    }
 }
 
 static void BattleStartClearSetData(void)
