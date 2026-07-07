@@ -698,7 +698,7 @@ const struct Item gItems[] =
         .price = 2500,
         .description = sFertilizerDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
+        .type = ITEM_USE_FIELD,
         .fieldUseFunc = ItemUseOutOfBattle_Fertilizer,
     },
 
@@ -5554,7 +5554,7 @@ const struct Item gItems2[] =
         .price = 2500,
         .description = sFertilizerDesc,
         .pocket = POCKET_ITEMS,
-        .type = ITEM_USE_BAG_MENU,
+        .type = ITEM_USE_FIELD,
         .fieldUseFunc = ItemUseOutOfBattle_Fertilizer,
     },
 
