@@ -231,6 +231,7 @@ EWRAM_DATA u8 *gLinkBattleRecvBuffer = NULL;
 EWRAM_DATA struct BattleResources *gBattleResources = NULL;
 EWRAM_DATA u8 gActionSelectionCursor[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA u8 gMoveSelectionCursor[MAX_BATTLERS_COUNT] = {0};
+EWRAM_DATA u8 gTargetSelectionCursor[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA u8 gBattlerStatusSummaryTaskId[MAX_BATTLERS_COUNT] = {0};
 EWRAM_DATA u8 gBattlerInMenuId = 0;
 EWRAM_DATA bool8 gDoingBattleAnim = FALSE;
@@ -3640,6 +3641,7 @@ static void BattleStartClearSetData(void)
         gLastPrintedMoves[i] = MOVE_NONE;
         gBattleResources->flags->flags[i] = 0;
         gPalaceSelectionBattleScripts[i] = 0;
+        gTargetSelectionCursor[i] = 0xFF;
     }
 
     for (i = 0; i < 2; i++)
@@ -3787,6 +3789,7 @@ void SwitchInClearSetData(void)
 
     gActionSelectionCursor[gActiveBattler] = 0;
     gMoveSelectionCursor[gActiveBattler] = 0;
+    gTargetSelectionCursor[gActiveBattler] = 0xFF;
 
     ptr = (u8 *)&gDisableStructs[gActiveBattler];
     for (i = 0; i < sizeof(struct DisableStruct); i++)
@@ -3869,6 +3872,7 @@ void FaintClearSetData(void)
 
     gActionSelectionCursor[gActiveBattler] = 0;
     gMoveSelectionCursor[gActiveBattler] = 0;
+    gTargetSelectionCursor[gActiveBattler] = 0xFF;
 
     ptr = (u8 *)&gDisableStructs[gActiveBattler];
     for (i = 0; i < sizeof(struct DisableStruct); i++)
