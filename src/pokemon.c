@@ -11931,18 +11931,17 @@ u8 *MonSpritesGfxManager_GetSpritePtr(u8 managerId, u8 spriteNum)
 //******************* tx_randomizer_and_challenges
 void RandomizeTypeEffectivenessListEWRAM(u16 seed)
 {
-    u8 i;
+    u8 i, j;
     u8 stemp[RANDOM_TYPE_COUNT];
 
     memcpy(stemp, sOneTypeChallengeValidTypes, sizeof(sOneTypeChallengeValidTypes));
     ShuffleListU8(stemp, NELEMS(sOneTypeChallengeValidTypes), seed);
 
-    sTypeEffectivenessList[TYPE_MYSTERY] = TYPE_NORMAL;
-    for (i=0; i<NUMBER_OF_MON_TYPES; i++)
+    sTypeEffectivenessList[TYPE_MYSTERY] = TYPE_MYSTERY;
+    for (i = 0, j = 0; i < NUMBER_OF_MON_TYPES; i++)
     {
         if (i != TYPE_MYSTERY)
-            sTypeEffectivenessList[i] = stemp[i];
-
+            sTypeEffectivenessList[i] = stemp[j++];
     }
 }
 u8 GetTypeEffectivenessRandom(u8 type)
