@@ -2049,6 +2049,30 @@ struct ObjectEvent *GetFollowerObject(void) { // Return follower ObjectEvent or 
     return NULL;
 }
 
+// Return TRUE if a species has a 64px tall follower sprite (considered "large")
+bool8 IsFollowerSpeciesLarge(u16 species) {
+    const struct ObjectEventGraphicsInfo *info = SpeciesToGraphicsInfo(species, 0);
+    return info->height == 64;
+}
+
+// Return the pokemon that is currently following the player.
+// Uses the designated follower if valid, otherwise falls back to first live mon.
+struct Pokemon *GetDesignatedFollowerMon(void) {
+    if (gSaveBlock2Ptr->optionsfollowerEnable == 0)
+    {
+        u8 df = gSaveBlock1Ptr->designatedFollower;
+        if (df != 0 && df <= PARTY_SIZE
+            && !InBattlePyramid()
+            && GetMonData(&gPlayerParty[df - 1], MON_DATA_SPECIES) != SPECIES_NONE
+            && GetMonData(&gPlayerParty[df - 1], MON_DATA_HP) > 0
+            && !GetMonData(&gPlayerParty[df - 1], MON_DATA_IS_EGG))
+        {
+            return &gPlayerParty[df - 1];
+        }
+    }
+    return GetFirstLiveMon();
+}
+
 // Return graphicsInfo for a pokemon species & form
 static const struct ObjectEventGraphicsInfo *SpeciesToGraphicsInfo(u16 species, u8 form) {
     const struct ObjectEventGraphicsInfo *graphicsInfo;
@@ -2231,7 +2255,19 @@ static bool8 GetMonInfo(struct Pokemon * mon, u16 *species, u8 *form, u8 *shiny)
 static bool8 GetFollowerInfo(u16 *species, u8 *form, u8 *shiny) 
 {
     if (gSaveBlock2Ptr->optionsfollowerEnable == 0) 
+    {
+        u8 df = gSaveBlock1Ptr->designatedFollower; // 0 = none, 1-6 = slot+1
+        if (df != 0 && df <= PARTY_SIZE
+            && !InBattlePyramid()
+            && GetMonData(&gPlayerParty[df - 1], MON_DATA_SPECIES) != SPECIES_NONE
+            && GetMonData(&gPlayerParty[df - 1], MON_DATA_HP) > 0
+            && !GetMonData(&gPlayerParty[df - 1], MON_DATA_IS_EGG))
+        {
+            return GetMonInfo(&gPlayerParty[df - 1], species, form, shiny);
+        }
+        // Fallback to first live mon
         return GetMonInfo(GetFirstLiveMon(), species, form, shiny);
+    }
     else
         return FALSE;
 }
@@ -2251,6 +2287,19 @@ void UpdateFollowingPokemon(void) { // Update following pokemon if any
         FlagGet(FLAG_TEMP_HIDE_FOLLOWER) ||
         (gSaveBlock2Ptr->optionsfollowerLargeEnable == 1) && SpeciesToGraphicsInfo(species, 0)->height == 64)
     {
+        // Auto-clear designated follower if it's a large mon and big followers is off
+        if (gSaveBlock2Ptr->optionsfollowerLargeEnable == 1
+            && gSaveBlock1Ptr->designatedFollower != 0)
+        {
+            u8 df = gSaveBlock1Ptr->designatedFollower;
+            if (df <= PARTY_SIZE
+                && GetMonData(&gPlayerParty[df - 1], MON_DATA_SPECIES) != SPECIES_NONE)
+            {
+                u16 dfSpecies = GetMonData(&gPlayerParty[df - 1], MON_DATA_SPECIES);
+                if (SpeciesToGraphicsInfo(dfSpecies, 0)->height == 64)
+                    gSaveBlock1Ptr->designatedFollower = 0;
+            }
+        }
         RemoveFollowingPokemon();
         return;
     }
@@ -2438,7 +2487,7 @@ bool8 ScrFunc_getfolloweraction(struct ScriptContext *ctx) // Essentially a big 
     u32 condCount = 0;
     u32 emotion;
     struct ObjectEvent *objEvent = GetFollowerObject();
-    struct Pokemon *mon = GetFirstLiveMon();
+    struct Pokemon *mon = GetDesignatedFollowerMon();
     u8 emotion_weight[FOLLOWER_EMOTION_LENGTH] = {
         [FOLLOWER_EMOTION_HAPPY] = 10,
         [FOLLOWER_EMOTION_NEUTRAL] = 15,
@@ -6125,7 +6174,7 @@ bool8 ScrFunc_GetDirectionToFace(struct ScriptContext *ctx) {
 bool8 ScrFunc_IsFollowerFieldMoveUser(struct ScriptContext *ctx) {
     u16 *var = GetVarPointer(ScriptReadHalfword(ctx));
     u16 userIndex = gFieldEffectArguments[0]; // field move user index
-    struct Pokemon *follower = GetFirstLiveMon();
+    struct Pokemon *follower = GetDesignatedFollowerMon();
     struct ObjectEvent *obj = GetFollowerObject();
     if (var == NULL)
         return FALSE;
@@ -7482,7 +7531,7 @@ static void ObjectEventSetPokeballGfx(struct ObjectEvent *objEvent) {
     #if OW_MON_POKEBALLS
     u32 ball = BALL_POKE;
     if (objEvent->localId == OBJ_EVENT_ID_FOLLOWER) {
-        struct Pokemon *mon = GetFirstLiveMon();
+        struct Pokemon *mon = GetDesignatedFollowerMon();
         if (mon)
             ball = ItemIdToBallId(GetMonData(mon, MON_DATA_POKEBALL));
     }
