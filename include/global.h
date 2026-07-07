@@ -572,6 +572,8 @@ struct SaveBlock2
               u16 optionsSurfOverworld:1; // whether to use the original Surf blob or dynamic blob (False to use dynamic)
               u16 optionsFontType:1;
               u8 shinySeen[NUM_DEX_FLAG_BYTES]; // Tracks whether trainer has ever seen/caught a shiny of each species
+              u16 optionsCursorMemory:1;
+              u16 optionsKOAnims:1;
 }; // sizeof=0xF2C + NUM_DEX_FLAG_BYTES
 
 extern struct SaveBlock2 *gSaveBlock2Ptr;
@@ -1109,7 +1111,8 @@ struct SaveBlock1
     /*0x3B98*/ struct TrainerNameRecord trainerNameRecords[20];
     /*0x3C88*/ u8 registeredTexts[UNION_ROOM_KB_ROW_COUNT][21];
     /*0x3D5A*/ u8 designatedFollower; // 0 = none (fallback to first live), 1-6 = party slot + 1
-    /*0x3D5B*/ u8 unused_3D5B[9];
+    /*0x3D5B*/ u16 typeRandomizerSeed;
+    /*0x3D5D*/ u8 unused_3D5D[7];
     /*0x3D64*/ struct TrainerHillSave trainerHill;
     /*0x3D70*/ struct WaldaPhrase waldaPhrase;
     /*0x3D88*/ u8 NuzlockeEncounterFlags[9]; //tx_randomizer_and_challenges

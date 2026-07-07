@@ -2388,14 +2388,6 @@ static void Task_HandleInput_MoveSelect(u8 taskId)
             PlaySE(SE_SELECT);
             CloseMoveSelectMode(taskId);
         }
-        else if (JOY_NEW(SELECT_BUTTON))
-        {
-            if (sMonSummaryScreen->currPageIndex == PSS_PAGE_BATTLE_MOVES)
-            {
-                PlaySE(SE_SELECT);
-                ToggleStatsOverlay();
-            }
-        }
     }
 }
 

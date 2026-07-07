@@ -1,6 +1,7 @@
 #include "global.h"
 #include "main.h"
 #include "palette.h"
+#include "pokemon.h"
 #include "scanline_effect.h"
 #include "task.h"
 #include "title_screen.h"
@@ -1156,6 +1157,7 @@ void CB2_InitCopyrightScreenAfterBootup(void)
         LoadGameSave(SAVE_NORMAL);
         if (gSaveFileStatus == SAVE_STATUS_EMPTY || gSaveFileStatus == SAVE_STATUS_CORRUPT)
             Sav2_ClearSetDefault();
+        RandomizeTypeEffectivenessListEWRAM(gSaveBlock1Ptr->typeRandomizerSeed);
         SetPokemonCryStereo(gSaveBlock2Ptr->optionsSound);
         InitHeap(gHeap, HEAP_SIZE);
     }

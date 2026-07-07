@@ -2715,23 +2715,31 @@ static void SetPartyMonFieldSelectionActions(struct Pokemon *mons, u8 slotId)
     }
     else
     {
+        bool8 knowsFly = FALSE;
+        bool8 knowsFlash = FALSE;
+
+        // Add all known field moves in moveset order (including Fly/Flash)
         for (i = 0; i < MAX_MON_MOVES; i++)
         {
             for (j = 0; sFieldMoves[j] != FIELD_MOVES_COUNT; j++)
             {
                 if (GetMonData(&mons[slotId], i + MON_DATA_MOVE1) == sFieldMoves[j])
                 {
-                    if (sFieldMoves[j] != MOVE_FLY) // If Mon already knows FLY, prevent it from being added to action list
-                        if (sFieldMoves[j] != MOVE_FLASH) // If Mon already knows FLASH, prevent it from being added to action list
-                            AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, j + MENU_FIELD_MOVES);
-                            break;
+                    if (sFieldMoves[j] == MOVE_FLY)
+                        knowsFly = TRUE;
+                    if (sFieldMoves[j] == MOVE_FLASH)
+                        knowsFlash = TRUE;
+                    AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, j + MENU_FIELD_MOVES);
+                    break;
                 }
             }
         }
-        if (sPartyMenuInternal->numActions < 5 && CanMonLearnTMHM(&mons[slotId], ITEM_HM02 - ITEM_TM01)) // If Mon can learn HM02 and action list consists of < 4 moves, add FLY to action list
-            AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 5 + MENU_FIELD_MOVES);
-        if (sPartyMenuInternal->numActions < 5 && CanMonLearnTMHM(&mons[slotId], ITEM_HM05 - ITEM_TM01)) // If Mon can learn HM05 and action list consists of < 4 moves, add FLASH to action list
+        // If there's room and mon can learn Fly/Flash but doesn't know them, add as extras
+        // Flash is prioritized over Fly since Flash has no alternative access (Fly can be triggered from the map)
+        if (sPartyMenuInternal->numActions < 6 && !knowsFlash && CanMonLearnTMHM(&mons[slotId], ITEM_HM05 - ITEM_TM01))
             AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 1 + MENU_FIELD_MOVES);
+        if (sPartyMenuInternal->numActions < 6 && !knowsFly && CanMonLearnTMHM(&mons[slotId], ITEM_HM02 - ITEM_TM01))
+            AppendToList(sPartyMenuInternal->actions, &sPartyMenuInternal->numActions, 5 + MENU_FIELD_MOVES);
     }
     if (!InBattlePike())
     {

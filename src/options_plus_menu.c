@@ -56,9 +56,11 @@ enum
 {
     MENUITEM_BATTLE_BATTLESCENE,
     MENUITEM_BATTLE_BATTLESTYLE,
+    MENUITEM_BATTLE_KO_ANIMS,
     MENUITEM_BATTLE_SPLIT,
     MENUITEM_BATTLE_FAST_INTRO,
     MENUITEM_BATTLE_FAST_BATTLES,
+    MENUITEM_BATTLE_CURSOR_MEMORY,
     MENUITEM_BATTLE_NEW_BACKGROUNDS,
     MENUITEM_BATTLE_BALL_PROMPT,
     MENUITEM_BATTLE_TYPE_EFFECTIVE,
@@ -226,6 +228,8 @@ static void DrawChoices_Autorun_Surf(int selection, int y);
 static void DrawChoices_Autorun_Dive(int selection, int y);
 static void DrawChoices_SurfOverworld(int selection, int y);
 static void DrawChoices_Font(int selection, int y);
+static void DrawChoices_CursorMemory(int selection, int y);
+static void DrawChoices_KOAnims(int selection, int y);
 static void DrawBgWindowFrames(void);
 
 // EWRAM vars
@@ -292,6 +296,8 @@ struct // MENU_CUSTOM
     [MENUITEM_BATTLE_LR_RUN]           = {DrawChoices_LR_Run,             ProcessInput_Options_Two},
     [MENUITEM_BATTLE_BALL_PROMPT]      = {DrawChoices_Ball_Prompt,        ProcessInput_Options_Two},
     [MENUITEM_BATTLE_NEW_BACKGROUNDS]  = {DrawChoices_New_Backgrounds,    ProcessInput_Options_Two},
+    [MENUITEM_BATTLE_CURSOR_MEMORY]    = {DrawChoices_CursorMemory,       ProcessInput_Options_Two},
+    [MENUITEM_BATTLE_KO_ANIMS]         = {DrawChoices_KOAnims,            ProcessInput_Options_Two},
 };
 
 struct // MENU_SOUND
@@ -347,6 +353,8 @@ static const u8 *const sOptionMenuItemsNamesMain[MENUITEM_MAIN_COUNT] =
     [MENUITEM_MAIN_SURFOVERWORLD]       = sText_SurfSprites,
 };
 
+static const u8 sText_CursorMemory[]              = _("CURSOR MEMORY");
+static const u8 sText_KOAnims[]                   = _("KO ANIMS");
 static const u8 *const sOptionMenuItemsNamesCustom[MENUITEM_BATTLE_COUNT] =
 {
     [MENUITEM_BATTLE_BATTLESTYLE]      = gText_BattleStyle,
@@ -359,6 +367,8 @@ static const u8 *const sOptionMenuItemsNamesCustom[MENUITEM_BATTLE_COUNT] =
     [MENUITEM_BATTLE_LR_RUN]           = sText_OptionLR_Run,
     [MENUITEM_BATTLE_BALL_PROMPT]      = sText_OptionBallPrompt,
     [MENUITEM_BATTLE_NEW_BACKGROUNDS]  = sText_OptionNewBackgrounds,
+    [MENUITEM_BATTLE_CURSOR_MEMORY]    = sText_CursorMemory,
+    [MENUITEM_BATTLE_KO_ANIMS]         = sText_KOAnims,
 };
 
 static const u8 sText_OptionMusic[]                  = _("MUSIC");
@@ -429,8 +439,10 @@ static bool8 CheckConditions(int selection)
         case MENUITEM_BATTLE_RUN_TYPE:        return TRUE;
         case MENUITEM_BATTLE_LR_RUN:          return sOptions->sel_battle[MENUITEM_BATTLE_RUN_TYPE] == 1 || sOptions->sel_battle[MENUITEM_BATTLE_RUN_TYPE] == 3;
         case MENUITEM_BATTLE_BALL_PROMPT:     return TRUE;
-        case MENUITEM_BATTLE_COUNT:           return TRUE;
         case MENUITEM_BATTLE_NEW_BACKGROUNDS: return TRUE;
+        case MENUITEM_BATTLE_CURSOR_MEMORY:   return TRUE;
+        case MENUITEM_BATTLE_KO_ANIMS:        return TRUE;
+        case MENUITEM_BATTLE_COUNT:           return TRUE;
         }
     case MENU_SOUND:
         switch(selection)
@@ -525,6 +537,10 @@ static const u8 sText_Desc_Ball_Prompt_On[]        = _("Press {R_BUTTON} in batt
 static const u8 sText_Desc_Ball_Prompt_Off[]       = _("Disables the prompt to use\nPokéballs quickly.");
 static const u8 sText_Desc_NewBackgrounds_Old[]    = _("Original battle terrain backgrounds.");
 static const u8 sText_Desc_NewBackgrounds_New[]    = _("Modernized battle terrain\nbackgrounds, similar to Gen IV.");
+static const u8 sText_Desc_CursorMemoryOn[]        = _("The cursor in battle remembers\nthe {PKMN}'s last target.");
+static const u8 sText_Desc_CursorMemoryOff[]       = _("The cursor in battle does not\nremember the last target.");
+static const u8 sText_Desc_KOAnimsOn[]             = _("Play {PKMN}'s animation and cry\nwhen an opponent is defeated.");
+static const u8 sText_Desc_KOAnimsOff[]            = _("No animation or cry when defeating\nan opponent.");
 static const u8 *const sOptionMenuItemDescriptionsCustom[MENUITEM_BATTLE_COUNT][4] =
 {
     [MENUITEM_BATTLE_BATTLESCENE]         = {sText_Desc_BattleScene_On,           sText_Desc_BattleScene_Off,        sText_Empty},
@@ -537,6 +553,8 @@ static const u8 *const sOptionMenuItemDescriptionsCustom[MENUITEM_BATTLE_COUNT][
     [MENUITEM_BATTLE_BALL_PROMPT]         = {sText_Desc_Ball_Prompt_On,           sText_Desc_Ball_Prompt_Off},
     [MENUITEM_BATTLE_NEW_BACKGROUNDS]     = {sText_Desc_NewBackgrounds_Old,       sText_Desc_NewBackgrounds_New},
     [MENUITEM_BATTLE_RUN_TYPE]            = {sText_Desc_Run_Type_Off,             sText_Desc_Run_Type_LR,             sText_Desc_Run_Type_B,         sText_Desc_Run_Type_B_2},
+    [MENUITEM_BATTLE_CURSOR_MEMORY]       = {sText_Desc_CursorMemoryOn,           sText_Desc_CursorMemoryOff},
+    [MENUITEM_BATTLE_KO_ANIMS]            = {sText_Desc_KOAnimsOn,                sText_Desc_KOAnimsOff},
 };
 
 static const u8 sText_Desc_SoundMono[]                       = _("Sound is the same in all speakers.\nRecommended for original hardware.");
@@ -605,6 +623,8 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledCustom[MENUITEM_BATTLE
     [MENUITEM_BATTLE_BALL_PROMPT]         = sText_Empty,
     [MENUITEM_BATTLE_NEW_BACKGROUNDS]     = sText_Empty,
     [MENUITEM_BATTLE_RUN_TYPE]            = sText_Empty,
+    [MENUITEM_BATTLE_CURSOR_MEMORY]       = sText_Empty,
+    [MENUITEM_BATTLE_KO_ANIMS]            = sText_Empty,
 };
 
 static const u8 *const sOptionMenuItemDescriptionsDisabledSound[MENUITEM_SOUND_COUNT] =
@@ -881,6 +901,8 @@ void CB2_InitOptionPlusMenu(void)
         sOptions->sel_battle[MENUITEM_BATTLE_BALL_PROMPT]       = gSaveBlock2Ptr->optionsBallPrompt;
         sOptions->sel_battle[MENUITEM_BATTLE_NEW_BACKGROUNDS]   = gSaveBlock2Ptr->optionsNewBackgrounds;
         sOptions->sel_battle[MENUITEM_BATTLE_RUN_TYPE]          = gSaveBlock2Ptr->optionsRunType;
+        sOptions->sel_battle[MENUITEM_BATTLE_CURSOR_MEMORY]     = gSaveBlock2Ptr->optionsCursorMemory;
+        sOptions->sel_battle[MENUITEM_BATTLE_KO_ANIMS]          = gSaveBlock2Ptr->optionsKOAnims;
 
         sOptions->sel_sound[MENUITEM_SOUND_SOUND]                             = gSaveBlock2Ptr->optionsSound;
         sOptions->sel_sound[MENUITEM_SOUND_MUSIC]                             = gSaveBlock2Ptr->optionsMusicOnOff;
@@ -1119,6 +1141,8 @@ static void Task_OptionMenuSave(u8 taskId)
     gSaveBlock2Ptr->optionsBallPrompt       = sOptions->sel_battle[MENUITEM_BATTLE_BALL_PROMPT];
     gSaveBlock2Ptr->optionsNewBackgrounds   = sOptions->sel_battle[MENUITEM_BATTLE_NEW_BACKGROUNDS];
     gSaveBlock2Ptr->optionsRunType          = sOptions->sel_battle[MENUITEM_BATTLE_RUN_TYPE];
+    gSaveBlock2Ptr->optionsCursorMemory     = sOptions->sel_battle[MENUITEM_BATTLE_CURSOR_MEMORY];
+    gSaveBlock2Ptr->optionsKOAnims          = sOptions->sel_battle[MENUITEM_BATTLE_KO_ANIMS];
 
     gSaveBlock2Ptr->optionsSound            = sOptions->sel_sound[MENUITEM_SOUND_SOUND];
     gSaveBlock2Ptr->optionsMusicOnOff       = sOptions->sel_sound[MENUITEM_SOUND_MUSIC];
@@ -2085,6 +2109,45 @@ static void DrawChoices_Font(int selection, int y)
     DrawOptionMenuChoice(sText_Em, 104, y, styles[0], active);
     DrawOptionMenuChoice(sText_FRLG, GetStringRightAlignXOffset(1, sText_FRLG, 198), y, styles[1], active);
 }
+
+static void DrawChoices_CursorMemory(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_BATTLE_CURSOR_MEMORY);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock2Ptr->optionsCursorMemory = 0; //On
+    }
+    else
+    {
+        gSaveBlock2Ptr->optionsCursorMemory = 1; //Off
+    }
+
+    DrawOptionMenuChoice(gText_BattleSceneOn, 104, y, styles[0], active);
+    DrawOptionMenuChoice(gText_BattleSceneOff, GetStringRightAlignXOffset(1, gText_BattleSceneOff, 198), y, styles[1], active);
+}
+
+static void DrawChoices_KOAnims(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_BATTLE_KO_ANIMS);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock2Ptr->optionsKOAnims = 0; //On
+    }
+    else
+    {
+        gSaveBlock2Ptr->optionsKOAnims = 1; //Off
+    }
+
+    DrawOptionMenuChoice(gText_BattleSceneOn, 104, y, styles[0], active);
+    DrawOptionMenuChoice(gText_BattleSceneOff, GetStringRightAlignXOffset(1, gText_BattleSceneOff, 198), y, styles[1], active);
+}
+
 
 
 

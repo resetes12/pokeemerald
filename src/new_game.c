@@ -124,6 +124,8 @@ static void SetDefaultOptions(void)
     gSaveBlock2Ptr->optionsNewBackgrounds = 0;
     gSaveBlock2Ptr->optionsRunType = 1;
     gSaveBlock2Ptr->optionsSurfOverworld = 0;
+    gSaveBlock2Ptr->optionsCursorMemory = 1;
+    gSaveBlock2Ptr->optionsKOAnims = 1;
 }
 
 static void ClearPokedexFlags(void)
@@ -241,7 +243,8 @@ void NewGameInitData(void)
     WipeTrainerNameRecords();
     ResetTrainerHillResults();
     ResetContestLinkResults();
-    RandomizeTypeEffectivenessListEWRAM(Random32());
+    gSaveBlock1Ptr->typeRandomizerSeed = Random32() & 0xFFFF;
+    RandomizeTypeEffectivenessListEWRAM(gSaveBlock1Ptr->typeRandomizerSeed);
     if ((gSaveBlock1Ptr->tx_Nuzlocke_EasyMode) && (gSaveBlock1Ptr->tx_Challenges_Nuzlocke))
         gSaveBlock1Ptr->tx_Nuzlocke_EasyMode = 0;
 
