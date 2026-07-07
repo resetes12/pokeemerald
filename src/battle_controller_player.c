@@ -544,6 +544,7 @@ static void HandleInputChooseTarget(void)
         PlaySE(SE_SELECT);
         gSprites[gBattlerSpriteIds[gMultiUsePlayerCursor]].callback = SpriteCB_HideAsMoveTarget;
         gTargetSelectionCursor[gActiveBattler] = gMultiUsePlayerCursor;
+        gTargetSelectionMove[gActiveBattler] = gMoveSelectionCursor[gActiveBattler];
         BtlController_EmitTwoReturnValues(BUFFER_B, 10, gMoveSelectionCursor[gActiveBattler] | (gMultiUsePlayerCursor << 8));
         EndBounceEffect(gMultiUsePlayerCursor, BOUNCE_HEALTHBOX);
         TryHideLastUsedBall();
@@ -715,6 +716,7 @@ static void HandleInputChooseMove(void)
             if (moveTarget & (MOVE_TARGET_USER | MOVE_TARGET_USER_OR_SELECTED))
                 gMultiUsePlayerCursor = gActiveBattler;
             else if (gTargetSelectionCursor[gActiveBattler] != 0xFF
+                     && gTargetSelectionMove[gActiveBattler] == gMoveSelectionCursor[gActiveBattler]
                      && !(gAbsentBattlerFlags & gBitTable[gTargetSelectionCursor[gActiveBattler]])
                      && gBattleMons[gTargetSelectionCursor[gActiveBattler]].hp > 0)
                 gMultiUsePlayerCursor = gTargetSelectionCursor[gActiveBattler];
