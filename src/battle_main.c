@@ -3640,12 +3640,14 @@ static void BattleMainCB1(void)
     }
 
     // When player is done choosing in doubles, immediately dismiss the menu
+    // When player is done choosing in doubles, immediately dismiss the menu
     // so the screen doesn't appear frozen during opponent AI computation.
     if ((gBattleTypeFlags & BATTLE_TYPE_DOUBLE) && !IsPlayerStillChoosing()
         && gBattle_BG0_Y != 0)
     {
         gBattle_BG0_X = 0;
         gBattle_BG0_Y = 0;
+        BattlePutTextOnWindow(gText_EmptyString2, B_WIN_MSG);
     }
 }
 
