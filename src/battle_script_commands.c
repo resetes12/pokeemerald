@@ -1466,9 +1466,9 @@ s32 GetTypeEffectiveness(struct Pokemon *mon, u8 moveType) {
             }
             else if (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE(i)) == moveType) {
                 // check type1
-                if (TYPE_EFFECT_DEF_TYPE(i) == type1)
+                if (GetTypeEffectivenessRandom(TYPE_EFFECT_DEF_TYPE(i)) == type1)
                     multiplier = TYPE_EFFECT_MULTIPLIER(i);
-                else if (TYPE_EFFECT_DEF_TYPE(i) == type2 && type1 != type2)
+                else if (GetTypeEffectivenessRandom(TYPE_EFFECT_DEF_TYPE(i)) == type2 && type1 != type2)
                     multiplier = TYPE_EFFECT_MULTIPLIER(i);
                 else {
                     i += 3;
@@ -1513,9 +1513,9 @@ s32 GetTypeEffectiveness(struct Pokemon *mon, u8 moveType) {
             }
             else if (GetTypeEffectivenessRandom(TYPE_EFFECT_ATK_TYPE_OLD(i)) == moveType) {
                 // check type1
-                if (TYPE_EFFECT_DEF_TYPE_OLD(i) == type1)
+                if (GetTypeEffectivenessRandom(TYPE_EFFECT_DEF_TYPE_OLD(i)) == type1)
                     multiplier = TYPE_EFFECT_MULTIPLIER_OLD(i);
-                else if (TYPE_EFFECT_DEF_TYPE_OLD(i) == type2 && type1 != type2)
+                else if (GetTypeEffectivenessRandom(TYPE_EFFECT_DEF_TYPE_OLD(i)) == type2 && type1 != type2)
                     multiplier = TYPE_EFFECT_MULTIPLIER_OLD(i);
                 else {
                     i += 3;
