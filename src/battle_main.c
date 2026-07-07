@@ -4931,7 +4931,6 @@ static void HandleTurnActionSelectionState(void)
                     {
                         BtlController_EmitChooseItem(BUFFER_A, gBattleStruct->battlerPartyOrders[gActiveBattler]);
                         MarkBattlerForControllerExec(gActiveBattler);
-                        gItemLimit++;
                        }
                     break;
                 case B_ACTION_SWITCH:
@@ -5126,6 +5125,7 @@ static void HandleTurnActionSelectionState(void)
                     else
                     {
                         gLastUsedItem = (gBattleBufferB[gActiveBattler][1] | (gBattleBufferB[gActiveBattler][2] << 8));
+                        gItemLimit++;
                         gBattleCommunication[gActiveBattler]++;
                     }
                     break;
