@@ -19,6 +19,8 @@
 #include "palette.h"
 #include "party_menu.h"
 #include "pokemon.h"
+#include "pokeball.h"
+#include "battle_anim.h"
 #include "script.h"
 #include "sound.h"
 #include "sprite.h"
@@ -249,6 +251,8 @@ static const u16 sNewGameBirch_Pal[16] = INCBIN_U16("graphics/birch_speech/birch
 
 static const u32 sPokeballGlow_Gfx[] = INCBIN_U32("graphics/field_effects/pics/pokeball_glow.4bpp");
 static const u16 sPokeballGlow_Pal[16] = INCBIN_U16("graphics/field_effects/palettes/pokeball_glow.gbapal");
+static const u32 sPokeballGlowFull_Gfx[] = INCBIN_U32("graphics/field_effects/pics/pokeball_glow_full.4bpp");
+static const u16 sPokeballGlowFull_Pal[16] = INCBIN_U16("graphics/field_effects/palettes/pokeball_glow_full.gbapal");
 static const u32 sPokecenterMonitor0_Gfx[] = INCBIN_U32("graphics/field_effects/pics/pokecenter_monitor/0.4bpp");
 static const u32 sPokecenterMonitor1_Gfx[] = INCBIN_U32("graphics/field_effects/pics/pokecenter_monitor/1.4bpp");
 static const u32 sHofMonitorBig_Gfx[] = INCBIN_U32("graphics/field_effects/pics/hof_monitor_big.4bpp");
@@ -365,6 +369,12 @@ const struct SpritePalette gSpritePalette_PokeballGlow =
     .tag = FLDEFF_PAL_TAG_POKEBALL_GLOW
 };
 
+static const struct SpritePalette sSpritePalette_PokeballGlowFull =
+{
+    .data = sPokeballGlowFull_Pal,
+    .tag = FLDEFF_PAL_TAG_POKEBALL_GLOW_FULL
+};
+
 const struct SpritePalette gSpritePalette_HofMonitor =
 {
     .data = sHofMonitor_Pal,
@@ -388,6 +398,41 @@ static const struct OamData sOam_32x16 =
 static const struct SpriteFrameImage sPicTable_PokeballGlow[] =
 {
     obj_frame_tiles(sPokeballGlow_Gfx)
+};
+
+// 12 frames, one per ball type in sprite sheet order:
+// Poke, Great, Ultra, Timer, Premier, Luxury, Dive, Repeat, Net, Master, Safari, Nest
+static const struct SpriteFrameImage sPicTable_PokeballGlowFull[] =
+{
+    overworld_frame(sPokeballGlowFull_Gfx, 1, 1, 0),
+    overworld_frame(sPokeballGlowFull_Gfx, 1, 1, 1),
+    overworld_frame(sPokeballGlowFull_Gfx, 1, 1, 2),
+    overworld_frame(sPokeballGlowFull_Gfx, 1, 1, 3),
+    overworld_frame(sPokeballGlowFull_Gfx, 1, 1, 4),
+    overworld_frame(sPokeballGlowFull_Gfx, 1, 1, 5),
+    overworld_frame(sPokeballGlowFull_Gfx, 1, 1, 6),
+    overworld_frame(sPokeballGlowFull_Gfx, 1, 1, 7),
+    overworld_frame(sPokeballGlowFull_Gfx, 1, 1, 8),
+    overworld_frame(sPokeballGlowFull_Gfx, 1, 1, 9),
+    overworld_frame(sPokeballGlowFull_Gfx, 1, 1, 10),
+    overworld_frame(sPokeballGlowFull_Gfx, 1, 1, 11),
+};
+
+// Maps BALL_* enum value to frame index in sPicTable_PokeballGlowFull
+static const u8 sBallIdToGlowFrame[POKEBALL_COUNT] =
+{
+    [BALL_POKE]    = 0,
+    [BALL_GREAT]   = 1,
+    [BALL_SAFARI]  = 10,
+    [BALL_ULTRA]   = 2,
+    [BALL_MASTER]  = 9,
+    [BALL_NET]     = 8,
+    [BALL_DIVE]    = 6,
+    [BALL_NEST]    = 11,
+    [BALL_REPEAT]  = 7,
+    [BALL_TIMER]   = 3,
+    [BALL_LUXURY]  = 5,
+    [BALL_PREMIER] = 4,
 };
 
 static const struct SpriteFrameImage sPicTable_PokecenterMonitor[] =
@@ -530,6 +575,17 @@ static const struct SpriteTemplate sSpriteTemplate_PokeballGlow =
     .oam = &sOam_8x8,
     .anims = sAnims_Flicker,
     .images = sPicTable_PokeballGlow,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = SpriteCB_PokeballGlow
+};
+
+static const struct SpriteTemplate sSpriteTemplate_PokeballGlowFull =
+{
+    .tileTag = TAG_NONE,
+    .paletteTag = FLDEFF_PAL_TAG_POKEBALL_GLOW_FULL,
+    .oam = &sOam_8x8,
+    .anims = sAnims_Flicker,
+    .images = sPicTable_PokeballGlowFull,
     .affineAnims = gDummySpriteAffineAnimTable,
     .callback = SpriteCB_PokeballGlow
 };
@@ -1033,6 +1089,7 @@ static void Task_PokecenterHeal(u8 taskId)
 static void PokecenterHealEffect_Init(struct Task *task)
 {
     task->tState++;
+    LoadSpritePalette(&sSpritePalette_PokeballGlowFull);
     task->tBallSpriteId = CreateGlowingPokeballsEffect(task->tNumMons, task->tFirstBallX, task->tFirstBallY, TRUE);
     task->tMonitorSpriteId = CreatePokecenterMonitorSprite(task->tMonitorX, task->tMonitorY);
 }
@@ -1088,6 +1145,7 @@ static void HallOfFameRecordEffect_Init(struct Task *task)
 {
     u8 taskId;
     task->tState++;
+    LoadSpritePalette(&sSpritePalette_PokeballGlowFull);
     task->tBallSpriteId = CreateGlowingPokeballsEffect(task->tNumMons, task->tFirstBallX, task->tFirstBallY, FALSE);
     taskId = FindTaskIdByFunc(Task_HallOfFameRecord);
     CreateHofMonitorSprite(taskId, 120, 24, FALSE);
@@ -1148,10 +1206,17 @@ static void PokeballGlowEffect_PlaceBalls(struct Sprite *sprite)
     u8 spriteId;
     if (sprite->sTimer == 0 || (--sprite->sTimer) == 0)
     {
+        u16 ballItem = GetMonData(&gPlayerParty[sprite->sCounter], MON_DATA_POKEBALL);
+        u8 ballId = ItemIdToBallId(ballItem);
+        u8 frameIdx = sBallIdToGlowFrame[ballId];
+
         sprite->sTimer = 25;
-        spriteId = CreateSpriteAtEnd(&sSpriteTemplate_PokeballGlow, sPokeballCoordOffsets[sprite->sCounter].x + sprite->x2, sPokeballCoordOffsets[sprite->sCounter].y + sprite->y2, 0);
+        spriteId = CreateSpriteAtEnd(&sSpriteTemplate_PokeballGlowFull, sPokeballCoordOffsets[sprite->sCounter].x + sprite->x2, sPokeballCoordOffsets[sprite->sCounter].y + sprite->y2, 0);
         gSprites[spriteId].oam.priority = 2;
         gSprites[spriteId].sEffectSpriteId = sprite->sSpriteId;
+        // Point this sprite's images to the correct ball type frame and reload tiles
+        gSprites[spriteId].images = &sPicTable_PokeballGlowFull[frameIdx];
+        StartSpriteAnim(&gSprites[spriteId], 0);
         sprite->sCounter++;
         sprite->sNumMons--;
         PlaySE(SE_BALL);
@@ -1181,6 +1246,9 @@ static void PokeballGlowEffect_TryPlaySe(struct Sprite *sprite)
 static void PokeballGlowEffect_Flash1(struct Sprite *sprite)
 {
     u8 phase;
+    u8 i;
+    u16 palOffset;
+
     if ((--sprite->sTimer) == 0)
     {
         sprite->sTimer = 8;
@@ -1190,15 +1258,10 @@ static void PokeballGlowEffect_Flash1(struct Sprite *sprite)
         if (sprite->sCounter == 0)
             sprite->data[3]++;
     }
-    phase = (sprite->sCounter + 3) & 3;
-    MultiplyInvertedPaletteRGBComponents(OBJ_PLTT_ID(IndexOfSpritePaletteTag(FLDEFF_PAL_TAG_POKEBALL_GLOW)) + 8, sPokeballGlowReds[phase], sPokeballGlowGreens[phase], sPokeballGlowBlues[phase]);
-    phase = (sprite->sCounter + 2) & 3;
-    MultiplyInvertedPaletteRGBComponents(OBJ_PLTT_ID(IndexOfSpritePaletteTag(FLDEFF_PAL_TAG_POKEBALL_GLOW)) + 6, sPokeballGlowReds[phase], sPokeballGlowGreens[phase], sPokeballGlowBlues[phase]);
-    phase = (sprite->sCounter + 1) & 3;
-    MultiplyInvertedPaletteRGBComponents(OBJ_PLTT_ID(IndexOfSpritePaletteTag(FLDEFF_PAL_TAG_POKEBALL_GLOW)) + 2, sPokeballGlowReds[phase], sPokeballGlowGreens[phase], sPokeballGlowBlues[phase]);
     phase = sprite->sCounter;
-    MultiplyInvertedPaletteRGBComponents(OBJ_PLTT_ID(IndexOfSpritePaletteTag(FLDEFF_PAL_TAG_POKEBALL_GLOW)) + 5, sPokeballGlowReds[phase], sPokeballGlowGreens[phase], sPokeballGlowBlues[phase]);
-    MultiplyInvertedPaletteRGBComponents(OBJ_PLTT_ID(IndexOfSpritePaletteTag(FLDEFF_PAL_TAG_POKEBALL_GLOW)) + 3, sPokeballGlowReds[phase], sPokeballGlowGreens[phase], sPokeballGlowBlues[phase]);
+    palOffset = OBJ_PLTT_ID(IndexOfSpritePaletteTag(FLDEFF_PAL_TAG_POKEBALL_GLOW_FULL));
+    for (i = 1; i < 16; i++)
+        MultiplyInvertedPaletteRGBComponents(palOffset + i, sPokeballGlowReds[phase], sPokeballGlowGreens[phase], sPokeballGlowBlues[phase]);
     if (sprite->data[3] > 2)
     {
         sprite->sState++;
@@ -1210,6 +1273,9 @@ static void PokeballGlowEffect_Flash1(struct Sprite *sprite)
 static void PokeballGlowEffect_Flash2(struct Sprite *sprite)
 {
     u8 phase;
+    u8 i;
+    u16 palOffset;
+
     if ((--sprite->sTimer) == 0)
     {
         sprite->sTimer = 8;
@@ -1222,11 +1288,9 @@ static void PokeballGlowEffect_Flash2(struct Sprite *sprite)
         }
     }
     phase = sprite->sCounter;
-    MultiplyInvertedPaletteRGBComponents(OBJ_PLTT_ID(IndexOfSpritePaletteTag(FLDEFF_PAL_TAG_POKEBALL_GLOW)) + 8, sPokeballGlowReds[phase], sPokeballGlowGreens[phase], sPokeballGlowBlues[phase]);
-    MultiplyInvertedPaletteRGBComponents(OBJ_PLTT_ID(IndexOfSpritePaletteTag(FLDEFF_PAL_TAG_POKEBALL_GLOW)) + 6, sPokeballGlowReds[phase], sPokeballGlowGreens[phase], sPokeballGlowBlues[phase]);
-    MultiplyInvertedPaletteRGBComponents(OBJ_PLTT_ID(IndexOfSpritePaletteTag(FLDEFF_PAL_TAG_POKEBALL_GLOW)) + 2, sPokeballGlowReds[phase], sPokeballGlowGreens[phase], sPokeballGlowBlues[phase]);
-    MultiplyInvertedPaletteRGBComponents(OBJ_PLTT_ID(IndexOfSpritePaletteTag(FLDEFF_PAL_TAG_POKEBALL_GLOW)) + 5, sPokeballGlowReds[phase], sPokeballGlowGreens[phase], sPokeballGlowBlues[phase]);
-    MultiplyInvertedPaletteRGBComponents(OBJ_PLTT_ID(IndexOfSpritePaletteTag(FLDEFF_PAL_TAG_POKEBALL_GLOW)) + 3, sPokeballGlowReds[phase], sPokeballGlowGreens[phase], sPokeballGlowBlues[phase]);
+    palOffset = OBJ_PLTT_ID(IndexOfSpritePaletteTag(FLDEFF_PAL_TAG_POKEBALL_GLOW_FULL));
+    for (i = 1; i < 16; i++)
+        MultiplyInvertedPaletteRGBComponents(palOffset + i, sPokeballGlowReds[phase], sPokeballGlowGreens[phase], sPokeballGlowBlues[phase]);
 }
 
 static void PokeballGlowEffect_WaitAfterFlash(struct Sprite *sprite)
