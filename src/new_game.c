@@ -125,7 +125,6 @@ static void SetDefaultOptions(void)
     gSaveBlock2Ptr->optionsRunType = 1;
     gSaveBlock2Ptr->optionsSurfOverworld = 0;
     gSaveBlock2Ptr->optionsCursorMemory = 1;
-    gSaveBlock2Ptr->optionsKOAnims = 1;
 }
 
 static void ClearPokedexFlags(void)
