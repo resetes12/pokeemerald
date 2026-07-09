@@ -1241,18 +1241,32 @@ static void Intro_TryShinyAnimShowHealthbox(void)
     // Restore bgm after cry has played and healthbox anim is started
     if (!gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].waitForCry
         && gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].healthboxSlideInStarted
-        && !gBattleSpritesDataPtr->healthBoxesData[BATTLE_PARTNER(gActiveBattler)].waitForCry
-        && !IsCryPlayingOrClearCrySongs())
+        && !gBattleSpritesDataPtr->healthBoxesData[BATTLE_PARTNER(gActiveBattler)].waitForCry)
     {
-        if (!gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].bgmRestored)
+        bool8 cryDone;
+        if (gSaveBlock2Ptr->optionsBattleSpeed)
         {
-            if (gBattleTypeFlags & BATTLE_TYPE_MULTI && gBattleTypeFlags & BATTLE_TYPE_LINK)
-                m4aMPlayContinue(&gMPlayInfo_BGM);
-            else
-                m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, 0x100);
+            gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].introEndDelay++;
+            cryDone = !IsCryPlaying() || gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].introEndDelay >= BATTLE_SPEED_CRY_WAIT_FRAMES;
         }
-        gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].bgmRestored = TRUE;
-        bgmRestored = TRUE;
+        else
+        {
+            cryDone = !IsCryPlayingOrClearCrySongs();
+        }
+
+        if (cryDone)
+        {
+            gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].introEndDelay = 0;
+            if (!gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].bgmRestored)
+            {
+                if (gBattleTypeFlags & BATTLE_TYPE_MULTI && gBattleTypeFlags & BATTLE_TYPE_LINK)
+                    m4aMPlayContinue(&gMPlayInfo_BGM);
+                else
+                    m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, 0x100);
+            }
+            gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].bgmRestored = TRUE;
+            bgmRestored = TRUE;
+        }
     }
 
     // Wait for battler anims
@@ -1319,12 +1333,20 @@ static void SwitchIn_CleanShinyAnimShowSubstitute(void)
 
 static void SwitchIn_HandleSoundAndEnd(void)
 {
-    if (!gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].specialAnimActive
-        && !IsCryPlayingOrClearCrySongs())
+    if (!gBattleSpritesDataPtr->healthBoxesData[gActiveBattler].specialAnimActive)
     {
-        m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, 0x100);
-        HandleLowHpMusicChange(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], gActiveBattler);
-        PlayerBufferExecCompleted();
+        bool8 cryDone;
+        if (gSaveBlock2Ptr->optionsBattleSpeed)
+            cryDone = TRUE; // Don't wait for cry on mid-battle switches at 2x
+        else
+            cryDone = !IsCryPlayingOrClearCrySongs();
+
+        if (cryDone)
+        {
+            m4aMPlayVolumeControl(&gMPlayInfo_BGM, TRACKS_ALL, 0x100);
+            HandleLowHpMusicChange(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], gActiveBattler);
+            PlayerBufferExecCompleted();
+        }
     }
 }
 

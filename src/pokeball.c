@@ -692,6 +692,10 @@ static void Task_PlayCryWhenReleasedFromBall(u8 taskId)
             PlayCry_ByMode(species, pan, CRY_MODE_NORMAL);
         else
             PlayCry_ByMode(species, pan, CRY_MODE_WEAK);
+        gTasks[taskId].tCryTaskState = 10;
+        break;
+    case 10:
+        // Wait one frame so cry registers as playing before clearing flag
         gBattleSpritesDataPtr->healthBoxesData[battlerId].waitForCry = FALSE;
         DestroyTask(taskId);
         break;
@@ -709,13 +713,17 @@ static void Task_PlayCryWhenReleasedFromBall(u8 taskId)
             else
                 PlayCry_ReleaseDouble(species, pan, CRY_MODE_WEAK_DOUBLES);
 
-            gBattleSpritesDataPtr->healthBoxesData[battlerId].waitForCry = FALSE;
-            DestroyTask(taskId);
+            gTasks[taskId].tCryTaskState = 21;
         }
         else
         {
             gTasks[taskId].tCryTaskFrames--;
         }
+        break;
+    case 21:
+        // Wait one frame so cry registers as playing before clearing flag
+        gBattleSpritesDataPtr->healthBoxesData[battlerId].waitForCry = FALSE;
+        DestroyTask(taskId);
         break;
     case 3:
         gTasks[taskId].tCryTaskFrames = 6;
@@ -749,6 +757,10 @@ static void Task_PlayCryWhenReleasedFromBall(u8 taskId)
         else
             PlayCry_ReleaseDouble(species, pan, CRY_MODE_WEAK);
 
+        gTasks[taskId].tCryTaskState = 33;
+        break;
+    case 33:
+        // Wait one frame so cry registers as playing before clearing flag
         gBattleSpritesDataPtr->healthBoxesData[battlerId].waitForCry = FALSE;
         DestroyTask(taskId);
         break;
