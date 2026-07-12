@@ -1,5 +1,6 @@
 #include "global.h"
 #include "overworld.h"
+#include "battle.h"
 #include "battle_pyramid.h"
 #include "battle_setup.h"
 #include "berry.h"
@@ -1696,6 +1697,14 @@ static void OverworldBasic(void)
 void CB2_OverworldBasic(void)
 {
     OverworldBasic();
+    if (gSaveBlock2Ptr->optionsBattleSpeed && !IsCryPlaying())
+    {
+        gBattleSpeedDoubleTickActive = TRUE;
+        RunTasks();
+        AnimateSprites();
+        BuildOamBuffer();
+        gBattleSpeedDoubleTickActive = FALSE;
+    }
 }
 
 void CB2_Overworld(void)

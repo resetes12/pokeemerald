@@ -719,6 +719,11 @@ extern u8 gTargetSelectionMove[MAX_BATTLERS_COUNT];
 extern u8 gBattlerStatusSummaryTaskId[MAX_BATTLERS_COUNT];
 extern u8 gBattlerInMenuId;
 extern bool8 gDoingBattleAnim;
+extern bool8 gBattleSpeedDoubleTickActive;
+extern bool8 gBattleCaptureSuccessActive;
+
+// Max frames to wait for cry at 2x speed before proceeding (cry continues in background)
+#define BATTLE_SPEED_CRY_WAIT_FRAMES 30
 extern u32 gTransformedPersonalities[MAX_BATTLERS_COUNT];
 extern u8 gPlayerDpadHoldFrames;
 extern struct BattleSpriteData *gBattleSpritesDataPtr;

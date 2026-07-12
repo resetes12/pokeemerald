@@ -236,7 +236,7 @@ static void Intro_WaitForHealthbox(void)
         }
     }
 
-    if (IsCryPlayingOrClearCrySongs())
+    if (!gSaveBlock2Ptr->optionsBattleSpeed && IsCryPlayingOrClearCrySongs())
         finished = FALSE;
 
     if (finished)

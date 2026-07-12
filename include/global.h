@@ -573,6 +573,7 @@ struct SaveBlock2
               u16 optionsFontType:1;
               u8 shinySeen[NUM_DEX_FLAG_BYTES]; // Tracks whether trainer has ever seen/caught a shiny of each species
               u16 optionsCursorMemory:1;
+              u16 optionsBattleSpeed:1; // 0 = normal, 1 = double speed animations/bars
 }; // sizeof=0xF2C + NUM_DEX_FLAG_BYTES
 
 extern struct SaveBlock2 *gSaveBlock2Ptr;
