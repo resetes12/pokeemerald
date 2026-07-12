@@ -1066,7 +1066,11 @@ Route104_Text_FlowerShopSellingSaplings:
 	.string "This Flower Shop started selling\n"
 	.string "saplings recently.\p"
 	.string "It made me so happy, I went overboard\n"
-	.string "shopping. Where should I put them?$"
+	.string "shopping. Where should I put them?\p"
+	.string "Oh, did you know? If you keep\n"
+	.string "attracting Pokémon with Sweet Scent,\l"
+	.string "differently colored ones may appear.\l"
+	.string "Isn't that wild?$"
 
 Route104_Text_MrBrineysCottage:
 	.string "Mr. Briney's Cottage$"
