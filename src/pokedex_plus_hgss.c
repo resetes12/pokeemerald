@@ -4072,7 +4072,7 @@ static void Task_HandleInfoScreenInput(u8 taskId)
             sPokedexView->isShowingShiny = !sPokedexView->isShowingShiny;
 
             if (sPokedexView->isShowingShiny)
-                palData = GetMonSpritePalFromSpeciesAndPersonality(species, 0, 0); // otId=0, personality=0 forces shiny
+                palData = GetMonSpritePalFromSpeciesAndPersonality(species, 0, 0x00010001); // otId=0, personality with shinyValue=0 and non-zero to pass shiny check
             else
                 palData = gMonPaletteTable[species].data;
 
