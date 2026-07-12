@@ -4,3 +4,6 @@ gText_WantToUseSurf::
 
 gText_PlayerUsedSurf::
 	.string "{STR_VAR_1} used Surf!$"
+
+gText_CantUseSurf::
+	.string "None of your Pokémon can Surf.$"
