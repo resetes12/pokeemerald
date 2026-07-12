@@ -5319,6 +5319,19 @@ static void HandleTurnActionSelectionState(void)
                     gHitMarker |= HITMARKER_RUN;
                     gChosenActionByBattler[gActiveBattler] = B_ACTION_RUN;
                     gBattleCommunication[gActiveBattler] = STATE_WAIT_ACTION_CONFIRMED_STANDBY;
+
+                    // In doubles, also forfeit for the partner so the battle ends immediately
+                    if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
+                    {
+                        u8 partner = GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerPosition(gActiveBattler)));
+                        gChosenActionByBattler[partner] = B_ACTION_RUN;
+                        gBattleCommunication[partner] = STATE_WAIT_ACTION_CONFIRMED;
+
+                        // Skip opponent AI and go straight to turn execution
+                        gBattlerAttacker = gActiveBattler;
+                        gBattleOutcome = B_OUTCOME_FORFEITED;
+                        gBattleMainFunc = HandleEndTurn_RanFromBattle;
+                    }
                 }
                 else
                 {
