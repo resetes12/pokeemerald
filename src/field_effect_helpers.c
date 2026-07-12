@@ -3,6 +3,7 @@
 #include "field_camera.h"
 #include "field_effect.h"
 #include "field_effect_helpers.h"
+#include "field_player_avatar.h"
 #include "field_weather.h"
 #include "fieldmap.h"
 #include "gpu_regs.h"
@@ -101,8 +102,20 @@ static void LoadObjectReflectionPalette(struct ObjectEvent *objectEvent, struct 
     if ((bridgeType = MetatileBehavior_GetBridgeType(objectEvent->previousMetatileBehavior))
         || (bridgeType = MetatileBehavior_GetBridgeType(objectEvent->currentMetatileBehavior)))
     {
-        reflectionSprite->sReflectionVerticalOffset = bridgeReflectionVerticalOffsets[bridgeType - 1];
-        LoadObjectHighBridgeReflectionPalette(objectEvent, reflectionSprite);
+        // If player is surfing (flag set or surfing graphics), use normal water reflection
+        if (TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING)
+            || objectEvent->graphicsId == OBJ_EVENT_GFX_BRENDAN_SURFING
+            || objectEvent->graphicsId == OBJ_EVENT_GFX_MAY_SURFING
+            || objectEvent->graphicsId == OBJ_EVENT_GFX_BRENDAN_SURFING_RS
+            || objectEvent->graphicsId == OBJ_EVENT_GFX_MAY_SURFING_RS)
+        {
+            LoadObjectRegularReflectionPalette(objectEvent, reflectionSprite);
+        }
+        else
+        {
+            reflectionSprite->sReflectionVerticalOffset = bridgeReflectionVerticalOffsets[bridgeType - 1];
+            LoadObjectHighBridgeReflectionPalette(objectEvent, reflectionSprite);
+        }
     }
     else
     {
@@ -325,13 +338,27 @@ u32 FldEff_Shadow(void)
     u8 objectEventId;
     const struct ObjectEventGraphicsInfo *graphicsInfo;
     u8 spriteId;
+    u8 metatileBehavior;
     s32 i;
+
+    objectEventId = GetObjectEventIdByLocalIdAndMap(gFieldEffectArguments[0], gFieldEffectArguments[1], gFieldEffectArguments[2]);
+
+    // Don't create shadow on water/reflective/bridge tiles
+    metatileBehavior = MapGridGetMetatileBehaviorAt(gObjectEvents[objectEventId].currentCoords.x, gObjectEvents[objectEventId].currentCoords.y);
+    if (MetatileBehavior_IsSurfableWaterOrUnderwater(metatileBehavior)
+     || MetatileBehavior_IsReflective(metatileBehavior)
+     || MetatileBehavior_IsBridgeOverWater(metatileBehavior))
+        return 0;
+
+    graphicsInfo = GetObjectEventGraphicsInfo(gObjectEvents[objectEventId].graphicsId);
+    if (graphicsInfo->shadowSize == SHADOW_SIZE_NONE)
+        return 0;
+
     for (i = MAX_SPRITES - 1; i > -1; i--) { // Search backwards, because of CreateSpriteAtEnd
         // Return early if a shadow sprite already exists
         if (gSprites[i].data[0] == gFieldEffectArguments[0] && gSprites[i].callback == UpdateShadowFieldEffect)
             return 0;
     }
-    objectEventId = GetObjectEventIdByLocalIdAndMap(gFieldEffectArguments[0], gFieldEffectArguments[1], gFieldEffectArguments[2]);
     graphicsInfo = GetObjectEventGraphicsInfo(gObjectEvents[objectEventId].graphicsId);
     if (graphicsInfo->shadowSize == SHADOW_SIZE_NONE) // don't create a shadow at all
         return 0;
@@ -377,13 +404,17 @@ void UpdateShadowFieldEffect(struct Sprite *sprite)
         sprite->invisible = linkedSprite->invisible;
         if (!objectEvent->active
          || objectEvent->noShadow
+         || objectEvent->hasReflection
          || objectEvent->inHotSprings
          || objectEvent->inSandPile
          || gWeatherPtr->noShadows
          || MetatileBehavior_IsPokeGrass(objectEvent->currentMetatileBehavior)
          || MetatileBehavior_IsPuddle(objectEvent->currentMetatileBehavior)
          || MetatileBehavior_IsSurfableWaterOrUnderwater(objectEvent->currentMetatileBehavior)
-         || MetatileBehavior_IsSurfableWaterOrUnderwater(objectEvent->previousMetatileBehavior))
+         || MetatileBehavior_IsSurfableWaterOrUnderwater(objectEvent->previousMetatileBehavior)
+         || MetatileBehavior_IsBridgeOverWater(objectEvent->currentMetatileBehavior)
+         || MetatileBehavior_IsReflective(objectEvent->currentMetatileBehavior)
+         || TestPlayerAvatarFlags(PLAYER_AVATAR_FLAG_SURFING))
         {
             FieldEffectStop(sprite, FLDEFF_SHADOW);
         }
