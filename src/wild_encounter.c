@@ -26,8 +26,8 @@
 extern const u8 EventScript_RepelWoreOff[];
 
 #define MAX_ENCOUNTER_RATE 2880
-#define MAX_SWEET_SCENT_CHAIN 255
-#define MAX_CHAIN_FISHING_STREAK 255
+#define MAX_SWEET_SCENT_CHAIN 20
+#define MAX_CHAIN_FISHING_STREAK 100
 
 #define NUM_FEEBAS_SPOTS 6
 
