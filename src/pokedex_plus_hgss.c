@@ -4637,6 +4637,15 @@ static void PrintInfoScreenTextSmall(const u8* str, u8 left, u8 top)
 
     AddTextPrinterParameterized4(0, 0, left, top, 0, 0, color, 0, str);
 }
+static void PrintInfoScreenTextSmallGray(const u8* str, u8 left, u8 top)
+{
+    u8 color[3];
+    color[0] = TEXT_COLOR_TRANSPARENT;
+    color[1] = TEXT_DYNAMIC_COLOR_5;
+    color[2] = TEXT_COLOR_DARK_GRAY;
+
+    AddTextPrinterParameterized4(0, 0, left, top, 0, 0, color, 0, str);
+}
 static void PrintInfoScreenTextSmallWhite(const u8* str, u8 left, u8 top)
 {
     u8 color[3];
@@ -6777,7 +6786,19 @@ static void Task_LoadEvolutionScreen(u8 taskId)
         GetSeenFlagTargetSpecies();
         if (sPokedexView->sEvoScreenData.numAllEvolutions != 0 && sPokedexView->sEvoScreenData.numSeen != 0)
         {
-            sPokedexView->sEvoScreenData.arrowSpriteId = CreateSprite(&sSpriteTemplate_Arrow, 7, 58, 0);
+            // Find first seen entry for initial arrow position
+            u8 initPos = 0;
+            u8 j;
+            for (j = 0; j < sPokedexView->sEvoScreenData.numAllEvolutions; j++)
+            {
+                if (sPokedexView->sEvoScreenData.seen[j] == TRUE)
+                {
+                    initPos = j;
+                    break;
+                }
+            }
+            sPokedexView->sEvoScreenData.menuPos = initPos;
+            sPokedexView->sEvoScreenData.arrowSpriteId = CreateSprite(&sSpriteTemplate_Arrow, 7, 58 + 9 * initPos, 0);
             gSprites[sPokedexView->sEvoScreenData.arrowSpriteId].animNum = 2;
         }
         gMain.state++;
@@ -6838,38 +6859,42 @@ static void Task_HandleEvolutionScreenInput(u8 taskId)
     }
     #endif
 
-    if (sPokedexView->sEvoScreenData.numAllEvolutions != 0 && sPokedexView->sEvoScreenData.numSeen != 0)
+    if (sPokedexView->sEvoScreenData.numAllEvolutions != 0)
     {
         u8 i;
         u8 base_y = 58;
         u8 base_y_offset = 9;
         u8 pos = sPokedexView->sEvoScreenData.menuPos;
         u8 max = sPokedexView->sEvoScreenData.numAllEvolutions;
-        if (JOY_NEW(DPAD_DOWN))
+        if (sPokedexView->sEvoScreenData.numSeen > 1 && JOY_NEW(DPAD_DOWN))
         {
             while (TRUE)
             {
                 pos += 1;
                 if (pos >= max)
                     pos = 0;
-
                 if (sPokedexView->sEvoScreenData.seen[pos] == TRUE)
                     break;
             }
             gSprites[sPokedexView->sEvoScreenData.arrowSpriteId].y = base_y + base_y_offset * pos;
             sPokedexView->sEvoScreenData.menuPos = pos;
         }
-        else if (JOY_NEW(DPAD_UP))
+        else if (sPokedexView->sEvoScreenData.numSeen > 1 && JOY_NEW(DPAD_UP))
         {
-            if (sPokedexView->sEvoScreenData.menuPos == 0)
-                sPokedexView->sEvoScreenData.menuPos = sPokedexView->sEvoScreenData.numAllEvolutions - 1;
-            else
-                sPokedexView->sEvoScreenData.menuPos -= 1;
-
-            gSprites[sPokedexView->sEvoScreenData.arrowSpriteId].y = base_y + base_y_offset * sPokedexView->sEvoScreenData.menuPos;
+            while (TRUE)
+            {
+                if (pos == 0)
+                    pos = max - 1;
+                else
+                    pos -= 1;
+                if (sPokedexView->sEvoScreenData.seen[pos] == TRUE)
+                    break;
+            }
+            gSprites[sPokedexView->sEvoScreenData.arrowSpriteId].y = base_y + base_y_offset * pos;
+            sPokedexView->sEvoScreenData.menuPos = pos;
         }
 
-        if (JOY_NEW(A_BUTTON))
+        if (JOY_NEW(A_BUTTON) && sPokedexView->sEvoScreenData.seen[sPokedexView->sEvoScreenData.menuPos])
         {
             if (sPokedexView->isSearchResults && sPokedexView->originalSearchSelectionNum == 0)
                 sPokedexView->originalSearchSelectionNum = sPokedexListItem->dexNum;
@@ -6941,7 +6966,10 @@ static void HandleTargetSpeciesPrint(u8 taskId, u16 targetSpecies, u16 previousT
     else
         StringCopy(gStringVar3, gText_ThreeQuestionMarks); //show questionmarks instead of name
     StringExpandPlaceholders(gStringVar3, gText_EVO_Name); //evolution mon name
-    PrintInfoScreenTextSmall(gStringVar3, base_x, base_y + base_y_offset*base_i); //evolution mon name
+    if (seen)
+        PrintInfoScreenTextSmall(gStringVar3, base_x, base_y + base_y_offset*base_i); //evolution mon name
+    else
+        PrintInfoScreenTextSmallGray(gStringVar3, base_x, base_y + base_y_offset*base_i); //gray for unseen
 
     //Print mon icon in the top row
     if (isEevee)
@@ -6969,13 +6997,14 @@ static void HandleTargetSpeciesPrint(u8 taskId, u16 targetSpecies, u16 previousT
 static void CreateCaughtBallEvolutionScreen(u16 targetSpecies, u8 x, u8 y, u16 unused)
 {
     bool8 owned = GetSetPokedexFlag(SpeciesToNationalPokedexNum(targetSpecies), FLAG_GET_CAUGHT);
+    bool8 seen = GetSetPokedexFlag(SpeciesToNationalPokedexNum(targetSpecies), FLAG_GET_SEEN);
     if (owned)
         BlitBitmapToWindow(0, sCaughtBall_Gfx, x, y-1, 8, 16);
-    else
+    else if (seen)
     {
-        //FillWindowPixelRect(0, PIXEL_FILL(0), x, y, 8, 16); //not sure why this was even here
         PrintInfoScreenTextSmall(gText_OneDash, x+1, y-1);
     }
+    // Unseen: show nothing (no dash, no ball)
 }
 
 static void HandlePreEvolutionSpeciesPrint(u8 taskId, u16 preSpecies, u16 species, u8 base_x, u8 base_y, u8 base_y_offset, u8 base_i)
@@ -7002,7 +7031,10 @@ static void HandlePreEvolutionSpeciesPrint(u8 taskId, u16 preSpecies, u16 specie
     }
     #endif
 
-    PrintInfoScreenTextSmall(gStringVar3, base_x, base_y + base_y_offset*base_i); //evolution mon name
+    if (seen)
+        PrintInfoScreenTextSmall(gStringVar3, base_x, base_y + base_y_offset*base_i);
+    else
+        PrintInfoScreenTextSmallGray(gStringVar3, base_x, base_y + base_y_offset*base_i);
 
     if (base_i < 3)
     {
@@ -7313,7 +7345,10 @@ static u8 PrintEvolutionTargetSpeciesAndMethod(u8 taskId, u16 species, u8 depth,
             StringExpandPlaceholders(gStringVar4, gText_EVO_UNKNOWN );
             break;
         }//Switch end
-        PrintInfoScreenTextSmall(gStringVar4, base_x + depth_x*depth+base_x_offset, base_y + base_y_offset*base_i); //Print actual instructions
+        if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(targetSpecies), FLAG_GET_SEEN))
+            PrintInfoScreenTextSmall(gStringVar4, base_x + depth_x*depth+base_x_offset, base_y + base_y_offset*base_i); //Print actual instructions
+        else
+            PrintInfoScreenTextSmallGray(gStringVar4, base_x + depth_x*depth+base_x_offset, base_y + base_y_offset*base_i); //Gray for unseen
 
         depth_i += PrintEvolutionTargetSpeciesAndMethod(taskId, targetSpecies, depth+1, base_i+1);
     }//For loop end

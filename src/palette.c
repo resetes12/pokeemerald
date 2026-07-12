@@ -435,6 +435,7 @@ void ResetPaletteFadeControl(void)
     gPaletteFade.multipurpose2 = 0; // assign same value twice
     gPaletteFade.yDec = 0;
     gPaletteFade.bufferTransferDisabled = FALSE;
+    gPaletteFade.mode = NORMAL_FADE;
     gPaletteFade.shouldResetBlendRegisters = FALSE;
     gPaletteFade.hardwareFadeFinishing = FALSE;
     gPaletteFade.softwareFadeFinishing = FALSE;
