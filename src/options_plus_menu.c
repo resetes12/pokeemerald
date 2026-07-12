@@ -48,6 +48,7 @@ enum
     MENUITEM_MAIN_UNIT_TYPE,
     MENUITEM_MAIN_SKIP_INTRO,
     MENUITEM_MAIN_FRAMETYPE,
+    MENUITEM_MAIN_BRIGHTER_NIGHTS,
     MENUITEM_MAIN_COUNT,
 };
 
@@ -228,6 +229,7 @@ static void DrawChoices_Run_Type(int selection, int y);
 static void DrawChoices_Autorun_Surf(int selection, int y);
 static void DrawChoices_Autorun_Dive(int selection, int y);
 static void DrawChoices_SurfOverworld(int selection, int y);
+static void DrawChoices_BrighterNights(int selection, int y);
 static void DrawChoices_Font(int selection, int y);
 static void DrawChoices_CursorMemory(int selection, int y);
 static void DrawBgWindowFrames(void);
@@ -277,6 +279,7 @@ struct // MENU_MAIN
     [MENUITEM_MAIN_SKIP_INTRO]              = {DrawChoices_Skip_Intro,       ProcessInput_Options_Two},
     [MENUITEM_MAIN_UNIT_TYPE]               = {DrawChoices_Unit_Type,        ProcessInput_Options_Two},
     [MENUITEM_MAIN_FRAMETYPE]               = {DrawChoices_FrameType,        ProcessInput_FrameType},
+    [MENUITEM_MAIN_BRIGHTER_NIGHTS]         = {DrawChoices_BrighterNights,   ProcessInput_Options_Two},
     [MENUITEM_MAIN_SURFOVERWORLD]           = {DrawChoices_SurfOverworld,    ProcessInput_Options_Two},
 };
 
@@ -333,6 +336,7 @@ static const u8 sText_OptionRunType[]             = _("QUICK RUN");
 static const u8 sText_AutorunEnable_Surf[]        = _("AUTORUN (SURF)");
 static const u8 sText_AutorunEnable_Dive[]        = _("AUTORUN (DIVE)");
 static const u8 sText_SurfSprites[]               = _("SURF SPRITES");
+static const u8 sText_BrighterNights[]            = _("BRIGHT NIGHTS");
 static const u8 sText_FontType[]                  = _("FONT TYPE");
 static const u8 *const sOptionMenuItemsNamesMain[MENUITEM_MAIN_COUNT] =
 {
@@ -351,6 +355,7 @@ static const u8 *const sOptionMenuItemsNamesMain[MENUITEM_MAIN_COUNT] =
     [MENUITEM_MAIN_SKIP_INTRO]          = sText_OptionSkipIntro,
     [MENUITEM_MAIN_UNIT_TYPE]           = sText_OptionUnitType,
     [MENUITEM_MAIN_FRAMETYPE]           = gText_Frame,
+    [MENUITEM_MAIN_BRIGHTER_NIGHTS]     = sText_BrighterNights,
     [MENUITEM_MAIN_SURFOVERWORLD]       = sText_SurfSprites,
 };
 
@@ -426,6 +431,7 @@ static bool8 CheckConditions(int selection)
         case MENUITEM_MAIN_SKIP_INTRO:        return TRUE;
         case MENUITEM_MAIN_UNIT_TYPE:         return TRUE;
         case MENUITEM_MAIN_SURFOVERWORLD:     return TRUE;
+        case MENUITEM_MAIN_BRIGHTER_NIGHTS:   return TRUE;
         }
     case MENU_CUSTOM:
         switch(selection)
@@ -498,6 +504,8 @@ static const u8 sText_Desc_Units_Imperial[]        = _("Display Berry and Pokém
 static const u8 sText_Desc_Units_Metric[]          = _("Display Berry and Pokémon weight\nand size in kilograms and meters.");
 static const u8 sText_Desc_SurfOverworldDynamic[]       = _("Use the Pokémon's sprite when\nsurfing.");
 static const u8 sText_Desc_SurfOverworldOriginal[]      = _("Use the original generic sprite when\nsurfing.");
+static const u8 sText_Desc_BrighterNightsOn[]           = _("Night shading is less dark.\nEasier to see at night.");
+static const u8 sText_Desc_BrighterNightsOff[]          = _("Night shading at full darkness.\nOriginal intensity.");
 static const u8 *const sOptionMenuItemDescriptionsMain[MENUITEM_MAIN_COUNT][3] =
 {
     [MENUITEM_MAIN_TEXTSPEED]         = {sText_Desc_TextSpeed,            sText_Empty,                     sText_Empty},
@@ -516,6 +524,7 @@ static const u8 *const sOptionMenuItemDescriptionsMain[MENUITEM_MAIN_COUNT][3] =
     [MENUITEM_MAIN_SKIP_INTRO]        = {sText_Desc_SkipIntroOn,          sText_Desc_SkipIntroOff},
     [MENUITEM_MAIN_UNIT_TYPE]         = {sText_Desc_Units_Metric,         sText_Desc_Units_Imperial},
     [MENUITEM_MAIN_SURFOVERWORLD]     = {sText_Desc_SurfOverworldDynamic, sText_Desc_SurfOverworldOriginal},
+    [MENUITEM_MAIN_BRIGHTER_NIGHTS]   = {sText_Desc_BrighterNightsOff,     sText_Desc_BrighterNightsOn},
 };
 
 // Custom {PKMN}
@@ -607,6 +616,7 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledMain[MENUITEM_MAIN_COU
     [MENUITEM_MAIN_EVEN_FASTER_JOY]   = sText_Empty,
     [MENUITEM_MAIN_SKIP_INTRO]        = sText_Empty,
     [MENUITEM_MAIN_SURFOVERWORLD]     = sText_Empty,
+    [MENUITEM_MAIN_BRIGHTER_NIGHTS]   = sText_Empty,
 };
 
 // Disabled Custom
@@ -725,9 +735,10 @@ static void DrawTopBarText(void)
 static void DrawOptionMenuTexts(void) //left side text
 {
     u8 i;
+    u8 optionsToDraw = min(OPTIONS_ON_SCREEN, MenuItemCount());
 
     FillWindowPixelBuffer(WIN_OPTIONS, PIXEL_FILL(1));
-    for (i = 0; i < MenuItemCount(); i++)
+    for (i = 0; i < optionsToDraw; i++)
         DrawLeftSideOptionText(i, (i * Y_DIFF) + 1);
     CopyWindowToVram(WIN_OPTIONS, COPYWIN_FULL);
 }
@@ -890,6 +901,7 @@ void CB2_InitOptionPlusMenu(void)
         sOptions->sel[MENUITEM_MAIN_SKIP_INTRO]          = gSaveBlock2Ptr->optionsSkipIntro;
         sOptions->sel[MENUITEM_MAIN_UNIT_TYPE]           = gSaveBlock2Ptr->optionsUnitSystem;
         sOptions->sel[MENUITEM_MAIN_SURFOVERWORLD]       = gSaveBlock2Ptr->optionsSurfOverworld;
+        sOptions->sel[MENUITEM_MAIN_BRIGHTER_NIGHTS]     = gSaveBlock2Ptr->optionsBrighterNights;
 
         sOptions->sel_battle[MENUITEM_BATTLE_BATTLESTYLE]       = gSaveBlock2Ptr->optionsBattleStyle;
         sOptions->sel_battle[MENUITEM_BATTLE_BATTLESCENE]       = gSaveBlock2Ptr->optionsBattleSceneOff;
@@ -1130,6 +1142,7 @@ static void Task_OptionMenuSave(u8 taskId)
     gSaveBlock2Ptr->optionsSkipIntro             = sOptions->sel[MENUITEM_MAIN_SKIP_INTRO];
     gSaveBlock2Ptr->optionsUnitSystem            = sOptions->sel[MENUITEM_MAIN_UNIT_TYPE];
     gSaveBlock2Ptr->optionsSurfOverworld         = sOptions->sel[MENUITEM_MAIN_SURFOVERWORLD];
+    gSaveBlock2Ptr->optionsBrighterNights        = sOptions->sel[MENUITEM_MAIN_BRIGHTER_NIGHTS];
 
     gSaveBlock2Ptr->optionsBattleStyle      = sOptions->sel_battle[MENUITEM_BATTLE_BATTLESTYLE];
     gSaveBlock2Ptr->optionsBattleSceneOff   = sOptions->sel_battle[MENUITEM_BATTLE_BATTLESCENE];
@@ -2109,6 +2122,25 @@ static void DrawChoices_SurfOverworld(int selection, int y)
 
     DrawOptionMenuChoice(sText_Dynamic, 104, y, styles[0], active);
     DrawOptionMenuChoice(sText_Old, GetStringRightAlignXOffset(1, sText_Old, 198), y, styles[1], active);
+}
+
+static void DrawChoices_BrighterNights(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_MAIN_BRIGHTER_NIGHTS);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock2Ptr->optionsBrighterNights = 0; // Off (original)
+    }
+    else
+    {
+        gSaveBlock2Ptr->optionsBrighterNights = 1; // On (brighter)
+    }
+
+    DrawOptionMenuChoice(gText_BattleSceneOff, 104, y, styles[0], active);
+    DrawOptionMenuChoice(gText_BattleSceneOn, GetStringRightAlignXOffset(1, gText_BattleSceneOn, 198), y, styles[1], active);
 }
 
 static const u8 sText_Em[]          = _("Emerald");

@@ -808,8 +808,8 @@ void FadeScreen(u8 mode, s8 delay)
           if (MapHasNaturalLight(gMapHeader.mapType)) {
             UpdateAltBgPalettes(PALETTES_BG);
             BeginTimeOfDayPaletteFade(PALETTES_ALL, delay, 16, 0,
-              (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time0],
-              (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time1],
+              (struct BlendSettings *)&GetTimeOfDayBlend()[currentTimeBlend.time0],
+              (struct BlendSettings *)&GetTimeOfDayBlend()[currentTimeBlend.time1],
               currentTimeBlend.weight, fadeColor);
           } else {
             BeginNormalPaletteFade(PALETTES_ALL, delay, 16, 0, fadeColor);

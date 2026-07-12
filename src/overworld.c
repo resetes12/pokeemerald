@@ -1535,6 +1535,7 @@ void CB1_Overworld(void)
 }
 
 #define TINT_NIGHT Q_8_8(0.456) | Q_8_8(0.456) << 8 | Q_8_8(0.615) << 16
+#define TINT_NIGHT_BRIGHT Q_8_8(0.619) | Q_8_8(0.619) << 8 | Q_8_8(0.731) << 16
 
 const struct BlendSettings gTimeOfDayBlend[] =
 {
@@ -1542,6 +1543,20 @@ const struct BlendSettings gTimeOfDayBlend[] =
     [TIME_OF_DAY_TWILIGHT] = {.coeff = 4, .blendColor = 0xA8B0E0, .isTint = TRUE},
     [TIME_OF_DAY_DAY] = {.coeff = 0, .blendColor = 0},
 };
+
+const struct BlendSettings gTimeOfDayBlendBright[] =
+{
+    [TIME_OF_DAY_NIGHT] = {.coeff = 10, .blendColor = TINT_NIGHT_BRIGHT, .isTint = TRUE},
+    [TIME_OF_DAY_TWILIGHT] = {.coeff = 4, .blendColor = 0xA8B0E0, .isTint = TRUE},
+    [TIME_OF_DAY_DAY] = {.coeff = 0, .blendColor = 0},
+};
+
+const struct BlendSettings *GetTimeOfDayBlend(void)
+{
+    if (gSaveBlock2Ptr->optionsBrighterNights)
+        return gTimeOfDayBlendBright;
+    return gTimeOfDayBlend;
+}
 
 u8 UpdateTimeOfDay(void) {
     s32 hours, minutes;
@@ -1637,8 +1652,8 @@ void UpdatePalettesWithTime(u32 palettes) {
         palettes,
         gPlttBufferUnfaded,
         gPlttBufferFaded,
-        (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time0],
-        (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time1],
+        (struct BlendSettings *)&GetTimeOfDayBlend()[currentTimeBlend.time0],
+        (struct BlendSettings *)&GetTimeOfDayBlend()[currentTimeBlend.time1],
         currentTimeBlend.weight
     );
     }
@@ -1652,8 +1667,8 @@ u8 UpdateSpritePaletteWithTime(u8 paletteNum) {
         1,
         &gPlttBufferUnfaded[OBJ_PLTT_ID(paletteNum)],
         &gPlttBufferFaded[OBJ_PLTT_ID(paletteNum)],
-        (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time0],
-        (struct BlendSettings *)&gTimeOfDayBlend[currentTimeBlend.time1],
+        (struct BlendSettings *)&GetTimeOfDayBlend()[currentTimeBlend.time0],
+        (struct BlendSettings *)&GetTimeOfDayBlend()[currentTimeBlend.time1],
         currentTimeBlend.weight
     );
     }
