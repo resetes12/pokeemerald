@@ -6089,6 +6089,11 @@ static void FreeResetData_ReturnToOvOrDoEvolutions(void)
 {
     if (!gPaletteFade.active)
     {
+        // Reset sweet scent chain: preserve only on sweet scent encounter win/catch
+        if (!gIsSweetScentEncounter || (gBattleOutcome != B_OUTCOME_WON && gBattleOutcome != B_OUTCOME_CAUGHT))
+            gSweetScentChainStreak = 0;
+        gIsSweetScentEncounter = FALSE;
+
         ResetSpriteData();
         if (gLeveledUpInBattle == 0 || (gBattleOutcome != B_OUTCOME_WON && gBattleOutcome != B_OUTCOME_CAUGHT))
         {
