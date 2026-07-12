@@ -620,7 +620,7 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledMain[MENUITEM_MAIN_COU
 };
 
 // Disabled Custom
-static const u8 sText_Desc_Disabled_LR_Run[]   = _("Only active if L+R is selected above.");
+static const u8 sText_Desc_Disabled_LR_Run[]   = _("Only active if ‘L+R+A’ or ‘B’ is\nselected above.");
 static const u8 *const sOptionMenuItemDescriptionsDisabledCustom[MENUITEM_BATTLE_COUNT] =
 {
     [MENUITEM_BATTLE_BATTLESCENE]         = sText_Empty,
