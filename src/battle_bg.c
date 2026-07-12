@@ -1267,6 +1267,15 @@ void DrawMainBattleBackground(void)
             break;
         }
     }
+
+    // Brighten battle terrain night palettes when Bright Nights is on
+    if (gSaveBlock2Ptr->optionsBrighterNights
+        && !(gMapHeader.mapType == MAP_TYPE_INDOOR)
+        && ((gLocalTime.hours >= 0 && gLocalTime.hours < 6) || (gLocalTime.hours >= 21 && gLocalTime.hours < 24)))
+    {
+        // Blend BG palettes 2-4 (terrain) toward a warm dark tone to lift blacks without hazing
+        BlendPalettes(0x1C, 3, RGB(10, 10, 14));
+    }
 }
 
 void LoadBattleTextboxAndBackground(void)

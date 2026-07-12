@@ -109,6 +109,7 @@ static void SetDefaultOptions(void)
     gSaveBlock2Ptr->optionsFishing = 1;
     gSaveBlock2Ptr->optionsFastIntro = 1;
     gSaveBlock2Ptr->optionsFastBattle = 1;
+    gSaveBlock2Ptr->optionsBattleSpeed = 0;
     gSaveBlock2Ptr->optionsBikeMusic = 0;
     gSaveBlock2Ptr->optionsEvenFasterJoy = 1;
     gSaveBlock2Ptr->optionsSurfMusic = 0;
@@ -125,6 +126,7 @@ static void SetDefaultOptions(void)
     gSaveBlock2Ptr->optionsRunType = 1;
     gSaveBlock2Ptr->optionsSurfOverworld = 0;
     gSaveBlock2Ptr->optionsCursorMemory = 1;
+    gSaveBlock2Ptr->optionsBrighterNights = 0;
 }
 
 static void ClearPokedexFlags(void)
