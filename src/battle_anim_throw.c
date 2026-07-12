@@ -1321,6 +1321,7 @@ static void SpriteCB_Ball_Capture_Step(struct Sprite *sprite)
     else if (sprite->sTimer == 95)
     {
         gDoingBattleAnim = FALSE;
+        gBattleCaptureSuccessActive = TRUE;
         UpdateOamPriorityInAllHealthboxes(1);
         m4aMPlayAllStop();
         if (gSaveBlock2Ptr->optionsSoundEffects == 0)

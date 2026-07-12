@@ -1093,6 +1093,8 @@ static void LaunchBattleTransitionTask(u8 transitionId)
 static void Task_BattleTransition(u8 taskId)
 {
     while (sTaskHandlers[gTasks[taskId].tState](&gTasks[taskId]));
+    if (gSaveBlock2Ptr->optionsBattleSpeed)
+        while (sTaskHandlers[gTasks[taskId].tState](&gTasks[taskId]));
 }
 
 static bool8 Transition_StartIntro(struct Task *task)

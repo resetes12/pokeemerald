@@ -251,6 +251,8 @@ EWRAM_DATA u16 gLastThrownBall = 0;
 EWRAM_DATA u16 gBallToDisplay = 0;
 EWRAM_DATA bool8 gLastUsedBallMenuPresent = FALSE;
 EWRAM_DATA u8 gItemLimit = 0;
+EWRAM_DATA bool8 gBattleSpeedDoubleTickActive = FALSE;
+EWRAM_DATA bool8 gBattleCaptureSuccessActive = FALSE;
 
 void (*gPreBattleCallback1)(void);
 void (*gBattleMainFunc)(void);
@@ -2130,6 +2132,34 @@ void BattleMainCB2(void)
     UpdatePaletteFade();
     RunTasks();
 
+    if (gSaveBlock2Ptr->optionsBattleSpeed
+        && !(gBattleTypeFlags & BATTLE_TYPE_LINK)
+        && !gBattleCaptureSuccessActive)
+    {
+        bool8 ballActive = FALSE;
+        u8 i;
+        for (i = 0; i < gBattlersCount; i++)
+        {
+            if (gBattleSpritesDataPtr->healthBoxesData[i].ballAnimActive
+             || gBattleSpritesDataPtr->healthBoxesData[i].waitForCry)
+            {
+                ballActive = TRUE;
+                break;
+            }
+        }
+
+        gBattleSpeedDoubleTickActive = TRUE;
+        if (!ballActive && gBattleMainFunc != HandleTurnActionSelectionState)
+        {
+            for (gActiveBattler = 0; gActiveBattler < gBattlersCount; gActiveBattler++)
+                gBattlerControllerFuncs[gActiveBattler]();
+        }
+        AnimateSprites();
+        BuildOamBuffer();
+        RunTasks();
+        gBattleSpeedDoubleTickActive = FALSE;
+    }
+
     if (JOY_HELD(B_BUTTON) && gBattleTypeFlags & BATTLE_TYPE_RECORDED && RecordedBattle_CanStopPlayback())
     {
         // Player pressed B during recorded battle playback, end battle
@@ -2145,6 +2175,7 @@ static void FreeRestoreBattleData(void)
     gMain.callback1 = gPreBattleCallback1;
     gScanlineEffect.state = 3;
     gMain.inBattle = FALSE;
+    gBattleCaptureSuccessActive = FALSE;
     ZeroEnemyPartyMons();
     m4aSongNumStop(SE_LOW_HEALTH);
     FreeMonSpritesGfx();
@@ -5288,6 +5319,19 @@ static void HandleTurnActionSelectionState(void)
                     gHitMarker |= HITMARKER_RUN;
                     gChosenActionByBattler[gActiveBattler] = B_ACTION_RUN;
                     gBattleCommunication[gActiveBattler] = STATE_WAIT_ACTION_CONFIRMED_STANDBY;
+
+                    // In doubles, also forfeit for the partner so the battle ends immediately
+                    if (gBattleTypeFlags & BATTLE_TYPE_DOUBLE)
+                    {
+                        u8 partner = GetBattlerAtPosition(BATTLE_PARTNER(GetBattlerPosition(gActiveBattler)));
+                        gChosenActionByBattler[partner] = B_ACTION_RUN;
+                        gBattleCommunication[partner] = STATE_WAIT_ACTION_CONFIRMED;
+
+                        // Skip opponent AI and go straight to turn execution
+                        gBattlerAttacker = gActiveBattler;
+                        gBattleOutcome = B_OUTCOME_FORFEITED;
+                        gBattleMainFunc = HandleEndTurn_RanFromBattle;
+                    }
                 }
                 else
                 {
