@@ -852,9 +852,6 @@ bool8 SweetScentWildEncounter(void)
         else if (gSaveBlock1Ptr->tx_Features_ShinyChance == 4)
             shinyThreshold = 128;
 
-        MgbaPrintf(MGBA_LOG_WARN, "[SweetScent] chain=%d shinyChance=%d threshold=%d",
-                   gSweetScentChainStreak, gSaveBlock1Ptr->tx_Features_ShinyChance, shinyThreshold);
-
         if (shinyValue >= shinyThreshold) // not already shiny
         {
             u32 rolls = 0;
@@ -882,11 +879,6 @@ bool8 SweetScentWildEncounter(void)
                 }
             }
         }
-    }
-    else
-    {
-        MgbaPrintf(MGBA_LOG_WARN, "[SweetScent] chain=0 (starting new chain) shinyChance=%d",
-                   gSaveBlock1Ptr->tx_Features_ShinyChance);
     }
 
     // Increment chain
