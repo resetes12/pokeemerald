@@ -133,9 +133,9 @@ char *new_file_extension(char *filename, char *ext)
 	char *new_filename = malloc(length + 1 + strlen(ext) + 1);
 	if (new_filename)
 	{
-		strcpy(new_filename, filename);
+		memcpy(new_filename, filename, length);
 		new_filename[length] = '.';
-		strcpy(new_filename + length + 1, ext);
+		memcpy(new_filename + length + 1, ext, strlen(ext) + 1);
 	}
 	return new_filename;
 }
@@ -301,7 +301,7 @@ void read_aif(struct Bytes *aif, AifData *aif_data)
 			unsigned long num_samples = chunk_size - 8;
 			if (aif_data->sample_size == 8)
 			{
-				uint8_t *sample_data = (uint8_t *)malloc(num_samples * sizeof(uint8_t));
+				uint8_t *sample_data = (uint8_t *)calloc(num_samples, sizeof(uint8_t));
 				memcpy(sample_data, &aif->data[pos], num_samples);
 
 				aif_data->samples8 = sample_data;
@@ -309,8 +309,8 @@ void read_aif(struct Bytes *aif, AifData *aif_data)
 			}
 			else
 			{
-				uint16_t *sample_data = (uint16_t *)malloc(num_samples * sizeof(uint16_t));
-				uint16_t *sample_data_swapped = (uint16_t *)malloc(num_samples * sizeof(uint16_t));
+				uint16_t *sample_data = (uint16_t *)calloc(num_samples, sizeof(uint16_t));
+				uint16_t *sample_data_swapped = (uint16_t *)calloc(num_samples, sizeof(uint16_t));
 				memcpy(sample_data, &aif->data[pos], num_samples);
 				for (long unsigned i = 0; i < num_samples; i++)
 				{
@@ -578,7 +578,7 @@ void aif2pcm(const char *aif_filename, const char *pcm_filename, bool compress)
 	if (aif_data.sample_size == 16)
 	{
 		aif_data.real_num_samples /= 2;
-		uint8_t *converted_samples = malloc(aif_data.real_num_samples * sizeof(uint8_t));
+		uint8_t *converted_samples = calloc(aif_data.real_num_samples, sizeof(uint8_t));
 		for (unsigned long i = 0; i < aif_data.real_num_samples; i++)
 		{
 			converted_samples[i] = aif_data.samples16[i] >> 8;
