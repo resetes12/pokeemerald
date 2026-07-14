@@ -2704,7 +2704,7 @@ static bool8 ShouldDoSlideInAnim(void) {
         BATTLE_TYPE_INGAME_PARTNER | BATTLE_TYPE_RECORDED | BATTLE_TYPE_TRAINER_HILL)
     )
         return FALSE;
-    if (GetFirstLiveMon() != &gPlayerParty[gBattlerPartyIndexes[gActiveBattler]])
+    if (GetDesignatedFollowerMon() != &gPlayerParty[gBattlerPartyIndexes[gActiveBattler]])
         return FALSE;
     return TRUE;
 }
