@@ -3284,6 +3284,15 @@ static void SwitchPartyMon(void)
         gSaveBlock1Ptr->designatedFollower = gPartyMenu.slotId2 + 1;
     else if (gSaveBlock1Ptr->designatedFollower == gPartyMenu.slotId2 + 1)
         gSaveBlock1Ptr->designatedFollower = gPartyMenu.slotId + 1;
+
+    // Track surf mon slot through party swaps
+    {
+        u16 surfSlot = VarGet(VAR_SURF_MON_SLOT);
+        if (surfSlot == gPartyMenu.slotId)
+            VarSet(VAR_SURF_MON_SLOT, gPartyMenu.slotId2);
+        else if (surfSlot == gPartyMenu.slotId2)
+            VarSet(VAR_SURF_MON_SLOT, gPartyMenu.slotId);
+    }
 }
 
 // Finish switching mons or using Softboiled
