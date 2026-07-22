@@ -2,6 +2,7 @@
 #include "malloc.h"
 #include "battle_anim.h"
 #include "battle_pyramid.h"
+#include "battle_pike.h"
 #include "battle_script_commands.h"
 #include "berry.h"
 #include "debug.h"
@@ -2063,6 +2064,7 @@ struct Pokemon *GetDesignatedFollowerMon(void) {
         u8 df = gSaveBlock1Ptr->designatedFollower;
         if (df != 0 && df <= PARTY_SIZE
             && !InBattlePyramid()
+            && !InBattlePike()
             && GetMonData(&gPlayerParty[df - 1], MON_DATA_SPECIES) != SPECIES_NONE
             && GetMonData(&gPlayerParty[df - 1], MON_DATA_HP) > 0
             && !GetMonData(&gPlayerParty[df - 1], MON_DATA_IS_EGG))
@@ -2259,6 +2261,7 @@ static bool8 GetFollowerInfo(u16 *species, u8 *form, u8 *shiny)
         u8 df = gSaveBlock1Ptr->designatedFollower; // 0 = none, 1-6 = slot+1
         if (df != 0 && df <= PARTY_SIZE
             && !InBattlePyramid()
+            && !InBattlePike()
             && GetMonData(&gPlayerParty[df - 1], MON_DATA_SPECIES) != SPECIES_NONE
             && GetMonData(&gPlayerParty[df - 1], MON_DATA_HP) > 0
             && !GetMonData(&gPlayerParty[df - 1], MON_DATA_IS_EGG))
