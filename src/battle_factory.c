@@ -346,8 +346,8 @@ static void GenerateOpponentMons(void)
         if (j != (int)ARRAY_COUNT(gSaveBlock2Ptr->frontier.rentalMons))
             continue;
 
-        // "High tier" pokemon are only allowed on open level mode
-        if (lvlMode == FRONTIER_LVL_OPEN && monId > FRONTIER_MONS_HIGH_TIER)
+        // "High tier" pokemon are only allowed on hard (open) level mode
+        if (lvlMode == FRONTIER_LVL_50 && monId > FRONTIER_MONS_HIGH_TIER)
             continue;
 
         // Ensure this species hasn't already been chosen for the opponent
@@ -431,10 +431,7 @@ static void SetPlayerAndOpponentParties(void)
             gFacilityTrainerMons = gBattleFrontierMons;
         else if (gSaveBlock2Ptr->optionStyle == 0) //on
             gFacilityTrainerMons = gBattleFrontierMonsSplit;
-        if (gSaveBlock2Ptr->frontier.lvlMode != FRONTIER_LVL_50)
-            monLevel = FRONTIER_MAX_LEVEL_OPEN;
-        else
-            monLevel = FRONTIER_MAX_LEVEL_50;
+        monLevel = GetFrontierEnemyMonLevel(gSaveBlock2Ptr->frontier.lvlMode);
     }
 
     if (gSpecialVar_0x8005 < 2)
@@ -807,7 +804,7 @@ void FillFactoryBrainParty(void)
 
         if (gFacilityTrainerMons[monId].species == SPECIES_UNOWN)
             continue;
-        if (lvlMode == FRONTIER_LVL_OPEN && monId > FRONTIER_MONS_HIGH_TIER)
+        if (lvlMode == FRONTIER_LVL_50 && monId > FRONTIER_MONS_HIGH_TIER)
             continue;
 
         for (j = 0; j < (int)ARRAY_COUNT(gSaveBlock2Ptr->frontier.rentalMons); j++)

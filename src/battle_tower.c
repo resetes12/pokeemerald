@@ -1823,9 +1823,8 @@ static void FillTrainerParty(u16 trainerId, u8 firstMonId, u8 monCount)
     {
         u16 monId = monSet[Random() % bfMonCount];
 
-        // "High tier" Pokémon are only allowed on open level mode
-        // 20 is not a possible value for level here
-        if (lvlMode == FRONTIER_LVL_OPEN && monId > FRONTIER_MONS_HIGH_TIER)
+        // "High tier" Pokémon are only allowed on hard (open) level mode
+        if (lvlMode == FRONTIER_LVL_50 && monId > FRONTIER_MONS_HIGH_TIER)
             continue;
 
         // Ensure this Pokémon species isn't a duplicate.
@@ -1946,7 +1945,7 @@ u16 GetRandomFrontierMonFromSet(u16 trainerId)
         // "High tier" Pokémon are only allowed on open level mode
         // 20 is not a possible value for level here
         monId = monSet[Random() % numMons];
-    } while(lvlMode == FRONTIER_LVL_OPEN && monId > FRONTIER_MONS_HIGH_TIER);
+    } while(lvlMode == FRONTIER_LVL_50 && monId > FRONTIER_MONS_HIGH_TIER);
 
     return monId;
 }
