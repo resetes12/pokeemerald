@@ -145,6 +145,7 @@ Challenges page:
 * IV Maximizer is available in Lylicove, after beating the game, with the option to set IVs to 30 or 31 to allow different Hidden Potentials. Needs a level 100 Pokémon.
 * A nurse NPC is available after beating the game to farm EXP. in Lilycove.
 * New battle backgrounds, completely optional, in the options menu.
+* x2 battles! Enable "Anim Speed" option in the options menu.
 * Faster battle intros. Enable "Fast Intros" option in the options menu.
 * Faster-paced battles. Enable "Fast Battles" option in the options menu.
 * Win streaks in the Battle Frontier multiply the amount of Battle Points obtained even more.
@@ -178,6 +179,7 @@ Challenges page:
 * The time on the clock can be changed by pressing R, and time events should work. Can be also changed the official way by pressing R+B+LEFT on the main menu.
 * Three pages with additional options in the options menu.
 * New friendship and shiny indicator in the Summary Page of every Pokémon (ported from Heart and Soul)
+* The Pokédex now registers Shiny Pokémon, which can be seen pressing the A button.
 * Debug menu can be enabled by everybody, so you can cheat or modify whatever you want. **BE MINDFUL THAT IT CAN BREAK YOUR SAVE IF USED INCORRECTLY!** Refer to the Faq to learn how.
 
 
@@ -215,6 +217,7 @@ Challenges page:
 * Trainer Hill rewards have been greatly improved: You'll always get 20BP for each win and, if you finish within 10min or less, you can obtain Gamecube exclusive berries (Ganlon, Petaya, Salac & Apicot Berry) and up to 1.000.000$ (scales with time spent during the Trainer Hill challenge). 
 * Match and Acro Bike are now one. Change between them by pressing "R".
 * Easier fishing has been added to the options menu (FR/LG fishing).
+* Chain fishing AND Sweet Scent chaining!
 * All tickets are available to buy in the Battle Frontier.
 * Faster nurse Joy healing, and now with an even faster version in the options menu (with a confirmation sound).
 * A new item, the Big Nugget! It can be sold for a very high price. Available from Clamperl or Rich trainers (rematch only).
@@ -256,3 +259,19 @@ Decompilation hack-roms may crash or have strange bugs if you are using other em
 
 **Help! PkHex / PKSM / Similar tools or apps can't open the savefile!**
 These programs rely on knowing where to find the data on the savefile, and Modern Emerald has modified certain parts of the savedata which makes it incompatible with these apps or tools. Use the debug menu to cheat, as it provides the same options, mostly.
+
+# 🪪CREDITS
+
+* [https://github.com/pret/pokeemerald] for its base
+* Pret's Wiki Tutorials:
+    - TONS of their tutorials were used!
+* Repos:
+    - HGSS / DPPt / BW music from: 
+        - https://github.com/CyanSMP64/pokeemerald/tree/dppt_hgss_music 
+        - https://github.com/CyanSMP64/pokeemerald/tree/dppt_hgss_bw_music_old
+    -  Day/Night system / Followers:
+        - https://github.com/aarant/pokeemerald/tree/followers-expanded-id
+    - PHY/SP new icons and Stab indicator:
+        - https://github.com/worpbane/pokeemerald-worped/commits/battle-ui-rework/
+    - Many stuff was ported from HnS:
+        - https://github.com/PokemonHnS-Development/pokemonHnS
