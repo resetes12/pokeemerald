@@ -2364,8 +2364,575 @@ $(MID_SUBDIR)/mus_hg_obtain_b_points.s: %.s: %.mid
 $(MID_SUBDIR)/mus_hg_win_minigame.s: %.s: %.mid
 	$(MID) $< $@ -E -R0 -G229 -V091 -p5
 
-$(MID_SUBDIR)/mus_bw_vs_legend.s: %.s: %.mid
-	$(MID) $< $@ -E -R0 -G275 -V090
+$(MID_SUBDIR)/bw_seq_bgm_starting.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V045
+
+$(MID_SUBDIR)/bw_seq_bgm_starting2.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V090
+
+$(MID_SUBDIR)/bw_seq_bgm_e_opening.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V103 -X
+
+$(MID_SUBDIR)/bw_seq_bgm_t_01.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V071
+
+$(MID_SUBDIR)/bw_seq_bgm_vs_rival.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V079
+
+$(MID_SUBDIR)/bw_seq_bgm_e_tsureteke1.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V066
+
+$(MID_SUBDIR)/bw_seq_bgm_e_doctor.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V100
+
+$(MID_SUBDIR)/bw_seq_bgm_labo.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V066
+
+$(MID_SUBDIR)/bw_seq_me_keyitem.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V085 -p5
+
+$(MID_SUBDIR)/bw_seq_bgm_e_friend.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V081
+
+$(MID_SUBDIR)/bw_seq_bgm_r_a.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V063
+
+$(MID_SUBDIR)/bw_seq_bgm_vs_norapoke.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V094
+
+$(MID_SUBDIR)/bw_seq_bgm_win1.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V116
+
+$(MID_SUBDIR)/bw_seq_me_lvup.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V090 -p5
+
+$(MID_SUBDIR)/bw_seq_bgm_t_02.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V060
+
+$(MID_SUBDIR)/bw_seq_bgm_e_tsureteke2.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V066
+
+$(MID_SUBDIR)/bw_seq_bgm_pokecen.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V066
+
+$(MID_SUBDIR)/bw_seq_me_asa.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V070 -p5
+
+$(MID_SUBDIR)/bw_seq_me_hyouka1.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V079 -p5
+
+$(MID_SUBDIR)/bw_seq_bgm_e_sage.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V099
+
+$(MID_SUBDIR)/bw_seq_bgm_r_b_sp.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V082
+
+$(MID_SUBDIR)/bw_seq_bgm_r_b_su.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V082
+
+$(MID_SUBDIR)/bw_seq_bgm_r_b_au.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V082
+
+$(MID_SUBDIR)/bw_seq_bgm_r_b_wi.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V082
+
+$(MID_SUBDIR)/bw_seq_me_call.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V095 -p5
+
+$(MID_SUBDIR)/bw_seq_bgm_eye_01.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V064
+
+$(MID_SUBDIR)/bw_seq_bgm_vs_trainer.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V090
+
+$(MID_SUBDIR)/bw_seq_bgm_win2.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V095
+
+$(MID_SUBDIR)/bw_seq_bgm_eye_02.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V065
+
+$(MID_SUBDIR)/bw_seq_me_item.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V070 -p5
+
+$(MID_SUBDIR)/bw_seq_bgm_c_01.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V064
+
+$(MID_SUBDIR)/bw_seq_me_hyouka2.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V081 -p5
+
+$(MID_SUBDIR)/bw_seq_bgm_d_01.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V093
+
+$(MID_SUBDIR)/bw_seq_bgm_d_01_b1f.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V093
+
+$(MID_SUBDIR)/bw_seq_bgm_e_plasma.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V073
+
+$(MID_SUBDIR)/bw_seq_bgm_vs_plasma.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V120
+
+$(MID_SUBDIR)/bw_seq_bgm_win6.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G277 -V079
+
+$(MID_SUBDIR)/bw_seq_bgm_shinka.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V068
+
+$(MID_SUBDIR)/bw_seq_bgm_koukan.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V076
+
+$(MID_SUBDIR)/bw_seq_me_shinkaome.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V072 -p5
+
+$(MID_SUBDIR)/bw_seq_bgm_eye_03.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V067
+
+$(MID_SUBDIR)/bw_seq_bgm_e_rival.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V059
+
+$(MID_SUBDIR)/bw_seq_bgm_e_trouble.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V092
+
+$(MID_SUBDIR)/bw_seq_bgm_c_02.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V070
+
+$(MID_SUBDIR)/bw_seq_me_hyouka3.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V070 -p5
+
+$(MID_SUBDIR)/bw_seq_bgm_gym.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V056
+
+$(MID_SUBDIR)/bw_seq_bgm_vs_gymleader.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V106
+
+$(MID_SUBDIR)/bw_seq_bgm_battlesuperior.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V090
+
+$(MID_SUBDIR)/bw_seq_bgm_win3.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V096
+
+$(MID_SUBDIR)/bw_seq_me_badge.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V081 -p5
+
+$(MID_SUBDIR)/bw_seq_me_waza.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V093 -p5
+
+$(MID_SUBDIR)/bw_seq_bgm_gate.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V079
+
+$(MID_SUBDIR)/bw_seq_bgm_h_01.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V106
+
+$(MID_SUBDIR)/bw_seq_bgm_c_03.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V064
+
+$(MID_SUBDIR)/bw_seq_bgm_eye_12.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V073
+
+$(MID_SUBDIR)/bw_seq_bgm_r_c_sp.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V086
+
+$(MID_SUBDIR)/bw_seq_bgm_r_c_su.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V086
+
+$(MID_SUBDIR)/bw_seq_bgm_r_c_au.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V086
+
+$(MID_SUBDIR)/bw_seq_bgm_r_c_wi.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V086
+
+$(MID_SUBDIR)/bw_seq_bgm_eye_11.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V080
+
+$(MID_SUBDIR)/bw_seq_bgm_c_04.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V073
+
+$(MID_SUBDIR)/bw_seq_bgm_e_support.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V052
+
+$(MID_SUBDIR)/bw_seq_bgm_e_emotion.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V090
+
+$(MID_SUBDIR)/bw_seq_bgm_e_n.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V078
+
+$(MID_SUBDIR)/bw_seq_bgm_vs_n.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V126
+
+$(MID_SUBDIR)/bw_seq_bgm_battlepinch.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V086 -p1
+
+$(MID_SUBDIR)/bw_seq_bgm_bicycle.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V082
+
+$(MID_SUBDIR)/bw_seq_bgm_e_champion.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V068
+
+$(MID_SUBDIR)/bw_seq_bgm_h_02.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V124
+
+$(MID_SUBDIR)/bw_seq_bgm_c_05.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V076
+
+$(MID_SUBDIR)/bw_seq_bgm_d_03.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V057
+
+$(MID_SUBDIR)/bw_seq_bgm_r_d_sp.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V076
+
+$(MID_SUBDIR)/bw_seq_bgm_r_d_su.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V076
+
+$(MID_SUBDIR)/bw_seq_bgm_r_d_au.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V076
+
+$(MID_SUBDIR)/bw_seq_bgm_r_d_wi.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V076
+
+$(MID_SUBDIR)/bw_seq_bgm_eye_06.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V050
+
+$(MID_SUBDIR)/bw_seq_bgm_eye_09.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V059
+
+$(MID_SUBDIR)/bw_seq_bgm_d_02.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V107
+
+$(MID_SUBDIR)/bw_seq_bgm_d_02_b1f.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V107
+
+$(MID_SUBDIR)/bw_seq_bgm_d_02_b2f.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V107
+
+$(MID_SUBDIR)/bw_seq_bgm_c_06.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V089
+
+$(MID_SUBDIR)/bw_seq_bgm_e_doctor2.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V083
+
+$(MID_SUBDIR)/bw_seq_me_hyouka4.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V082 -p5
+
+$(MID_SUBDIR)/bw_seq_me_wasure.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V115 -p5
+
+$(MID_SUBDIR)/bw_seq_bgm_eye_08.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V086
+
+$(MID_SUBDIR)/bw_seq_bgm_c_07.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V064
+
+$(MID_SUBDIR)/bw_seq_bgm_d_05.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V089
+
+$(MID_SUBDIR)/bw_seq_bgm_eye_plasma.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V088
+
+$(MID_SUBDIR)/bw_seq_bgm_d_07.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V094
+
+$(MID_SUBDIR)/bw_seq_bgm_d_04.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V074
+
+$(MID_SUBDIR)/bw_seq_me_item_mystery.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V088 -p5
+
+$(MID_SUBDIR)/bw_seq_bgm_h_03.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V060
+
+$(MID_SUBDIR)/bw_seq_bgm_fs.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V088
+
+$(MID_SUBDIR)/bw_seq_bgm_eye_05.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V056
+
+$(MID_SUBDIR)/bw_seq_bgm_c_08_b.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V058
+
+$(MID_SUBDIR)/bw_seq_bgm_c_08_w.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V080 -X
+
+$(MID_SUBDIR)/bw_seq_bgm_r_f.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V094
+
+$(MID_SUBDIR)/bw_seq_bgm_d_champroad.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V098
+
+$(MID_SUBDIR)/bw_seq_bgm_eye_04.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V061
+
+$(MID_SUBDIR)/bw_seq_bgm_pokemon_league.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V092
+
+$(MID_SUBDIR)/bw_seq_bgm_vs_shitenno.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V090
+
+$(MID_SUBDIR)/bw_seq_bgm_e_n_castle.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V117
+
+$(MID_SUBDIR)/bw_seq_bgm_n_castle_bridge.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V110
+
+$(MID_SUBDIR)/bw_seq_bgm_n_castle.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V110
+
+$(MID_SUBDIR)/bw_seq_bgm_n_room.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V089
+
+$(MID_SUBDIR)/bw_seq_bgm_e_legend_come.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V111
+
+$(MID_SUBDIR)/bw_seq_bgm_e_legend_born.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V118
+
+$(MID_SUBDIR)/bw_seq_bgm_vs_shin.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V091 -X
+
+$(MID_SUBDIR)/bw_seq_bgm_vs_n_2.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V105
+
+$(MID_SUBDIR)/bw_seq_bgm_e_g_cis.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V088
+
+$(MID_SUBDIR)/bw_seq_bgm_vs_g_cis.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V126
+
+$(MID_SUBDIR)/bw_seq_bgm_e_last.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V111 -X
+
+$(MID_SUBDIR)/bw_seq_bgm_ending.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V106
+
+$(MID_SUBDIR)/bw_seq_bgm_e_handsome.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V078
+
+$(MID_SUBDIR)/bw_seq_me_tamago_get.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V072 -p5
+
+$(MID_SUBDIR)/bw_seq_bgm_pleasure_boat.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V078
+
+$(MID_SUBDIR)/bw_seq_bgm_wifi_access.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V065
+
+$(MID_SUBDIR)/bw_seq_bgm_glterminal.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V094
+
+$(MID_SUBDIR)/bw_seq_bgm_gts.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V100
+
+$(MID_SUBDIR)/bw_seq_bgm_guruguru.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V061
+
+$(MID_SUBDIR)/bw_seq_bgm_united_nations.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V074
+
+$(MID_SUBDIR)/bw_seq_me_hyouka5.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V076 -p5
+
+$(MID_SUBDIR)/bw_seq_bgm_gear_station.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V057
+
+$(MID_SUBDIR)/bw_seq_bgm_battle_subway.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V071
+
+$(MID_SUBDIR)/bw_seq_bgm_vs_subway_trainer.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V112
+
+$(MID_SUBDIR)/bw_seq_me_bpget.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V081 -p5
+
+$(MID_SUBDIR)/bw_seq_bgm_msl_field.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V113
+
+$(MID_SUBDIR)/bw_seq_me_acce.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V063 -p5
+
+$(MID_SUBDIR)/bw_seq_bgm_msl_dressup.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V074
+
+$(MID_SUBDIR)/bw_seq_bgm_msl_before.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V072
+
+$(MID_SUBDIR)/bw_seq_bgm_msl_01.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G277 -V074
+
+$(MID_SUBDIR)/bw_seq_bgm_msl_02.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V084
+
+$(MID_SUBDIR)/bw_seq_bgm_msl_03.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V079
+
+$(MID_SUBDIR)/bw_seq_bgm_msl_04.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V074
+
+$(MID_SUBDIR)/bw_seq_bgm_msl_dl_munna.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G278 -V080
+
+$(MID_SUBDIR)/bw_seq_bgm_msl_dl_smash.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G278 -V080
+
+$(MID_SUBDIR)/bw_seq_bgm_msl_dl_festa.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G278 -V080
+
+$(MID_SUBDIR)/bw_seq_bgm_msl_dl_relic.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G278 -V080
+
+$(MID_SUBDIR)/bw_seq_bgm_msl_dl_runpa.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G278 -V080
+
+$(MID_SUBDIR)/bw_seq_bgm_e_kanransya.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V063
+
+$(MID_SUBDIR)/bw_seq_me_aishou_kidou.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G277 -V110 -p5
+
+$(MID_SUBDIR)/bw_seq_me_aishou_h.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G277 -V066 -p5
+
+$(MID_SUBDIR)/bw_seq_me_aishou_m.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G277 -V066 -p5
+
+$(MID_SUBDIR)/bw_seq_me_aishou_l.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G277 -V066 -p5
+
+$(MID_SUBDIR)/bw_seq_bgm_vs_movepoke.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V106
+
+$(MID_SUBDIR)/bw_seq_bgm_t_03.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V082
+
+$(MID_SUBDIR)/bw_seq_bgm_h_05.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V089
+
+$(MID_SUBDIR)/bw_seq_bgm_r_e_sp.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V071
+
+$(MID_SUBDIR)/bw_seq_bgm_r_e_su.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V071
+
+$(MID_SUBDIR)/bw_seq_bgm_r_e_au.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V071
+
+$(MID_SUBDIR)/bw_seq_bgm_r_e_wi.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V071
+
+$(MID_SUBDIR)/bw_seq_bgm_eye_07.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V108
+
+$(MID_SUBDIR)/bw_seq_bgm_palpark.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V077
+
+$(MID_SUBDIR)/bw_seq_bgm_palpark_box.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V085
+
+$(MID_SUBDIR)/bw_seq_bgm_palpark_game.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V073
+
+$(MID_SUBDIR)/bw_seq_bgm_eye_10.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V058
+
+$(MID_SUBDIR)/bw_seq_bgm_c_10_b.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V076
+
+$(MID_SUBDIR)/bw_seq_bgm_c_10_w.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V098
+
+$(MID_SUBDIR)/bw_seq_bgm_game_sync.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V086
+
+$(MID_SUBDIR)/bw_seq_bgm_palace.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V078
+
+$(MID_SUBDIR)/bw_seq_me_mission_start.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V112 -p5
+
+$(MID_SUBDIR)/bw_seq_bgm_palace2.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V094
+
+$(MID_SUBDIR)/bw_seq_me_mission_clear.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V105 -p5
+
+$(MID_SUBDIR)/bw_seq_me_mission_failed.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V118 -p5
+
+$(MID_SUBDIR)/bw_seq_bgm_eye_13.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V096
+
+$(MID_SUBDIR)/bw_seq_bgm_t_05_sp.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V077
+
+$(MID_SUBDIR)/bw_seq_bgm_t_05_su.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V094
+
+$(MID_SUBDIR)/bw_seq_bgm_e_shirona.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V056
+
+$(MID_SUBDIR)/bw_seq_bgm_vs_shirona.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G279 -V068
+
+$(MID_SUBDIR)/bw_seq_bgm_d_06.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G277 -V062
+
+$(MID_SUBDIR)/bw_seq_bgm_vs_tsuyopoke.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V096
+
+$(MID_SUBDIR)/bw_seq_bgm_naminori.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V068
+
+$(MID_SUBDIR)/bw_seq_bgm_diving.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V084
+
+$(MID_SUBDIR)/bw_seq_bgm_t_04.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V090
+
+$(MID_SUBDIR)/bw_seq_bgm_h_04.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G280 -V090 -X
+
+$(MID_SUBDIR)/bw_seq_bgm_wifi_present.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V052
+
+$(MID_SUBDIR)/bw_seq_bgm_wcs.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V092
+
+$(MID_SUBDIR)/bw_seq_bgm_e_sound_designer.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V064
+
+$(MID_SUBDIR)/bw_seq_bgm_vs_rai.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V091 -X
+
+$(MID_SUBDIR)/bw_seq_me_hyouka6.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V076 -p5
+
+$(MID_SUBDIR)/bw_seq_bgm_vs_champ.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V094
+
+$(MID_SUBDIR)/bw_seq_bgm_win5.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G275 -V090
+
+$(MID_SUBDIR)/bw_seq_bgm_e_dendouiri.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G277 -V074
+
+$(MID_SUBDIR)/bw_seq_bgm_e_inishie.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V089
+
+$(MID_SUBDIR)/bw_seq_bgm_vs_wcs.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V092
+
+$(MID_SUBDIR)/bw_seq_me_kinomi.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V091 -p5
+
+$(MID_SUBDIR)/bw_seq_bgm_gf_logo.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G278 -V070
+
+$(MID_SUBDIR)/bw_seq_bgm_title.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V092
+
+$(MID_SUBDIR)/bw_seq_bgm_title01.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G274 -V093
+
+$(MID_SUBDIR)/bw_seq_bgm_pokemon_theme.s: %.s: %.mid
+	$(MID) $< $@ -E -R5 -G276 -V106
 
 $(MID_SUBDIR)/mus_bw_vs_iris.s: %.s: %.mid
-	$(MID) $< $@ -E -R0 -G274 -V090
+	$(MID) $< $@ -E -R5 -G333 -V090

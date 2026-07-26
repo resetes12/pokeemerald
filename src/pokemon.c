@@ -10504,10 +10504,10 @@ u16 GetBattleBGM(void)
         {
         case SPECIES_LATIOS:
         case SPECIES_LATIAS:
-            return MUS_BW_VS_LEGEND;
+            return BW_SEQ_BGM_VS_MOVEPOKE;
         default:
             // Fallback to existing behavior if species couldn't be read.
-            return MUS_BW_VS_LEGEND;
+            return BW_SEQ_BGM_VS_MOVEPOKE;
         }
     }
     else if (gBattleTypeFlags & BATTLE_TYPE_TRAINER)
