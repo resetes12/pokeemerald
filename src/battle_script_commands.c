@@ -3951,12 +3951,16 @@ static void Cmd_getexp(void)
                     PlayBGM(MUS_DP_VICTORY_WILD); 
                 else if((gSaveBlock2Ptr->optionsWildBattleMusic == 3) || (gSaveBlock2Ptr->optionsWildBattleMusic == 4))
                     PlayBGM(MUS_HG_VICTORY_WILD); 
-                else if (gSaveBlock2Ptr->optionsWildBattleMusic == 5)
+                else if(gSaveBlock2Ptr->optionsWildBattleMusic == 5)
+                    PlayBGM(BW_SEQ_BGM_WIN1);
+                else if (gSaveBlock2Ptr->optionsWildBattleMusic == 6)
                 {
-                    if((Random() % 3) == 1)
+                    if((Random() % 4) == 1)
                         PlayBGM(MUS_DP_VICTORY_WILD); 
-                    else if((Random() % 3) == 2)
-                        PlayBGM(MUS_HG_VICTORY_WILD); 
+                    else if((Random() % 4) == 2)
+                        PlayBGM(MUS_HG_VICTORY_WILD);
+                    else if((Random() % 4) == 3)
+                        PlayBGM(BW_SEQ_BGM_WIN1); 
                     else
                         PlayBGM(MUS_VICTORY_WILD); 
                 }

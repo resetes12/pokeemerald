@@ -181,7 +181,7 @@ static int XOptions_ProcessInput(int x, int selection);
 static int ProcessInput_Options_Two(int selection);
 static int ProcessInput_Options_Three(int selection);
 static int ProcessInput_Options_Four(int selection);
-static int ProcessInput_Options_Six(int selection);
+static int ProcessInput_Options_Seven(int selection);
 static int ProcessInput_Options_Eleven(int selection);
 static int ProcessInput_Sound(int selection);
 static int ProcessInput_FrameType(int selection);
@@ -193,7 +193,7 @@ static u8 MenuItemCount(void);
 static void DrawDescriptionText(void);
 static void DrawOptionMenuChoice(const u8 *text, u8 x, u8 y, u8 style, bool8 active);
 static void DrawChoices_Options_Four(const u8 *const *const strings, int selection, int y, bool8 active);
-static void DrawChoices_Options_Six(const u8 *const *const strings, int selection, int y, bool8 active);
+static void DrawChoices_Options_Seven(const u8 *const *const strings, int selection, int y, bool8 active);
 static void ReDrawAll(void);
 static void DrawChoices_TextSpeed(int selection, int y);
 static void DrawChoices_Difficulty(int selection, int y);
@@ -313,9 +313,9 @@ struct // MENU_SOUND
     [MENUITEM_SOUND_MUSIC]                         = {DrawChoices_Music,                                 ProcessInput_Options_Two},
     [MENUITEM_SOUND_BIKE_MUSIC]                    = {DrawChoices_BikeMusic,                             ProcessInput_Options_Two},
     [MENUITEM_SOUND_SURF_MUSIC]                    = {DrawChoices_SurfMusic,                             ProcessInput_Options_Two},
-    [MENUITEM_SOUND_WILD_MON_MUSIC]                = {DrawChoices_Wild_Battle_Music,                     ProcessInput_Options_Six},
-    [MENUITEM_SOUND_BATTLE_TRAINER_MUSIC]          = {DrawChoices_Trainer_Battle_Music,                  ProcessInput_Options_Six},
-    [MENUITEM_SOUND_BATTLE_FRONTIER_TRAINER_MUSIC] = {DrawChoices_Frontier_Trainer_Battle_Music,         ProcessInput_Options_Six},
+    [MENUITEM_SOUND_WILD_MON_MUSIC]                = {DrawChoices_Wild_Battle_Music,                     ProcessInput_Options_Seven},
+    [MENUITEM_SOUND_BATTLE_TRAINER_MUSIC]          = {DrawChoices_Trainer_Battle_Music,                  ProcessInput_Options_Seven},
+    [MENUITEM_SOUND_BATTLE_FRONTIER_TRAINER_MUSIC] = {DrawChoices_Frontier_Trainer_Battle_Music,         ProcessInput_Options_Seven},
     [MENUITEM_SOUND_EFFECTS]                       = {DrawChoices_Sound_Effects,                         ProcessInput_Options_Three},
 };
 
@@ -583,16 +583,17 @@ static const u8 sText_Desc_WildMonMusic_Random[]             = _("Randomizes mus
 static const u8 sText_Desc_SoundEffects_Gen3[]               = _("Default sound effects from Gen III.");
 static const u8 sText_Desc_SoundEffects_DP[]                 = _("Sound effects from Diamond, Pearl\nand Platinum.");
 static const u8 sText_Desc_SoundEffects_HGSS[]               = _("Sound effects from {COLOR 5}{COLOR 6}Heart Gold{COLOR 2} and\n{COLOR 3}{COLOR 4}Soul Silver{COLOR 2}.");
+static const u8 sText_Desc_WildMonMusic_BW[]                 = _("Music from Black and White.");
 
-static const u8 *const sOptionMenuItemDescriptionsSound[MENUITEM_SOUND_COUNT][6] =
+static const u8 *const sOptionMenuItemDescriptionsSound[MENUITEM_SOUND_COUNT][7] =
 {
     [MENUITEM_SOUND_SOUND]          = {sText_Desc_SoundMono,              sText_Desc_SoundStereo,                 sText_Empty,                         sText_Empty,                       sText_Empty,                           sText_Empty},
     [MENUITEM_SOUND_MUSIC]          = {sText_Desc_Music_On,               sText_Desc_Music_Off,                   sText_Empty,                         sText_Empty,                       sText_Empty,                           sText_Empty},
     [MENUITEM_SOUND_BIKE_MUSIC]     = {sText_Desc_BikeMusicOn,            sText_Desc_BikeMusicOff,                sText_Empty,                         sText_Empty,                       sText_Empty,                           sText_Empty},
     [MENUITEM_SOUND_SURF_MUSIC]     = {sText_Desc_SurfMusicOn,            sText_Desc_SurfMusicOff,                sText_Empty,                         sText_Empty,                       sText_Empty,                           sText_Empty},
-    [MENUITEM_SOUND_WILD_MON_MUSIC] = {sText_Desc_WildMonMusic_Hoenn,     sText_Desc_WildMonMusic_Kanto_Old,      sText_Desc_WildMonMusic_Sinnoh,      sText_Desc_WildMonMusic_Johto,     sText_Desc_WildMonMusic_Kanto_New,     sText_Desc_WildMonMusic_Random},
-    [MENUITEM_SOUND_BATTLE_TRAINER_MUSIC] = {sText_Desc_WildMonMusic_Hoenn,     sText_Desc_WildMonMusic_Kanto_Old,      sText_Desc_WildMonMusic_Sinnoh,      sText_Desc_WildMonMusic_Johto,     sText_Desc_WildMonMusic_Kanto_New,     sText_Desc_WildMonMusic_Random},
-    [MENUITEM_SOUND_BATTLE_FRONTIER_TRAINER_MUSIC] = {sText_Desc_WildMonMusic_Hoenn,     sText_Desc_WildMonMusic_Kanto_Old,      sText_Desc_WildMonMusic_Sinnoh,      sText_Desc_WildMonMusic_Johto,     sText_Desc_WildMonMusic_Kanto_New,     sText_Desc_WildMonMusic_Random},
+    [MENUITEM_SOUND_WILD_MON_MUSIC] = {sText_Desc_WildMonMusic_Hoenn,     sText_Desc_WildMonMusic_Kanto_Old,      sText_Desc_WildMonMusic_Sinnoh,      sText_Desc_WildMonMusic_Johto,     sText_Desc_WildMonMusic_Kanto_New,     sText_Desc_WildMonMusic_BW,                  sText_Desc_WildMonMusic_Random},
+    [MENUITEM_SOUND_BATTLE_TRAINER_MUSIC] = {sText_Desc_WildMonMusic_Hoenn,     sText_Desc_WildMonMusic_Kanto_Old,      sText_Desc_WildMonMusic_Sinnoh,      sText_Desc_WildMonMusic_Johto,     sText_Desc_WildMonMusic_Kanto_New,     sText_Desc_WildMonMusic_BW,            sText_Desc_WildMonMusic_Random},
+    [MENUITEM_SOUND_BATTLE_FRONTIER_TRAINER_MUSIC] = {sText_Desc_WildMonMusic_Hoenn,     sText_Desc_WildMonMusic_Kanto_Old,      sText_Desc_WildMonMusic_Sinnoh,      sText_Desc_WildMonMusic_Johto,     sText_Desc_WildMonMusic_Kanto_New,     sText_Desc_WildMonMusic_BW,   sText_Desc_WildMonMusic_Random},
     [MENUITEM_SOUND_EFFECTS]        = {sText_Desc_SoundEffects_Gen3,     sText_Desc_SoundEffects_DP,      sText_Desc_SoundEffects_HGSS,      sText_Empty,     sText_Empty,     sText_Empty},
 };
 
@@ -1284,9 +1285,9 @@ static int ProcessInput_Options_Four(int selection)
     return XOptions_ProcessInput(4, selection);
 }
 
-static int ProcessInput_Options_Six(int selection)
+static int ProcessInput_Options_Seven(int selection)
 {
-    return XOptions_ProcessInput(6, selection);
+    return XOptions_ProcessInput(7, selection);
 }
 
 static int ProcessInput_Options_Eleven(int selection)
@@ -1400,7 +1401,7 @@ static void DrawChoices_Options_Four(const u8 *const *const strings, int selecti
     DrawOptionMenuChoice(strings[order[2]], GetStringRightAlignXOffset(1, strings[order[2]], 198), y, styles[order[2]], active);
 }
 
-static void DrawChoices_Options_Six(const u8 *const *const strings, int selection, int y, bool8 active)
+static void DrawChoices_Options_Seven(const u8 *const *const strings, int selection, int y, bool8 active)
 {
     static const u8 choiceOrders[][2] =
     {
@@ -1409,9 +1410,10 @@ static void DrawChoices_Options_Six(const u8 *const *const strings, int selectio
         {2, 3},
         {3, 4},
         {4, 5},
-        {5, 0},
+        {5, 6},
+        {6, 0},
     };
-    u8 styles[6] = {0};
+    u8 styles[7] = {0};
     const u8 *order = choiceOrders[selection];
     styles[selection] = 1;
 
@@ -1501,13 +1503,14 @@ static const u8 sText_Sound_WildMon_Kanto_Old[]   = _("Kanto 1");
 static const u8 sText_Sound_WildMon_Sinnoh[]      = _("Sinnoh");
 static const u8 sText_Sound_WildMon_Johto[]       = _("Johto");
 static const u8 sText_Sound_WildMon_Kanto_New[]   = _("Kanto 2");
+static const u8 sText_Sound_WildMon_BW[]          = _("Unova");
 static const u8 sText_Sound_WildMon_Random[]      = _("Random");
 
-static const u8 *const sText_Sound_WildMonBattleMusic_Strings[] = {sText_Sound_WildMon_Hoenn,  sText_Sound_WildMon_Kanto_Old,  sText_Sound_WildMon_Sinnoh,  sText_Sound_WildMon_Johto,  sText_Sound_WildMon_Kanto_New,   sText_Sound_WildMon_Random};
+static const u8 *const sText_Sound_WildMonBattleMusic_Strings[] = {sText_Sound_WildMon_Hoenn,  sText_Sound_WildMon_Kanto_Old,  sText_Sound_WildMon_Sinnoh,  sText_Sound_WildMon_Johto,  sText_Sound_WildMon_Kanto_New,   sText_Sound_WildMon_BW,  sText_Sound_WildMon_Random};
 static void DrawChoices_Wild_Battle_Music(int selection, int y)
 {
     bool8 active = CheckConditions(MENUITEM_SOUND_WILD_MON_MUSIC);
-    DrawChoices_Options_Six(sText_Sound_WildMonBattleMusic_Strings, selection, y, active);
+    DrawChoices_Options_Seven(sText_Sound_WildMonBattleMusic_Strings, selection, y, active);
 
     if (selection == 0)
     {
@@ -1529,16 +1532,20 @@ static void DrawChoices_Wild_Battle_Music(int selection, int y)
     {
         gSaveBlock2Ptr->optionsWildBattleMusic = 4; // Kanto 2
     }
-    else //(selection == 5)
+    else if (selection == 5)
     {
-        gSaveBlock2Ptr->optionsWildBattleMusic = 5; // Random
+        gSaveBlock2Ptr->optionsWildBattleMusic = 5; // Unova
+    }
+    else
+    {
+        gSaveBlock2Ptr->optionsWildBattleMusic = 6; // Random
     }
 }
 
 static void DrawChoices_Trainer_Battle_Music(int selection, int y)
 {
     bool8 active = CheckConditions(MENUITEM_SOUND_BATTLE_TRAINER_MUSIC);
-    DrawChoices_Options_Six(sText_Sound_WildMonBattleMusic_Strings, selection, y, active);
+    DrawChoices_Options_Seven(sText_Sound_WildMonBattleMusic_Strings, selection, y, active);
 
     if (selection == 0)
     {
@@ -1560,16 +1567,20 @@ static void DrawChoices_Trainer_Battle_Music(int selection, int y)
     {
         gSaveBlock2Ptr->optionsTrainerBattleMusic = 4; // Kanto 2
     }
-    else //(selection == 5)
+    else if (selection == 5)
     {
-        gSaveBlock2Ptr->optionsTrainerBattleMusic = 5; // Random
+        gSaveBlock2Ptr->optionsTrainerBattleMusic = 5; // Unova
+    }
+    else
+    {
+        gSaveBlock2Ptr->optionsTrainerBattleMusic = 6; // Random
     }
 }
 
 static void DrawChoices_Frontier_Trainer_Battle_Music(int selection, int y)
 {
     bool8 active = CheckConditions(MENUITEM_SOUND_BATTLE_FRONTIER_TRAINER_MUSIC);
-    DrawChoices_Options_Six(sText_Sound_WildMonBattleMusic_Strings, selection, y, active);
+    DrawChoices_Options_Seven(sText_Sound_WildMonBattleMusic_Strings, selection, y, active);
 
     if (selection == 0)
     {
@@ -1591,9 +1602,13 @@ static void DrawChoices_Frontier_Trainer_Battle_Music(int selection, int y)
     {
         gSaveBlock2Ptr->optionsFrontierTrainerBattleMusic = 4; // Kanto 2
     }
-    else //(selection == 5)
+    else if (selection == 5)
     {
-        gSaveBlock2Ptr->optionsFrontierTrainerBattleMusic = 5; // Random
+        gSaveBlock2Ptr->optionsFrontierTrainerBattleMusic = 5; // Unova
+    }
+    else
+    {
+        gSaveBlock2Ptr->optionsFrontierTrainerBattleMusic = 6; // Random
     }
 }
 

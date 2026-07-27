@@ -10536,11 +10536,15 @@ u16 GetBattleBGM(void)
             else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 4)
                 return MUS_HG_VS_ROCKET;
             else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 5)
+                return BW_SEQ_BGM_VS_G_CIS;
+            else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 6)
             {
-                if((Random() % 3) == 1)
+                if((Random() % 4) == 1)
                     return MUS_DP_VS_GALACTIC_BOSS;
-                else if((Random() % 3) == 2)
+                else if((Random() % 4) == 2)
                     return MUS_HG_VS_ROCKET;
+                else if((Random() % 4) == 3)
+                    return BW_SEQ_BGM_VS_G_CIS;
                 else
                     return MUS_VS_AQUA_MAGMA_LEADER;
             }
@@ -10558,11 +10562,15 @@ u16 GetBattleBGM(void)
             else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 4)
                 return MUS_HG_VS_ROCKET;
             else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 5)
+                return BW_SEQ_BGM_VS_PLASMA;
+            else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 6)
             {
-                if((Random() % 3) == 1)
+                if((Random() % 4) == 1)
                     return MUS_DP_VS_GALACTIC;
-                else if((Random() % 3) == 2)
+                else if((Random() % 4) == 2)
                     return MUS_HG_VS_ROCKET;
+                else if((Random() % 4) == 3)
+                    return BW_SEQ_BGM_VS_PLASMA;
                 else
                     return MUS_VS_AQUA_MAGMA;
             }
@@ -10580,11 +10588,15 @@ u16 GetBattleBGM(void)
             else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 4)
                 return MUS_HG_VS_ROCKET;
             else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 5)
+                return BW_SEQ_BGM_VS_PLASMA;
+            else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 6)
             {
-                if((Random() % 3) == 1)
+                if((Random() % 4) == 1)
                     return MUS_DP_VS_GALACTIC_COMMANDER;
-                else if((Random() % 3) == 2)
+                else if((Random() % 4) == 2)
                     return MUS_HG_VS_ROCKET;
+                else if((Random() % 4) == 3)
+                    return BW_SEQ_BGM_VS_PLASMA;
                 else
                     return MUS_VS_AQUA_MAGMA;
             }
@@ -10601,15 +10613,19 @@ u16 GetBattleBGM(void)
             else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 4)
                 return MUS_HG_VS_GYM_LEADER_KANTO;
             else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 5)
+                return BW_SEQ_BGM_VS_GYMLEADER;
+            else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 6)
             {
-                if((Random() % 5) == 1)
+                if((Random() % 6) == 1)
                     return MUS_RG_VS_GYM_LEADER;
-                else if((Random() % 5) == 2)
+                else if((Random() % 6) == 2)
                     return MUS_DP_VS_GYM_LEADER;
-                else if((Random() % 5) == 3)
+                else if((Random() % 6) == 3)
                     return MUS_HG_VS_GYM_LEADER;
-                else if((Random() % 5) == 4)
+                else if((Random() % 6) == 4)
                     return MUS_HG_VS_GYM_LEADER_KANTO;
+                else if((Random() % 6) == 5)
+                    return BW_SEQ_BGM_VS_GYMLEADER;
                 else
                     return MUS_VS_GYM_LEADER;
             }
@@ -10626,13 +10642,17 @@ u16 GetBattleBGM(void)
             else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 4)
                 return MUS_HG_VS_CHAMPION;
             else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 5)
+                return BW_SEQ_BGM_VS_CHAMP;
+            else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 6)
             {
-                if((Random() % 4) == 1)
+                if((Random() % 5) == 1)
                     return MUS_RG_VS_CHAMPION;
-                else if((Random() % 4) == 2)
+                else if((Random() % 5) == 2)
                     return MUS_DP_VS_CHAMPION;
-                else if((Random() % 4) == 3)
+                else if((Random() % 5) == 3)
                     return MUS_HG_VS_CHAMPION;
+                else if((Random() % 5) == 4)
+                    return BW_SEQ_BGM_VS_CHAMP;
                 else
                     return MUS_VS_CHAMPION;
             }
@@ -10651,11 +10671,15 @@ u16 GetBattleBGM(void)
                 else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 4)
                     return MUS_HG_VS_RIVAL;
                 else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 5)
+                    return BW_SEQ_BGM_VS_RIVAL;
+                else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 6)
                 {
-                    if((Random() % 3) == 1)
+                    if((Random() % 4) == 1)
                         return MUS_DP_VS_RIVAL;
-                    else if((Random() % 3) == 2)
+                    else if((Random() % 4) == 2)
                         return MUS_HG_VS_RIVAL;
+                    else if((Random() % 4) == 3)
+                        return BW_SEQ_BGM_VS_RIVAL;
                     else
                         return MUS_VS_RIVAL;
                 }
@@ -10673,15 +10697,19 @@ u16 GetBattleBGM(void)
             else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 4)
                 return MUS_HG_VS_GYM_LEADER_KANTO;
             else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 5)
+                return BW_SEQ_BGM_VS_SHITENNO;
+            else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 6)
             {
-                if((Random() % 5) == 1)
+                if((Random() % 6) == 1)
                     return MUS_DP_VS_ELITE_FOUR;
-                else if((Random() % 5) == 2)
+                else if((Random() % 6) == 2)
                     return MUS_RG_VS_GYM_LEADER;
-                else if((Random() % 5) == 3)
+                else if((Random() % 6) == 3)
                     return MUS_HG_VS_GYM_LEADER;
-                else if((Random() % 5) == 4)
+                else if((Random() % 6) == 4)
                     return MUS_HG_VS_GYM_LEADER_KANTO;
+                else if((Random() % 6) == 5)
+                    return BW_SEQ_BGM_VS_SHITENNO;
                 else
                     return MUS_VS_ELITE_FOUR;
             }
@@ -10704,11 +10732,22 @@ u16 GetBattleBGM(void)
             else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 4)
                 return MUS_HG_VS_FRONTIER_BRAIN;
             else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 5)
+                {
+                    if((Random() % 2) == 1)
+                        return BW_SEQ_BGM_VS_N;
+                    else
+                        return BW_SEQ_BGM_VS_N_2;
+                }
+            else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 6)
             {
-                if((Random() % 3) == 1)
+                if((Random() % 5) == 1)
                     return MUS_PL_VS_FRONTIER_BRAIN;
-                else if((Random() % 3) == 2)
+                else if((Random() % 5) == 2)
                     return MUS_HG_VS_FRONTIER_BRAIN;
+                else if((Random() % 5) == 3)
+                    return BW_SEQ_BGM_VS_N;
+                else if((Random() % 5) == 4)
+                    return BW_SEQ_BGM_VS_N_2;
                 else
                     return MUS_VS_FRONTIER_BRAIN;
             }
@@ -10727,15 +10766,21 @@ u16 GetBattleBGM(void)
                 else if (gSaveBlock2Ptr->optionsFrontierTrainerBattleMusic == 4)
                     return MUS_HG_VS_TRAINER_KANTO;
                 else if (gSaveBlock2Ptr->optionsFrontierTrainerBattleMusic == 5)
+                    return BW_SEQ_BGM_VS_SUBWAY_TRAINER;
+                else if (gSaveBlock2Ptr->optionsFrontierTrainerBattleMusic == 6)
                 {
-                    if((Random() % 5) == 1)
+                    if((Random() % 7) == 1)
                         return MUS_DP_VS_TRAINER;
-                    else if((Random() % 5) == 2)
+                    else if((Random() % 7) == 2)
                         return MUS_RG_VS_TRAINER;
-                    else if((Random() % 5) == 3)
+                    else if((Random() % 7) == 3)
                         return MUS_HG_VS_TRAINER;
-                    else if((Random() % 5) == 4)
+                    else if((Random() % 7) == 4)
                         return MUS_HG_VS_TRAINER_KANTO;
+                    else if((Random() % 7) == 5)
+                        return BW_SEQ_BGM_VS_SUBWAY_TRAINER;
+                    else if((Random() % 7) == 6)
+                        return BW_SEQ_BGM_VS_TRAINER;
                     else
                         return MUS_VS_TRAINER;
                 }
@@ -10754,15 +10799,19 @@ u16 GetBattleBGM(void)
                 else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 4)
                     return MUS_HG_VS_TRAINER_KANTO;
                 else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 5)
+                    return BW_SEQ_BGM_VS_TRAINER;
+                else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 6)
                 {
-                    if((Random() % 5) == 1)
+                    if((Random() % 6) == 1)
                         return MUS_DP_VS_TRAINER;
-                    else if((Random() % 5) == 2)
+                    else if((Random() % 6) == 2)
                         return MUS_RG_VS_TRAINER;
-                    else if((Random() % 5) == 3)
+                    else if((Random() % 6) == 3)
                         return MUS_HG_VS_TRAINER;
-                    else if((Random() % 5) == 4)
+                    else if((Random() % 6) == 4)
                         return MUS_HG_VS_TRAINER_KANTO;
+                    else if((Random() % 6) == 5)
+                        return BW_SEQ_BGM_VS_TRAINER;
                     else
                         return MUS_VS_TRAINER;
                 }
@@ -10782,15 +10831,19 @@ u16 GetBattleBGM(void)
         else if (gSaveBlock2Ptr->optionsWildBattleMusic == 4)
             return MUS_HG_VS_WILD_KANTO;
         else if (gSaveBlock2Ptr->optionsWildBattleMusic == 5)
+            return BW_SEQ_BGM_VS_NORAPOKE;
+        else if (gSaveBlock2Ptr->optionsWildBattleMusic == 6)
         {
-            if((Random() % 5) == 1)
+            if((Random() % 6) == 1)
                 return MUS_HG_VS_WILD_KANTO;
-            else if((Random() % 5) == 2)
+            else if((Random() % 6) == 2)
                 return MUS_RG_VS_WILD;
-            else if((Random() % 5) == 3)
+            else if((Random() % 6) == 3)
                 return MUS_DP_VS_WILD;
-            else if((Random() % 5) == 4)
+            else if((Random() % 6) == 4)
                 return MUS_HG_VS_WILD;
+            else if((Random() % 6) == 5)
+                return BW_SEQ_BGM_VS_NORAPOKE;
             else
                 return MUS_VS_WILD;
         }
