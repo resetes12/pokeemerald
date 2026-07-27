@@ -635,7 +635,7 @@ LittlerootTown_ProfessorBirchsLab_EventScript_ReceivePokedex::
 	special SetUnlockedPokedexFlags
 	checkrandomizer
 	call_if_eq VAR_RESULT, TRUE, LittlerootTown_ProfessorBirchsLab_EventScript_ReceivePokedexAltered
-	call_if_eq VAR_ENCOUNTER_TABLE, 2, LittlerootTown_ProfessorBirchsLab_EventScript_ReceivePokedexAltered
+	call_if_ge VAR_ENCOUNTER_TABLE, 2, LittlerootTown_ProfessorBirchsLab_EventScript_ReceivePokedexAltered
 	setflag FLAG_RECEIVED_POKEDEX_FROM_BIRCH
 	setvar VAR_CABLE_CLUB_TUTORIAL_STATE, 1
 	return
