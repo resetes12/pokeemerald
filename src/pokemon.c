@@ -10721,24 +10721,24 @@ u16 GetBattleBGM(void)
         case TRAINER_CLASS_FACTORY_HEAD:
         case TRAINER_CLASS_PIKE_QUEEN:
         case TRAINER_CLASS_PYRAMID_KING:
-            if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 0)
+            if (gSaveBlock2Ptr->optionsFrontierTrainerBattleMusic == 0)
                 return MUS_VS_FRONTIER_BRAIN;
-            else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 1)
+            else if (gSaveBlock2Ptr->optionsFrontierTrainerBattleMusic == 1)
                 return MUS_VS_FRONTIER_BRAIN;
-            else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 2)
+            else if (gSaveBlock2Ptr->optionsFrontierTrainerBattleMusic == 2)
                 return MUS_PL_VS_FRONTIER_BRAIN;
-            else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 3)
+            else if (gSaveBlock2Ptr->optionsFrontierTrainerBattleMusic == 3)
                 return MUS_HG_VS_FRONTIER_BRAIN;
-            else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 4)
+            else if (gSaveBlock2Ptr->optionsFrontierTrainerBattleMusic == 4)
                 return MUS_HG_VS_FRONTIER_BRAIN;
-            else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 5)
+            else if (gSaveBlock2Ptr->optionsFrontierTrainerBattleMusic == 5)
                 {
                     if((Random() % 2) == 1)
                         return BW_SEQ_BGM_VS_N;
                     else
                         return BW_SEQ_BGM_VS_N_2;
                 }
-            else if (gSaveBlock2Ptr->optionsTrainerBattleMusic == 6)
+            else if (gSaveBlock2Ptr->optionsFrontierTrainerBattleMusic == 6)
             {
                 if((Random() % 5) == 1)
                     return MUS_PL_VS_FRONTIER_BRAIN;
