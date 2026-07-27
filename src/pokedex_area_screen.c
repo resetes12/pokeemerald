@@ -781,12 +781,12 @@ static void FindMapsWithMon(u16 species)
         // Add regular species to the area map
         {
             u16 slotIndex = 0;
-            // Determine the active encounter slot: 0 = vanilla, 1 = modern.
+            // Determine the active encounter slot: 0 = vanilla, 1 = modern day, 2 = modern night.
             u8 activeSlot;
             if (gSaveBlock1Ptr->tx_Mode_Encounters == 1)
-                activeSlot = 1; // Modern always
+                activeSlot = (sPokedexAreaScreen->areaViewTimeMode == 1) ? 2 : 1; // Modern: night=2, day=1
             else if (gSaveBlock1Ptr->tx_Mode_Encounters == 2 && FlagGet(FLAG_SYS_GAME_CLEAR))
-                activeSlot = 1; // Post-game after champion
+                activeSlot = (sPokedexAreaScreen->areaViewTimeMode == 1) ? 2 : 1; // Post-game: night=2, day=1
             else
                 activeSlot = 0; // Vanilla (mode 0, or mode 2 pre-champion)
 
@@ -794,7 +794,7 @@ static void FindMapsWithMon(u16 species)
             {
                 // Track which time-slot offset we're at within a run of same-map headers.
                 // Consecutive headers sharing mapGroup+mapNum are day/night variants:
-                //   slotIndex 0 = day table, slotIndex 1 = night table.
+                //   slotIndex 0 = vanilla, slotIndex 1 = modern day, slotIndex 2 = modern night.
                 if (i > 0
                     && gWildMonHeaders[i].mapGroup == gWildMonHeaders[i-1].mapGroup
                     && gWildMonHeaders[i].mapNum   == gWildMonHeaders[i-1].mapNum)
@@ -803,14 +803,30 @@ static void FindMapsWithMon(u16 species)
                     slotIndex = 0;
 
                 // Only process the header matching the player's active encounter table.
-                // Single-slot maps (isMultiSlot == false) always pass through.
+                // Single-slot maps always pass through. For multi-slot maps, select
+                // the slot matching activeSlot, falling back to the last available
+                // slot if this map has fewer slots than requested (e.g. no night table).
                 {
                     bool8 isMultiSlot = (slotIndex > 0)
                         || (gWildMonHeaders[i+1].mapGroup != MAP_GROUP(UNDEFINED)
                             && gWildMonHeaders[i].mapGroup == gWildMonHeaders[i+1].mapGroup
                             && gWildMonHeaders[i].mapNum   == gWildMonHeaders[i+1].mapNum);
-                    if (isMultiSlot && slotIndex != activeSlot)
-                        continue;
+                    if (isMultiSlot)
+                    {
+                        // Count total slots for this map from the current position forward
+                        u8 totalSlots = slotIndex + 1;
+                        u16 k;
+                        for (k = i + 1; gWildMonHeaders[k].mapGroup != MAP_GROUP(UNDEFINED)
+                            && gWildMonHeaders[k].mapGroup == gWildMonHeaders[i].mapGroup
+                            && gWildMonHeaders[k].mapNum == gWildMonHeaders[i].mapNum; k++)
+                            totalSlots++;
+                        // Fall back to last slot if activeSlot exceeds what this map has
+                        {
+                            u8 effectiveSlot = (activeSlot >= totalSlots) ? (totalSlots - 1) : activeSlot;
+                            if (slotIndex != effectiveSlot)
+                                continue;
+                        }
+                    }
                 }
 
                 if (MapHasSpecies(&gWildMonHeaders[i], species))
