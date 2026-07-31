@@ -365,6 +365,8 @@ static u16 GetCurrentMapWildMonHeaderId(void)
         if (gWildMonHeaders[i].mapGroup == gSaveBlock1Ptr->location.mapGroup &&
             gWildMonHeaders[i].mapNum == gSaveBlock1Ptr->location.mapNum)
         {
+            u16 originalId = i;
+
             if (VarGet(VAR_ENCOUNTER_TABLE) >= 1 && VarGet(VAR_ENCOUNTER_TABLE) <= 4)
                 i += (VarGet(VAR_ENCOUNTER_TABLE) - 1);
             if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(ALTERING_CAVE) &&
@@ -375,6 +377,15 @@ static u16 GetCurrentMapWildMonHeaderId(void)
                     alteringCaveId = 0;
 
                 i += alteringCaveId;
+            }
+
+            // Prevent night table overshoot: if the offset landed on a different
+            // map's header, fall back to modern day (originalId + 1).
+            if (VarGet(VAR_ENCOUNTER_TABLE) == 3
+                && (gWildMonHeaders[i].mapGroup != gWildMonHeaders[originalId].mapGroup
+                    || gWildMonHeaders[i].mapNum != gWildMonHeaders[originalId].mapNum))
+            {
+                i = originalId + 1;
             }
 
             return i;
