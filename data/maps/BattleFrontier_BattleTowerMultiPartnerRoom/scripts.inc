@@ -1531,7 +1531,7 @@ BattleFrontier_BattleTowerMultiPartnerRoom_Text_CoolTrainerFMon2Ask::
 	.string "How about we become tag partners?$"
 
 BattleFrontier_BattleTowerMultiPartnerRoom_Text_CoolTrainerFAccept::
-	.string "Sounds A-Ok!\n"
+	.string "Sounds A-OK!\n"
 	.string "I'd better do the registration.$"
 
 BattleFrontier_BattleTowerMultiPartnerRoom_Text_CoolTrainerFReject::
