@@ -51,6 +51,10 @@ LilycoveCity_CoveLilyMotel_2F_EventScript_GameBoyKid::
 	msgbox LilycoveCity_CoveLilyMotel_2F_Text_NeverLeaveWithoutGameBoy, MSGBOX_NPC
 	end
 
+LilycoveCity_CoveLilyMotel_2F_EventScript_Restes::
+	msgbox LilycoveCity_CoveLilyMotel_2F_Text_Restes, MSGBOX_NPC
+	end
+
 LilycoveCity_CoveLilyMotel_2F_EventScript_Scott::
 	lock
 	faceplayer
@@ -133,4 +137,16 @@ LilycoveCity_CoveLilyMotel_2F_Text_ContestsDoTakeStrategy:
 	.string "to win a Contest.\p"
 	.string "Devising Contest strategies is one way\n"
 	.string "of becoming a better Trainer, I'd say.$"
+
+LilycoveCity_CoveLilyMotel_2F_Text_Restes::
+	.string "Hi! I'm Resetes12, but you can call\n"
+	.string "me Restes.\p"
+	.string "I'm the creator of Pokémon Modern\n"
+	.string "Emerald. Glad to see you playing!\p"
+	.string "Be sure to check out Pokémon Heart &\n"
+	.string "Soul, which was created using Modern\l"
+	.string "Emerald as its base.\p"
+	.string "I also edited that game and created\n"
+	.string "Pokémon Modern Heart & Soul!\p"
+	.string "I hope you enjoy all three games!$"
 
