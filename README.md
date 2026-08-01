@@ -2,20 +2,19 @@
 
 This is a decompilation of Pokémon Emerald, edited to be "Pokémon Modern Emerald".
 You can get more information about Modern Emerald at [Pokecommunity](https://www.pokecommunity.com/showthread.php?t=494005)
-You can get the hackrom documentation following [this link](https://docs.google.com/spreadsheets/d/1QEFJmFhfaZqgxSUnM7MFpufrnrRk_NMzNoNWl2m3y_0/edit#gid=414283818)
 
 
 # 🦀MODERN EMERALD EXPANDS!
 
 Official releases:
 * [Pokémon Modern Heart and Soul](https://github.com/resetes12/HNS_modern) by myself
-    Experience Johto and Kanto, but now with enhancements, bug fixes, and other stuff.
+    * Experience Johto and Kanto, but now with enhancements, bug fixes, and other stuff.
 * Pokémon Modern FireRed & LeafGreen by myself
-    _Soon_™️. Experience FRLG, but Modernized.
+    * _Soon_™️. Experience FRLG, but Modernized.
 
 Modern Emerald has been used as a base to create other hacks:
 * [Pokémon Heart and Soul](https://github.com/PokemonHnS-Development/pokemonHnS) by @lildill31
-    Experience Johto and Kanto, but for the GBA!
+    * Experience Johto and Kanto, but for the GBA!
 * [Pokémon Emerald Worped](https://github.com/worpbane/pokeemerald-worped/) by @worpbane
 
 Modern Emerald also has some small mods:
