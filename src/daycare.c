@@ -303,6 +303,10 @@ static u8 GetNumLevelsGainedFromSteps(struct DaycareMon *daycareMon)
 
     levelBefore = GetLevelFromBoxMonExp(&daycareMon->mon);
     levelAfter = GetLevelAfterDaycareSteps(&daycareMon->mon, daycareMon->steps);
+
+    if (levelAfter > GetCurrentPartyLevelCap())
+        levelAfter = GetCurrentPartyLevelCap();
+
     return levelAfter - levelBefore;
 }
 
