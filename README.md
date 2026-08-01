@@ -1,15 +1,26 @@
-# Pokémon Modern Emerald
+# POKÉMON MODERN EMERALD
 
 This is a decompilation of Pokémon Emerald, edited to be "Pokémon Modern Emerald".
 You can get more information about Modern Emerald at [Pokecommunity](https://www.pokecommunity.com/showthread.php?t=494005)
 You can get the hackrom documentation following [this link](https://docs.google.com/spreadsheets/d/1QEFJmFhfaZqgxSUnM7MFpufrnrRk_NMzNoNWl2m3y_0/edit#gid=414283818)
 
-# If you want to compile:
 
-Please follow [Pret's guide on how to build the rom](https://github.com/pret/pokeemerald/blob/master/INSTALL.md) but using this branch instead of theirs. 
-When compiling, **use the modern compiler** with the "make modern" command. 
-_Compiling using the old compiler won't work._
-The game was compiled using `(devkitARM release 62) 13.2.0`, but it _should_ work up to `release 65` without any issues. Higher versions may not work, so manual fixes might be required.
+# 🦀MODERN EMERALD EXPANDS!
+
+Official releases:
+* [Pokémon Modern Heart and Soul](https://github.com/resetes12/HNS_modern) by myself
+    Experience Johto and Kanto, but now with enhancements, bug fixes, and other stuff.
+* Pokémon Modern FireRed & LeafGreen by myself
+    _Soon_™️. Experience FRLG, but Modernized.
+
+Modern Emerald has been used as a base to create other hacks:
+* [Pokémon Heart and Soul](https://github.com/PokemonHnS-Development/pokemonHnS) by @lildill31
+    Experience Johto and Kanto, but for the GBA!
+* [Pokémon Emerald Worped](https://github.com/worpbane/pokeemerald-worped/) by @worpbane
+
+Modern Emerald also has some small mods:
+* [Modern Emerald with ORAS Tilset](https://github.com/lbsbezerra/pokeemerald-modern-oras) by @lbsbezerra
+
 
 # 📃 DOCUMENTATION:
 [Documentation can be found online](https://docs.google.com/spreadsheets/d/1QEFJmFhfaZqgxSUnM7MFpufrnrRk_NMzNoNWl2m3y_0/edit?gid=1310408794#gid=1310408794)
@@ -162,6 +173,7 @@ Challenges page:
 * New Pokédex! You can now see important information on the new "Stats" page. It's very, VERY useful, and it's like having the game documentation in-game.
 * The Pokédex can now be scrolled faster: if you hold left or right, it will advance like before, but without the need to keep pressing left and right.
 * The Pokédex can now be scrolled faster than faster! If you hold left or right AND you hold the R button, it will scroll even faster than explained above!
+* The Pokédex now registers Shiny Pokémon, which can be seen pressing the A button.
 * Faster trainer transitions ported from Fire Red.
 * Choose between holding L+R+A or holding B when entering a wild battle to instantly run, or pressing B when the battle has started to run away faster. _(Optional)_.
 * You can now register 2 key items: Pressing (as usual) and holding SELECT!
@@ -179,7 +191,7 @@ Challenges page:
 * The time on the clock can be changed by pressing R, and time events should work. Can be also changed the official way by pressing R+B+LEFT on the main menu.
 * Three pages with additional options in the options menu.
 * New friendship and shiny indicator in the Summary Page of every Pokémon (ported from Heart and Soul)
-* The Pokédex now registers Shiny Pokémon, which can be seen pressing the A button.
+* Press SELECT while teaching a move to show your Pokémon Stats.
 * Debug menu can be enabled by everybody, so you can cheat or modify whatever you want. **BE MINDFUL THAT IT CAN BREAK YOUR SAVE IF USED INCORRECTLY!** Refer to the Faq to learn how.
 
 
@@ -240,15 +252,27 @@ Challenges page:
 * Mirage Island can be forced with a certain Pokémon in the party, apart from its unusual rate, and works even if they are sitting on the PC.
 
 **Sound related:**
-* Added all the music and sound effects from Pokémon Diamond, Pearl, Platinum, HeartGold, and SoulSilver.
+* Added all the music and sound effects from Pokémon Diamond, Pearl, Platinum, HeartGold, SoulSilver, Black and White.
 * You can listen to all this music using the combo "Right DPAD + Select + B" in the Title Screen.
 * All legendaries have their music swapped for something different using all the newly included tracks from the games mentioned above.
 * Option to disable or enable music.
 * Option to disable or enable Surf and Bike music.
-* Option to choose between different tracks for Wild Battles, Trainers and Frontier Trainers ("Hoenn", "Kanto 1", "Sinnoh", "Johto", "Kanto 2", "Random").
+* Option to choose between different tracks for Wild Battles, Trainers and Frontier Trainers ("Hoenn", "Kanto 1", "Sinnoh", "Johto", "Kanto 2", "Unova", and "Random").
 * Option to choose between "Gen 3", "DPPl", and "HGSS" sound effects.
 
-# 🔧QUICK FAQ FOR THIS REPO
+# 🔧For developers:
+
+Please follow [Pret's guide on how to build the rom](https://github.com/pret/pokeemerald/blob/master/INSTALL.md) but using this branch instead of theirs. 
+
+When compiling, **use the modern compiler** with the "make modern" command. 
+_Compiling using the old compiler won't work._
+
+The game was compiled using `(devkitARM release 62) 13.2.0`, but it _should_ work up to `release 65` without any issues. Higher versions may not work, so manual fixes might be required.
+
+# Quick FAQ:
+
+**Can't open the repo in Porymap!**
+* This project is not yet compatible with Porymap 6. Use Porymap 5 instead.
 
 **I can't compile Modern Emerald!!**
 * First thing: When compiling, **you have to use the modern compiler** with the "make modern" command. The old compiler will never work.
