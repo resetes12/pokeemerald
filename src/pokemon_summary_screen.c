@@ -1898,6 +1898,16 @@ static void Task_OpenPokedexFromSummary(u8 taskId)
         FreeSummaryScreen();
         DestroyTask(taskId);
         
+        // Clear all BG tilemaps to prevent leftover tiles bleeding into the Pokédex screen
+        FillBgTilemapBufferRect_Palette0(0, 0, 0, 0, 32, 32);
+        FillBgTilemapBufferRect_Palette0(1, 0, 0, 0, 32, 32);
+        FillBgTilemapBufferRect_Palette0(2, 0, 0, 0, 32, 32);
+        FillBgTilemapBufferRect_Palette0(3, 0, 0, 0, 32, 32);
+        CopyBgTilemapBufferToVram(0);
+        CopyBgTilemapBufferToVram(1);
+        CopyBgTilemapBufferToVram(2);
+        CopyBgTilemapBufferToVram(3);
+
         // Open the Pokédex info screen for this specific Pokémon
         OpenPokedexInfoScreen(species, CB2_ReturnToSummaryFromPokedex);
     }
