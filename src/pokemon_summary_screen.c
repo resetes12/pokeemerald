@@ -1965,10 +1965,18 @@ static void Task_HandleInput(u8 taskId)
             {
                 if (sMonSummaryScreen->currPageIndex == PSS_PAGE_INFO)
                 {
-                    StopPokemonAnimations();
-                    PlaySE(SE_SELECT);
-                    // Open the Pokedex entry for this species
-                    CB2_ShowPokedexEntryFromSummary();
+                    if (!sMonSummaryScreen->summary.isEgg && FlagGet(FLAG_SYS_POKEDEX_GET) == TRUE)
+                    {
+                        StopPokemonAnimations();
+                        PlaySE(SE_SELECT);
+                        CB2_ShowPokedexEntryFromSummary();
+                    }
+                    else
+                    {
+                        StopPokemonAnimations();
+                        PlaySE(SE_SELECT);
+                        BeginCloseSummaryScreen(taskId);
+                    }
                 }
                 else // Contest or Battle Moves
                 {
