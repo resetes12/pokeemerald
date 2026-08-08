@@ -2135,7 +2135,8 @@ void BattleMainCB2(void)
 
     if (gSaveBlock2Ptr->optionsBattleSpeed
         && !(gBattleTypeFlags & BATTLE_TYPE_LINK)
-        && !gBattleCaptureSuccessActive)
+        && !gBattleCaptureSuccessActive
+        && !gPaletteFade.active)
     {
         bool8 ballActive = FALSE;
         u8 i;
