@@ -4261,6 +4261,7 @@ void OpenPokedexInfoScreen(u16 species, void (*returnCallback)(void))
 //*        Area screen               *
 //*                                  *
 //************************************
+#define tSkipCry         data[3]
 static void Task_LoadAreaScreen(u8 taskId)
 {
     switch (gMain.state)
@@ -4307,6 +4308,7 @@ static void Task_SwitchScreensFromAreaScreen(u8 taskId)
         {
         case 1:
         default:
+            gTasks[taskId].tSkipCry = FALSE;
             gTasks[taskId].func = Task_LoadInfoScreen;
             break;
         case 2:
@@ -4346,7 +4348,7 @@ static void Task_ExitAreaScreenToExternal(u8 taskId)
     }
 }
 
-
+#undef tSkipCry
 
 //************************************
 //*                                  *
