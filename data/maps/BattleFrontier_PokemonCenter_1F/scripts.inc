@@ -219,10 +219,10 @@ BattleFrontier_PokemonCenter_1F_EventScript_DisableChallenges_NoItemTrainer:
 	end
 
 EventScript_MultichoiceDisableChallenge_Text_Challenge_NoItemTrainer:
-	.string "No Item (Player)$"
+	.string "No Item (Trainers)$"
 
 EventScript_MultichoiceDisableChallenge_Text_Challenge_NoItemTrainer_Disable:
-	.string "Disable No Item (Player)?$"
+	.string "Disable No Item (Trainers)?$"
 
 @pkcenter challenge
 BattleFrontier_PokemonCenter_1F_EventScript_DisableChallenges_PokecenterChal_Ask:
