@@ -3931,6 +3931,21 @@ static void Task_LoadInfoScreen(u8 taskId)
         CopyWindowToVram(WIN_INFO, COPYWIN_FULL);
         CopyBgTilemapBufferToVram(1);
         CopyBgTilemapBufferToVram(2);
+        // Reload BG3 tilemap to fix corruption between init cases.
+        {
+            extern const u32 gPokedexPlusHGSS_ScreenInfo_Tilemap[];
+            LZ77UnCompWram(gPokedexPlusHGSS_ScreenInfo_Tilemap, GetBgTilemapBuffer(3));
+        }
+        if (GetShinySeenFlag(sPokedexListItem->dexNum))
+        {
+            u16 *buf = (u16 *)GetBgTilemapBuffer(3);
+            buf[9 * 32 + 14] = 208; buf[9 * 32 + 15] = 209;
+            buf[9 * 32 + 16] = 210; buf[9 * 32 + 17] = 211;
+            buf[10 * 32 + 14] = 212; buf[10 * 32 + 15] = 213;
+            buf[10 * 32 + 16] = 214; buf[10 * 32 + 17] = 215;
+            buf[11 * 32 + 14] = 216; buf[11 * 32 + 15] = 217;
+            buf[11 * 32 + 16] = 218; buf[11 * 32 + 17] = 219;
+        }
         CopyBgTilemapBufferToVram(3);
         gMain.state++;
         break;
@@ -4038,6 +4053,12 @@ static void FreeInfoScreenWindowAndBgBuffers(void)
 
 static void Task_HandleInfoScreenInput(u8 taskId)
 {
+    // Fix BG3 tilemap entries corrupted by stale DMA writes each VBlank.
+    // Write directly to VRAM since the RAM buffer gets re-corrupted every frame.
+    // mapBaseIndex 15 for BG3 on the info screen.
+    *(vu16 *)(BG_SCREEN_ADDR(15) + 553 * 2) = 65;   // row 17 col 9: background fill
+    *(vu16 *)(BG_SCREEN_ADDR(15) + 628 * 2) = 111;  // row 19 col 20: border
+
     if (gTasks[taskId].tScrolling)
     {
         // Scroll up/down
