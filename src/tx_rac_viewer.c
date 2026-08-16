@@ -1172,6 +1172,13 @@ static void Viewer_RedrawList(void)
 
 // ---- Entry point from field ----------------------------------------------------
 
+// Called as a special (no taskId) — mirrors the PlayerPC pattern with waitstate.
+void Special_OpenChallengeViewer(void)
+{
+    gMain.savedCallback = CB2_ReturnToFieldContinueScript;
+    SetMainCallback2(CB2_InitChallengeViewer);
+}
+
 void Task_ChallengeViewer(u8 taskId)
 {
     gMain.savedCallback = CB2_ReturnToFieldContinueScript; // return to continue script, prevents player moving
