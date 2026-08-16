@@ -88,6 +88,7 @@ enum { // Util
     DEBUG_UTIL_MENU_ITEM_SETWALLCLOCK,
     DEBUG_UTIL_MENU_ITEM_WATCHCREDITS,
     DEBUG_UTIL_MENU_ITEM_TRAINER_NAME,
+    DEBUG_UTIL_MENU_ITEM_RIVAL_NAME,
     DEBUG_UTIL_MENU_ITEM_TRAINER_GENDER,
     DEBUG_UTIL_MENU_ITEM_TRAINER_ID,
     DEBUG_UTIL_MENU_ITEM_CHEAT,
@@ -331,6 +332,7 @@ static void DebugAction_Util_CheckWallClock(u8 taskId);
 static void DebugAction_Util_SetWallClock(u8 taskId);
 static void DebugAction_Util_WatchCredits(u8 taskId);
 static void DebugAction_Util_Trainer_Name(u8 taskId);
+static void DebugAction_Util_Rival_Name(u8 taskId);
 static void DebugAction_Util_Trainer_Gender(u8 taskId);
 static void DebugAction_Util_Trainer_Id(u8 taskId);
 static void DebugAction_Util_CheatStart(u8 taskId);
@@ -475,6 +477,7 @@ static const u8 sDebugText_Util_CheckWallClock[] =          _("Check Wall Clock�
 static const u8 sDebugText_Util_SetWallClock[] =            _("Set Wall Clock…{CLEAR_TO 110}{RIGHT_ARROW}");
 static const u8 sDebugText_Util_WatchCredits[] =            _("Watch Credits…{CLEAR_TO 110}{RIGHT_ARROW}");
 static const u8 sDebugText_Util_Trainer_Name[] =            _("Trainer name");
+static const u8 sDebugText_Util_Rival_Name[] =              _("Rival name");
 static const u8 sDebugText_Util_Trainer_Gender[] =          _("Toggle T. Gender");
 static const u8 sDebugText_Util_Trainer_Id[] =              _("New Trainer Id");
 static const u8 sDebugText_Util_CheatStart[] =              _("Cheat Start");
@@ -662,6 +665,7 @@ static const struct ListMenuItem sDebugMenu_Items_Utilities[] =
     [DEBUG_UTIL_MENU_ITEM_SETWALLCLOCK]     = {sDebugText_Util_SetWallClock,     DEBUG_UTIL_MENU_ITEM_SETWALLCLOCK},
     [DEBUG_UTIL_MENU_ITEM_WATCHCREDITS]     = {sDebugText_Util_WatchCredits,     DEBUG_UTIL_MENU_ITEM_WATCHCREDITS},
     [DEBUG_UTIL_MENU_ITEM_TRAINER_NAME]     = {sDebugText_Util_Trainer_Name,     DEBUG_UTIL_MENU_ITEM_TRAINER_NAME},
+    [DEBUG_UTIL_MENU_ITEM_RIVAL_NAME]       = {sDebugText_Util_Rival_Name,       DEBUG_UTIL_MENU_ITEM_RIVAL_NAME},
     [DEBUG_UTIL_MENU_ITEM_TRAINER_GENDER]   = {sDebugText_Util_Trainer_Gender,   DEBUG_UTIL_MENU_ITEM_TRAINER_GENDER},
     [DEBUG_UTIL_MENU_ITEM_TRAINER_ID]       = {sDebugText_Util_Trainer_Id,       DEBUG_UTIL_MENU_ITEM_TRAINER_ID},
     [DEBUG_UTIL_MENU_ITEM_CHEAT]            = {sDebugText_Util_CheatStart,        DEBUG_UTIL_MENU_ITEM_CHEAT},
@@ -812,6 +816,7 @@ static void (*const sDebugMenu_Actions_Utilities[])(u8) =
     [DEBUG_UTIL_MENU_ITEM_SETWALLCLOCK]     = DebugAction_Util_SetWallClock,
     [DEBUG_UTIL_MENU_ITEM_WATCHCREDITS]     = DebugAction_Util_WatchCredits,
     [DEBUG_UTIL_MENU_ITEM_TRAINER_NAME]     = DebugAction_Util_Trainer_Name,
+    [DEBUG_UTIL_MENU_ITEM_RIVAL_NAME]       = DebugAction_Util_Rival_Name,
     [DEBUG_UTIL_MENU_ITEM_TRAINER_GENDER]   = DebugAction_Util_Trainer_Gender,
     [DEBUG_UTIL_MENU_ITEM_TRAINER_ID]       = DebugAction_Util_Trainer_Id,
     [DEBUG_UTIL_MENU_ITEM_CHEAT]            = DebugAction_Util_CheatStart,
@@ -2092,6 +2097,24 @@ static void DebugAction_Util_Trainer_Name(u8 taskId)
     NewGameBirchSpeech_SetDefaultPlayerName(Random() % 20);
     DoNamingScreen(0, gSaveBlock2Ptr->playerName, gSaveBlock2Ptr->playerGender, 0, 0, CB2_ReturnToFieldContinueScript);
 }
+
+static const u8 *const gMalePresetNames[] = {
+    gText_ExpandedPlaceholder_Brendan
+};
+
+static const u8 *const gFemalePresetNames[] = {
+    gText_ExpandedPlaceholder_May
+};
+
+static void DebugAction_Util_Rival_Name(u8 taskId)
+{
+    if (gSaveBlock2Ptr->playerGender == 0) // 0 Male, 1 Female
+        StringCopy(gSaveBlock2Ptr->rivalName, gFemalePresetNames[Random() % NELEMS(gFemalePresetNames)]);
+    else
+        StringCopy(gSaveBlock2Ptr->rivalName, gMalePresetNames[Random() % NELEMS(gMalePresetNames)]);
+    DoNamingScreen(NAMING_SCREEN_RIVAL, gSaveBlock2Ptr->rivalName, 0, 0, 0, CB2_ReturnToFieldContinueScript);
+}
+
 static void DebugAction_Util_Trainer_Gender(u8 taskId)
 {
     if (gSaveBlock2Ptr->playerGender == 0) // 0 Male, 1 Female
