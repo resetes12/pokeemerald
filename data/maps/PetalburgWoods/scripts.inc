@@ -241,7 +241,7 @@ Text_PetalburgWoods_Celebi_SignFirstTime:
 	.string "more than twenty years.\p"
 	.string "And I can assure you, this story\n"
 	.string "is as real as the air we breathe.\p"
-	.string "The Forest Guardian is small, Green,\n"
+	.string "The Forest Guardian is small, green,\n"
 	.string "and gazing at it feels…\p"
 	.string "Like seeing the spirit of the forest.\p"
 	.string "Sadly, I last saw it many, many\n"

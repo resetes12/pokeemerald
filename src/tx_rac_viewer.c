@@ -18,12 +18,11 @@
 #include "international_string_util.h" // for GetStringRightAlignXOffset
 #include "strings.h"
 #include "gba/m4a_internal.h"
-
-extern struct MusicPlayerInfo *gMPlay_PokemonCry;
 #include "constants/rgb.h"
 #include "event_data.h"
 #include "tx_randomizer_and_challenges.h"
 
+extern struct MusicPlayerInfo *gMPlay_PokemonCry;
 // ---- Paging ----
 enum
 {
