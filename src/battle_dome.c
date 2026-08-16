@@ -2452,7 +2452,10 @@ static void InitDomeTrainers(void)
                 || species[j] == SPECIES_GULPIN
                 || species[j] == SPECIES_SWALOT
                 || species[j] == SPECIES_LUVDISC
-                || species[j] == SPECIES_ELECTIVIRE))
+                || species[j] == SPECIES_ELECTIVIRE
+                || species[j] == SPECIES_YANMEGA
+                || species[j] == SPECIES_HUNTAIL
+                || species[j] == SPECIES_GOREBYSS))
                 {
                     monTypesBits |= gBitTable[gSpeciesInfo[gFacilityTrainerMons[DOME_MONS[i][j]].species].types_old[0]];
                     monTypesBits |= gBitTable[gSpeciesInfo[gFacilityTrainerMons[DOME_MONS[i][j]].species].types_old[1]];

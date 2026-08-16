@@ -10645,7 +10645,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .noFlip = FALSE,
     },
 
-    [SPECIES_CLAMPERL] =
+    [SPECIES_CLAMPERL] = //modified
     {
         .baseHP        = 35,
         .baseAttack    = 64,
@@ -10669,21 +10669,25 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .friendship = STANDARD_FRIENDSHIP,
         .growthRate = GROWTH_ERRATIC,
         .eggGroups = { EGG_GROUP_WATER_1, EGG_GROUP_WATER_1 },
-        .abilities = {ABILITY_SHELL_ARMOR, ABILITY_NONE},
+        .abilities = {ABILITY_SHELL_ARMOR, ABILITY_SHELL_ARMOR},
+        .abilities_old = {ABILITY_SHELL_ARMOR, ABILITY_NONE},
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
     },
 
-    [SPECIES_HUNTAIL] =
+    [SPECIES_HUNTAIL] = //modified
     {
         .baseHP        = 55,
-        .baseAttack    = 104,
+        .baseAttack    = 114, //+10
+        .baseAttack_old    = 104,
         .baseDefense   = 105,
         .baseSpeed     = 52,
-        .baseSpAttack  = 94,
+        .baseSpAttack  = 84, //-10
+        .baseSpAttack_old  = 94,
         .baseSpDefense = 75,
-        .types = { TYPE_WATER, TYPE_WATER },
+        .types = { TYPE_WATER, TYPE_DARK }, //changed
+        .types_old = { TYPE_WATER, TYPE_WATER },
         .catchRate = 60,
         .expYield = 178,
         .evYield_HP        = 0,
@@ -10699,21 +10703,26 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .friendship = STANDARD_FRIENDSHIP,
         .growthRate = GROWTH_ERRATIC,
         .eggGroups = { EGG_GROUP_WATER_1, EGG_GROUP_WATER_1 },
-        .abilities = {ABILITY_SWIFT_SWIM, ABILITY_NONE},
+        .abilities = {ABILITY_SWIFT_SWIM, ABILITY_DRIZZLE},
+        .abilities_old = {ABILITY_SWIFT_SWIM, ABILITY_NONE},
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
     },
 
-    [SPECIES_GOREBYSS] =
+    [SPECIES_GOREBYSS] = //modified
     {
-        .baseHP        = 55,
-        .baseAttack    = 84,
+        .baseHP        = 65, //+10
+        .baseHP_old        = 55,
+        .baseAttack    = 54, //-30
+        .baseAttack_old    = 84,
         .baseDefense   = 105,
         .baseSpeed     = 52,
         .baseSpAttack  = 114,
-        .baseSpDefense = 75,
-        .types = { TYPE_WATER, TYPE_WATER },
+        .baseSpDefense = 95, //+20
+        .baseSpDefense_old = 75,
+        .types = { TYPE_WATER, TYPE_PSYCHIC }, //changed
+        .types_old = { TYPE_WATER, TYPE_WATER },
         .catchRate = 60,
         .expYield = 178,
         .evYield_HP        = 0,
@@ -10729,7 +10738,8 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .friendship = STANDARD_FRIENDSHIP,
         .growthRate = GROWTH_ERRATIC,
         .eggGroups = { EGG_GROUP_WATER_1, EGG_GROUP_WATER_1 },
-        .abilities = {ABILITY_SWIFT_SWIM, ABILITY_NONE},
+        .abilities = {ABILITY_SWIFT_SWIM, ABILITY_RAIN_DISH},
+        .abilities_old = {ABILITY_SWIFT_SWIM, ABILITY_NONE},
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_PINK,
         .noFlip = FALSE,
@@ -12854,7 +12864,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .bodyColor = BODY_COLOR_BLACK,
         .noFlip = FALSE,
     },
-    [SPECIES_YANMEGA] =
+    [SPECIES_YANMEGA] = //modified
     {
         .baseHP        = 86,
         .baseAttack    = 76,

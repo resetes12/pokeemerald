@@ -8274,7 +8274,11 @@ u8 GetAbilityBySpecies(u16 species, u8 abilityNum)
             && (gSaveBlock1Ptr->tx_Mode_Legendary_Abilities == 0))
         gLastUsedAbility = gSpeciesInfo[species].abilities_old[0];
     else if ((abilityNum == 1)
-            && (species == SPECIES_NOCTOWL || species == SPECIES_YANMEGA)
+            && (species == SPECIES_NOCTOWL 
+             || species == SPECIES_YANMEGA
+             || species == SPECIES_CLAMPERL
+             || species == SPECIES_HUNTAIL
+             || species == SPECIES_GOREBYSS)
             && (gSaveBlock1Ptr->tx_Mode_Modern_Types == 0))
         gLastUsedAbility = gSpeciesInfo[species].abilities_old[1];
     else if (abilityNum)
@@ -12145,7 +12149,9 @@ u8 GetTypeBySpecies(u16 species, u8 typeNum)
     || species == SPECIES_SWALOT                //-Normal
     || species == SPECIES_LUVDISC               //-Fairy
     || species == SPECIES_ELECTIVIRE            //-Fighting
-    || species == SPECIES_YANMEGA))             //+Flying, -Dragon
+    || species == SPECIES_YANMEGA               //+Flying, -Dragon
+    || species == SPECIES_HUNTAIL               //-Psychic
+    || species == SPECIES_GOREBYSS))            //-Dark
     {
         if (typeNum == 1)
             type = gSpeciesInfo[species].types_old[0];
