@@ -256,6 +256,8 @@ void NewGameInitData(void)
     EnableExtraLegendaries ? FlagSet(FLAG_EXTRA_LEGENDARIES) : FlagClear(FLAG_EXTRA_LEGENDARIES);
     FasterJoy ? FlagSet(FLAG_EVEN_FASTER_JOY) : FlagClear(FLAG_EVEN_FASTER_JOY);
 
+    VarSet(VAR_NUMBER_OF_RELEASE, MODERN_EMERALD_RELEASE_NUMBER);
+
     /*if (difficultyPrev == DIFFICULTY_EASY)
         VarSet(VAR_DIFFICULTY, DIFFICULTY_EASY);
     else if (difficultyPrev == DIFFICULTY_NORMAL)

@@ -17,6 +17,9 @@
 #define VERSION_PLATINUM 12
 #define VERSION_GAMECUBE 15
 
+// Modern Emerald started tracking Release Numbers after version 3.5. Up until 3.5 (included), all versions are considered "0".
+#define MODERN_EMERALD_RELEASE_NUMBER 36
+
 #define LANGUAGE_JAPANESE 1
 #define LANGUAGE_ENGLISH  2
 #define LANGUAGE_FRENCH   3
