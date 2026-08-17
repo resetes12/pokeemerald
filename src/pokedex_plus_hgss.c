@@ -4106,12 +4106,25 @@ static void Task_HandleInfoScreenInput(u8 taskId)
 
     if ((JOY_NEW(DPAD_RIGHT) || (JOY_NEW(R_BUTTON) && gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_LR)))
     {
-        sPokedexView->selectedScreen = AREA_SCREEN;
-        StopMonSpriteAnimation(gTasks[taskId].tMonSpriteId);
-        BeginNormalPaletteFade(0xFFFFFFEB, 0, 0, 0x10, RGB_BLACK);
-        sPokedexView->screenSwitchState = 1;
-        gTasks[taskId].func = Task_SwitchScreensFromInfoScreen;
-        PlaySE(SE_PIN);
+        if (gMain.inBattle)
+        {
+            // Skip AREA screen in battle (tiles are garbled from battle VRAM state)
+            sPokedexView->selectedScreen = STATS_SCREEN;
+            StopMonSpriteAnimation(gTasks[taskId].tMonSpriteId);
+            BeginNormalPaletteFade(0xFFFFFFEB, 0, 0, 0x10, RGB_BLACK);
+            sPokedexView->screenSwitchState = 4;
+            gTasks[taskId].func = Task_SwitchScreensFromInfoScreen;
+            PlaySE(SE_PIN);
+        }
+        else
+        {
+            sPokedexView->selectedScreen = AREA_SCREEN;
+            StopMonSpriteAnimation(gTasks[taskId].tMonSpriteId);
+            BeginNormalPaletteFade(0xFFFFFFEB, 0, 0, 0x10, RGB_BLACK);
+            sPokedexView->screenSwitchState = 1;
+            gTasks[taskId].func = Task_SwitchScreensFromInfoScreen;
+            PlaySE(SE_PIN);
+        }
     }
 
 }
@@ -4133,6 +4146,9 @@ static void Task_SwitchScreensFromInfoScreen(u8 taskId)
             break;
         case 3:
             gTasks[taskId].func = Task_LoadSizeScreen;
+            break;
+        case 4:
+            gTasks[taskId].func = Task_LoadStatsScreen;
             break;
         }
     }
@@ -6606,7 +6622,10 @@ static void Task_SwitchScreensFromStatsScreen(u8 taskId)
         case 1:
             FreeAllWindowBuffers();
             InitWindows(sInfoScreen_WindowTemplates);
-            gTasks[taskId].func = Task_LoadAreaScreen;
+            if (gMain.inBattle)
+                gTasks[taskId].func = Task_LoadInfoScreen;
+            else
+                gTasks[taskId].func = Task_LoadAreaScreen;
             break;
         case 2:
             gTasks[taskId].func = Task_LoadCryScreen;
@@ -7943,7 +7962,7 @@ static void Task_HandleCryScreenInput(u8 taskId)
         if (JOY_NEW(DPAD_RIGHT)
          || (JOY_NEW(R_BUTTON) && gSaveBlock2Ptr->optionsButtonMode == OPTIONS_BUTTON_MODE_LR))
         {
-            if (!sPokedexListItem->owned)
+            if (!sPokedexListItem->owned || gMain.inBattle)
             {
                 PlaySE(SE_FAILURE);
             }
