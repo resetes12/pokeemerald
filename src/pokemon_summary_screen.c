@@ -440,6 +440,7 @@ static void BufferIvOrEvStats(u8 mode);
 static void ToggleStatsOverlay(void);
 static void ShowStatsOverlay(void);
 static void HideStatsOverlay(void);
+static void PrintPokedexOrCancel(void);
 
 // const rom data
 #include "data/text/move_descriptions.h"
@@ -2138,6 +2139,7 @@ static void Task_ChangeSummaryMon(u8 taskId)
         break;
     case 11:
         PrintPageSpecificText(sMonSummaryScreen->currPageIndex);
+        PrintPokedexOrCancel();
         LimitEggSummaryPageDisplay();
         break;
     case 12:
@@ -3401,6 +3403,33 @@ static void PrintPageNamesAndStats(void)
     PrintTextOnWindow(PSS_LABEL_WINDOW_MOVES_POWER_ACC, gText_Accuracy2, 0, 17, 0, 1);
     PrintTextOnWindow(PSS_LABEL_WINDOW_MOVES_APPEAL_JAM, gText_Appeal, 0, 1, 0, 1);
     PrintTextOnWindow(PSS_LABEL_WINDOW_MOVES_APPEAL_JAM, gText_Jam, 0, 17, 0, 1);
+}
+
+// Redraws the CANCEL or POKEDEX prompt when scrolling between eggs and non-eggs.
+static void PrintPokedexOrCancel(void)
+{
+    int stringXPos;
+    int iconXPos;
+
+    FillWindowPixelBuffer(PSS_LABEL_WINDOW_PROMPT_CANCEL, PIXEL_FILL(0));
+    if (!sMonSummaryScreen->summary.isEgg && FlagGet(FLAG_SYS_POKEDEX_GET) == TRUE)
+    {
+        stringXPos = GetStringRightAlignXOffset(FONT_NORMAL, gText_MenuPokedex, 62);
+        iconXPos = stringXPos - 16;
+        if (iconXPos < 0)
+            iconXPos = 0;
+        PrintAOrBButtonIcon(PSS_LABEL_WINDOW_PROMPT_CANCEL, FALSE, iconXPos);
+        PrintTextOnWindow(PSS_LABEL_WINDOW_PROMPT_CANCEL, gText_MenuPokedex, stringXPos, 1, 0, 0);
+    }
+    else
+    {
+        stringXPos = GetStringRightAlignXOffset(FONT_NORMAL, gText_Cancel2, 62);
+        iconXPos = stringXPos - 16;
+        if (iconXPos < 0)
+            iconXPos = 0;
+        PrintAOrBButtonIcon(PSS_LABEL_WINDOW_PROMPT_CANCEL, FALSE, iconXPos);
+        PrintTextOnWindow(PSS_LABEL_WINDOW_PROMPT_CANCEL, gText_Cancel2, stringXPos, 1, 0, 0);
+    }
 }
 
 static void PutPageWindowTilemaps(u8 page)
