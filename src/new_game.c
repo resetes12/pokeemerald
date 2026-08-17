@@ -44,6 +44,7 @@
 #include "berry_powder.h"
 #include "mystery_gift.h"
 #include "union_room_chat.h"
+#include "save_migration.h"
 #include "constants/items.h"
 #include "tx_randomizer_and_challenges.h"
 
@@ -264,7 +265,8 @@ void NewGameInitData(void)
         VarSet(VAR_DIFFICULTY, DIFFICULTY_NORMAL);
     else if (difficultyPrev == DIFFICULTY_HARD)
         VarSet(VAR_DIFFICULTY, DIFFICULTY_HARD);*/
-    
+
+    StampCurrentSaveVersion();
 }
 void CheckIfChallengesAreActive(void)
 {

@@ -39,6 +39,7 @@
 #include "window.h"
 #include "mystery_gift_menu.h"
 #include "tx_randomizer_and_challenges.h"
+#include "save_migration.h"
 #include "constants/flags.h"
 
 /*
@@ -259,57 +260,18 @@ static void MainMenu_FormatSavegameTime(void);
 static void MainMenu_FormatSavegameBadges(void);
 static void NewGameBirchSpeech_CreateDialogueWindowBorder(u8, u8, u8, u8, u8, u8);
 
-//Common version updater functions
-static void Task_UpdateGameMenu_OlderVersions(u8);
-static void Task_ShowUpdateGameMenu_OlderVersions(u8);
-static s8 Task_ShowUpdateGameMenu_ProcessMenuInput(void);
-static void Task_ShowUpdateGameMenu_ChooseWhichVersion(u8);
-static void Task_ShowUpdateGameMenu_WaitToShowUpdateMessage(u8);
-static void Task_ShowUpdateGameMenu_ChooseCorrectVersion(u8);
-static void Task_UpdateFrom24(u8);
-static void Task_UpdateFrom30(u8);
-static void Task_UpdateFrom35(u8);
-static void Task_ClearUpdateMenu_WindowTilemap(u8, u8, u8, u8, u8, u8);
-static void Task_ClearUpdateMenu_Window(u8, u8);
-//Update from 2.4
-//Enable Wondertrade?
-static void Task_ShowUpdateGameMenu_Version24_Wondertrade(u8);
-static void Task_ShowUpdateGameMenu_Version24_YesNo_Menu_Wondertrade(u8);
-static void Task_ShowUpdateGameMenu_Version24_Choose_YesNo_Wondertrade(u8);
-//Enable Unlimited WT?
-static void Task_ShowUpdateGameMenu_Version24_Goto_UnlimitedWT(u8);
-static void Task_ShowUpdateGameMenu_Version24_YesNo_Menu_UnlimitedWT(u8);
-static void Task_ShowUpdateGameMenu_Version24_Choose_YesNo_UnlimitedWT(u8);
-//Enable Frontier Bans?
-static void Task_ShowUpdateGameMenu_Version24_Goto_FrontierBans(u8);
-static void Task_ShowUpdateGameMenu_Version24_YesNo_Menu_FrontierBans(u8);
-static void Task_ShowUpdateGameMenu_Version24_Choose_YesNo_FrontierBans(u8);
-//Enable Shiny Colors?
-static void Task_ShowUpdateGameMenu_Version24_Goto_ShinyColors(u8);
-static void Task_ShowUpdateGameMenu_Version24_YesNo_Menu_ShinyColors(u8);
-static void Task_ShowUpdateGameMenu_Version24_Choose_YesNo_ShinyColors(u8);
-//Which Type Chart?
-static void Task_ShowUpdateGameMenu_Version24_Goto_TypeChart(u8);
-static void Task_ShowUpdateGameMenu_Version24_YesNo_Menu_TypeChart(u8);
-static void Task_ShowUpdateGameMenu_Version24_Choose_YesNo_TypeChart(u8);
-//Update from 3.0
-//Enable Wondertrade?
-static void Task_ShowUpdateGameMenu_Version30_Wondertrade(u8);
-static void Task_ShowUpdateGameMenu_Version30_YesNo_Menu_Wondertrade(u8);
-static void Task_ShowUpdateGameMenu_Version30_Choose_YesNo_Wondertrade(u8);
-//Enable Shiny Colors?
-static void Task_ShowUpdateGameMenu_Version30_Goto_ShinyColors(u8);
-static void Task_ShowUpdateGameMenu_Version30_YesNo_Menu_ShinyColors(u8);
-static void Task_ShowUpdateGameMenu_Version30_Choose_YesNo_ShinyColors(u8);
-//Which Type Chart?
-static void Task_ShowUpdateGameMenu_Version30_Goto_TypeChart(u8);
-static void Task_ShowUpdateGameMenu_Version30_YesNo_Menu_TypeChart(u8);
-static void Task_ShowUpdateGameMenu_Version30_Choose_YesNo_TypeChart(u8);
-//Update from 3.5
-//Enable Wondertrade?
-static void Task_ShowUpdateGameMenu_Version35_Wondertrade(u8);
-static void Task_ShowUpdateGameMenu_Version35_YesNo_Menu_Wondertrade(u8);
-static void Task_ShowUpdateGameMenu_Version35_Choose_YesNo_Wondertrade(u8);
+// Version updater forward declarations
+static void Task_VersionUpdater_ShowIntroMessage(u8);
+static void Task_VersionUpdater_WaitIntroMessage(u8);
+static void Task_VersionUpdater_ShowVersionMenu(u8);
+static void Task_VersionUpdater_HandleVersionChoice(u8);
+static void Task_VersionUpdater_ShowNextQuestion(u8);
+static void Task_VersionUpdater_WaitQuestionText(u8);
+static void Task_VersionUpdater_ShowYesNo(u8);
+static void Task_VersionUpdater_HandleYesNo(u8);
+static void Task_VersionUpdater_ShowComplete(u8);
+static void Task_VersionUpdater_WaitComplete(u8);
+static void Task_VersionUpdater_Finish(u8);
 
 // .rodata
 
@@ -344,18 +306,6 @@ static const u16 sBirchSpeechPlatformBlackPal[] = {RGB_BLACK, RGB_BLACK, RGB_BLA
 #define MENU_TOP_ERROR 15
 #define MENU_WIDTH_ERROR 26
 #define MENU_HEIGHT_ERROR 4
-
-// "Which version are you updating from?" menu (24 / 30 / 35)
-#define MENU_LEFT_UPDATE 10
-#define MENU_TOP_UPDATE 7
-#define MENU_WIDTH_UPDATE 10
-#define MENU_HEIGHT_UPDATE 6
-
-// Yes/No Menu for updating
-#define MENU_LEFT_YESNO_UPDATE 10
-#define MENU_TOP_YESNO_UPDATE 7
-#define MENU_WIDTH_YESNO_UPDATE 8
-#define MENU_HEIGHT_YESNO_UPDATE 4
 
 #define MENU_SHADOW_PADDING 1
 
@@ -447,25 +397,15 @@ static const struct WindowTemplate sWindowTemplates_MainMenu[] =
         .paletteNum = 15,
         .baseBlock = 0x16D
     },
-    // "Which version are you updating from?" select menu
+    // Version updater select menu (window 8)
     {
         .bg = 0,
-        .tilemapLeft = MENU_LEFT_UPDATE,
-        .tilemapTop = MENU_TOP_UPDATE,
-        .width = MENU_WIDTH_UPDATE,
-        .height = MENU_HEIGHT_UPDATE,
+        .tilemapLeft = 2,
+        .tilemapTop = 11,
+        .width = 14,
+        .height = 6,
         .paletteNum = 15,
-        .baseBlock = 0x25A
-    },
-    // "Which version are you updating from?" YES/NO menu
-    {
-        .bg = 0,
-        .tilemapLeft = MENU_LEFT_YESNO_UPDATE,
-        .tilemapTop = MENU_TOP_YESNO_UPDATE,
-        .width = MENU_WIDTH_YESNO_UPDATE,
-        .height = MENU_HEIGHT_YESNO_UPDATE,
-        .paletteNum = 15,
-        .baseBlock = 0x25A
+        .baseBlock = 0x1E0
     },
     DUMMY_WIN_TEMPLATE
 };
@@ -580,16 +520,143 @@ static const struct MenuAction sMenuActions_Difficulty[] = {
     {gText_Hard, NULL}
 };
 
-static const struct MenuAction sMenuActions_UpdateGame[] = {
-    {gText_Version24, NULL},
-    {gText_Version30, NULL},
-    {gText_Version35, NULL}
+// ============================================================
+// Version Updater Data
+// ============================================================
+
+static const u8 sText_VersionUpdater_Intro[] = _("A save from an older version was\ndetected.\p{COLOR RED}Choose which version you were\nplaying:{COLOR DARK_GRAY}");
+static const u8 sText_VersionUpdater_V24[] = _("v2.4 or older");
+static const u8 sText_VersionUpdater_V30[] = _("v3.0/3.1/3.2");
+static const u8 sText_VersionUpdater_V35[] = _("v3.3/3.4/3.5");
+
+static const u8 sText_VersionUpdater_WonderTrade[] = _("Would you like to enable\nWonderTrade?");
+static const u8 sText_VersionUpdater_UnlimitedWT[] = _("Enable unlimited WonderTrades?\n(Otherwise limited to 3/day)");
+static const u8 sText_VersionUpdater_FrontierBans[] = _("Enable Battle Frontier legendary\nbans based on difficulty?");
+static const u8 sText_VersionUpdater_ShinyColors[] = _("Enable alternate Shiny colors?\n(Custom shiny palettes for some\pspecies.)");
+static const u8 sText_VersionUpdater_TypeChart[] = _("Which Type Chart?\n{COLOR RED}Yes{COLOR DARK_GRAY} = Gen VI+\n{COLOR RED}No{COLOR DARK_GRAY} = Modern (buffs weak types)");
+static const u8 sText_VersionUpdater_Complete[] = _("Update complete!\nSave your game to keep changes.");
+
+static const struct MenuAction sMenuActions_VersionSelect[] = {
+    {sText_VersionUpdater_V24, NULL},
+    {sText_VersionUpdater_V30, NULL},
+    {sText_VersionUpdater_V35, NULL},
 };
 
-static const struct MenuAction sMenuActions_UpdateGame_YesNo[] = {
-    {gText_Yes, NULL},
-    {gText_No, NULL}
+// Origin version indices (from version select menu)
+#define FROM_VERSION_24  0
+#define FROM_VERSION_30  1
+#define FROM_VERSION_35  2
+
+// Migration step: a question to ask the player during version update.
+// minimumFrom: step is asked only if player's origin <= this value.
+// Actions on Yes/No: set a flag OR write a saveblock1 field.
+enum VersionUpdaterAction {
+    VU_ACTION_NONE,
+    VU_ACTION_SET_FLAG,
+    VU_ACTION_SET_SB1_FIELD,
 };
+
+struct VersionUpdaterStep {
+    const u8 *promptText;
+    u8 minimumFrom;      // Ask if player chose this origin or older
+    u8 yesActionType;    // VU_ACTION_*
+    u8 noActionType;     // VU_ACTION_*
+    u16 yesTarget;       // Flag ID or unused
+    u16 noTarget;        // Flag ID or unused
+    u8 yesValue;         // Value for field write
+    u8 noValue;          // Value for field write
+};
+
+// Helper: apply a migration action
+static void ApplyVersionUpdaterAction(u8 actionType, u16 target, u8 value)
+{
+    switch (actionType)
+    {
+    case VU_ACTION_SET_FLAG:
+        if (target != 0)
+            FlagSet(target);
+        break;
+    case VU_ACTION_SET_SB1_FIELD:
+        // Per-field handling. Add cases here as new fields are wired up.
+        switch (target)
+        {
+        case 1: // tx_Features_FrontierBans
+            gSaveBlock1Ptr->tx_Features_FrontierBans = value;
+            break;
+        case 2: // tx_Features_ShinyColors
+            gSaveBlock1Ptr->tx_Features_ShinyColors = value;
+            break;
+        case 3: // tx_Mode_TypeEffectiveness
+            gSaveBlock1Ptr->tx_Mode_TypeEffectiveness = value;
+            break;
+        }
+        break;
+    }
+}
+
+static const struct VersionUpdaterStep sVersionUpdaterSteps[] = {
+    // WonderTrade enable — all old versions
+    {
+        .promptText = sText_VersionUpdater_WonderTrade,
+        .minimumFrom = FROM_VERSION_35,
+        .yesActionType = VU_ACTION_SET_FLAG,
+        .yesTarget = FLAG_WT_ENABLED,
+        .yesValue = 0,
+        .noActionType = VU_ACTION_NONE,
+        .noTarget = 0,
+        .noValue = 0,
+    },
+    // Unlimited WT — 2.4 only
+    {
+        .promptText = sText_VersionUpdater_UnlimitedWT,
+        .minimumFrom = FROM_VERSION_24,
+        .yesActionType = VU_ACTION_SET_FLAG,
+        .yesTarget = FLAG_UNLIMITIED_WONDERTRADE,
+        .yesValue = 0,
+        .noActionType = VU_ACTION_NONE,
+        .noTarget = 0,
+        .noValue = 0,
+    },
+    // Frontier Bans — 2.4 only
+    {
+        .promptText = sText_VersionUpdater_FrontierBans,
+        .minimumFrom = FROM_VERSION_24,
+        .yesActionType = VU_ACTION_SET_SB1_FIELD,
+        .yesTarget = 1, // tx_Features_FrontierBans
+        .yesValue = 1,
+        .noActionType = VU_ACTION_SET_SB1_FIELD,
+        .noTarget = 1,
+        .noValue = 0,
+    },
+    // Shiny Colors — 2.4 and 3.0
+    {
+        .promptText = sText_VersionUpdater_ShinyColors,
+        .minimumFrom = FROM_VERSION_30,
+        .yesActionType = VU_ACTION_SET_SB1_FIELD,
+        .yesTarget = 2, // tx_Features_ShinyColors
+        .yesValue = 1,
+        .noActionType = VU_ACTION_SET_SB1_FIELD,
+        .noTarget = 2,
+        .noValue = 0,
+    },
+    // Type Chart — 2.4 and 3.0
+    {
+        .promptText = sText_VersionUpdater_TypeChart,
+        .minimumFrom = FROM_VERSION_30,
+        .yesActionType = VU_ACTION_SET_SB1_FIELD,
+        .yesTarget = 3, // tx_Mode_TypeEffectiveness (0 = Gen VI, 1 = Modern)
+        .yesValue = 0,
+        .noActionType = VU_ACTION_SET_SB1_FIELD,
+        .noTarget = 3,
+        .noValue = 1,
+    },
+};
+
+#define NUM_VERSION_UPDATER_STEPS ARRAY_COUNT(sVersionUpdaterSteps)
+
+// Task data fields for version updater (use high indices to avoid conflicts with tMenuType=data[0], tCurrItem=data[1])
+#define tUpdaterStep    data[13]
+#define tUpdaterOrigin  data[14]
 
 static const u8 *const sMalePresetNames[] = {
     gText_DefaultNameStu,
@@ -847,26 +914,15 @@ static void Task_MainMenuCheckBattery(u8 taskId)
         SetGpuReg(REG_OFFSET_BLDALPHA, 0);
         SetGpuReg(REG_OFFSET_BLDY, 7);
 
-        //If the release number of the current save doesn't match the current ME release number, start the version updater.
-        //Since ME didn't have a release identifier before, all previous versions to release 36 (3.6, which curiously is release 36) are set to 0. 
-        //Users have to manually choose how to update their game.
-        //New players shouldn't have this menu pop up since the Var used gets instantly written when starting the game.
-
-        if ((VarGet(VAR_NUMBER_OF_RELEASE) < MODERN_EMERALD_RELEASE_NUMBER) && (VarGet(VAR_LITTLEROOT_INTRO_STATE) > 0))
+        // Check if save needs version migration before proceeding
+        if (SaveNeedsMigration() && gSaveBlock2Ptr->playTimeHours + gSaveBlock2Ptr->playTimeMinutes > 0)
         {
-            if (VarGet(VAR_NUMBER_OF_RELEASE) == 0)
-            //Versions 2.4 / 3.0 / 3.1 / 3.2 / 3.3 / 3.4 / 3.5
-            {
-                CreateMainMenuErrorWindow(gText_OldVersionDetected24to35);
-                gTasks[taskId].func = Task_UpdateGameMenu_OlderVersions;
-            }
-            //The rest is unused for now, but will be used if ME gets updated again. 
-            //Every ME release from release 36 upwards should have an easier time updating.
-            //else if (VarGet(VAR_NUMBER_OF_RELEASE) == 36)
-            //{
-            //    CreateMainMenuErrorWindow(gText_OldVersionDetected);
-            //    
-            //}
+            // Disable the darken effect so version updater windows render cleanly
+            SetGpuReg(REG_OFFSET_BLDCNT, 0);
+            SetGpuReg(REG_OFFSET_BLDY, 0);
+            gTasks[taskId].tUpdaterStep = 0;
+            gTasks[taskId].tUpdaterOrigin = 0;
+            gTasks[taskId].func = Task_VersionUpdater_ShowIntroMessage;
         }
         else if (!(RtcGetErrorStatus() & RTC_ERR_FLAG_MASK))
         {
@@ -895,577 +951,187 @@ static void Task_WaitForBatteryDryErrorWindow(u8 taskId)
     }
 }
 
-///////////////////
-//VERSION UPDATER//
-///////////////////
+// ============================================================
+// Version Updater Task Functions
+// ============================================================
 
-//Will be added when needed, as needed
-
-////////////////////////////////
-//VERSION UPDATER OLD VERSIONS//
-////////////////////////////////
-
-static void Task_UpdateGameMenu_OlderVersions(u8 taskId)
+static void Task_VersionUpdater_ShowIntroMessage(u8 taskId)
 {
-    RunTextPrinters();
-    if (!IsTextPrinterActive(7) && (JOY_NEW(A_BUTTON)))
+    u8 version = GetSaveVersion();
+
+    if (version == ME_SAVE_VERSION_NONE)
     {
-        ClearWindowTilemap(7);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[7]);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_OlderVersions;
+        // Pre-tracking save — we don't know the origin, ask the player
+        CreateMainMenuErrorWindow(sText_VersionUpdater_Intro);
+        gTasks[taskId].func = Task_VersionUpdater_WaitIntroMessage;
+    }
+    else
+    {
+        // Known version — check if there are any applicable questions.
+        // Map known version to an origin index. Versions >= 36 get FROM_VERSION_35.
+        u8 origin = FROM_VERSION_35;
+        u16 step;
+        bool8 hasQuestions = FALSE;
+
+        for (step = 0; step < NUM_VERSION_UPDATER_STEPS; step++)
+        {
+            if (origin <= sVersionUpdaterSteps[step].minimumFrom)
+            {
+                hasQuestions = TRUE;
+                break;
+            }
+        }
+
+        if (!hasQuestions)
+        {
+            // No questions needed — silently stamp and continue
+            StampCurrentSaveVersion();
+            gTasks[taskId].func = Task_MainMenuCheckBattery;
+            return;
+        }
+
+        gTasks[taskId].tUpdaterOrigin = origin;
+        gTasks[taskId].tUpdaterStep = 0;
+        gTasks[taskId].func = Task_VersionUpdater_ShowNextQuestion;
     }
 }
 
-static void Task_ShowUpdateGameMenu_OlderVersions(u8 taskId)
+static void Task_VersionUpdater_WaitIntroMessage(u8 taskId)
 {
-    DrawMainMenuWindowBorder(&sWindowTemplates_MainMenu[8], MAIN_MENU_BORDER_TILE);
+    RunTextPrinters();
+    if (!IsTextPrinterActive(7) && JOY_NEW(A_BUTTON))
+    {
+        ClearWindowTilemap(7);
+        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[7]);
+        gTasks[taskId].func = Task_VersionUpdater_ShowVersionMenu;
+    }
+}
+
+static void Task_VersionUpdater_ShowVersionMenu(u8 taskId)
+{
     FillWindowPixelBuffer(8, PIXEL_FILL(1));
-    PrintMenuTable(8, ARRAY_COUNT(sMenuActions_UpdateGame), sMenuActions_UpdateGame);
-    InitMenuInUpperLeftCornerNormal(8, ARRAY_COUNT(sMenuActions_UpdateGame), 0);
+    PrintMenuTable(8, ARRAY_COUNT(sMenuActions_VersionSelect), sMenuActions_VersionSelect);
+    InitMenuInUpperLeftCornerNormal(8, ARRAY_COUNT(sMenuActions_VersionSelect), 0);
     PutWindowTilemap(8);
     CopyWindowToVram(8, COPYWIN_FULL);
-    gTasks[taskId].func = Task_ShowUpdateGameMenu_ChooseWhichVersion;
+    DrawMainMenuWindowBorder(&sWindowTemplates_MainMenu[8], MAIN_MENU_BORDER_TILE);
+    gTasks[taskId].func = Task_VersionUpdater_HandleVersionChoice;
 }
 
-static s8 Task_ShowUpdateGameMenu_ProcessMenuInput(void)
+static void Task_VersionUpdater_HandleVersionChoice(u8 taskId)
 {
-    return Menu_ProcessInputNoWrap();
-}
+    s8 selection = Menu_ProcessInputNoWrap();
 
-static void Task_ShowUpdateGameMenu_ChooseWhichVersion(u8 taskId)
-{
-    s8 selection = Task_ShowUpdateGameMenu_ProcessMenuInput();
+    if (selection == MENU_B_PRESSED)
+        return; // Force a choice, no backing out
 
-    switch (selection)
+    if (selection >= 0 && selection < (s8)ARRAY_COUNT(sMenuActions_VersionSelect))
     {
-    case 0: //From 2.4
         PlaySE(SE_SELECT);
+        gTasks[taskId].tUpdaterOrigin = selection;
+        gTasks[taskId].tUpdaterStep = 0;
         ClearWindowTilemap(8);
         ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[8]);
-        CreateMainMenuErrorWindow(gText_From24);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_Version24_Wondertrade;
-        break;
-    case 1: //From 3.0/3.1/3.2
-        PlaySE(SE_SELECT);
-        ClearWindowTilemap(8);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[8]);
-        CreateMainMenuErrorWindow(gText_From30);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_Version30_Wondertrade;
-        break;
-    case 2: //From 3.3/3.4/3.5
-        PlaySE(SE_SELECT);
-        ClearWindowTilemap(8);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[8]);
-        CreateMainMenuErrorWindow(gText_From35);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_Version35_Wondertrade;
-        break;
-    // No MENU_B_PRESSED case on purpose: the player must pick one of the
-    // three options before continuing.
+        gTasks[taskId].func = Task_VersionUpdater_ShowNextQuestion;
     }
 }
 
-///////////////////////////
-//UPDATE FROM VERSION 2.4//
-///////////////////////////
+static void Task_VersionUpdater_ShowNextQuestion(u8 taskId)
+{
+    u16 step = gTasks[taskId].tUpdaterStep;
+    u8 origin = gTasks[taskId].tUpdaterOrigin;
 
-///////////////////
-//WONDERTRADE
+    // Find next applicable question
+    while (step < NUM_VERSION_UPDATER_STEPS)
+    {
+        if (origin <= sVersionUpdaterSteps[step].minimumFrom)
+            break;
+        step++;
+    }
 
-static void Task_ShowUpdateGameMenu_Version24_Wondertrade(u8 taskId)
+    gTasks[taskId].tUpdaterStep = step;
+
+    if (step >= NUM_VERSION_UPDATER_STEPS)
+    {
+        gTasks[taskId].func = Task_VersionUpdater_ShowComplete;
+        return;
+    }
+
+    CreateMainMenuErrorWindow(sVersionUpdaterSteps[step].promptText);
+    gTasks[taskId].func = Task_VersionUpdater_WaitQuestionText;
+}
+
+static void Task_VersionUpdater_WaitQuestionText(u8 taskId)
 {
     RunTextPrinters();
-    if (!IsTextPrinterActive(7) && (JOY_NEW(A_BUTTON)))
+    if (!IsTextPrinterActive(7) && JOY_NEW(A_BUTTON))
     {
-        ClearWindowTilemap(7);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[7]);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_Version24_YesNo_Menu_Wondertrade;
+        gTasks[taskId].func = Task_VersionUpdater_ShowYesNo;
     }
 }
 
-static void Task_ShowUpdateGameMenu_Version24_YesNo_Menu_Wondertrade(u8 taskId)
+static void Task_VersionUpdater_ShowYesNo(u8 taskId)
 {
-    DrawMainMenuWindowBorder(&sWindowTemplates_MainMenu[9], MAIN_MENU_BORDER_TILE);
-    FillWindowPixelBuffer(9, PIXEL_FILL(1));
-    PrintMenuTable(9, ARRAY_COUNT(sMenuActions_UpdateGame_YesNo), sMenuActions_UpdateGame_YesNo);
-    InitMenuInUpperLeftCornerNormal(9, ARRAY_COUNT(sMenuActions_UpdateGame_YesNo), 0);
-    PutWindowTilemap(9);
-    CopyWindowToVram(9, COPYWIN_FULL);
-    gTasks[taskId].func = Task_ShowUpdateGameMenu_Version24_Choose_YesNo_Wondertrade;
+    CreateYesNoMenuParameterized(20, 8, MAIN_MENU_BORDER_TILE, 0x240, 2, 15);
+    gTasks[taskId].func = Task_VersionUpdater_HandleYesNo;
 }
 
-static void Task_ShowUpdateGameMenu_Version24_Choose_YesNo_Wondertrade(u8 taskId)
+static void Task_VersionUpdater_HandleYesNo(u8 taskId)
 {
-    s8 selection = Task_ShowUpdateGameMenu_ProcessMenuInput();
+    s8 selection = Menu_ProcessInputNoWrapClearOnChoose();
+    u16 step = gTasks[taskId].tUpdaterStep;
 
-    switch (selection)
+    if (selection == 0) // Yes
     {
-    case 0:
         PlaySE(SE_SELECT);
-        ClearWindowTilemap(9);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[9]);
-        //TODO: ADD WONDERTRADE SAVEBLOCK SET TO 1
-
-        //if (gSaveBlock2Ptr->playerGender == MALE)
-        //    StringCopy(gSaveBlock2Ptr->rivalName, gFemalePresetNames[Random() % NELEMS(gFemalePresetNames)]); // choose a random name from gFemalePresetNames for a male player's rival
-        //else
-        //    StringCopy(gSaveBlock2Ptr->rivalName, gMalePresetNames[Random() % NELEMS(gMalePresetNames)]); // choose a random name from gMalePresetNames for a female player's rival
-        
-        //Saveblock change for some options
-        //if (gSaveBlock1Ptr->tx_Features_ShinyColors == 0) //old tx_Mode_AlternateSpawns
-        //    gSaveBlock1Ptr->tx_Mode_Encounters = 0;
-        //else if (gSaveBlock1Ptr->tx_Features_ShinyColors == 1) //old tx_Mode_AlternateSpawns
-        //    gSaveBlock1Ptr->tx_Mode_Encounters = 1;
-
-        CreateMainMenuErrorWindow(gText_From24_WonderTrade_Yes);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_Version24_Goto_UnlimitedWT;
-        break;
-    case 1:
-        PlaySE(SE_SELECT);
-        ClearWindowTilemap(9);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[9]);
-        //TODO: ADD WONDERTRADE SAVEBLOCK SET TO 0
-
-        //if (gSaveBlock2Ptr->playerGender == MALE)
-        //    StringCopy(gSaveBlock2Ptr->rivalName, gFemalePresetNames[Random() % NELEMS(gFemalePresetNames)]); // choose a random name from gFemalePresetNames for a male player's rival
-        //else
-        //    StringCopy(gSaveBlock2Ptr->rivalName, gMalePresetNames[Random() % NELEMS(gMalePresetNames)]); // choose a random name from gMalePresetNames for a female player's rival
-        
-        //Saveblock change for some options
-        //if (gSaveBlock1Ptr->tx_Features_ShinyColors == 0) //old tx_Mode_AlternateSpawns
-        //    gSaveBlock1Ptr->tx_Mode_Encounters = 0;
-        //else if (gSaveBlock1Ptr->tx_Features_ShinyColors == 1) //old tx_Mode_AlternateSpawns
-        //    gSaveBlock1Ptr->tx_Mode_Encounters = 1;
-        CreateMainMenuErrorWindow(gText_From24_WonderTrade_No);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_Version24_Goto_FrontierBans;
-        break;
+        ApplyVersionUpdaterAction(sVersionUpdaterSteps[step].yesActionType,
+                                  sVersionUpdaterSteps[step].yesTarget,
+                                  sVersionUpdaterSteps[step].yesValue);
     }
-}
-
-///////////////////////
-//UNLIMITED WONDERTRADE
-
-static void Task_ShowUpdateGameMenu_Version24_Goto_UnlimitedWT(u8 taskId)
-{
-    RunTextPrinters();
-    if (!IsTextPrinterActive(7) && (JOY_NEW(A_BUTTON)))
+    else if (selection == 1 || selection == MENU_B_PRESSED) // No
     {
-        ClearWindowTilemap(7);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[7]);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_Version24_YesNo_Menu_UnlimitedWT;
-    }
-}
-
-static void Task_ShowUpdateGameMenu_Version24_YesNo_Menu_UnlimitedWT(u8 taskId)
-{
-    DrawMainMenuWindowBorder(&sWindowTemplates_MainMenu[9], MAIN_MENU_BORDER_TILE);
-    FillWindowPixelBuffer(9, PIXEL_FILL(1));
-    PrintMenuTable(9, ARRAY_COUNT(sMenuActions_UpdateGame_YesNo), sMenuActions_UpdateGame_YesNo);
-    InitMenuInUpperLeftCornerNormal(9, ARRAY_COUNT(sMenuActions_UpdateGame_YesNo), 0);
-    PutWindowTilemap(9);
-    CopyWindowToVram(9, COPYWIN_FULL);
-    gTasks[taskId].func = Task_ShowUpdateGameMenu_Version24_Choose_YesNo_UnlimitedWT;
-}
-
-static void Task_ShowUpdateGameMenu_Version24_Choose_YesNo_UnlimitedWT(u8 taskId)
-{
-    s8 selection = Task_ShowUpdateGameMenu_ProcessMenuInput();
-
-    switch (selection)
-    {
-    case 0:
         PlaySE(SE_SELECT);
-        ClearWindowTilemap(9);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[9]);
-        //SetVar(VAR_WONDERTRADE, 0);
-        CreateMainMenuErrorWindow(gText_From24_UnlimitedWT_Yes);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_Version24_Goto_FrontierBans;
-        break;
-    case 1:
-        PlaySE(SE_SELECT);
-        ClearWindowTilemap(9);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[9]);
-        //SetVar(VAR_WONDERTRADE, 1);
-        CreateMainMenuErrorWindow(gText_From24_UnlimitedWT_No);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_Version24_Goto_FrontierBans;
-        break;
+        ApplyVersionUpdaterAction(sVersionUpdaterSteps[step].noActionType,
+                                  sVersionUpdaterSteps[step].noTarget,
+                                  sVersionUpdaterSteps[step].noValue);
     }
-}
-
-///////////////////
-//FRONTIER BANS
-
-static void Task_ShowUpdateGameMenu_Version24_Goto_FrontierBans(u8 taskId)
-{
-    RunTextPrinters();
-    if (!IsTextPrinterActive(7) && (JOY_NEW(A_BUTTON)))
+    else
     {
-        ClearWindowTilemap(7);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[7]);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_Version24_YesNo_Menu_FrontierBans;
+        return; // Still processing input
     }
-}
 
-static void Task_ShowUpdateGameMenu_Version24_YesNo_Menu_FrontierBans(u8 taskId)
-{
-    DrawMainMenuWindowBorder(&sWindowTemplates_MainMenu[9], MAIN_MENU_BORDER_TILE);
-    FillWindowPixelBuffer(9, PIXEL_FILL(1));
-    PrintMenuTable(9, ARRAY_COUNT(sMenuActions_UpdateGame_YesNo), sMenuActions_UpdateGame_YesNo);
-    InitMenuInUpperLeftCornerNormal(9, ARRAY_COUNT(sMenuActions_UpdateGame_YesNo), 0);
-    PutWindowTilemap(9);
-    CopyWindowToVram(9, COPYWIN_FULL);
-    gTasks[taskId].func = Task_ShowUpdateGameMenu_Version24_Choose_YesNo_FrontierBans;
-}
-
-static void Task_ShowUpdateGameMenu_Version24_Choose_YesNo_FrontierBans(u8 taskId)
-{
-    s8 selection = Task_ShowUpdateGameMenu_ProcessMenuInput();
-
-    switch (selection)
-    {
-    case 0:
-        PlaySE(SE_SELECT);
-        ClearWindowTilemap(9);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[9]);
-        //gSaveBlock1Ptr->tx_Features_FrontierBans = 0;
-        CreateMainMenuErrorWindow(gText_From24_FrontierBans_Yes);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_Version24_Goto_ShinyColors;
-        break;
-    case 1:
-        PlaySE(SE_SELECT);
-        ClearWindowTilemap(9);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[9]);
-        //gSaveBlock1Ptr->tx_Features_FrontierBans = 1;
-        CreateMainMenuErrorWindow(gText_From24_FrontierBans_No);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_Version24_Goto_ShinyColors;
-        break;
-    }
-}
-
-///////////////////
-//SHINY COLORS
-
-static void Task_ShowUpdateGameMenu_Version24_Goto_ShinyColors(u8 taskId)
-{
-    RunTextPrinters();
-    if (!IsTextPrinterActive(7) && (JOY_NEW(A_BUTTON)))
-    {
-        ClearWindowTilemap(7);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[7]);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_Version24_YesNo_Menu_ShinyColors;
-    }
-}
-
-static void Task_ShowUpdateGameMenu_Version24_YesNo_Menu_ShinyColors(u8 taskId)
-{
-    DrawMainMenuWindowBorder(&sWindowTemplates_MainMenu[9], MAIN_MENU_BORDER_TILE);
-    FillWindowPixelBuffer(9, PIXEL_FILL(1));
-    PrintMenuTable(9, ARRAY_COUNT(sMenuActions_UpdateGame_YesNo), sMenuActions_UpdateGame_YesNo);
-    InitMenuInUpperLeftCornerNormal(9, ARRAY_COUNT(sMenuActions_UpdateGame_YesNo), 0);
-    PutWindowTilemap(9);
-    CopyWindowToVram(9, COPYWIN_FULL);
-    gTasks[taskId].func = Task_ShowUpdateGameMenu_Version24_Choose_YesNo_ShinyColors;
-}
-
-static void Task_ShowUpdateGameMenu_Version24_Choose_YesNo_ShinyColors(u8 taskId)
-{
-    s8 selection = Task_ShowUpdateGameMenu_ProcessMenuInput();
-
-    switch (selection)
-    {
-    case 0:
-        PlaySE(SE_SELECT);
-        ClearWindowTilemap(9);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[9]);
-        //gSaveBlock1Ptr->tx_Features_ShinyColors = 1;
-        CreateMainMenuErrorWindow(gText_From24_ShinyColors_Yes);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_Version24_Goto_TypeChart;
-        break;
-    case 1:
-        PlaySE(SE_SELECT);
-        ClearWindowTilemap(9);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[9]);
-        //gSaveBlock1Ptr->tx_Features_ShinyColors = 0;
-        CreateMainMenuErrorWindow(gText_From24_ShinyColors_No);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_Version24_Goto_TypeChart;
-        break;
-    }
-}
-
-////////////
-//TYPE CHART
-
-static void Task_ShowUpdateGameMenu_Version24_Goto_TypeChart(u8 taskId)
-{
-    RunTextPrinters();
-    if (!IsTextPrinterActive(7) && (JOY_NEW(A_BUTTON)))
-    {
-        ClearWindowTilemap(7);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[7]);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_Version24_YesNo_Menu_TypeChart;
-    }
-}
-
-static void Task_ShowUpdateGameMenu_Version24_YesNo_Menu_TypeChart(u8 taskId)
-{
-    DrawMainMenuWindowBorder(&sWindowTemplates_MainMenu[9], MAIN_MENU_BORDER_TILE);
-    FillWindowPixelBuffer(9, PIXEL_FILL(1));
-    PrintMenuTable(9, ARRAY_COUNT(sMenuActions_UpdateGame_YesNo), sMenuActions_UpdateGame_YesNo);
-    InitMenuInUpperLeftCornerNormal(9, ARRAY_COUNT(sMenuActions_UpdateGame_YesNo), 0);
-    PutWindowTilemap(9);
-    CopyWindowToVram(9, COPYWIN_FULL);
-    gTasks[taskId].func = Task_ShowUpdateGameMenu_Version24_Choose_YesNo_TypeChart;
-}
-
-static void Task_ShowUpdateGameMenu_Version24_Choose_YesNo_TypeChart(u8 taskId)
-{
-    s8 selection = Task_ShowUpdateGameMenu_ProcessMenuInput();
-
-    switch (selection)
-    {
-    case 0:
-        PlaySE(SE_SELECT);
-        ClearWindowTilemap(9);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[9]);
-        //gSaveBlock1Ptr->tx_Mode_TypeEffectiveness = 0;
-        CreateMainMenuErrorWindow(gText_From24_TypeChart_Yes);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_WaitToShowUpdateMessage;
-        break;
-    case 1:
-        PlaySE(SE_SELECT);
-        ClearWindowTilemap(9);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[9]);
-        //gSaveBlock1Ptr->tx_Mode_TypeEffectiveness = 1;
-        CreateMainMenuErrorWindow(gText_From24_TypeChart_No);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_WaitToShowUpdateMessage;
-        break;
-    }
-}
-
-///////////////////////////
-//UPDATE FROM VERSION 3.0//
-///////////////////////////
-
-///////////////////
-//WONDERTRADE
-static void Task_ShowUpdateGameMenu_Version30_Wondertrade(u8 taskId)
-{
-    RunTextPrinters();
-    if (!IsTextPrinterActive(7) && (JOY_NEW(A_BUTTON)))
-    {
-        ClearWindowTilemap(7);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[7]);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_Version30_YesNo_Menu_Wondertrade;
-    }
-}
-
-static void Task_ShowUpdateGameMenu_Version30_YesNo_Menu_Wondertrade(u8 taskId)
-{
-    DrawMainMenuWindowBorder(&sWindowTemplates_MainMenu[9], MAIN_MENU_BORDER_TILE);
-    FillWindowPixelBuffer(9, PIXEL_FILL(1));
-    PrintMenuTable(9, ARRAY_COUNT(sMenuActions_UpdateGame_YesNo), sMenuActions_UpdateGame_YesNo);
-    InitMenuInUpperLeftCornerNormal(9, ARRAY_COUNT(sMenuActions_UpdateGame_YesNo), 0);
-    PutWindowTilemap(9);
-    CopyWindowToVram(9, COPYWIN_FULL);
-    gTasks[taskId].func = Task_ShowUpdateGameMenu_Version30_Choose_YesNo_Wondertrade;
-}
-
-static void Task_ShowUpdateGameMenu_Version30_Choose_YesNo_Wondertrade(u8 taskId)
-{
-    s8 selection = Task_ShowUpdateGameMenu_ProcessMenuInput();
-
-    switch (selection)
-    {
-    case 0:
-        PlaySE(SE_SELECT);
-        ClearWindowTilemap(9);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[9]);
-        //TODO: ADD WONDERTRADE SAVEBLOCK SET TO 1
-        CreateMainMenuErrorWindow(gText_From30_WonderTrade_Yes);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_Version30_Goto_ShinyColors;
-        break;
-    case 1:
-        PlaySE(SE_SELECT);
-        ClearWindowTilemap(9);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[9]);
-        //TODO: ADD WONDERTRADE SAVEBLOCK SET TO 0
-        CreateMainMenuErrorWindow(gText_From30_WonderTrade_No);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_Version30_Goto_ShinyColors;
-        break;
-    }
-}
-
-///////////////////
-//SHINY COLORS
-
-static void Task_ShowUpdateGameMenu_Version30_Goto_ShinyColors(u8 taskId)
-{
-    RunTextPrinters();
-    if (!IsTextPrinterActive(7) && (JOY_NEW(A_BUTTON)))
-    {
-        ClearWindowTilemap(7);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[7]);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_Version30_YesNo_Menu_ShinyColors;
-    }
-}
-
-static void Task_ShowUpdateGameMenu_Version30_YesNo_Menu_ShinyColors(u8 taskId)
-{
-    DrawMainMenuWindowBorder(&sWindowTemplates_MainMenu[9], MAIN_MENU_BORDER_TILE);
-    FillWindowPixelBuffer(9, PIXEL_FILL(1));
-    PrintMenuTable(9, ARRAY_COUNT(sMenuActions_UpdateGame_YesNo), sMenuActions_UpdateGame_YesNo);
-    InitMenuInUpperLeftCornerNormal(9, ARRAY_COUNT(sMenuActions_UpdateGame_YesNo), 0);
-    PutWindowTilemap(9);
-    CopyWindowToVram(9, COPYWIN_FULL);
-    gTasks[taskId].func = Task_ShowUpdateGameMenu_Version30_Choose_YesNo_ShinyColors;
-}
-
-static void Task_ShowUpdateGameMenu_Version30_Choose_YesNo_ShinyColors(u8 taskId)
-{
-    s8 selection = Task_ShowUpdateGameMenu_ProcessMenuInput();
-
-    switch (selection)
-    {
-    case 0:
-        PlaySE(SE_SELECT);
-        ClearWindowTilemap(9);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[9]);
-        //gSaveBlock1Ptr->tx_Features_ShinyColors = 1;
-        CreateMainMenuErrorWindow(gText_From30_ShinyColors_Yes);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_Version30_Goto_TypeChart;
-        break;
-    case 1:
-        PlaySE(SE_SELECT);
-        ClearWindowTilemap(9);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[9]);
-        //gSaveBlock1Ptr->tx_Features_ShinyColors = 0;
-        CreateMainMenuErrorWindow(gText_From30_ShinyColors_No);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_Version30_Goto_TypeChart;
-        break;
-    }
-}
-
-////////////
-//TYPE CHART
-
-static void Task_ShowUpdateGameMenu_Version30_Goto_TypeChart(u8 taskId)
-{
-    RunTextPrinters();
-    if (!IsTextPrinterActive(7) && (JOY_NEW(A_BUTTON)))
-    {
-        ClearWindowTilemap(7);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[7]);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_Version30_YesNo_Menu_TypeChart;
-    }
-}
-
-static void Task_ShowUpdateGameMenu_Version30_YesNo_Menu_TypeChart(u8 taskId)
-{
-    DrawMainMenuWindowBorder(&sWindowTemplates_MainMenu[9], MAIN_MENU_BORDER_TILE);
-    FillWindowPixelBuffer(9, PIXEL_FILL(1));
-    PrintMenuTable(9, ARRAY_COUNT(sMenuActions_UpdateGame_YesNo), sMenuActions_UpdateGame_YesNo);
-    InitMenuInUpperLeftCornerNormal(9, ARRAY_COUNT(sMenuActions_UpdateGame_YesNo), 0);
-    PutWindowTilemap(9);
-    CopyWindowToVram(9, COPYWIN_FULL);
-    gTasks[taskId].func = Task_ShowUpdateGameMenu_Version30_Choose_YesNo_TypeChart;
-}
-
-static void Task_ShowUpdateGameMenu_Version30_Choose_YesNo_TypeChart(u8 taskId)
-{
-    s8 selection = Task_ShowUpdateGameMenu_ProcessMenuInput();
-
-    switch (selection)
-    {
-    case 0:
-        PlaySE(SE_SELECT);
-        ClearWindowTilemap(9);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[9]);
-        //gSaveBlock1Ptr->tx_Mode_TypeEffectiveness = 0;
-        CreateMainMenuErrorWindow(gText_From30_TypeChart_Yes);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_WaitToShowUpdateMessage;
-        break;
-    case 1:
-        PlaySE(SE_SELECT);
-        ClearWindowTilemap(9);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[9]);
-        //gSaveBlock1Ptr->tx_Mode_TypeEffectiveness = 1;
-        CreateMainMenuErrorWindow(gText_From30_TypeChart_No);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_WaitToShowUpdateMessage;
-        break;
-    }
-}
-
-///////////////////////////
-//UPDATE FROM VERSION 3.5//
-///////////////////////////
-
-///////////////////
-//WONDERTRADE
-static void Task_ShowUpdateGameMenu_Version35_Wondertrade(u8 taskId)
-{
-    RunTextPrinters();
-    if (!IsTextPrinterActive(7) && (JOY_NEW(A_BUTTON)))
-    {
-        ClearWindowTilemap(7);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[7]);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_Version35_YesNo_Menu_Wondertrade;
-    }
-}
-
-static void Task_ShowUpdateGameMenu_Version35_YesNo_Menu_Wondertrade(u8 taskId)
-{
-    DrawMainMenuWindowBorder(&sWindowTemplates_MainMenu[9], MAIN_MENU_BORDER_TILE);
-    FillWindowPixelBuffer(9, PIXEL_FILL(1));
-    PrintMenuTable(9, ARRAY_COUNT(sMenuActions_UpdateGame_YesNo), sMenuActions_UpdateGame_YesNo);
-    InitMenuInUpperLeftCornerNormal(9, ARRAY_COUNT(sMenuActions_UpdateGame_YesNo), 0);
-    PutWindowTilemap(9);
-    CopyWindowToVram(9, COPYWIN_FULL);
-    gTasks[taskId].func = Task_ShowUpdateGameMenu_Version35_Choose_YesNo_Wondertrade;
-}
-
-static void Task_ShowUpdateGameMenu_Version35_Choose_YesNo_Wondertrade(u8 taskId)
-{
-    s8 selection = Task_ShowUpdateGameMenu_ProcessMenuInput();
-
-    switch (selection)
-    {
-    case 0:
-        PlaySE(SE_SELECT);
-        ClearWindowTilemap(9);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[9]);
-        //TODO: ADD WONDERTRADE SAVEBLOCK SET TO 1
-        CreateMainMenuErrorWindow(gText_From35_WonderTrade_Yes);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_WaitToShowUpdateMessage;
-        break;
-    case 1:
-        PlaySE(SE_SELECT);
-        ClearWindowTilemap(9);
-        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[9]);
-        //TODO: ADD WONDERTRADE SAVEBLOCK SET TO 0
-        CreateMainMenuErrorWindow(gText_From35_WonderTrade_No);
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_WaitToShowUpdateMessage;
-        break;
-    }
-}
-
-////////////////
-///COMMON END///
-////////////////
-
-static void Task_ShowUpdateGameMenu_WaitToShowUpdateMessage(u8 taskId)
-{
-    RunTextPrinters();
-    if (!IsTextPrinterActive(7) && (JOY_NEW(A_BUTTON)))
-    {
-        gTasks[taskId].func = Task_ShowUpdateGameMenu_ChooseCorrectVersion;
-    }
-}
-
-//Sets the VAR_NUMBER_OF_RELEASE to the current Modern Emerald Release Number
-static void Task_ShowUpdateGameMenu_ChooseCorrectVersion(u8 taskId)
-{
+    gTasks[taskId].tUpdaterStep = step + 1;
     ClearWindowTilemap(7);
     ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[7]);
-    VarSet(VAR_NUMBER_OF_RELEASE, MODERN_EMERALD_RELEASE_NUMBER);
+    gTasks[taskId].func = Task_VersionUpdater_ShowNextQuestion;
+}
+
+static void Task_VersionUpdater_ShowComplete(u8 taskId)
+{
+    CreateMainMenuErrorWindow(sText_VersionUpdater_Complete);
+    gTasks[taskId].func = Task_VersionUpdater_WaitComplete;
+}
+
+static void Task_VersionUpdater_WaitComplete(u8 taskId)
+{
+    RunTextPrinters();
+    if (!IsTextPrinterActive(7) && JOY_NEW(A_BUTTON))
+    {
+        ClearWindowTilemap(7);
+        ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[7]);
+        gTasks[taskId].func = Task_VersionUpdater_Finish;
+    }
+}
+
+static void Task_VersionUpdater_Finish(u8 taskId)
+{
+    StampCurrentSaveVersion();
+    // Clear the full BG0 tilemap so main menu draws on a clean slate
+    FillBgTilemapBufferRect_Palette0(0, 0, 0, 0, 30, 20);
+    CopyBgTilemapBufferToVram(0);
+    // Reset GPU window regs
+    SetGpuReg(REG_OFFSET_WIN0H, 0);
+    SetGpuReg(REG_OFFSET_WIN0V, 0);
     gTasks[taskId].func = Task_MainMenuCheckBattery;
 }
 

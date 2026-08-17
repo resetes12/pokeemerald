@@ -17,8 +17,23 @@
 #define VERSION_PLATINUM 12
 #define VERSION_GAMECUBE 15
 
-// Modern Emerald started tracking Release Numbers after version 3.5. Up until 3.5 (included), all versions are considered "0".
-#define MODERN_EMERALD_RELEASE_NUMBER 36
+// =====================================================================
+// SAVE VERSION TRACKING
+// =====================================================================
+// The save migration system reads saveVersion from a FIXED byte offset
+// in flash sector 0 (SaveBlock2) BEFORE checksum validation.
+// This means struct SaveBlock2's layout up to the saveVersion field
+// can NEVER be reordered or resized. See include/global.h for details.
+//
+// Increment ME_SAVE_VERSION_CURRENT for each release that changes
+// saveblock layout or adds features needing migration.
+// =====================================================================
+#define ME_SAVE_VERSION_NONE    0  // Pre-tracking (3.5 and earlier)
+#define ME_SAVE_VERSION_3_6    36  // First version with save version tracking
+#define ME_SAVE_VERSION_CURRENT ME_SAVE_VERSION_3_6
+
+// Alias used by maintainer's script-level version updater (vars.h / new_game.c)
+#define MODERN_EMERALD_RELEASE_NUMBER ME_SAVE_VERSION_CURRENT
 
 #define LANGUAGE_JAPANESE 1
 #define LANGUAGE_ENGLISH  2

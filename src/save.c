@@ -3,6 +3,7 @@
 #include "gba/flash_internal.h"
 #include "fieldmap.h"
 #include "save.h"
+#include "save_migration.h"
 #include "task.h"
 #include "decompress.h"
 #include "load_save.h"
@@ -499,6 +500,29 @@ static u8 CopySaveSlotData(u16 sectorId, struct SaveSectorLocation *locations)
             gLastWrittenSector = i;
 
         checksum = CalculateChecksum(gReadWriteSector->data, locations[id].size);
+
+        // Attempt pre-checksum migration for sectors with outdated layout.
+        // If the old-size checksum matches, it's a pre-3.6 save with a smaller struct.
+        // Zero the appended fields and recalculate.
+        if (gReadWriteSector->signature == SECTOR_SIGNATURE && gReadWriteSector->checksum != checksum)
+        {
+            u16 oldSize = GetOldSaveBlock2Size();
+            u16 oldChecksum = CalculateChecksum(gReadWriteSector->data, oldSize);
+
+            if (id == SECTOR_ID_SAVEBLOCK2 && oldSize < locations[id].size
+                && gReadWriteSector->checksum == oldChecksum)
+            {
+                // Old save confirmed — zero appended tail and accept
+                TryMigrateSectorData(id, gReadWriteSector->data, locations[id].size);
+                checksum = CalculateChecksum(gReadWriteSector->data, locations[id].size);
+                gReadWriteSector->checksum = checksum;
+            }
+            else if (TryMigrateSectorData(id, gReadWriteSector->data, locations[id].size))
+            {
+                checksum = CalculateChecksum(gReadWriteSector->data, locations[id].size);
+                gReadWriteSector->checksum = checksum;
+            }
+        }
 
         // Only copy data for sectors whose signature and checksum fields are correct
         if (gReadWriteSector->signature == SECTOR_SIGNATURE && gReadWriteSector->checksum == checksum)
