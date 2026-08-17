@@ -2160,6 +2160,12 @@ static void HandleSpecialTrainerBattleEnd(void)
             u16 itemBefore = GetMonData(&gSaveBlock1Ptr->playerParty[i], MON_DATA_HELD_ITEM);
             SetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, &itemBefore);
         }
+        if (FlagGet(FLAG_LIMIT_TO_50))
+        {
+            FlagClear(FLAG_LIMIT_TO_50);
+            for (i = 0; i < PARTY_SIZE; i++)
+                CalculateMonStats(&gPlayerParty[i]);
+        }
         break;
     case SPECIAL_BATTLE_EREADER:
         CopyEReaderTrainerFarewellMessage();
