@@ -509,6 +509,13 @@ struct RankingHall2P
 
 struct SaveBlock2
 {
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // WARNING: DO NOT reorder, resize, or remove ANY field from the start of
+    // this struct up to and including `saveVersion`. The save migration system
+    // reads `saveVersion` at a fixed raw byte offset from flash BEFORE the
+    // checksum is validated. If this offset changes, old saves become
+    // unrecoverable. Add new fields AFTER `padding_savecompat` only.
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     /*0x00*/ u8 playerName[PLAYER_NAME_LENGTH + 1];
     /*0x08*/ u8 playerGender; // MALE, FEMALE
     /*0x09*/ u8 specialSaveWarpFlags;
@@ -574,7 +581,14 @@ struct SaveBlock2
               u16 optionsCursorMemory:1;
               u16 optionsBattleSpeed:1; // 0 = normal, 1 = double speed animations/bars
               u16 optionsBrighterNights:1; // 0 = normal darkness, 1 = brighter nights
-              u8 padding_savecompat[4]; // Preserve struct size for save compatibility
+              // ------- FROZEN OFFSET BOUNDARY -------
+              // Everything above this line MUST NOT change size or order.
+              // The save migration system depends on saveVersion being at a
+              // fixed byte offset within flash sector 0. Moving it = bricked saves.
+              u8 saveVersion;            // ME_SAVE_VERSION_* — read from raw flash pre-checksum
+              u8 padding_savecompat[3]; // Remaining padding for save compatibility
+              // ------- END FROZEN BOUNDARY -------
+              // New fields may be added below here safely (with a version bump + migration).
               u8 shinySeen[NUM_DEX_FLAG_BYTES]; // Tracks whether trainer has ever seen/caught a shiny of each species. Stays the last one in case of
                                                 // overflow.
 }; // sizeof=0xF2C + NUM_DEX_FLAG_BYTES
