@@ -567,6 +567,13 @@ struct VersionUpdaterStep {
     u8 noValue;          // Value for field write
 };
 
+//Defines to make everything a bit more readable
+#define FRONTIER_BANS_24 1
+#define SHINY_COLORS_30 2
+#define TYPE_EFFECTIVENESS_30 3
+#define WONDERTRADE_35 4
+
+
 // Helper: apply a migration action
 static void ApplyVersionUpdaterAction(u8 actionType, u16 target, u8 value)
 {
@@ -580,22 +587,24 @@ static void ApplyVersionUpdaterAction(u8 actionType, u16 target, u8 value)
         // Per-field handling. Add cases here as new fields are wired up.
         switch (target)
         {
-        case 1: // tx_Features_FrontierBans
+        case FRONTIER_BANS_24:
             gSaveBlock1Ptr->tx_Features_FrontierBans = value;
             break;
-        case 2: // tx_Features_ShinyColors
+        case SHINY_COLORS_30:
             gSaveBlock1Ptr->tx_Features_ShinyColors = value;
             break;
-        case 3: // tx_Mode_TypeEffectiveness
+        case TYPE_EFFECTIVENESS_30:
             gSaveBlock1Ptr->tx_Mode_TypeEffectiveness = value;
             break;
-        case 4: // tx_Features_WT
+        case WONDERTRADE_35:
             {
             gSaveBlock1Ptr->tx_Features_WT = value;
+            //WonderTrade also depends on a flag being set
             if (value == 1)
                 FlagSet(FLAG_WT_ENABLED);
             else
                 FlagClear(FLAG_WT_ENABLED);
+            break;
             }
         }
         break;
@@ -608,10 +617,10 @@ static const struct VersionUpdaterStep sVersionUpdaterSteps[] = {
         .promptText = sText_VersionUpdater_WonderTrade,
         .minimumFrom = FROM_VERSION_35,
         .yesActionType = VU_ACTION_SET_SB1_FIELD,
-        .yesTarget = 4, // tx_Features_WT
+        .yesTarget = WONDERTRADE_35,
         .yesValue = 1,
         .noActionType = VU_ACTION_SET_SB1_FIELD,
-        .noTarget = 4,
+        .noTarget = WONDERTRADE_35,
         .noValue = 0,
     },
     // Unlimited WT — 2.4 only
@@ -630,10 +639,10 @@ static const struct VersionUpdaterStep sVersionUpdaterSteps[] = {
         .promptText = sText_VersionUpdater_FrontierBans,
         .minimumFrom = FROM_VERSION_24,
         .yesActionType = VU_ACTION_SET_SB1_FIELD,
-        .yesTarget = 1, // tx_Features_FrontierBans
+        .yesTarget = FRONTIER_BANS_24,
         .yesValue = 1,
         .noActionType = VU_ACTION_SET_SB1_FIELD,
-        .noTarget = 1,
+        .noTarget = FRONTIER_BANS_24,
         .noValue = 0,
     },
     // Shiny Colors — 2.4 and 3.0
@@ -641,10 +650,10 @@ static const struct VersionUpdaterStep sVersionUpdaterSteps[] = {
         .promptText = sText_VersionUpdater_ShinyColors,
         .minimumFrom = FROM_VERSION_30,
         .yesActionType = VU_ACTION_SET_SB1_FIELD,
-        .yesTarget = 2, // tx_Features_ShinyColors
+        .yesTarget = SHINY_COLORS_30,
         .yesValue = 1,
         .noActionType = VU_ACTION_SET_SB1_FIELD,
-        .noTarget = 2,
+        .noTarget = SHINY_COLORS_30,
         .noValue = 0,
     },
     // Type Chart — 2.4 and 3.0
@@ -652,10 +661,10 @@ static const struct VersionUpdaterStep sVersionUpdaterSteps[] = {
         .promptText = sText_VersionUpdater_TypeChart,
         .minimumFrom = FROM_VERSION_30,
         .yesActionType = VU_ACTION_SET_SB1_FIELD,
-        .yesTarget = 3, // tx_Mode_TypeEffectiveness (0 = Gen VI, 1 = Modern)
+        .yesTarget = TYPE_EFFECTIVENESS_30,
         .yesValue = 0,
         .noActionType = VU_ACTION_SET_SB1_FIELD,
-        .noTarget = 3,
+        .noTarget = TYPE_EFFECTIVENESS_30,
         .noValue = 1,
     },
 };
