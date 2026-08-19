@@ -1029,6 +1029,28 @@ static void Task_VersionUpdater_HandleVersionChoice(u8 taskId)
     {
         PlaySE(SE_SELECT);
         gTasks[taskId].tUpdaterOrigin = selection;
+        // ============================================================
+        // Silent migrations — no user prompt, just fix data
+        // It runs at the start because "tx_Features_ShinyColors"
+        // will be re-written during the update process, meaning that
+        // users who choose not to have "Shiny Colors" on will have
+        // their Encounter mode changed to Original
+        // ============================================================
+        if (selection <= FROM_VERSION_24)
+        {
+            // Rival naming didn't exist in 2.4. 
+            if (gSaveBlock2Ptr->playerGender == MALE)
+                StringCopy(gSaveBlock2Ptr->rivalName, gText_ExpandedPlaceholder_May); //Always set to May
+            else
+                StringCopy(gSaveBlock2Ptr->rivalName, gText_ExpandedPlaceholder_Brendan); //Always set to Brendan
+
+            // Field rename: old tx_Mode_AlternateSpawns was repurposed as tx_Features_ShinyColors.
+            // Migrate its old value to the new tx_Mode_Encounters field.
+            if (gSaveBlock1Ptr->tx_Features_ShinyColors == 0)
+                gSaveBlock1Ptr->tx_Mode_Encounters = 0;
+            else if (gSaveBlock1Ptr->tx_Features_ShinyColors == 1)
+                gSaveBlock1Ptr->tx_Mode_Encounters = 1;
+        }
         gTasks[taskId].tUpdaterStep = 0;
         ClearWindowTilemap(8);
         ClearMainMenuWindowTilemap(&sWindowTemplates_MainMenu[8]);
@@ -1125,27 +1147,6 @@ static void Task_VersionUpdater_WaitComplete(u8 taskId)
 
 static void Task_VersionUpdater_Finish(u8 taskId)
 {
-    u8 origin = gTasks[taskId].tUpdaterOrigin;
-
-    // ============================================================
-    // Silent migrations — no user prompt, just fix data
-    // ============================================================
-    if (origin <= FROM_VERSION_24)
-    {
-        // Rival naming didn't exist in 2.4. 
-        if (gSaveBlock2Ptr->playerGender == MALE)
-            StringCopy(gSaveBlock2Ptr->rivalName, gText_ExpandedPlaceholder_May); //Always set to May
-        else
-            StringCopy(gSaveBlock2Ptr->rivalName, gText_ExpandedPlaceholder_Brendan); //Always set to Brendan
-
-        // Field rename: old tx_Mode_AlternateSpawns was repurposed as tx_Features_ShinyColors.
-        // Migrate its old value to the new tx_Mode_Encounters field.
-        if (gSaveBlock1Ptr->tx_Features_ShinyColors == 0)
-            gSaveBlock1Ptr->tx_Mode_Encounters = 0;
-        else if (gSaveBlock1Ptr->tx_Features_ShinyColors == 1)
-            gSaveBlock1Ptr->tx_Mode_Encounters = 1;
-    }
-
     StampCurrentSaveVersion();
     // Clear the full BG0 tilemap so main menu draws on a clean slate
     FillBgTilemapBufferRect_Palette0(0, 0, 0, 0, 30, 20);
