@@ -10,7 +10,7 @@ Official releases:
 * [Pokémon Modern Heart and Soul](https://github.com/resetes12/HNS_modern) by myself
     * Experience Johto and Kanto, but now with enhancements, bug fixes, and other stuff.
 * Pokémon Modern FireRed & LeafGreen by myself
-    * _Soon_™️. Experience FRLG, but Modernized.
+    * _Soon_ ™️. Experience FRLG, but Modernized.
 
 Modern Emerald has been used as a base to create other hacks:
 * [Pokémon Heart and Soul](https://github.com/PokemonHnS-Development/pokemonHnS) by @lildill31
@@ -300,4 +300,4 @@ These programs rely on knowing where to find the data on the savefile, and Moder
         - https://github.com/PokemonHnS-Development/pokemonHnS
 * Contributors:
    - Decap by @fanyx
-   - Tweaks and commits by @aloven, @pinkshellos, @insertCreativeName5. @davidgfnet, @unique-github-username, @TixoRebel, @bfedie5 and @deepCeadeus
+   - Tweaks and commits by [@aloven](https://github.com/aloven), [@pinkshellos](https://github.com/PinkShellos), [@insertCreativeName5](https://github.com/InsertCreativeName5). [@davidgfnet](https://github.com/davidgfnet), [@unique-github-username](https://github.com/unique-github-username), [@TixoRebel](https://github.com/TixoRebel), [@bfedie5](https://github.com/bfedie518) and [@deepCeadeus](https://github.com/deepCeadeus)
