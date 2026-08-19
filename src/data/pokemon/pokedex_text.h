@@ -2315,10 +2315,10 @@ const u8 gJirachiPokedexText[] = _(
     "enemies.");
 
 const u8 gDeoxysPokedexText[] = _(
-    "A Pokémon that mutated from an\n"
-    "extraterrestrial virus exposed to a laser\n"
-    "beam. Its body is configured for superior\n"
-    "agility and speed.");
+    "Deoxys emerged from a virus that came\n"
+    "from space. Highly intelligent, it wields\n"
+    "psychokinetic powers and shoots lasers\n"
+    "from the crystalline organ on its chest.");
 
 const u8 gAmbipomPokedexText[] = _(
     "They live on large trees. Split into two,\n"
@@ -2554,13 +2554,31 @@ const u8 gUrsalunaPokedexText[] = _(
     "manipulate peat at will.");
 
 const u8 gUrsaluna_BloodMoonPokedexText[] = _(
-            "It crossed the sea and drifted\n"
-            "ashore in a new land. Surviving in this\n"
-            "place led it to take on a unique\n"
-            "appearance and gain special powers.");
+    "It crossed the sea and drifted\n"
+    "ashore in a new land. Surviving in this\n"
+    "place led it to take on a unique\n"
+    "appearance and gain special powers.");
 
 const u8 gKleavorPokedexText[] = _(
-            "A violent creature that fells trees with\n"
-            "its crude axes and shields itself with hard\n"
-            "stone. Should one encounter this Pokémon\n"
-            "in the wild, one's only recourse is to flee.");
+    "A violent creature that fells trees with\n"
+    "its crude axes and shields itself with hard\n"
+    "stone. Should one encounter this Pokémon\n"
+    "in the wild, one's only recourse is to flee.");
+
+const u8 gDeoxysAPokedexText[] = _(
+    "An alien virus that fell to earth on\n" 
+    "a meteor underwent a DNA mutation to\n"
+    "become this Pokémon. This Deoxys has\n"
+    "transformed into its aggressive guise.");  
+  
+const u8 gDeoxysDPokedexText[] = _(
+    "An alien virus that fell to earth on\n" 
+    "a meteor underwent a DNA mutation to\n"
+    "become this Pokémon. It absorbs attacks\n"
+    "by altering its cellular structure."); 
+    
+const u8 gDeoxysSPokedexText[] = _(
+    "A Pokémon that mutated from an\n"
+    "extraterrestrial virus exposed to a laser\n"
+    "beam. Its body is configured for superior\n"
+    "agility and speed.");
