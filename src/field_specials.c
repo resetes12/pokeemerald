@@ -28,6 +28,7 @@
 #include "overworld.h"
 #include "party_menu.h"
 #include "pokeblock.h"
+#include "pokedex.h"
 #include "pokemon.h"
 #include "pokemon_storage_system.h"
 #include "random.h"
@@ -4372,6 +4373,8 @@ bool16 TryChangeDeoxysForm(void)
 
         SetMonData(&gPlayerParty[gSpecialVar_0x8004], MON_DATA_SPECIES, &targetSpecies);
         CalculateMonStats(&gPlayerParty[gSpecialVar_0x8004]);
+        GetSetPokedexFlag(SpeciesToNationalPokedexNum(targetSpecies), FLAG_SET_SEEN);
+        GetSetPokedexFlag(SpeciesToNationalPokedexNum(targetSpecies), FLAG_SET_CAUGHT);
         gSpecialVar_Result = TRUE;
         return TRUE;
     }
