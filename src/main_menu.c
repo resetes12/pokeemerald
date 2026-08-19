@@ -589,6 +589,14 @@ static void ApplyVersionUpdaterAction(u8 actionType, u16 target, u8 value)
         case 3: // tx_Mode_TypeEffectiveness
             gSaveBlock1Ptr->tx_Mode_TypeEffectiveness = value;
             break;
+        case 4: // tx_Features_WT
+            {
+            gSaveBlock1Ptr->tx_Features_WT = value;
+            if (value == 1)
+                FlagSet(FLAG_WT_ENABLED);
+            else
+                FlagClear(FLAG_WT_ENABLED);
+            }
         }
         break;
     }
@@ -599,11 +607,11 @@ static const struct VersionUpdaterStep sVersionUpdaterSteps[] = {
     {
         .promptText = sText_VersionUpdater_WonderTrade,
         .minimumFrom = FROM_VERSION_35,
-        .yesActionType = VU_ACTION_SET_FLAG,
-        .yesTarget = FLAG_WT_ENABLED, //Placeholder, a new saveblock option is needed
-        .yesValue = 0,
-        .noActionType = VU_ACTION_NONE,
-        .noTarget = 0,
+        .yesActionType = VU_ACTION_SET_SB1_FIELD,
+        .yesTarget = 4, // tx_Features_WT
+        .yesValue = 1,
+        .noActionType = VU_ACTION_SET_SB1_FIELD,
+        .noTarget = 4,
         .noValue = 0,
     },
     // Unlimited WT — 2.4 only
