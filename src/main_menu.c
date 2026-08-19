@@ -400,9 +400,9 @@ static const struct WindowTemplate sWindowTemplates_MainMenu[] =
     // Version updater select menu (window 8)
     {
         .bg = 0,
-        .tilemapLeft = 2,
-        .tilemapTop = 11,
-        .width = 14,
+        .tilemapLeft = 10,
+        .tilemapTop = 7,
+        .width = 10,
         .height = 6,
         .paletteNum = 15,
         .baseBlock = 0x1E0
@@ -524,16 +524,16 @@ static const struct MenuAction sMenuActions_Difficulty[] = {
 // Version Updater Data
 // ============================================================
 
-static const u8 sText_VersionUpdater_Intro[] = _("A save from an older version was\ndetected.\p{COLOR RED}Choose which version you were\nplaying:{COLOR DARK_GRAY}");
+static const u8 sText_VersionUpdater_Intro[] = _("A save from an older version was\ndetected. An update is needed.\p{COLOR RED}Choose from which version are you\nupdating from.{COLOR DARK_GRAY}");
 static const u8 sText_VersionUpdater_V24[] = _("v2.4 or older");
 static const u8 sText_VersionUpdater_V30[] = _("v3.0/3.1/3.2");
 static const u8 sText_VersionUpdater_V35[] = _("v3.3/3.4/3.5");
 
-static const u8 sText_VersionUpdater_WonderTrade[] = _("Would you like to enable\nWonderTrade?");
-static const u8 sText_VersionUpdater_UnlimitedWT[] = _("Enable unlimited WonderTrades?\n(Otherwise limited to 3/day)");
-static const u8 sText_VersionUpdater_FrontierBans[] = _("Enable Battle Frontier legendary\nbans based on difficulty?");
-static const u8 sText_VersionUpdater_ShinyColors[] = _("Enable alternate Shiny colors?\n(Custom shiny palettes for some\pspecies.)");
-static const u8 sText_VersionUpdater_TypeChart[] = _("Which Type Chart?\n{COLOR RED}Yes{COLOR DARK_GRAY} = Gen VI+\n{COLOR RED}No{COLOR DARK_GRAY} = Modern (buffs weak types)");
+static const u8 sText_VersionUpdater_WonderTrade[] = _("{COLOR RED}Before proceeding, please save your\ngame in an exterior map.{COLOR DARK_GRAY}\pIf this is not the version you're\nupdating from, reset and start again.\pWould you like to enable\nWonderTrade?");
+static const u8 sText_VersionUpdater_UnlimitedWT[] = _("WonderTrades are limited to 3\ntimes a day.\pHowever, a new option can make\nWonderTrades unlimited.\pThis option doesn't matter if\nWonderTrade has been disabled.\pHowever, WonderTrade can be enabled\nagain after becoming Champion,\pin the Battle Frontier Pokécenter.\pEnable unlimited WonderTrades?");
+static const u8 sText_VersionUpdater_FrontierBans[] = _("Enable Battle Frontier Bans?\pAccording to your current difficulty,\nenabling it will ban legendaries from\pparticipating in the Battle Frontier.\nDisabling it will let lengendaries in,\pno matter your chosen difficulty.\pWould you like to enable the bans?\n{COLOR RED}Yes{COLOR DARK_GRAY} has been always the default option.");
+static const u8 sText_VersionUpdater_ShinyColors[] = _("Some {PKMN} species have custom, new\nshiny forms.\pPreviously, this option was always {COLOR RED}On{COLOR DARK_GRAY},\nnow it's optional.\pCheck online docs for more info and\nimages on new shiny forms.\pEnable alternate Shiny colors?");
+static const u8 sText_VersionUpdater_TypeChart[] = _("Which Type Chart will you use?\pGen VI+ Type Chart nerfs Steel not\nresisting Ghost and Dark.\pModern Type Chart buffs bad types into\nnot so bad, like Bug.\pCheck online docs for more info on this\nnew option.\pWould you like to use Gen VI\nType Chart?\pSelecting {COLOR RED}Yes{COLOR DARK_GRAY} will enable Gen VI Chart.\n{COLOR RED}No{COLOR DARK_GRAY} will set it to Modern Type Chart.");
 static const u8 sText_VersionUpdater_Complete[] = _("Update complete!\nSave your game to keep changes.");
 
 static const struct MenuAction sMenuActions_VersionSelect[] = {
@@ -600,7 +600,7 @@ static const struct VersionUpdaterStep sVersionUpdaterSteps[] = {
         .promptText = sText_VersionUpdater_WonderTrade,
         .minimumFrom = FROM_VERSION_35,
         .yesActionType = VU_ACTION_SET_FLAG,
-        .yesTarget = FLAG_WT_ENABLED,
+        .yesTarget = FLAG_WT_ENABLED, //Placeholder, a new saveblock option is needed
         .yesValue = 0,
         .noActionType = VU_ACTION_NONE,
         .noTarget = 0,
@@ -1132,11 +1132,11 @@ static void Task_VersionUpdater_Finish(u8 taskId)
     // ============================================================
     if (origin <= FROM_VERSION_24)
     {
-        // Rival naming didn't exist in 2.4 — assign a random rival name
+        // Rival naming didn't exist in 2.4. 
         if (gSaveBlock2Ptr->playerGender == MALE)
-            StringCopy(gSaveBlock2Ptr->rivalName, sFemalePresetNames[Random() % ARRAY_COUNT(sFemalePresetNames)]);
+            StringCopy(gSaveBlock2Ptr->rivalName, gText_ExpandedPlaceholder_May); //Always set to May
         else
-            StringCopy(gSaveBlock2Ptr->rivalName, sMalePresetNames[Random() % ARRAY_COUNT(sMalePresetNames)]);
+            StringCopy(gSaveBlock2Ptr->rivalName, gText_ExpandedPlaceholder_Brendan); //Always set to Brendan
 
         // Field rename: old tx_Mode_AlternateSpawns was repurposed as tx_Features_ShinyColors.
         // Migrate its old value to the new tx_Mode_Encounters field.
