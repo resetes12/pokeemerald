@@ -231,7 +231,7 @@ Challenges page:
 * Chain fishing AND Sweet Scent chaining!
 * All tickets are available to buy in the Battle Frontier.
 * Faster nurse Joy healing, and now with an even faster version in the options menu (with a confirmation sound).
-* A new item, the Big Nugget! It can be sold for a very high price. Available from Clamperl or Rich trainers (rematch only).
+* A new item, the Big Nugget! It can be sold for a very high price. Available from Rich trainers (rematch only).
 * You can check the Soot Sack to know how much ash you have.
 * Interacting with berry trees is faster.
 * Berry trees that are in rainy routes don't need to be watered, and berry trees don't decay.
@@ -285,7 +285,7 @@ These programs rely on knowing where to find the data on the savefile, and Moder
 
 # 🪪CREDITS
 
-* [https://github.com/pret/pokeemerald] for its base
+* [Pret's Pokeemerald](https://github.com/pret/pokeemerald) for its base
 * Pret's Wiki Tutorials:
     - TONS of their tutorials were used!
 * Repos:
@@ -298,3 +298,6 @@ These programs rely on knowing where to find the data on the savefile, and Moder
         - https://github.com/worpbane/pokeemerald-worped/commits/battle-ui-rework/
     - Many stuff was ported from HnS:
         - https://github.com/PokemonHnS-Development/pokemonHnS
+* Contributors:
+   - Decap by @fanyx
+   - Tweaks and commits by @aloven, @pinkshellos, @insertCreativeName5. @davidgfnet, @unique-github-username, @TixoRebel, @bfedie5 and @deepCeadeus
