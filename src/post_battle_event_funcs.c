@@ -19,9 +19,14 @@ int GameClear(void)
     } ribbonCounts[6];
 
     HealPlayerParty();
+    //Easy Nuzlocke mode gets disabled after beating the game
     gSaveBlock1Ptr->tx_Nuzlocke_EasyMode = 0;
 
-    //Hard Mode exp. reduction gets disabled
+    // WonderTrade gets enabled after beating the game, doesn't matter if you had it on or off
+    gSaveBlock1Ptr->tx_Features_WT = 1;
+    FlagSet(FLAG_WT_ENABLED);
+
+    //Hard Mode exp. reduction gets disabled after beating the game
     if (gSaveBlock2Ptr->optionsDifficulty == 2)
         gSaveBlock1Ptr->tx_Difficulty_HardExp = 1;
 

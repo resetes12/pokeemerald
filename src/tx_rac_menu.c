@@ -70,6 +70,7 @@ enum
     MENUITEM_FEATURES_SHINY_CHANCE,
     MENUITEM_FEATURES_SHINY_COLOR,
     MENUITEM_FEATURES_ITEM_DROP,
+    MENUITEM_FEATURES_WT,
     MENUITEM_FEATURES_UNLIMITED_WT,
     MENUITEM_FEATURES_EASY_FEEBAS,
     MENUITEM_FEATURES_FRONTIER_BANS,
@@ -317,6 +318,7 @@ static void DrawChoices_Mode_InfiniteTMs(int selection, int y);
 static void DrawChoices_Mode_SurvivePoison(int selection, int y);
 static void DrawChoices_Features_EasyFeebas(int selection, int y);
 static void DrawChoices_Features_Rtc_Type(int selection, int y);
+static void DrawChoices_Features_WT(int selection, int y);
 static void DrawChoices_Features_Unlimited_WT(int selection, int y);
 static void DrawChoices_Mode_Synchronize(int selection, int y);
 static void DrawChoices_Mode_Mints(int selection, int y);
@@ -395,9 +397,10 @@ struct // MENU_FEATURES
     [MENUITEM_FEATURES_SHINY_CHANCE]          = {DrawChoices_Features_ShinyChance,          ProcessInput_Options_Five},
     [MENUITEM_FEATURES_ITEM_DROP]             = {DrawChoices_Features_ItemDrop,             ProcessInput_Options_Two},
     [MENUITEM_FEATURES_EASY_FEEBAS]           = {DrawChoices_Features_EasyFeebas,           ProcessInput_Options_Two},
+    [MENUITEM_FEATURES_WT]                    = {DrawChoices_Features_WT,                   ProcessInput_Options_Two},
     [MENUITEM_FEATURES_UNLIMITED_WT]          = {DrawChoices_Features_Unlimited_WT,         ProcessInput_Options_Two},
     [MENUITEM_FEATURES_FRONTIER_BANS]         = {DrawChoices_Features_FrontierBans,         ProcessInput_Options_Two},
-    [MENUITEM_FEATURES_SHINY_COLOR]           = {DrawChoices_Features_Shiny_Colors,          ProcessInput_Options_Two},
+    [MENUITEM_FEATURES_SHINY_COLOR]           = {DrawChoices_Features_Shiny_Colors,         ProcessInput_Options_Two},
     [MENUITEM_FEATURES_NEXT]                  = {NULL, NULL},
 };
 
@@ -522,6 +525,7 @@ static const u8 sText_RTC_Type[]            = _("CLOCK TYPE");
 static const u8 sText_ShinyChance[]         = _("SHINY CHANCE");
 static const u8 sText_ItemDrop[]            = _("ITEM DROP");
 static const u8 sText_EasyFeebas[]          = _("EASIER FEEBAS");
+static const u8 sText_WT[]                  = _("WONDERTRADE");
 static const u8 sText_Unlimited_WT[]        = _("UNLIMITED WT");
 static const u8 sText_FrontierBans[]        = _("FRONTIER BANS");
 static const u8 sText_Shiny_Colors[]        = _("SHINY COLORS");
@@ -532,6 +536,7 @@ static const u8 *const sOptionMenuItemsNamesFeatures[MENUITEM_FEATURES_COUNT] =
     [MENUITEM_FEATURES_SHINY_CHANCE]              = sText_ShinyChance,
     [MENUITEM_FEATURES_ITEM_DROP]                 = sText_ItemDrop,
     [MENUITEM_FEATURES_EASY_FEEBAS]               = sText_EasyFeebas,
+    [MENUITEM_FEATURES_WT]                        = sText_WT,
     [MENUITEM_FEATURES_UNLIMITED_WT]              = sText_Unlimited_WT,
     [MENUITEM_FEATURES_FRONTIER_BANS]             = sText_FrontierBans,
     [MENUITEM_FEATURES_SHINY_COLOR]               = sText_Shiny_Colors,
@@ -837,6 +842,8 @@ static const u8 sText_Description_Features_ShinyChance_1024[]         = _("High 
 static const u8 sText_Description_Features_ShinyChance_512[]          = _("Very high chance of Shiny encounter.");
 static const u8 sText_Description_Features_EasyFeebas_On[]            = _("Feebas is easier to catch and spawns\neverywhere in Route 119.");
 static const u8 sText_Description_Features_EasyFeebas_Off[]           = _("Feebas is encountered in random\nspots in Route 119.");
+static const u8 sText_Description_Features_WT_On[]                    = _("WonderTrade Stations are enabled\nfrom the start of the game.");
+static const u8 sText_Description_Features_WT_Off[]                   = _("WonderTrade Stations are enabled\nafter becoming Champion.");
 static const u8 sText_Description_Features_Unlimited_WT_On[]          = _("Enables a daily limit of 3\nWonderTrades. Recommended.");
 static const u8 sText_Description_Features_Unlimited_WT_Off[]         = _("WonderTrades have no daily limit.");
 static const u8 sText_Description_Features_FrontierBans_Unban[]       = _("All legendaries are allowed to\nparticipate in the Battle Frontier.");
@@ -852,9 +859,10 @@ static const u8 *const sOptionMenuItemDescriptionsFeatures[MENUITEM_FEATURES_COU
     [MENUITEM_FEATURES_SHINY_CHANCE]          = {sText_Description_Features_ShinyChance_8192,       sText_Description_Features_ShinyChance_4096,      sText_Description_Features_ShinyChance_2048,        sText_Description_Features_ShinyChance_1024,        sText_Description_Features_ShinyChance_512},
     [MENUITEM_FEATURES_ITEM_DROP]             = {sText_Description_Features_ItemDrop_Off,           sText_Description_Features_ItemDrop_On,           sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_EASY_FEEBAS]           = {sText_Description_Features_EasyFeebas_Off,         sText_Description_Features_EasyFeebas_On,         sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_FEATURES_WT]                    = {sText_Description_Features_WT_Off,                 sText_Description_Features_WT_On,                 sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_UNLIMITED_WT]          = {sText_Description_Features_Unlimited_WT_On,        sText_Description_Features_Unlimited_WT_Off,      sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_FRONTIER_BANS]         = {sText_Description_Features_FrontierBans_Ban,       sText_Description_Features_FrontierBans_Unban,    sText_Empty,                                        sText_Empty,                                        sText_Empty},
-    [MENUITEM_FEATURES_SHINY_COLOR]           = {sText_Description_Features_Shiny_Colors_Original,  sText_Description_Features_Shiny_Colors_Modern,    sText_Empty,                                        sText_Empty,                                        sText_Empty},
+    [MENUITEM_FEATURES_SHINY_COLOR]           = {sText_Description_Features_Shiny_Colors_Original,  sText_Description_Features_Shiny_Colors_Modern,   sText_Empty,                                        sText_Empty,                                        sText_Empty},
     [MENUITEM_FEATURES_NEXT]                  = {sText_Description_Features_Next,                   sText_Empty,                                      sText_Empty,                                        sText_Empty,                                        sText_Empty},
 };
 
@@ -1051,6 +1059,7 @@ static const u8 *const sOptionMenuItemDescriptionsDisabledFeatures[MENUITEM_FEAT
     [MENUITEM_FEATURES_SHINY_CHANCE]          = sText_Empty,
     [MENUITEM_FEATURES_ITEM_DROP]             = sText_Empty,
     [MENUITEM_FEATURES_EASY_FEEBAS]           = sText_Empty,
+    [MENUITEM_FEATURES_WT]                    = sText_Empty,
     [MENUITEM_FEATURES_UNLIMITED_WT]          = sText_Empty,
     [MENUITEM_FEATURES_SHINY_COLOR]           = sText_Empty,
     [MENUITEM_FEATURES_NEXT]                  = sText_Empty,
@@ -1464,6 +1473,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         gSaveBlock1Ptr->tx_Features_ShinyChance             = TX_FEATURES_SHINY_CHANCE;
         gSaveBlock1Ptr->tx_Features_WildMonDropItems        = TX_FEATURES_ITEM_DROP;
         gSaveBlock1Ptr->tx_Features_EasierFeebas            = TX_FEATURES_EASIER_FEEBAS;
+        gSaveBlock1Ptr->tx_Features_WT                      = TX_FEATURES_WT;
         gSaveBlock1Ptr->tx_Features_Unlimited_WT            = TX_FEATURES_UNLIMITED_WT;
         gSaveBlock1Ptr->tx_Features_FrontierBans            = TX_FEATURES_FRONTIER_BANS;
         gSaveBlock1Ptr->tx_Features_ShinyColors             = TX_FEATURES_SHINY_COLORS;
@@ -1538,6 +1548,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
         sOptions->sel_features[MENUITEM_FEATURES_SHINY_CHANCE]           = gSaveBlock1Ptr->tx_Features_ShinyChance;
         sOptions->sel_features[MENUITEM_FEATURES_ITEM_DROP]              = gSaveBlock1Ptr->tx_Features_WildMonDropItems;
         sOptions->sel_features[MENUITEM_FEATURES_EASY_FEEBAS]            = gSaveBlock1Ptr->tx_Features_EasierFeebas;
+        sOptions->sel_features[MENUITEM_FEATURES_WT]                     = gSaveBlock1Ptr->tx_Features_WT;
         sOptions->sel_features[MENUITEM_FEATURES_UNLIMITED_WT]           = gSaveBlock1Ptr->tx_Features_Unlimited_WT;
         sOptions->sel_features[MENUITEM_FEATURES_FRONTIER_BANS]          = gSaveBlock1Ptr->tx_Features_FrontierBans;
         sOptions->sel_features[MENUITEM_FEATURES_SHINY_COLOR]            = gSaveBlock1Ptr->tx_Features_ShinyColors;
@@ -1893,6 +1904,7 @@ void SaveData_TxRandomizerAndChallenges(void)
     gSaveBlock1Ptr->tx_Features_ShinyChance                 = sOptions->sel_features[MENUITEM_FEATURES_SHINY_CHANCE];
     gSaveBlock1Ptr->tx_Features_WildMonDropItems            = sOptions->sel_features[MENUITEM_FEATURES_ITEM_DROP];
     gSaveBlock1Ptr->tx_Features_EasierFeebas                = sOptions->sel_features[MENUITEM_FEATURES_EASY_FEEBAS];
+    gSaveBlock1Ptr->tx_Features_WT                          = sOptions->sel_features[MENUITEM_FEATURES_WT];
     gSaveBlock1Ptr->tx_Features_Unlimited_WT                = sOptions->sel_features[MENUITEM_FEATURES_UNLIMITED_WT];
     gSaveBlock1Ptr->tx_Features_FrontierBans                = sOptions->sel_features[MENUITEM_FEATURES_FRONTIER_BANS];
     gSaveBlock1Ptr->tx_Features_ShinyColors                 = sOptions->sel_features[MENUITEM_FEATURES_SHINY_COLOR];
@@ -2915,6 +2927,27 @@ static void DrawChoices_Features_ShinyChance(int selection, int y)
     {
         gSaveBlock1Ptr->tx_Features_ShinyChance = 4; // 1/512
     }
+}
+
+static void DrawChoices_Features_WT(int selection, int y)
+{
+    bool8 active = CheckConditions(MENUITEM_FEATURES_WT);
+    u8 styles[2] = {0};
+    styles[selection] = 1;
+
+    if (selection == 0)
+    {
+        gSaveBlock1Ptr->tx_Features_WT = 0; //WonderTrade is disabled until beating the game
+        FlagClear(FLAG_WT_ENABLED);
+    }
+    else
+    {
+        gSaveBlock1Ptr->tx_Features_WT = 1; //WonderTrade is enabled
+        FlagSet(FLAG_WT_ENABLED);
+    }
+
+    DrawOptionMenuChoice(sText_Off, 104, y, styles[0], active);
+    DrawOptionMenuChoice(sText_On, GetStringRightAlignXOffset(1, sText_On, 198), y, styles[1], active);
 }
 
 static void DrawChoices_Features_Unlimited_WT(int selection, int y)

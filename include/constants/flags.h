@@ -506,7 +506,7 @@
 #define FLAG_ENABLE_TATE_AND_LIZA_MATCH_CALL 0x1D8
 #define FLAG_ENABLE_JUAN_MATCH_CALL          0x1D9
 
-#define FLAG_WT_ENABLED                      0x1DA
+#define FLAG_WT_ENABLED_AFTER_FIFTH_BADGE    0x1DA //Unrelated to "FLAG_WT_ENABLED"
 
 #define FLAG_SHOWN_MYSTIC_TICKET             0x1DB
 #define FLAG_DEFEATED_HO_OH                  0x1DC
@@ -689,7 +689,7 @@
 #define FLAG_SURF_PICHU_OBTAINED  0x286 // Surf Pichu
 #define FLAG_RS_OUTFIT     0x287
 #define FLAG_OUTFIT_BOX_OBTAINED  0x288
-#define FLAG_UNUSED_0x289  0x289 // Unused Flag
+#define FLAG_WT_ENABLED    0x289 // Checks whether WT is enabled or not
 #define FLAG_UNUSED_0x28A  0x28A // Unused Flag
 #define FLAG_UNUSED_0x28B  0x28B // Unused Flag
 #define FLAG_UNUSED_0x28C  0x28C // Unused Flag

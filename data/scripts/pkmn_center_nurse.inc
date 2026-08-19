@@ -1,6 +1,7 @@
 Common_EventScript_PkmnCenterNurse::
 	lock
 	faceplayer
+	goto_if_unset FLAG_WT_ENABLED, Common_EventScript_PkmnCenterNurseContinue
 	goto_if_set FLAG_BADGE05_GET, EventScript_PkmnCenterNurse_WTHasBeenEnabled
 Common_EventScript_PkmnCenterNurseContinue::
 	specialvar VAR_RESULT, IsPokecenterChallengeActivated
@@ -13,13 +14,13 @@ Common_EventScript_PkmnCenterNurseContinue::
 	end
 
 EventScript_PkmnCenterNurse_WTHasBeenEnabled::
-	goto_if_unset FLAG_WT_ENABLED, EventScript_PkmnCenterNurse_WTHasBeenEnabledExplain
+	goto_if_unset FLAG_WT_ENABLED_AFTER_FIFTH_BADGE, EventScript_PkmnCenterNurse_WTHasBeenEnabledExplain
 	goto Common_EventScript_PkmnCenterNurseContinue
 
 EventScript_PkmnCenterNurse_WTHasBeenEnabledExplain::
 	msgbox EventScript_PkmnCenterNurse_WTHasBeenEnabledExplain_Text, MSGBOX_DEFAULT
 	closemessage
-	setflag FLAG_WT_ENABLED
+	setflag FLAG_WT_ENABLED_AFTER_FIFTH_BADGE
 	releaseall
 	end
 
@@ -30,7 +31,7 @@ EventScript_PkmnCenterNurse_WTHasBeenEnabledExplain_Text:
 	.string "the Wondertrade System is now\l"
 	.string "operational.\p"
 	.string "Please be sure to visit the\n"
-	.string "second floor of the Pokécenter!$"
+	.string "basement floor of the Pokécenter!$"
 
 EventScript_PkmnCenterNurse_Goodbye::
 	message gText_WeHopeToSeeYouAgain

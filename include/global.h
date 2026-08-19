@@ -531,8 +531,6 @@ struct SaveBlock2
              u16 optionsBattleStyle:1; // OPTIONS_BATTLE_STYLE_[SHIFT/SET]
              u16 optionsBattleSceneOff:1; // whether battle animations are disabled
              u16 regionMapZoom:1; // whether the map is zoomed in
-             //u16 padding1:4;
-             //u16 padding2;
              u16 optionsfollowerEnable:1;
              bool8 optionsautoRun;
              u16 optionsDisableMatchCall:1;
@@ -1202,6 +1200,7 @@ struct SaveBlock1
         u8 tx_Difficulty_HardExp:1;
         u8 tx_Mode_TypeEffectiveness:1;
         u8 tx_Difficulty_CatchRate:3;
+        u8 tx_Features_WT:1;
 };
 
 extern struct SaveBlock1* gSaveBlock1Ptr;
