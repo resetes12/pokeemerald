@@ -514,46 +514,6 @@ void ChangeEncounterTable(void)
     }
 }
 
-//Migration scripts from 2.4 to 3.2
-void Update24to30(void)
-{
-    if (gSaveBlock1Ptr->tx_Features_ShinyColors == 0) //old tx_Mode_AlternateSpawns
-        gSaveBlock1Ptr->tx_Mode_Encounters = 0;
-    else if (gSaveBlock1Ptr->tx_Features_ShinyColors == 1) //old tx_Mode_AlternateSpawns
-        gSaveBlock1Ptr->tx_Mode_Encounters = 1;
-}
-
-void Update24to32_SetFrontierBansToZero(void)
-{
-    gSaveBlock1Ptr->tx_Features_FrontierBans = 0;
-}
-
-void Update24to32_SetFrontierBansToOne(void)
-{
-    gSaveBlock1Ptr->tx_Features_FrontierBans = 1;
-}
-
-//Migration scripts from 3.2 to 3.3
-void Update32to33_SetShinyColorsToZero(void)
-{
-    gSaveBlock1Ptr->tx_Features_ShinyColors = 1;
-}
-
-void Update32to33_SetShinyColorsToOne(void)
-{
-    gSaveBlock1Ptr->tx_Features_ShinyColors = 1;
-}
-
-void Update32to33_TypeEffectiveness_GenVI(void)
-{
-    gSaveBlock1Ptr->tx_Mode_TypeEffectiveness = 0;
-}
-
-void Update32to33_TypeEffectiveness_Modern(void)
-{
-    gSaveBlock1Ptr->tx_Mode_TypeEffectiveness = 1;
-}
-
 //Challenge disabler NPC
 void DisableChallengesAfterBeatingGameEvoLimit(void)
 {

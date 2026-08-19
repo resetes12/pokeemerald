@@ -3220,35 +3220,4 @@ extern const u8 gText_Var1DotVar2_Metric[];
 extern const u8 gText_Follow[];
 extern const u8 gText_PkmnWillFollowYou[];
 
-//Version updater
-extern const u8 gText_OldVersionDetected24to35[];
-extern const u8 gText_OldVersionDetected[];
-extern const u8 gText_Version24[];
-extern const u8 gText_Version30[];
-extern const u8 gText_Version35[];
-//Update from 2.4
-extern const u8 gText_From24[];
-extern const u8 gText_From24_WonderTrade_Yes[];
-extern const u8 gText_From24_WonderTrade_No[];
-extern const u8 gText_From24_UnlimitedWT_Yes[];
-extern const u8 gText_From24_UnlimitedWT_No[];
-extern const u8 gText_From24_FrontierBans_Yes[];
-extern const u8 gText_From24_FrontierBans_No[];
-extern const u8 gText_From24_ShinyColors_Yes[];
-extern const u8 gText_From24_ShinyColors_No[];
-extern const u8 gText_From24_TypeChart_Yes[];
-extern const u8 gText_From24_TypeChart_No[];
-//Update from 3.0
-extern const u8 gText_From30[];
-extern const u8 gText_From30_WonderTrade_Yes[];
-extern const u8 gText_From30_WonderTrade_No[];
-extern const u8 gText_From30_ShinyColors_Yes[];
-extern const u8 gText_From30_ShinyColors_No[];
-extern const u8 gText_From30_TypeChart_Yes[];
-extern const u8 gText_From30_TypeChart_No[];
-//Update from 3.5
-extern const u8 gText_From35[];
-extern const u8 gText_From35_WonderTrade_Yes[];
-extern const u8 gText_From35_WonderTrade_No[];
-
 #endif // GUARD_STRINGS_H
