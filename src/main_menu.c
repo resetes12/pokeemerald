@@ -1172,6 +1172,8 @@ static void Task_VersionUpdater_Finish(u8 taskId)
         gSaveBlock1Ptr->tx_Features_WT = 1;
         FlagSet(FLAG_WT_ENABLED);
     }
+    // Retroactively set shiny-seen flags for any shinies already in party/PC/daycare
+    ScanOwnedMonsForShinies();
 
     StampCurrentSaveVersion();
     // Clear the full BG0 tilemap so main menu draws on a clean slate
