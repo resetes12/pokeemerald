@@ -1164,6 +1164,9 @@ static void Task_VersionUpdater_WaitComplete(u8 taskId)
 
 static void Task_VersionUpdater_Finish(u8 taskId)
 {
+    // Retroactively set shiny-seen flags for any shinies already in party/PC/daycare
+    ScanOwnedMonsForShinies();
+
     StampCurrentSaveVersion();
     // Clear the full BG0 tilemap so main menu draws on a clean slate
     FillBgTilemapBufferRect_Palette0(0, 0, 0, 0, 30, 20);
