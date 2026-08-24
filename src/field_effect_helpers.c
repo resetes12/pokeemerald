@@ -404,7 +404,6 @@ void UpdateShadowFieldEffect(struct Sprite *sprite)
         sprite->invisible = linkedSprite->invisible;
         if (!objectEvent->active
          || objectEvent->noShadow
-         || objectEvent->hasReflection
          || objectEvent->inHotSprings
          || objectEvent->inSandPile
          || gWeatherPtr->noShadows
