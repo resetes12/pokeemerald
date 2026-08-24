@@ -544,7 +544,7 @@ static void HandleInputChooseTarget(void)
     {
         PlaySE(SE_SELECT);
         gSprites[gBattlerSpriteIds[gMultiUsePlayerCursor]].callback = SpriteCB_HideAsMoveTarget;
-        if (gSaveBlock2Ptr->optionsCursorMemory)
+        if ((gSaveBlock2Ptr->optionsCursorMemory) == 0)
         {
             gTargetSelectionCursor[gActiveBattler] = gMultiUsePlayerCursor;
             gTargetSelectionMove[gActiveBattler] = gMoveSelectionCursor[gActiveBattler];
@@ -723,7 +723,7 @@ static void HandleInputChooseMove(void)
                      && gTargetSelectionMove[gActiveBattler] == gMoveSelectionCursor[gActiveBattler]
                      && !(gAbsentBattlerFlags & gBitTable[gTargetSelectionCursor[gActiveBattler]])
                      && gBattleMons[gTargetSelectionCursor[gActiveBattler]].hp > 0
-                     && (gSaveBlock2Ptr->optionsCursorMemory))
+                     && ((gSaveBlock2Ptr->optionsCursorMemory) == 0))
                 gMultiUsePlayerCursor = gTargetSelectionCursor[gActiveBattler];
             else if (gAbsentBattlerFlags & gBitTable[GetBattlerAtPosition(B_POSITION_OPPONENT_LEFT)])
                 gMultiUsePlayerCursor = GetBattlerAtPosition(B_POSITION_OPPONENT_RIGHT);
