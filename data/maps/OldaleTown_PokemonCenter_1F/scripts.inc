@@ -1,4 +1,6 @@
 .set LOCALID_NURSE, 1
+.set LOCALID_TEALA_1, 5
+.set LOCALID_TEALA_2, 6
 
 OldaleTown_PokemonCenter_1F_MapScripts::
 	map_script MAP_SCRIPT_ON_TRANSITION, OldaleTown_PokemonCenter_1F_OnTransition
@@ -6,8 +8,15 @@ OldaleTown_PokemonCenter_1F_MapScripts::
 	.byte 0
 
 OldaleTown_PokemonCenter_1F_OnTransition:
+	call_if_set FLAG_ADVENTURE_STARTED, OldaleTown_PokemonCenter_1F_HideTeala
 	setrespawn HEAL_LOCATION_OLDALE_TOWN
 	call Common_EventScript_UpdateBrineyLocation
+	end
+
+OldaleTown_PokemonCenter_1F_HideTeala:
+	setflag FLAG_TEALA_BLOCKS_MULTIPLAYER
+	removeobject LOCALID_TEALA_1
+	removeobject LOCALID_TEALA_2
 	end
 
 OldaleTown_PokemonCenter_1F_EventScript_Nurse::
@@ -16,6 +25,10 @@ OldaleTown_PokemonCenter_1F_EventScript_Nurse::
 	waitmessage
 	waitbuttonpress
 	release
+	end
+
+OldaleTown_PokemonCenter_1F_EventScript_Teala::
+	msgbox OldaleTown_PokemonCenter_1F_Text_Teala, MSGBOX_NPC
 	end
 
 OldaleTown_PokemonCenter_1F_EventScript_Gentleman::
@@ -62,3 +75,7 @@ OldaleTown_PokemonCenter_1F_Text_TradedInWirelessClub:
 	.string "the second floor was built recently.\p"
 	.string "I traded Pokémon right away.$"
 
+OldaleTown_PokemonCenter_1F_Text_Teala:
+	.string "I'm sorry, but we're currently renovating\n"
+	.string "both the upper and lower floors.\p"
+	.string "Please come back later!$"
