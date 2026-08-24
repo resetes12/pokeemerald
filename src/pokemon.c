@@ -6772,9 +6772,9 @@ s32 CalculateBaseDamage(struct BattlePokemon *attacker, struct BattlePokemon *de
         gBattleMovePower = (150 * gBattleMovePower) / 100;
     if (type == TYPE_BUG && attacker->ability == ABILITY_SWARM && attacker->hp <= (attacker->maxHP / 3))
         gBattleMovePower = (150 * gBattleMovePower) / 100;
-    if ((attacker->species == SPECIES_SPINDA) && ((Random() % 100) <= 2))
+    if ((attacker->species == SPECIES_SPINDA) && ((Random() % 100) <= 2) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 1))
         gBattleMovePower = (200 * gBattleMovePower) / 100;
-    if ((attacker->species == SPECIES_GROUDON) && (moveType == TYPE_FIRE))
+    if ((attacker->species == SPECIES_GROUDON) && (moveType == TYPE_FIRE) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 1))
         gBattleMovePower = (150 * gBattleMovePower) / 100;
 
     // Self-destruct / Explosion cut defense in half
