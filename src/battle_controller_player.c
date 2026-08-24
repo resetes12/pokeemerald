@@ -1839,9 +1839,13 @@ u8 TypeEffectiveness(u8 targetId)
 bool8 IsMoveSTAB(u16 move, u8 battlerId)
 {
 	u8 moveType = DisplayMoveTypeChange(move);
+    u16 species = GetMonData(&gPlayerParty[gBattlerPartyIndexes[gActiveBattler]], MON_DATA_SPECIES);
 
     if (IS_MOVE_STATUS(move))
         return FALSE;
+    
+    if ((species == SPECIES_GROUDON) && (moveType == TYPE_FIRE) && (gSaveBlock1Ptr->tx_Mode_New_Stats == 1))
+        return TRUE;
 
     return (moveType == gBattleMons[battlerId].type1 || moveType == gBattleMons[battlerId].type2);
 }
