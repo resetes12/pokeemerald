@@ -8264,7 +8264,8 @@ u8 GetAbilityBySpecies(u16 species, u8 abilityNum)
         else
             abilityNum = 1;
     }
-    if ((abilityNum == 0) && (species == SPECIES_ARTICUNO 
+    if ((abilityNum == 0) 
+           && (species == SPECIES_ARTICUNO 
             || species == SPECIES_ZAPDOS 
             || species == SPECIES_MOLTRES
             || species == SPECIES_MEWTWO
@@ -8272,7 +8273,10 @@ u8 GetAbilityBySpecies(u16 species, u8 abilityNum)
             || species == SPECIES_ENTEI
             || species == SPECIES_SUICUNE
             || species == SPECIES_HO_OH
-            || species == SPECIES_LUGIA)
+            || species == SPECIES_LUGIA
+            || species == SPECIES_DEOXYS_ATTACK
+            || species == SPECIES_DEOXYS_DEFENSE
+            || species == SPECIES_DEOXYS_SPEED)
             && (gSaveBlock1Ptr->tx_Mode_Legendary_Abilities == 0))
         gLastUsedAbility = gSpeciesInfo[species].abilities_old[0];
     else if ((abilityNum == 1)
@@ -8280,7 +8284,10 @@ u8 GetAbilityBySpecies(u16 species, u8 abilityNum)
              || species == SPECIES_YANMEGA
              || species == SPECIES_CLAMPERL
              || species == SPECIES_HUNTAIL
-             || species == SPECIES_GOREBYSS)
+             || species == SPECIES_GOREBYSS
+             || species == SPECIES_REGIROCK
+             || species == SPECIES_REGICE
+             || species == SPECIES_REGISTEEL)
             && (gSaveBlock1Ptr->tx_Mode_Modern_Types == 0))
         gLastUsedAbility = gSpeciesInfo[species].abilities_old[1];
     else if (abilityNum)

@@ -11496,13 +11496,13 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .friendship = 35,
         .growthRate = GROWTH_SLOW,
         .eggGroups = { EGG_GROUP_MINERAL, EGG_GROUP_MINERAL },
-        .abilities = {ABILITY_CLEAR_BODY, ABILITY_ROCK_HEAD},
+        .abilities = {ABILITY_CLEAR_BODY, ABILITY_NONE},
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
     },
 
-    [SPECIES_REGIROCK] =
+    [SPECIES_REGIROCK] = //modified
     {
         .baseHP        = 80,
         .baseAttack    = 100,
@@ -11526,13 +11526,14 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .friendship = 35,
         .growthRate = GROWTH_SLOW,
         .eggGroups = { EGG_GROUP_NO_EGGS_DISCOVERED, EGG_GROUP_NO_EGGS_DISCOVERED },
+        .abilities_old = {ABILITY_CLEAR_BODY, ABILITY_NONE},
         .abilities = {ABILITY_CLEAR_BODY, ABILITY_STURDY},
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BROWN,
         .noFlip = FALSE,
     },
 
-    [SPECIES_REGICE] =
+    [SPECIES_REGICE] = //modified
     {
         .baseHP        = 80,
         .baseAttack    = 50,
@@ -11556,13 +11557,14 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .friendship = 35,
         .growthRate = GROWTH_SLOW,
         .eggGroups = { EGG_GROUP_NO_EGGS_DISCOVERED, EGG_GROUP_NO_EGGS_DISCOVERED },
+        .abilities_old = {ABILITY_CLEAR_BODY, ABILITY_NONE},
         .abilities = {ABILITY_CLEAR_BODY, ABILITY_INNER_FOCUS},
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_BLUE,
         .noFlip = FALSE,
     },
 
-    [SPECIES_REGISTEEL] =
+    [SPECIES_REGISTEEL] = //modified
     {
         .baseHP        = 80,
         .baseAttack    = 75,
@@ -11586,7 +11588,8 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .friendship = 35,
         .growthRate = GROWTH_SLOW,
         .eggGroups = { EGG_GROUP_NO_EGGS_DISCOVERED, EGG_GROUP_NO_EGGS_DISCOVERED },
-        .abilities = {ABILITY_CLEAR_BODY, ABILITY_NONE},
+        .abilities_old = {ABILITY_CLEAR_BODY, ABILITY_NONE},
+        .abilities = {ABILITY_CLEAR_BODY, ABILITY_SHELL_ARMOR},
         .safariZoneFleeRate = 0,
         .bodyColor = BODY_COLOR_GRAY,
         .noFlip = FALSE,
@@ -11977,7 +11980,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .noFlip = FALSE,
     },
 
-    [SPECIES_DEOXYS_ATTACK] =
+    [SPECIES_DEOXYS_ATTACK] = //changed
     {
         .baseHP        = 50,
         .baseAttack    = 180,
@@ -12002,12 +12005,13 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .friendship = 0,
         .growthRate = GROWTH_SLOW,
         .eggGroups = { EGG_GROUP_NO_EGGS_DISCOVERED, EGG_GROUP_NO_EGGS_DISCOVERED },
+        .abilities_old = {ABILITY_PRESSURE, ABILITY_NONE},
         .abilities = {ABILITY_GUTS, ABILITY_NONE},
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
     },
 
-    [SPECIES_DEOXYS_DEFENSE] =
+    [SPECIES_DEOXYS_DEFENSE] = //changed
     {
         .baseHP        = 50,
         .baseAttack    = 70,
@@ -12032,12 +12036,13 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .friendship = 0,
         .growthRate = GROWTH_SLOW,
         .eggGroups = { EGG_GROUP_NO_EGGS_DISCOVERED, EGG_GROUP_NO_EGGS_DISCOVERED },
+        .abilities_old = {ABILITY_PRESSURE, ABILITY_NONE},
         .abilities = {ABILITY_NATURAL_CURE, ABILITY_NONE},
         .bodyColor = BODY_COLOR_RED,
         .noFlip = FALSE,
     },
 
-    [SPECIES_DEOXYS_SPEED] =
+    [SPECIES_DEOXYS_SPEED] = //changed
     {
         .baseHP        = 50,
         .baseAttack    = 95,
@@ -12062,6 +12067,7 @@ const struct SpeciesInfo gSpeciesInfo[] =
         .friendship = 0,
         .growthRate = GROWTH_SLOW,
         .eggGroups = { EGG_GROUP_NO_EGGS_DISCOVERED, EGG_GROUP_NO_EGGS_DISCOVERED },
+        .abilities_old = {ABILITY_PRESSURE, ABILITY_NONE},
         .abilities = {ABILITY_SPEED_BOOST, ABILITY_NONE},
         .bodyColor = BODY_COLOR_RED,
         .noFlip = TRUE,
