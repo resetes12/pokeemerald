@@ -47,7 +47,7 @@ BerryTree_EventScript_CheckBerryStage1::
 	special ObjectEventInteractionGetBerryCountString
 	checkitem ITEM_WAILMER_PAIL, 1
 	compare VAR_RESULT, 0
-	goto_if_eq BerryTree_EventScript_DontWater
+	goto_if_eq BerryTree_EventScript_DontWater_NoWailmerPail
 	msgbox BerryTree_Text_BerryGrowthStage1, MSGBOX_YESNO
 	compare VAR_RESULT, YES
 	goto_if_eq BerryTree_EventScript_WaterBerry
@@ -59,7 +59,7 @@ BerryTree_EventScript_CheckBerryStage2::
 	special ObjectEventInteractionGetBerryName
 	checkitem ITEM_WAILMER_PAIL, 1
 	compare VAR_RESULT, 0
-	goto_if_eq BerryTree_EventScript_DontWater
+	goto_if_eq BerryTree_EventScript_DontWater_NoWailmerPail
 	msgbox BerryTree_Text_BerryGrowthStage2, MSGBOX_YESNO
 	compare VAR_RESULT, YES
 	goto_if_eq BerryTree_EventScript_WaterBerry
@@ -71,7 +71,7 @@ BerryTree_EventScript_CheckBerryStage3::
 	special ObjectEventInteractionGetBerryName
 	checkitem ITEM_WAILMER_PAIL, 1
 	compare VAR_RESULT, 0
-	goto_if_eq BerryTree_EventScript_DontWater
+	goto_if_eq BerryTree_EventScript_DontWater_NoWailmerPail
 	msgbox BerryTree_Text_BerryGrowthStage3, MSGBOX_YESNO
 	compare VAR_RESULT, YES
 	goto_if_eq BerryTree_EventScript_WaterBerry
@@ -83,7 +83,7 @@ BerryTree_EventScript_CheckBerryStage4::
 	lockall
 	checkitem ITEM_WAILMER_PAIL, 1
 	compare VAR_RESULT, 0
-	goto_if_eq BerryTree_EventScript_DontWater
+	goto_if_eq BerryTree_EventScript_DontWater_NoWailmerPail
 	msgbox BerryTree_Text_BerryGrowthStage4, MSGBOX_YESNO
 	compare VAR_RESULT, YES
 	goto_if_eq BerryTree_EventScript_WaterBerry
@@ -143,6 +143,13 @@ BerryTree_EventScript_DontWater::
 	releaseall
 	end
 
+BerryTree_EventScript_DontWater_NoWailmerPail::
+	message BerryTree_Text_BerryGrowthStage_NoWailmerPail
+	waitmessage
+	waitbuttonpress
+	releaseall
+	end
+
 BerryTree_EventScript_ItemUseWailmerPail::
 	special ObjectEventInteractionGetBerryTreeData
 	lockall
@@ -169,6 +176,9 @@ BerryTree_EventScript_PlantBerry::
 
 BerryTree_Text_ItsSoftLoamySoil:
 	.string "It's soft, loamy soil.$"
+
+BerryTree_Text_BerryGrowthStage_NoWailmerPail:
+	.string "One {STR_VAR_1} was planted here.$"
 
 BerryTree_Text_BerryGrowthStage1:
 	.string "One {STR_VAR_1} was planted here.\n"
