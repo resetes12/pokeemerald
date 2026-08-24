@@ -70,7 +70,7 @@ Features page:
 * Shiny Chance: 8192 (Emerald default) - 4096 (Gen VI+) - 2048 - 1024 - 512.
 * Shiny Colors: Enables or disables new shiny colored forms for 24 Pokémon.
 * Item Drops: Items held by wild Pokémon, when defeated, will be dropped and obtained by the player. Forget about catching it or using Thief!
-* Wondertrade: Wondetrade stations are available in the 1BF of every Pokécenter. If disabled, they will be available after beating the game.
+* Wondertrade: Wondertrade stations are available in the 1BF of every Pokécenter. If disabled, they will be available after beating the game.
 * Uncapped wondertrade: No 3-daily limit.
 * Easier Feebas: If enabled, Feebas have a 5% chance to appear around the whole Route 119.
 * Frontier bans: Decide if you want legendaries banned or not in Battle Frontier. If enabled, remember that the bans depend on your chosen difficulty!
