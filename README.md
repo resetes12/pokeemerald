@@ -22,6 +22,7 @@ Modern Emerald also has some small mods:
 
 
 # 📃 DOCUMENTATION:
+
 [Documentation can be found online](https://docs.google.com/spreadsheets/d/1QEFJmFhfaZqgxSUnM7MFpufrnrRk_NMzNoNWl2m3y_0/edit?gid=1310408794#gid=1310408794)
 Includes:
 - Pokémon location and changes (plus an extra, more specific Pokémon location).
@@ -69,6 +70,7 @@ Features page:
 * Shiny Chance: 8192 (Emerald default) - 4096 (Gen VI+) - 2048 - 1024 - 512.
 * Shiny Colors: Enables or disables new shiny colored forms for 24 Pokémon.
 * Item Drops: Items held by wild Pokémon, when defeated, will be dropped and obtained by the player. Forget about catching it or using Thief!
+* Wondertrade: Wondetrade stations are available in the 1BF of every Pokécenter. If disabled, they will be available after beating the game.
 * Uncapped wondertrade: No 3-daily limit.
 * Easier Feebas: If enabled, Feebas have a 5% chance to appear around the whole Route 119.
 * Frontier bans: Decide if you want legendaries banned or not in Battle Frontier. If enabled, remember that the bans depend on your chosen difficulty!
@@ -119,8 +121,8 @@ Challenges page:
 
 
 **Pokémon related:**
-* Following Pokémon (Optional, with a second option to enable or not Big Followers like Rayquaza).
-* Unique surfing animations (Optional).
+* Following Pokémon _(Optional, with a second option to enable or not Big Followers like Rayquaza)_.
+* Unique surfing animations _(Optional)_.
 * 44 new Pokémon species, mostly from Generation 4, and a few Gen 9 (Annihilape, Dudunsparce, Farigiraf).
 * 1 new box space, for a total of 450 Pokémon box space.
 * Birch's bag can show shiny starters!
@@ -135,8 +137,8 @@ Challenges page:
 * Everstone works on male or female Pokémon and guarantees nature.
 * Gen. VIII Synchronize _(Optional)_.
 * Shuckle can make berry juice just like in Gen. II!! Yay?
-* Groudon has STAB with Fire moves, but retains its Ground-only typing.
-* Spinda has a 2% chance of multiplying by two the damage of moves.
+* Groudon has STAB with Fire moves, but retains its Ground-only typing _(Optional, "Pokémon stats" needs to be set to Modern)_.
+* Spinda has a 2% chance of multiplying by two the damage of moves _(Optional, "Pokémon stats" needs to be set to Modern)_.
 * Nature Mints are available to buy in the Flower Shop after the 4th Gym _(Optional)_, or after becoming champion if not enabled from the start.
 * Deoxys forms can be changed at Birth Island, using the meteorites.
 * All Hoenn and National Dex Pokémon need to be obtained to obtain the Completion Diploma, or it won't count as completed.
@@ -186,6 +188,7 @@ Challenges page:
 * The bag now holds up to 90 items, and item capacity has been upgraded to x999.
 * When the bag is full, items go to the PC.
 * You can change the ball your Pokémon is in using a different ball from the bag.
+* "Move" can be used from "Item" submenu in the Summary screen
 * Reusable repel prompt.
 * The time on the clock can be changed by pressing R, and time events should work. Can be also changed the official way by pressing R+B+LEFT on the main menu.
 * Three pages with additional options in the options menu.
@@ -196,7 +199,7 @@ Challenges page:
 
 **Gameplay related:**
 * RNG is fixed and properly works.
-* Wonder Trade is available on the basement floor of every Pokémon Center, available after the 5th badge (unless you are doing a randomizer, which makes it available from the start, or a challenge, which enables WT after beating the game). The number of Wonder-trades is 3 per day, unless using the "Unlimited Wondertrades" option.
+* _(Optional, but gets enabled for every save after beating the game)_ Wonder Trade is available on the basement floor of every Pokémon Center, available after the 5th badge unless you are doing a randomizer, which makes it available from the start, or a challenge, which enables WT after beating the game. The number of Wonder-trades is 3 per day, unless using the "Unlimited Wondertrades" option.
 * Wonder Trade uses a tier system, so rare Pokémon are rare to obtain as well. 
 * 3 difficulty modes (EASY, NORMAL and HARD). Selected at the start of the game, can be changed anytime from the options menu (unless using the "Limit difficulty" option).
 
@@ -259,7 +262,7 @@ Challenges page:
 * Option to choose between different tracks for Wild Battles, Trainers and Frontier Trainers ("Hoenn", "Kanto 1", "Sinnoh", "Johto", "Kanto 2", "Unova", and "Random").
 * Option to choose between "Gen 3", "DPPl", and "HGSS" sound effects.
 
-# 🔧For developers:
+# 🔧 FOR DEVELOPERS:
 
 Please follow [Pret's guide on how to build the rom](https://github.com/pret/pokeemerald/blob/master/INSTALL.md) but using this branch instead of theirs. 
 
@@ -268,7 +271,7 @@ _Compiling using the old compiler won't work._
 
 The game was compiled using `(devkitARM release 62) 13.2.0`, but it _should_ work up to `release 65` without any issues. Higher versions may not work, so manual fixes might be required.
 
-# Quick FAQ:
+# 🗿 QUICK FAQ:
 
 **Can't open the repo in Porymap!**
 * This project is not yet compatible with Porymap 6. Use Porymap 5 instead.
@@ -283,7 +286,14 @@ Decompilation hack-roms may crash or have strange bugs if you are using other em
 **Help! PkHex / PKSM / Similar tools or apps can't open the savefile!**
 These programs rely on knowing where to find the data on the savefile, and Modern Emerald has modified certain parts of the savedata which makes it incompatible with these apps or tools. Use the debug menu to cheat, as it provides the same options, mostly.
 
-# 🪪CREDITS
+# 🤷‍♂️ AI DISCLAIMER
+
+* 99,9% of my code has been made by hand.
+    - Currently, only one commit has had some help from an AI.
+    - Contributors do not count towards this percetange. I do not control or limit any contributor.
+* Some text strings have been corrected or had their wording improved using AI tools.
+
+# 🪪 CREDITS
 
 * [Pret's Pokeemerald](https://github.com/pret/pokeemerald) for its base
 * Pret's Wiki Tutorials:
