@@ -834,7 +834,7 @@ static void Viewer_DrawRow_Page2(u8 visRow, u16 idx)
                                   sText_Challenges_ShinyChance_Strings[sc], selected);
         break;
     }
-    case 6: // FRONTIER BANS
+    case 7: // FRONTIER BANS
     {
         const int y = visRow * 16;
         Viewer_ClearRow(visRow, selected);
