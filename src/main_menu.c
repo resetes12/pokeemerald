@@ -529,8 +529,8 @@ static const u8 sText_VersionUpdater_V24[] = _("v2.4 or older");
 static const u8 sText_VersionUpdater_V30[] = _("v3.0/3.1/3.2");
 static const u8 sText_VersionUpdater_V35[] = _("v3.3/3.4/3.5");
 
-static const u8 sText_VersionUpdater_WonderTrade[] = _("{COLOR RED}Before proceeding, please save your\ngame in an exterior map.{COLOR DARK_GRAY}\pIf this is not the version you're\nupdating from, reset and start again.\pWould you like to enable\nWonderTrade?");
-static const u8 sText_VersionUpdater_UnlimitedWT[] = _("WonderTrades are limited to 3\ntimes a day.\pHowever, a new option can make\nWonderTrades unlimited.\pThis option doesn't matter if\nWonderTrade has been disabled.\pHowever, WonderTrade can be enabled\nagain after becoming Champion,\pin the Battle Frontier Pokécenter.\pEnable unlimited WonderTrades?");
+static const u8 sText_VersionUpdater_WonderTrade[] = _("{COLOR RED}Before proceeding, please save your\ngame in an exterior map.{COLOR DARK_GRAY}\pIf this is not the version you're\nupdating from, reset and start again.\pWould you like to enable\nWonderTrade?\pSelecting {COLOR RED}No{COLOR DARK_GRAY} will disable it until you\nbecome Champion.");
+static const u8 sText_VersionUpdater_UnlimitedWT[] = _("WonderTrades are limited to 3\ntimes a day.\pHowever, a new option can make\nWonderTrades unlimited.\pThis option doesn't matter if\nWonderTrade has been disabled.\pEnable unlimited WonderTrades?");
 static const u8 sText_VersionUpdater_FrontierBans[] = _("Enable Battle Frontier Bans?\pAccording to your current difficulty,\nenabling it will ban legendaries from\pparticipating in the Battle Frontier.\nDisabling it will let lengendaries in,\pno matter your chosen difficulty.\pWould you like to enable the bans?\n{COLOR RED}Yes{COLOR DARK_GRAY} has been always the default option.");
 static const u8 sText_VersionUpdater_ShinyColors[] = _("Some {PKMN} species have custom, new\nshiny forms.\pPreviously, this option was always {COLOR RED}On{COLOR DARK_GRAY},\nnow it's optional.\pCheck online docs for more info and\nimages on new shiny forms.\pEnable alternate Shiny colors?");
 static const u8 sText_VersionUpdater_TypeChart[] = _("Which Type Chart will you use?\pGen VI+ Type Chart nerfs Steel not\nresisting Ghost and Dark.\pModern Type Chart buffs bad types into\nnot so bad, like Bug.\pCheck online docs for more info on this\nnew option.\pWould you like to use Gen VI\nType Chart?\pSelecting {COLOR RED}Yes{COLOR DARK_GRAY} will enable Gen VI Chart.\n{COLOR RED}No{COLOR DARK_GRAY} will set it to Modern Type Chart.");
@@ -1164,6 +1164,17 @@ static void Task_VersionUpdater_WaitComplete(u8 taskId)
 
 static void Task_VersionUpdater_Finish(u8 taskId)
 {
+    // If the player already beat the game, ensure WonderTrade is enabled
+    // (mirrors the force-enable in post_battle_event_funcs.c that only fires
+    // during the E4 victory event, which won't re-trigger for old saves).
+    if (FlagGet(FLAG_SYS_GAME_CLEAR))
+    {
+        gSaveBlock1Ptr->tx_Features_WT = 1;
+        FlagSet(FLAG_WT_ENABLED);
+    }
+    // Retroactively set shiny-seen flags for any shinies already in party/PC/daycare
+    ScanOwnedMonsForShinies();
+
     StampCurrentSaveVersion();
     // Clear the full BG0 tilemap so main menu draws on a clean slate
     FillBgTilemapBufferRect_Palette0(0, 0, 0, 0, 30, 20);
