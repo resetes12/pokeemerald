@@ -254,8 +254,8 @@ RustboroCity_DevonCorp_3F_Text_ThankYouForDeliveringLetter:
 
 RustboroCity_DevonCorp_3F_Text_ExplainExpShare:
 	.string "Mr. Stone: There are two types of\n"
-	.string "Exp. Share items:\l"
-	.string "The Key Item and the Held Item.\p"
+	.string "Exp. Share items: The Key Item\l"
+	.string "and the Held Item.\p"
 	.string "If you turn the Key Item Exp. Share\n"
 	.string "on, all Pokémon in the party will gain\l"
 	.string "half the Exp. Points from battle.\p"

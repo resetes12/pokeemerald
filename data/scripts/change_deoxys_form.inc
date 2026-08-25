@@ -98,23 +98,23 @@ ChangeDeoxysForm_End_Nothing_Happened::
 	end
 
 ChangeDeoxysForm_Text_NormalForm:
-	.string "Looks like a Normal meteorite.\n"
+	.string "Looks like a {COLOR RED}normal{COLOR DARK_GRAY} meteorite.\n"
 	.string "It has a rough, dry surface.$"
 
 ChangeDeoxysForm_Text_DefenseForm:
-	.string "Looks like a Sturdy meteorite.\n"
+	.string "Looks like a {COLOR RED}sturdy{COLOR DARK_GRAY} meteorite.\n"
 	.string "Seems unbreakeable, like a diamond.$"
 
 ChangeDeoxysForm_Text_AttackForm:
-	.string "Looks like a Powerful meteorite.\n"
+	.string "Looks like a {COLOR RED}powerful{COLOR DARK_GRAY} meteorite.\n"
 	.string "It's hot to the touch.$"
 
 ChangeDeoxysForm_Text_SpeedForm:
-	.string "Looks like a Lightweight meteorite.\n"
+	.string "Looks like a {COLOR RED}lightweight{COLOR DARK_GRAY} meteorite.\n"
 	.string "I can lift it very easily!$"
 
 ChangeDeoxysForm_Text_Beginning:
-	.string "One of my Pokémon reacted to the it!$"
+	.string "Deoxys reacted to the it!$"
 
 ChangeDeoxysForm_Text_End:
 	.string "I should get going.$"
@@ -126,8 +126,8 @@ ChangeDeoxysForm_Text_End_Wrong_Pokemon:
 	.string "I should get going.$"
 
 ChangeDeoxysForm_Text_Select:
-	.string "Should I let any of my Pokémon\n"
-	.string "touch this meteorite?$"
+	.string "Should I let Deoxys touch\n"
+	.string "the meteorite?$"
 
 ChangeDeoxysForm_Text_Success:
 	.string "Something has happened to Deoxys!$"
