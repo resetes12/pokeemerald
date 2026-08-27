@@ -9,7 +9,6 @@ Things that are not implemented yet, or bugs that are caused by unimplemented fe
     * Setting "Egg" from Off to On should also update "Egg2", but setting "Egg2" to Off should NOT update "Egg". Also, setting "Egg" to Off should NOT update "Egg2".
     * Add a "Bad Egg" index as an alternate value for "Present".
     * In edit mode, pressing Select should reset that value; in mode 0, to default; else to that of the mon being edited.
-    * If the mon being created would be Shiny, draw a star next to the nickname.
     * Dynamic max values:
         * PP (With max PP for that move including PP Up boosts)
         * Current HP (with max HP)
@@ -53,6 +52,8 @@ static void DebugPkmCreator_Redraw(void);
 static void DebugPkmCreator_EditModeRedraw(u32, u8);
 static void DebugPkmCreator_ProcessInput(u8);
 static void DebugPkmCreator_EditModeProcessInput(u8);
+static void DebugPkmCreator_ToggleShiny(void);
+static u32 DebugPkmCreator_GetOtId(void);
 static u8 DebugPkmCreator_GiveToPlayer(void);
 
 static const u8 Str_Species[] = _("Species");
@@ -63,6 +64,7 @@ static const u8 Str_OT[] = _("OT Name");
 static const u8 Str_Nick[] = _("Nickname");
 static const u8 Str_Gender[] = _("Gender");
 static const u8 Str_Nature[] = _("Nature");
+static const u8 Str_Shiny[] = _("Shiny");
 static const u8 Str_Egg[] = _("Egg");
 static const u8 Str_Egg2[] = _("Egg2");
 static const u8 Str_HasSpecies[] = _("Present");
@@ -128,6 +130,7 @@ static const u8 Str_DefaultOTName[8] = _("Debug-E");
 
 static const u8 Str_Page[] = _("Page: {STR_VAR_1}");
 static const u8 Str_Slot[] = _("Slot: {STR_VAR_1}");
+static const u8 Str_ShinyHint[] = _("{SELECT_BUTTON}Shiny");
 
 static const u8 Str_StringVars[] = _("{STR_VAR_1}{STR_VAR_3}");
 static const u8 Str_Spacer1[] = _(": {CLEAR_TO 100}");
@@ -150,6 +153,13 @@ static const u8 Str_isShiny[] = _("{TRIANGLE}");
 static const u8 *const IsShinyIndex[2] = {
     Str_Empty,
     Str_isShiny
+};
+
+// Same marker, but with a leading space so it can be drawn right after the nickname
+static const u8 Str_isShinyNick[] = _(" {TRIANGLE}");
+static const u8 *const IsShinyNickIndex[2] = {
+    Str_Empty,
+    Str_isShinyNick
 };
 
 static const u8 Str_None[] = _("---");
@@ -360,7 +370,7 @@ static const struct EditPokemonStruct DebugPkmCreator_Options[] =
         [VAL_MOVE_2_PPUP]          = {Str_PPUp, EDIT_NORMAL, 0, 3, 0, MON_DATA_PP_BONUSES, 1},
         [VAL_MOVE_3_PPUP]          = {Str_PPUp, EDIT_NORMAL, 0, 3, 0, MON_DATA_PP_BONUSES, 1},
         [VAL_MOVE_4_PPUP]          = {Str_PPUp, EDIT_NORMAL, 0, 3, 0, MON_DATA_PP_BONUSES, 1},
-        [VAL_IS_SHINY]             = {Str_Nature, EDIT_READONLY, 0, 1, 0, MON_DATA_PERSONALITY, 1},
+        [VAL_IS_SHINY]             = {Str_Shiny, EDIT_READONLY, 0, 1, 0, MON_DATA_PERSONALITY, 1},
 };
 
 #define EDIT_OPTION_COUNT ARRAY_COUNT(DebugPkmCreator_Options)
@@ -586,6 +596,11 @@ void DebugPkmCreator_Init(u8 mode, u8 index)
     CopyWindowToVram(sDebugPkmCreatorData.menuWindowId, 3);
     DebugPkmCreator_Redraw();
     CreateTask(DebugPkmCreator_ProcessInput, 10);
+}
+
+static u32 DebugPkmCreator_GetOtId(void)
+{
+    return sDebugPkmCreatorData.data[VAL_TID] | (sDebugPkmCreatorData.data[VAL_SID] << 16);
 }
 
 static void DebugPkmCreator_Init_SetDefaults(void)
@@ -935,8 +950,8 @@ static void DebugPkmCreator_PopulateDataStruct(void)
             sDebugPkmCreatorData.data[i] = data & 3;
             break;
         case VAL_IS_SHINY:
-            //GetMonData(&sDebugPkmCreatorData.mon, MON_DATA_PERSONALITY)
-            sDebugPkmCreatorData.data[i] = IsShinyOtIdPersonality(sDebugPkmCreatorData.data[VAL_OT], sDebugPkmCreatorData.data[VAL_PID]);
+            // Handled last, so TID/SID/PID are already populated above
+            sDebugPkmCreatorData.data[i] = IsShinyOtIdPersonality(DebugPkmCreator_GetOtId(), sDebugPkmCreatorData.data[VAL_PID]);
             break;
         }
     }
@@ -962,6 +977,9 @@ static void DebugPkmCreator_Redraw(void)
         AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, 0, gStringVar2, x, y, 0, NULL);
         x = 0;
     }
+    x = 152;
+    AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, 0, Str_ShinyHint, x, y, 0, NULL);
+    x = 0;
     y += 16;
     for (i = 0; i < 6; i++)
     {
@@ -1008,6 +1026,19 @@ static void DebugPkmCreator_Redraw(void)
                 bufferPosition = StringCopy(bufferPosition, Str_HexPrefix);
             }
             *gStringVar3 = EOS;
+            StringExpandPlaceholders(bufferPosition, Str_StringVars);
+            AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
+            break;
+        case VAL_NICK:
+            // Same as the EDIT_STRING default case, plus the shiny marker right after the name
+            StringCopyN(gStringVar1, (u8*) sDebugPkmCreatorData.data[index], data->digitCount);
+            gStringVar1[data->digitCount] = EOS;
+            if (data->text != NULL)
+            {
+                bufferPosition = StringCopy(bufferPosition, data->text);
+                bufferPosition = StringCopy(bufferPosition, Str_Spacer1);
+            }
+            StringCopy(gStringVar3, IsShinyNickIndex[sDebugPkmCreatorData.data[VAL_IS_SHINY]]);
             StringExpandPlaceholders(bufferPosition, Str_StringVars);
             AddTextPrinterParameterized(sDebugPkmCreatorData.menuWindowId, FONT_NARROW, gStringVar2, x, y, 0, NULL);
             break;
@@ -1338,7 +1369,7 @@ static void DebugPkmCreator_EditModeRedraw(u32 digit, u8 editIndex)
             u32 pid = DebugPkmCreator_editingVal[editIndex];
             u16 nature = GetNatureFromPersonality(pid);
             u8 gender = GetGenderFromSpeciesAndPersonality(sDebugPkmCreatorData.data[VAL_SPECIES], pid);
-            u8 isSihny = IsShinyOtIdPersonality(sDebugPkmCreatorData.data[VAL_OT], pid);
+            u8 isSihny = IsShinyOtIdPersonality(DebugPkmCreator_GetOtId(), pid);
             if (gender == MON_FEMALE) 
                 gender = 1;
             else if (gender == MON_GENDERLESS) 
@@ -1504,6 +1535,64 @@ static void DebugPkmCreator_EditModeRedraw(u32 digit, u8 editIndex)
 
 
 
+// Every shiny chance setting treats a shiny value below SHINY_ODDS as shiny, and none of them
+// treats one of 128 or above as shiny, so those two ranges are safe no matter the setting.
+#define NOT_SHINY_VALUE_MIN 128
+#define NOT_SHINY_VALUE_COUNT 128
+
+// Looks for a personality value that gives the wanted shininess without changing the nature,
+// the gender or the ability slot of the mon. Gender and ability only depend on the lowest byte
+// of the personality, so that byte is kept as is and only the rest of it is searched.
+static bool32 DebugPkmCreator_FindPersonalityWithShininess(u32 otId, u32 personality, bool32 wantShiny, u32* result)
+{
+    u32 nature = GetNatureFromPersonality(personality);
+    u32 lowByte = personality & 0xFF;
+    u32 otIdHalves = (otId & 0xFFFF) ^ (otId >> 16);
+    u32 shinyValue = wantShiny ? 0 : NOT_SHINY_VALUE_MIN;
+    u32 shinyValueCount = wantShiny ? SHINY_ODDS : NOT_SHINY_VALUE_COUNT;
+    // Start somewhere random so that toggling the same mon repeatedly doesn't always give the same PID
+    u32 startByte = Random() & 0xFF;
+    u32 i, j;
+
+    for (i = 0; i < 256; i++)
+    {
+        u32 lowHalf = ((startByte + i) & 0xFF) << 8 | lowByte;
+        for (j = 0; j < shinyValueCount; j++)
+        {
+            // The shiny value of this personality is exactly (shinyValue + j)
+            u32 candidate = ((otIdHalves ^ lowHalf ^ (shinyValue + j)) << 16) | lowHalf;
+            if (GetNatureFromPersonality(candidate) == nature)
+            {
+                *result = candidate;
+                return TRUE;
+            }
+        }
+    }
+    return FALSE;
+}
+
+static void DebugPkmCreator_ToggleShiny(void)
+{
+    u32 personality;
+    u8 nickname[POKEMON_NAME_LENGTH + 1];
+
+    if (!DebugPkmCreator_FindPersonalityWithShininess(DebugPkmCreator_GetOtId(), sDebugPkmCreatorData.data[VAL_PID], !sDebugPkmCreatorData.data[VAL_IS_SHINY], &personality))
+    {
+        PlaySE(SE_BOO);
+        return;
+    }
+    // Rebuilding the mon resets the nickname to the species name, so keep the current one
+    GetMonData(&sDebugPkmCreatorData.mon, MON_DATA_NICKNAME, nickname);
+    sDebugPkmCreatorData.data[VAL_PID] = personality;
+    // Same path as editing the PID by hand
+    DebugPkmCreator_Init_SetNewMonData(FALSE);
+    SetMonData(&sDebugPkmCreatorData.mon, MON_DATA_NICKNAME, nickname);
+    DebugPkmCreator_PopulateDataStruct();
+    FillWindowPixelBuffer(sDebugPkmCreatorData.menuWindowId, 0x11);
+    DebugPkmCreator_Redraw();
+    PlaySE(sDebugPkmCreatorData.data[VAL_IS_SHINY] ? SE_SHINY : SE_SELECT);
+}
+
 static void DebugPkmCreator_ProcessInput(u8 taskid)
 {
     u16 keys = gMain.newKeys;
@@ -1653,8 +1742,9 @@ static void DebugPkmCreator_ProcessInput(u8 taskid)
         }
         return;
     }
-    if (keys & SELECT_BUTTON) // TODO: Re-randomize the PID and IVs, or if OT is selected, toggle OT gender
+    if (keys & SELECT_BUTTON) // Toggle shiny (keeping nature, gender and ability)
     {
+        DebugPkmCreator_ToggleShiny();
         return;
     }
     if (keys & A_BUTTON) // Enter Edit Mode
