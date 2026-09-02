@@ -53,14 +53,13 @@ gText_Birch_ChallengeEasy::
 	.string "Oh, is that so?\p"
     .string "Easy Mode lowers the challenge by\n"
     .string "scaling down enemy and wild Pokémon.\p"
-    .string "Your Pokémon also gain 20% more Exp.\p"
+    .string "Your Pokémon also gain 30% more Exp.\p"
     .string "You can change Difficulty anytime\n"
     .string "from the Options Menu, unless you\l"
     .string "choose to lock the Difficulty.\p"
 	.string "All right, with that clear…\n"
 	.string "Do you expect any Challenge\l"
-	.string "in your journey?\p"
-	.string "And what's your name?$"
+	.string "in your journey?$"
 
 gText_Birch_ChallengeNormal::
 	.string "Oh, is that so?\p"
@@ -74,8 +73,7 @@ gText_Birch_ChallengeNormal::
     .string "choose to lock the Difficulty.\p"
 	.string "All right, with that clear…\n"
 	.string "Do you expect any Challenge\l"
-	.string "in your journey?\p"
-	.string "And what's your name?$"
+	.string "in your journey?$"
 
 gText_Birch_ChallengeHard::
     .string "Oh, is that so?\p"
@@ -85,8 +83,8 @@ gText_Birch_ChallengeHard::
     .string "Difficulty HackROMs, but uses simple\l"
     .string "mechanics to raise the difficulty.\l"
     .string "This Mode includes:\p"
-    .string "Pokémon gain only 60% Experience.\p"
-    .string "Enemy and wild {PKMN} level scale\n"
+    .string "Pokémon gain -40% Experience.\p"
+    .string "Enemy and wild Pokémon level scale\n"
     .string "with your Badges.\p"
     .string "All Badge Boosts removed.\p"
 	.string "You can't use more than 4 items\n"
@@ -102,18 +100,17 @@ gText_Birch_ChallengeHard::
     .string "and restore normal Experience gain.\p"
 	.string "All right, with that clear…\n"
 	.string "Do you expect any Challenge\l"
-	.string "in your journey?\p"
-	.string "And what's your name?$"
+	.string "in your journey?$"
 
 gText_Birch_WhatsYourName::
 	.string "All right.\n"
 	.string "What's your name?$"
 
 gText_Birch_SoItsPlayer::
-	.string "Oh! So you're {PLAYER}{KUN}?$"
+	.string "So it's {PLAYER}{KUN}?$"
 
 gText_Birch_YourePlayer::
-	.string "Ah, of course!\p"
+	.string "Ah, I remember now!\p"
 	.string "You're {PLAYER}{KUN} who's moving to my\n"
 	.string "hometown of Littleroot.\l"
 	.string "I get it now!\p"
@@ -129,3 +126,8 @@ gText_Birch_AreYouReady::
 	.string "Well, I'll be expecting you later.\n"
 	.string "Come see me in my Pokémon Lab.\p"
 	.string "$"
+
+gText_Birch_ChallengeSelected::
+	.string "Great! Remember that you can\n"
+	.string "check which Challenges are\l"
+	.string "active using a PC.$"
