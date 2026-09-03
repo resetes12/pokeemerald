@@ -1668,6 +1668,26 @@ bool8 IsBadEggInParty(void)
     return FALSE;
 }
 
+bool8 PlayerHasMESpeciesOrItem(void)
+{
+    u8 partyCount = CalculatePlayerPartyCount();
+    u8 i;
+
+    for (i = 0; i < partyCount; i++)
+    {
+        if ((GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, NULL) == ITEM_FERTILIZER)
+        || (GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, NULL) == ITEM_BIG_NUGGET)
+        || (GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, NULL) == ITEM_EXP_SHARE_SMALL)
+        || (GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, NULL) == ITEM_FAIRY_GEM)
+        || (GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, NULL) >= ITEM_ADAMANT_MINT && GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, NULL) <= ITEM_TIMID_MINT))
+            return TRUE;
+        if ((GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, NULL) >= SPECIES_AMBIPOM && GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, NULL) <= SPECIES_UNUSED_SPACE10))
+            return TRUE;
+    }
+
+    return FALSE;
+}
+
 bool8 InMultiPartnerRoom(void)
 {
     if (gSaveBlock1Ptr->location.mapGroup == MAP_GROUP(BATTLE_FRONTIER_BATTLE_TOWER_MULTI_PARTNER_ROOM)
