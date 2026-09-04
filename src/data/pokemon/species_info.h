@@ -6852,16 +6852,14 @@ const struct SpeciesInfo gSpeciesInfo[] =
 
     [SPECIES_DELIBIRD] = //modified
     {
-        .baseHP        = 75, //+30
-        .baseHP_old        = 45,
-        .baseAttack    = 65, //+10 
-        .baseAttack_old    = 55,
+        .baseHP        = 45,
+        .baseAttack    = 55,
         .baseDefense_old   = 45,
-        .baseDefense   = 70, //+25
+        .baseDefense   = 50, //+5
         .baseSpeed     = 75,
         .baseSpAttack  = 65,
         .baseSpDefense_old = 45,
-        .baseSpDefense = 70, //+25
+        .baseSpDefense = 50, //+5
         .types = { TYPE_ICE, TYPE_FLYING },
         .catchRate = 45,
         .expYield = 183,
