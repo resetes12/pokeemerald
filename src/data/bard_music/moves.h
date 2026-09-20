@@ -2958,6 +2958,55 @@ const struct BardSound gBardSounds_Moves[MOVES_COUNT][6] = {
         NULL_BARD_SOUND,
         NULL_BARD_SOUND,
     },
+    [MOVE_BLOOD_MOON] = {
+        { .songLengthId = 51 },
+        { .songLengthId = 12 },
+        { .songLengthId = 33 },
+        { .songLengthId = 1 },
+        NULL_BARD_SOUND,
+        NULL_BARD_SOUND,
+    },
+    [MOVE_JUDGMENT] = {
+        { .songLengthId = 10 },
+        { .songLengthId = 20 },
+        { .songLengthId = 30 },
+        { .songLengthId = 40 },
+        { .songLengthId = 50 },
+        { .songLengthId = 51 },
+    },
+    [MOVE_FREEZING_GLARE] = {
+        { .songLengthId = 2 },
+        { .songLengthId = 34 },
+        { .songLengthId = 11 },
+        { .songLengthId = 12 },
+        NULL_BARD_SOUND,
+        NULL_BARD_SOUND,
+    },
+    [MOVE_FIERY_WRATH] = {
+        { .songLengthId = 30 },
+        { .songLengthId = 42 },
+        NULL_BARD_SOUND,
+        NULL_BARD_SOUND,
+        NULL_BARD_SOUND,
+        NULL_BARD_SOUND,
+    },
+    [MOVE_THUNDEROUS_KICK] = {
+        { .songLengthId = 14 },
+        { .songLengthId = 10 },
+        { .songLengthId = 51 },
+        { .songLengthId = 51 },
+        { .songLengthId = 51 },
+        { .songLengthId = 51 },
+    },
+    [MOVE_SEARING_SHOT] = {
+        { .songLengthId = 26 },
+        { .songLengthId = 12 },
+        { .songLengthId = 4 },
+        NULL_BARD_SOUND,
+        NULL_BARD_SOUND,
+        NULL_BARD_SOUND,
+    },
+
 };
 
 #endif //GUARD_DATA_BARD_MUSIC_MOVES_H

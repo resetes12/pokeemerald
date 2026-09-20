@@ -2976,6 +2976,7 @@ static const u8 sTyphlosionTutorLearnset[] =
     TUTOR(MOVE_SWAGGER),
     TUTOR(MOVE_SWIFT),
     TUTOR(MOVE_THUNDER_PUNCH),
+    TUTOR(MOVE_BLAST_BURN),
     0xFF,
 };
 
@@ -4921,6 +4922,7 @@ static const u8 sBlazikenTutorLearnset[] =
     TUTOR(MOVE_SWIFT),
     TUTOR(MOVE_SWORDS_DANCE),
     TUTOR(MOVE_THUNDER_PUNCH),
+    TUTOR(MOVE_BLAST_BURN),
     0xFF,
 };
 
@@ -8331,6 +8333,20 @@ static const u8 sKleavorTutorLearnset[] =
     0xFF,
 };
 
+static const u8 sVictiniTutorLearnset[] =
+{
+    TUTOR(MOVE_DREAM_EATER),
+    TUTOR(MOVE_FIRE_PUNCH),
+    TUTOR(MOVE_PSYCH_UP),
+    TUTOR(MOVE_SLEEP_TALK),
+    TUTOR(MOVE_SNORE),
+    TUTOR(MOVE_SUBSTITUTE),
+    TUTOR(MOVE_SWAGGER),
+    TUTOR(MOVE_SWIFT),
+    TUTOR(MOVE_BLAST_BURN),
+    0xFF,
+};
+
 static const u8 sTestTutorLearnset[] =
 {
     TUTOR(MOVE_BODY_SLAM),
@@ -8366,6 +8382,51 @@ static const u8 sTestTutorLearnset[] =
     TUTOR(MOVE_FRENZY_PLANT),
     TUTOR(MOVE_BLAST_BURN),
     TUTOR(MOVE_HYDRO_CANNON),
+    0xFF,
+};
+
+
+static const u8 sArticunoGalarTutorLearnset[] =
+{
+    TUTOR(MOVE_DREAM_EATER),
+    TUTOR(MOVE_PSYCH_UP),
+    TUTOR(MOVE_SLEEP_TALK),
+    TUTOR(MOVE_SNORE),
+    TUTOR(MOVE_SUBSTITUTE),
+    TUTOR(MOVE_SWAGGER),
+    TUTOR(MOVE_SWIFT),
+    0xFF,
+};
+
+static const u8 sZapdosGalarTutorLearnset[] =
+{
+    TUTOR(MOVE_BODY_SLAM),
+    TUTOR(MOVE_COUNTER),
+    TUTOR(MOVE_DOUBLE_EDGE),
+    TUTOR(MOVE_DREAM_EATER),
+    TUTOR(MOVE_DYNAMIC_PUNCH),
+    TUTOR(MOVE_ENDURE),
+    TUTOR(MOVE_MEGA_KICK),
+    TUTOR(MOVE_MEGA_PUNCH),
+    TUTOR(MOVE_ROLLOUT),
+    TUTOR(MOVE_SEISMIC_TOSS),
+    TUTOR(MOVE_SLEEP_TALK),
+    TUTOR(MOVE_SNORE),
+    TUTOR(MOVE_SUBSTITUTE),
+    TUTOR(MOVE_SWAGGER),
+    TUTOR(MOVE_SWIFT),
+    0xFF,
+};
+
+static const u8 sMoltresGalarTutorLearnset[] =
+{
+    TUTOR(MOVE_ENDURE),
+    TUTOR(MOVE_ROCK_SLIDE),
+    TUTOR(MOVE_SLEEP_TALK),
+    TUTOR(MOVE_SNORE),
+    TUTOR(MOVE_SUBSTITUTE),
+    TUTOR(MOVE_SWAGGER),
+    TUTOR(MOVE_SWIFT),
     0xFF,
 };
 
@@ -8803,5 +8864,9 @@ static const u8 *const sTutorLearnsets[] =
     [SPECIES_URSALUNA] = sUrsalunaTutorLearnset,
     [SPECIES_URSALUNA_BLOODMOON] = sUrsalunaBloodmoonTutorLearnset,
     [SPECIES_KLEAVOR] = sKleavorTutorLearnset,
+    [SPECIES_VICTINI] = sVictiniTutorLearnset,
     [SPECIES_TEST] = sTestTutorLearnset,
+    [SPECIES_ARTICUNO_GALAR] = sArticunoGalarTutorLearnset,
+    [SPECIES_ZAPDOS_GALAR] = sZapdosGalarTutorLearnset,
+    [SPECIES_MOLTRES_GALAR] = sMoltresGalarTutorLearnset,
 };

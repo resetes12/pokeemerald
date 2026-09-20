@@ -508,12 +508,12 @@ const u8 *const gMonIconTable[] =
     [SPECIES_URSALUNA] = gMonIcon_Ursaluna, 
     [SPECIES_URSALUNA_BLOODMOON] = gMonIcon_Ursaluna_BloodMoon,
     [SPECIES_KLEAVOR] = gMonIcon_Kleavor, 
-    //[SPECIES_UNUSED_SPACE5] = gMonIcon_Unused_Space5, 
+    [SPECIES_VICTINI] = gMonIcon_Victini, 
     //[SPECIES_UNUSED_SPACE6] = gMonIcon_Unused_Space6, 
     [SPECIES_TEST] = gMonIcon_Test, 
-    //[SPECIES_UNUSED_SPACE8] = gMonIcon_Unused_Space8, 
-    //[SPECIES_UNUSED_SPACE9] = gMonIcon_Unused_Space9, 
-    //[SPECIES_UNUSED_SPACE10] = gMonIcon_Unused_Space10,
+    [SPECIES_ARTICUNO_GALAR] = gMonIcon_Articuno_Galar,
+    [SPECIES_ZAPDOS_GALAR] = gMonIcon_Zapdos_Galar,
+    [SPECIES_MOLTRES_GALAR] = gMonIcon_Moltres_Galar,
 };
 
 const u8 gMonIconPaletteIndices[] =
@@ -1002,12 +1002,12 @@ const u8 gMonIconPaletteIndices[] =
     [SPECIES_URSALUNA] = 2,
     [SPECIES_URSALUNA_BLOODMOON] = 2,
     [SPECIES_KLEAVOR] = 2,
-    //[SPECIES_UNUSED_SPACE5] = 0,
+    [SPECIES_VICTINI] = 0,
     //[SPECIES_UNUSED_SPACE6] = 0,
     [SPECIES_TEST] = 1,
-    //[SPECIES_UNUSED_SPACE8] = 0,
-    //[SPECIES_UNUSED_SPACE9] = 0,
-    //[SPECIES_UNUSED_SPACE10] = 0,
+    [SPECIES_ARTICUNO_GALAR] = 2,
+    [SPECIES_ZAPDOS_GALAR] = 0,
+    [SPECIES_MOLTRES_GALAR] = 0,
 };
 
 const struct SpritePalette gMonIconPaletteTable[] =

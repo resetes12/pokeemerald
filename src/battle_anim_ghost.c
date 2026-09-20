@@ -82,7 +82,7 @@ static const union AffineAnimCmd sAffineAnim_ShadowBall[] =
     AFFINEANIMCMD_JUMP(0),
 };
 
-static const union AffineAnimCmd *const sAffineAnims_ShadowBall[] =
+const union AffineAnimCmd *const sAffineAnims_ShadowBall[] =
 {
     sAffineAnim_ShadowBall,
 };

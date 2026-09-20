@@ -456,12 +456,12 @@ const u16 *const gLevelUpLearnsets[NUM_SPECIES] =
     [SPECIES_URSALUNA] = sUrsalunaLevelUpLearnset, 
     [SPECIES_URSALUNA_BLOODMOON] = sUrsaluna_BloodMoonLevelUpLearnset, 
     [SPECIES_KLEAVOR] = sKleavorLevelUpLearnset, 
-    [SPECIES_UNUSED_SPACE5] = sUnusedSpace5LevelUpLearnset, 
+    [SPECIES_VICTINI] = sVictiniLearnset, 
     [SPECIES_UNUSED_SPACE6] = sUnusedSpace6LevelUpLearnset, 
     [SPECIES_TEST]          = sTestLearnset, 
-    [SPECIES_UNUSED_SPACE8] = sUnusedSpace8LevelUpLearnset, 
-    [SPECIES_UNUSED_SPACE9] = sUnusedSpace9LevelUpLearnset, 
-    [SPECIES_UNUSED_SPACE10] = sUnusedSpace10LevelUpLearnset, 
+    [SPECIES_ARTICUNO_GALAR] = sArticunoGalarLevelUpLearnset, 
+    [SPECIES_ZAPDOS_GALAR] = sZapdosGalarLevelUpLearnset, 
+    [SPECIES_MOLTRES_GALAR] = sMoltresGalarLevelUpLearnset, 
 
 };
 
@@ -923,11 +923,11 @@ const u16 *const gLevelUpLearnsets_Original[NUM_SPECIES] =
     [SPECIES_URSALUNA] = sUrsalunaLevelUpLearnset_Original, 
     [SPECIES_URSALUNA_BLOODMOON] = sUrsaluna_BloodMoonLevelUpLearnset_Original, 
     [SPECIES_KLEAVOR] = sKleavorLevelUpLearnset_Original, 
-    [SPECIES_UNUSED_SPACE5] = sUnusedSpace5LevelUpLearnset_Original, 
+    [SPECIES_VICTINI] = sVictiniLearnset_Original, 
     [SPECIES_UNUSED_SPACE6] = sUnusedSpace6LevelUpLearnset_Original, 
     [SPECIES_TEST]          = sTestLearnset_Original, 
-    [SPECIES_UNUSED_SPACE8] = sUnusedSpace8LevelUpLearnset_Original, 
-    [SPECIES_UNUSED_SPACE9] = sUnusedSpace9LevelUpLearnset_Original, 
-    [SPECIES_UNUSED_SPACE10] = sUnusedSpace10LevelUpLearnset_Original, 
+    [SPECIES_ARTICUNO_GALAR] = sArticunoGalarLevelUpLearnset_Original, 
+    [SPECIES_ZAPDOS_GALAR] = sZapdosGalarLevelUpLearnset_Original, 
+    [SPECIES_MOLTRES_GALAR] = sMoltresGalarLevelUpLearnset_Original, 
 
 };

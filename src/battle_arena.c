@@ -286,6 +286,12 @@ static const s8 sMindRatings[MOVES_COUNT] =
     [MOVE_PLAY_ROUGH] = 1,
     [MOVE_MOONBLAST] = 1,
     [MOVE_POISON_JAB] = 1,
+    [MOVE_BLOOD_MOON] = 1,
+    [MOVE_JUDGMENT] = 1,
+    [MOVE_FREEZING_GLARE] = 1,
+    [MOVE_THUNDEROUS_KICK] = 1,
+    [MOVE_FIERY_WRATH] = 1,
+    [MOVE_SEARING_SHOT] = 1,
 };
 
 static const struct OamData sOam_JudgmentIcon =

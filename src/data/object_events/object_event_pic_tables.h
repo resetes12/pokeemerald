@@ -6037,6 +6037,42 @@ static const struct SpriteFrameImage sPicTable_Kleavor[] = {
     overworld_frame(gObjectEventPic_Kleavor, 4, 4, 5),
 };
 
+static const struct SpriteFrameImage sPicTable_Victini[] = {
+    overworld_frame(gObjectEventPic_Victini, 4, 4, 0),
+    overworld_frame(gObjectEventPic_Victini, 4, 4, 1),
+    overworld_frame(gObjectEventPic_Victini, 4, 4, 2),
+    overworld_frame(gObjectEventPic_Victini, 4, 4, 3),
+    overworld_frame(gObjectEventPic_Victini, 4, 4, 4),
+    overworld_frame(gObjectEventPic_Victini, 4, 4, 5),
+};
+
+static const struct SpriteFrameImage sPicTable_Articuno_Galar[] = {
+    overworld_frame(gObjectEventPic_Articuno_Galar, 4, 4, 0),
+    overworld_frame(gObjectEventPic_Articuno_Galar, 4, 4, 1),
+    overworld_frame(gObjectEventPic_Articuno_Galar, 4, 4, 2),
+    overworld_frame(gObjectEventPic_Articuno_Galar, 4, 4, 3),
+    overworld_frame(gObjectEventPic_Articuno_Galar, 4, 4, 4),
+    overworld_frame(gObjectEventPic_Articuno_Galar, 4, 4, 5),
+};
+
+static const struct SpriteFrameImage sPicTable_Zapdos_Galar[] = {
+    overworld_frame(gObjectEventPic_Zapdos_Galar, 4, 4, 0),
+    overworld_frame(gObjectEventPic_Zapdos_Galar, 4, 4, 1),
+    overworld_frame(gObjectEventPic_Zapdos_Galar, 4, 4, 2),
+    overworld_frame(gObjectEventPic_Zapdos_Galar, 4, 4, 3),
+    overworld_frame(gObjectEventPic_Zapdos_Galar, 4, 4, 4),
+    overworld_frame(gObjectEventPic_Zapdos_Galar, 4, 4, 5),
+};
+
+static const struct SpriteFrameImage sPicTable_Moltres_Galar[] = {
+    overworld_frame(gObjectEventPic_Moltres_Galar, 4, 4, 0),
+    overworld_frame(gObjectEventPic_Moltres_Galar, 4, 4, 1),
+    overworld_frame(gObjectEventPic_Moltres_Galar, 4, 4, 2),
+    overworld_frame(gObjectEventPic_Moltres_Galar, 4, 4, 3),
+    overworld_frame(gObjectEventPic_Moltres_Galar, 4, 4, 4),
+    overworld_frame(gObjectEventPic_Moltres_Galar, 4, 4, 5),
+};
+
 //RS Outfit, Brendan
 static const struct SpriteFrameImage sPicTable_BrendanNormal_RS[] = {
     overworld_frame(gObjectEventPic_BrendanNormal_RS, 2, 4, 0),

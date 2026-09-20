@@ -303,4 +303,17 @@ extern const union AnimCmd *const gAnims_SmallBubblePair[];
 extern const union AnimCmd *const gAnims_WaterBubble[];
 extern const union AffineAnimCmd *const gAffineAnims_Bite[];
 
+extern const union AnimCmd *const gExplosionAnimTable[];
+extern const union AffineAnimCmd *const sAffineAnims_ShadowBall[];
+extern const union AffineAnimCmd *const sAffineAnims_GrowingElectricOrb[];
+extern const union AnimCmd *const sAnims_HandsAndFeet[];
+extern const union AnimCmd *const gPowerAbsorptionOrbAnimTable[];
+void AnimMudSportDirtRising(struct Sprite *sprite);
+void AnimGrowingChargeOrb(struct Sprite *);
+void AnimOverheatFlame(struct Sprite *);
+void AnimOverheatFlame_Step(struct Sprite *);
+void AnimSpinningKickOrPunchFinish(struct Sprite *);
+void AnimNeedleArmSpike(struct Sprite *);
+void AnimNeedleArmSpike_Step(struct Sprite *);
+
 #endif // GUARD_BATTLE_ANIM_H

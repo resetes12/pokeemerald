@@ -10,8 +10,6 @@ static void AnimDragonRageFirePlume(struct Sprite *);
 static void AnimDragonFireToTarget(struct Sprite *);
 static void AnimDragonDanceOrb(struct Sprite *);
 static void AnimDragonDanceOrb_Step(struct Sprite *);
-static void AnimOverheatFlame(struct Sprite *);
-static void AnimOverheatFlame_Step(struct Sprite *);
 static void AnimTask_DragonDanceWaver_Step(u8);
 static void UpdateDragonDanceScanlineEffect(struct Task *);
 
@@ -424,7 +422,7 @@ static void UpdateDragonDanceScanlineEffect(struct Task *task)
     task->data[5] = (task->data[5] + 9) & 0xFF;
 }
 
-static void AnimOverheatFlame(struct Sprite *sprite)
+void AnimOverheatFlame(struct Sprite *sprite)
 {
     int i;
     int yAmplitude = (gBattleAnimArgs[2] * 3) / 5;
@@ -440,7 +438,7 @@ static void AnimOverheatFlame(struct Sprite *sprite)
         sUnusedOverheatData[i] = sprite->data[i];
 }
 
-static void AnimOverheatFlame_Step(struct Sprite *sprite)
+void AnimOverheatFlame_Step(struct Sprite *sprite)
 {
     sprite->data[4] += sprite->data[1];
     sprite->data[5] += sprite->data[2];

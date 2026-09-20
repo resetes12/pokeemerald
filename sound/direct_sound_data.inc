@@ -2115,6 +2115,22 @@ Cry_Kleavor::
 	.incbin "sound/direct_sound_samples/cries/kleavor.bin"
 
 	.align 2
+Cry_Victini::
+	.incbin "sound/direct_sound_samples/cries/victini.bin"
+
+	.align 2
+Cry_Articuno_Galar::
+	.incbin "sound/direct_sound_samples/cries/articuno.bin"
+
+	.align 2
+Cry_Zapdos_Galar::
+	.incbin "sound/direct_sound_samples/cries/zapdos.bin"
+
+	.align 2
+Cry_Moltres_Galar::
+	.incbin "sound/direct_sound_samples/cries/moltres.bin"
+
+	.align 2
 Cry_Test::
 	.incbin "sound/direct_sound_samples/cries/unown.bin"
 

@@ -1681,7 +1681,7 @@ bool8 PlayerHasMESpeciesOrItem(void)
         || (GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, NULL) == ITEM_FAIRY_GEM)
         || (GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, NULL) >= ITEM_ADAMANT_MINT && GetMonData(&gPlayerParty[i], MON_DATA_HELD_ITEM, NULL) <= ITEM_TIMID_MINT))
             return TRUE;
-        if ((GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, NULL) >= SPECIES_AMBIPOM && GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, NULL) <= SPECIES_UNUSED_SPACE10))
+        if ((GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, NULL) >= SPECIES_AMBIPOM && GetMonData(&gPlayerParty[i], MON_DATA_SPECIES, NULL) <= SPECIES_MOLTRES_GALAR))
             return TRUE;
     }
 

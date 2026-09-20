@@ -533,6 +533,10 @@ static const u16 sSpeciesHiddenFromAreaScreenModern[] = {
     SPECIES_URSALUNA,
     SPECIES_URSALUNA_BLOODMOON,
     SPECIES_KLEAVOR,
+    SPECIES_VICTINI,
+    SPECIES_ARTICUNO_GALAR,
+    SPECIES_ZAPDOS_GALAR,
+    SPECIES_MOLTRES_GALAR,
 };
 
 static const u16 sMovingRegionMapSections[3] =

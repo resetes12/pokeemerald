@@ -15,7 +15,6 @@ static void AnimDirtPlumeParticle_Step(struct Sprite *);
 static void AnimDigDirtMound(struct Sprite *);
 static void AnimBonemerangProjectile_Step(struct Sprite *);
 static void AnimBonemerangProjectile_End(struct Sprite *);
-static void AnimMudSportDirtRising(struct Sprite *);
 static void AnimMudSportDirtFalling(struct Sprite *);
 static void AnimTask_DigBounceMovement(u8);
 static void AnimTask_DigEndBounceMovementSetInvisible(u8);
@@ -248,7 +247,7 @@ static void AnimMudSportDirt(struct Sprite *sprite)
     }
 }
 
-static void AnimMudSportDirtRising(struct Sprite *sprite)
+void AnimMudSportDirtRising(struct Sprite *sprite)
 {
     if (++sprite->data[1] > 1)
     {

@@ -3137,6 +3137,32 @@ const u32 gMonShinyPalette_Kleavor[] = INCBIN_U32("graphics/pokemon/kleavor/shin
 const u8 gMonIcon_Kleavor[] = INCBIN_U8("graphics/pokemon/kleavor/icon.4bpp");
 const u8 gMonFootprint_Kleavor[] = INCBIN_U8("graphics/pokemon/kleavor/footprint.1bpp");
 
+const u32 gMonStillFrontPic_Victini[] = INCBIN_U32("graphics/pokemon/victini/front.4bpp.lz");
+const u32 gMonPalette_Victini[] = INCBIN_U32("graphics/pokemon/victini/normal.gbapal.lz");
+const u32 gMonBackPic_Victini[] = INCBIN_U32("graphics/pokemon/victini/back.4bpp.lz");
+const u32 gMonShinyPalette_Victini[] = INCBIN_U32("graphics/pokemon/victini/shiny.gbapal.lz");
+const u8 gMonIcon_Victini[] = INCBIN_U8("graphics/pokemon/victini/icon.4bpp");
+const u8 gMonFootprint_Victini[] = INCBIN_U8("graphics/pokemon/victini/footprint.1bpp");
+
+const u32 gMonStillFrontPic_Articuno_Galar[] = INCBIN_U32("graphics/pokemon/articuno/galar/front.4bpp.lz");
+const u32 gMonPalette_Articuno_Galar[] = INCBIN_U32("graphics/pokemon/articuno/galar/normal.gbapal.lz");
+const u32 gMonBackPic_Articuno_Galar[] = INCBIN_U32("graphics/pokemon/articuno/galar/back.4bpp.lz");
+const u32 gMonShinyPalette_Articuno_Galar[] = INCBIN_U32("graphics/pokemon/articuno/galar/shiny.gbapal.lz");
+const u8 gMonIcon_Articuno_Galar[] = INCBIN_U8("graphics/pokemon/articuno/galar/icon.4bpp");
+
+const u32 gMonStillFrontPic_Zapdos_Galar[] = INCBIN_U32("graphics/pokemon/zapdos/galar/front.4bpp.lz");
+const u32 gMonPalette_Zapdos_Galar[] = INCBIN_U32("graphics/pokemon/zapdos/galar/normal.gbapal.lz");
+const u32 gMonBackPic_Zapdos_Galar[] = INCBIN_U32("graphics/pokemon/zapdos/galar/back.4bpp.lz");
+const u32 gMonShinyPalette_Zapdos_Galar[] = INCBIN_U32("graphics/pokemon/zapdos/galar/shiny.gbapal.lz");
+const u8 gMonIcon_Zapdos_Galar[] = INCBIN_U8("graphics/pokemon/zapdos/galar/icon.4bpp");
+
+
+const u32 gMonStillFrontPic_Moltres_Galar[] = INCBIN_U32("graphics/pokemon/moltres/galar/front.4bpp.lz");
+const u32 gMonPalette_Moltres_Galar[] = INCBIN_U32("graphics/pokemon/moltres/galar/normal.gbapal.lz");
+const u32 gMonBackPic_Moltres_Galar[] = INCBIN_U32("graphics/pokemon/moltres/galar/back.4bpp.lz");
+const u32 gMonShinyPalette_Moltres_Galar[] = INCBIN_U32("graphics/pokemon/moltres/galar/shiny.gbapal.lz");
+const u8 gMonIcon_Moltres_Galar[] = INCBIN_U8("graphics/pokemon/moltres/galar/icon.4bpp");
+
 //Modern shinies
 const u32 gMonShinyPalette_Modern_Pikachu[] = INCBIN_U32("graphics/pokemon/pikachu/shiny_modern.gbapal.lz");
 const u32 gMonShinyPalette_Modern_Raichu[] = INCBIN_U32("graphics/pokemon/raichu/shiny_modern.gbapal.lz");

@@ -35,7 +35,6 @@ static void AnimArmThrustHit(struct Sprite *);
 static void AnimArmThrustHit_Step(struct Sprite *sprite);
 static void AnimRevengeScratch(struct Sprite *);
 static void AnimFocusPunchFist(struct Sprite *);
-static void AnimSpinningKickOrPunchFinish(struct Sprite *);
 
 extern struct SpriteTemplate gBasicHitSplatSpriteTemplate;
 
@@ -81,7 +80,7 @@ static const union AnimCmd sAnim_HandRight[] =
     ANIMCMD_END,
 };
 
-static const union AnimCmd *const sAnims_HandsAndFeet[] =
+const union AnimCmd *const sAnims_HandsAndFeet[] =
 {
     sAnim_Fist,
     sAnim_FootWide,
@@ -619,7 +618,7 @@ static void AnimSpinningKickOrPunch(struct Sprite *sprite)
     StoreSpriteCallbackInData6(sprite, AnimSpinningKickOrPunchFinish);
 }
 
-static void AnimSpinningKickOrPunchFinish(struct Sprite *sprite)
+void AnimSpinningKickOrPunchFinish(struct Sprite *sprite)
 {
     StartSpriteAffineAnim(sprite, 0);
     sprite->affineAnimPaused = 1;

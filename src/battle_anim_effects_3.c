@@ -120,6 +120,8 @@ static void AnimTask_OdorSleuthMovementWaitFinish(u8);
 static void MoveOdorSleuthClone(struct Sprite *);
 static void AnimTask_TeeterDanceMovement_Step(u8);
 static void AnimTask_SlackOffSquish_Step(u8);
+static void SpriteCB_Geyser(struct Sprite *sprite);
+static void SpriteCB_SearingShotRock(struct Sprite *sprite);
 
 const union AnimCmd gScratchAnimCmds[] =
 {
@@ -5545,3 +5547,191 @@ static void AnimTask_SlackOffSquish_Step(u8 taskId)
     if (!RunAffineAnimFromTaskData(&gTasks[taskId]))
         DestroyAnimVisualTask(taskId);
 }
+
+//Bloodmoon
+
+static const union AffineAnimCmd sArrowRaidOnslaughtAffineAnims[] = {
+    AFFINEANIMCMD_FRAME(0, 0, 0x30, 1),
+    AFFINEANIMCMD_END
+};
+
+static const union AffineAnimCmd *const sArrowRaidOnslaughtAffineAnimTable[] = {
+    sArrowRaidOnslaughtAffineAnims
+};
+
+const struct SpriteTemplate gRedExplosionSpriteTemplate =
+{
+    .tileTag = ANIM_TAG_RED_EXPLOSION,
+    .paletteTag = ANIM_TAG_RED_EXPLOSION,
+    .oam = &gOamData_AffineOff_ObjNormal_32x32,
+    .anims = gExplosionAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = AnimSpriteOnMonPos,
+};
+
+const struct SpriteTemplate gBloodMoonOnslaughtSpriteTemplate =
+{
+    .tileTag = ANIM_TAG_BEAM,
+    .paletteTag = ANIM_TAG_BEAM,
+    .oam = &gOamData_AffineNormal_ObjBlend_64x64,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = sArrowRaidOnslaughtAffineAnimTable,
+    .callback = AnimAssistPawprint
+};
+
+const struct SpriteTemplate gMoonUpSpriteTemplate =
+{
+    .tileTag = ANIM_TAG_BLOOD_MOON,
+    .paletteTag = ANIM_TAG_BLOOD_MOON,
+    .oam = &gOamData_AffineOff_ObjNormal_64x64,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = AnimWeatherBallUp,
+};
+
+// Fiery Wrath
+
+//Launches an object upwards like they were being shot from a geyser
+//arg 0: null
+//arg 1: initial x pixel offset
+//arg 2: initial y pixel offset
+static void SpriteCB_Geyser(struct Sprite *sprite)
+{
+    sprite->x = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_X_2) + gBattleAnimArgs[1];
+    sprite->y = GetBattlerSpriteCoord(gBattleAnimAttacker, BATTLER_COORD_Y_PIC_OFFSET) + gBattleAnimArgs[2];
+
+    sprite->data[0] = gBattleAnimArgs[1] > 0 ? 1 : -1;
+    sprite->callback = AnimMudSportDirtRising;
+}
+
+const struct SpriteTemplate gSpriteTemplate_FieryWrathGeyser = {
+    .tileTag = ANIM_TAG_PURPLE_RING,
+    .paletteTag = ANIM_TAG_PURPLE_RING,
+    .oam = &gOamData_AffineDouble_ObjNormal_16x32,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = sAffineAnims_ShadowBall,
+    .callback = SpriteCB_Geyser
+};
+
+// Searing Shot
+
+static void InitSpritePosToGivenTarget(struct Sprite *sprite)
+{
+    sprite->x = GetBattlerSpriteCoord2(gBattleAnimTarget, BATTLER_COORD_X);
+    sprite->y = GetBattlerSpriteCoord2(gBattleAnimTarget, BATTLER_COORD_Y);
+
+    SetAnimSpriteInitialXOffset(sprite, gBattleAnimArgs[0]);
+    sprite->y2 = gBattleAnimArgs[1];
+}
+
+static void SpriteCB_SearingShotRock(struct Sprite *sprite)
+{
+    if (!IsBattlerSpriteVisible(gBattleAnimTarget))
+    {
+        DestroyAnimSprite(sprite);
+    }
+    else
+    {
+        InitSpritePosToGivenTarget(sprite);
+        StartSpriteAnim(sprite, gBattleAnimArgs[2]);
+        sprite->data[0] = gBattleAnimArgs[3];
+        sprite->callback = WaitAnimForDuration;
+        StoreSpriteCallbackInData6(sprite, AnimSpinningKickOrPunchFinish);
+    }
+}
+
+const struct SpriteTemplate gSearingShotRedChargeTemplate =
+{
+    .tileTag = ANIM_TAG_CIRCLE_OF_LIGHT,
+    .paletteTag = ANIM_TAG_JAGGED_MUSIC_NOTE,
+    .oam = &gOamData_AffineNormal_ObjBlend_64x64,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = sAffineAnims_GrowingElectricOrb,
+    .callback = AnimGrowingChargeOrb
+};
+
+const struct SpriteTemplate gSearingShotEruptionRockTemplate =
+{
+    .tileTag = ANIM_TAG_WARM_ROCK,
+    .paletteTag = ANIM_TAG_WARM_ROCK,
+    .oam = &gOamData_AffineOff_ObjNormal_32x32,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = AnimOverheatFlame
+};
+
+static const union AffineAnimCmd sSpriteAffineAnim_SearingShotRock[] =
+{
+    AFFINEANIMCMD_FRAME(8, 8, 9, 15),
+    AFFINEANIMCMD_FRAME(-8, -8, 9, 15),
+    AFFINEANIMCMD_END,
+};
+static const union AffineAnimCmd* const sSpriteAffineAnimTable_SearingShotRock[] =
+{
+    sSpriteAffineAnim_SearingShotRock,
+};
+const struct SpriteTemplate gSearingShotEruptionImpactTemplate =
+{
+    .tileTag = ANIM_TAG_WARM_ROCK,
+    .paletteTag = ANIM_TAG_WARM_ROCK,
+    .oam = &gOamData_AffineDouble_ObjNormal_32x32,
+    .anims = sAnims_HandsAndFeet,
+    .images = NULL,
+    .affineAnims = sSpriteAffineAnimTable_SearingShotRock,
+    .callback = SpriteCB_SearingShotRock
+};
+
+//Judgment
+
+const struct SpriteTemplate gJudgmentGrayOutwardSpikesTemplate =
+{
+    .tileTag = ANIM_TAG_GREEN_SPIKE,
+    .paletteTag = ANIM_TAG_GUST,
+    .oam = &gOamData_AffineNormal_ObjNormal_16x16,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = AnimNeedleArmSpike
+};
+
+const struct SpriteTemplate gJudgmentGrayInwardOrbsTemplate =
+{
+    .tileTag = ANIM_TAG_ORBS,
+    .paletteTag = ANIM_TAG_HANDS_AND_FEET,
+    .oam = &gOamData_AffineNormal_ObjBlend_16x16,
+    .anims = gPowerAbsorptionOrbAnimTable,
+    .images = NULL,
+    .affineAnims = gDummySpriteAffineAnimTable,
+    .callback = AnimNeedleArmSpike
+};
+
+static const union AffineAnimCmd sSpriteAffineAnim_JudgmentBall[] =
+{
+    AFFINEANIMCMD_FRAME(16, 16, 0, 0),
+    AFFINEANIMCMD_FRAME(8, 8, 0, 15), //Half size
+    AFFINEANIMCMD_FRAME(0, 0, 0, 120), //Delay
+    AFFINEANIMCMD_FRAME(24, 24, 0, 5), //Normal size
+    AFFINEANIMCMD_FRAME(0, 0, 0, 10), //Delay
+    AFFINEANIMCMD_FRAME(-16, -16, 0, 15), //Revert to 1 px
+    AFFINEANIMCMD_END,
+};
+static const union AffineAnimCmd* const sSpriteAffineAnimTable_JudgmentBall[] =
+{
+    sSpriteAffineAnim_JudgmentBall,
+};
+const struct SpriteTemplate gJudgmentBlackChargeTemplate =
+{
+    .tileTag = ANIM_TAG_CIRCLE_OF_LIGHT,
+    .paletteTag = ANIM_TAG_HANDS_AND_FEET,
+    .oam = &gOamData_AffineNormal_ObjBlend_64x64,
+    .anims = gDummySpriteAnimTable,
+    .images = NULL,
+    .affineAnims = sSpriteAffineAnimTable_JudgmentBall,
+    .callback = AnimGrowingChargeOrb
+};

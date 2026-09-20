@@ -3206,6 +3206,35 @@ extern const u32 gMonStillFrontPic_Kleavor[];
 extern const u8 gMonIcon_Kleavor[];
 extern const u8 gMonFootprint_Kleavor[];
 
+extern const u32 gMonFrontPic_Victini[];
+extern const u32 gMonPalette_Victini[];
+extern const u32 gMonBackPic_Victini[];
+extern const u32 gMonShinyPalette_Victini[];
+extern const u32 gMonStillFrontPic_Victini[];
+extern const u8 gMonIcon_Victini[];
+extern const u8 gMonFootprint_Victini[];
+
+extern const u32 gMonFrontPic_Articuno_Galar[];
+extern const u32 gMonPalette_Articuno_Galar[];
+extern const u32 gMonBackPic_Articuno_Galar[];
+extern const u32 gMonShinyPalette_Articuno_Galar[];
+extern const u32 gMonStillFrontPic_Articuno_Galar[];
+extern const u8 gMonIcon_Articuno_Galar[];
+
+extern const u32 gMonFrontPic_Zapdos_Galar[];
+extern const u32 gMonPalette_Zapdos_Galar[];
+extern const u32 gMonBackPic_Zapdos_Galar[];
+extern const u32 gMonShinyPalette_Zapdos_Galar[];
+extern const u32 gMonStillFrontPic_Zapdos_Galar[];
+extern const u8 gMonIcon_Zapdos_Galar[];
+
+extern const u32 gMonFrontPic_Moltres_Galar[];
+extern const u32 gMonPalette_Moltres_Galar[];
+extern const u32 gMonBackPic_Moltres_Galar[];
+extern const u32 gMonShinyPalette_Moltres_Galar[];
+extern const u32 gMonStillFrontPic_Moltres_Galar[];
+extern const u8 gMonIcon_Moltres_Galar[];
+
 extern const u8 gMonIcon_Test[];
 extern const u32 gMonFrontPic_Test[];
 extern const u32 gMonPalette_Test[];
@@ -5633,6 +5662,15 @@ extern const u32 gBattleAnimSpriteGfx_DragonPulseRing[];
 extern const u32 gBattleAnimSpritePal_DragonPulseRing[];
 extern const u32 gBattleAnimSpriteGfx_PurpleJab[];
 extern const u32 gBattleAnimSpritePal_PurpleJab[];
+extern const u32 gBattleAnimSpriteGfx_Beam[];
+extern const u32 gBattleAnimSpritePal_Beam[];
+extern const u32 gBattleAnimSpriteGfx_BloodMoon[];
+extern const u32 gBattleAnimSpritePal_BloodMoon[];
+extern const u32 gBattleAnimSpriteGfx_RedExplosion[];
+extern const u32 gBattleAnimSpritePal_RedExplosion[];
+extern const u32 gBattleAnimBgImage_Fire1[];
+extern const u16 gBattleAnimBgPalette_Fire1[];
+extern const u32 gBattleAnimBgTilemap_Fire1[];
 
 extern const u8 gMonMarkingsMenu_Gfx[];
 extern const u16 gMonMarkingsMenu_Pal[];

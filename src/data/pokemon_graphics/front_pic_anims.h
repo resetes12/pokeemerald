@@ -5282,6 +5282,68 @@ static const union AnimCmd sAnim_Kleavor_1[] =
     ANIMCMD_END,
 };
 
+static const union AnimCmd sAnim_Victini_1[] =
+{
+    ANIMCMD_FRAME(0, 2),
+    ANIMCMD_FRAME(1, 46),
+    ANIMCMD_FRAME(0, 10),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_Articuno_Galar_1[] =
+{
+    ANIMCMD_FRAME(1, 25),
+    ANIMCMD_FRAME(0, 15),
+    ANIMCMD_FRAME(1, 20),
+    ANIMCMD_FRAME(0, 10),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_Zapdos_Galar_1[] =
+{
+    ANIMCMD_FRAME(0, 10),
+    ANIMCMD_FRAME(1, 10),
+    ANIMCMD_FRAME(0, 10),
+    ANIMCMD_END,
+};
+
+static const union AnimCmd sAnim_Moltres_Galar_1[] =
+{
+    ANIMCMD_FRAME(1, 3),
+    ANIMCMD_FRAME(0, 3),
+    ANIMCMD_FRAME(1, 3),
+    ANIMCMD_FRAME(0, 3),
+    ANIMCMD_FRAME(1, 3),
+    ANIMCMD_FRAME(0, 3),
+    ANIMCMD_FRAME(1, 3),
+    ANIMCMD_FRAME(0, 3),
+    ANIMCMD_FRAME(1, 3),
+    ANIMCMD_FRAME(0, 3),
+    ANIMCMD_FRAME(1, 3),
+    ANIMCMD_FRAME(0, 3),
+    ANIMCMD_FRAME(1, 3),
+    ANIMCMD_FRAME(0, 3),
+    ANIMCMD_FRAME(1, 3),
+    ANIMCMD_FRAME(0, 3),
+    ANIMCMD_FRAME(1, 3),
+    ANIMCMD_FRAME(0, 3),
+    ANIMCMD_FRAME(1, 3),
+    ANIMCMD_FRAME(0, 3),
+    ANIMCMD_FRAME(1, 3),
+    ANIMCMD_FRAME(0, 3),
+    ANIMCMD_FRAME(1, 3),
+    ANIMCMD_FRAME(0, 3),
+    ANIMCMD_FRAME(1, 3),
+    ANIMCMD_FRAME(0, 3),
+    ANIMCMD_FRAME(1, 3),
+    ANIMCMD_FRAME(0, 3),
+    ANIMCMD_FRAME(1, 3),
+    ANIMCMD_FRAME(0, 3),
+    ANIMCMD_FRAME(1, 3),
+    ANIMCMD_FRAME(0, 3),
+    ANIMCMD_END,
+};
+
 #define SINGLE_ANIMATION(name)                      \
 static const union AnimCmd *const sAnims_##name[] = \
 {                                                   \
@@ -5770,6 +5832,10 @@ SINGLE_ANIMATION(Wyrdeer);
 SINGLE_ANIMATION(Ursaluna);
 SINGLE_ANIMATION(Ursaluna_BloodMoon);
 SINGLE_ANIMATION(Kleavor);
+SINGLE_ANIMATION(Victini);
+SINGLE_ANIMATION(Articuno_Galar);
+SINGLE_ANIMATION(Zapdos_Galar);
+SINGLE_ANIMATION(Moltres_Galar);
 
 const union AnimCmd *const *const gMonFrontAnimsPtrTable[] =
 {
@@ -6257,6 +6323,9 @@ const union AnimCmd *const *const gMonFrontAnimsPtrTable[] =
     [SPECIES_URSALUNA] = sAnims_Ursaluna,
     [SPECIES_URSALUNA_BLOODMOON] = sAnims_Ursaluna_BloodMoon,
     [SPECIES_KLEAVOR] = sAnims_Kleavor,
+    [SPECIES_VICTINI] = sAnims_Victini,
     [SPECIES_TEST] = sAnims_Unown,
-
+    [SPECIES_ARTICUNO_GALAR]    = sAnims_Articuno_Galar,
+    [SPECIES_ZAPDOS_GALAR]      = sAnims_Zapdos_Galar,
+    [SPECIES_MOLTRES_GALAR]     = sAnims_Moltres_Galar,
 };

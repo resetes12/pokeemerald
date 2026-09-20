@@ -369,4 +369,10 @@ const u8 gMoveNames[MOVES_COUNT][MOVE_NAME_LENGTH + 1] =
     [MOVE_PLAY_ROUGH] = _("Play Rough"),
     [MOVE_POISON_JAB] = _("Poison Jab"),
     [MOVE_HEAL_PULSE] = _("Heal Pulse"),
+    [MOVE_BLOOD_MOON] = _("Blood Moon"),
+    [MOVE_JUDGMENT] = _("Judgment"),
+    [MOVE_FREEZING_GLARE] = _("Freez. Glare"),
+    [MOVE_THUNDEROUS_KICK] = _("Thund. Kick"),
+    [MOVE_FIERY_WRATH] = _("Fiery Wrath"),
+    [MOVE_SEARING_SHOT] = _("Searing Shot"),
 };

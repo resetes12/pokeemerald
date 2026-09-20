@@ -25,7 +25,6 @@ static void AnimThunderWave_Step(struct Sprite *);
 static void AnimTask_ElectricChargingParticles_Step(u8 taskId);
 static void AnimElectricChargingParticles(struct Sprite *);
 static void AnimElectricChargingParticles_Step(struct Sprite *);
-static void AnimGrowingChargeOrb(struct Sprite *);
 static void AnimElectricPuff(struct Sprite *);
 static void AnimVoltTackleOrbSlide(struct Sprite *);
 static void AnimVoltTackleOrbSlide_Step(struct Sprite *);
@@ -326,7 +325,7 @@ static const union AffineAnimCmd sAffineAnim_GrowingElectricOrb_2[] =
     AFFINEANIMCMD_END,
 };
 
-static const union AffineAnimCmd *const sAffineAnims_GrowingElectricOrb[] =
+const union AffineAnimCmd *const sAffineAnims_GrowingElectricOrb[] =
 {
     sAffineAnim_GrowingElectricOrb_0,
     sAffineAnim_GrowingElectricOrb_1,
@@ -899,7 +898,7 @@ static void AnimElectricChargingParticles(struct Sprite *sprite)
     sprite->callback = AnimElectricChargingParticles_Step;
 }
 
-static void AnimGrowingChargeOrb(struct Sprite *sprite)
+void AnimGrowingChargeOrb(struct Sprite *sprite)
 {
     if (gBattleAnimArgs[0] == ANIM_ATTACKER)
     {

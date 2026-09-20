@@ -2565,6 +2565,30 @@ const u8 gKleavorPokedexText[] = _(
     "stone. Should one encounter this Pokémon\n"
     "in the wild, one's only recourse is to flee.");
 
+const u8 gVictiniPokedexText[] = _(
+    "This Pokémon brings victory.\n"
+    "It is said that Trainers with Victini\n"
+    "always win, regardless of the type\n"
+    "of encounter.");
+
+const u8 gArticunoGalarPokedexText[] = _(
+    "It fires beams that immobilize opponents\n"
+    "as if they had been frozen solid.\n"
+    "Its feather-like blades of psychic energy\n"
+    "rip through thick iron sheets like paper.");
+
+const u8 gZapdosGalarPokedexText[] = _(
+    "When its feathers rub together, they\n"
+    "produce a crackling sound like the\n"
+    "zapping of electricity. Apparently, it runs\n"
+    "through the mountains at over 180 mph.");
+
+const u8 gMoltresGalarPokedexText[] = _(
+    "This Pokémon's sinister, flame-like aura\n"
+    "will consume the spirit of any creature\n"
+    "it hits. Victims become burned-out\n"
+    "shadows of themselves.");
+
 const u8 gDeoxysAPokedexText[] = _(
     "An alien virus that fell to earth on\n" 
     "a meteor underwent a DNA mutation to\n"

@@ -68,8 +68,6 @@ static void AnimTrickBag_Step2(struct Sprite *);
 static void AnimTrickBag_Step3(struct Sprite *);
 static void AnimFlyingParticle(struct Sprite *);
 static void AnimFlyingParticle_Step(struct Sprite *);
-static void AnimNeedleArmSpike(struct Sprite *);
-static void AnimNeedleArmSpike_Step(struct Sprite *);
 static void AnimSlidingHit(struct Sprite *);
 static void AnimWhipHit(struct Sprite *);
 static void AnimFlickeringPunch(struct Sprite *);
@@ -3695,7 +3693,7 @@ void AnimTask_CycleMagicalLeafPal(u8 taskId)
         DestroyAnimVisualTask(taskId);
 }
 
-static void AnimNeedleArmSpike(struct Sprite *sprite)
+void AnimNeedleArmSpike(struct Sprite *sprite)
 {
     u8 a;
     u8 b;
@@ -3751,7 +3749,7 @@ static void AnimNeedleArmSpike(struct Sprite *sprite)
     }
 }
 
-static void AnimNeedleArmSpike_Step(struct Sprite *sprite)
+void AnimNeedleArmSpike_Step(struct Sprite *sprite)
 {
     if (sprite->data[0])
     {

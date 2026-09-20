@@ -484,11 +484,11 @@ const struct CompressedSpriteSheet gMonFrontPicTable[] =
     SPECIES_SPRITE(URSALUNA, gMonFrontPic_Ursaluna),
     SPECIES_SPRITE(URSALUNA_BLOODMOON, gMonFrontPic_Ursaluna_BloodMoon),
     SPECIES_SPRITE(KLEAVOR, gMonFrontPic_Kleavor),
-    //SPECIES_SPRITE(UNUSED_SPACE5, gMonFrontPic_Unused_Space5),
+    SPECIES_SPRITE(VICTINI, gMonFrontPic_Victini),
     //SPECIES_SPRITE(UNUSED_SPACE6, gMonFrontPic_Unused_Space6),
     SPECIES_SPRITE(TEST, gMonFrontPic_Test),
-    //SPECIES_SPRITE(UNUSED_SPACE8, gMonFrontPic_Unused_Space8),
-    //SPECIES_SPRITE(UNUSED_SPACE9, gMonFrontPic_Unused_Space9),
-    //SPECIES_SPRITE(UNUSED_SPACE10, gMonFrontPic_Unused_Space10),
+    SPECIES_SPRITE(ARTICUNO_GALAR, gMonFrontPic_Articuno_Galar),
+    SPECIES_SPRITE(ZAPDOS_GALAR, gMonFrontPic_Zapdos_Galar),
+    SPECIES_SPRITE(MOLTRES_GALAR, gMonFrontPic_Moltres_Galar),
 
 };
