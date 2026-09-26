@@ -415,7 +415,7 @@ If this works, then proceed to [Installation](#installation). Otherwise, ask for
     git clone https://github.com/pret/agbcc
     cd agbcc
     ./build.sh
-    ./install.sh ../pokeemerald
+    ./install.sh ../
     ```
 
 - **Otherwise**, if agbcc has been built before (e.g. if the git clone above fails), but was **last built on a different terminal** than the one currently used (only relevant to Windows, e.g. switching from msys2 to WSL1), then run the following commands to build and install it into pokeemerald:
