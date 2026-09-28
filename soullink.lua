@@ -17,6 +17,9 @@ local MAILBOX_INCOMING_TYPE_OFFSET = MAILBOX_INCOMING_OFFSET + 12
 local MAILBOX_INCOMING_ACK_OFFSET = 64
 local EVENT_PING = 1
 local PING_INTERVAL_FRAMES = 300
+local NETWORK_KEEPALIVE_INTERVAL_FRAMES = 300
+local NETWORK_PEER_TIMEOUT_FRAMES = 900
+local NETWORK_RECEIVE_TIMEOUT_MS = 1
 
 local SAVE_BLOCK1_PTR = 0x3D5C -- gSaveBlock1Ptr - 0x03000000
 local FLAGS_OFFSET = 0x1364
@@ -76,6 +79,117 @@ end
 
 local networkConfig, networkConfigError = loadNetworkConfig()
 local commSocketInfo, commSocketError = probeCommSocket()
+local networkReady = false
+local nextNetworkSequence = 1
+local lastRemoteSequence = 0
+local nextKeepaliveFrame = 0
+local lastRemoteFrame = nil
+
+local function sendNetworkMessage(messageType, payload)
+    if not networkReady then
+        return false
+    end
+
+    local message = table.concat({
+        "SL1", tostring(nextNetworkSequence), networkConfig.role,
+        messageType, payload or "",
+    }, "|")
+    local ok, sent = pcall(function()
+        return comm.socketServerSend(message)
+    end)
+    if not ok or not sent or sent <= 0 then
+        console.log("[SoulLink] network send failed: " .. tostring(sent))
+        networkReady = false
+        return false
+    end
+
+    nextNetworkSequence = nextNetworkSequence + 1
+    return true
+end
+
+local function handleNetworkMessage(message)
+    local protocol, sequenceText, sender, messageType, payload =
+        message:match("^([^|]+)|([^|]+)|([^|]+)|([^|]+)|(.*)$")
+    local sequence = tonumber(sequenceText)
+    if protocol ~= "SL1" or not sequence or sequence < 1
+        or sequence ~= math.floor(sequence)
+    then
+        return false, "malformed message"
+    end
+    if sender == networkConfig.role or (sender ~= "host" and sender ~= "client") then
+        return false, "invalid sender " .. tostring(sender)
+    end
+    if sequence <= lastRemoteSequence then
+        return true
+    end
+    if messageType ~= "HELLO" and messageType ~= "KEEPALIVE" then
+        return false, "unsupported message type " .. tostring(messageType)
+    end
+
+    lastRemoteSequence = sequence
+    lastRemoteFrame = emu.framecount()
+    if messageType == "HELLO" then
+        console.log(string.format(
+            "[SoulLink] HELLO %d received from %s (protocol=%s)",
+            sequence, sender, payload))
+    else
+        console.log(string.format(
+            "[SoulLink] KEEPALIVE %d received from %s", sequence, sender))
+    end
+    return true
+end
+
+local function initializeNetwork()
+    if not networkConfig or not commSocketInfo then
+        return
+    end
+
+    local ok, timeoutError = pcall(function()
+        comm.socketServerSetTimeout(NETWORK_RECEIVE_TIMEOUT_MS)
+    end)
+    if not ok then
+        console.log("[SoulLink] cannot configure socket timeout: " .. tostring(timeoutError))
+        return
+    end
+
+    networkReady = true
+    if sendNetworkMessage("HELLO", tostring(MAILBOX_VERSION)) then
+        console.log("[SoulLink] HELLO sent as " .. networkConfig.role)
+        nextKeepaliveFrame = emu.framecount() + NETWORK_KEEPALIVE_INTERVAL_FRAMES
+    end
+end
+
+local function updateNetwork()
+    if not networkReady then
+        return
+    end
+
+    local frame = emu.framecount()
+    if frame >= nextKeepaliveFrame then
+        sendNetworkMessage("KEEPALIVE", tostring(frame))
+        nextKeepaliveFrame = frame + NETWORK_KEEPALIVE_INTERVAL_FRAMES
+    end
+
+    local ok, message = pcall(function()
+        return comm.socketServerResponse()
+    end)
+    if not ok then
+        console.log("[SoulLink] network receive failed: " .. tostring(message))
+        networkReady = false
+        return
+    end
+    if message and message ~= "" then
+        local valid, messageError = handleNetworkMessage(message)
+        if not valid then
+            console.log("[SoulLink] ignored network message: " .. messageError)
+        end
+    end
+
+    if lastRemoteFrame and frame - lastRemoteFrame >= NETWORK_PEER_TIMEOUT_FRAMES then
+        console.log("[SoulLink] peer keepalive timed out")
+        lastRemoteFrame = nil
+    end
+end
 
 local function findMailboxAddress()
     local mapPath = getScriptDirectory() .. "pokeemerald_modern.map"
@@ -252,11 +366,13 @@ if networkConfig then
 else
     console.log("[SoulLink] " .. networkConfigError)
 end
+initializeNetwork()
 
 local previousSignature = nil
 local previousError = nil
 while true do
     updateMailbox()
+    updateNetwork()
 
     local ok, state, stateError = pcall(readState)
     if not ok then
