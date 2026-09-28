@@ -85,6 +85,9 @@ local function readState()
         saveBlock1 = saveBlock1,
         mode = mode,
         active = active,
+        easy = easy,
+        enabled = enabled,
+        hardcore = hardcore,
         speciesClause = bitIsSet(clausesByte, 5),
         shinyClause = bitIsSet(clausesByte, 6),
         nicknaming = bitIsSet(clausesByte, 7),
@@ -95,6 +98,7 @@ local function readState()
 
     state.signature = table.concat({
         string.format("%08X", state.saveBlock1), state.mode, tostring(state.active),
+        tostring(state.easy), tostring(state.enabled), tostring(state.hardcore),
         tostring(state.speciesClause), tostring(state.shinyClause),
         tostring(state.nicknaming), tostring(state.deletion), state.encountersHex,
     }, "|")
@@ -107,6 +111,9 @@ local function printState(state)
         state.mode, yesNo(state.active), yesNo(state.speciesClause),
         yesNo(state.shinyClause), yesNo(state.nicknaming),
         state.deletion and "release" or "cemetery"))
+    console.log(string.format(
+        "[Nuzlocke] rawFlags easy=%s enabled=%s hardcore=%s",
+        yesNo(state.easy), yesNo(state.enabled), yesNo(state.hardcore)))
     console.log(string.format(
         "[Nuzlocke] saveBlock1=0x%08X encounters=[%s] usedIds=%s",
         state.saveBlock1, state.encountersHex, state.usedEncounterIds))
