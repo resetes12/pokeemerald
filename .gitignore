@@ -46,3 +46,4 @@ agbcc/
 /*.zip
 AGENTS.md
 HANDOFF.md
+/soullink-config.lua

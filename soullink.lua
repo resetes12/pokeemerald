@@ -38,6 +38,45 @@ local function getScriptDirectory()
     return source:match("^(.*[\\/])") or ""
 end
 
+local function loadNetworkConfig()
+    local configPath = getScriptDirectory() .. "soullink-config.lua"
+    local configChunk, loadError = loadfile(configPath)
+    if not configChunk then
+        return nil, "network disabled; copy soullink-config.example.lua to soullink-config.lua (" .. tostring(loadError) .. ")"
+    end
+
+    local ok, config = pcall(configChunk)
+    if not ok then
+        return nil, "cannot load " .. configPath .. ": " .. tostring(config)
+    end
+    if type(config) ~= "table"
+        or (config.role ~= "host" and config.role ~= "client")
+        or type(config.host) ~= "string"
+        or type(config.port) ~= "number"
+        or config.port < 1 or config.port > 65535
+    then
+        return nil, "invalid network config in " .. configPath
+    end
+    return config
+end
+
+local function probeCommSocket()
+    if comm == nil then
+        return nil, "BizHawk comm.socketServer API is unavailable"
+    end
+
+    local ok, info = pcall(function()
+        return comm.socketServerGetInfo()
+    end)
+    if not ok or not info or info == "" then
+        return nil, "built-in socket is not initialized; start the bridge, then launch EmuHawk with --socket-ip and --socket-port"
+    end
+    return info
+end
+
+local networkConfig, networkConfigError = loadNetworkConfig()
+local commSocketInfo, commSocketError = probeCommSocket()
+
 local function findMailboxAddress()
     local mapPath = getScriptDirectory() .. "pokeemerald_modern.map"
     local mapFile, openError = io.open(mapPath, "r")
@@ -202,6 +241,17 @@ end
 
 console.log("[Nuzlocke] diagnostic reader started")
 console.log(string.format("[SoulLink] mailbox symbol resolved to 0x%08X", EWRAM_BASE + mailboxOffset))
+if commSocketInfo then
+    console.log("[SoulLink] BizHawk socket connected to " .. commSocketInfo)
+else
+    console.log("[SoulLink] " .. commSocketError)
+end
+if networkConfig then
+    console.log(string.format("[SoulLink] network config: role=%s host=%s port=%d",
+        networkConfig.role, networkConfig.host, networkConfig.port))
+else
+    console.log("[SoulLink] " .. networkConfigError)
+end
 
 local previousSignature = nil
 local previousError = nil
