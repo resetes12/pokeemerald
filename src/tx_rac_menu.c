@@ -1942,6 +1942,7 @@ void SaveData_TxRandomizerAndChallenges(void)
         gSaveBlock1Ptr->tx_Random_Evolutions         = FALSE;
         gSaveBlock1Ptr->tx_Random_EvolutionMethods   = FALSE;
         gSaveBlock1Ptr->tx_Random_TypeEffectiveness  = FALSE;
+        gSaveBlock1Ptr->tx_Random_Items              = FALSE;
         gSaveBlock1Ptr->tx_Random_Chaos              = FALSE;
     }
     //MENU_NUZLOCKE
