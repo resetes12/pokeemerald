@@ -8,6 +8,7 @@
 #include "bg.h"
 #include "rtc.h"
 #include "scanline_effect.h"
+#include "soul_link.h"
 #include "overworld.h"
 #include "play_time.h"
 #include "random.h"
@@ -168,6 +169,8 @@ void AgbMain()
 
 static void UpdateLinkAndCallCallbacks(void)
 {
+    SoulLink_Update();
+
     if (!HandleLinkConnection())
         CallCallbacks();
 }

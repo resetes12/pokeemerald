@@ -9,6 +9,15 @@ local EWRAM_DOMAIN = "EWRAM"
 local EWRAM_BASE = 0x02000000
 local EWRAM_END = 0x02040000
 
+local MAILBOX_MAGIC = 0x4B4E4C53
+local MAILBOX_VERSION = 1
+local MAILBOX_SIZE = 68
+local MAILBOX_INCOMING_OFFSET = 40
+local MAILBOX_INCOMING_TYPE_OFFSET = MAILBOX_INCOMING_OFFSET + 12
+local MAILBOX_INCOMING_ACK_OFFSET = 64
+local EVENT_PING = 1
+local PING_INTERVAL_FRAMES = 300
+
 local SAVE_BLOCK1_PTR = 0x3D5C -- gSaveBlock1Ptr - 0x03000000
 local FLAGS_OFFSET = 0x1364
 local ENCOUNTER_FLAGS_OFFSET = 0x3D94
@@ -20,6 +29,78 @@ local NUZLOCKE_OPTIONS_OFFSET = 0x3DA3
 local FLAG_ADVENTURE_STARTED = 0x074
 local FLAG_SYS_POKEMON_GET = 0x860
 local FLAG_IS_CHAMPION = 0x87F
+
+local function getScriptDirectory()
+    local source = debug.getinfo(1, "S").source
+    if source:sub(1, 1) == "@" then
+        source = source:sub(2)
+    end
+    return source:match("^(.*[\\/])") or ""
+end
+
+local function findMailboxAddress()
+    local mapPath = getScriptDirectory() .. "pokeemerald_modern.map"
+    local mapFile, openError = io.open(mapPath, "r")
+    if not mapFile then
+        error("cannot open linker map " .. mapPath .. ": " .. tostring(openError))
+    end
+
+    local address
+    for line in mapFile:lines() do
+        local hex = line:match("^%s*(0x[%da-fA-F]+)%s+gSoulLinkMailbox%s*$")
+        if hex then
+            address = tonumber(hex)
+            break
+        end
+    end
+    mapFile:close()
+
+    if not address or address < EWRAM_BASE or address + MAILBOX_SIZE > EWRAM_END then
+        error("gSoulLinkMailbox is missing or invalid in " .. mapPath)
+    end
+    return address - EWRAM_BASE
+end
+
+local mailboxOffset = findMailboxAddress()
+local nextPingSequence = 1
+local pendingPing = nil
+local nextPingFrame = 0
+local mailboxReady = false
+
+local function updateMailbox()
+    local magic = memory.read_u32_le(mailboxOffset, EWRAM_DOMAIN)
+    local version = memory.read_u16_le(mailboxOffset + 4, EWRAM_DOMAIN)
+    local size = memory.read_u16_le(mailboxOffset + 6, EWRAM_DOMAIN)
+
+    if magic ~= MAILBOX_MAGIC or version ~= MAILBOX_VERSION or size ~= MAILBOX_SIZE then
+        mailboxReady = false
+        return
+    end
+
+    if not mailboxReady then
+        console.log(string.format(
+            "[SoulLink] mailbox ready at 0x%08X (protocol=%d, size=%d)",
+            EWRAM_BASE + mailboxOffset, version, size))
+        mailboxReady = true
+    end
+
+    local ack = memory.read_u32_le(mailboxOffset + MAILBOX_INCOMING_ACK_OFFSET, EWRAM_DOMAIN)
+    if pendingPing and ack == pendingPing then
+        console.log(string.format("[SoulLink] PING %d acknowledged by ROM", pendingPing))
+        pendingPing = nil
+        nextPingFrame = emu.framecount() + PING_INTERVAL_FRAMES
+    end
+
+    if not pendingPing and emu.framecount() >= nextPingFrame then
+        local incomingSequence = memory.read_u32_le(mailboxOffset + MAILBOX_INCOMING_OFFSET, EWRAM_DOMAIN)
+        if incomingSequence == ack then
+            memory.write_u16_le(mailboxOffset + MAILBOX_INCOMING_TYPE_OFFSET, EVENT_PING, EWRAM_DOMAIN)
+            memory.write_u32_le(mailboxOffset + MAILBOX_INCOMING_OFFSET, nextPingSequence, EWRAM_DOMAIN)
+            pendingPing = nextPingSequence
+            nextPingSequence = nextPingSequence + 1
+        end
+    end
+end
 
 local function bitIsSet(value, bit)
     return math.floor(value / (2 ^ bit)) % 2 == 1
@@ -120,10 +201,13 @@ local function printState(state)
 end
 
 console.log("[Nuzlocke] diagnostic reader started")
+console.log(string.format("[SoulLink] mailbox symbol resolved to 0x%08X", EWRAM_BASE + mailboxOffset))
 
 local previousSignature = nil
 local previousError = nil
 while true do
+    updateMailbox()
+
     local ok, state, stateError = pcall(readState)
     if not ok then
         stateError = state
