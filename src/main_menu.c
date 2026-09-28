@@ -2040,10 +2040,9 @@ static void Task_NewGameBirchSpeech_SlideInNewGenderSprite(u8 taskId)
 
 static void Task_NewGameBirchSpeech_Difficulty(u8 taskId) //difficulty
 {
-    NewGameBirchSpeech_ClearWindow(0);
-    StringExpandPlaceholders(gStringVar4, gText_Birch_Difficulty);
-    AddTextPrinterForMessage(TRUE);
-    gTasks[taskId].func = Task_NewGameBirchSpeech_WaitToShowDifficultyMenu;
+    gSaveBlock2Ptr->optionsDifficulty = 1; // Normal
+    FlagClear(FLAG_DIFFICULTY_HARD);
+    gTasks[taskId].func = Task_NewGameBirchSpeech_ChallengeNormal;
 }
 
 static void Task_NewGameBirchSpeech_WaitToShowDifficultyMenu(u8 taskId)

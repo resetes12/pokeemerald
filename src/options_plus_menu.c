@@ -415,7 +415,7 @@ static bool8 CheckConditions(int selection)
         {
         case MENUITEM_MAIN_TEXTSPEED:         return TRUE;
         case MENUITEM_MAIN_FONT:              return TRUE;
-        case MENUITEM_MAIN_DIFFICULTY:        return TRUE;
+        case MENUITEM_MAIN_DIFFICULTY:        return FALSE;
 
         case MENUITEM_MAIN_BUTTONMODE:        return TRUE;
         case MENUITEM_MAIN_FRAMETYPE:         return TRUE;
@@ -437,9 +437,9 @@ static bool8 CheckConditions(int selection)
         switch(selection)
         {
         case MENUITEM_BATTLE_BATTLESCENE:     return TRUE;
-        case MENUITEM_BATTLE_BATTLESTYLE:     return TRUE;
+        case MENUITEM_BATTLE_BATTLESTYLE:     return FALSE;
         case MENUITEM_BATTLE_FAST_INTRO:      return TRUE;
-        case MENUITEM_BATTLE_SPLIT:           return TRUE;
+        case MENUITEM_BATTLE_SPLIT:           return FALSE;
         case MENUITEM_BATTLE_TYPE_EFFECTIVE:  return TRUE;
         case MENUITEM_BATTLE_FAST_BATTLES:    return TRUE;
         case MENUITEM_BATTLE_BATTLE_SPEED:    return TRUE;
@@ -888,7 +888,7 @@ void CB2_InitOptionPlusMenu(void)
         sOptions = AllocZeroed(sizeof(*sOptions));
         sOptions->sel[MENUITEM_MAIN_TEXTSPEED]           = gSaveBlock2Ptr->optionsTextSpeed;
         sOptions->sel[MENUITEM_MAIN_FONT]                = gSaveBlock2Ptr->optionsFontType;
-        sOptions->sel[MENUITEM_MAIN_DIFFICULTY]          = gSaveBlock2Ptr->optionsDifficulty;
+        sOptions->sel[MENUITEM_MAIN_DIFFICULTY]          = 1; // Normal
         sOptions->sel[MENUITEM_MAIN_BUTTONMODE]          = gSaveBlock2Ptr->optionsButtonMode;
         sOptions->sel[MENUITEM_MAIN_FOLLOWER]            = gSaveBlock2Ptr->optionsfollowerEnable;
         sOptions->sel[MENUITEM_MAIN_LARGE_FOLLOWER]      = gSaveBlock2Ptr->optionsfollowerLargeEnable;
@@ -904,12 +904,12 @@ void CB2_InitOptionPlusMenu(void)
         sOptions->sel[MENUITEM_MAIN_SURFOVERWORLD]       = gSaveBlock2Ptr->optionsSurfOverworld;
         sOptions->sel[MENUITEM_MAIN_BRIGHTER_NIGHTS]     = gSaveBlock2Ptr->optionsBrighterNights;
 
-        sOptions->sel_battle[MENUITEM_BATTLE_BATTLESTYLE]       = gSaveBlock2Ptr->optionsBattleStyle;
+        sOptions->sel_battle[MENUITEM_BATTLE_BATTLESTYLE]       = OPTIONS_BATTLE_STYLE_SET;
         sOptions->sel_battle[MENUITEM_BATTLE_BATTLESCENE]       = gSaveBlock2Ptr->optionsBattleSceneOff;
         sOptions->sel_battle[MENUITEM_BATTLE_FAST_INTRO]        = gSaveBlock2Ptr->optionsFastIntro;
         sOptions->sel_battle[MENUITEM_BATTLE_FAST_BATTLES]      = gSaveBlock2Ptr->optionsFastBattle;
         sOptions->sel_battle[MENUITEM_BATTLE_BATTLE_SPEED]      = gSaveBlock2Ptr->optionsBattleSpeed;
-        sOptions->sel_battle[MENUITEM_BATTLE_SPLIT]             = gSaveBlock2Ptr->optionStyle;
+        sOptions->sel_battle[MENUITEM_BATTLE_SPLIT]             = 0; // On
         sOptions->sel_battle[MENUITEM_BATTLE_TYPE_EFFECTIVE]    = gSaveBlock2Ptr->optionTypeEffective;
         sOptions->sel_battle[MENUITEM_BATTLE_LR_RUN]            = gSaveBlock2Ptr->optionsLRtoRun;
         sOptions->sel_battle[MENUITEM_BATTLE_BALL_PROMPT]       = gSaveBlock2Ptr->optionsBallPrompt;
