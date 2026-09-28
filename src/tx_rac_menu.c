@@ -1147,27 +1147,27 @@ static const u8 *const OptionTextDescription(void)
     switch (sOptions->submenu)
     {
     case MENU_MODE:
-        if (!CheckConditions(menuItem) && sOptionMenuItemDescriptionsDisabledMode[menuItem] != sText_Empty)
+        if (!CheckConditions(menuItem) && sOptionMenuItemDescriptionsDisabledMode[menuItem] != NULL && sOptionMenuItemDescriptionsDisabledMode[menuItem] != sText_Empty)
             return sOptionMenuItemDescriptionsDisabledMode[menuItem];
         selection = sOptions->sel_mode[menuItem];
         return sOptionMenuItemDescriptionsMode[menuItem][selection];
     case MENU_FEATURES:
-        if (!CheckConditions(menuItem) && sOptionMenuItemDescriptionsDisabledFeatures[menuItem] != sText_Empty)
+        if (!CheckConditions(menuItem) && sOptionMenuItemDescriptionsDisabledFeatures[menuItem] != NULL && sOptionMenuItemDescriptionsDisabledFeatures[menuItem] != sText_Empty)
             return sOptionMenuItemDescriptionsDisabledFeatures[menuItem];
         selection = sOptions->sel_features[menuItem];
         return sOptionMenuItemDescriptionsFeatures[menuItem][selection];
     case MENU_RANDOMIZER:
-        if (!CheckConditions(menuItem) && sOptionMenuItemDescriptionsDisabledRandomizer[menuItem] != sText_Empty)
+        if (!CheckConditions(menuItem) && sOptionMenuItemDescriptionsDisabledRandomizer[menuItem] != NULL && sOptionMenuItemDescriptionsDisabledRandomizer[menuItem] != sText_Empty)
             return sOptionMenuItemDescriptionsDisabledRandomizer[menuItem];
         selection = sOptions->sel_randomizer[menuItem];
         return sOptionMenuItemDescriptionsRandomizer[menuItem][selection];
     case MENU_NUZLOCKE:
-        if (!CheckConditions(menuItem) && sOptionMenuItemDescriptionsDisabledNuzlocke[menuItem] != sText_Empty)
+        if (!CheckConditions(menuItem) && sOptionMenuItemDescriptionsDisabledNuzlocke[menuItem] != NULL && sOptionMenuItemDescriptionsDisabledNuzlocke[menuItem] != sText_Empty)
             return sOptionMenuItemDescriptionsDisabledNuzlocke[menuItem];
         selection = sOptions->sel_nuzlocke[menuItem];
         return sOptionMenuItemDescriptionsNuzlocke[menuItem][selection];
     case MENU_DIFFICULTY:
-        if (!CheckConditions(menuItem) && sOptionMenuItemDescriptionsDisabledDifficulty[menuItem] != sText_Empty)
+        if (!CheckConditions(menuItem) && sOptionMenuItemDescriptionsDisabledDifficulty[menuItem] != NULL && sOptionMenuItemDescriptionsDisabledDifficulty[menuItem] != sText_Empty)
             return sOptionMenuItemDescriptionsDisabledDifficulty[menuItem];
         selection = sOptions->sel_difficulty[menuItem];
         if (sOptions->menuCursor[MENU_DIFFICULTY] == MENUITEM_DIFFICULTY_PARTY_LIMIT)
@@ -1175,7 +1175,7 @@ static const u8 *const OptionTextDescription(void)
         else
             return sOptionMenuItemDescriptionsDifficulty[menuItem][selection];
     case MENU_CHALLENGES:
-        if (!CheckConditions(menuItem) && sOptionMenuItemDescriptionsDisabledChallenges[menuItem] != sText_Empty)
+        if (!CheckConditions(menuItem) && sOptionMenuItemDescriptionsDisabledChallenges[menuItem] != NULL && sOptionMenuItemDescriptionsDisabledChallenges[menuItem] != sText_Empty)
             return sOptionMenuItemDescriptionsDisabledChallenges[menuItem];
         selection = sOptions->sel_challenges[menuItem];
         if (sOptions->menuCursor[MENU_CHALLENGES] == MENUITEM_CHALLENGES_ONE_TYPE_CHALLENGE)
