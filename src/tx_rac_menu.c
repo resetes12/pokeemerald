@@ -668,6 +668,14 @@ static const u8 *const OptionTextRight(u8 menuItem)
 // Menu left side text conditions
 static bool8 CheckConditions(int selection)
 {
+    // Soul Link rules are fixed; only navigation and randomizer choices remain editable.
+    if ((sOptions->submenu == MENU_MODE && selection != MENUITEM_MODE_NEXT)
+        || (sOptions->submenu == MENU_FEATURES && selection != MENUITEM_FEATURES_NEXT)
+        || (sOptions->submenu == MENU_NUZLOCKE && selection != MENUITEM_NUZLOCKE_NEXT)
+        || (sOptions->submenu == MENU_DIFFICULTY && selection != MENUITEM_DIFFICULTY_NEXT)
+        || (sOptions->submenu == MENU_CHALLENGES && selection != MENUITEM_CHALLENGES_SAVE))
+        return FALSE;
+
     switch (sOptions->submenu)
     {
     case MENU_MODE:
@@ -1528,7 +1536,7 @@ void CB2_InitTxRandomizerChallengesMenu(void)
 
         sOptions = AllocZeroed(sizeof(*sOptions));
         //MENU MODE
-        sOptions->sel_mode[MENUITEM_MODE_CLASSIC_MODERN]         = FALSE;
+        sOptions->sel_mode[MENUITEM_MODE_CLASSIC_MODERN]         = 2; // Custom
         sOptions->sel_mode[MENUITEM_MODE_ALTERNATE_SPAWNS]       = gSaveBlock1Ptr->tx_Mode_Encounters;
         sOptions->sel_mode[MENUITEM_MODE_INFINITE_TMS]           = gSaveBlock1Ptr->tx_Mode_InfiniteTMs;
         sOptions->sel_mode[MENUITEM_MODE_SURVIVE_POISON]         = gSaveBlock1Ptr->tx_Mode_PoisonSurvive;
