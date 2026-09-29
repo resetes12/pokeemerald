@@ -10,19 +10,27 @@ local EWRAM_BASE = 0x02000000
 local EWRAM_END = 0x02040000
 
 local MAILBOX_MAGIC = 0x4B4E4C53
-local MAILBOX_VERSION = 4
+local MAILBOX_VERSION = 5
+local SAVE_FORMAT_VERSION = 2
 local MAILBOX_SIZE = 68
 local MAILBOX_OUTGOING_OFFSET = 12
 local MAILBOX_OUTGOING_ACK_OFFSET = 36
 local MAILBOX_INCOMING_OFFSET = 40
+local MAILBOX_INCOMING_PERSONALITY_OFFSET = MAILBOX_INCOMING_OFFSET + 4
+local MAILBOX_INCOMING_OT_ID_OFFSET = MAILBOX_INCOMING_OFFSET + 8
 local MAILBOX_INCOMING_TYPE_OFFSET = MAILBOX_INCOMING_OFFSET + 12
+local MAILBOX_INCOMING_PAIR_ID_OFFSET = MAILBOX_INCOMING_OFFSET + 14
+local MAILBOX_INCOMING_SPECIES_OFFSET = MAILBOX_INCOMING_OFFSET + 16
+local MAILBOX_INCOMING_LOCATION_OFFSET = MAILBOX_INCOMING_OFFSET + 18
 local MAILBOX_INCOMING_FLAGS_OFFSET = MAILBOX_INCOMING_OFFSET + 20
+local MAILBOX_INCOMING_RESERVED_OFFSET = MAILBOX_INCOMING_OFFSET + 22
 local MAILBOX_INCOMING_ACK_OFFSET = 64
 local EVENT_PING = 1
 local EVENT_LOBBY_STATE = 2
 local EVENT_LOBBY_INTENT = 3
 local EVENT_LOBBY_START = 4
 local EVENT_GATE_STATE = 5
+local EVENT_SETTINGS = 6
 local PING_INTERVAL_FRAMES = 300
 local NETWORK_KEEPALIVE_INTERVAL_FRAMES = 300
 local NETWORK_PEER_TIMEOUT_SECONDS = 600
@@ -40,6 +48,9 @@ local INTENT_CONTINUE = 2
 local GATE_IDLE = 0
 local GATE_WAITING = 1
 local GATE_LOCKED = 2
+local GATE_APPROVED = 3
+local GATE_REJECTED = 4
+local RANDOMIZER_SETTINGS_MASK = 0x7FFF
 local LOBBY_NAMES = {
     [LOBBY_DISCONNECTED] = "DISCONNECTED", [LOBBY_WAITING] = "WAITING",
     [LOBBY_READY] = "READY", [LOBBY_REJECTED] = "REJECTED",
@@ -120,7 +131,11 @@ local pendingLobbyFlags = lobbyState + lobbyConnectedMask * 16 + localPlayerMask
 local localIntent = nil
 local gateState = GATE_IDLE
 local gatePlayerMask = 0
-local pendingGateFlags = nil
+local gateRunIdLow = 0
+local gateRunIdHigh = 0
+local gateSettings = 0
+local pendingGate = false
+local localSettings = nil
 
 local function sendNetworkMessage(messageType, payload)
     if not networkReady then
@@ -191,14 +206,16 @@ local function senderPlayerMask(sender)
 end
 
 local function encodeIntent(intent)
-    return string.format("%d,%u,%u,%d,%d,%d,%d", intent.action,
+    return string.format("%d,%u,%u,%d,%d,%d,%d,%d", intent.action,
         intent.runIdLow, intent.runIdHigh, intent.protocolVersion,
-        intent.formatVersion, intent.playerSlot, intent.activePlayerMask)
+        intent.formatVersion, intent.playerSlot, intent.activePlayerMask,
+        intent.settings)
 end
 
 local function parseIntent(payload)
-    local values = {payload:match("^(%d+),(%d+),(%d+),(%d+),(%d+),(%d+),(%d+)$")}
-    if #values ~= 7 then
+    local values = {payload:match(
+        "^(%d+),(%d+),(%d+),(%d+),(%d+),(%d+),(%d+),(%d+)$")}
+    if #values ~= 8 then
         return nil
     end
     for i = 1, #values do
@@ -208,13 +225,37 @@ local function parseIntent(payload)
         or values[2] > 0xFFFFFFFF or values[3] > 0xFFFFFFFF
         or values[4] > 0xFFFF or values[5] > 0xFFFF
         or values[6] > 4 or values[7] > LOBBY_PLAYER_MASK
+        or values[8] > RANDOMIZER_SETTINGS_MASK
     then
         return nil
     end
     return {
         action = values[1], runIdLow = values[2], runIdHigh = values[3],
         protocolVersion = values[4], formatVersion = values[5],
-        playerSlot = values[6], activePlayerMask = values[7],
+        playerSlot = values[6], activePlayerMask = values[7], settings = values[8],
+    }
+end
+
+local function parseGate(payload)
+    local values = {payload:match("^(%d+),(%d+),(%d+),(%d+),(%d+)$")}
+    if #values ~= 5 then
+        return nil
+    end
+    for i = 1, #values do
+        values[i] = tonumber(values[i])
+    end
+    if values[1] > GATE_REJECTED or values[2] > LOBBY_PLAYER_MASK
+        or values[3] > 0xFFFFFFFF or values[4] > 0xFFFFFFFF
+        or values[5] > RANDOMIZER_SETTINGS_MASK
+        or (values[1] == GATE_APPROVED and values[3] == 0 and values[4] == 0)
+        or (values[1] ~= GATE_APPROVED
+            and (values[3] ~= 0 or values[4] ~= 0 or values[5] ~= 0))
+    then
+        return nil
+    end
+    return {
+        state = values[1], playerMask = values[2], runIdLow = values[3],
+        runIdHigh = values[4], settings = values[5],
     }
 end
 
@@ -258,17 +299,27 @@ local function updateHostLobbyState(forceBroadcast)
     end
 end
 
-local function applyGateState(state, playerMask, broadcast)
+local function applyGateState(state, playerMask, broadcast,
+        runIdLow, runIdHigh, settings)
+    runIdLow = runIdLow or 0
+    runIdHigh = runIdHigh or 0
+    settings = settings or 0
     local changed = state ~= gateState or playerMask ~= gatePlayerMask
+        or runIdLow ~= gateRunIdLow or runIdHigh ~= gateRunIdHigh
+        or settings ~= gateSettings
     gateState = state
     gatePlayerMask = playerMask
+    gateRunIdLow = runIdLow
+    gateRunIdHigh = runIdHigh
+    gateSettings = settings
     if changed then
-        pendingGateFlags = state + playerMask * 16
+        pendingGate = true
         console.log(string.format(
             "[SoulLink] gate state: %d players=0x%X", state, playerMask))
     end
     if networkConfig.role == "host" and (changed or broadcast) then
-        sendNetworkMessage("GATE", string.format("%d,%d", state, playerMask))
+        sendNetworkMessage("GATE", string.format("%d,%d,%u,%u,%d",
+            state, playerMask, runIdLow, runIdHigh, settings))
     end
 end
 
@@ -287,9 +338,10 @@ local function getHostIntentFacts()
 end
 
 local function updateHostGateState(forceBroadcast)
-    if gateState == GATE_LOCKED then
+    if gateState >= GATE_LOCKED then
         if forceBroadcast then
-            applyGateState(gateState, gatePlayerMask, true)
+            applyGateState(gateState, gatePlayerMask, true,
+                gateRunIdLow, gateRunIdHigh, gateSettings)
         end
         return
     end
@@ -314,6 +366,10 @@ local function tryLockHostRoster()
         and lobbyReadyMask == lobbyConnectedMask
         and intentMask == lobbyConnectedMask and allNewGame
     then
+        localSettings = nil
+        for _, peer in pairs(remotePeers) do
+            peer.settings = nil
+        end
         applyGateState(GATE_LOCKED, lobbyConnectedMask, true)
     else
         console.log(string.format(
@@ -374,6 +430,7 @@ local function handleNetworkMessage(message)
     if messageType ~= "HELLO" and messageType ~= "KEEPALIVE"
         and messageType ~= "READY" and messageType ~= "LOBBY_STATE"
         and messageType ~= "INTENT" and messageType ~= "GATE"
+        and messageType ~= "SETTINGS"
     then
         return false, "unsupported message type " .. tostring(messageType)
     end
@@ -434,13 +491,17 @@ local function handleNetworkMessage(message)
             return false, "invalid INTENT payload"
         end
     elseif messageType == "GATE" then
-        local stateText, maskText = payload:match("^(%d+),(%d+)$")
-        local state = tonumber(stateText)
-        local playerMask = tonumber(maskText)
-        if networkConfig.role ~= "client" or not state or state > GATE_LOCKED
-            or not playerMask or playerMask > LOBBY_PLAYER_MASK
-        then
+        if networkConfig.role ~= "client" or not parseGate(payload) then
             return false, "invalid GATE payload"
+        end
+    elseif messageType == "SETTINGS" then
+        local settings = tonumber(payload)
+        if networkConfig.role ~= "host" or gateState ~= GATE_LOCKED
+            or not settings or settings > RANDOMIZER_SETTINGS_MASK
+            or math.floor(settings) ~= settings
+            or math.floor(gatePlayerMask / senderPlayerMask(sender)) % 2 ~= 1
+        then
+            return false, "invalid SETTINGS payload"
         end
     end
 
@@ -461,8 +522,13 @@ local function handleNetworkMessage(message)
             "[SoulLink] %s selected intent=%d", sender, peer.intent.action))
         updateHostGateState(false)
     elseif messageType == "GATE" then
-        local stateText, maskText = payload:match("^(%d+),(%d+)$")
-        applyGateState(tonumber(stateText), tonumber(maskText), false)
+        local gate = parseGate(payload)
+        applyGateState(gate.state, gate.playerMask, false,
+            gate.runIdLow, gate.runIdHigh, gate.settings)
+    elseif messageType == "SETTINGS" then
+        peer.settings = tonumber(payload)
+        console.log(string.format(
+            "[SoulLink] %s settings=0x%04X", sender, peer.settings))
     elseif LOG_HEARTBEATS then
         console.log(string.format(
             "[SoulLink] KEEPALIVE %d received from %s", sequence, sender))
@@ -577,6 +643,7 @@ local function readOutgoingIntent()
         formatVersion = memory.read_u16_le(offset + 16, EWRAM_DOMAIN),
         playerSlot = memory.read_u16_le(offset + 18, EWRAM_DOMAIN),
         activePlayerMask = math.floor(flags / 256) % 16,
+        settings = memory.read_u16_le(offset + 22, EWRAM_DOMAIN),
     }
 end
 
@@ -609,6 +676,17 @@ local function consumeMailboxOutgoing()
         else
             console.log("[SoulLink] ignored Start from a non-host ROM")
         end
+    elseif eventType == EVENT_SETTINGS then
+        local settings = memory.read_u16_le(offset + 22, EWRAM_DOMAIN)
+        if gateState ~= GATE_LOCKED or settings > RANDOMIZER_SETTINGS_MASK then
+            console.log("[SoulLink] ignored invalid ROM settings submission")
+        elseif networkConfig.role == "host" then
+            localSettings = settings
+            console.log(string.format(
+                "[SoulLink] host settings=0x%04X", settings))
+        else
+            consumed = sendNetworkMessage("SETTINGS", tostring(settings))
+        end
     else
         console.log("[SoulLink] ignored unknown ROM event " .. eventType)
     end
@@ -619,13 +697,35 @@ local function consumeMailboxOutgoing()
     end
 end
 
-local function writeMailboxEvent(eventType, flags)
+local function writeMailboxEvent(eventType, flags, payload)
     local sequence = nextMailboxSequence
+    payload = payload or {}
+    memory.write_u32_le(MAILBOX_INCOMING_PERSONALITY_OFFSET + mailboxOffset,
+        payload.runIdLow or 0, EWRAM_DOMAIN)
+    memory.write_u32_le(MAILBOX_INCOMING_OT_ID_OFFSET + mailboxOffset,
+        payload.runIdHigh or 0, EWRAM_DOMAIN)
+    memory.write_u16_le(MAILBOX_INCOMING_PAIR_ID_OFFSET + mailboxOffset,
+        payload.protocolVersion or 0, EWRAM_DOMAIN)
+    memory.write_u16_le(MAILBOX_INCOMING_SPECIES_OFFSET + mailboxOffset,
+        payload.formatVersion or 0, EWRAM_DOMAIN)
+    memory.write_u16_le(MAILBOX_INCOMING_LOCATION_OFFSET + mailboxOffset,
+        payload.playerSlot or 0, EWRAM_DOMAIN)
+    memory.write_u16_le(MAILBOX_INCOMING_RESERVED_OFFSET + mailboxOffset,
+        payload.settings or 0, EWRAM_DOMAIN)
     memory.write_u16_le(mailboxOffset + MAILBOX_INCOMING_FLAGS_OFFSET, flags or 0, EWRAM_DOMAIN)
     memory.write_u16_le(mailboxOffset + MAILBOX_INCOMING_TYPE_OFFSET, eventType, EWRAM_DOMAIN)
     memory.write_u32_le(mailboxOffset + MAILBOX_INCOMING_OFFSET, sequence, EWRAM_DOMAIN)
     nextMailboxSequence = sequence + 1
     return sequence
+end
+
+local function playerSlotFromMask(mask)
+    for bit = 0, 3 do
+        if math.floor(mask / (2 ^ bit)) % 2 == 1 then
+            return bit + 1
+        end
+    end
+    return 0
 end
 
 local function updateMailbox()
@@ -637,7 +737,7 @@ local function updateMailbox()
         if mailboxReady then
             pendingLobbyFlags = packLobbyFlags(
                 lobbyState, lobbyConnectedMask, lobbyReadyMask)
-            pendingGateFlags = gateState + gatePlayerMask * 16
+            pendingGate = true
             sendNetworkMessage("READY", "0")
         end
         mailboxReady = false
@@ -677,9 +777,17 @@ local function updateMailbox()
             "[SoulLink] lobby state sent to ROM: %s connected=0x%X ready=0x%X local=0x%X",
             LOBBY_NAMES[lobbyState], lobbyConnectedMask, lobbyReadyMask, localPlayerMask))
         pendingLobbyFlags = nil
-    elseif pendingGateFlags ~= nil then
-        writeMailboxEvent(EVENT_GATE_STATE, pendingGateFlags)
-        pendingGateFlags = nil
+    elseif pendingGate then
+        local approved = gateState == GATE_APPROVED
+        writeMailboxEvent(EVENT_GATE_STATE, gateState + gatePlayerMask * 16, {
+            runIdLow = approved and gateRunIdLow or 0,
+            runIdHigh = approved and gateRunIdHigh or 0,
+            protocolVersion = approved and MAILBOX_VERSION or 0,
+            formatVersion = approved and SAVE_FORMAT_VERSION or 0,
+            playerSlot = approved and playerSlotFromMask(localPlayerMask) or 0,
+            settings = approved and gateSettings or 0,
+        })
+        pendingGate = false
     elseif not pendingPing and emu.framecount() >= nextPingFrame then
         pendingPing = writeMailboxEvent(EVENT_PING, 0)
     end

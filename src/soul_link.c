@@ -37,7 +37,13 @@ static void ResetMailbox(void)
     gSoulLinkMailbox.magic = SOUL_LINK_MAILBOX_MAGIC;
 }
 
-static bool8 TryPublishOutgoing(u16 type, const struct SoulLinkSaveData *run, u16 flags)
+static u16 GetRunRandomizerSettings(const struct SoulLinkSaveData *run)
+{
+    return run->randomizerSettings[0] | (run->randomizerSettings[1] << 8);
+}
+
+static bool8 TryPublishOutgoing(u16 type, const struct SoulLinkSaveData *run,
+                                u16 flags, u16 data)
 {
     volatile struct SoulLinkMessage *message = &gSoulLinkMailbox.outgoing;
     u32 sequence;
@@ -55,7 +61,7 @@ static bool8 TryPublishOutgoing(u16 type, const struct SoulLinkSaveData *run, u1
     message->species = run == NULL ? SOUL_LINK_SAVE_FORMAT_VERSION : run->formatVersion;
     message->location = run == NULL ? 0 : run->playerSlot;
     message->flags = flags;
-    message->reserved = 0;
+    message->reserved = data;
     message->sequence = sequence;
     return TRUE;
 }
@@ -64,6 +70,7 @@ bool8 SoulLink_SendLobbyIntent(u8 intent)
 {
     const struct SoulLinkSaveData *run = NULL;
     u16 flags = intent;
+    u16 settings = 0;
 
     if (intent != SOUL_LINK_INTENT_NEW_GAME && intent != SOUL_LINK_INTENT_CONTINUE)
         return FALSE;
@@ -71,13 +78,20 @@ bool8 SoulLink_SendLobbyIntent(u8 intent)
     {
         run = &gSaveBlock2Ptr->soulLink;
         flags |= run->activePlayerMask << SOUL_LINK_INTENT_ACTIVE_MASK_SHIFT;
+        settings = GetRunRandomizerSettings(run);
     }
-    return TryPublishOutgoing(SOUL_LINK_EVENT_LOBBY_INTENT, run, flags);
+    return TryPublishOutgoing(SOUL_LINK_EVENT_LOBBY_INTENT, run, flags, settings);
 }
 
 bool8 SoulLink_SendLobbyStart(void)
 {
-    return TryPublishOutgoing(SOUL_LINK_EVENT_LOBBY_START, NULL, 0);
+    return TryPublishOutgoing(SOUL_LINK_EVENT_LOBBY_START, NULL, 0, 0);
+}
+
+bool8 SoulLink_SendSettings(void)
+{
+    return TryPublishOutgoing(SOUL_LINK_EVENT_SETTINGS, NULL, 0,
+                              gSoulLinkPendingRandomizerSettings);
 }
 
 void SoulLink_Update(void)
@@ -133,6 +147,10 @@ void SoulLink_Update(void)
                     gSoulLinkPendingRun.formatVersion = gSoulLinkMailbox.incoming.species;
                     gSoulLinkPendingRun.playerSlot = gSoulLinkMailbox.incoming.location;
                     gSoulLinkPendingRun.activePlayerMask = playerMask;
+                    gSoulLinkPendingRun.randomizerSettings[0] =
+                        gSoulLinkMailbox.incoming.reserved;
+                    gSoulLinkPendingRun.randomizerSettings[1] =
+                        gSoulLinkMailbox.incoming.reserved >> 8;
                 }
                 else
                 {
