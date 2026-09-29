@@ -12,15 +12,20 @@ local EWRAM_END = 0x02040000
 local MAILBOX_MAGIC = 0x4B4E4C53
 local MAILBOX_VERSION = 4
 local MAILBOX_SIZE = 68
+local MAILBOX_OUTGOING_OFFSET = 12
+local MAILBOX_OUTGOING_ACK_OFFSET = 36
 local MAILBOX_INCOMING_OFFSET = 40
 local MAILBOX_INCOMING_TYPE_OFFSET = MAILBOX_INCOMING_OFFSET + 12
 local MAILBOX_INCOMING_FLAGS_OFFSET = MAILBOX_INCOMING_OFFSET + 20
 local MAILBOX_INCOMING_ACK_OFFSET = 64
 local EVENT_PING = 1
 local EVENT_LOBBY_STATE = 2
+local EVENT_LOBBY_INTENT = 3
+local EVENT_LOBBY_START = 4
+local EVENT_GATE_STATE = 5
 local PING_INTERVAL_FRAMES = 300
 local NETWORK_KEEPALIVE_INTERVAL_FRAMES = 300
-local NETWORK_PEER_TIMEOUT_FRAMES = 900
+local NETWORK_PEER_TIMEOUT_SECONDS = 600
 local NETWORK_RECEIVE_TIMEOUT_MS = 1
 local LOG_HEARTBEATS = false
 
@@ -30,6 +35,11 @@ local LOBBY_READY = 2
 local LOBBY_REJECTED = 3
 local LOBBY_APPROVED = 4
 local LOBBY_PLAYER_MASK = 0xF
+local INTENT_NEW_GAME = 1
+local INTENT_CONTINUE = 2
+local GATE_IDLE = 0
+local GATE_WAITING = 1
+local GATE_LOCKED = 2
 local LOBBY_NAMES = {
     [LOBBY_DISCONNECTED] = "DISCONNECTED", [LOBBY_WAITING] = "WAITING",
     [LOBBY_READY] = "READY", [LOBBY_REJECTED] = "REJECTED",
@@ -107,6 +117,10 @@ local lobbyConnectedMask = networkConfig and networkConfig.role == "host" and 1 
 local lobbyReadyMask = 0
 local localPlayerMask = networkConfig and networkConfig.role == "host" and 1 or 0
 local pendingLobbyFlags = lobbyState + lobbyConnectedMask * 16 + localPlayerMask * 4096
+local localIntent = nil
+local gateState = GATE_IDLE
+local gatePlayerMask = 0
+local pendingGateFlags = nil
 
 local function sendNetworkMessage(messageType, payload)
     if not networkReady then
@@ -169,6 +183,41 @@ local function isClientSender(sender)
     return sender:match("^client[1-3]$") ~= nil
 end
 
+local function senderPlayerMask(sender)
+    if sender == "host" then
+        return 1
+    end
+    return 2 ^ tonumber(sender:match("^client([1-3])$"))
+end
+
+local function encodeIntent(intent)
+    return string.format("%d,%u,%u,%d,%d,%d,%d", intent.action,
+        intent.runIdLow, intent.runIdHigh, intent.protocolVersion,
+        intent.formatVersion, intent.playerSlot, intent.activePlayerMask)
+end
+
+local function parseIntent(payload)
+    local values = {payload:match("^(%d+),(%d+),(%d+),(%d+),(%d+),(%d+),(%d+)$")}
+    if #values ~= 7 then
+        return nil
+    end
+    for i = 1, #values do
+        values[i] = tonumber(values[i])
+    end
+    if (values[1] ~= INTENT_NEW_GAME and values[1] ~= INTENT_CONTINUE)
+        or values[2] > 0xFFFFFFFF or values[3] > 0xFFFFFFFF
+        or values[4] > 0xFFFF or values[5] > 0xFFFF
+        or values[6] > 4 or values[7] > LOBBY_PLAYER_MASK
+    then
+        return nil
+    end
+    return {
+        action = values[1], runIdLow = values[2], runIdHigh = values[3],
+        protocolVersion = values[4], formatVersion = values[5],
+        playerSlot = values[6], activePlayerMask = values[7],
+    }
+end
+
 local function getHostLobbyFacts()
     local count = 0
     local allReady = true
@@ -209,10 +258,75 @@ local function updateHostLobbyState(forceBroadcast)
     end
 end
 
+local function applyGateState(state, playerMask, broadcast)
+    local changed = state ~= gateState or playerMask ~= gatePlayerMask
+    gateState = state
+    gatePlayerMask = playerMask
+    if changed then
+        pendingGateFlags = state + playerMask * 16
+        console.log(string.format(
+            "[SoulLink] gate state: %d players=0x%X", state, playerMask))
+    end
+    if networkConfig.role == "host" and (changed or broadcast) then
+        sendNetworkMessage("GATE", string.format("%d,%d", state, playerMask))
+    end
+end
+
+local function getHostIntentFacts()
+    local intentMask = localIntent and 1 or 0
+    local allNewGame = localIntent and localIntent.action == INTENT_NEW_GAME or false
+    for sender, peer in pairs(remotePeers) do
+        if peer.intent then
+            intentMask = intentMask + senderPlayerMask(sender)
+            allNewGame = allNewGame and peer.intent.action == INTENT_NEW_GAME
+        else
+            allNewGame = false
+        end
+    end
+    return intentMask, allNewGame
+end
+
+local function updateHostGateState(forceBroadcast)
+    if gateState == GATE_LOCKED then
+        if forceBroadcast then
+            applyGateState(gateState, gatePlayerMask, true)
+        end
+        return
+    end
+    local intentMask = getHostIntentFacts()
+    applyGateState(intentMask == 0 and GATE_IDLE or GATE_WAITING,
+        intentMask, forceBroadcast)
+end
+
+local function bitCount(mask)
+    local count = 0
+    for bit = 0, 3 do
+        if math.floor(mask / (2 ^ bit)) % 2 == 1 then
+            count = count + 1
+        end
+    end
+    return count
+end
+
+local function tryLockHostRoster()
+    local intentMask, allNewGame = getHostIntentFacts()
+    if bitCount(lobbyConnectedMask) >= 2
+        and lobbyReadyMask == lobbyConnectedMask
+        and intentMask == lobbyConnectedMask and allNewGame
+    then
+        applyGateState(GATE_LOCKED, lobbyConnectedMask, true)
+    else
+        console.log(string.format(
+            "[SoulLink] cannot lock roster: connected=0x%X ready=0x%X intents=0x%X",
+            lobbyConnectedMask, lobbyReadyMask, intentMask))
+    end
+end
+
 local function removeRemotePeer(sender)
     remotePeers[sender] = nil
     if networkConfig.role == "host" then
         updateHostLobbyState(false)
+        updateHostGateState(false)
     elseif sender == "host" then
         localReadySent = false
         applyLobbySnapshot(LOBBY_WAITING, 0, 0)
@@ -224,6 +338,7 @@ local function clearRemotePeers()
     localReadySent = false
     if networkConfig.role == "host" then
         updateHostLobbyState(false)
+        updateHostGateState(false)
     else
         applyLobbySnapshot(LOBBY_WAITING, 0, 0)
     end
@@ -258,6 +373,7 @@ local function handleNetworkMessage(message)
     end
     if messageType ~= "HELLO" and messageType ~= "KEEPALIVE"
         and messageType ~= "READY" and messageType ~= "LOBBY_STATE"
+        and messageType ~= "INTENT" and messageType ~= "GATE"
     then
         return false, "unsupported message type " .. tostring(messageType)
     end
@@ -266,7 +382,7 @@ local function handleNetworkMessage(message)
         local peerVersion = tonumber(payload)
         remotePeers[sender] = {
             lastSequence = sequence,
-            lastFrame = emu.framecount(),
+            lastSeenAt = os.time(),
             ready = false,
             rejected = peerVersion ~= MAILBOX_VERSION,
         }
@@ -279,6 +395,7 @@ local function handleNetworkMessage(message)
         end
         if networkConfig.role == "host" then
             updateHostLobbyState(true)
+            updateHostGateState(true)
         elseif remotePeers[sender].rejected then
             applyLobbySnapshot(LOBBY_REJECTED, 0, 0)
         end
@@ -312,10 +429,23 @@ local function handleNetworkMessage(message)
         then
             return false, "invalid LOBBY_STATE payload"
         end
+    elseif messageType == "INTENT" then
+        if networkConfig.role ~= "host" or not parseIntent(payload) then
+            return false, "invalid INTENT payload"
+        end
+    elseif messageType == "GATE" then
+        local stateText, maskText = payload:match("^(%d+),(%d+)$")
+        local state = tonumber(stateText)
+        local playerMask = tonumber(maskText)
+        if networkConfig.role ~= "client" or not state or state > GATE_LOCKED
+            or not playerMask or playerMask > LOBBY_PLAYER_MASK
+        then
+            return false, "invalid GATE payload"
+        end
     end
 
     peer.lastSequence = sequence
-    peer.lastFrame = emu.framecount()
+    peer.lastSeenAt = os.time()
     if messageType == "READY" then
         peer.ready = payload == "1"
         console.log(string.format("[SoulLink] %s ready=%s", sender, payload))
@@ -325,6 +455,14 @@ local function handleNetworkMessage(message)
     elseif messageType == "LOBBY_STATE" then
         local stateText, connectedText, readyText = payload:match("^(%d+),(%d+),(%d+)$")
         applyLobbySnapshot(tonumber(stateText), tonumber(connectedText), tonumber(readyText))
+    elseif messageType == "INTENT" then
+        peer.intent = parseIntent(payload)
+        console.log(string.format(
+            "[SoulLink] %s selected intent=%d", sender, peer.intent.action))
+        updateHostGateState(false)
+    elseif messageType == "GATE" then
+        local stateText, maskText = payload:match("^(%d+),(%d+)$")
+        applyGateState(tonumber(stateText), tonumber(maskText), false)
     elseif LOG_HEARTBEATS then
         console.log(string.format(
             "[SoulLink] KEEPALIVE %d received from %s", sequence, sender))
@@ -387,8 +525,9 @@ local function updateNetwork()
     end
 
     local timedOut = {}
+    local now = os.time()
     for sender, peer in pairs(remotePeers) do
-        if frame - peer.lastFrame >= NETWORK_PEER_TIMEOUT_FRAMES then
+        if os.difftime(now, peer.lastSeenAt) >= NETWORK_PEER_TIMEOUT_SECONDS then
             timedOut[#timedOut + 1] = sender
         end
     end
@@ -427,6 +566,59 @@ local pendingPing = nil
 local nextPingFrame = 0
 local hasLoggedPingAck = false
 
+local function readOutgoingIntent()
+    local offset = mailboxOffset + MAILBOX_OUTGOING_OFFSET
+    local flags = memory.read_u16_le(offset + 20, EWRAM_DOMAIN)
+    return {
+        action = flags % 256,
+        runIdLow = memory.read_u32_le(offset + 4, EWRAM_DOMAIN),
+        runIdHigh = memory.read_u32_le(offset + 8, EWRAM_DOMAIN),
+        protocolVersion = memory.read_u16_le(offset + 14, EWRAM_DOMAIN),
+        formatVersion = memory.read_u16_le(offset + 16, EWRAM_DOMAIN),
+        playerSlot = memory.read_u16_le(offset + 18, EWRAM_DOMAIN),
+        activePlayerMask = math.floor(flags / 256) % 16,
+    }
+end
+
+local function consumeMailboxOutgoing()
+    local offset = mailboxOffset + MAILBOX_OUTGOING_OFFSET
+    local sequence = memory.read_u32_le(offset, EWRAM_DOMAIN)
+    local ack = memory.read_u32_le(
+        mailboxOffset + MAILBOX_OUTGOING_ACK_OFFSET, EWRAM_DOMAIN)
+    if sequence == 0 or sequence == ack then
+        return
+    end
+
+    local eventType = memory.read_u16_le(offset + 12, EWRAM_DOMAIN)
+    local consumed = true
+    if not networkConfig then
+        console.log("[SoulLink] ignored ROM lobby event while network is disabled")
+    elseif eventType == EVENT_LOBBY_INTENT then
+        local intent = readOutgoingIntent()
+        if not parseIntent(encodeIntent(intent)) then
+            console.log("[SoulLink] ignored invalid ROM lobby intent")
+        elseif networkConfig.role == "host" then
+            localIntent = intent
+            updateHostGateState(false)
+        else
+            consumed = sendNetworkMessage("INTENT", encodeIntent(intent))
+        end
+    elseif eventType == EVENT_LOBBY_START then
+        if networkConfig.role == "host" then
+            tryLockHostRoster()
+        else
+            console.log("[SoulLink] ignored Start from a non-host ROM")
+        end
+    else
+        console.log("[SoulLink] ignored unknown ROM event " .. eventType)
+    end
+
+    if consumed then
+        memory.write_u32_le(
+            mailboxOffset + MAILBOX_OUTGOING_ACK_OFFSET, sequence, EWRAM_DOMAIN)
+    end
+end
+
 local function writeMailboxEvent(eventType, flags)
     local sequence = nextMailboxSequence
     memory.write_u16_le(mailboxOffset + MAILBOX_INCOMING_FLAGS_OFFSET, flags or 0, EWRAM_DOMAIN)
@@ -445,6 +637,7 @@ local function updateMailbox()
         if mailboxReady then
             pendingLobbyFlags = packLobbyFlags(
                 lobbyState, lobbyConnectedMask, lobbyReadyMask)
+            pendingGateFlags = gateState + gatePlayerMask * 16
             sendNetworkMessage("READY", "0")
         end
         mailboxReady = false
@@ -459,6 +652,8 @@ local function updateMailbox()
             EWRAM_BASE + mailboxOffset, version, size))
         mailboxReady = true
     end
+
+    consumeMailboxOutgoing()
 
     local ack = memory.read_u32_le(mailboxOffset + MAILBOX_INCOMING_ACK_OFFSET, EWRAM_DOMAIN)
     if pendingPing and ack == pendingPing then
@@ -482,6 +677,9 @@ local function updateMailbox()
             "[SoulLink] lobby state sent to ROM: %s connected=0x%X ready=0x%X local=0x%X",
             LOBBY_NAMES[lobbyState], lobbyConnectedMask, lobbyReadyMask, localPlayerMask))
         pendingLobbyFlags = nil
+    elseif pendingGateFlags ~= nil then
+        writeMailboxEvent(EVENT_GATE_STATE, pendingGateFlags)
+        pendingGateFlags = nil
     elseif not pendingPing and emu.framecount() >= nextPingFrame then
         pendingPing = writeMailboxEvent(EVENT_PING, 0)
     end
