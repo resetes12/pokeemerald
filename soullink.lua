@@ -1,11 +1,13 @@
 -- Diagnostic Nuzlocke state reader for the current Modern Emerald build.
 -- Load through EmuHawk: Tools -> Lua Console -> Open Script.
 --
--- The mailbox address comes from pokeemerald_modern.map; its constants mirror
+-- Runtime addresses come from pokeemerald_modern.map; mailbox constants mirror
 -- the ABI declared in include/soul_link.h.
 
 local IWRAM_DOMAIN = "IWRAM"
 local EWRAM_DOMAIN = "EWRAM"
+local IWRAM_BASE = 0x03000000
+local IWRAM_END = 0x03008000
 local EWRAM_BASE = 0x02000000
 local EWRAM_END = 0x02040000
 
@@ -57,7 +59,6 @@ local LOBBY_NAMES = {
     [LOBBY_APPROVED] = "APPROVED",
 }
 
-local SAVE_BLOCK1_PTR = 0x3D5C -- gSaveBlock1Ptr - 0x03000000
 local FLAGS_OFFSET = 0x1364
 local ENCOUNTER_FLAGS_OFFSET = 0x3D94
 local ENCOUNTER_FLAGS_SIZE = 9
@@ -360,6 +361,51 @@ local function bitCount(mask)
     return count
 end
 
+local function generateRunId()
+    local runIdLow = os.time() % 0x100000000
+    local runIdHigh = (math.floor(os.clock() * 1000000)
+        + emu.framecount() * 65537) % 0x100000000
+    if runIdLow == 0 and runIdHigh == 0 then
+        runIdHigh = 1
+    end
+    return runIdLow, runIdHigh
+end
+
+local function tryApproveSettings()
+    if gateState ~= GATE_LOCKED or localSettings == nil then
+        return
+    end
+
+    local submittedMask = 1
+    for sender, peer in pairs(remotePeers) do
+        local playerMask = senderPlayerMask(sender)
+        if math.floor(gatePlayerMask / playerMask) % 2 == 1 then
+            if peer.settings == nil then
+                return
+            end
+            submittedMask = submittedMask + playerMask
+            if peer.settings ~= localSettings then
+                console.log(string.format(
+                    "[SoulLink] settings mismatch: host=0x%04X %s=0x%04X",
+                    localSettings, sender, peer.settings))
+                applyGateState(GATE_REJECTED, gatePlayerMask, true)
+                return
+            end
+        end
+    end
+
+    if submittedMask ~= gatePlayerMask then
+        return
+    end
+
+    local runIdLow, runIdHigh = generateRunId()
+    console.log(string.format(
+        "[SoulLink] settings match; approving run %08X%08X",
+        runIdHigh, runIdLow))
+    applyGateState(GATE_APPROVED, gatePlayerMask, true,
+        runIdLow, runIdHigh, localSettings)
+end
+
 local function tryLockHostRoster()
     local intentMask, allNewGame = getHostIntentFacts()
     if bitCount(lobbyConnectedMask) >= 2
@@ -529,6 +575,7 @@ local function handleNetworkMessage(message)
         peer.settings = tonumber(payload)
         console.log(string.format(
             "[SoulLink] %s settings=0x%04X", sender, peer.settings))
+        tryApproveSettings()
     elseif LOG_HEARTBEATS then
         console.log(string.format(
             "[SoulLink] KEEPALIVE %d received from %s", sequence, sender))
@@ -603,7 +650,7 @@ local function updateNetwork()
     end
 end
 
-local function findMailboxAddress()
+local function findMapSymbolOffset(symbol, baseAddress, endAddress, size)
     local mapPath = getScriptDirectory() .. "pokeemerald_modern.map"
     local mapFile, openError = io.open(mapPath, "r")
     if not mapFile then
@@ -612,7 +659,8 @@ local function findMailboxAddress()
 
     local address
     for line in mapFile:lines() do
-        local hex = line:match("^%s*(0x[%da-fA-F]+)%s+gSoulLinkMailbox%s*$")
+        local hex = line:match(
+            "^%s*(0x[%da-fA-F]+)%s+" .. symbol .. "%s*$")
         if hex then
             address = tonumber(hex)
             break
@@ -620,13 +668,16 @@ local function findMailboxAddress()
     end
     mapFile:close()
 
-    if not address or address < EWRAM_BASE or address + MAILBOX_SIZE > EWRAM_END then
-        error("gSoulLinkMailbox is missing or invalid in " .. mapPath)
+    if not address or address < baseAddress or address + size > endAddress then
+        error(symbol .. " is missing or invalid in " .. mapPath)
     end
-    return address - EWRAM_BASE
+    return address - baseAddress
 end
 
-local mailboxOffset = findMailboxAddress()
+local mailboxOffset = findMapSymbolOffset(
+    "gSoulLinkMailbox", EWRAM_BASE, EWRAM_END, MAILBOX_SIZE)
+local saveBlock1PointerOffset = findMapSymbolOffset(
+    "gSaveBlock1Ptr", IWRAM_BASE, IWRAM_END, 4)
 local nextMailboxSequence = 1
 local pendingPing = nil
 local nextPingFrame = 0
@@ -684,6 +735,7 @@ local function consumeMailboxOutgoing()
             localSettings = settings
             console.log(string.format(
                 "[SoulLink] host settings=0x%04X", settings))
+            tryApproveSettings()
         else
             consumed = sendNetworkMessage("SETTINGS", tostring(settings))
         end
@@ -811,7 +863,7 @@ local function readFlag(saveBlock1, flag)
 end
 
 local function readState()
-    local saveBlock1 = memory.read_u32_le(SAVE_BLOCK1_PTR, IWRAM_DOMAIN)
+    local saveBlock1 = memory.read_u32_le(saveBlock1PointerOffset, IWRAM_DOMAIN)
     if saveBlock1 < EWRAM_BASE or saveBlock1 >= EWRAM_END then
         return nil, string.format("waiting for SaveBlock1 (pointer=0x%08X)", saveBlock1)
     end
@@ -892,6 +944,8 @@ local function printState(state)
 end
 
 console.log("[Nuzlocke] diagnostic reader started")
+console.log(string.format("[Nuzlocke] save pointer symbol resolved to 0x%08X",
+    IWRAM_BASE + saveBlock1PointerOffset))
 console.log(string.format("[SoulLink] mailbox symbol resolved to 0x%08X", EWRAM_BASE + mailboxOffset))
 if commSocketInfo then
     console.log("[SoulLink] BizHawk socket connected to " .. commSocketInfo)

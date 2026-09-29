@@ -30,6 +30,7 @@
 #include "link_rfu.h"
 #include "load_save.h"
 #include "main.h"
+#include "main_menu.h"
 #include "malloc.h"
 #include "m4a.h"
 #include "map_name_popup.h"
@@ -1778,6 +1779,12 @@ void CB2_NewGame(void)
     StopMapMusic();
     ResetSafariZoneFlag_();
     NewGameInitData();
+    CB2_InitSoulLinkSettingsGate();
+}
+
+void CB2_CompleteSoulLinkNewGame(void)
+{
+    FieldClearVBlankHBlankCallbacks();
     ResetInitialPlayerAvatarState();
     PlayTimeCounter_Start();
     ScriptContext_Init();

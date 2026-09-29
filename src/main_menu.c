@@ -212,6 +212,8 @@ static void Task_HandleMainMenuBPressed(u8);
 static void Task_SoulLinkNewGameLobbyInit(u8);
 static void Task_SoulLinkNewGameLobby(u8);
 static void Task_SoulLinkNewGameLobbyExit(u8);
+static void Task_SoulLinkSettingsGate(u8);
+static void Task_SoulLinkSettingsGateExit(u8);
 static void Task_NewGameBirchSpeech_Init(u8);
 static void Task_DisplayMainMenuInvalidActionError(u8);
 static void AddBirchSpeechObjects(u8);
@@ -495,6 +497,8 @@ static const u8 sText_SoulLinkWaitingPlayers[] = _("Waiting for all players…")
 static const u8 sText_SoulLinkHostStart[] = _("Host: Press START.");
 static const u8 sText_SoulLinkClientWait[] = _("Waiting for the host…");
 static const u8 sText_SoulLinkRejected[] = _("Connection rejected.");
+static const u8 sText_SoulLinkCheckingSettings[] = _("SOUL LINK\nChecking randomizer settings…");
+static const u8 sText_SoulLinkSettingsMismatch[] = _("Randomizer settings differ.\nRestart with matching settings.");
 
 static const struct BgTemplate sMainMenuBgTemplates[] = {
     {
@@ -869,6 +873,8 @@ static u32 InitMainMenu(bool8 returningFromOptionsMenu)
 #define tSoulLinkIntentSent data[2]
 #define tSoulLinkLastStatus data[3]
 #define tSoulLinkLastLocalMask data[4]
+#define tSoulLinkSettingsSent data[5]
+#define tSoulLinkLastGateState data[6]
 
 #define tArrowTaskIsScrolled data[15]   // For scroll indicator arrow task
 
@@ -1709,6 +1715,94 @@ static void Task_SoulLinkNewGameLobbyExit(u8 taskId)
         CopyBgTilemapBufferToVram(0);
         FreeAllWindowBuffers();
         gTasks[taskId].func = Task_NewGameBirchSpeech_Init;
+    }
+}
+
+static void DrawSoulLinkSettingsGate(void)
+{
+    const u8 *text = gSoulLinkGateState == SOUL_LINK_GATE_REJECTED
+        ? sText_SoulLinkSettingsMismatch
+        : sText_SoulLinkCheckingSettings;
+
+    FillWindowPixelBuffer(7, PIXEL_FILL(0xA));
+    AddTextPrinterParameterized3(7, FONT_NORMAL, 0, 1,
+        sTextColor_Headers, TEXT_SKIP_DRAW, text);
+    PutWindowTilemap(7);
+    CopyWindowToVram(7, COPYWIN_GFX);
+    DrawMainMenuWindowBorder(&sWindowTemplates_MainMenu[7], MAIN_MENU_BORDER_TILE);
+}
+
+void CB2_InitSoulLinkSettingsGate(void)
+{
+    u8 taskId;
+
+    SetVBlankCallback(NULL);
+    SetGpuReg(REG_OFFSET_DISPCNT, 0);
+    DmaFill16(3, 0, (void *)VRAM, VRAM_SIZE);
+    DmaFill32(3, 0, (void *)OAM, OAM_SIZE);
+    DmaFill16(3, 0, (void *)(PLTT + 2), PLTT_SIZE - 2);
+    ResetPaletteFade();
+    LoadPalette(sMainMenuBgPal, BG_PLTT_ID(0), PLTT_SIZE_4BPP);
+    LoadPalette(sMainMenuTextPal, BG_PLTT_ID(15), PLTT_SIZE_4BPP);
+    ScanlineEffect_Stop();
+    ResetTasks();
+    ResetSpriteData();
+    FreeAllSpritePalettes();
+    ResetBgsAndClearDma3BusyFlags(0);
+    InitBgsFromTemplates(0, sMainMenuBgTemplates, ARRAY_COUNT(sMainMenuBgTemplates));
+    InitWindows(sWindowTemplates_MainMenu);
+    DeactivateAllTextPrinters();
+    LoadMainMenuWindowFrameTiles(0, MAIN_MENU_BORDER_TILE);
+    SetGpuReg(REG_OFFSET_WIN0H, 0);
+    SetGpuReg(REG_OFFSET_WIN0V, 0);
+    SetGpuReg(REG_OFFSET_WININ, 0);
+    SetGpuReg(REG_OFFSET_WINOUT, 0);
+    SetGpuReg(REG_OFFSET_BLDCNT, 0);
+    SetGpuReg(REG_OFFSET_BLDALPHA, 0);
+    SetGpuReg(REG_OFFSET_BLDY, 0);
+    EnableInterrupts(1);
+    SetVBlankCallback(VBlankCB_MainMenu);
+    SetMainCallback2(CB2_MainMenu);
+    SetGpuReg(REG_OFFSET_DISPCNT,
+        DISPCNT_WIN0_ON | DISPCNT_OBJ_ON | DISPCNT_OBJ_1D_MAP);
+    ShowBg(0);
+    HideBg(1);
+    DrawSoulLinkSettingsGate();
+    BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
+
+    taskId = CreateTask(Task_SoulLinkSettingsGate, 0);
+    gTasks[taskId].tSoulLinkSettingsSent = FALSE;
+    gTasks[taskId].tSoulLinkLastGateState = gSoulLinkGateState;
+}
+
+static void Task_SoulLinkSettingsGate(u8 taskId)
+{
+    if (!gTasks[taskId].tSoulLinkSettingsSent)
+        gTasks[taskId].tSoulLinkSettingsSent = SoulLink_SendSettings();
+
+    if (gTasks[taskId].tSoulLinkLastGateState != gSoulLinkGateState)
+    {
+        gTasks[taskId].tSoulLinkLastGateState = gSoulLinkGateState;
+        DrawSoulLinkSettingsGate();
+    }
+
+    if (!gPaletteFade.active
+     && gSoulLinkGateState == SOUL_LINK_GATE_APPROVED)
+    {
+        memcpy(&gSaveBlock2Ptr->soulLink, (const void *)&gSoulLinkPendingRun,
+            sizeof(gSaveBlock2Ptr->soulLink));
+        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
+        gTasks[taskId].func = Task_SoulLinkSettingsGateExit;
+    }
+}
+
+static void Task_SoulLinkSettingsGateExit(u8 taskId)
+{
+    if (!gPaletteFade.active)
+    {
+        FreeAllWindowBuffers();
+        SetMainCallback2(CB2_CompleteSoulLinkNewGame);
+        DestroyTask(taskId);
     }
 }
 
