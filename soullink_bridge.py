@@ -12,7 +12,8 @@ from pathlib import Path
 
 
 MAX_FRAME_SIZE = 64 * 1024
-HELLO_TIMEOUT_SECONDS = 120
+HELLO_TIMEOUT_SECONDS = 600
+MAX_CLIENTS = 3
 ROLES = {"host", "client"}
 
 
@@ -95,21 +96,33 @@ class Peer:
     reader: asyncio.StreamReader
     writer: asyncio.StreamWriter
     role: str | None = None
+    client_id: int | None = None
     hello: bytes | None = None
 
     @property
     def address(self) -> object:
         return self.writer.get_extra_info("peername")
 
+    @property
+    def name(self) -> str:
+        if self.role == "client":
+            return f"client {self.client_id}"
+        return self.role or "unregistered peer"
+
 
 class SoulLinkRelay:
     def __init__(self) -> None:
-        self.peers: dict[str, Peer] = {}
+        self.host: Peer | None = None
+        self.clients: dict[int, Peer] = {}
 
     async def drop(self, peer: Peer) -> None:
-        if peer.role is not None and self.peers.get(peer.role) is peer:
-            del self.peers[peer.role]
-            print(f"[Bridge] {peer.role} disconnected: {peer.address}")
+        if peer.role == "host" and self.host is peer:
+            self.host = None
+            print(f"[Bridge] host disconnected: {peer.address}")
+        elif (peer.role == "client" and peer.client_id is not None
+              and self.clients.get(peer.client_id) is peer):
+            del self.clients[peer.client_id]
+            print(f"[Bridge] {peer.name} disconnected: {peer.address}")
         peer.writer.close()
         with contextlib.suppress(ConnectionError, OSError):
             await peer.writer.wait_closed()
@@ -119,22 +132,33 @@ class SoulLinkRelay:
         if message_type != "HELLO":
             raise ValueError("first message must be HELLO")
 
-        previous = self.peers.get(role)
-        if previous is not None and previous is not peer:
-            print(f"[Bridge] replacing existing {role} connection")
-            await self.drop(previous)
-
         peer.role = role
         peer.hello = payload
-        self.peers[role] = peer
-        print(f"[Bridge] {role} registered: {peer.address}")
+        if role == "host":
+            if self.host is not None:
+                raise ValueError("a host is already connected")
+            self.host = peer
+            print(f"[Bridge] host registered: {peer.address}")
+            for client in list(self.clients.values()):
+                await self.pair(peer, client)
+        else:
+            client_id = next(
+                (candidate for candidate in range(1, MAX_CLIENTS + 1)
+                 if candidate not in self.clients),
+                None,
+            )
+            if client_id is None:
+                raise ValueError("lobby already has three clients")
+            peer.client_id = client_id
+            self.clients[client_id] = peer
+            print(f"[Bridge] {peer.name} registered: {peer.address}")
+            if self.host is not None:
+                await self.pair(self.host, peer)
 
-        other = self.peers.get("client" if role == "host" else "host")
-        if other is not None:
-            await self.forward(other, payload)
-            if other.hello is not None:
-                await self.forward(peer, other.hello)
-            print("[Bridge] host and client are paired")
+    async def pair(self, host: Peer, client: Peer) -> None:
+        await self.forward(host, client.hello or b"")
+        await self.forward(client, host.hello or b"")
+        print(f"[Bridge] host and {client.name} are paired")
 
     async def forward(self, target: Peer, payload: bytes) -> None:
         try:
@@ -155,9 +179,11 @@ class SoulLinkRelay:
                 if sender != peer.role:
                     raise ValueError("message sender does not match registered role")
 
-                target = self.peers.get("client" if peer.role == "host" else "host")
-                if target is not None:
-                    await self.forward(target, payload)
+                if peer.role == "host":
+                    for client in list(self.clients.values()):
+                        await self.forward(client, payload)
+                elif self.host is not None:
+                    await self.forward(self.host, payload)
         except asyncio.TimeoutError:
             print(f"[Bridge] HELLO timeout: {peer.address}")
         except (asyncio.IncompleteReadError, ConnectionError):
