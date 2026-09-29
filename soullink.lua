@@ -10,7 +10,7 @@ local EWRAM_BASE = 0x02000000
 local EWRAM_END = 0x02040000
 
 local MAILBOX_MAGIC = 0x4B4E4C53
-local MAILBOX_VERSION = 2
+local MAILBOX_VERSION = 3
 local MAILBOX_SIZE = 68
 local MAILBOX_INCOMING_OFFSET = 40
 local MAILBOX_INCOMING_TYPE_OFFSET = MAILBOX_INCOMING_OFFSET + 12
@@ -29,6 +29,7 @@ local LOBBY_WAITING = 1
 local LOBBY_READY = 2
 local LOBBY_REJECTED = 3
 local LOBBY_APPROVED = 4
+local LOBBY_PLAYER_MASK = 0xF
 local LOBBY_NAMES = {
     [LOBBY_DISCONNECTED] = "DISCONNECTED", [LOBBY_WAITING] = "WAITING",
     [LOBBY_READY] = "READY", [LOBBY_REJECTED] = "REJECTED",
@@ -102,7 +103,9 @@ local localConnectionId = nil
 local mailboxReady = false
 local localReadySent = false
 local lobbyState = LOBBY_WAITING
-local pendingLobbyState = LOBBY_WAITING
+local lobbyConnectedMask = networkConfig and networkConfig.role == "host" and 1 or 0
+local lobbyReadyMask = 0
+local pendingLobbyFlags = lobbyState + lobbyConnectedMask * 16
 
 local function sendNetworkMessage(messageType, payload)
     if not networkReady then
@@ -126,14 +129,28 @@ local function sendNetworkMessage(messageType, payload)
     return true
 end
 
-local function applyLobbyState(state)
-    if state == lobbyState then
+local function packLobbyFlags(state, connectedMask, readyMask)
+    return state + connectedMask * 16 + readyMask * 256
+end
+
+local function lobbyPayload(state, connectedMask, readyMask)
+    return string.format("%d,%d,%d", state, connectedMask, readyMask)
+end
+
+local function applyLobbySnapshot(state, connectedMask, readyMask)
+    if state == lobbyState and connectedMask == lobbyConnectedMask
+        and readyMask == lobbyReadyMask
+    then
         return false
     end
 
     lobbyState = state
-    pendingLobbyState = state
-    console.log("[SoulLink] lobby state: " .. LOBBY_NAMES[state])
+    lobbyConnectedMask = connectedMask
+    lobbyReadyMask = readyMask
+    pendingLobbyFlags = packLobbyFlags(state, connectedMask, readyMask)
+    console.log(string.format(
+        "[SoulLink] lobby state: %s connected=0x%X ready=0x%X",
+        LOBBY_NAMES[state], connectedMask, readyMask))
     return true
 end
 
@@ -145,16 +162,25 @@ local function getHostLobbyFacts()
     local count = 0
     local allReady = true
     local rejected = false
-    for _, peer in pairs(remotePeers) do
+    local connectedMask = 1
+    local readyMask = mailboxReady and 1 or 0
+    for sender, peer in pairs(remotePeers) do
+        local clientNumber = tonumber(sender:match("^client([1-3])$"))
+        local playerBit = 2 ^ clientNumber
         count = count + 1
+        connectedMask = connectedMask + playerBit
         allReady = allReady and peer.ready
         rejected = rejected or peer.rejected
+        if peer.ready and not peer.rejected then
+            readyMask = readyMask + playerBit
+        end
     end
-    return count, allReady, rejected
+    return count, allReady, rejected, connectedMask, readyMask
 end
 
 local function updateHostLobbyState(forceBroadcast)
-    local peerCount, allPeersReady, anyPeerRejected = getHostLobbyFacts()
+    local peerCount, allPeersReady, anyPeerRejected, connectedMask, readyMask =
+        getHostLobbyFacts()
     local state
     if anyPeerRejected then
         state = LOBBY_REJECTED
@@ -166,9 +192,9 @@ local function updateHostLobbyState(forceBroadcast)
         state = LOBBY_READY
     end
 
-    local changed = applyLobbyState(state)
+    local changed = applyLobbySnapshot(state, connectedMask, readyMask)
     if (changed or forceBroadcast) and peerCount > 0 then
-        sendNetworkMessage("LOBBY_STATE", tostring(state))
+        sendNetworkMessage("LOBBY_STATE", lobbyPayload(state, connectedMask, readyMask))
     end
 end
 
@@ -178,7 +204,7 @@ local function removeRemotePeer(sender)
         updateHostLobbyState(false)
     elseif sender == "host" then
         localReadySent = false
-        applyLobbyState(LOBBY_WAITING)
+        applyLobbySnapshot(LOBBY_WAITING, 0, 0)
     end
 end
 
@@ -188,7 +214,7 @@ local function clearRemotePeers()
     if networkConfig.role == "host" then
         updateHostLobbyState(false)
     else
-        applyLobbyState(LOBBY_WAITING)
+        applyLobbySnapshot(LOBBY_WAITING, 0, 0)
     end
 end
 
@@ -242,7 +268,7 @@ local function handleNetworkMessage(message)
         if networkConfig.role == "host" then
             updateHostLobbyState(true)
         elseif remotePeers[sender].rejected then
-            applyLobbyState(LOBBY_REJECTED)
+            applyLobbySnapshot(LOBBY_REJECTED, 0, 0)
         end
         return true
     end
@@ -260,10 +286,17 @@ local function handleNetworkMessage(message)
             return false, "invalid READY payload"
         end
     elseif messageType == "LOBBY_STATE" then
-        local state = tonumber(payload)
+        local stateText, connectedText, readyText = payload:match("^(%d+),(%d+),(%d+)$")
+        local state = tonumber(stateText)
+        local connectedMask = tonumber(connectedText)
+        local readyMask = tonumber(readyText)
         if networkConfig.role ~= "client" or sender ~= "host"
             or not state or state < LOBBY_WAITING or state > LOBBY_APPROVED
             or state ~= math.floor(state)
+            or not connectedMask or connectedMask < 0 or connectedMask > LOBBY_PLAYER_MASK
+            or connectedMask ~= math.floor(connectedMask)
+            or not readyMask or readyMask < 0 or readyMask > LOBBY_PLAYER_MASK
+            or readyMask ~= math.floor(readyMask)
         then
             return false, "invalid LOBBY_STATE payload"
         end
@@ -278,8 +311,8 @@ local function handleNetworkMessage(message)
             updateHostLobbyState(false)
         end
     elseif messageType == "LOBBY_STATE" then
-        local state = tonumber(payload)
-        applyLobbyState(state)
+        local stateText, connectedText, readyText = payload:match("^(%d+),(%d+),(%d+)$")
+        applyLobbySnapshot(tonumber(stateText), tonumber(connectedText), tonumber(readyText))
     elseif LOG_HEARTBEATS then
         console.log(string.format(
             "[SoulLink] KEEPALIVE %d received from %s", sequence, sender))
@@ -398,7 +431,8 @@ local function updateMailbox()
 
     if magic ~= MAILBOX_MAGIC or version ~= MAILBOX_VERSION or size ~= MAILBOX_SIZE then
         if mailboxReady then
-            pendingLobbyState = lobbyState
+            pendingLobbyFlags = packLobbyFlags(
+                lobbyState, lobbyConnectedMask, lobbyReadyMask)
             sendNetworkMessage("READY", "0")
         end
         mailboxReady = false
@@ -430,10 +464,12 @@ local function updateMailbox()
         return
     end
 
-    if pendingLobbyState ~= nil then
-        writeMailboxEvent(EVENT_LOBBY_STATE, pendingLobbyState)
-        console.log("[SoulLink] lobby state sent to ROM: " .. LOBBY_NAMES[pendingLobbyState])
-        pendingLobbyState = nil
+    if pendingLobbyFlags ~= nil then
+        writeMailboxEvent(EVENT_LOBBY_STATE, pendingLobbyFlags)
+        console.log(string.format(
+            "[SoulLink] lobby state sent to ROM: %s connected=0x%X ready=0x%X",
+            LOBBY_NAMES[lobbyState], lobbyConnectedMask, lobbyReadyMask))
+        pendingLobbyFlags = nil
     elseif not pendingPing and emu.framecount() >= nextPingFrame then
         pendingPing = writeMailboxEvent(EVENT_PING, 0)
     end

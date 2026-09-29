@@ -2,7 +2,11 @@
 #define GUARD_SOUL_LINK_H
 
 #define SOUL_LINK_MAILBOX_MAGIC 0x4B4E4C53 // "SLNK" in little-endian memory
-#define SOUL_LINK_PROTOCOL_VERSION 2
+#define SOUL_LINK_PROTOCOL_VERSION 3
+#define SOUL_LINK_LOBBY_STATE_MASK 0x0007
+#define SOUL_LINK_LOBBY_CONNECTED_SHIFT 4
+#define SOUL_LINK_LOBBY_READY_SHIFT 8
+#define SOUL_LINK_LOBBY_PLAYER_MASK 0x000F
 
 enum SoulLinkEventType
 {
@@ -49,6 +53,8 @@ struct SoulLinkMailbox
 
 extern volatile struct SoulLinkMailbox gSoulLinkMailbox;
 extern volatile u16 gSoulLinkLobbyState;
+extern volatile u8 gSoulLinkConnectedPlayerMask;
+extern volatile u8 gSoulLinkReadyPlayerMask;
 
 void SoulLink_Update(void);
 
