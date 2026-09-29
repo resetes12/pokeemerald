@@ -40,6 +40,7 @@
 #include "mystery_gift_menu.h"
 #include "tx_randomizer_and_challenges.h"
 #include "save_migration.h"
+#include "soul_link.h"
 #include "constants/flags.h"
 
 /*
@@ -208,6 +209,9 @@ static void HighlightSelectedMainMenuItem(u8, u8, s16);
 static void Task_HandleMainMenuInput(u8);
 static void Task_HandleMainMenuAPressed(u8);
 static void Task_HandleMainMenuBPressed(u8);
+static void Task_SoulLinkNewGameLobbyInit(u8);
+static void Task_SoulLinkNewGameLobby(u8);
+static void Task_SoulLinkNewGameLobbyExit(u8);
 static void Task_NewGameBirchSpeech_Init(u8);
 static void Task_DisplayMainMenuInvalidActionError(u8);
 static void AddBirchSpeechObjects(u8);
@@ -483,6 +487,14 @@ static const u16 sMainMenuTextPal[] = INCBIN_U16("graphics/interface/main_menu_t
 
 static const u8 sTextColor_Headers[] = {TEXT_DYNAMIC_COLOR_1, TEXT_DYNAMIC_COLOR_2, TEXT_DYNAMIC_COLOR_3};
 static const u8 sTextColor_MenuInfo[] = {TEXT_DYNAMIC_COLOR_1, TEXT_COLOR_WHITE, TEXT_DYNAMIC_COLOR_3};
+static const u8 sText_SoulLinkLobbyTitle[] = _("SOUL LINK LOBBY");
+static const u8 sText_SoulLinkPlayers[] = _("Players: {STR_VAR_1}/4");
+static const u8 sText_SoulLinkSelections[] = _("New Game: {STR_VAR_1}/{STR_VAR_2}");
+static const u8 sText_SoulLinkConnecting[] = _("Connecting to bridge…");
+static const u8 sText_SoulLinkWaitingPlayers[] = _("Waiting for all players…");
+static const u8 sText_SoulLinkHostStart[] = _("Host: Press START.");
+static const u8 sText_SoulLinkClientWait[] = _("Waiting for the host…");
+static const u8 sText_SoulLinkRejected[] = _("Connection rejected.");
 
 static const struct BgTemplate sMainMenuBgTemplates[] = {
     {
@@ -854,6 +866,9 @@ static u32 InitMainMenu(bool8 returningFromOptionsMenu)
 #define tScrollArrowTaskId data[13]
 #define tIsScrolled data[14]
 #define tWirelessAdapterConnected data[15]
+#define tSoulLinkIntentSent data[2]
+#define tSoulLinkLastStatus data[3]
+#define tSoulLinkLastLocalMask data[4]
 
 #define tArrowTaskIsScrolled data[15]   // For scroll indicator arrow task
 
@@ -1525,7 +1540,7 @@ static void Task_HandleMainMenuAPressed(u8 taskId)
             default:
                 gPlttBufferUnfaded[0] = RGB_BLACK;
                 gPlttBufferFaded[0] = RGB_BLACK;
-                gTasks[taskId].func = Task_NewGameBirchSpeech_Init;
+                gTasks[taskId].func = Task_SoulLinkNewGameLobbyInit;
                 break;
             case ACTION_CONTINUE:
                 gPlttBufferUnfaded[0] = RGB_BLACK;
@@ -1564,11 +1579,136 @@ static void Task_HandleMainMenuAPressed(u8 taskId)
                 BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
                 return;
         }
-        FreeAllWindowBuffers();
+        if (action != ACTION_NEW_GAME)
+            FreeAllWindowBuffers();
         if (action != ACTION_OPTION)
             sCurrItemAndOptionMenuCheck = 0;
         else
             sCurrItemAndOptionMenuCheck |= OPTION_MENU_FLAG;  // entering the options menu
+    }
+}
+
+static u8 CountSoulLinkPlayers(u8 mask)
+{
+    u8 count = 0;
+    u8 bit;
+
+    for (bit = 0; bit < 4; bit++)
+    {
+        if (mask & (1 << bit))
+            count++;
+    }
+    return count;
+}
+
+static bool8 CanHostStartSoulLink(void)
+{
+    return gSoulLinkLocalPlayerMask == 1
+        && CountSoulLinkPlayers(gSoulLinkConnectedPlayerMask) >= 2
+        && gSoulLinkReadyPlayerMask == gSoulLinkConnectedPlayerMask
+        && gSoulLinkLockedPlayerMask == gSoulLinkConnectedPlayerMask;
+}
+
+static void DrawSoulLinkNewGameLobby(void)
+{
+    const u8 *instruction;
+    u8 connectedCount = CountSoulLinkPlayers(gSoulLinkConnectedPlayerMask);
+    u8 selectedCount = CountSoulLinkPlayers(gSoulLinkLockedPlayerMask);
+
+    FillWindowPixelBuffer(2, PIXEL_FILL(0xA));
+    AddTextPrinterParameterized3(2, FONT_NORMAL, 0, 1,
+        sTextColor_Headers, TEXT_SKIP_DRAW, sText_SoulLinkLobbyTitle);
+    ConvertIntToDecimalStringN(gStringVar1, connectedCount, STR_CONV_MODE_LEFT_ALIGN, 1);
+    StringExpandPlaceholders(gStringVar4, sText_SoulLinkPlayers);
+    AddTextPrinterParameterized3(2, FONT_NORMAL, 0, 17,
+        sTextColor_MenuInfo, TEXT_SKIP_DRAW, gStringVar4);
+    ConvertIntToDecimalStringN(gStringVar1, selectedCount, STR_CONV_MODE_LEFT_ALIGN, 1);
+    ConvertIntToDecimalStringN(gStringVar2, connectedCount, STR_CONV_MODE_LEFT_ALIGN, 1);
+    StringExpandPlaceholders(gStringVar4, sText_SoulLinkSelections);
+    AddTextPrinterParameterized3(2, FONT_NORMAL, 0, 33,
+        sTextColor_MenuInfo, TEXT_SKIP_DRAW, gStringVar4);
+    PutWindowTilemap(2);
+    CopyWindowToVram(2, COPYWIN_GFX);
+    DrawMainMenuWindowBorder(&sWindowTemplates_MainMenu[2], MAIN_MENU_BORDER_TILE);
+
+    if (gSoulLinkLobbyState == SOUL_LINK_LOBBY_REJECTED
+     || gSoulLinkGateState == SOUL_LINK_GATE_REJECTED)
+        instruction = sText_SoulLinkRejected;
+    else if (gSoulLinkLocalPlayerMask == 0)
+        instruction = sText_SoulLinkConnecting;
+    else if (CanHostStartSoulLink())
+        instruction = sText_SoulLinkHostStart;
+    else if (gSoulLinkLocalPlayerMask == 1
+          || gSoulLinkLockedPlayerMask != gSoulLinkConnectedPlayerMask)
+        instruction = sText_SoulLinkWaitingPlayers;
+    else
+        instruction = sText_SoulLinkClientWait;
+
+    FillWindowPixelBuffer(7, PIXEL_FILL(0xA));
+    AddTextPrinterParameterized3(7, FONT_NORMAL, 0, 1,
+        sTextColor_Headers, TEXT_SKIP_DRAW, instruction);
+    PutWindowTilemap(7);
+    CopyWindowToVram(7, COPYWIN_GFX);
+    DrawMainMenuWindowBorder(&sWindowTemplates_MainMenu[7], MAIN_MENU_BORDER_TILE);
+}
+
+static void Task_SoulLinkNewGameLobbyInit(u8 taskId)
+{
+    FillBgTilemapBufferRect_Palette0(0, 0, 0, 0,
+        DISPLAY_TILE_WIDTH, DISPLAY_TILE_HEIGHT);
+    CopyBgTilemapBufferToVram(0);
+    SetGpuReg(REG_OFFSET_WIN0H, 0);
+    SetGpuReg(REG_OFFSET_WIN0V, 0);
+    gTasks[taskId].tSoulLinkIntentSent = FALSE;
+    gTasks[taskId].tSoulLinkLastStatus = -1;
+    gTasks[taskId].tSoulLinkLastLocalMask = -1;
+    DrawSoulLinkNewGameLobby();
+    BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
+    gTasks[taskId].func = Task_SoulLinkNewGameLobby;
+}
+
+static void Task_SoulLinkNewGameLobby(u8 taskId)
+{
+    u16 status = gSoulLinkConnectedPlayerMask
+        | (gSoulLinkLockedPlayerMask << 4)
+        | (gSoulLinkGateState << 8)
+        | (gSoulLinkLobbyState << 12);
+
+    if (!gTasks[taskId].tSoulLinkIntentSent)
+        gTasks[taskId].tSoulLinkIntentSent =
+            SoulLink_SendLobbyIntent(SOUL_LINK_INTENT_NEW_GAME);
+
+    if (status != gTasks[taskId].tSoulLinkLastStatus
+     || gSoulLinkLocalPlayerMask != gTasks[taskId].tSoulLinkLastLocalMask)
+    {
+        gTasks[taskId].tSoulLinkLastStatus = status;
+        gTasks[taskId].tSoulLinkLastLocalMask = gSoulLinkLocalPlayerMask;
+        DrawSoulLinkNewGameLobby();
+    }
+
+    if (gSoulLinkGateState == SOUL_LINK_GATE_LOCKED
+     && (gSoulLinkLockedPlayerMask & gSoulLinkLocalPlayerMask))
+    {
+        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
+        gTasks[taskId].func = Task_SoulLinkNewGameLobbyExit;
+    }
+    else if (!gPaletteFade.active && CanHostStartSoulLink()
+          && JOY_NEW(START_BUTTON))
+    {
+        PlaySE(SE_SELECT);
+        SoulLink_SendLobbyStart();
+    }
+}
+
+static void Task_SoulLinkNewGameLobbyExit(u8 taskId)
+{
+    if (!gPaletteFade.active)
+    {
+        FillBgTilemapBufferRect_Palette0(0, 0, 0, 0,
+            DISPLAY_TILE_WIDTH, DISPLAY_TILE_HEIGHT);
+        CopyBgTilemapBufferToVram(0);
+        FreeAllWindowBuffers();
+        gTasks[taskId].func = Task_NewGameBirchSpeech_Init;
     }
 }
 
@@ -1630,6 +1770,9 @@ static void Task_DisplayMainMenuInvalidActionError(u8 taskId)
 #undef tScrollArrowTaskId
 #undef tIsScrolled
 #undef tWirelessAdapterConnected
+#undef tSoulLinkIntentSent
+#undef tSoulLinkLastStatus
+#undef tSoulLinkLastLocalMask
 
 #undef tArrowTaskIsScrolled
 
