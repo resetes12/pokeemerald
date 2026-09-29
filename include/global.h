@@ -507,6 +507,16 @@ struct RankingHall2P
     //u8 padding;
 };
 
+struct SoulLinkSaveData
+{
+    u32 runId[2];
+    u16 protocolVersion;
+    u8 formatVersion;
+    u8 playerSlot;
+    u8 activePlayerMask;
+    u8 reserved[3];
+};
+
 struct SaveBlock2
 {
     // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -589,7 +599,8 @@ struct SaveBlock2
               // New fields may be added below here safely (with a version bump + migration).
               u8 shinySeen[NUM_DEX_FLAG_BYTES]; // Tracks whether trainer has ever seen/caught a shiny of each species. Stays the last one in case of
                                                 // overflow.
-}; // sizeof=0xF2C + NUM_DEX_FLAG_BYTES
+              struct SoulLinkSaveData soulLink;
+};
 
 extern struct SaveBlock2 *gSaveBlock2Ptr;
 

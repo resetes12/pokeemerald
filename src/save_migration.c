@@ -7,6 +7,7 @@
 static const u8 sRecognizedVersions[] = {
     ME_SAVE_VERSION_NONE,    // Pre-tracking (3.5 and earlier)
     ME_SAVE_VERSION_3_6,     // 3.6 (first tracked version)
+    ME_SAVE_VERSION_3_7,     // 3.7 (Soul Link run metadata)
 };
 
 u8 GetSaveVersion(void)
@@ -67,30 +68,40 @@ STATIC_ASSERT(offsetof(struct SaveBlock2, saveVersion) < SECTOR_DATA_SIZE, SaveV
 // Old SaveBlock2 size used by all ME versions from 2.4 through 3.5.
 // These versions had identical struct layouts (fields only appended after this point).
 #define SAVEBLOCK2_SIZE_V24_TO_V35 0xF2C
+#define SAVEBLOCK2_SIZE_V36 offsetof(struct SaveBlock2, soulLink)
+
+u16 GetHistoricalSaveBlock2Size(const u8 *data)
+{
+    switch (data[SAVE_VERSION_SECTOR0_OFFSET])
+    {
+    case ME_SAVE_VERSION_NONE:
+        return SAVEBLOCK2_SIZE_V24_TO_V35;
+    case ME_SAVE_VERSION_3_6:
+        return SAVEBLOCK2_SIZE_V36;
+    default:
+        return 0;
+    }
+}
 
 bool8 TryMigrateSectorData(u8 sectorId, u8 *data, u16 size)
 {
+    u16 oldSize;
+
     // Only sector 0 (SaveBlock2) needs old-size fallback for now
     if (sectorId != SECTOR_ID_SAVEBLOCK2)
         return FALSE;
 
-    // If the current size is the same as the old size, nothing to do
-    if (size <= SAVEBLOCK2_SIZE_V24_TO_V35)
+    oldSize = GetHistoricalSaveBlock2Size(data);
+    if (oldSize == 0 || oldSize >= size)
         return FALSE;
 
-    // Zero out the appended fields (everything past the old struct end)
-    // so they get sane defaults (0 = disabled for all new options).
-    // The caller has already verified the old-size checksum matches.
+    // The caller has verified the historical-size checksum. Zero fields that
+    // did not exist in that version before accepting it as the current layout.
     {
         u16 j;
-        for (j = SAVEBLOCK2_SIZE_V24_TO_V35; j < size; j++)
+        for (j = oldSize; j < size; j++)
             data[j] = 0;
     }
 
     return TRUE;
-}
-
-u16 GetOldSaveBlock2Size(void)
-{
-    return SAVEBLOCK2_SIZE_V24_TO_V35;
 }

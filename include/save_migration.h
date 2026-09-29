@@ -24,7 +24,8 @@ void StampCurrentSaveVersion(void);
 // Returns TRUE if data was modified (caller should recalculate checksum).
 bool8 TryMigrateSectorData(u8 sectorId, u8 *data, u16 size);
 
-// Returns the old SaveBlock2 struct size for fallback checksum validation.
-u16 GetOldSaveBlock2Size(void);
+// Returns the historical SaveBlock2 size encoded by raw sector data, or 0
+// when the version is current or unsupported.
+u16 GetHistoricalSaveBlock2Size(const u8 *data);
 
 #endif // GUARD_SAVE_MIGRATION_H
