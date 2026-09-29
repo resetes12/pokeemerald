@@ -91,6 +91,16 @@ def parse_message(payload: bytes) -> tuple[str, str]:
     return parts[2], parts[3]
 
 
+def with_sender(payload: bytes, sender: str) -> bytes:
+    parts = payload.decode("utf-8").split("|", 4)
+    parts[2] = sender
+    return "|".join(parts).encode("utf-8")
+
+
+def relay_message(message_type: str, payload: str) -> bytes:
+    return f"SL1|1|relay|{message_type}|{payload}".encode("utf-8")
+
+
 @dataclass(eq=False, slots=True)
 class Peer:
     reader: asyncio.StreamReader
@@ -108,6 +118,12 @@ class Peer:
         if self.role == "client":
             return f"client {self.client_id}"
         return self.role or "unregistered peer"
+
+    @property
+    def sender(self) -> str:
+        if self.role == "client" and self.client_id is not None:
+            return f"client{self.client_id}"
+        return self.role or "unknown"
 
 
 class SoulLinkRelay:
@@ -152,11 +168,12 @@ class SoulLinkRelay:
             peer.client_id = client_id
             self.clients[client_id] = peer
             print(f"[Bridge] {peer.name} registered: {peer.address}")
+            await self.forward(peer, relay_message("WELCOME", peer.sender))
             if self.host is not None:
                 await self.pair(self.host, peer)
 
     async def pair(self, host: Peer, client: Peer) -> None:
-        await self.forward(host, client.hello or b"")
+        await self.forward(host, with_sender(client.hello or b"", client.sender))
         await self.forward(client, host.hello or b"")
         print(f"[Bridge] host and {client.name} are paired")
 
@@ -183,7 +200,7 @@ class SoulLinkRelay:
                     for client in list(self.clients.values()):
                         await self.forward(client, payload)
                 elif self.host is not None:
-                    await self.forward(self.host, payload)
+                    await self.forward(self.host, with_sender(payload, peer.sender))
         except asyncio.TimeoutError:
             print(f"[Bridge] HELLO timeout: {peer.address}")
         except (asyncio.IncompleteReadError, ConnectionError):

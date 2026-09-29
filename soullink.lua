@@ -22,6 +22,7 @@ local PING_INTERVAL_FRAMES = 300
 local NETWORK_KEEPALIVE_INTERVAL_FRAMES = 300
 local NETWORK_PEER_TIMEOUT_FRAMES = 900
 local NETWORK_RECEIVE_TIMEOUT_MS = 1
+local LOG_HEARTBEATS = false
 
 local LOBBY_DISCONNECTED = 0
 local LOBBY_WAITING = 1
@@ -94,15 +95,12 @@ local networkConfig, networkConfigError = loadNetworkConfig()
 local commSocketInfo, commSocketError = probeCommSocket()
 local networkReady = false
 local nextNetworkSequence = 1
-local lastRemoteSequence = 0
 local nextKeepaliveFrame = 0
-local lastRemoteFrame = nil
+local remotePeers = {}
+local localConnectionId = nil
 
 local mailboxReady = false
 local localReadySent = false
-local peerPresent = false
-local peerReady = false
-local peerRejected = false
 local lobbyState = LOBBY_WAITING
 local pendingLobbyState = LOBBY_WAITING
 
@@ -139,29 +137,53 @@ local function applyLobbyState(state)
     return true
 end
 
+local function isClientSender(sender)
+    return sender:match("^client[1-3]$") ~= nil
+end
+
+local function getHostLobbyFacts()
+    local count = 0
+    local allReady = true
+    local rejected = false
+    for _, peer in pairs(remotePeers) do
+        count = count + 1
+        allReady = allReady and peer.ready
+        rejected = rejected or peer.rejected
+    end
+    return count, allReady, rejected
+end
+
 local function updateHostLobbyState(forceBroadcast)
+    local peerCount, allPeersReady, anyPeerRejected = getHostLobbyFacts()
     local state
-    if peerRejected then
+    if anyPeerRejected then
         state = LOBBY_REJECTED
-    elseif not peerPresent then
+    elseif peerCount == 0 then
         state = LOBBY_WAITING
-    elseif mailboxReady and peerReady then
+    elseif mailboxReady and allPeersReady then
         state = LOBBY_APPROVED
     else
         state = LOBBY_READY
     end
 
     local changed = applyLobbyState(state)
-    if (changed or forceBroadcast) and peerPresent then
+    if (changed or forceBroadcast) and peerCount > 0 then
         sendNetworkMessage("LOBBY_STATE", tostring(state))
     end
 end
 
-local function markPeerDisconnected()
-    peerPresent = false
-    peerReady = false
-    peerRejected = false
-    lastRemoteFrame = nil
+local function removeRemotePeer(sender)
+    remotePeers[sender] = nil
+    if networkConfig.role == "host" then
+        updateHostLobbyState(false)
+    elseif sender == "host" then
+        localReadySent = false
+        applyLobbyState(LOBBY_WAITING)
+    end
+end
+
+local function clearRemotePeers()
+    remotePeers = {}
     localReadySent = false
     if networkConfig.role == "host" then
         updateHostLobbyState(false)
@@ -179,11 +201,22 @@ local function handleNetworkMessage(message)
     then
         return false, "malformed message"
     end
-    if sender == networkConfig.role or (sender ~= "host" and sender ~= "client") then
-        return false, "invalid sender " .. tostring(sender)
-    end
-    if sequence <= lastRemoteSequence then
+
+    if sender == "relay" then
+        if networkConfig.role ~= "client" or messageType ~= "WELCOME"
+            or not isClientSender(payload)
+        then
+            return false, "invalid relay message"
+        end
+        localConnectionId = payload
+        console.log("[SoulLink] assigned transient identity " .. localConnectionId)
         return true
+    end
+
+    if (networkConfig.role == "host" and not isClientSender(sender))
+        or (networkConfig.role == "client" and sender ~= "host")
+    then
+        return false, "invalid sender " .. tostring(sender)
     end
     if messageType ~= "HELLO" and messageType ~= "KEEPALIVE"
         and messageType ~= "READY" and messageType ~= "LOBBY_STATE"
@@ -191,34 +224,40 @@ local function handleNetworkMessage(message)
         return false, "unsupported message type " .. tostring(messageType)
     end
 
-    lastRemoteSequence = sequence
-    lastRemoteFrame = emu.framecount()
-    peerPresent = true
-
     if messageType == "HELLO" then
         local peerVersion = tonumber(payload)
-        peerReady = false
-        peerRejected = peerVersion ~= MAILBOX_VERSION
+        remotePeers[sender] = {
+            lastSequence = sequence,
+            lastFrame = emu.framecount(),
+            ready = false,
+            rejected = peerVersion ~= MAILBOX_VERSION,
+        }
         console.log(string.format(
             "[SoulLink] HELLO %d received from %s (protocol=%s)",
             sequence, sender, payload))
 
-        if not peerRejected and mailboxReady then
+        if not remotePeers[sender].rejected and mailboxReady then
             localReadySent = sendNetworkMessage("READY", "1")
         end
         if networkConfig.role == "host" then
             updateHostLobbyState(true)
-        elseif peerRejected then
+        elseif remotePeers[sender].rejected then
             applyLobbyState(LOBBY_REJECTED)
         end
-    elseif messageType == "READY" then
+        return true
+    end
+
+    local peer = remotePeers[sender]
+    if not peer then
+        return false, "message received before HELLO from " .. sender
+    end
+    if sequence <= peer.lastSequence then
+        return true
+    end
+
+    if messageType == "READY" then
         if payload ~= "0" and payload ~= "1" then
             return false, "invalid READY payload"
-        end
-        peerReady = payload == "1"
-        console.log(string.format("[SoulLink] %s ready=%s", sender, payload))
-        if networkConfig.role == "host" then
-            updateHostLobbyState(false)
         end
     elseif messageType == "LOBBY_STATE" then
         local state = tonumber(payload)
@@ -228,8 +267,20 @@ local function handleNetworkMessage(message)
         then
             return false, "invalid LOBBY_STATE payload"
         end
+    end
+
+    peer.lastSequence = sequence
+    peer.lastFrame = emu.framecount()
+    if messageType == "READY" then
+        peer.ready = payload == "1"
+        console.log(string.format("[SoulLink] %s ready=%s", sender, payload))
+        if networkConfig.role == "host" then
+            updateHostLobbyState(false)
+        end
+    elseif messageType == "LOBBY_STATE" then
+        local state = tonumber(payload)
         applyLobbyState(state)
-    else
+    elseif LOG_HEARTBEATS then
         console.log(string.format(
             "[SoulLink] KEEPALIVE %d received from %s", sequence, sender))
     end
@@ -280,7 +331,7 @@ local function updateNetwork()
     if not ok then
         console.log("[SoulLink] network receive failed: " .. tostring(message))
         networkReady = false
-        markPeerDisconnected()
+        clearRemotePeers()
         return
     end
     if message and message ~= "" then
@@ -290,9 +341,15 @@ local function updateNetwork()
         end
     end
 
-    if lastRemoteFrame and frame - lastRemoteFrame >= NETWORK_PEER_TIMEOUT_FRAMES then
-        console.log("[SoulLink] peer keepalive timed out")
-        markPeerDisconnected()
+    local timedOut = {}
+    for sender, peer in pairs(remotePeers) do
+        if frame - peer.lastFrame >= NETWORK_PEER_TIMEOUT_FRAMES then
+            timedOut[#timedOut + 1] = sender
+        end
+    end
+    for _, sender in ipairs(timedOut) do
+        console.log("[SoulLink] " .. sender .. " keepalive timed out")
+        removeRemotePeer(sender)
     end
 end
 
@@ -323,6 +380,7 @@ local mailboxOffset = findMailboxAddress()
 local nextMailboxSequence = 1
 local pendingPing = nil
 local nextPingFrame = 0
+local hasLoggedPingAck = false
 
 local function writeMailboxEvent(eventType, flags)
     local sequence = nextMailboxSequence
@@ -358,7 +416,10 @@ local function updateMailbox()
 
     local ack = memory.read_u32_le(mailboxOffset + MAILBOX_INCOMING_ACK_OFFSET, EWRAM_DOMAIN)
     if pendingPing and ack == pendingPing then
-        console.log(string.format("[SoulLink] PING %d acknowledged by ROM", pendingPing))
+        if not hasLoggedPingAck or LOG_HEARTBEATS then
+            console.log(string.format("[SoulLink] PING %d acknowledged by ROM", pendingPing))
+        end
+        hasLoggedPingAck = true
         pendingPing = nil
         nextPingFrame = emu.framecount() + PING_INTERVAL_FRAMES
     end
