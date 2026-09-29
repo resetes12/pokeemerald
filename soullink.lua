@@ -10,7 +10,7 @@ local EWRAM_BASE = 0x02000000
 local EWRAM_END = 0x02040000
 
 local MAILBOX_MAGIC = 0x4B4E4C53
-local MAILBOX_VERSION = 3
+local MAILBOX_VERSION = 4
 local MAILBOX_SIZE = 68
 local MAILBOX_INCOMING_OFFSET = 40
 local MAILBOX_INCOMING_TYPE_OFFSET = MAILBOX_INCOMING_OFFSET + 12
@@ -105,7 +105,8 @@ local localReadySent = false
 local lobbyState = LOBBY_WAITING
 local lobbyConnectedMask = networkConfig and networkConfig.role == "host" and 1 or 0
 local lobbyReadyMask = 0
-local pendingLobbyFlags = lobbyState + lobbyConnectedMask * 16
+local localPlayerMask = networkConfig and networkConfig.role == "host" and 1 or 0
+local pendingLobbyFlags = lobbyState + lobbyConnectedMask * 16 + localPlayerMask * 4096
 
 local function sendNetworkMessage(messageType, payload)
     if not networkReady then
@@ -130,11 +131,21 @@ local function sendNetworkMessage(messageType, payload)
 end
 
 local function packLobbyFlags(state, connectedMask, readyMask)
-    return state + connectedMask * 16 + readyMask * 256
+    return state + connectedMask * 16 + readyMask * 256 + localPlayerMask * 4096
 end
 
 local function lobbyPayload(state, connectedMask, readyMask)
     return string.format("%d,%d,%d", state, connectedMask, readyMask)
+end
+
+local function applyLocalPlayerMask(mask)
+    if mask == localPlayerMask then
+        return
+    end
+
+    localPlayerMask = mask
+    pendingLobbyFlags = packLobbyFlags(lobbyState, lobbyConnectedMask, lobbyReadyMask)
+    console.log(string.format("[SoulLink] local player mask: 0x%X", mask))
 end
 
 local function applyLobbySnapshot(state, connectedMask, readyMask)
@@ -235,6 +246,7 @@ local function handleNetworkMessage(message)
             return false, "invalid relay message"
         end
         localConnectionId = payload
+        applyLocalPlayerMask(2 ^ tonumber(payload:match("client([1-3])")))
         console.log("[SoulLink] assigned transient identity " .. localConnectionId)
         return true
     end
@@ -467,8 +479,8 @@ local function updateMailbox()
     if pendingLobbyFlags ~= nil then
         writeMailboxEvent(EVENT_LOBBY_STATE, pendingLobbyFlags)
         console.log(string.format(
-            "[SoulLink] lobby state sent to ROM: %s connected=0x%X ready=0x%X",
-            LOBBY_NAMES[lobbyState], lobbyConnectedMask, lobbyReadyMask))
+            "[SoulLink] lobby state sent to ROM: %s connected=0x%X ready=0x%X local=0x%X",
+            LOBBY_NAMES[lobbyState], lobbyConnectedMask, lobbyReadyMask, localPlayerMask))
         pendingLobbyFlags = nil
     elseif not pendingPing and emu.framecount() >= nextPingFrame then
         pendingPing = writeMailboxEvent(EVENT_PING, 0)
