@@ -21,6 +21,7 @@
 extern struct MusicPlayerInfo *gMPlay_PokemonCry;
 #include "constants/rgb.h"
 #include "battle_main.h"
+#include "soul_link.h"
 #include "tx_randomizer_and_challenges.h"
 #include "pokemon.h"
 #include "event_data.h"
@@ -98,6 +99,9 @@ enum
     MENUITEM_RANDOM_NEXT,
     MENUITEM_RANDOM_COUNT,
 };
+
+STATIC_ASSERT(MENUITEM_RANDOM_NEXT == SOUL_LINK_RANDOMIZER_SETTING_COUNT,
+              SoulLinkRandomizerSettingsCount);
 
 enum
 {
@@ -1891,6 +1895,16 @@ static void Task_RandomizerChallengesMenuFadeOut(u8 taskId)
 
 void SaveData_TxRandomizerAndChallenges(void)
 {
+    u16 randomizerSettings = 0;
+    u8 i;
+
+    for (i = 0; i < SOUL_LINK_RANDOMIZER_SETTING_COUNT; i++)
+    {
+        if (sOptions->sel_randomizer[i])
+            randomizerSettings |= 1 << i;
+    }
+    SoulLink_SetPendingRandomizerSettings(randomizerSettings);
+
     PrintCurrentSelections();
     //MENU MODE
     gSaveBlock1Ptr->tx_Mode_Encounters                  = sOptions->sel_mode[MENUITEM_MODE_ALTERNATE_SPAWNS];

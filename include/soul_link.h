@@ -3,7 +3,9 @@
 
 #define SOUL_LINK_MAILBOX_MAGIC 0x4B4E4C53 // "SLNK" in little-endian memory
 #define SOUL_LINK_PROTOCOL_VERSION 4
-#define SOUL_LINK_SAVE_FORMAT_VERSION 1
+#define SOUL_LINK_SAVE_FORMAT_VERSION 2
+#define SOUL_LINK_RANDOMIZER_SETTING_COUNT 15
+#define SOUL_LINK_RANDOMIZER_SETTINGS_MASK 0x7FFF
 #define SOUL_LINK_LOBBY_STATE_MASK 0x0007
 #define SOUL_LINK_LOBBY_CONNECTED_SHIFT 4
 #define SOUL_LINK_LOBBY_READY_SHIFT 8
@@ -83,8 +85,10 @@ extern volatile u8 gSoulLinkLocalPlayerMask;
 extern volatile u8 gSoulLinkGateState;
 extern volatile u8 gSoulLinkLockedPlayerMask;
 extern volatile struct SoulLinkSaveData gSoulLinkPendingRun;
+extern u16 gSoulLinkPendingRandomizerSettings;
 
 void SoulLink_Update(void);
+void SoulLink_SetPendingRandomizerSettings(u16 settings);
 bool8 SoulLink_SendLobbyIntent(u8 intent);
 bool8 SoulLink_SendLobbyStart(void);
 

@@ -514,7 +514,8 @@ struct SoulLinkSaveData
     u8 formatVersion;
     u8 playerSlot;
     u8 activePlayerMask;
-    u8 reserved[3];
+    u8 randomizerSettings[2];
+    u8 reserved;
 };
 
 struct SaveBlock2

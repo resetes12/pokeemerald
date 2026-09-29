@@ -9,9 +9,16 @@ EWRAM_DATA volatile u8 gSoulLinkLocalPlayerMask = 0;
 EWRAM_DATA volatile u8 gSoulLinkGateState = SOUL_LINK_GATE_IDLE;
 EWRAM_DATA volatile u8 gSoulLinkLockedPlayerMask = 0;
 EWRAM_DATA volatile struct SoulLinkSaveData gSoulLinkPendingRun = {0};
+EWRAM_DATA u16 gSoulLinkPendingRandomizerSettings = 0;
 
 STATIC_ASSERT(sizeof(struct SoulLinkMessage) == 24, SoulLinkMessageSize);
 STATIC_ASSERT(sizeof(struct SoulLinkMailbox) == 68, SoulLinkMailboxSize);
+
+void SoulLink_SetPendingRandomizerSettings(u16 settings)
+{
+    gSoulLinkPendingRandomizerSettings =
+        settings & SOUL_LINK_RANDOMIZER_SETTINGS_MASK;
+}
 
 static void ResetMailbox(void)
 {
