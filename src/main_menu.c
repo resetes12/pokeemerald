@@ -880,6 +880,7 @@ static u32 InitMainMenu(bool8 returningFromOptionsMenu)
 #define tSoulLinkLastLocalMask data[4]
 #define tSoulLinkSettingsSent data[5]
 #define tSoulLinkLastGateState data[6]
+#define tSoulLinkExitClearQueued data[7]
 
 #define tArrowTaskIsScrolled data[15]   // For scroll indicator arrow task
 
@@ -1619,6 +1620,20 @@ static bool8 CanHostStartSoulLink(void)
         && gSoulLinkLockedPlayerMask == gSoulLinkConnectedPlayerMask;
 }
 
+static bool8 IsSoulLinkGateGraphicsReady(u8 taskId)
+{
+    if (!gTasks[taskId].tSoulLinkExitClearQueued)
+    {
+        FillBgTilemapBufferRect_Palette0(0, 0, 0, 0,
+            DISPLAY_TILE_WIDTH, DISPLAY_TILE_HEIGHT);
+        CopyBgTilemapBufferToVram(0);
+        gTasks[taskId].tSoulLinkExitClearQueued = TRUE;
+        return FALSE;
+    }
+
+    return !IsDma3ManagerBusyWithBgCopy();
+}
+
 static void DrawSoulLinkNewGameLobby(void)
 {
     const u8 *instruction;
@@ -1712,7 +1727,7 @@ static void Task_SoulLinkNewGameLobby(u8 taskId)
 
 static void Task_SoulLinkNewGameLobbyExit(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gPaletteFade.active && IsSoulLinkGateGraphicsReady(taskId))
     {
         FreeAllWindowBuffers();
         gTasks[taskId].func = Task_NewGameBirchSpeech_Init;
@@ -1769,7 +1784,7 @@ static void Task_SoulLinkContinueGate(u8 taskId)
 
 static void Task_SoulLinkContinueGateExit(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gPaletteFade.active && IsSoulLinkGateGraphicsReady(taskId))
     {
         FreeAllWindowBuffers();
         SetMainCallback2(CB2_ContinueSavedGame);
@@ -1857,7 +1872,7 @@ static void Task_SoulLinkSettingsGate(u8 taskId)
 
 static void Task_SoulLinkSettingsGateExit(u8 taskId)
 {
-    if (!gPaletteFade.active)
+    if (!gPaletteFade.active && IsSoulLinkGateGraphicsReady(taskId))
     {
         FreeAllWindowBuffers();
         SetMainCallback2(CB2_CompleteSoulLinkNewGame);
@@ -1926,6 +1941,7 @@ static void Task_DisplayMainMenuInvalidActionError(u8 taskId)
 #undef tSoulLinkIntentSent
 #undef tSoulLinkLastStatus
 #undef tSoulLinkLastLocalMask
+#undef tSoulLinkExitClearQueued
 
 #undef tArrowTaskIsScrolled
 
