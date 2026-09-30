@@ -306,7 +306,8 @@ static void Task_MapNamePopUpWindow(u8 taskId)
         }
         break;
     case STATE_ERASE:
-        ClearStdWindowAndFrame(GetMapNamePopUpWindowId(), TRUE);
+        if (GetMapNamePopUpWindowId() != WINDOW_NONE)
+            ClearStdWindowAndFrame(GetMapNamePopUpWindowId(), TRUE);
         task->tState = STATE_END;
         break;
     case STATE_END:
@@ -320,8 +321,11 @@ void HideMapNamePopUpWindow(void)
 {
     if (FuncIsActiveTask(Task_MapNamePopUpWindow))
     {
-        ClearStdWindowAndFrame(GetMapNamePopUpWindowId(), TRUE);
-        RemoveMapNamePopUpWindow();
+        if (GetMapNamePopUpWindowId() != WINDOW_NONE)
+        {
+            ClearStdWindowAndFrame(GetMapNamePopUpWindowId(), TRUE);
+            RemoveMapNamePopUpWindow();
+        }
         SetGpuReg_ForcedBlank(REG_OFFSET_BG0VOFS, 0);
         DestroyTask(sPopupTaskId);
     }
