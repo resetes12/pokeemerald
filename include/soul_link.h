@@ -20,6 +20,9 @@
 #define SOUL_LINK_RUN_PLAYER_COUNT_SHIFT 1
 #define SOUL_LINK_RUN_PLAYER_COUNT_MASK (7 << SOUL_LINK_RUN_PLAYER_COUNT_SHIFT)
 #define SOUL_LINK_RUN_STATUS_MASK 0x0F
+#define SOUL_LINK_GROUP_NONE 0
+
+struct BoxPokemon;
 
 enum SoulLinkEventType
 {
@@ -101,5 +104,7 @@ bool8 SoulLink_SendLobbyIntent(u8 intent);
 bool8 SoulLink_SendLobbyStart(void);
 bool8 SoulLink_SendSettings(void);
 bool8 SoulLink_QueueCatch(u32 personality, u32 otId, u16 species, u16 location);
+u16 SoulLink_GetBoxMonGroupId(struct BoxPokemon *boxMon);
+void SoulLink_SetBoxMonGroupId(struct BoxPokemon *boxMon, u16 groupId);
 
 #endif // GUARD_SOUL_LINK_H

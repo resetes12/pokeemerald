@@ -17,7 +17,8 @@ enum {
     MON_DATA_OT_NAME,
     MON_DATA_MARKINGS,
     MON_DATA_CHECKSUM,
-    MON_DATA_ENCRYPT_SEPARATOR,
+    MON_DATA_SOUL_LINK_GROUP,
+    MON_DATA_ENCRYPT_SEPARATOR = MON_DATA_SOUL_LINK_GROUP,
     MON_DATA_SPECIES,
     MON_DATA_HELD_ITEM,
     MON_DATA_MOVE1,
@@ -217,7 +218,7 @@ struct BoxPokemon
     u8 otName[PLAYER_NAME_LENGTH];
     u8 markings;
     u16 checksum;
-    u16 unknown;
+    u16 soulLinkGroupId;
 
     union
     {

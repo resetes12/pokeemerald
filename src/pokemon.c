@@ -7532,8 +7532,8 @@ u32 GetBoxMonData3(struct BoxPokemon *boxMon, s32 field, u8 *data)
     case MON_DATA_CHECKSUM:
         retVal = boxMon->checksum;
         break;
-    case MON_DATA_ENCRYPT_SEPARATOR:
-        retVal = boxMon->unknown;
+    case MON_DATA_SOUL_LINK_GROUP:
+        retVal = boxMon->soulLinkGroupId;
         break;
     case MON_DATA_SPECIES:
         retVal = boxMon->isBadEgg ? SPECIES_EGG : substruct0->species;
@@ -7917,8 +7917,8 @@ void SetBoxMonData(struct BoxPokemon *boxMon, s32 field, const void *dataArg)
     case MON_DATA_CHECKSUM:
         SET16(boxMon->checksum);
         break;
-    case MON_DATA_ENCRYPT_SEPARATOR:
-        SET16(boxMon->unknown);
+    case MON_DATA_SOUL_LINK_GROUP:
+        SET16(boxMon->soulLinkGroupId);
         break;
     case MON_DATA_SPECIES:
     {

@@ -1,4 +1,5 @@
 #include "global.h"
+#include "pokemon.h"
 #include "soul_link.h"
 
 EWRAM_DATA volatile struct SoulLinkMailbox gSoulLinkMailbox = {0};
@@ -15,6 +16,16 @@ static EWRAM_DATA struct SoulLinkMessage sPendingCatch = {0};
 
 STATIC_ASSERT(sizeof(struct SoulLinkMessage) == 24, SoulLinkMessageSize);
 STATIC_ASSERT(sizeof(struct SoulLinkMailbox) == 68, SoulLinkMailboxSize);
+
+u16 SoulLink_GetBoxMonGroupId(struct BoxPokemon *boxMon)
+{
+    return GetBoxMonData(boxMon, MON_DATA_SOUL_LINK_GROUP);
+}
+
+void SoulLink_SetBoxMonGroupId(struct BoxPokemon *boxMon, u16 groupId)
+{
+    SetBoxMonData(boxMon, MON_DATA_SOUL_LINK_GROUP, &groupId);
+}
 
 void SoulLink_SetPendingRandomizerSettings(u16 settings)
 {
