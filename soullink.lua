@@ -12,7 +12,7 @@ local EWRAM_BASE = 0x02000000
 local EWRAM_END = 0x02040000
 
 local MAILBOX_MAGIC = 0x4B4E4C53
-local MAILBOX_VERSION = 7
+local MAILBOX_VERSION = 8
 local SAVE_FORMAT_VERSION = 3
 local MAILBOX_SIZE = 68
 local MAILBOX_OUTGOING_OFFSET = 12
@@ -34,6 +34,7 @@ local EVENT_LOBBY_START = 4
 local EVENT_GATE_STATE = 5
 local EVENT_SETTINGS = 6
 local EVENT_CATCH = 7
+local EVENT_LINK_CREATED = 8
 local PING_INTERVAL_FRAMES = 300
 local NETWORK_KEEPALIVE_INTERVAL_FRAMES = 300
 local NETWORK_PEER_TIMEOUT_SECONDS = 600
@@ -143,6 +144,7 @@ local pendingGate = false
 local localSettings = nil
 local pendingCatchGroups = {}
 local finalizedCatchGroups = {}
+local pendingRomEvents = {}
 
 local STARTER_GROUP_ID = 0xFFFF
 
@@ -290,6 +292,46 @@ local function parseCatch(payload)
     }
 end
 
+local function parseLinkCreated(payload)
+    local values = {payload:match(
+        "^(%d+),(%d+),(%d+),(%d+),(%d+),(%d+)$")}
+    if #values ~= 6 then
+        return nil
+    end
+    for i = 1, #values do
+        values[i] = tonumber(values[i])
+    end
+    if values[1] < 1 or values[1] > STARTER_GROUP_ID
+        or values[2] < 1 or values[2] > LOBBY_PLAYER_MASK
+        or values[3] > 0xFFFFFFFF or values[4] > 0xFFFFFFFF
+        or values[5] < 1 or values[5] > 0xFFFF
+        or values[6] > 0xFFFF
+        or (values[1] ~= STARTER_GROUP_ID and values[1] ~= values[6] + 1)
+    then
+        return nil
+    end
+    return {
+        groupId = values[1], playerMask = values[2],
+        personality = values[3], otId = values[4],
+        species = values[5], location = values[6],
+    }
+end
+
+local function queueLinkCreated(link)
+    pendingRomEvents[#pendingRomEvents + 1] = {
+        type = EVENT_LINK_CREATED,
+        flags = link.playerMask,
+        payload = {
+            personality = link.personality, otId = link.otId,
+            pairId = link.groupId, species = link.species,
+            location = link.location,
+        },
+    }
+    console.log(string.format(
+        "[SoulLink] queued group=%d for local Pokemon %08X:%08X",
+        link.groupId, link.otId, link.personality))
+end
+
 local function getHostLobbyFacts()
     local count = 0
     local allReady = true
@@ -348,6 +390,7 @@ local function applyGateState(state, playerMask, broadcast,
     if networkConfig.role == "host" and runChanged then
         pendingCatchGroups = {}
         finalizedCatchGroups = {}
+        pendingRomEvents = {}
     end
     if changed then
         pendingGate = true
@@ -446,6 +489,21 @@ local function recordPendingCatch(sender, caught)
         local groupId = caught.location + 1
         finalizedCatchGroups[caught.location] = groupId
         pendingCatchGroups[caught.location] = nil
+        for playerMask, member in pairs(pending.members) do
+            local link = {
+                groupId = groupId, playerMask = playerMask,
+                personality = member.personality, otId = member.otId,
+                species = member.species, location = member.location,
+            }
+            if playerMask == localPlayerMask then
+                queueLinkCreated(link)
+            else
+                sendNetworkMessage("LINK_CREATED", string.format(
+                    "%d,%d,%u,%u,%d,%d", groupId, playerMask,
+                    member.personality, member.otId,
+                    member.species, member.location))
+            end
+        end
         console.log(string.format(
             "[SoulLink] finalized group=%d location=%d %s",
             groupId, caught.location, formatCatchMembers(pending.members)))
@@ -687,6 +745,7 @@ local function handleNetworkMessage(message)
         and messageType ~= "READY" and messageType ~= "LOBBY_STATE"
         and messageType ~= "INTENT" and messageType ~= "GATE"
         and messageType ~= "SETTINGS" and messageType ~= "CATCH"
+        and messageType ~= "LINK_CREATED"
     then
         return false, "unsupported message type " .. tostring(messageType)
     end
@@ -767,6 +826,10 @@ local function handleNetworkMessage(message)
         if networkConfig.role ~= "host" or not parseCatch(payload) then
             return false, "invalid CATCH payload"
         end
+    elseif messageType == "LINK_CREATED" then
+        if networkConfig.role ~= "client" or not parseLinkCreated(payload) then
+            return false, "invalid LINK_CREATED payload"
+        end
     end
 
     peer.lastSequence = sequence
@@ -800,6 +863,11 @@ local function handleNetworkMessage(message)
             "[SoulLink] CATCH from %s: personality=%08X otId=%08X species=%d location=%d",
             sender, caught.personality, caught.otId, caught.species, caught.location))
         recordPendingCatch(sender, caught)
+    elseif messageType == "LINK_CREATED" then
+        local link = parseLinkCreated(payload)
+        if link.playerMask == localPlayerMask then
+            queueLinkCreated(link)
+        end
     elseif LOG_HEARTBEATS then
         console.log(string.format(
             "[SoulLink] KEEPALIVE %d received from %s", sequence, sender))
@@ -1002,17 +1070,17 @@ local function writeMailboxEvent(eventType, flags, payload)
     local sequence = nextMailboxSequence
     payload = payload or {}
     memory.write_u32_le(MAILBOX_INCOMING_PERSONALITY_OFFSET + mailboxOffset,
-        payload.runIdLow or 0, EWRAM_DOMAIN)
+        payload.personality or payload.runIdLow or 0, EWRAM_DOMAIN)
     memory.write_u32_le(MAILBOX_INCOMING_OT_ID_OFFSET + mailboxOffset,
-        payload.runIdHigh or 0, EWRAM_DOMAIN)
+        payload.otId or payload.runIdHigh or 0, EWRAM_DOMAIN)
     memory.write_u16_le(MAILBOX_INCOMING_PAIR_ID_OFFSET + mailboxOffset,
-        payload.protocolVersion or 0, EWRAM_DOMAIN)
+        payload.pairId or payload.protocolVersion or 0, EWRAM_DOMAIN)
     memory.write_u16_le(MAILBOX_INCOMING_SPECIES_OFFSET + mailboxOffset,
-        payload.formatVersion or 0, EWRAM_DOMAIN)
+        payload.species or payload.formatVersion or 0, EWRAM_DOMAIN)
     memory.write_u16_le(MAILBOX_INCOMING_LOCATION_OFFSET + mailboxOffset,
-        payload.playerSlot or 0, EWRAM_DOMAIN)
+        payload.location or payload.playerSlot or 0, EWRAM_DOMAIN)
     memory.write_u16_le(MAILBOX_INCOMING_RESERVED_OFFSET + mailboxOffset,
-        payload.settings or 0, EWRAM_DOMAIN)
+        payload.reserved or payload.settings or 0, EWRAM_DOMAIN)
     memory.write_u16_le(mailboxOffset + MAILBOX_INCOMING_FLAGS_OFFSET, flags or 0, EWRAM_DOMAIN)
     memory.write_u16_le(mailboxOffset + MAILBOX_INCOMING_TYPE_OFFSET, eventType, EWRAM_DOMAIN)
     memory.write_u32_le(mailboxOffset + MAILBOX_INCOMING_OFFSET, sequence, EWRAM_DOMAIN)
@@ -1093,6 +1161,9 @@ local function updateMailbox()
             settings = approved and gateSettings or 0,
         })
         pendingGate = false
+    elseif #pendingRomEvents > 0 then
+        local event = table.remove(pendingRomEvents, 1)
+        writeMailboxEvent(event.type, event.flags, event.payload)
     elseif not pendingPing and emu.framecount() >= nextPingFrame then
         pendingPing = writeMailboxEvent(EVENT_PING, 0)
     end

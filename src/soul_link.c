@@ -1,5 +1,6 @@
 #include "global.h"
 #include "pokemon.h"
+#include "pokemon_storage_system.h"
 #include "soul_link.h"
 
 EWRAM_DATA volatile struct SoulLinkMailbox gSoulLinkMailbox = {0};
@@ -91,6 +92,57 @@ static bool8 TryPublishOutgoing(u16 type, u32 personality, u32 otId,
     message->reserved = data;
     message->sequence = sequence;
     return TRUE;
+}
+
+static struct BoxPokemon *FindOwnedBoxMon(u32 personality, u32 otId)
+{
+    u8 box;
+    u8 position;
+
+    for (position = 0; position < PARTY_SIZE; position++)
+    {
+        struct BoxPokemon *boxMon = &gPlayerParty[position].box;
+
+        if (GetMonData(&gPlayerParty[position], MON_DATA_SPECIES) != SPECIES_NONE
+         && GetBoxMonData(boxMon, MON_DATA_PERSONALITY) == personality
+         && GetBoxMonData(boxMon, MON_DATA_OT_ID) == otId)
+            return boxMon;
+    }
+
+    for (box = 0; box < TOTAL_BOXES_COUNT; box++)
+    {
+        for (position = 0; position < IN_BOX_COUNT; position++)
+        {
+            struct BoxPokemon *boxMon = &gPokemonStoragePtr->boxes[box][position];
+
+            if (GetBoxMonData(boxMon, MON_DATA_SANITY_HAS_SPECIES)
+             && GetBoxMonData(boxMon, MON_DATA_PERSONALITY) == personality
+             && GetBoxMonData(boxMon, MON_DATA_OT_ID) == otId)
+                return boxMon;
+        }
+    }
+
+    return NULL;
+}
+
+static void ApplyLinkCreated(const volatile struct SoulLinkMessage *message)
+{
+    struct BoxPokemon *boxMon;
+    u16 currentGroup;
+
+    if (message->pairId == SOUL_LINK_GROUP_NONE
+     || message->flags != gSoulLinkLocalPlayerMask
+     || !(message->pairId == SOUL_LINK_STARTER_GROUP_ID
+       || message->pairId == message->location + 1))
+        return;
+
+    boxMon = FindOwnedBoxMon(message->personality, message->otId);
+    if (boxMon == NULL)
+        return;
+
+    currentGroup = SoulLink_GetBoxMonGroupId(boxMon);
+    if (currentGroup == SOUL_LINK_GROUP_NONE)
+        SoulLink_SetBoxMonGroupId(boxMon, message->pairId);
 }
 
 bool8 SoulLink_SendLobbyIntent(u8 intent)
@@ -222,6 +274,10 @@ void SoulLink_Update(void)
                     memset((void *)&gSoulLinkPendingRun, 0, sizeof(gSoulLinkPendingRun));
                 }
             }
+        }
+        else if (gSoulLinkMailbox.incoming.type == SOUL_LINK_EVENT_LINK_CREATED)
+        {
+            ApplyLinkCreated(&gSoulLinkMailbox.incoming);
         }
 
         // Unknown messages are consumed so malformed input cannot wedge the
