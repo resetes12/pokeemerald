@@ -12,8 +12,8 @@ local EWRAM_BASE = 0x02000000
 local EWRAM_END = 0x02040000
 
 local MAILBOX_MAGIC = 0x4B4E4C53
-local MAILBOX_VERSION = 5
-local SAVE_FORMAT_VERSION = 2
+local MAILBOX_VERSION = 6
+local SAVE_FORMAT_VERSION = 3
 local MAILBOX_SIZE = 68
 local MAILBOX_OUTGOING_OFFSET = 12
 local MAILBOX_OUTGOING_ACK_OFFSET = 36
@@ -53,6 +53,7 @@ local GATE_LOCKED = 2
 local GATE_APPROVED = 3
 local GATE_REJECTED = 4
 local RANDOMIZER_SETTINGS_MASK = 0x7FFF
+local RUN_STATUS_MASK = 0xF
 local LOBBY_NAMES = {
     [LOBBY_DISCONNECTED] = "DISCONNECTED", [LOBBY_WAITING] = "WAITING",
     [LOBBY_READY] = "READY", [LOBBY_REJECTED] = "REJECTED",
@@ -207,16 +208,16 @@ local function senderPlayerMask(sender)
 end
 
 local function encodeIntent(intent)
-    return string.format("%d,%u,%u,%d,%d,%d,%d,%d", intent.action,
+    return string.format("%d,%u,%u,%d,%d,%d,%d,%d,%d", intent.action,
         intent.runIdLow, intent.runIdHigh, intent.protocolVersion,
         intent.formatVersion, intent.playerSlot, intent.activePlayerMask,
-        intent.settings)
+        intent.settings, intent.status)
 end
 
 local function parseIntent(payload)
     local values = {payload:match(
-        "^(%d+),(%d+),(%d+),(%d+),(%d+),(%d+),(%d+),(%d+)$")}
-    if #values ~= 8 then
+        "^(%d+),(%d+),(%d+),(%d+),(%d+),(%d+),(%d+),(%d+),(%d+)$")}
+    if #values ~= 9 then
         return nil
     end
     for i = 1, #values do
@@ -227,6 +228,7 @@ local function parseIntent(payload)
         or values[4] > 0xFFFF or values[5] > 0xFFFF
         or values[6] > 4 or values[7] > LOBBY_PLAYER_MASK
         or values[8] > RANDOMIZER_SETTINGS_MASK
+        or values[9] > RUN_STATUS_MASK
     then
         return nil
     end
@@ -234,6 +236,7 @@ local function parseIntent(payload)
         action = values[1], runIdLow = values[2], runIdHigh = values[3],
         protocolVersion = values[4], formatVersion = values[5],
         playerSlot = values[6], activePlayerMask = values[7], settings = values[8],
+        status = values[9],
     }
 end
 
@@ -695,6 +698,7 @@ local function readOutgoingIntent()
         playerSlot = memory.read_u16_le(offset + 18, EWRAM_DOMAIN),
         activePlayerMask = math.floor(flags / 256) % 16,
         settings = memory.read_u16_le(offset + 22, EWRAM_DOMAIN),
+        status = math.floor(flags / 4096) % 16,
     }
 end
 

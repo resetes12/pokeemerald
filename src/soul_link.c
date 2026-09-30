@@ -42,6 +42,19 @@ static u16 GetRunRandomizerSettings(const struct SoulLinkSaveData *run)
     return run->randomizerSettings[0] | (run->randomizerSettings[1] << 8);
 }
 
+static u8 CountPlayers(u8 playerMask)
+{
+    u8 count = 0;
+    u8 bit;
+
+    for (bit = 0; bit < 4; bit++)
+    {
+        if (playerMask & (1 << bit))
+            count++;
+    }
+    return count;
+}
+
 static bool8 TryPublishOutgoing(u16 type, const struct SoulLinkSaveData *run,
                                 u16 flags, u16 data)
 {
@@ -78,6 +91,8 @@ bool8 SoulLink_SendLobbyIntent(u8 intent)
     {
         run = &gSaveBlock2Ptr->soulLink;
         flags |= run->activePlayerMask << SOUL_LINK_INTENT_ACTIVE_MASK_SHIFT;
+        flags |= (run->status & SOUL_LINK_RUN_STATUS_MASK)
+            << SOUL_LINK_INTENT_STATUS_SHIFT;
         settings = GetRunRandomizerSettings(run);
     }
     return TryPublishOutgoing(SOUL_LINK_EVENT_LOBBY_INTENT, run, flags, settings);
@@ -151,6 +166,8 @@ void SoulLink_Update(void)
                         gSoulLinkMailbox.incoming.reserved;
                     gSoulLinkPendingRun.randomizerSettings[1] =
                         gSoulLinkMailbox.incoming.reserved >> 8;
+                    gSoulLinkPendingRun.status = SOUL_LINK_RUN_STATUS_ACTIVE
+                        | (CountPlayers(playerMask) << SOUL_LINK_RUN_PLAYER_COUNT_SHIFT);
                 }
                 else
                 {
