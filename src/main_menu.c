@@ -212,6 +212,9 @@ static void Task_HandleMainMenuBPressed(u8);
 static void Task_SoulLinkNewGameLobbyInit(u8);
 static void Task_SoulLinkNewGameLobby(u8);
 static void Task_SoulLinkNewGameLobbyExit(u8);
+static void Task_SoulLinkContinueGateInit(u8);
+static void Task_SoulLinkContinueGate(u8);
+static void Task_SoulLinkContinueGateExit(u8);
 static void Task_SoulLinkSettingsGate(u8);
 static void Task_SoulLinkSettingsGateExit(u8);
 static void Task_NewGameBirchSpeech_Init(u8);
@@ -497,6 +500,8 @@ static const u8 sText_SoulLinkWaitingPlayers[] = _("Waiting for all players…")
 static const u8 sText_SoulLinkHostStart[] = _("Host: Press START.");
 static const u8 sText_SoulLinkClientWait[] = _("Waiting for the host…");
 static const u8 sText_SoulLinkRejected[] = _("Connection rejected.");
+static const u8 sText_SoulLinkContinueWaiting[] = _("SOUL LINK CONTINUE\nWaiting for linked saves…");
+static const u8 sText_SoulLinkContinueRejected[] = _("Linked saves do not match.\nRestart with the correct saves.");
 static const u8 sText_SoulLinkCheckingSettings[] = _("SOUL LINK\nChecking randomizer settings…");
 static const u8 sText_SoulLinkSettingsMismatch[] = _("Randomizer settings differ.\nRestart with matching settings.");
 
@@ -1551,8 +1556,7 @@ static void Task_HandleMainMenuAPressed(u8 taskId)
             case ACTION_CONTINUE:
                 gPlttBufferUnfaded[0] = RGB_BLACK;
                 gPlttBufferFaded[0] = RGB_BLACK;
-                SetMainCallback2(CB2_ContinueSavedGame);
-                DestroyTask(taskId);
+                gTasks[taskId].func = Task_SoulLinkContinueGateInit;
                 break;
             case ACTION_OPTION:
                 gMain.savedCallback = CB2_ReinitMainMenu;
@@ -1715,6 +1719,64 @@ static void Task_SoulLinkNewGameLobbyExit(u8 taskId)
         CopyBgTilemapBufferToVram(0);
         FreeAllWindowBuffers();
         gTasks[taskId].func = Task_NewGameBirchSpeech_Init;
+    }
+}
+
+static void DrawSoulLinkContinueGate(void)
+{
+    const u8 *text = gSoulLinkGateState == SOUL_LINK_GATE_REJECTED
+        ? sText_SoulLinkContinueRejected
+        : sText_SoulLinkContinueWaiting;
+
+    FillWindowPixelBuffer(7, PIXEL_FILL(0xA));
+    AddTextPrinterParameterized3(7, FONT_NORMAL, 0, 1,
+        sTextColor_Headers, TEXT_SKIP_DRAW, text);
+    PutWindowTilemap(7);
+    CopyWindowToVram(7, COPYWIN_GFX);
+    DrawMainMenuWindowBorder(&sWindowTemplates_MainMenu[7], MAIN_MENU_BORDER_TILE);
+}
+
+static void Task_SoulLinkContinueGateInit(u8 taskId)
+{
+    FillBgTilemapBufferRect_Palette0(0, 0, 0, 0,
+        DISPLAY_TILE_WIDTH, DISPLAY_TILE_HEIGHT);
+    CopyBgTilemapBufferToVram(0);
+    SetGpuReg(REG_OFFSET_WIN0H, 0);
+    SetGpuReg(REG_OFFSET_WIN0V, 0);
+    gTasks[taskId].tSoulLinkIntentSent = FALSE;
+    gTasks[taskId].tSoulLinkLastGateState = -1;
+    DrawSoulLinkContinueGate();
+    BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
+    gTasks[taskId].func = Task_SoulLinkContinueGate;
+}
+
+static void Task_SoulLinkContinueGate(u8 taskId)
+{
+    if (!gTasks[taskId].tSoulLinkIntentSent)
+        gTasks[taskId].tSoulLinkIntentSent =
+            SoulLink_SendLobbyIntent(SOUL_LINK_INTENT_CONTINUE);
+
+    if (gTasks[taskId].tSoulLinkLastGateState != gSoulLinkGateState)
+    {
+        gTasks[taskId].tSoulLinkLastGateState = gSoulLinkGateState;
+        DrawSoulLinkContinueGate();
+    }
+
+    if (!gPaletteFade.active
+     && gSoulLinkGateState == SOUL_LINK_GATE_APPROVED)
+    {
+        BeginNormalPaletteFade(PALETTES_ALL, 0, 0, 16, RGB_BLACK);
+        gTasks[taskId].func = Task_SoulLinkContinueGateExit;
+    }
+}
+
+static void Task_SoulLinkContinueGateExit(u8 taskId)
+{
+    if (!gPaletteFade.active)
+    {
+        FreeAllWindowBuffers();
+        SetMainCallback2(CB2_ContinueSavedGame);
+        DestroyTask(taskId);
     }
 }
 

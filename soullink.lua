@@ -54,6 +54,8 @@ local GATE_APPROVED = 3
 local GATE_REJECTED = 4
 local RANDOMIZER_SETTINGS_MASK = 0x7FFF
 local RUN_STATUS_MASK = 0xF
+local RUN_STATUS_ACTIVE = 1
+local RUN_PLAYER_COUNT_SHIFT = 1
 local LOBBY_NAMES = {
     [LOBBY_DISCONNECTED] = "DISCONNECTED", [LOBBY_WAITING] = "WAITING",
     [LOBBY_READY] = "READY", [LOBBY_REJECTED] = "REJECTED",
@@ -341,19 +343,6 @@ local function getHostIntentFacts()
     return intentMask, allNewGame
 end
 
-local function updateHostGateState(forceBroadcast)
-    if gateState >= GATE_LOCKED then
-        if forceBroadcast then
-            applyGateState(gateState, gatePlayerMask, true,
-                gateRunIdLow, gateRunIdHigh, gateSettings)
-        end
-        return
-    end
-    local intentMask = getHostIntentFacts()
-    applyGateState(intentMask == 0 and GATE_IDLE or GATE_WAITING,
-        intentMask, forceBroadcast)
-end
-
 local function bitCount(mask)
     local count = 0
     for bit = 0, 3 do
@@ -362,6 +351,125 @@ local function bitCount(mask)
         end
     end
     return count
+end
+
+local function rejectContinue(reason, playerMask)
+    console.log("[SoulLink] Continue rejected: " .. reason)
+    applyGateState(GATE_REJECTED, playerMask or 0, true)
+end
+
+local function validateContinueIntent(intent)
+    local playerCount = bitCount(intent.activePlayerMask)
+    local expectedStatus = RUN_STATUS_ACTIVE
+        + playerCount * (2 ^ RUN_PLAYER_COUNT_SHIFT)
+
+    if intent.action ~= INTENT_CONTINUE then
+        return false, "not every player selected Continue"
+    elseif intent.runIdLow == 0 and intent.runIdHigh == 0 then
+        return false, "save is not linked to a run"
+    elseif intent.protocolVersion ~= MAILBOX_VERSION
+        or intent.formatVersion ~= SAVE_FORMAT_VERSION
+    then
+        return false, "save protocol or format is incompatible"
+    elseif playerCount < 2 or playerCount > 4 then
+        return false, "saved roster size is invalid"
+    elseif intent.playerSlot < 1
+        or math.floor(intent.activePlayerMask / (2 ^ (intent.playerSlot - 1))) % 2 ~= 1
+    then
+        return false, "saved player slot is invalid"
+    elseif intent.status ~= expectedStatus then
+        return false, "saved run status or participant count is invalid"
+    end
+    return true
+end
+
+local function tryApproveContinue(forceBroadcast)
+    local baseline = localIntent
+    local valid, reason = validateContinueIntent(baseline)
+    if not valid then
+        rejectContinue("host " .. reason, baseline.activePlayerMask)
+        return
+    elseif baseline.playerSlot ~= 1 then
+        rejectContinue("host save is not player 1", baseline.activePlayerMask)
+        return
+    end
+
+    local expectedCount = bitCount(baseline.activePlayerMask)
+    local connectedCount = bitCount(lobbyConnectedMask)
+    if connectedCount > expectedCount then
+        rejectContinue("more players connected than the saved roster",
+            baseline.activePlayerMask)
+        return
+    elseif connectedCount < expectedCount then
+        applyGateState(GATE_WAITING, baseline.activePlayerMask, forceBroadcast)
+        return
+    end
+
+    local savedSlotMask = 2 ^ (baseline.playerSlot - 1)
+    for sender, peer in pairs(remotePeers) do
+        if peer.rejected then
+            rejectContinue(sender .. " uses an incompatible protocol",
+                baseline.activePlayerMask)
+            return
+        elseif not peer.intent then
+            applyGateState(GATE_WAITING, baseline.activePlayerMask, forceBroadcast)
+            return
+        end
+
+        valid, reason = validateContinueIntent(peer.intent)
+        if not valid then
+            rejectContinue(sender .. " " .. reason, baseline.activePlayerMask)
+            return
+        end
+        local intent = peer.intent
+        if intent.runIdLow ~= baseline.runIdLow
+            or intent.runIdHigh ~= baseline.runIdHigh
+            or intent.activePlayerMask ~= baseline.activePlayerMask
+            or intent.protocolVersion ~= baseline.protocolVersion
+            or intent.formatVersion ~= baseline.formatVersion
+            or intent.settings ~= baseline.settings
+            or intent.status ~= baseline.status
+        then
+            rejectContinue(sender .. " save metadata does not match",
+                baseline.activePlayerMask)
+            return
+        end
+
+        local slotBit = 2 ^ (intent.playerSlot - 1)
+        if math.floor(savedSlotMask / slotBit) % 2 == 1 then
+            rejectContinue("duplicate saved player slot", baseline.activePlayerMask)
+            return
+        end
+        savedSlotMask = savedSlotMask + slotBit
+    end
+
+    if savedSlotMask ~= baseline.activePlayerMask then
+        rejectContinue("saved player slots do not match the roster",
+            baseline.activePlayerMask)
+        return
+    end
+
+    console.log(string.format("[SoulLink] linked saves match; approving run %08X%08X",
+        baseline.runIdHigh, baseline.runIdLow))
+    applyGateState(GATE_APPROVED, baseline.activePlayerMask, true,
+        baseline.runIdLow, baseline.runIdHigh, baseline.settings)
+end
+
+local function updateHostGateState(forceBroadcast)
+    if gateState >= GATE_LOCKED then
+        if forceBroadcast then
+            applyGateState(gateState, gatePlayerMask, true,
+                gateRunIdLow, gateRunIdHigh, gateSettings)
+        end
+        return
+    end
+    if localIntent and localIntent.action == INTENT_CONTINUE then
+        tryApproveContinue(forceBroadcast)
+        return
+    end
+    local intentMask = getHostIntentFacts()
+    applyGateState(intentMask == 0 and GATE_IDLE or GATE_WAITING,
+        intentMask, forceBroadcast)
 end
 
 local function generateRunId()
@@ -504,6 +612,10 @@ local function handleNetworkMessage(message)
             updateHostGateState(true)
         elseif remotePeers[sender].rejected then
             applyLobbySnapshot(LOBBY_REJECTED, 0, 0)
+        elseif localIntent
+            and sendNetworkMessage("INTENT", encodeIntent(localIntent))
+        then
+            console.log("[SoulLink] resent lobby intent after host connected")
         end
         return true
     end
@@ -719,11 +831,16 @@ local function consumeMailboxOutgoing()
         local intent = readOutgoingIntent()
         if not parseIntent(encodeIntent(intent)) then
             console.log("[SoulLink] ignored invalid ROM lobby intent")
-        elseif networkConfig.role == "host" then
-            localIntent = intent
-            updateHostGateState(false)
         else
-            consumed = sendNetworkMessage("INTENT", encodeIntent(intent))
+            if gateState >= GATE_LOCKED then
+                applyGateState(GATE_WAITING, 0, networkConfig.role == "host")
+            end
+            localIntent = intent
+            if networkConfig.role == "host" then
+                updateHostGateState(false)
+            else
+                consumed = sendNetworkMessage("INTENT", encodeIntent(intent))
+            end
         end
     elseif eventType == EVENT_LOBBY_START then
         if networkConfig.role == "host" then
@@ -835,12 +952,16 @@ local function updateMailbox()
         pendingLobbyFlags = nil
     elseif pendingGate then
         local approved = gateState == GATE_APPROVED
+        local approvedSlot = playerSlotFromMask(localPlayerMask)
+        if approved and localIntent and localIntent.action == INTENT_CONTINUE then
+            approvedSlot = localIntent.playerSlot
+        end
         writeMailboxEvent(EVENT_GATE_STATE, gateState + gatePlayerMask * 16, {
             runIdLow = approved and gateRunIdLow or 0,
             runIdHigh = approved and gateRunIdHigh or 0,
             protocolVersion = approved and MAILBOX_VERSION or 0,
             formatVersion = approved and SAVE_FORMAT_VERSION or 0,
-            playerSlot = approved and playerSlotFromMask(localPlayerMask) or 0,
+            playerSlot = approved and approvedSlot or 0,
             settings = approved and gateSettings or 0,
         })
         pendingGate = false
