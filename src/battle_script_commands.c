@@ -38,6 +38,7 @@
 #include "pokemon_summary_screen.h"
 #include "pokenav.h"
 #include "menu_specialized.h"
+#include "soul_link.h"
 #include "data.h"
 #include "constants/abilities.h"
 #include "constants/battle_anim.h"
@@ -10934,7 +10935,9 @@ static void Cmd_handleballthrow(void)
 
 static void Cmd_givecaughtmon(void)
 {
-    if (GiveMonToPlayer(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]]) != MON_GIVEN_TO_PARTY)
+    struct Pokemon *caughtMon = &gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]];
+
+    if (GiveMonToPlayer(caughtMon) != MON_GIVEN_TO_PARTY)
     {
         if (!ShouldShowBoxWasFullMessage())
         {
@@ -10958,6 +10961,10 @@ static void Cmd_givecaughtmon(void)
     gBattleResults.caughtMonSpecies = GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_SPECIES, NULL);
     GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_NICKNAME, gBattleResults.caughtMonNick);
     gBattleResults.caughtMonBall = GetMonData(&gEnemyParty[gBattlerPartyIndexes[BATTLE_OPPOSITE(gBattlerAttacker)]], MON_DATA_POKEBALL, NULL);
+    SoulLink_QueueCatch(GetMonData(caughtMon, MON_DATA_PERSONALITY, NULL),
+        GetMonData(caughtMon, MON_DATA_OT_ID, NULL),
+        GetMonData(caughtMon, MON_DATA_SPECIES, NULL),
+        GetMonData(caughtMon, MON_DATA_MET_LOCATION, NULL));
 
     gBattlescriptCurrInstr++;
 }

@@ -12,7 +12,7 @@ local EWRAM_BASE = 0x02000000
 local EWRAM_END = 0x02040000
 
 local MAILBOX_MAGIC = 0x4B4E4C53
-local MAILBOX_VERSION = 6
+local MAILBOX_VERSION = 7
 local SAVE_FORMAT_VERSION = 3
 local MAILBOX_SIZE = 68
 local MAILBOX_OUTGOING_OFFSET = 12
@@ -33,6 +33,7 @@ local EVENT_LOBBY_INTENT = 3
 local EVENT_LOBBY_START = 4
 local EVENT_GATE_STATE = 5
 local EVENT_SETTINGS = 6
+local EVENT_CATCH = 7
 local PING_INTERVAL_FRAMES = 300
 local NETWORK_KEEPALIVE_INTERVAL_FRAMES = 300
 local NETWORK_PEER_TIMEOUT_SECONDS = 600
@@ -262,6 +263,26 @@ local function parseGate(payload)
     return {
         state = values[1], playerMask = values[2], runIdLow = values[3],
         runIdHigh = values[4], settings = values[5],
+    }
+end
+
+local function parseCatch(payload)
+    local values = {payload:match("^(%d+),(%d+),(%d+),(%d+)$")}
+    if #values ~= 4 then
+        return nil
+    end
+    for i = 1, #values do
+        values[i] = tonumber(values[i])
+    end
+    if values[1] > 0xFFFFFFFF or values[2] > 0xFFFFFFFF
+        or values[3] < 1 or values[3] > 0xFFFF
+        or values[4] > 0xFFFF
+    then
+        return nil
+    end
+    return {
+        personality = values[1], otId = values[2],
+        species = values[3], location = values[4],
     }
 end
 
@@ -587,7 +608,7 @@ local function handleNetworkMessage(message)
     if messageType ~= "HELLO" and messageType ~= "KEEPALIVE"
         and messageType ~= "READY" and messageType ~= "LOBBY_STATE"
         and messageType ~= "INTENT" and messageType ~= "GATE"
-        and messageType ~= "SETTINGS"
+        and messageType ~= "SETTINGS" and messageType ~= "CATCH"
     then
         return false, "unsupported message type " .. tostring(messageType)
     end
@@ -664,6 +685,10 @@ local function handleNetworkMessage(message)
         then
             return false, "invalid SETTINGS payload"
         end
+    elseif messageType == "CATCH" then
+        if networkConfig.role ~= "host" or not parseCatch(payload) then
+            return false, "invalid CATCH payload"
+        end
     end
 
     peer.lastSequence = sequence
@@ -691,6 +716,11 @@ local function handleNetworkMessage(message)
         console.log(string.format(
             "[SoulLink] %s settings=0x%04X", sender, peer.settings))
         tryApproveSettings()
+    elseif messageType == "CATCH" then
+        local caught = parseCatch(payload)
+        console.log(string.format(
+            "[SoulLink] CATCH from %s: personality=%08X otId=%08X species=%d location=%d",
+            sender, caught.personality, caught.otId, caught.species, caught.location))
     elseif LOG_HEARTBEATS then
         console.log(string.format(
             "[SoulLink] KEEPALIVE %d received from %s", sequence, sender))
@@ -859,6 +889,23 @@ local function consumeMailboxOutgoing()
             tryApproveSettings()
         else
             consumed = sendNetworkMessage("SETTINGS", tostring(settings))
+        end
+    elseif eventType == EVENT_CATCH then
+        local caught = {
+            personality = memory.read_u32_le(offset + 4, EWRAM_DOMAIN),
+            otId = memory.read_u32_le(offset + 8, EWRAM_DOMAIN),
+            species = memory.read_u16_le(offset + 16, EWRAM_DOMAIN),
+            location = memory.read_u16_le(offset + 18, EWRAM_DOMAIN),
+        }
+        local payload = string.format("%u,%u,%d,%d", caught.personality,
+            caught.otId, caught.species, caught.location)
+        if networkConfig.role == "client" then
+            consumed = sendNetworkMessage("CATCH", payload)
+        end
+        if consumed then
+            console.log(string.format(
+                "[SoulLink] local CATCH: personality=%08X otId=%08X species=%d location=%d",
+                caught.personality, caught.otId, caught.species, caught.location))
         end
     else
         console.log("[SoulLink] ignored unknown ROM event " .. eventType)

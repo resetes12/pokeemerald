@@ -2,7 +2,8 @@
 #define GUARD_SOUL_LINK_H
 
 #define SOUL_LINK_MAILBOX_MAGIC 0x4B4E4C53 // "SLNK" in little-endian memory
-#define SOUL_LINK_PROTOCOL_VERSION 6
+#define SOUL_LINK_PROTOCOL_VERSION 7
+#define SOUL_LINK_PREVIOUS_PROTOCOL_VERSION 6
 #define SOUL_LINK_SAVE_FORMAT_VERSION 3
 #define SOUL_LINK_RANDOMIZER_SETTING_COUNT 15
 #define SOUL_LINK_RANDOMIZER_SETTINGS_MASK 0x7FFF
@@ -29,6 +30,7 @@ enum SoulLinkEventType
     SOUL_LINK_EVENT_LOBBY_START,
     SOUL_LINK_EVENT_GATE_STATE,
     SOUL_LINK_EVENT_SETTINGS,
+    SOUL_LINK_EVENT_CATCH,
 };
 
 enum SoulLinkLobbyIntent
@@ -98,5 +100,6 @@ void SoulLink_SetPendingRandomizerSettings(u16 settings);
 bool8 SoulLink_SendLobbyIntent(u8 intent);
 bool8 SoulLink_SendLobbyStart(void);
 bool8 SoulLink_SendSettings(void);
+bool8 SoulLink_QueueCatch(u32 personality, u32 otId, u16 species, u16 location);
 
 #endif // GUARD_SOUL_LINK_H

@@ -1589,7 +1589,7 @@ static void Task_HandleMainMenuAPressed(u8 taskId)
                 BeginNormalPaletteFade(PALETTES_ALL, 0, 16, 0, RGB_BLACK);
                 return;
         }
-        if (action != ACTION_NEW_GAME)
+        if (action != ACTION_NEW_GAME && action != ACTION_CONTINUE)
             FreeAllWindowBuffers();
         if (action != ACTION_OPTION)
             sCurrItemAndOptionMenuCheck = 0;
@@ -1714,9 +1714,6 @@ static void Task_SoulLinkNewGameLobbyExit(u8 taskId)
 {
     if (!gPaletteFade.active)
     {
-        FillBgTilemapBufferRect_Palette0(0, 0, 0, 0,
-            DISPLAY_TILE_WIDTH, DISPLAY_TILE_HEIGHT);
-        CopyBgTilemapBufferToVram(0);
         FreeAllWindowBuffers();
         gTasks[taskId].func = Task_NewGameBirchSpeech_Init;
     }

@@ -10,6 +10,8 @@ EWRAM_DATA volatile u8 gSoulLinkGateState = SOUL_LINK_GATE_IDLE;
 EWRAM_DATA volatile u8 gSoulLinkLockedPlayerMask = 0;
 EWRAM_DATA volatile struct SoulLinkSaveData gSoulLinkPendingRun = {0};
 EWRAM_DATA u16 gSoulLinkPendingRandomizerSettings = 0;
+static EWRAM_DATA bool8 sCatchPending = FALSE;
+static EWRAM_DATA struct SoulLinkMessage sPendingCatch = {0};
 
 STATIC_ASSERT(sizeof(struct SoulLinkMessage) == 24, SoulLinkMessageSize);
 STATIC_ASSERT(sizeof(struct SoulLinkMailbox) == 68, SoulLinkMailboxSize);
@@ -55,7 +57,8 @@ static u8 CountPlayers(u8 playerMask)
     return count;
 }
 
-static bool8 TryPublishOutgoing(u16 type, const struct SoulLinkSaveData *run,
+static bool8 TryPublishOutgoing(u16 type, u32 personality, u32 otId,
+                                u16 pairId, u16 species, u16 location,
                                 u16 flags, u16 data)
 {
     volatile struct SoulLinkMessage *message = &gSoulLinkMailbox.outgoing;
@@ -67,12 +70,12 @@ static bool8 TryPublishOutgoing(u16 type, const struct SoulLinkSaveData *run,
     sequence = message->sequence + 1;
     if (sequence == 0)
         sequence = 1;
-    message->personality = run == NULL ? 0 : run->runId[0];
-    message->otId = run == NULL ? 0 : run->runId[1];
+    message->personality = personality;
+    message->otId = otId;
     message->type = type;
-    message->pairId = run == NULL ? SOUL_LINK_PROTOCOL_VERSION : run->protocolVersion;
-    message->species = run == NULL ? SOUL_LINK_SAVE_FORMAT_VERSION : run->formatVersion;
-    message->location = run == NULL ? 0 : run->playerSlot;
+    message->pairId = pairId;
+    message->species = species;
+    message->location = location;
     message->flags = flags;
     message->reserved = data;
     message->sequence = sequence;
@@ -81,7 +84,7 @@ static bool8 TryPublishOutgoing(u16 type, const struct SoulLinkSaveData *run,
 
 bool8 SoulLink_SendLobbyIntent(u8 intent)
 {
-    const struct SoulLinkSaveData *run = NULL;
+    struct SoulLinkSaveData *run = NULL;
     u16 flags = intent;
     u16 settings = 0;
 
@@ -90,23 +93,57 @@ bool8 SoulLink_SendLobbyIntent(u8 intent)
     if (intent == SOUL_LINK_INTENT_CONTINUE)
     {
         run = &gSaveBlock2Ptr->soulLink;
+        if (run->formatVersion == SOUL_LINK_SAVE_FORMAT_VERSION
+         && run->protocolVersion == SOUL_LINK_PREVIOUS_PROTOCOL_VERSION)
+            run->protocolVersion = SOUL_LINK_PROTOCOL_VERSION;
         flags |= run->activePlayerMask << SOUL_LINK_INTENT_ACTIVE_MASK_SHIFT;
         flags |= (run->status & SOUL_LINK_RUN_STATUS_MASK)
             << SOUL_LINK_INTENT_STATUS_SHIFT;
         settings = GetRunRandomizerSettings(run);
     }
-    return TryPublishOutgoing(SOUL_LINK_EVENT_LOBBY_INTENT, run, flags, settings);
+    return TryPublishOutgoing(SOUL_LINK_EVENT_LOBBY_INTENT,
+        run == NULL ? 0 : run->runId[0], run == NULL ? 0 : run->runId[1],
+        run == NULL ? SOUL_LINK_PROTOCOL_VERSION : run->protocolVersion,
+        run == NULL ? SOUL_LINK_SAVE_FORMAT_VERSION : run->formatVersion,
+        run == NULL ? 0 : run->playerSlot, flags, settings);
 }
 
 bool8 SoulLink_SendLobbyStart(void)
 {
-    return TryPublishOutgoing(SOUL_LINK_EVENT_LOBBY_START, NULL, 0, 0);
+    return TryPublishOutgoing(SOUL_LINK_EVENT_LOBBY_START, 0, 0,
+        SOUL_LINK_PROTOCOL_VERSION, SOUL_LINK_SAVE_FORMAT_VERSION, 0, 0, 0);
 }
 
 bool8 SoulLink_SendSettings(void)
 {
-    return TryPublishOutgoing(SOUL_LINK_EVENT_SETTINGS, NULL, 0,
-                              gSoulLinkPendingRandomizerSettings);
+    return TryPublishOutgoing(SOUL_LINK_EVENT_SETTINGS, 0, 0,
+        SOUL_LINK_PROTOCOL_VERSION, SOUL_LINK_SAVE_FORMAT_VERSION, 0, 0,
+        gSoulLinkPendingRandomizerSettings);
+}
+
+bool8 SoulLink_QueueCatch(u32 personality, u32 otId, u16 species, u16 location)
+{
+    struct SoulLinkSaveData *run = &gSaveBlock2Ptr->soulLink;
+
+    if (!(run->status & SOUL_LINK_RUN_STATUS_ACTIVE))
+        return FALSE;
+    if (run->formatVersion == SOUL_LINK_SAVE_FORMAT_VERSION
+     && run->protocolVersion == SOUL_LINK_PREVIOUS_PROTOCOL_VERSION)
+        run->protocolVersion = SOUL_LINK_PROTOCOL_VERSION;
+    if (run->protocolVersion != SOUL_LINK_PROTOCOL_VERSION)
+        return FALSE;
+    if (sCatchPending)
+        return FALSE;
+    if (TryPublishOutgoing(SOUL_LINK_EVENT_CATCH, personality, otId, 0,
+                           species, location, 0, 0))
+        return TRUE;
+
+    sPendingCatch.personality = personality;
+    sPendingCatch.otId = otId;
+    sPendingCatch.species = species;
+    sPendingCatch.location = location;
+    sCatchPending = TRUE;
+    return TRUE;
 }
 
 void SoulLink_Update(void)
@@ -180,4 +217,10 @@ void SoulLink_Update(void)
         // single-message slot.
         gSoulLinkMailbox.incomingAck = sequence;
     }
+
+    if (sCatchPending
+     && TryPublishOutgoing(SOUL_LINK_EVENT_CATCH,
+            sPendingCatch.personality, sPendingCatch.otId, 0,
+            sPendingCatch.species, sPendingCatch.location, 0, 0))
+        sCatchPending = FALSE;
 }
