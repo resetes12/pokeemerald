@@ -141,6 +141,10 @@ local gateRunIdHigh = 0
 local gateSettings = 0
 local pendingGate = false
 local localSettings = nil
+local pendingCatchGroups = {}
+local finalizedCatchGroups = {}
+
+local STARTER_GROUP_ID = 0xFFFF
 
 local function sendNetworkMessage(messageType, payload)
     if not networkReady then
@@ -334,11 +338,17 @@ local function applyGateState(state, playerMask, broadcast,
     local changed = state ~= gateState or playerMask ~= gatePlayerMask
         or runIdLow ~= gateRunIdLow or runIdHigh ~= gateRunIdHigh
         or settings ~= gateSettings
+    local runChanged = state == GATE_APPROVED
+        and (runIdLow ~= gateRunIdLow or runIdHigh ~= gateRunIdHigh)
     gateState = state
     gatePlayerMask = playerMask
     gateRunIdLow = runIdLow
     gateRunIdHigh = runIdHigh
     gateSettings = settings
+    if networkConfig.role == "host" and runChanged then
+        pendingCatchGroups = {}
+        finalizedCatchGroups = {}
+    end
     if changed then
         pendingGate = true
         console.log(string.format(
@@ -372,6 +382,74 @@ local function bitCount(mask)
         end
     end
     return count
+end
+
+local function formatCatchMembers(members)
+    local formatted = {}
+    for slot = 1, 4 do
+        local caught = members[2 ^ (slot - 1)]
+        if caught then
+            formatted[#formatted + 1] = string.format(
+                "P%d=%04X:%08X%08X", slot, caught.species,
+                caught.otId, caught.personality)
+        end
+    end
+    return table.concat(formatted, " ")
+end
+
+local function recordPendingCatch(sender, caught)
+    local playerMask = senderPlayerMask(sender)
+    if gateState ~= GATE_APPROVED
+        or math.floor(gatePlayerMask / playerMask) % 2 ~= 1
+    then
+        console.log(string.format(
+            "[SoulLink] ignored CATCH from inactive %s", sender))
+        return
+    end
+    if caught.location >= STARTER_GROUP_ID - 1 then
+        console.log(string.format(
+            "[SoulLink] ignored CATCH with invalid location %d", caught.location))
+        return
+    end
+    if finalizedCatchGroups[caught.location] then
+        console.log(string.format(
+            "[SoulLink] ignored CATCH for finalized location %d from %s",
+            caught.location, sender))
+        return
+    end
+
+    local pending = pendingCatchGroups[caught.location]
+    if not pending then
+        pending = {playerMask = 0, members = {}}
+        pendingCatchGroups[caught.location] = pending
+    end
+
+    local previous = pending.members[playerMask]
+    if previous then
+        if previous.personality ~= caught.personality
+            or previous.otId ~= caught.otId
+        then
+            console.log(string.format(
+                "[SoulLink] ignored replacement CATCH at location %d from %s",
+                caught.location, sender))
+        end
+        return
+    end
+
+    pending.members[playerMask] = caught
+    pending.playerMask = pending.playerMask + playerMask
+    console.log(string.format(
+        "[SoulLink] pending catches location=%d players=0x%X/0x%X",
+        caught.location, pending.playerMask, gatePlayerMask))
+
+    if pending.playerMask == gatePlayerMask then
+        local groupId = caught.location + 1
+        finalizedCatchGroups[caught.location] = groupId
+        pendingCatchGroups[caught.location] = nil
+        console.log(string.format(
+            "[SoulLink] finalized group=%d location=%d %s",
+            groupId, caught.location, formatCatchMembers(pending.members)))
+    end
 end
 
 local function rejectContinue(reason, playerMask)
@@ -721,6 +799,7 @@ local function handleNetworkMessage(message)
         console.log(string.format(
             "[SoulLink] CATCH from %s: personality=%08X otId=%08X species=%d location=%d",
             sender, caught.personality, caught.otId, caught.species, caught.location))
+        recordPendingCatch(sender, caught)
     elseif LOG_HEARTBEATS then
         console.log(string.format(
             "[SoulLink] KEEPALIVE %d received from %s", sequence, sender))
@@ -901,6 +980,8 @@ local function consumeMailboxOutgoing()
             caught.otId, caught.species, caught.location)
         if networkConfig.role == "client" then
             consumed = sendNetworkMessage("CATCH", payload)
+        else
+            recordPendingCatch("host", caught)
         end
         if consumed then
             console.log(string.format(
