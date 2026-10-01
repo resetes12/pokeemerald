@@ -12,7 +12,7 @@ local EWRAM_BASE = 0x02000000
 local EWRAM_END = 0x02040000
 
 local MAILBOX_MAGIC = 0x4B4E4C53
-local MAILBOX_VERSION = 9
+local MAILBOX_VERSION = 10
 local SAVE_FORMAT_VERSION = 3
 local MAILBOX_SIZE = 68
 local MAILBOX_OUTGOING_OFFSET = 12
@@ -40,6 +40,7 @@ local EVENT_SNAPSHOT_MEMBER = 10
 local EVENT_SNAPSHOT_END = 11
 local EVENT_REGISTRY_REQUEST = 12
 local EVENT_REGISTRY_RESULT = 13
+local EVENT_ENCOUNTER_FAILED = 14
 local REGISTRY_REQUEST_COUNT = 1
 local REGISTRY_REQUEST_MEMBER = 2
 local REGISTRY_REQUEST_PLAYER_NAME = 3
@@ -154,6 +155,7 @@ local pendingGate = false
 local localSettings = nil
 local pendingCatchGroups = {}
 local finalizedCatchGroups = {}
+local failedEncounterLocations = {}
 local pendingRomEvents = {}
 local snapshotBuilders = {}
 local playerSnapshots = {}
@@ -334,6 +336,36 @@ local function parseCatch(payload)
     return {
         personality = values[1], otId = values[2],
         species = values[3], location = values[4],
+    }
+end
+
+local function parseEncounterFailed(payload)
+    local location = tonumber(payload)
+    if not location or location < 0 or location > 0xDD
+        or math.floor(location) ~= location
+    then
+        return nil
+    end
+    return location
+end
+
+local function parseEncounterClosed(payload)
+    local values = {payload:match("^(%d+),(%d+),(%d+),(%d+)$")}
+    if #values ~= 4 then
+        return nil
+    end
+    for i = 1, #values do
+        values[i] = tonumber(values[i])
+    end
+    if values[1] > 0xDD or values[2] < 1
+        or values[2] > LOBBY_PLAYER_MASK
+        or values[3] > 0xFFFFFFFF or values[4] > 0xFFFFFFFF
+    then
+        return nil
+    end
+    return {
+        location = values[1], playerMask = values[2],
+        personality = values[3], otId = values[4],
     }
 end
 
@@ -588,6 +620,7 @@ local function applyGateState(state, playerMask, broadcast,
         if networkConfig.role == "host" then
             pendingCatchGroups = {}
             finalizedCatchGroups = {}
+            failedEncounterLocations = {}
             pendingRomEvents = {}
             pendingNetworkMessages = {}
             pendingNetworkMessageIndex = 1
@@ -641,6 +674,63 @@ local function formatCatchMembers(members)
     return table.concat(formatted, " ")
 end
 
+local function queueEncounterClosed(closed)
+    pendingRomEvents[#pendingRomEvents + 1] = {
+        type = EVENT_ENCOUNTER_FAILED, flags = closed.playerMask,
+        payload = {
+            location = closed.location, personality = closed.personality,
+            otId = closed.otId,
+        },
+    }
+    console.log(string.format(
+        "[SoulLink] queued failed encounter location=%d player=0x%X forfeit=%s",
+        closed.location, closed.playerMask,
+        (closed.personality ~= 0 or closed.otId ~= 0) and "yes" or "no"))
+end
+
+local function deliverEncounterClosed(closed)
+    if closed.playerMask == localPlayerMask then
+        queueEncounterClosed(closed)
+    else
+        pendingNetworkMessages[#pendingNetworkMessages + 1] = {
+            type = "ENCOUNTER_CLOSED",
+            payload = string.format("%d,%d,%u,%u", closed.location,
+                closed.playerMask, closed.personality, closed.otId),
+        }
+    end
+end
+
+local function resolveEncounterFailure(sender, location)
+    local reporterMask = senderPlayerMask(sender)
+    if gateState ~= GATE_APPROVED
+        or math.floor(gatePlayerMask / reporterMask) % 2 ~= 1
+        or finalizedCatchGroups[location] or failedEncounterLocations[location]
+    then
+        console.log(string.format(
+            "[SoulLink] ignored ENCOUNTER_FAILED location=%d from %s",
+            location, sender))
+        return
+    end
+
+    local pending = pendingCatchGroups[location]
+    failedEncounterLocations[location] = true
+    pendingCatchGroups[location] = nil
+    for slot = 1, 4 do
+        local playerMask = 2 ^ (slot - 1)
+        if math.floor(gatePlayerMask / playerMask) % 2 == 1 then
+            local caught = pending and pending.members[playerMask]
+            deliverEncounterClosed({
+                location = location, playerMask = playerMask,
+                personality = caught and caught.personality or 0,
+                otId = caught and caught.otId or 0,
+            })
+        end
+    end
+    console.log(string.format(
+        "[SoulLink] closed failed encounter location=%d reporter=%s",
+        location, sender))
+end
+
 local function recordPendingCatch(sender, caught)
     local playerMask = senderPlayerMask(sender)
     if gateState ~= GATE_APPROVED
@@ -658,6 +748,16 @@ local function recordPendingCatch(sender, caught)
     if finalizedCatchGroups[caught.location] then
         console.log(string.format(
             "[SoulLink] ignored CATCH for finalized location %d from %s",
+            caught.location, sender))
+        return
+    end
+    if failedEncounterLocations[caught.location] then
+        deliverEncounterClosed({
+            location = caught.location, playerMask = playerMask,
+            personality = caught.personality, otId = caught.otId,
+        })
+        console.log(string.format(
+            "[SoulLink] forfeiting late CATCH at failed location %d from %s",
             caught.location, sender))
         return
     end
@@ -946,6 +1046,8 @@ local function handleNetworkMessage(message)
         and messageType ~= "READY" and messageType ~= "LOBBY_STATE"
         and messageType ~= "INTENT" and messageType ~= "GATE"
         and messageType ~= "SETTINGS" and messageType ~= "CATCH"
+        and messageType ~= "ENCOUNTER_FAILED"
+        and messageType ~= "ENCOUNTER_CLOSED"
         and messageType ~= "LINK_CREATED"
         and messageType ~= "SNAPSHOT_BEGIN"
         and messageType ~= "SNAPSHOT_MEMBER"
@@ -1033,6 +1135,14 @@ local function handleNetworkMessage(message)
         if networkConfig.role ~= "host" or not parseCatch(payload) then
             return false, "invalid CATCH payload"
         end
+    elseif messageType == "ENCOUNTER_FAILED" then
+        if networkConfig.role ~= "host" or not parseEncounterFailed(payload) then
+            return false, "invalid ENCOUNTER_FAILED payload"
+        end
+    elseif messageType == "ENCOUNTER_CLOSED" then
+        if networkConfig.role ~= "client" or not parseEncounterClosed(payload) then
+            return false, "invalid ENCOUNTER_CLOSED payload"
+        end
     elseif messageType == "LINK_CREATED" then
         if networkConfig.role ~= "client" or not parseLinkCreated(payload) then
             return false, "invalid LINK_CREATED payload"
@@ -1096,6 +1206,13 @@ local function handleNetworkMessage(message)
             "[SoulLink] CATCH from %s: personality=%08X otId=%08X species=%d location=%d",
             sender, caught.personality, caught.otId, caught.species, caught.location))
         recordPendingCatch(sender, caught)
+    elseif messageType == "ENCOUNTER_FAILED" then
+        resolveEncounterFailure(sender, parseEncounterFailed(payload))
+    elseif messageType == "ENCOUNTER_CLOSED" then
+        local closed = parseEncounterClosed(payload)
+        if closed.playerMask == localPlayerMask then
+            queueEncounterClosed(closed)
+        end
     elseif messageType == "LINK_CREATED" then
         local link = parseLinkCreated(payload)
         if link.playerMask == localPlayerMask then
@@ -1304,6 +1421,21 @@ local function consumeMailboxOutgoing()
             console.log(string.format(
                 "[SoulLink] local CATCH: personality=%08X otId=%08X species=%d location=%d",
                 caught.personality, caught.otId, caught.species, caught.location))
+        end
+    elseif eventType == EVENT_ENCOUNTER_FAILED then
+        local location = memory.read_u16_le(offset + 18, EWRAM_DOMAIN)
+        if location > 0xDD then
+            console.log(string.format(
+                "[SoulLink] ignored invalid local ENCOUNTER_FAILED location=%d",
+                location))
+        elseif networkConfig.role == "client" then
+            consumed = sendNetworkMessage("ENCOUNTER_FAILED", tostring(location))
+        else
+            resolveEncounterFailure("host", location)
+        end
+        if consumed then
+            console.log(string.format(
+                "[SoulLink] local ENCOUNTER_FAILED: location=%d", location))
         end
     elseif eventType == EVENT_SNAPSHOT_BEGIN then
         local slot = memory.read_u16_le(offset + 14, EWRAM_DOMAIN)

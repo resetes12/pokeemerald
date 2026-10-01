@@ -1,8 +1,11 @@
 #include "global.h"
 #include "characters.h"
+#include "constants/region_map_sections.h"
+#include "main.h"
 #include "pokemon.h"
 #include "pokemon_storage_system.h"
 #include "soul_link.h"
+#include "tx_randomizer_and_challenges.h"
 
 EWRAM_DATA volatile struct SoulLinkMailbox gSoulLinkMailbox = {0};
 EWRAM_DATA volatile u16 gSoulLinkLobbyState = SOUL_LINK_LOBBY_DISCONNECTED;
@@ -13,8 +16,9 @@ EWRAM_DATA volatile u8 gSoulLinkGateState = SOUL_LINK_GATE_IDLE;
 EWRAM_DATA volatile u8 gSoulLinkLockedPlayerMask = 0;
 EWRAM_DATA volatile struct SoulLinkSaveData gSoulLinkPendingRun = {0};
 EWRAM_DATA u16 gSoulLinkPendingRandomizerSettings = 0;
-static EWRAM_DATA bool8 sCatchPending = FALSE;
-static EWRAM_DATA struct SoulLinkMessage sPendingCatch = {0};
+static EWRAM_DATA bool8 sEncounterEventPending = FALSE;
+static EWRAM_DATA struct SoulLinkMessage sPendingEncounterEvent = {0};
+static EWRAM_DATA bool8 sCemeteryCleanupPending = FALSE;
 static EWRAM_DATA u16 sSnapshotIndex = 0;
 static EWRAM_DATA u16 sSnapshotMemberCount = 0;
 static EWRAM_DATA u8 sSnapshotState = 0;
@@ -367,6 +371,44 @@ static void ApplyLinkCreated(const volatile struct SoulLinkMessage *message)
         BeginLocalSnapshot();
 }
 
+static void ApplyEncounterClosed(const volatile struct SoulLinkMessage *message)
+{
+    struct BoxPokemon *boxMon;
+    bool8 dead = TRUE;
+
+    if (message->flags != gSoulLinkLocalPlayerMask
+     || message->location > MAPSEC_SAFARI_ZONE_AREA6)
+        return;
+
+    NuzlockeFlagSet(message->location);
+    if (message->personality == 0 && message->otId == 0)
+        return;
+
+    boxMon = FindOwnedBoxMon(message->personality, message->otId);
+    if (boxMon == NULL)
+        return;
+    SetBoxMonData(boxMon, MON_DATA_NUZLOCKE_RIBBON, &dead);
+    sCemeteryCleanupPending = TRUE;
+    BeginLocalSnapshot();
+}
+
+static void CleanupForfeitedPartyMons(void)
+{
+    u8 position;
+
+    if (!sCemeteryCleanupPending || gMain.inBattle)
+        return;
+    for (position = 0; position < PARTY_SIZE; position++)
+    {
+        if (GetMonData(&gPlayerParty[position], MON_DATA_SANITY_HAS_SPECIES)
+         && GetMonData(&gPlayerParty[position], MON_DATA_NUZLOCKE_RIBBON))
+            NuzlockeDeletePartyMon(position);
+    }
+    CompactPartySlots();
+    sCemeteryCleanupPending = FALSE;
+    BeginLocalSnapshot();
+}
+
 bool8 SoulLink_SendLobbyIntent(u8 intent)
 {
     struct SoulLinkSaveData *run = NULL;
@@ -406,7 +448,8 @@ bool8 SoulLink_SendSettings(void)
         gSoulLinkPendingRandomizerSettings);
 }
 
-bool8 SoulLink_QueueCatch(u32 personality, u32 otId, u16 species, u16 location)
+static bool8 QueueEncounterEvent(u16 type, u32 personality, u32 otId,
+                                 u16 species, u16 location)
 {
     struct SoulLinkSaveData *run = &gSaveBlock2Ptr->soulLink;
 
@@ -417,18 +460,33 @@ bool8 SoulLink_QueueCatch(u32 personality, u32 otId, u16 species, u16 location)
         run->protocolVersion = SOUL_LINK_PROTOCOL_VERSION;
     if (run->protocolVersion != SOUL_LINK_PROTOCOL_VERSION)
         return FALSE;
-    if (sCatchPending)
+    if (sEncounterEventPending)
         return FALSE;
-    if (TryPublishOutgoing(SOUL_LINK_EVENT_CATCH, personality, otId, 0,
-                           species, location, 0, 0))
+    if (TryPublishOutgoing(type, personality, otId, 0, species, location, 0, 0))
         return TRUE;
 
-    sPendingCatch.personality = personality;
-    sPendingCatch.otId = otId;
-    sPendingCatch.species = species;
-    sPendingCatch.location = location;
-    sCatchPending = TRUE;
+    sPendingEncounterEvent.type = type;
+    sPendingEncounterEvent.personality = personality;
+    sPendingEncounterEvent.otId = otId;
+    sPendingEncounterEvent.pairId = 0;
+    sPendingEncounterEvent.species = species;
+    sPendingEncounterEvent.location = location;
+    sPendingEncounterEvent.flags = 0;
+    sPendingEncounterEvent.reserved = 0;
+    sEncounterEventPending = TRUE;
     return TRUE;
+}
+
+bool8 SoulLink_QueueCatch(u32 personality, u32 otId, u16 species, u16 location)
+{
+    return QueueEncounterEvent(SOUL_LINK_EVENT_CATCH, personality, otId,
+        species, location);
+}
+
+bool8 SoulLink_QueueEncounterFailed(u16 location)
+{
+    return QueueEncounterEvent(SOUL_LINK_EVENT_ENCOUNTER_FAILED, 0, 0, 0,
+        location);
 }
 
 void SoulLink_Update(void)
@@ -502,6 +560,10 @@ void SoulLink_Update(void)
         {
             ApplyLinkCreated(&gSoulLinkMailbox.incoming);
         }
+        else if (gSoulLinkMailbox.incoming.type == SOUL_LINK_EVENT_ENCOUNTER_FAILED)
+        {
+            ApplyEncounterClosed(&gSoulLinkMailbox.incoming);
+        }
         else if (gSoulLinkMailbox.incoming.type == SOUL_LINK_EVENT_REGISTRY_RESULT
               && sRegistryPendingRequest != 0
               && sRegistryPendingRequest == (flags & 0xFF))
@@ -541,11 +603,14 @@ void SoulLink_Update(void)
         gSoulLinkMailbox.incomingAck = sequence;
     }
 
-    if (sCatchPending
-     && TryPublishOutgoing(SOUL_LINK_EVENT_CATCH,
-            sPendingCatch.personality, sPendingCatch.otId, 0,
-            sPendingCatch.species, sPendingCatch.location, 0, 0))
-        sCatchPending = FALSE;
+    if (sEncounterEventPending
+     && TryPublishOutgoing(sPendingEncounterEvent.type,
+            sPendingEncounterEvent.personality, sPendingEncounterEvent.otId,
+            sPendingEncounterEvent.pairId, sPendingEncounterEvent.species,
+            sPendingEncounterEvent.location, sPendingEncounterEvent.flags,
+            sPendingEncounterEvent.reserved))
+        sEncounterEventPending = FALSE;
 
+    CleanupForfeitedPartyMons();
     PublishLocalSnapshot();
 }

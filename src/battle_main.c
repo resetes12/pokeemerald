@@ -41,6 +41,7 @@
 #include "safari_zone.h"
 #include "scanline_effect.h"
 #include "sound.h"
+#include "soul_link.h"
 #include "sprite.h"
 #include "string_util.h"
 #include "strings.h"
@@ -6053,6 +6054,7 @@ static void HandleEndTurn_MonFled(void)
 static void HandleEndTurn_FinishBattle(void)
 {
     u8 j;
+    u16 encounterLocation;
     gItemLimit = 0;
     if (gCurrentActionFuncId == B_ACTION_TRY_FINISH || gCurrentActionFuncId == B_ACTION_FINISHED)
     {
@@ -6141,7 +6143,13 @@ static void HandleEndTurn_FinishBattle(void)
                                         | BATTLE_TYPE_RECORDED_LINK)))
             {
                 if (!NuzlockeIsSpeciesClauseActive && !OneTypeChallengeCaptureBlocked)
-                    NuzlockeFlagSet(NuzlockeGetCurrentRegionMapSectionId());
+                {
+                    encounterLocation = NuzlockeGetCurrentRegionMapSectionId();
+                    NuzlockeFlagSet(encounterLocation);
+                    if (!NuzlockeIsCaptureBlocked
+                     && gBattleOutcome != B_OUTCOME_CAUGHT)
+                        SoulLink_QueueEncounterFailed(encounterLocation);
+                }
             }
             NuzlockeIsCaptureBlocked = FALSE;
             NuzlockeIsSpeciesClauseActive = FALSE;

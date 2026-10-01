@@ -2,8 +2,8 @@
 #define GUARD_SOUL_LINK_H
 
 #define SOUL_LINK_MAILBOX_MAGIC 0x4B4E4C53 // "SLNK" in little-endian memory
-#define SOUL_LINK_PROTOCOL_VERSION 9
-#define SOUL_LINK_PREVIOUS_PROTOCOL_VERSION 8
+#define SOUL_LINK_PROTOCOL_VERSION 10
+#define SOUL_LINK_PREVIOUS_PROTOCOL_VERSION 9
 #define SOUL_LINK_SAVE_FORMAT_VERSION 3
 #define SOUL_LINK_RANDOMIZER_SETTING_COUNT 15
 #define SOUL_LINK_RANDOMIZER_SETTINGS_MASK 0x7FFF
@@ -45,6 +45,7 @@ enum SoulLinkEventType
     SOUL_LINK_EVENT_SNAPSHOT_END,
     SOUL_LINK_EVENT_REGISTRY_REQUEST,
     SOUL_LINK_EVENT_REGISTRY_RESULT,
+    SOUL_LINK_EVENT_ENCOUNTER_FAILED,
 };
 
 enum SoulLinkRegistryRequest
@@ -131,6 +132,7 @@ bool8 SoulLink_SendLobbyIntent(u8 intent);
 bool8 SoulLink_SendLobbyStart(void);
 bool8 SoulLink_SendSettings(void);
 bool8 SoulLink_QueueCatch(u32 personality, u32 otId, u16 species, u16 location);
+bool8 SoulLink_QueueEncounterFailed(u16 location);
 bool8 SoulLink_IsActive(void);
 bool8 SoulLink_RequestRegistryCount(void);
 bool8 SoulLink_TakeRegistryCount(u16 *count, bool8 *valid);
