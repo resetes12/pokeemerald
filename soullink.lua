@@ -1017,6 +1017,30 @@ local function validateContinueIntent(intent)
     return true
 end
 
+local function validateApprovedReconnect(sender, intent)
+    local valid, reason = validateContinueIntent(intent)
+    if not valid then
+        return false, reason
+    end
+    if intent.runIdLow ~= gateRunIdLow or intent.runIdHigh ~= gateRunIdHigh
+        or intent.activePlayerMask ~= gatePlayerMask
+        or intent.settings ~= gateSettings
+    then
+        return false, "save metadata does not match the active run"
+    end
+    if intent.playerSlot == 1 then
+        return false, "player 1 belongs to the host"
+    end
+    for otherSender, otherPeer in pairs(remotePeers) do
+        if otherSender ~= sender and otherPeer.intent
+            and otherPeer.intent.playerSlot == intent.playerSlot
+        then
+            return false, "saved player slot is already connected"
+        end
+    end
+    return true
+end
+
 local function tryApproveContinue(forceBroadcast)
     local baseline = localIntent
     local valid, reason = validateContinueIntent(baseline)
@@ -1263,7 +1287,9 @@ local function handleNetworkMessage(message)
         end
         if networkConfig.role == "host" then
             updateHostLobbyState(true)
-            updateHostGateState(true)
+            if gateState ~= GATE_APPROVED then
+                updateHostGateState(true)
+            end
         elseif remotePeers[sender].rejected then
             applyLobbySnapshot(LOBBY_REJECTED, 0, 0)
         elseif localIntent
@@ -1280,6 +1306,12 @@ local function handleNetworkMessage(message)
     end
     if sequence <= peer.lastSequence then
         return true
+    end
+    if networkConfig.role == "host" and gateState == GATE_APPROVED
+        and not peer.intent and messageType ~= "KEEPALIVE"
+        and messageType ~= "READY" and messageType ~= "INTENT"
+    then
+        return false, "message received before approved reconnect intent"
     end
 
     if messageType == "READY" then
@@ -1388,10 +1420,18 @@ local function handleNetworkMessage(message)
         local stateText, connectedText, readyText = payload:match("^(%d+),(%d+),(%d+)$")
         applyLobbySnapshot(tonumber(stateText), tonumber(connectedText), tonumber(readyText))
     elseif messageType == "INTENT" then
-        peer.intent = parseIntent(payload)
+        local intent = parseIntent(payload)
+        if gateState == GATE_APPROVED then
+            local valid, reason = validateApprovedReconnect(sender, intent)
+            if not valid then
+                console.log("[SoulLink] reconnect rejected for " .. sender .. ": " .. reason)
+                return true
+            end
+        end
+        peer.intent = intent
         console.log(string.format(
             "[SoulLink] %s selected intent=%d", sender, peer.intent.action))
-        updateHostGateState(false)
+        updateHostGateState(gateState == GATE_APPROVED)
     elseif messageType == "GATE" then
         local gate = parseGate(payload)
         applyGateState(gate.state, gate.playerMask, false,
