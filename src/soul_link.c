@@ -205,6 +205,13 @@ u8 SoulLink_GetPlayerSlot(void)
         ? gSoulLinkPendingRun.playerSlot : gSaveBlock2Ptr->soulLink.playerSlot;
 }
 
+u8 SoulLink_GetActivePlayerMask(void)
+{
+    return gSoulLinkPendingRun.activePlayerMask != 0
+        ? gSoulLinkPendingRun.activePlayerMask
+        : gSaveBlock2Ptr->soulLink.activePlayerMask;
+}
+
 void SoulLink_CancelRegistryRequest(void)
 {
     sRegistryPendingRequest = 0;

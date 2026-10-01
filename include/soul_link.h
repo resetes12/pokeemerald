@@ -140,6 +140,7 @@ bool8 SoulLink_TakeRegistryMember(struct SoulLinkRegistryMember *member,
 bool8 SoulLink_RequestRegistryPlayerName(u8 playerSlot);
 bool8 SoulLink_TakeRegistryPlayerName(u8 *name, bool8 *valid);
 u8 SoulLink_GetPlayerSlot(void);
+u8 SoulLink_GetActivePlayerMask(void);
 void SoulLink_CancelRegistryRequest(void);
 void SoulLink_LinkStarter(struct Pokemon *mon);
 u16 SoulLink_GetBoxMonGroupId(struct BoxPokemon *boxMon);

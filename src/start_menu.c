@@ -23,6 +23,7 @@
 #include "link.h"
 #include "load_save.h"
 #include "main.h"
+#include "malloc.h"
 #include "menu.h"
 #include "new_game.h"
 #include "option_menu.h"
@@ -94,7 +95,17 @@ EWRAM_DATA static u8 (*sSaveDialogCallback)(void) = NULL;
 EWRAM_DATA static u8 sSaveDialogTimer = 0;
 EWRAM_DATA static bool8 sSavingComplete = FALSE;
 EWRAM_DATA static u8 sSaveInfoWindowId = 0;
-EWRAM_DATA static u16 sSoulLinkGroupCount = 0;
+
+struct SoulLinkMenuState
+{
+    u16 groupCount;
+    u8 windowId;
+    u8 activePlayerMask;
+    u8 nextPlayerSlot;
+    u8 playerNames[4][PLAYER_NAME_LENGTH + 1];
+};
+
+EWRAM_DATA static struct SoulLinkMenuState *sSoulLinkMenu = NULL;
 
 // Menu action callbacks
 static bool8 StartMenuPokedexCallback(void);
@@ -112,8 +123,10 @@ static bool8 StartMenuBattlePyramidBagCallback(void);
 static bool8 StartMenuDebugCallback(void);
 static bool8 StartMenuSoulLinksCallback(void);
 static bool8 WaitForSoulLinkRegistryCount(void);
-static bool8 WaitForSoulLinkRegistryMember(void);
-static bool8 WaitForSoulLinkRegistryPlayerName(void);
+static bool8 WaitForSoulLinkPlayerNames(void);
+static bool8 HandleSoulLinkBrowserInput(void);
+static bool8 ShowSoulLinkBrowser(void);
+static void FreeSoulLinkMenu(void);
 static void Task_CloseSoulLinkCount(u8 taskId);
 
 // Menu callbacks
@@ -192,10 +205,22 @@ static const struct WindowTemplate sWindowTemplate_PyramidPeak = {
     .baseBlock = 0x8
 };
 
+static const struct WindowTemplate sWindowTemplate_SoulLinks = {
+    .bg = 0,
+    .tilemapLeft = 1,
+    .tilemapTop = 1,
+    .width = 28,
+    .height = 18,
+    .paletteNum = 15,
+    .baseBlock = 0x1
+};
+
 static const u8 gText_MenuDebug[] = _("DEBUG");
 static const u8 sText_MenuSoulLinks[] = _("LINKS");
 static const u8 sText_SoulLinkCount[] = _("Linked groups: {STR_VAR_1}{PAUSE_UNTIL_PRESS}");
-static const u8 sText_SoulLinkFirst[] = _("{STR_VAR_1}'s group\n{STR_VAR_2} / {STR_VAR_3}{PAUSE_UNTIL_PRESS}");
+static const u8 sText_SoulLinkTitle[] = _("SOUL LINKS - {STR_VAR_1} GROUPS");
+static const u8 sText_SoulLinkClose[] = _("B: CLOSE");
+static const u8 sText_SoulLinkNoPlayer[] = _("N/A");
 static const u8 sText_SoulLinkUnavailable[] = _("Link registry is not ready.{PAUSE_UNTIL_PRESS}");
 
 static const struct MenuAction sStartMenuItems[] =
@@ -836,9 +861,21 @@ static bool8 WaitForSoulLinkRegistryCount(void)
 
     if (valid && count > 0)
     {
-        sSoulLinkGroupCount = count;
-        gMenuCallback = WaitForSoulLinkRegistryMember;
-        return FALSE;
+        sSoulLinkMenu = AllocZeroed(sizeof(*sSoulLinkMenu));
+        if (sSoulLinkMenu != NULL)
+        {
+            sSoulLinkMenu->groupCount = count;
+            sSoulLinkMenu->windowId = WINDOW_NONE;
+            sSoulLinkMenu->activePlayerMask = SoulLink_GetActivePlayerMask();
+            sSoulLinkMenu->nextPlayerSlot = 1;
+            if (sSoulLinkMenu->activePlayerMask != 0)
+            {
+                gMenuCallback = WaitForSoulLinkPlayerNames;
+                return FALSE;
+            }
+            FreeSoulLinkMenu();
+        }
+        valid = FALSE;
     }
 
     ClearStdWindowAndFrame(GetStartMenuWindowId(), TRUE);
@@ -857,31 +894,51 @@ static bool8 WaitForSoulLinkRegistryCount(void)
     return FALSE;
 }
 
-static bool8 WaitForSoulLinkRegistryMember(void)
+static bool8 WaitForSoulLinkPlayerNames(void)
 {
-    struct SoulLinkRegistryMember member;
+    u8 playerName[PLAYER_NAME_LENGTH + 1];
+    u8 slot = sSoulLinkMenu->nextPlayerSlot;
     bool8 valid;
     u8 taskId;
 
     if (JOY_NEW(B_BUTTON))
     {
         SoulLink_CancelRegistryRequest();
+        FreeSoulLinkMenu();
         HideStartMenu();
         return TRUE;
     }
-    if (!SoulLink_TakeRegistryMember(&member, &valid))
+
+    while (slot <= 4
+        && !(sSoulLinkMenu->activePlayerMask & (1 << (slot - 1))))
+        slot++;
+    if (slot > 4)
     {
-        SoulLink_RequestRegistryMember(0, SoulLink_GetPlayerSlot());
+        if (ShowSoulLinkBrowser())
+        {
+            gMenuCallback = HandleSoulLinkBrowserInput;
+            return FALSE;
+        }
+        ClearStdWindowAndFrame(GetStartMenuWindowId(), TRUE);
+        RemoveStartMenuWindow();
+        taskId = FindTaskIdByFunc(Task_ShowStartMenu);
+        DisplayItemMessageOnField(taskId, sText_SoulLinkUnavailable,
+            Task_CloseSoulLinkCount);
+        return FALSE;
+    }
+    if (!SoulLink_TakeRegistryPlayerName(playerName, &valid))
+    {
+        SoulLink_RequestRegistryPlayerName(slot);
+        return FALSE;
+    }
+    if (valid)
+    {
+        StringCopy(sSoulLinkMenu->playerNames[slot - 1], playerName);
+        sSoulLinkMenu->nextPlayerSlot = slot + 1;
         return FALSE;
     }
 
-    if (valid)
-    {
-        StringCopy(gStringVar2, member.nickname);
-        StringCopy(gStringVar3, gSpeciesNames[member.species]);
-        gMenuCallback = WaitForSoulLinkRegistryPlayerName;
-        return FALSE;
-    }
+    FreeSoulLinkMenu();
     ClearStdWindowAndFrame(GetStartMenuWindowId(), TRUE);
     RemoveStartMenuWindow();
     taskId = FindTaskIdByFunc(Task_ShowStartMenu);
@@ -890,39 +947,70 @@ static bool8 WaitForSoulLinkRegistryMember(void)
     return FALSE;
 }
 
-static bool8 WaitForSoulLinkRegistryPlayerName(void)
+static bool8 ShowSoulLinkBrowser(void)
 {
-    u8 playerName[PLAYER_NAME_LENGTH + 1];
-    bool8 valid;
-    u8 taskId;
+    u8 slot;
+    u8 column = 0;
+    const u8 columnWidth = 224 / 4;
+    const u8 *playerName;
+    u8 x;
 
-    if (JOY_NEW(B_BUTTON))
+    sSoulLinkMenu->windowId = AddWindow(&sWindowTemplate_SoulLinks);
+    if (sSoulLinkMenu->windowId == WINDOW_NONE)
     {
-        SoulLink_CancelRegistryRequest();
-        HideStartMenu();
-        return TRUE;
-    }
-    if (!SoulLink_TakeRegistryPlayerName(playerName, &valid))
-    {
-        SoulLink_RequestRegistryPlayerName(SoulLink_GetPlayerSlot());
+        FreeSoulLinkMenu();
         return FALSE;
     }
 
-    ClearStdWindowAndFrame(GetStartMenuWindowId(), TRUE);
+    RemoveExtraStartMenuWindows();
+    ClearStdWindowAndFrame(GetStartMenuWindowId(), FALSE);
     RemoveStartMenuWindow();
-    taskId = FindTaskIdByFunc(Task_ShowStartMenu);
-    if (valid)
+    DrawStdWindowFrame(sSoulLinkMenu->windowId, FALSE);
+    ConvertIntToDecimalStringN(gStringVar1, sSoulLinkMenu->groupCount,
+        STR_CONV_MODE_LEFT_ALIGN, 3);
+    StringExpandPlaceholders(gStringVar4, sText_SoulLinkTitle);
+    x = GetStringCenterAlignXOffset(FONT_NORMAL, gStringVar4, 224);
+    AddTextPrinterParameterized(sSoulLinkMenu->windowId, FONT_NORMAL,
+        gStringVar4, x, 1, TEXT_SKIP_DRAW, NULL);
+
+    for (slot = 1; slot <= 4; slot++)
     {
-        StringCopy(gStringVar1, playerName);
-        DisplayItemMessageOnField(taskId, sText_SoulLinkFirst,
-            Task_CloseSoulLinkCount);
+        playerName = sSoulLinkMenu->activePlayerMask & (1 << (slot - 1))
+            ? sSoulLinkMenu->playerNames[slot - 1] : sText_SoulLinkNoPlayer;
+        x = column * columnWidth + GetStringCenterAlignXOffset(FONT_NARROW,
+            playerName, columnWidth);
+        AddTextPrinterParameterized(sSoulLinkMenu->windowId, FONT_NARROW,
+            playerName, x, 25, TEXT_SKIP_DRAW, NULL);
+        column++;
     }
-    else
+    x = GetStringCenterAlignXOffset(FONT_NORMAL, sText_SoulLinkClose, 224);
+    AddTextPrinterParameterized(sSoulLinkMenu->windowId, FONT_NORMAL,
+        sText_SoulLinkClose, x, 129, TEXT_SKIP_DRAW, NULL);
+    CopyWindowToVram(sSoulLinkMenu->windowId, COPYWIN_FULL);
+    return TRUE;
+}
+
+static bool8 HandleSoulLinkBrowserInput(void)
+{
+    if (!JOY_NEW(B_BUTTON))
+        return FALSE;
+
+    PlaySE(SE_SELECT);
+    ClearStdWindowAndFrame(sSoulLinkMenu->windowId, TRUE);
+    RemoveWindow(sSoulLinkMenu->windowId);
+    FreeSoulLinkMenu();
+    ScriptUnfreezeObjectEvents();
+    UnlockPlayerFieldControls();
+    return TRUE;
+}
+
+static void FreeSoulLinkMenu(void)
+{
+    if (sSoulLinkMenu != NULL)
     {
-        DisplayItemMessageOnField(taskId, sText_SoulLinkUnavailable,
-            Task_CloseSoulLinkCount);
+        Free(sSoulLinkMenu);
+        sSoulLinkMenu = NULL;
     }
-    return FALSE;
 }
 
 static void Task_CloseSoulLinkCount(u8 taskId)
