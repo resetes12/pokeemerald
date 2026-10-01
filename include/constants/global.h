@@ -31,7 +31,8 @@
 #define ME_SAVE_VERSION_NONE    0  // Pre-tracking (3.5 and earlier)
 #define ME_SAVE_VERSION_3_6    36  // First version with save version tracking
 #define ME_SAVE_VERSION_3_7    37  // Soul Link run metadata
-#define ME_SAVE_VERSION_CURRENT ME_SAVE_VERSION_3_7
+#define ME_SAVE_VERSION_3_8    38  // Persistent failed Soul Link encounters
+#define ME_SAVE_VERSION_CURRENT ME_SAVE_VERSION_3_8
 
 // Alias used by maintainer's script-level version updater (vars.h / new_game.c)
 #define MODERN_EMERALD_RELEASE_NUMBER ME_SAVE_VERSION_CURRENT

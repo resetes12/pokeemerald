@@ -5,6 +5,7 @@
 #include "party_menu.h"
 #include "pokemon.h"
 #include "pokemon_storage_system.h"
+#include "soul_link.h"
 #include "constants/items.h"
 #include "constants/party_menu.h"
 #include "constants/region_map_sections.h"
@@ -272,6 +273,7 @@ void NuzlockeDeletePartyMonOption(u8 position)
 void NuzlockeDeleteFaintedPartyPokemon(void) // @Kurausukun
 {
     u8 i;
+    bool8 movedToCemetery = FALSE;
     struct Pokemon *pokemon;
     u32 monItem;
     u16 item = ITEM_NONE;
@@ -294,10 +296,13 @@ void NuzlockeDeleteFaintedPartyPokemon(void) // @Kurausukun
                     NuzlockeDeletePartyMonOption(i);
                 else
                     NuzlockeDeletePartyMon(i);
+                movedToCemetery = TRUE;
             }
         }
     }
     CompactPartySlots();
+    if (movedToCemetery)
+        SoulLink_RefreshLocalSnapshot();
 }
 
 // Difficulty

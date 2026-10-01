@@ -507,6 +507,8 @@ struct RankingHall2P
     //u8 padding;
 };
 
+#define SOUL_LINK_FAILED_LOCATION_BYTES 28
+
 struct SoulLinkSaveData
 {
     u32 runId[2];
@@ -516,6 +518,7 @@ struct SoulLinkSaveData
     u8 activePlayerMask;
     u8 randomizerSettings[2];
     u8 status;
+    u8 failedLocations[SOUL_LINK_FAILED_LOCATION_BYTES];
 };
 
 struct SaveBlock2

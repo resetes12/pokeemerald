@@ -2,9 +2,10 @@
 #define GUARD_SOUL_LINK_H
 
 #define SOUL_LINK_MAILBOX_MAGIC 0x4B4E4C53 // "SLNK" in little-endian memory
-#define SOUL_LINK_PROTOCOL_VERSION 10
-#define SOUL_LINK_PREVIOUS_PROTOCOL_VERSION 9
-#define SOUL_LINK_SAVE_FORMAT_VERSION 3
+#define SOUL_LINK_PROTOCOL_VERSION 11
+#define SOUL_LINK_PREVIOUS_PROTOCOL_VERSION 10
+#define SOUL_LINK_SAVE_FORMAT_VERSION 4
+#define SOUL_LINK_PREVIOUS_SAVE_FORMAT_VERSION 3
 #define SOUL_LINK_RANDOMIZER_SETTING_COUNT 15
 #define SOUL_LINK_RANDOMIZER_SETTINGS_MASK 0x7FFF
 #define SOUL_LINK_LOBBY_STATE_MASK 0x0007
@@ -23,8 +24,11 @@
 #define SOUL_LINK_GROUP_NONE 0
 #define SOUL_LINK_STARTER_GROUP_ID 0xFFFF
 #define SOUL_LINK_SNAPSHOT_FLAG_DEAD (1 << 0)
+#define SOUL_LINK_SNAPSHOT_FLAG_MISSED (1 << 1)
+#define SOUL_LINK_SNAPSHOT_FLAG_FAILED (1 << 2)
 #define SOUL_LINK_REGISTRY_RESULT_VALID (1 << 8)
 #define SOUL_LINK_REGISTRY_RESULT_DEAD (1 << 9)
+#define SOUL_LINK_REGISTRY_RESULT_MISSED (1 << 10)
 
 struct BoxPokemon;
 struct Pokemon;
@@ -61,6 +65,7 @@ struct SoulLinkRegistryMember
     u16 species;
     u16 location;
     bool8 dead;
+    bool8 missed;
     u8 nickname[POKEMON_NAME_LENGTH + 1];
 };
 
@@ -145,6 +150,7 @@ u8 SoulLink_GetPlayerSlot(void);
 u8 SoulLink_GetActivePlayerMask(void);
 void SoulLink_CancelRegistryRequest(void);
 void SoulLink_LinkStarter(struct Pokemon *mon);
+void SoulLink_RefreshLocalSnapshot(void);
 u16 SoulLink_GetBoxMonGroupId(struct BoxPokemon *boxMon);
 void SoulLink_SetBoxMonGroupId(struct BoxPokemon *boxMon, u16 groupId);
 

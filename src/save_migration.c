@@ -8,6 +8,7 @@ static const u8 sRecognizedVersions[] = {
     ME_SAVE_VERSION_NONE,    // Pre-tracking (3.5 and earlier)
     ME_SAVE_VERSION_3_6,     // 3.6 (first tracked version)
     ME_SAVE_VERSION_3_7,     // 3.7 (Soul Link run metadata)
+    ME_SAVE_VERSION_3_8,     // 3.8 (persistent failed Soul Link encounters)
 };
 
 u8 GetSaveVersion(void)
@@ -69,6 +70,7 @@ STATIC_ASSERT(offsetof(struct SaveBlock2, saveVersion) < SECTOR_DATA_SIZE, SaveV
 // These versions had identical struct layouts (fields only appended after this point).
 #define SAVEBLOCK2_SIZE_V24_TO_V35 0xF2C
 #define SAVEBLOCK2_SIZE_V36 offsetof(struct SaveBlock2, soulLink)
+#define SAVEBLOCK2_SIZE_V37 (offsetof(struct SaveBlock2, soulLink) + 16)
 
 u16 GetHistoricalSaveBlock2Size(const u8 *data)
 {
@@ -78,6 +80,8 @@ u16 GetHistoricalSaveBlock2Size(const u8 *data)
         return SAVEBLOCK2_SIZE_V24_TO_V35;
     case ME_SAVE_VERSION_3_6:
         return SAVEBLOCK2_SIZE_V36;
+    case ME_SAVE_VERSION_3_7:
+        return SAVEBLOCK2_SIZE_V37;
     default:
         return 0;
     }

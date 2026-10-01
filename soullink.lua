@@ -12,8 +12,8 @@ local EWRAM_BASE = 0x02000000
 local EWRAM_END = 0x02040000
 
 local MAILBOX_MAGIC = 0x4B4E4C53
-local MAILBOX_VERSION = 10
-local SAVE_FORMAT_VERSION = 3
+local MAILBOX_VERSION = 11
+local SAVE_FORMAT_VERSION = 4
 local MAILBOX_SIZE = 68
 local MAILBOX_OUTGOING_OFFSET = 12
 local MAILBOX_OUTGOING_ACK_OFFSET = 36
@@ -46,6 +46,7 @@ local REGISTRY_REQUEST_MEMBER = 2
 local REGISTRY_REQUEST_PLAYER_NAME = 3
 local REGISTRY_RESULT_VALID = 0x100
 local REGISTRY_RESULT_DEAD = 0x200
+local REGISTRY_RESULT_MISSED = 0x400
 local PING_INTERVAL_FRAMES = 300
 local NETWORK_KEEPALIVE_INTERVAL_FRAMES = 300
 local NETWORK_PEER_TIMEOUT_SECONDS = 600
@@ -208,9 +209,12 @@ local function queueRegistrySnapshot(snapshot)
     end)
     for _, groupId in ipairs(groupIds) do
         local member = snapshot.members[groupId]
+        local memberFlags = (member.dead and 1 or 0)
+            + (member.missed and 2 or 0)
+            + (member.failed and 4 or 0)
         queue("REGISTRY_MEMBER", string.format(
             "%d,%d,%d,%d,%d,%u,%u,%d", snapshot.slot, groupId,
-            member.species, member.location, member.dead and 1 or 0,
+            member.species, member.location, memberFlags,
             member.nicknameLow, member.nicknameHigh, member.nicknameTail))
     end
     queue("REGISTRY_END", string.format(
@@ -426,11 +430,12 @@ local function rebuildMergedRegistry()
             for groupId, member in pairs(snapshot.members) do
                 local group = rebuilt[groupId]
                 if not group then
-                    group = {location = member.location, members = {}}
+                    group = {location = member.location, members = {}, failed = false}
                     rebuilt[groupId] = group
                 end
                 if group.location == member.location then
                     group.members[slot] = member
+                    group.failed = group.failed or member.failed
                 else
                     console.log(string.format(
                         "[SoulLink] snapshot group=%d has conflicting locations %d/%d",
@@ -448,7 +453,7 @@ local function rebuildMergedRegistry()
         for slot in pairs(group.members) do
             memberMask = memberMask + 2 ^ (slot - 1)
         end
-        if memberMask == gatePlayerMask then
+        if memberMask == gatePlayerMask or group.failed then
             completeGroupCount = completeGroupCount + 1
         end
     end
@@ -472,7 +477,7 @@ local function getCompleteRegistryGroupIds()
         for slot in pairs(group.members) do
             memberMask = memberMask + 2 ^ (slot - 1)
         end
-        if memberMask == gatePlayerMask then
+        if memberMask == gatePlayerMask or group.failed then
             groupIds[#groupIds + 1] = groupId
         end
     end
@@ -509,21 +514,31 @@ local function recordSnapshot(sender, messageType, values, expectedSlot)
         return false, "snapshot record received before begin"
     elseif messageType == "SNAPSHOT_MEMBER" then
         local groupId = values[1]
+        local memberFlags = values[4]
+        local dead = memberFlags % 2 == 1
+        local missed = math.floor(memberFlags / 2) % 2 == 1
+        local failed = math.floor(memberFlags / 4) % 2 == 1
         if groupId < 1 or groupId > STARTER_GROUP_ID
-            or values[2] < 1 or values[2] > 0xFFFF
-            or values[3] > 0xFFFF or values[4] > 1
+            or values[2] > 0xFFFF or values[3] > 0xFFFF or memberFlags > 7
             or values[5] > 0xFFFFFFFF or values[6] > 0xFFFFFFFF
             or values[7] > 0xFFFF or builder.members[groupId]
             or (groupId ~= STARTER_GROUP_ID and groupId ~= values[3] + 1)
+            or (missed and (values[2] ~= 0 or not dead or not failed))
+            or (failed and not dead)
+            or (not missed and values[2] < 1)
         then
             snapshotBuilders[sender] = nil
             return false, "invalid snapshot member"
         end
         builder.members[groupId] = {
-            species = values[2], location = values[3], dead = values[4] == 1,
+            species = values[2], location = values[3], dead = dead,
+            missed = missed, failed = failed,
             nicknameLow = values[5], nicknameHigh = values[6],
             nicknameTail = values[7],
         }
+        if failed then
+            failedEncounterLocations[values[3]] = true
+        end
         builder.count = builder.count + 1
         return true
     end
@@ -1456,7 +1471,7 @@ local function consumeMailboxOutgoing()
             memory.read_u16_le(offset + 14, EWRAM_DOMAIN),
             memory.read_u16_le(offset + 16, EWRAM_DOMAIN),
             memory.read_u16_le(offset + 18, EWRAM_DOMAIN),
-            memory.read_u16_le(offset + 20, EWRAM_DOMAIN) % 2,
+            memory.read_u16_le(offset + 20, EWRAM_DOMAIN) % 8,
             memory.read_u32_le(offset + 4, EWRAM_DOMAIN),
             memory.read_u32_le(offset + 8, EWRAM_DOMAIN),
             memory.read_u16_le(offset + 22, EWRAM_DOMAIN),
@@ -1468,8 +1483,10 @@ local function consumeMailboxOutgoing()
                 "%d,%d,%d,%d,%u,%u,%d", table.unpack(values)))
         end
         console.log(string.format(
-            "[SoulLink] local snapshot member group=%d species=%d location=%d dead=%s nicknameWords=%08X:%08X:%04X",
-            values[1], values[2], values[3], values[4] == 1 and "yes" or "no",
+            "[SoulLink] local snapshot member group=%d species=%d location=%d dead=%s missed=%s failed=%s nicknameWords=%08X:%08X:%04X",
+            values[1], values[2], values[3], values[4] % 2 == 1 and "yes" or "no",
+            math.floor(values[4] / 2) % 2 == 1 and "yes" or "no",
+            math.floor(values[4] / 4) % 2 == 1 and "yes" or "no",
             values[5], values[6], values[7]))
     elseif eventType == EVENT_SNAPSHOT_END then
         local slot = memory.read_u16_le(offset + 14, EWRAM_DOMAIN)
@@ -1498,7 +1515,15 @@ local function consumeMailboxOutgoing()
             if request == REGISTRY_REQUEST_MEMBER and groupIds then
                 local row = memory.read_u16_le(offset + 14, EWRAM_DOMAIN)
                 groupId = groupIds[row + 1]
-                member = groupId and mergedLinkRegistry[groupId].members[slot]
+                local group = groupId and mergedLinkRegistry[groupId]
+                member = group and group.members[slot]
+                if group and group.failed and not member then
+                    member = {
+                        species = 0, location = group.location, dead = true,
+                        missed = true, nicknameLow = 0, nicknameHigh = 0,
+                        nicknameTail = 0,
+                    }
+                end
             elseif request == REGISTRY_REQUEST_PLAYER_NAME and groupIds then
                 playerSnapshot = playerSnapshots[slot]
             end
@@ -1509,7 +1534,8 @@ local function consumeMailboxOutgoing()
             pendingRomEvents[#pendingRomEvents + 1] = {
                 type = EVENT_REGISTRY_RESULT,
                 flags = request + (valid and REGISTRY_RESULT_VALID or 0)
-                    + (member and member.dead and REGISTRY_RESULT_DEAD or 0),
+                    + (member and member.dead and REGISTRY_RESULT_DEAD or 0)
+                    + (member and member.missed and REGISTRY_RESULT_MISSED or 0),
                 payload = {
                     personality = member and member.nicknameLow
                         or playerSnapshot and playerSnapshot.nameLow or 0,

@@ -32,6 +32,7 @@
 #include "party_menu.h"
 #include "pokedex.h"
 #include "pokenav.h"
+#include "region_map.h"
 #include "safari_zone.h"
 #include "save.h"
 #include "scanline_effect.h"
@@ -99,11 +100,14 @@ EWRAM_DATA static u8 sSaveInfoWindowId = 0;
 struct SoulLinkMenuState
 {
     u16 groupCount;
+    u16 selectedRow;
+    u16 topRow;
     u8 windowId;
     u8 activePlayerMask;
     u8 nextPlayerSlot;
+    u8 nextVisibleRow;
     u8 playerNames[4][PLAYER_NAME_LENGTH + 1];
-    struct SoulLinkRegistryMember firstRow[4];
+    struct SoulLinkRegistryMember rowMembers[2][4];
 };
 
 EWRAM_DATA static struct SoulLinkMenuState *sSoulLinkMenu = NULL;
@@ -125,9 +129,11 @@ static bool8 StartMenuDebugCallback(void);
 static bool8 StartMenuSoulLinksCallback(void);
 static bool8 WaitForSoulLinkRegistryCount(void);
 static bool8 WaitForSoulLinkPlayerNames(void);
-static bool8 WaitForSoulLinkFirstRow(void);
+static bool8 WaitForSoulLinkRows(void);
 static bool8 HandleSoulLinkBrowserInput(void);
 static bool8 ShowSoulLinkBrowser(void);
+static void DrawSoulLinkBrowser(void);
+static bool8 CloseSoulLinkBrowser(void);
 static void PrintSoulLinkCellText(const u8 *text, u8 column, u8 y);
 static void FreeSoulLinkMenu(void);
 static void Task_CloseSoulLinkCount(u8 taskId);
@@ -221,9 +227,12 @@ static const struct WindowTemplate sWindowTemplate_SoulLinks = {
 static const u8 gText_MenuDebug[] = _("DEBUG");
 static const u8 sText_MenuSoulLinks[] = _("LINKS");
 static const u8 sText_SoulLinkCount[] = _("Linked groups: {STR_VAR_1}{PAUSE_UNTIL_PRESS}");
-static const u8 sText_SoulLinkTitle[] = _("SOUL LINKS - {STR_VAR_1} GROUPS");
-static const u8 sText_SoulLinkDetails[] = _("ID {STR_VAR_1}  LOC {STR_VAR_2}  B: CLOSE");
+static const u8 sText_SoulLinkSlash[] = _("/");
+static const u8 sText_SoulLinkId[] = _(" ID ");
+static const u8 sText_SoulLinkSpace[] = _(" ");
+static const u8 sText_SoulLinkClose[] = _(" B: CLOSE");
 static const u8 sText_SoulLinkNoPlayer[] = _("N/A");
+static const u8 sText_SoulLinkMissed[] = _("MISSED");
 static const u8 sText_SoulLinkUnavailable[] = _("Link registry is not ready.{PAUSE_UNTIL_PRESS}");
 
 static const struct MenuAction sStartMenuItems[] =
@@ -868,6 +877,7 @@ static bool8 WaitForSoulLinkRegistryCount(void)
         if (sSoulLinkMenu != NULL)
         {
             sSoulLinkMenu->groupCount = count;
+            sSoulLinkMenu->selectedRow = 0;
             sSoulLinkMenu->windowId = WINDOW_NONE;
             sSoulLinkMenu->activePlayerMask = SoulLink_GetActivePlayerMask();
             sSoulLinkMenu->nextPlayerSlot = 1;
@@ -918,7 +928,8 @@ static bool8 WaitForSoulLinkPlayerNames(void)
     if (slot > 4)
     {
         sSoulLinkMenu->nextPlayerSlot = 1;
-        gMenuCallback = WaitForSoulLinkFirstRow;
+        sSoulLinkMenu->nextVisibleRow = 0;
+        gMenuCallback = WaitForSoulLinkRows;
         return FALSE;
     }
     if (!SoulLink_TakeRegistryPlayerName(playerName, &valid))
@@ -942,26 +953,26 @@ static bool8 WaitForSoulLinkPlayerNames(void)
     return FALSE;
 }
 
-static bool8 WaitForSoulLinkFirstRow(void)
+static bool8 WaitForSoulLinkRows(void)
 {
     struct SoulLinkRegistryMember member;
+    u8 visibleRow = sSoulLinkMenu->nextVisibleRow;
     u8 slot = sSoulLinkMenu->nextPlayerSlot;
     bool8 valid;
     u8 taskId;
 
     if (JOY_NEW(B_BUTTON))
-    {
-        SoulLink_CancelRegistryRequest();
-        FreeSoulLinkMenu();
-        HideStartMenu();
-        return TRUE;
-    }
+        return CloseSoulLinkBrowser();
 
-    while (slot <= 4
-        && !(sSoulLinkMenu->activePlayerMask & (1 << (slot - 1))))
-        slot++;
-    if (slot > 4)
+    if (visibleRow >= 2
+     || sSoulLinkMenu->topRow + visibleRow >= sSoulLinkMenu->groupCount)
     {
+        if (sSoulLinkMenu->windowId != WINDOW_NONE)
+        {
+            DrawSoulLinkBrowser();
+            gMenuCallback = HandleSoulLinkBrowserInput;
+            return FALSE;
+        }
         if (ShowSoulLinkBrowser())
         {
             gMenuCallback = HandleSoulLinkBrowserInput;
@@ -974,17 +985,29 @@ static bool8 WaitForSoulLinkFirstRow(void)
             Task_CloseSoulLinkCount);
         return FALSE;
     }
+
+    while (slot <= 4
+        && !(sSoulLinkMenu->activePlayerMask & (1 << (slot - 1))))
+        slot++;
+    if (slot > 4)
+    {
+        sSoulLinkMenu->nextVisibleRow++;
+        sSoulLinkMenu->nextPlayerSlot = 1;
+        return FALSE;
+    }
     if (!SoulLink_TakeRegistryMember(&member, &valid))
     {
-        SoulLink_RequestRegistryMember(0, slot);
+        SoulLink_RequestRegistryMember(sSoulLinkMenu->topRow + visibleRow, slot);
         return FALSE;
     }
     if (valid)
     {
-        sSoulLinkMenu->firstRow[slot - 1] = member;
+        sSoulLinkMenu->rowMembers[visibleRow][slot - 1] = member;
         sSoulLinkMenu->nextPlayerSlot = slot + 1;
         return FALSE;
     }
+    if (sSoulLinkMenu->windowId != WINDOW_NONE)
+        return CloseSoulLinkBrowser();
 
     FreeSoulLinkMenu();
     ClearStdWindowAndFrame(GetStartMenuWindowId(), TRUE);
@@ -997,13 +1020,6 @@ static bool8 WaitForSoulLinkFirstRow(void)
 
 static bool8 ShowSoulLinkBrowser(void)
 {
-    const struct SoulLinkRegistryMember *firstMember = NULL;
-    u8 slot;
-    u8 column = 0;
-    const u8 columnWidth = 224 / 4;
-    const u8 *playerName;
-    u8 x;
-
     sSoulLinkMenu->windowId = AddWindow(&sWindowTemplate_SoulLinks);
     if (sSoulLinkMenu->windowId == WINDOW_NONE)
     {
@@ -1015,46 +1031,90 @@ static bool8 ShowSoulLinkBrowser(void)
     ClearStdWindowAndFrame(GetStartMenuWindowId(), FALSE);
     RemoveStartMenuWindow();
     DrawStdWindowFrame(sSoulLinkMenu->windowId, FALSE);
-    ConvertIntToDecimalStringN(gStringVar1, sSoulLinkMenu->groupCount,
-        STR_CONV_MODE_LEFT_ALIGN, 3);
-    StringExpandPlaceholders(gStringVar4, sText_SoulLinkTitle);
-    x = GetStringCenterAlignXOffset(FONT_NORMAL, gStringVar4, 224);
-    AddTextPrinterParameterized(sSoulLinkMenu->windowId, FONT_NORMAL,
-        gStringVar4, x, 1, TEXT_SKIP_DRAW, NULL);
+    DrawSoulLinkBrowser();
+    return TRUE;
+}
 
+static void DrawSoulLinkBrowser(void)
+{
+    const struct SoulLinkRegistryMember *selectedMember = NULL;
+    u8 visibleRow;
+    u8 slot;
+    u8 column = 0;
+    const u8 columnWidth = 224 / 4;
+    const u8 *playerName;
+    u8 mapNameLength;
+    u8 x;
+
+    FillWindowPixelBuffer(sSoulLinkMenu->windowId, PIXEL_FILL(1));
     for (slot = 1; slot <= 4; slot++)
     {
         playerName = sSoulLinkMenu->activePlayerMask & (1 << (slot - 1))
             ? sSoulLinkMenu->playerNames[slot - 1] : sText_SoulLinkNoPlayer;
-        x = column * columnWidth + GetStringCenterAlignXOffset(FONT_NARROW,
+        x = column * columnWidth + GetStringCenterAlignXOffset(FONT_SMALL_NARROW,
             playerName, columnWidth);
-        AddTextPrinterParameterized(sSoulLinkMenu->windowId, FONT_NARROW,
-            playerName, x, 25, TEXT_SKIP_DRAW, NULL);
+        AddTextPrinterParameterized(sSoulLinkMenu->windowId, FONT_SMALL_NARROW,
+            playerName, x, 0, TEXT_SKIP_DRAW, NULL);
         column++;
     }
 
-    for (slot = 1; slot <= 4; slot++)
+    for (visibleRow = 0; visibleRow < 2
+        && sSoulLinkMenu->topRow + visibleRow < sSoulLinkMenu->groupCount;
+        visibleRow++)
     {
-        if (!(sSoulLinkMenu->activePlayerMask & (1 << (slot - 1))))
-            continue;
-        if (firstMember == NULL)
-            firstMember = &sSoulLinkMenu->firstRow[slot - 1];
-        PrintSoulLinkCellText(sSoulLinkMenu->firstRow[slot - 1].nickname,
-            slot - 1, 49);
-        PrintSoulLinkCellText(
-            gSpeciesNames[sSoulLinkMenu->firstRow[slot - 1].species],
-            slot - 1, 65);
+        if (sSoulLinkMenu->topRow + visibleRow == sSoulLinkMenu->selectedRow)
+            AddTextPrinterParameterized(sSoulLinkMenu->windowId,
+                FONT_SMALL_NARROW, gText_SelectorArrow3, 0,
+                28 + visibleRow * 56, TEXT_SKIP_DRAW, NULL);
+        for (slot = 1; slot <= 4; slot++)
+        {
+            if (!(sSoulLinkMenu->activePlayerMask & (1 << (slot - 1))))
+                continue;
+            if (sSoulLinkMenu->topRow + visibleRow == sSoulLinkMenu->selectedRow
+             && selectedMember == NULL)
+                selectedMember = &sSoulLinkMenu->rowMembers[visibleRow][slot - 1];
+            if (sSoulLinkMenu->rowMembers[visibleRow][slot - 1].missed)
+                PrintSoulLinkCellText(sText_SoulLinkMissed, slot - 1,
+                    50 + visibleRow * 56);
+            else
+            {
+                PrintSoulLinkCellText(
+                    sSoulLinkMenu->rowMembers[visibleRow][slot - 1].nickname,
+                    slot - 1, 44 + visibleRow * 56);
+                PrintSoulLinkCellText(gSpeciesNames[
+                    sSoulLinkMenu->rowMembers[visibleRow][slot - 1].species],
+                    slot - 1, 56 + visibleRow * 56);
+            }
+        }
     }
-    ConvertIntToDecimalStringN(gStringVar1, firstMember->groupId,
-        STR_CONV_MODE_LEFT_ALIGN, 5);
-    ConvertIntToDecimalStringN(gStringVar2, firstMember->location,
+    ConvertIntToDecimalStringN(gStringVar4, sSoulLinkMenu->selectedRow + 1,
         STR_CONV_MODE_LEFT_ALIGN, 3);
-    StringExpandPlaceholders(gStringVar4, sText_SoulLinkDetails);
-    x = GetStringCenterAlignXOffset(FONT_NORMAL, gStringVar4, 224);
-    AddTextPrinterParameterized(sSoulLinkMenu->windowId, FONT_NORMAL,
-        gStringVar4, x, 129, TEXT_SKIP_DRAW, NULL);
+    StringAppend(gStringVar4, sText_SoulLinkSlash);
+    ConvertIntToDecimalStringN(gStringVar1, sSoulLinkMenu->groupCount,
+        STR_CONV_MODE_LEFT_ALIGN, 3);
+    StringAppend(gStringVar4, gStringVar1);
+    StringAppend(gStringVar4, sText_SoulLinkId);
+    ConvertIntToDecimalStringN(gStringVar1, selectedMember->groupId,
+        STR_CONV_MODE_LEFT_ALIGN, 5);
+    StringAppend(gStringVar4, gStringVar1);
+    StringCopy(gStringVar3, gStringVar4);
+    GetMapName(gStringVar2, selectedMember->location, 0);
+    mapNameLength = StringLength(gStringVar2);
+    do
+    {
+        StringCopy(gStringVar4, gStringVar3);
+        StringAppend(gStringVar4, sText_SoulLinkSpace);
+        StringAppend(gStringVar4, gStringVar2);
+        StringAppend(gStringVar4, sText_SoulLinkClose);
+        if (GetStringWidth(FONT_SMALL_NARROW, gStringVar4, -1) <= 224
+         || mapNameLength == 0)
+            break;
+        gStringVar2[--mapNameLength] = EOS;
+    } while (TRUE);
+    x = GetStringCenterAlignXOffset(FONT_SMALL_NARROW, gStringVar4, 224);
+    AddTextPrinterParameterized(sSoulLinkMenu->windowId, FONT_SMALL_NARROW,
+        gStringVar4, x, 132, TEXT_SKIP_DRAW, NULL);
     CopyWindowToVram(sSoulLinkMenu->windowId, COPYWIN_FULL);
-    return TRUE;
 }
 
 static void PrintSoulLinkCellText(const u8 *text, u8 column, u8 y)
@@ -1067,18 +1127,56 @@ static void PrintSoulLinkCellText(const u8 *text, u8 column, u8 y)
 
     StringCopy(buffer, text);
     length = StringLength(buffer);
-    while (length > 0 && GetStringWidth(FONT_NARROW, buffer, -1) > textWidth)
+    while (length > 0
+        && GetStringWidth(FONT_SMALL_NARROW, buffer, -1) > textWidth)
         buffer[--length] = EOS;
     x = column * columnWidth
-        + GetStringCenterAlignXOffset(FONT_NARROW, buffer, columnWidth);
-    AddTextPrinterParameterized(sSoulLinkMenu->windowId, FONT_NARROW,
+        + GetStringCenterAlignXOffset(FONT_SMALL_NARROW, buffer, columnWidth);
+    AddTextPrinterParameterized(sSoulLinkMenu->windowId, FONT_SMALL_NARROW,
         buffer, x, y, TEXT_SKIP_DRAW, NULL);
 }
 
 static bool8 HandleSoulLinkBrowserInput(void)
 {
-    if (!JOY_NEW(B_BUTTON))
+    s16 direction = 0;
+
+    if (JOY_NEW(B_BUTTON))
+        return CloseSoulLinkBrowser();
+    if (JOY_NEW(DPAD_UP) && sSoulLinkMenu->selectedRow > 0)
+        direction = -1;
+    else if (JOY_NEW(DPAD_DOWN)
+          && sSoulLinkMenu->selectedRow + 1 < sSoulLinkMenu->groupCount)
+        direction = 1;
+    if (direction == 0)
         return FALSE;
+
+    PlaySE(SE_SELECT);
+    sSoulLinkMenu->selectedRow += direction;
+    if (sSoulLinkMenu->selectedRow < sSoulLinkMenu->topRow)
+        sSoulLinkMenu->topRow = sSoulLinkMenu->selectedRow;
+    else if (sSoulLinkMenu->selectedRow >= sSoulLinkMenu->topRow + 2)
+        sSoulLinkMenu->topRow = sSoulLinkMenu->selectedRow - 1;
+    else
+    {
+        DrawSoulLinkBrowser();
+        return FALSE;
+    }
+    sSoulLinkMenu->nextPlayerSlot = 1;
+    sSoulLinkMenu->nextVisibleRow = 0;
+    memset(sSoulLinkMenu->rowMembers, 0, sizeof(sSoulLinkMenu->rowMembers));
+    gMenuCallback = WaitForSoulLinkRows;
+    return FALSE;
+}
+
+static bool8 CloseSoulLinkBrowser(void)
+{
+    SoulLink_CancelRegistryRequest();
+    if (sSoulLinkMenu == NULL || sSoulLinkMenu->windowId == WINDOW_NONE)
+    {
+        FreeSoulLinkMenu();
+        HideStartMenu();
+        return TRUE;
+    }
 
     PlaySE(SE_SELECT);
     ClearStdWindowAndFrame(sSoulLinkMenu->windowId, TRUE);

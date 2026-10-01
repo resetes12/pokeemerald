@@ -19,9 +19,11 @@ EWRAM_DATA u16 gSoulLinkPendingRandomizerSettings = 0;
 static EWRAM_DATA bool8 sEncounterEventPending = FALSE;
 static EWRAM_DATA struct SoulLinkMessage sPendingEncounterEvent = {0};
 static EWRAM_DATA bool8 sCemeteryCleanupPending = FALSE;
+static EWRAM_DATA u8 sLobbyIntent = SOUL_LINK_INTENT_NONE;
 static EWRAM_DATA u16 sSnapshotIndex = 0;
 static EWRAM_DATA u16 sSnapshotMemberCount = 0;
 static EWRAM_DATA u8 sSnapshotState = 0;
+static EWRAM_DATA u8 sSnapshotPublishedLocations[SOUL_LINK_FAILED_LOCATION_BYTES] = {0};
 static EWRAM_DATA u8 sRegistryPendingRequest = 0;
 static EWRAM_DATA u8 sRegistryResultType = 0;
 static EWRAM_DATA bool8 sRegistryResultReady = FALSE;
@@ -35,6 +37,7 @@ enum
     SNAPSHOT_IDLE,
     SNAPSHOT_BEGIN,
     SNAPSHOT_MEMBERS,
+    SNAPSHOT_MISSED,
     SNAPSHOT_END,
 };
 
@@ -70,6 +73,7 @@ static void ResetMailbox(void)
     memset((void *)&gSoulLinkPendingRun, 0, sizeof(gSoulLinkPendingRun));
     memset((void *)&gSoulLinkMailbox, 0, sizeof(gSoulLinkMailbox));
     sSnapshotState = SNAPSHOT_IDLE;
+    sLobbyIntent = SOUL_LINK_INTENT_NONE;
     sRegistryPendingRequest = 0;
     sRegistryResultType = 0;
     sRegistryResultReady = FALSE;
@@ -85,6 +89,34 @@ static void ResetMailbox(void)
 static u16 GetRunRandomizerSettings(const struct SoulLinkSaveData *run)
 {
     return run->randomizerSettings[0] | (run->randomizerSettings[1] << 8);
+}
+
+static void UpgradeRunVersion(struct SoulLinkSaveData *run)
+{
+    if (run->formatVersion == SOUL_LINK_PREVIOUS_SAVE_FORMAT_VERSION
+     && run->protocolVersion == SOUL_LINK_PREVIOUS_PROTOCOL_VERSION)
+    {
+        run->formatVersion = SOUL_LINK_SAVE_FORMAT_VERSION;
+        run->protocolVersion = SOUL_LINK_PROTOCOL_VERSION;
+    }
+}
+
+static bool8 IsFailedLocation(u16 location)
+{
+    const volatile struct SoulLinkSaveData *run =
+        (gSoulLinkPendingRun.status & SOUL_LINK_RUN_STATUS_ACTIVE)
+        ? &gSoulLinkPendingRun : &gSaveBlock2Ptr->soulLink;
+
+    return location / 8 < SOUL_LINK_FAILED_LOCATION_BYTES
+        && (run->failedLocations[location / 8] & (1 << (location % 8)));
+}
+
+static void SetFailedLocation(u16 location)
+{
+    if (location / 8 >= SOUL_LINK_FAILED_LOCATION_BYTES)
+        return;
+    gSaveBlock2Ptr->soulLink.failedLocations[location / 8] |= 1 << (location % 8);
+    gSoulLinkPendingRun.failedLocations[location / 8] |= 1 << (location % 8);
 }
 
 static u8 CountPlayers(u8 playerMask)
@@ -226,7 +258,14 @@ static void BeginLocalSnapshot(void)
 {
     sSnapshotIndex = 0;
     sSnapshotMemberCount = 0;
+    memset(sSnapshotPublishedLocations, 0, sizeof(sSnapshotPublishedLocations));
     sSnapshotState = SNAPSHOT_BEGIN;
+}
+
+void SoulLink_RefreshLocalSnapshot(void)
+{
+    if (SoulLink_IsActive())
+        BeginLocalSnapshot();
 }
 
 void SoulLink_LinkStarter(struct Pokemon *mon)
@@ -286,16 +325,57 @@ static void PublishLocalSnapshot(void)
         return;
     }
 
+    if (sSnapshotState == SNAPSHOT_MISSED)
+    {
+        while (sSnapshotIndex <= MAPSEC_SAFARI_ZONE_AREA6
+            && (!IsFailedLocation(sSnapshotIndex)
+             || (sSnapshotPublishedLocations[sSnapshotIndex / 8]
+               & (1 << (sSnapshotIndex % 8)))))
+            sSnapshotIndex++;
+        if (sSnapshotIndex > MAPSEC_SAFARI_ZONE_AREA6)
+        {
+            sSnapshotState = SNAPSHOT_END;
+            return;
+        }
+        if (TryPublishOutgoing(SOUL_LINK_EVENT_SNAPSHOT_MEMBER,
+                0, 0, sSnapshotIndex + 1, SPECIES_NONE, sSnapshotIndex,
+                SOUL_LINK_SNAPSHOT_FLAG_DEAD | SOUL_LINK_SNAPSHOT_FLAG_MISSED
+                    | SOUL_LINK_SNAPSHOT_FLAG_FAILED, 0))
+        {
+            sSnapshotIndex++;
+            sSnapshotMemberCount++;
+        }
+        return;
+    }
+
     if (sSnapshotIndex >= SNAPSHOT_MON_COUNT)
     {
-        sSnapshotState = SNAPSHOT_END;
+        sSnapshotIndex = 0;
+        sSnapshotState = SNAPSHOT_MISSED;
         return;
     }
 
     boxMon = GetSnapshotBoxMon(sSnapshotIndex);
     groupId = SoulLink_GetBoxMonGroupId(boxMon);
-    if (!GetBoxMonData(boxMon, MON_DATA_SANITY_HAS_SPECIES)
-     || groupId == SOUL_LINK_GROUP_NONE)
+    if (!GetBoxMonData(boxMon, MON_DATA_SANITY_HAS_SPECIES))
+    {
+        sSnapshotIndex++;
+        return;
+    }
+
+    if (groupId == SOUL_LINK_GROUP_NONE
+     && GetBoxMonData(boxMon, MON_DATA_NUZLOCKE_RIBBON))
+    {
+        u16 location = GetBoxMonData(boxMon, MON_DATA_MET_LOCATION);
+
+        if (location <= MAPSEC_SAFARI_ZONE_AREA6)
+        {
+            groupId = location + 1;
+            SoulLink_SetBoxMonGroupId(boxMon, groupId);
+            SetFailedLocation(location);
+        }
+    }
+    if (groupId == SOUL_LINK_GROUP_NONE)
     {
         sSnapshotIndex++;
         return;
@@ -307,12 +387,19 @@ static void PublishLocalSnapshot(void)
     memcpy(&word2, stringBytes + sizeof(word0) + sizeof(word1), sizeof(word2));
     flags = GetBoxMonData(boxMon, MON_DATA_NUZLOCKE_RIBBON)
         ? SOUL_LINK_SNAPSHOT_FLAG_DEAD : 0;
+    if (groupId != SOUL_LINK_STARTER_GROUP_ID
+     && IsFailedLocation(groupId - 1))
+        flags |= SOUL_LINK_SNAPSHOT_FLAG_FAILED;
     if (TryPublishOutgoing(SOUL_LINK_EVENT_SNAPSHOT_MEMBER,
             word0, word1, groupId,
             GetBoxMonData(boxMon, MON_DATA_SPECIES),
             GetBoxMonData(boxMon, MON_DATA_MET_LOCATION),
             flags, word2))
     {
+        if (groupId != SOUL_LINK_STARTER_GROUP_ID
+         && (groupId - 1) / 8 < SOUL_LINK_FAILED_LOCATION_BYTES)
+            sSnapshotPublishedLocations[(groupId - 1) / 8]
+                |= 1 << ((groupId - 1) % 8);
         sSnapshotIndex++;
         sSnapshotMemberCount++;
     }
@@ -381,12 +468,18 @@ static void ApplyEncounterClosed(const volatile struct SoulLinkMessage *message)
         return;
 
     NuzlockeFlagSet(message->location);
+    SetFailedLocation(message->location);
     if (message->personality == 0 && message->otId == 0)
+    {
+        BeginLocalSnapshot();
         return;
+    }
 
     boxMon = FindOwnedBoxMon(message->personality, message->otId);
     if (boxMon == NULL)
         return;
+    if (SoulLink_GetBoxMonGroupId(boxMon) == SOUL_LINK_GROUP_NONE)
+        SoulLink_SetBoxMonGroupId(boxMon, message->location + 1);
     SetBoxMonData(boxMon, MON_DATA_NUZLOCKE_RIBBON, &dead);
     sCemeteryCleanupPending = TRUE;
     BeginLocalSnapshot();
@@ -420,14 +513,13 @@ bool8 SoulLink_SendLobbyIntent(u8 intent)
     if (intent == SOUL_LINK_INTENT_CONTINUE)
     {
         run = &gSaveBlock2Ptr->soulLink;
-        if (run->formatVersion == SOUL_LINK_SAVE_FORMAT_VERSION
-         && run->protocolVersion == SOUL_LINK_PREVIOUS_PROTOCOL_VERSION)
-            run->protocolVersion = SOUL_LINK_PROTOCOL_VERSION;
+        UpgradeRunVersion(run);
         flags |= run->activePlayerMask << SOUL_LINK_INTENT_ACTIVE_MASK_SHIFT;
         flags |= (run->status & SOUL_LINK_RUN_STATUS_MASK)
             << SOUL_LINK_INTENT_STATUS_SHIFT;
         settings = GetRunRandomizerSettings(run);
     }
+    sLobbyIntent = intent;
     return TryPublishOutgoing(SOUL_LINK_EVENT_LOBBY_INTENT,
         run == NULL ? 0 : run->runId[0], run == NULL ? 0 : run->runId[1],
         run == NULL ? SOUL_LINK_PROTOCOL_VERSION : run->protocolVersion,
@@ -455,9 +547,7 @@ static bool8 QueueEncounterEvent(u16 type, u32 personality, u32 otId,
 
     if (!(run->status & SOUL_LINK_RUN_STATUS_ACTIVE))
         return FALSE;
-    if (run->formatVersion == SOUL_LINK_SAVE_FORMAT_VERSION
-     && run->protocolVersion == SOUL_LINK_PREVIOUS_PROTOCOL_VERSION)
-        run->protocolVersion = SOUL_LINK_PROTOCOL_VERSION;
+    UpgradeRunVersion(run);
     if (run->protocolVersion != SOUL_LINK_PROTOCOL_VERSION)
         return FALSE;
     if (sEncounterEventPending)
@@ -536,6 +626,13 @@ void SoulLink_Update(void)
                 gSoulLinkLockedPlayerMask = playerMask;
                 if (state == SOUL_LINK_GATE_APPROVED)
                 {
+                    if (sLobbyIntent == SOUL_LINK_INTENT_CONTINUE)
+                        memcpy((void *)gSoulLinkPendingRun.failedLocations,
+                            gSaveBlock2Ptr->soulLink.failedLocations,
+                            sizeof(gSoulLinkPendingRun.failedLocations));
+                    else
+                        memset((void *)gSoulLinkPendingRun.failedLocations, 0,
+                            sizeof(gSoulLinkPendingRun.failedLocations));
                     gSoulLinkPendingRun.runId[0] = gSoulLinkMailbox.incoming.personality;
                     gSoulLinkPendingRun.runId[1] = gSoulLinkMailbox.incoming.otId;
                     gSoulLinkPendingRun.protocolVersion = gSoulLinkMailbox.incoming.pairId;
@@ -577,6 +674,8 @@ void SoulLink_Update(void)
                 sRegistryMember.species = gSoulLinkMailbox.incoming.species;
                 sRegistryMember.location = gSoulLinkMailbox.incoming.location;
                 sRegistryMember.dead = (flags & SOUL_LINK_REGISTRY_RESULT_DEAD) != 0;
+                sRegistryMember.missed =
+                    (flags & SOUL_LINK_REGISTRY_RESULT_MISSED) != 0;
                 memcpy(sRegistryMember.nickname,
                     (const void *)&gSoulLinkMailbox.incoming.personality, sizeof(u32));
                 memcpy(sRegistryMember.nickname + sizeof(u32),
