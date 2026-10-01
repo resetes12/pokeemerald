@@ -32,6 +32,7 @@
 #include "party_menu.h"
 #include "pokedex.h"
 #include "pokenav.h"
+#include "pokemon_icon.h"
 #include "region_map.h"
 #include "safari_zone.h"
 #include "save.h"
@@ -106,6 +107,8 @@ struct SoulLinkMenuState
     u8 activePlayerMask;
     u8 nextPlayerSlot;
     u8 nextVisibleRow;
+    bool8 iconPalettesLoaded;
+    u8 iconSpriteIds[2][4];
     u8 playerNames[4][PLAYER_NAME_LENGTH + 1];
     struct SoulLinkRegistryMember rowMembers[2][4];
 };
@@ -135,6 +138,8 @@ static bool8 ShowSoulLinkBrowser(void);
 static void DrawSoulLinkBrowser(void);
 static bool8 CloseSoulLinkBrowser(void);
 static void PrintSoulLinkCellText(const u8 *text, u8 column, u8 y);
+static void CreateSoulLinkIcons(void);
+static void DestroySoulLinkIcons(void);
 static void FreeSoulLinkMenu(void);
 static void Task_CloseSoulLinkCount(u8 taskId);
 
@@ -233,6 +238,7 @@ static const u8 sText_SoulLinkSpace[] = _(" ");
 static const u8 sText_SoulLinkClose[] = _(" B: CLOSE");
 static const u8 sText_SoulLinkNoPlayer[] = _("N/A");
 static const u8 sText_SoulLinkMissed[] = _("MISSED");
+static const u8 sText_SoulLinkStarter[] = _("Starter");
 static const u8 sText_SoulLinkUnavailable[] = _("Link registry is not ready.{PAUSE_UNTIL_PRESS}");
 
 static const struct MenuAction sStartMenuItems[] =
@@ -876,6 +882,8 @@ static bool8 WaitForSoulLinkRegistryCount(void)
         sSoulLinkMenu = AllocZeroed(sizeof(*sSoulLinkMenu));
         if (sSoulLinkMenu != NULL)
         {
+            memset(sSoulLinkMenu->iconSpriteIds, SPRITE_NONE,
+                sizeof(sSoulLinkMenu->iconSpriteIds));
             sSoulLinkMenu->groupCount = count;
             sSoulLinkMenu->selectedRow = 0;
             sSoulLinkMenu->windowId = WINDOW_NONE;
@@ -1031,6 +1039,8 @@ static bool8 ShowSoulLinkBrowser(void)
     ClearStdWindowAndFrame(GetStartMenuWindowId(), FALSE);
     RemoveStartMenuWindow();
     DrawStdWindowFrame(sSoulLinkMenu->windowId, FALSE);
+    LoadMonIconPalettes();
+    sSoulLinkMenu->iconPalettesLoaded = TRUE;
     DrawSoulLinkBrowser();
     return TRUE;
 }
@@ -1046,6 +1056,7 @@ static void DrawSoulLinkBrowser(void)
     u8 mapNameLength;
     u8 x;
 
+    DestroySoulLinkIcons();
     FillWindowPixelBuffer(sSoulLinkMenu->windowId, PIXEL_FILL(1));
     for (slot = 1; slot <= 4; slot++)
     {
@@ -1098,7 +1109,10 @@ static void DrawSoulLinkBrowser(void)
         STR_CONV_MODE_LEFT_ALIGN, 5);
     StringAppend(gStringVar4, gStringVar1);
     StringCopy(gStringVar3, gStringVar4);
-    GetMapName(gStringVar2, selectedMember->location, 0);
+    if (selectedMember->groupId == SOUL_LINK_STARTER_GROUP_ID)
+        StringCopy(gStringVar2, sText_SoulLinkStarter);
+    else
+        GetMapName(gStringVar2, selectedMember->location, 0);
     mapNameLength = StringLength(gStringVar2);
     do
     {
@@ -1115,6 +1129,57 @@ static void DrawSoulLinkBrowser(void)
     AddTextPrinterParameterized(sSoulLinkMenu->windowId, FONT_SMALL_NARROW,
         gStringVar4, x, 132, TEXT_SKIP_DRAW, NULL);
     CopyWindowToVram(sSoulLinkMenu->windowId, COPYWIN_FULL);
+    CreateSoulLinkIcons();
+}
+
+static void CreateSoulLinkIcons(void)
+{
+    u8 visibleRow;
+    u8 slot;
+    u8 spriteId;
+
+    for (visibleRow = 0; visibleRow < 2
+        && sSoulLinkMenu->topRow + visibleRow < sSoulLinkMenu->groupCount;
+        visibleRow++)
+    {
+        for (slot = 0; slot < 4; slot++)
+        {
+            const struct SoulLinkRegistryMember *member =
+                &sSoulLinkMenu->rowMembers[visibleRow][slot];
+
+            if (!(sSoulLinkMenu->activePlayerMask & (1 << slot))
+             || member->missed || member->species == SPECIES_NONE)
+                continue;
+            spriteId = CreateMonIconNoPersonality(member->species,
+                SpriteCallbackDummy, 36 + slot * 56,
+                36 + visibleRow * 56, 0, FALSE);
+            if (spriteId < MAX_SPRITES)
+            {
+                gSprites[spriteId].oam.priority = 0;
+                sSoulLinkMenu->iconSpriteIds[visibleRow][slot] = spriteId;
+            }
+        }
+    }
+}
+
+static void DestroySoulLinkIcons(void)
+{
+    u8 visibleRow;
+    u8 slot;
+
+    if (sSoulLinkMenu == NULL)
+        return;
+    for (visibleRow = 0; visibleRow < 2; visibleRow++)
+    {
+        for (slot = 0; slot < 4; slot++)
+        {
+            u8 spriteId = sSoulLinkMenu->iconSpriteIds[visibleRow][slot];
+
+            if (spriteId < MAX_SPRITES)
+                FreeAndDestroyMonIconSprite(&gSprites[spriteId]);
+            sSoulLinkMenu->iconSpriteIds[visibleRow][slot] = SPRITE_NONE;
+        }
+    }
 }
 
 static void PrintSoulLinkCellText(const u8 *text, u8 column, u8 y)
@@ -1191,6 +1256,9 @@ static void FreeSoulLinkMenu(void)
 {
     if (sSoulLinkMenu != NULL)
     {
+        DestroySoulLinkIcons();
+        if (sSoulLinkMenu->iconPalettesLoaded)
+            FreeMonIconPalettes();
         Free(sSoulLinkMenu);
         sSoulLinkMenu = NULL;
     }
