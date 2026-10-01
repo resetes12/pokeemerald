@@ -12,7 +12,7 @@ local EWRAM_BASE = 0x02000000
 local EWRAM_END = 0x02040000
 
 local MAILBOX_MAGIC = 0x4B4E4C53
-local MAILBOX_VERSION = 14
+local MAILBOX_VERSION = 15
 local SAVE_FORMAT_VERSION = 4
 local MAILBOX_SIZE = 68
 local MAILBOX_OUTGOING_OFFSET = 12
@@ -458,6 +458,7 @@ local function expectedSnapshotSlot(sender)
 end
 
 local resolveLinkDeath
+local tryFinalizePendingCatch
 
 local function rebuildMergedRegistry()
     local rebuilt = {}
@@ -494,6 +495,9 @@ local function rebuildMergedRegistry()
         end
         if memberMask == gatePlayerMask or group.failed then
             completeGroupCount = completeGroupCount + 1
+            if not group.failed and groupId ~= STARTER_GROUP_ID then
+                finalizedCatchGroups[group.location] = groupId
+            end
         end
     end
     console.log(string.format(
@@ -509,6 +513,16 @@ local function rebuildMergedRegistry()
             if hasDeadMember and not group.failed then
                 resolveLinkDeath("host", groupId)
             end
+        end
+    end
+
+    if networkConfig.role == "host" then
+        local locations = {}
+        for location in pairs(pendingCatchGroups) do
+            locations[#locations + 1] = location
+        end
+        for _, location in ipairs(locations) do
+            tryFinalizePendingCatch(location, pendingCatchGroups[location])
         end
     end
 
@@ -814,6 +828,50 @@ local function formatCatchMembers(members)
     return table.concat(formatted, " ")
 end
 
+tryFinalizePendingCatch = function(location, pending)
+    if not pending then
+        return
+    end
+
+    local combinedMask = pending.playerMask
+    local existing = mergedLinkRegistry[location + 1]
+    if existing and not existing.failed and existing.location == location then
+        for slot in pairs(existing.members) do
+            local playerMask = 2 ^ (slot - 1)
+            if math.floor(combinedMask / playerMask) % 2 ~= 1 then
+                combinedMask = combinedMask + playerMask
+            end
+        end
+    end
+    if combinedMask ~= gatePlayerMask then
+        return
+    end
+
+    local groupId = location + 1
+    finalizedCatchGroups[location] = groupId
+    pendingCatchGroups[location] = nil
+    for playerMask, member in pairs(pending.members) do
+        local link = {
+            groupId = groupId, playerMask = playerMask,
+            personality = member.personality, otId = member.otId,
+            species = member.species, location = member.location,
+        }
+        if playerMask == localPlayerMask then
+            queueLinkCreated(link)
+        else
+            pendingNetworkMessages[#pendingNetworkMessages + 1] = {
+                type = "LINK_CREATED",
+                payload = string.format("%d,%d,%u,%u,%d,%d",
+                    groupId, playerMask, member.personality, member.otId,
+                    member.species, member.location),
+            }
+        end
+    end
+    console.log(string.format(
+        "[SoulLink] finalized group=%d location=%d %s",
+        groupId, location, formatCatchMembers(pending.members)))
+end
+
 local function queueEncounterClosed(closed)
     pendingRomEvents[#pendingRomEvents + 1] = {
         type = EVENT_ENCOUNTER_FAILED, flags = closed.playerMask,
@@ -922,33 +980,11 @@ local function recordPendingCatch(sender, caught)
 
     pending.members[playerMask] = caught
     pending.playerMask = pending.playerMask + playerMask
+    setPartyReady(false, true)
     console.log(string.format(
         "[SoulLink] pending catches location=%d players=0x%X/0x%X",
         caught.location, pending.playerMask, gatePlayerMask))
-
-    if pending.playerMask == gatePlayerMask then
-        local groupId = caught.location + 1
-        finalizedCatchGroups[caught.location] = groupId
-        pendingCatchGroups[caught.location] = nil
-        for playerMask, member in pairs(pending.members) do
-            local link = {
-                groupId = groupId, playerMask = playerMask,
-                personality = member.personality, otId = member.otId,
-                species = member.species, location = member.location,
-            }
-            if playerMask == localPlayerMask then
-                queueLinkCreated(link)
-            else
-                sendNetworkMessage("LINK_CREATED", string.format(
-                    "%d,%d,%u,%u,%d,%d", groupId, playerMask,
-                    member.personality, member.otId,
-                    member.species, member.location))
-            end
-        end
-        console.log(string.format(
-            "[SoulLink] finalized group=%d location=%d %s",
-            groupId, caught.location, formatCatchMembers(pending.members)))
-    end
+    tryFinalizePendingCatch(caught.location, pending)
 end
 
 local function rejectContinue(reason, playerMask)

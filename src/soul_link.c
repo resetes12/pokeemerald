@@ -26,6 +26,7 @@ static EWRAM_DATA u8 sLobbyIntent = SOUL_LINK_INTENT_NONE;
 static EWRAM_DATA u16 sSnapshotIndex = 0;
 static EWRAM_DATA u16 sSnapshotMemberCount = 0;
 static EWRAM_DATA u8 sSnapshotState = 0;
+static EWRAM_DATA bool8 sSnapshotPendingReplay = FALSE;
 static EWRAM_DATA u8 sSnapshotPublishedLocations[SOUL_LINK_FAILED_LOCATION_BYTES] = {0};
 static EWRAM_DATA u8 sRegistryPendingRequest = 0;
 static EWRAM_DATA u8 sRegistryResultType = 0;
@@ -48,6 +49,9 @@ enum
 
 STATIC_ASSERT(sizeof(struct SoulLinkMessage) == 24, SoulLinkMessageSize);
 STATIC_ASSERT(sizeof(struct SoulLinkMailbox) == 68, SoulLinkMailboxSize);
+
+static bool8 QueueEncounterEvent(u16 type, u32 personality, u32 otId,
+                                 u16 species, u16 location);
 
 u16 SoulLink_GetBoxMonGroupId(struct BoxPokemon *boxMon)
 {
@@ -286,6 +290,7 @@ static void BeginLocalSnapshot(void)
 {
     sSnapshotIndex = 0;
     sSnapshotMemberCount = 0;
+    sSnapshotPendingReplay = FALSE;
     memset(sSnapshotPublishedLocations, 0, sizeof(sSnapshotPublishedLocations));
     sSnapshotState = SNAPSHOT_BEGIN;
 }
@@ -391,6 +396,23 @@ static void PublishLocalSnapshot(void)
         return;
     }
 
+    if (groupId != SOUL_LINK_STARTER_GROUP_ID
+     && (groupId & SOUL_LINK_PENDING_GROUP_FLAG))
+    {
+        u16 location = (groupId & ~SOUL_LINK_PENDING_GROUP_FLAG) - 1;
+
+        if (!sSnapshotPendingReplay)
+        {
+            if (QueueEncounterEvent(SOUL_LINK_EVENT_CATCH,
+                    GetBoxMonData(boxMon, MON_DATA_PERSONALITY),
+                    GetBoxMonData(boxMon, MON_DATA_OT_ID),
+                    GetBoxMonData(boxMon, MON_DATA_SPECIES), location))
+                sSnapshotPendingReplay = TRUE;
+            return;
+        }
+        groupId = SOUL_LINK_GROUP_NONE;
+    }
+
     if (groupId == SOUL_LINK_GROUP_NONE
      && GetBoxMonData(boxMon, MON_DATA_NUZLOCKE_RIBBON))
     {
@@ -415,6 +437,7 @@ static void PublishLocalSnapshot(void)
             if (sSnapshotIndex < PARTY_SIZE)
                 sSnapshotMemberCount++;
             sSnapshotIndex++;
+            sSnapshotPendingReplay = FALSE;
         }
         return;
     }
@@ -492,9 +515,11 @@ static void ApplyLinkCreated(const volatile struct SoulLinkMessage *message)
         return;
 
     currentGroup = SoulLink_GetBoxMonGroupId(boxMon);
-    if (currentGroup == SOUL_LINK_GROUP_NONE)
+    if (currentGroup == SOUL_LINK_GROUP_NONE
+     || currentGroup == (SOUL_LINK_PENDING_GROUP_FLAG | message->pairId))
         SoulLink_SetBoxMonGroupId(boxMon, message->pairId);
-    if (currentGroup == SOUL_LINK_GROUP_NONE || currentGroup == message->pairId)
+    if (currentGroup == SOUL_LINK_GROUP_NONE || currentGroup == message->pairId
+     || currentGroup == (SOUL_LINK_PENDING_GROUP_FLAG | message->pairId))
         BeginLocalSnapshot();
 }
 
@@ -518,7 +543,9 @@ static void ApplyEncounterClosed(const volatile struct SoulLinkMessage *message)
     boxMon = FindOwnedBoxMon(message->personality, message->otId);
     if (boxMon == NULL)
         return;
-    if (SoulLink_GetBoxMonGroupId(boxMon) == SOUL_LINK_GROUP_NONE)
+    if (SoulLink_GetBoxMonGroupId(boxMon) == SOUL_LINK_GROUP_NONE
+     || SoulLink_GetBoxMonGroupId(boxMon)
+          == (SOUL_LINK_PENDING_GROUP_FLAG | (message->location + 1)))
         SoulLink_SetBoxMonGroupId(boxMon, message->location + 1);
     SetBoxMonData(boxMon, MON_DATA_NUZLOCKE_RIBBON, &dead);
     sCemeteryCleanupPending = TRUE;
@@ -648,11 +675,21 @@ static bool8 QueueEncounterEvent(u16 type, u32 personality, u32 otId,
 
 bool8 SoulLink_QueueCatch(u32 personality, u32 otId, u16 species, u16 location)
 {
+    struct BoxPokemon *boxMon;
     bool8 queued = QueueEncounterEvent(SOUL_LINK_EVENT_CATCH, personality,
         otId, species, location);
 
-    if (queued)
+    if (queued && location <= MAPSEC_SAFARI_ZONE_AREA6)
+    {
+        boxMon = FindOwnedBoxMon(personality, otId);
+        if (boxMon != NULL
+         && SoulLink_GetBoxMonGroupId(boxMon) == SOUL_LINK_GROUP_NONE)
+        {
+            u16 pendingGroup = SOUL_LINK_PENDING_GROUP_FLAG | (location + 1);
+            SoulLink_SetBoxMonGroupId(boxMon, pendingGroup);
+        }
         BeginLocalSnapshot();
+    }
     return queued;
 }
 
@@ -668,7 +705,8 @@ bool8 SoulLink_QueueDeath(u16 groupId)
     u8 i;
 
     if (!(run->status & SOUL_LINK_RUN_STATUS_ACTIVE)
-     || groupId == SOUL_LINK_GROUP_NONE)
+     || groupId == SOUL_LINK_GROUP_NONE
+     || (groupId != SOUL_LINK_STARTER_GROUP_ID && (groupId & SOUL_LINK_PENDING_GROUP_FLAG)))
         return FALSE;
     UpgradeRunVersion(run);
     if (run->protocolVersion != SOUL_LINK_PROTOCOL_VERSION)
