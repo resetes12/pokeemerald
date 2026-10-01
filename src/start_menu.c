@@ -103,6 +103,7 @@ struct SoulLinkMenuState
     u8 activePlayerMask;
     u8 nextPlayerSlot;
     u8 playerNames[4][PLAYER_NAME_LENGTH + 1];
+    struct SoulLinkRegistryMember firstRow[4];
 };
 
 EWRAM_DATA static struct SoulLinkMenuState *sSoulLinkMenu = NULL;
@@ -124,8 +125,10 @@ static bool8 StartMenuDebugCallback(void);
 static bool8 StartMenuSoulLinksCallback(void);
 static bool8 WaitForSoulLinkRegistryCount(void);
 static bool8 WaitForSoulLinkPlayerNames(void);
+static bool8 WaitForSoulLinkFirstRow(void);
 static bool8 HandleSoulLinkBrowserInput(void);
 static bool8 ShowSoulLinkBrowser(void);
+static void PrintSoulLinkCellText(const u8 *text, u8 column, u8 y);
 static void FreeSoulLinkMenu(void);
 static void Task_CloseSoulLinkCount(u8 taskId);
 
@@ -219,7 +222,7 @@ static const u8 gText_MenuDebug[] = _("DEBUG");
 static const u8 sText_MenuSoulLinks[] = _("LINKS");
 static const u8 sText_SoulLinkCount[] = _("Linked groups: {STR_VAR_1}{PAUSE_UNTIL_PRESS}");
 static const u8 sText_SoulLinkTitle[] = _("SOUL LINKS - {STR_VAR_1} GROUPS");
-static const u8 sText_SoulLinkClose[] = _("B: CLOSE");
+static const u8 sText_SoulLinkDetails[] = _("ID {STR_VAR_1}  LOC {STR_VAR_2}  B: CLOSE");
 static const u8 sText_SoulLinkNoPlayer[] = _("N/A");
 static const u8 sText_SoulLinkUnavailable[] = _("Link registry is not ready.{PAUSE_UNTIL_PRESS}");
 
@@ -914,16 +917,8 @@ static bool8 WaitForSoulLinkPlayerNames(void)
         slot++;
     if (slot > 4)
     {
-        if (ShowSoulLinkBrowser())
-        {
-            gMenuCallback = HandleSoulLinkBrowserInput;
-            return FALSE;
-        }
-        ClearStdWindowAndFrame(GetStartMenuWindowId(), TRUE);
-        RemoveStartMenuWindow();
-        taskId = FindTaskIdByFunc(Task_ShowStartMenu);
-        DisplayItemMessageOnField(taskId, sText_SoulLinkUnavailable,
-            Task_CloseSoulLinkCount);
+        sSoulLinkMenu->nextPlayerSlot = 1;
+        gMenuCallback = WaitForSoulLinkFirstRow;
         return FALSE;
     }
     if (!SoulLink_TakeRegistryPlayerName(playerName, &valid))
@@ -947,8 +942,62 @@ static bool8 WaitForSoulLinkPlayerNames(void)
     return FALSE;
 }
 
+static bool8 WaitForSoulLinkFirstRow(void)
+{
+    struct SoulLinkRegistryMember member;
+    u8 slot = sSoulLinkMenu->nextPlayerSlot;
+    bool8 valid;
+    u8 taskId;
+
+    if (JOY_NEW(B_BUTTON))
+    {
+        SoulLink_CancelRegistryRequest();
+        FreeSoulLinkMenu();
+        HideStartMenu();
+        return TRUE;
+    }
+
+    while (slot <= 4
+        && !(sSoulLinkMenu->activePlayerMask & (1 << (slot - 1))))
+        slot++;
+    if (slot > 4)
+    {
+        if (ShowSoulLinkBrowser())
+        {
+            gMenuCallback = HandleSoulLinkBrowserInput;
+            return FALSE;
+        }
+        ClearStdWindowAndFrame(GetStartMenuWindowId(), TRUE);
+        RemoveStartMenuWindow();
+        taskId = FindTaskIdByFunc(Task_ShowStartMenu);
+        DisplayItemMessageOnField(taskId, sText_SoulLinkUnavailable,
+            Task_CloseSoulLinkCount);
+        return FALSE;
+    }
+    if (!SoulLink_TakeRegistryMember(&member, &valid))
+    {
+        SoulLink_RequestRegistryMember(0, slot);
+        return FALSE;
+    }
+    if (valid)
+    {
+        sSoulLinkMenu->firstRow[slot - 1] = member;
+        sSoulLinkMenu->nextPlayerSlot = slot + 1;
+        return FALSE;
+    }
+
+    FreeSoulLinkMenu();
+    ClearStdWindowAndFrame(GetStartMenuWindowId(), TRUE);
+    RemoveStartMenuWindow();
+    taskId = FindTaskIdByFunc(Task_ShowStartMenu);
+    DisplayItemMessageOnField(taskId, sText_SoulLinkUnavailable,
+        Task_CloseSoulLinkCount);
+    return FALSE;
+}
+
 static bool8 ShowSoulLinkBrowser(void)
 {
+    const struct SoulLinkRegistryMember *firstMember = NULL;
     u8 slot;
     u8 column = 0;
     const u8 columnWidth = 224 / 4;
@@ -983,11 +1032,47 @@ static bool8 ShowSoulLinkBrowser(void)
             playerName, x, 25, TEXT_SKIP_DRAW, NULL);
         column++;
     }
-    x = GetStringCenterAlignXOffset(FONT_NORMAL, sText_SoulLinkClose, 224);
+
+    for (slot = 1; slot <= 4; slot++)
+    {
+        if (!(sSoulLinkMenu->activePlayerMask & (1 << (slot - 1))))
+            continue;
+        if (firstMember == NULL)
+            firstMember = &sSoulLinkMenu->firstRow[slot - 1];
+        PrintSoulLinkCellText(sSoulLinkMenu->firstRow[slot - 1].nickname,
+            slot - 1, 49);
+        PrintSoulLinkCellText(
+            gSpeciesNames[sSoulLinkMenu->firstRow[slot - 1].species],
+            slot - 1, 65);
+    }
+    ConvertIntToDecimalStringN(gStringVar1, firstMember->groupId,
+        STR_CONV_MODE_LEFT_ALIGN, 5);
+    ConvertIntToDecimalStringN(gStringVar2, firstMember->location,
+        STR_CONV_MODE_LEFT_ALIGN, 3);
+    StringExpandPlaceholders(gStringVar4, sText_SoulLinkDetails);
+    x = GetStringCenterAlignXOffset(FONT_NORMAL, gStringVar4, 224);
     AddTextPrinterParameterized(sSoulLinkMenu->windowId, FONT_NORMAL,
-        sText_SoulLinkClose, x, 129, TEXT_SKIP_DRAW, NULL);
+        gStringVar4, x, 129, TEXT_SKIP_DRAW, NULL);
     CopyWindowToVram(sSoulLinkMenu->windowId, COPYWIN_FULL);
     return TRUE;
+}
+
+static void PrintSoulLinkCellText(const u8 *text, u8 column, u8 y)
+{
+    u8 buffer[POKEMON_NAME_LENGTH + 1];
+    u8 length;
+    const u8 columnWidth = 224 / 4;
+    const u8 textWidth = columnWidth - 4;
+    u8 x;
+
+    StringCopy(buffer, text);
+    length = StringLength(buffer);
+    while (length > 0 && GetStringWidth(FONT_NARROW, buffer, -1) > textWidth)
+        buffer[--length] = EOS;
+    x = column * columnWidth
+        + GetStringCenterAlignXOffset(FONT_NARROW, buffer, columnWidth);
+    AddTextPrinterParameterized(sSoulLinkMenu->windowId, FONT_NARROW,
+        buffer, x, y, TEXT_SKIP_DRAW, NULL);
 }
 
 static bool8 HandleSoulLinkBrowserInput(void)
