@@ -98,6 +98,9 @@ EWRAM_DATA static u8 sSaveDialogTimer = 0;
 EWRAM_DATA static bool8 sSavingComplete = FALSE;
 EWRAM_DATA static u8 sSaveInfoWindowId = 0;
 
+#define SOUL_LINK_ALIVE_COLOR 10
+#define SOUL_LINK_DEAD_COLOR  11
+
 struct SoulLinkMenuState
 {
     u16 groupCount;
@@ -108,6 +111,7 @@ struct SoulLinkMenuState
     u8 nextPlayerSlot;
     u8 nextVisibleRow;
     bool8 iconPalettesLoaded;
+    bool8 cellPalettesLoaded;
     u8 iconSpriteIds[2][4];
     u8 playerNames[4][PLAYER_NAME_LENGTH + 1];
     struct SoulLinkRegistryMember rowMembers[2][4];
@@ -137,7 +141,8 @@ static bool8 HandleSoulLinkBrowserInput(void);
 static bool8 ShowSoulLinkBrowser(void);
 static void DrawSoulLinkBrowser(void);
 static bool8 CloseSoulLinkBrowser(void);
-static void PrintSoulLinkCellText(const u8 *text, u8 column, u8 y);
+static void PrintSoulLinkCellText(const u8 *text, u8 column, u8 y,
+    const u8 *colors);
 static void CreateSoulLinkIcons(void);
 static void DestroySoulLinkIcons(void);
 static void FreeSoulLinkMenu(void);
@@ -240,6 +245,12 @@ static const u8 sText_SoulLinkNoPlayer[] = _("N/A");
 static const u8 sText_SoulLinkMissed[] = _("MISSED");
 static const u8 sText_SoulLinkStarter[] = _("Starter");
 static const u8 sText_SoulLinkUnavailable[] = _("Link registry is not ready.{PAUSE_UNTIL_PRESS}");
+static const u8 sTextColor_SoulLinkAlive[] = {
+    SOUL_LINK_ALIVE_COLOR, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_LIGHT_GRAY};
+static const u8 sTextColor_SoulLinkDead[] = {
+    SOUL_LINK_DEAD_COLOR, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_LIGHT_GRAY};
+static const u16 sSoulLinkCellPalette[] = {
+    RGB(20, 30, 20), RGB(31, 20, 20)};
 
 static const struct MenuAction sStartMenuItems[] =
 {
@@ -1039,6 +1050,9 @@ static bool8 ShowSoulLinkBrowser(void)
     ClearStdWindowAndFrame(GetStartMenuWindowId(), FALSE);
     RemoveStartMenuWindow();
     DrawStdWindowFrame(sSoulLinkMenu->windowId, FALSE);
+    LoadPalette(sSoulLinkCellPalette,
+        BG_PLTT_ID(15) + SOUL_LINK_ALIVE_COLOR, sizeof(sSoulLinkCellPalette));
+    sSoulLinkMenu->cellPalettesLoaded = TRUE;
     LoadMonIconPalettes();
     sSoulLinkMenu->iconPalettesLoaded = TRUE;
     DrawSoulLinkBrowser();
@@ -1073,28 +1087,57 @@ static void DrawSoulLinkBrowser(void)
         && sSoulLinkMenu->topRow + visibleRow < sSoulLinkMenu->groupCount;
         visibleRow++)
     {
-        if (sSoulLinkMenu->topRow + visibleRow == sSoulLinkMenu->selectedRow)
-            AddTextPrinterParameterized(sSoulLinkMenu->windowId,
-                FONT_SMALL_NARROW, gText_SelectorArrow3, 0,
-                28 + visibleRow * 56, TEXT_SKIP_DRAW, NULL);
+        const u8 *selectorColors = NULL;
+
         for (slot = 1; slot <= 4; slot++)
         {
+            const struct SoulLinkRegistryMember *member =
+                &sSoulLinkMenu->rowMembers[visibleRow][slot - 1];
+            const u8 *colors;
+
             if (!(sSoulLinkMenu->activePlayerMask & (1 << (slot - 1))))
                 continue;
+            colors = member->dead || member->missed
+                ? sTextColor_SoulLinkDead : sTextColor_SoulLinkAlive;
+            FillWindowPixelRect(sSoulLinkMenu->windowId,
+                PIXEL_FILL(colors[0]), (slot - 1) * columnWidth,
+                12 + visibleRow * 56, columnWidth, 56);
+            if (slot == 1)
+                selectorColors = colors;
+        }
+        if (sSoulLinkMenu->topRow + visibleRow == sSoulLinkMenu->selectedRow)
+        {
+            if (selectorColors != NULL)
+                AddTextPrinterParameterized3(sSoulLinkMenu->windowId,
+                    FONT_SMALL_NARROW, 0, 28 + visibleRow * 56,
+                    selectorColors, TEXT_SKIP_DRAW, gText_SelectorArrow3);
+            else
+                AddTextPrinterParameterized(sSoulLinkMenu->windowId,
+                    FONT_SMALL_NARROW, gText_SelectorArrow3, 0,
+                    28 + visibleRow * 56, TEXT_SKIP_DRAW, NULL);
+        }
+        for (slot = 1; slot <= 4; slot++)
+        {
+            const struct SoulLinkRegistryMember *member =
+                &sSoulLinkMenu->rowMembers[visibleRow][slot - 1];
+            const u8 *colors;
+
+            if (!(sSoulLinkMenu->activePlayerMask & (1 << (slot - 1))))
+                continue;
+            colors = member->dead || member->missed
+                ? sTextColor_SoulLinkDead : sTextColor_SoulLinkAlive;
             if (sSoulLinkMenu->topRow + visibleRow == sSoulLinkMenu->selectedRow
              && selectedMember == NULL)
-                selectedMember = &sSoulLinkMenu->rowMembers[visibleRow][slot - 1];
-            if (sSoulLinkMenu->rowMembers[visibleRow][slot - 1].missed)
+                selectedMember = member;
+            if (member->missed)
                 PrintSoulLinkCellText(sText_SoulLinkMissed, slot - 1,
-                    50 + visibleRow * 56);
+                    50 + visibleRow * 56, colors);
             else
             {
-                PrintSoulLinkCellText(
-                    sSoulLinkMenu->rowMembers[visibleRow][slot - 1].nickname,
-                    slot - 1, 44 + visibleRow * 56);
-                PrintSoulLinkCellText(gSpeciesNames[
-                    sSoulLinkMenu->rowMembers[visibleRow][slot - 1].species],
-                    slot - 1, 56 + visibleRow * 56);
+                PrintSoulLinkCellText(member->nickname, slot - 1,
+                    44 + visibleRow * 56, colors);
+                PrintSoulLinkCellText(gSpeciesNames[member->species], slot - 1,
+                    56 + visibleRow * 56, colors);
             }
         }
     }
@@ -1182,7 +1225,8 @@ static void DestroySoulLinkIcons(void)
     }
 }
 
-static void PrintSoulLinkCellText(const u8 *text, u8 column, u8 y)
+static void PrintSoulLinkCellText(const u8 *text, u8 column, u8 y,
+    const u8 *colors)
 {
     u8 buffer[POKEMON_NAME_LENGTH + 1];
     u8 length;
@@ -1197,8 +1241,8 @@ static void PrintSoulLinkCellText(const u8 *text, u8 column, u8 y)
         buffer[--length] = EOS;
     x = column * columnWidth
         + GetStringCenterAlignXOffset(FONT_SMALL_NARROW, buffer, columnWidth);
-    AddTextPrinterParameterized(sSoulLinkMenu->windowId, FONT_SMALL_NARROW,
-        buffer, x, y, TEXT_SKIP_DRAW, NULL);
+    AddTextPrinterParameterized3(sSoulLinkMenu->windowId, FONT_SMALL_NARROW,
+        x, y, colors, TEXT_SKIP_DRAW, buffer);
 }
 
 static bool8 HandleSoulLinkBrowserInput(void)
@@ -1259,6 +1303,10 @@ static void FreeSoulLinkMenu(void)
         DestroySoulLinkIcons();
         if (sSoulLinkMenu->iconPalettesLoaded)
             FreeMonIconPalettes();
+        if (sSoulLinkMenu->cellPalettesLoaded)
+            LoadPalette(gStandardMenuPalette + SOUL_LINK_ALIVE_COLOR,
+                BG_PLTT_ID(15) + SOUL_LINK_ALIVE_COLOR,
+                sizeof(sSoulLinkCellPalette));
         Free(sSoulLinkMenu);
         sSoulLinkMenu = NULL;
     }
