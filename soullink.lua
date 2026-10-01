@@ -434,6 +434,8 @@ local function expectedSnapshotSlot(sender)
         or tonumber(sender:match("^client([1-3])$")) + 1
 end
 
+local resolveLinkDeath
+
 local function rebuildMergedRegistry()
     local rebuilt = {}
     local completePlayers = 0
@@ -474,6 +476,18 @@ local function rebuildMergedRegistry()
     console.log(string.format(
         "[SoulLink] merged snapshots players=0x%X/0x%X groups=%d complete=%d",
         completePlayers, gatePlayerMask, groupCount, completeGroupCount))
+
+    if networkConfig.role == "host" and completePlayers == gatePlayerMask then
+        for groupId, group in pairs(rebuilt) do
+            local hasDeadMember = false
+            for _, member in pairs(group.members) do
+                hasDeadMember = hasDeadMember or member.dead
+            end
+            if hasDeadMember and not group.failed then
+                resolveLinkDeath("host", groupId)
+            end
+        end
+    end
 end
 
 local function getCompleteRegistryGroupIds()
@@ -604,7 +618,7 @@ local function queueLinkDied(groupId)
     }
 end
 
-local function resolveLinkDeath(sender, groupId)
+resolveLinkDeath = function(sender, groupId)
     local reporterMask = senderPlayerMask(sender)
     if gateState ~= GATE_APPROVED
         or math.floor(gatePlayerMask / reporterMask) % 2 ~= 1
