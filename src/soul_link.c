@@ -1,4 +1,5 @@
 #include "global.h"
+#include "characters.h"
 #include "pokemon.h"
 #include "pokemon_storage_system.h"
 #include "soul_link.h"
@@ -482,6 +483,13 @@ void SoulLink_Update(void)
                 sRegistryMember.species = gSoulLinkMailbox.incoming.species;
                 sRegistryMember.location = gSoulLinkMailbox.incoming.location;
                 sRegistryMember.dead = (flags & SOUL_LINK_REGISTRY_RESULT_DEAD) != 0;
+                memcpy(sRegistryMember.nickname,
+                    (const void *)&gSoulLinkMailbox.incoming.personality, sizeof(u32));
+                memcpy(sRegistryMember.nickname + sizeof(u32),
+                    (const void *)&gSoulLinkMailbox.incoming.otId, sizeof(u32));
+                memcpy(sRegistryMember.nickname + 2 * sizeof(u32),
+                    (const void *)&gSoulLinkMailbox.incoming.reserved, sizeof(u16));
+                sRegistryMember.nickname[POKEMON_NAME_LENGTH] = EOS;
             }
             sRegistryResultValid = (flags & SOUL_LINK_REGISTRY_RESULT_VALID) != 0;
             sRegistryPendingRequest = 0;

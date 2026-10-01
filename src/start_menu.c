@@ -3,6 +3,7 @@
 #include "battle_pyramid.h"
 #include "battle_pyramid_bag.h"
 #include "bg.h"
+#include "data.h"
 #include "debug.h"
 #include "event_data.h"
 #include "event_object_movement.h"
@@ -193,7 +194,7 @@ static const struct WindowTemplate sWindowTemplate_PyramidPeak = {
 static const u8 gText_MenuDebug[] = _("DEBUG");
 static const u8 sText_MenuSoulLinks[] = _("LINKS");
 static const u8 sText_SoulLinkCount[] = _("Linked groups: {STR_VAR_1}{PAUSE_UNTIL_PRESS}");
-static const u8 sText_SoulLinkFirst[] = _("Linked groups: {STR_VAR_1}\nFirst ID {STR_VAR_2}: species {STR_VAR_3}{PAUSE_UNTIL_PRESS}");
+static const u8 sText_SoulLinkFirst[] = _("Group {STR_VAR_1}\n{STR_VAR_2} / {STR_VAR_3}{PAUSE_UNTIL_PRESS}");
 static const u8 sText_SoulLinkUnavailable[] = _("Link registry is not ready.{PAUSE_UNTIL_PRESS}");
 
 static const struct MenuAction sStartMenuItems[] =
@@ -878,12 +879,10 @@ static bool8 WaitForSoulLinkRegistryMember(void)
     taskId = FindTaskIdByFunc(Task_ShowStartMenu);
     if (valid)
     {
-        ConvertIntToDecimalStringN(gStringVar1, sSoulLinkGroupCount,
-            STR_CONV_MODE_LEFT_ALIGN, 3);
-        ConvertIntToDecimalStringN(gStringVar2, member.groupId,
+        ConvertIntToDecimalStringN(gStringVar1, member.groupId,
             STR_CONV_MODE_LEFT_ALIGN, 5);
-        ConvertIntToDecimalStringN(gStringVar3, member.species,
-            STR_CONV_MODE_LEFT_ALIGN, 4);
+        StringCopy(gStringVar2, member.nickname);
+        StringCopy(gStringVar3, gSpeciesNames[member.species]);
         DisplayItemMessageOnField(taskId, sText_SoulLinkFirst,
             Task_CloseSoulLinkCount);
     }

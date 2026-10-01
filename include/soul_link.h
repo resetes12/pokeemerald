@@ -59,6 +59,7 @@ struct SoulLinkRegistryMember
     u16 species;
     u16 location;
     bool8 dead;
+    u8 nickname[POKEMON_NAME_LENGTH + 1];
 };
 
 enum SoulLinkLobbyIntent

@@ -1369,10 +1369,13 @@ local function consumeMailboxOutgoing()
                 flags = request + (valid and REGISTRY_RESULT_VALID or 0)
                     + (member and member.dead and REGISTRY_RESULT_DEAD or 0),
                 payload = {
+                    personality = member and member.nicknameLow or 0,
+                    otId = member and member.nicknameHigh or 0,
                     pairId = groupId or 0,
                     species = request == REGISTRY_REQUEST_COUNT
                         and (groupIds and #groupIds or 0) or (member and member.species or 0),
                     location = member and member.location or 0,
+                    reserved = member and member.nicknameTail or 0,
                 },
             }
             console.log(string.format(
