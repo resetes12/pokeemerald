@@ -38,6 +38,10 @@ local EVENT_LINK_CREATED = 8
 local EVENT_SNAPSHOT_BEGIN = 9
 local EVENT_SNAPSHOT_MEMBER = 10
 local EVENT_SNAPSHOT_END = 11
+local EVENT_REGISTRY_REQUEST = 12
+local EVENT_REGISTRY_RESULT = 13
+local REGISTRY_REQUEST_COUNT = 1
+local REGISTRY_RESULT_VALID = 0x100
 local PING_INTERVAL_FRAMES = 300
 local NETWORK_KEEPALIVE_INTERVAL_FRAMES = 300
 local NETWORK_PEER_TIMEOUT_SECONDS = 600
@@ -411,6 +415,28 @@ local function rebuildMergedRegistry()
     console.log(string.format(
         "[SoulLink] merged snapshots players=0x%X/0x%X groups=%d complete=%d",
         completePlayers, gatePlayerMask, groupCount, completeGroupCount))
+end
+
+local function countCompleteRegistryGroups()
+    local playerMask = 0
+    for slot in pairs(playerSnapshots) do
+        playerMask = playerMask + 2 ^ (slot - 1)
+    end
+    if playerMask ~= gatePlayerMask then
+        return nil
+    end
+
+    local count = 0
+    for _, group in pairs(mergedLinkRegistry) do
+        local memberMask = 0
+        for slot in pairs(group.members) do
+            memberMask = memberMask + 2 ^ (slot - 1)
+        end
+        if memberMask == gatePlayerMask then
+            count = count + 1
+        end
+    end
+    return count
 end
 
 local function recordSnapshot(sender, messageType, values, expectedSlot)
@@ -1314,6 +1340,19 @@ local function consumeMailboxOutgoing()
         console.log(string.format(
             "[SoulLink] local snapshot end slot=%d members=%d",
             slot, count))
+    elseif eventType == EVENT_REGISTRY_REQUEST then
+        local request = memory.read_u16_le(offset + 20, EWRAM_DOMAIN)
+        if request == REGISTRY_REQUEST_COUNT then
+            local count = countCompleteRegistryGroups()
+            pendingRomEvents[#pendingRomEvents + 1] = {
+                type = EVENT_REGISTRY_RESULT,
+                flags = request + (count and REGISTRY_RESULT_VALID or 0),
+                payload = {species = count or 0},
+            }
+            console.log(string.format(
+                "[SoulLink] registry count request: %s",
+                count and tostring(count) or "not ready"))
+        end
     else
         console.log("[SoulLink] ignored unknown ROM event " .. eventType)
     end

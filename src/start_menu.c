@@ -35,6 +35,7 @@
 #include "scanline_effect.h"
 #include "script.h"
 #include "sound.h"
+#include "soul_link.h"
 #include "start_menu.h"
 #include "strings.h"
 #include "string_util.h"
@@ -65,6 +66,7 @@ enum
     MENU_ACTION_RETIRE_FRONTIER,
     MENU_ACTION_PYRAMID_BAG,
     MENU_ACTION_DEBUG,
+    MENU_ACTION_SOUL_LINKS,
 };
 
 // Save status
@@ -106,6 +108,9 @@ static bool8 StartMenuLinkModePlayerNameCallback(void);
 static bool8 StartMenuBattlePyramidRetireCallback(void);
 static bool8 StartMenuBattlePyramidBagCallback(void);
 static bool8 StartMenuDebugCallback(void);
+static bool8 StartMenuSoulLinksCallback(void);
+static bool8 WaitForSoulLinkRegistryCount(void);
+static void Task_CloseSoulLinkCount(u8 taskId);
 
 // Menu callbacks
 static bool8 SaveStartCallback(void);
@@ -184,6 +189,9 @@ static const struct WindowTemplate sWindowTemplate_PyramidPeak = {
 };
 
 static const u8 gText_MenuDebug[] = _("DEBUG");
+static const u8 sText_MenuSoulLinks[] = _("LINKS");
+static const u8 sText_SoulLinkCount[] = _("Linked groups: {STR_VAR_1}{PAUSE_UNTIL_PRESS}");
+static const u8 sText_SoulLinkUnavailable[] = _("Link registry is not ready.{PAUSE_UNTIL_PRESS}");
 
 static const struct MenuAction sStartMenuItems[] =
 {
@@ -200,7 +208,8 @@ static const struct MenuAction sStartMenuItems[] =
     [MENU_ACTION_REST_FRONTIER]   = {gText_MenuRest,    {.u8_void = StartMenuSaveCallback}},
     [MENU_ACTION_RETIRE_FRONTIER] = {gText_MenuRetire,  {.u8_void = StartMenuBattlePyramidRetireCallback}},
     [MENU_ACTION_PYRAMID_BAG]     = {gText_MenuBag,     {.u8_void = StartMenuBattlePyramidBagCallback}},
-    [MENU_ACTION_DEBUG]           = {gText_MenuDebug,   {.u8_void = StartMenuDebugCallback}}
+    [MENU_ACTION_DEBUG]           = {gText_MenuDebug,   {.u8_void = StartMenuDebugCallback}},
+    [MENU_ACTION_SOUL_LINKS]      = {sText_MenuSoulLinks, {.u8_void = StartMenuSoulLinksCallback}}
 };
 
 static const struct BgTemplate sBgTemplates_LinkBattleSave[] =
@@ -321,7 +330,8 @@ static void BuildStartMenuActions(void)
 
 static void AddStartMenuAction(u8 action)
 {
-    AppendToList(sCurrentStartMenuActions, &sNumStartMenuActions, action);
+    if (sNumStartMenuActions < ARRAY_COUNT(sCurrentStartMenuActions))
+        AppendToList(sCurrentStartMenuActions, &sNumStartMenuActions, action);
 }
 
 static void BuildNormalStartMenu(void)
@@ -345,7 +355,8 @@ static void BuildNormalStartMenu(void)
     AddStartMenuAction(MENU_ACTION_PLAYER);
     AddStartMenuAction(MENU_ACTION_SAVE);
     AddStartMenuAction(MENU_ACTION_OPTION);
-    AddStartMenuAction(MENU_ACTION_EXIT);
+    AddStartMenuAction(SoulLink_IsActive()
+        ? MENU_ACTION_SOUL_LINKS : MENU_ACTION_EXIT);
 }
 
 static void BuildDebugStartMenu(void)
@@ -653,6 +664,7 @@ static bool8 HandleStartMenuInput(void)
 
         if (gMenuCallback != StartMenuSaveCallback
             && gMenuCallback != StartMenuExitCallback
+            && gMenuCallback != StartMenuSoulLinksCallback
             && gMenuCallback != StartMenuDebugCallback
             && gMenuCallback != StartMenuSafariZoneRetireCallback
             && gMenuCallback != StartMenuBattlePyramidRetireCallback)
@@ -787,6 +799,58 @@ static bool8 StartMenuExitCallback(void)
     HideStartMenu(); // Hide start menu
 
     return TRUE;
+}
+
+static bool8 StartMenuSoulLinksCallback(void)
+{
+    if (JOY_NEW(B_BUTTON))
+    {
+        SoulLink_CancelRegistryRequest();
+        HideStartMenu();
+        return TRUE;
+    }
+    if (SoulLink_RequestRegistryCount())
+        gMenuCallback = WaitForSoulLinkRegistryCount;
+    return FALSE;
+}
+
+static bool8 WaitForSoulLinkRegistryCount(void)
+{
+    u16 count;
+    bool8 valid;
+    u8 taskId;
+
+    if (JOY_NEW(B_BUTTON))
+    {
+        SoulLink_CancelRegistryRequest();
+        HideStartMenu();
+        return TRUE;
+    }
+    if (!SoulLink_TakeRegistryCount(&count, &valid))
+        return FALSE;
+
+    ClearStdWindowAndFrame(GetStartMenuWindowId(), TRUE);
+    RemoveStartMenuWindow();
+    taskId = FindTaskIdByFunc(Task_ShowStartMenu);
+    if (valid)
+    {
+        ConvertIntToDecimalStringN(gStringVar1, count, STR_CONV_MODE_LEFT_ALIGN, 3);
+        DisplayItemMessageOnField(taskId, sText_SoulLinkCount, Task_CloseSoulLinkCount);
+    }
+    else
+    {
+        DisplayItemMessageOnField(taskId, sText_SoulLinkUnavailable,
+            Task_CloseSoulLinkCount);
+    }
+    return FALSE;
+}
+
+static void Task_CloseSoulLinkCount(u8 taskId)
+{
+    ClearDialogWindowAndFrame(0, TRUE);
+    ScriptUnfreezeObjectEvents();
+    UnlockPlayerFieldControls();
+    DestroyTask(taskId);
 }
 
 static bool8 StartMenuDebugCallback(void)

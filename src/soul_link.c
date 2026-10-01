@@ -17,6 +17,10 @@ static EWRAM_DATA struct SoulLinkMessage sPendingCatch = {0};
 static EWRAM_DATA u16 sSnapshotIndex = 0;
 static EWRAM_DATA u16 sSnapshotMemberCount = 0;
 static EWRAM_DATA u8 sSnapshotState = 0;
+static EWRAM_DATA bool8 sRegistryRequestPending = FALSE;
+static EWRAM_DATA bool8 sRegistryResultReady = FALSE;
+static EWRAM_DATA bool8 sRegistryResultValid = FALSE;
+static EWRAM_DATA u16 sRegistryGroupCount = 0;
 
 enum
 {
@@ -58,6 +62,10 @@ static void ResetMailbox(void)
     memset((void *)&gSoulLinkPendingRun, 0, sizeof(gSoulLinkPendingRun));
     memset((void *)&gSoulLinkMailbox, 0, sizeof(gSoulLinkMailbox));
     sSnapshotState = SNAPSHOT_IDLE;
+    sRegistryRequestPending = FALSE;
+    sRegistryResultReady = FALSE;
+    sRegistryResultValid = FALSE;
+    sRegistryGroupCount = 0;
     gSoulLinkMailbox.protocolVersion = SOUL_LINK_PROTOCOL_VERSION;
     gSoulLinkMailbox.size = sizeof(gSoulLinkMailbox);
 
@@ -106,6 +114,40 @@ static bool8 TryPublishOutgoing(u16 type, u32 personality, u32 otId,
     message->reserved = data;
     message->sequence = sequence;
     return TRUE;
+}
+
+bool8 SoulLink_IsActive(void)
+{
+    return (gSoulLinkPendingRun.status & SOUL_LINK_RUN_STATUS_ACTIVE)
+        || (gSaveBlock2Ptr->soulLink.status & SOUL_LINK_RUN_STATUS_ACTIVE);
+}
+
+bool8 SoulLink_RequestRegistryCount(void)
+{
+    if (sRegistryRequestPending)
+        return TRUE;
+    if (!TryPublishOutgoing(SOUL_LINK_EVENT_REGISTRY_REQUEST, 0, 0, 0,
+            0, 0, SOUL_LINK_REGISTRY_REQUEST_COUNT, 0))
+        return FALSE;
+    sRegistryRequestPending = TRUE;
+    sRegistryResultReady = FALSE;
+    return TRUE;
+}
+
+bool8 SoulLink_TakeRegistryCount(u16 *count, bool8 *valid)
+{
+    if (!sRegistryResultReady)
+        return FALSE;
+    *count = sRegistryGroupCount;
+    *valid = sRegistryResultValid;
+    sRegistryResultReady = FALSE;
+    return TRUE;
+}
+
+void SoulLink_CancelRegistryRequest(void)
+{
+    sRegistryRequestPending = FALSE;
+    sRegistryResultReady = FALSE;
 }
 
 static void BeginLocalSnapshot(void)
@@ -381,6 +423,15 @@ void SoulLink_Update(void)
         else if (gSoulLinkMailbox.incoming.type == SOUL_LINK_EVENT_LINK_CREATED)
         {
             ApplyLinkCreated(&gSoulLinkMailbox.incoming);
+        }
+        else if (gSoulLinkMailbox.incoming.type == SOUL_LINK_EVENT_REGISTRY_RESULT
+              && sRegistryRequestPending
+              && (flags & 0xFF) == SOUL_LINK_REGISTRY_REQUEST_COUNT)
+        {
+            sRegistryGroupCount = gSoulLinkMailbox.incoming.species;
+            sRegistryResultValid = (flags & SOUL_LINK_REGISTRY_RESULT_VALID) != 0;
+            sRegistryRequestPending = FALSE;
+            sRegistryResultReady = TRUE;
         }
 
         // Unknown messages are consumed so malformed input cannot wedge the

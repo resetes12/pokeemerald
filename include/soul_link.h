@@ -23,6 +23,7 @@
 #define SOUL_LINK_GROUP_NONE 0
 #define SOUL_LINK_STARTER_GROUP_ID 0xFFFF
 #define SOUL_LINK_SNAPSHOT_FLAG_DEAD (1 << 0)
+#define SOUL_LINK_REGISTRY_RESULT_VALID (1 << 8)
 
 struct BoxPokemon;
 
@@ -40,6 +41,13 @@ enum SoulLinkEventType
     SOUL_LINK_EVENT_SNAPSHOT_BEGIN,
     SOUL_LINK_EVENT_SNAPSHOT_MEMBER,
     SOUL_LINK_EVENT_SNAPSHOT_END,
+    SOUL_LINK_EVENT_REGISTRY_REQUEST,
+    SOUL_LINK_EVENT_REGISTRY_RESULT,
+};
+
+enum SoulLinkRegistryRequest
+{
+    SOUL_LINK_REGISTRY_REQUEST_COUNT = 1,
 };
 
 enum SoulLinkLobbyIntent
@@ -110,6 +118,10 @@ bool8 SoulLink_SendLobbyIntent(u8 intent);
 bool8 SoulLink_SendLobbyStart(void);
 bool8 SoulLink_SendSettings(void);
 bool8 SoulLink_QueueCatch(u32 personality, u32 otId, u16 species, u16 location);
+bool8 SoulLink_IsActive(void);
+bool8 SoulLink_RequestRegistryCount(void);
+bool8 SoulLink_TakeRegistryCount(u16 *count, bool8 *valid);
+void SoulLink_CancelRegistryRequest(void);
 u16 SoulLink_GetBoxMonGroupId(struct BoxPokemon *boxMon);
 void SoulLink_SetBoxMonGroupId(struct BoxPokemon *boxMon, u16 groupId);
 
