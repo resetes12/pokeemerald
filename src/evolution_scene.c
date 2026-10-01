@@ -17,8 +17,10 @@
 #include "palette.h"
 #include "pokedex.h"
 #include "pokemon.h"
+#include "pokemon_storage_system.h"
 #include "pokemon_summary_screen.h"
 #include "scanline_effect.h"
+#include "soul_link.h"
 #include "sound.h"
 #include "sprite.h"
 #include "string_util.h"
@@ -548,7 +550,7 @@ static void CB2_TradeEvolutionSceneUpdate(void)
     RunTasks();
 }
 
-static void CreateShedinja(u16 preEvoSpecies, struct Pokemon *mon)
+static void CreateShedinja(u16 preEvoSpecies, struct Pokemon *mon, u8 partyId)
 {
     u32 data = 0;
     if (gEvolutionTable[preEvoSpecies][0].method == EVO_LEVEL_NINJASK && gPlayerPartyCount < PARTY_SIZE)
@@ -590,6 +592,15 @@ static void CreateShedinja(u16 preEvoSpecies, struct Pokemon *mon)
             && GetMonData(shedinja, MON_DATA_LANGUAGE) == LANGUAGE_JAPANESE
             && GetMonData(mon, MON_DATA_SPECIES) == SPECIES_NINJASK)
                 SetMonData(shedinja, MON_DATA_NICKNAME, sText_ShedinjaJapaneseName);
+
+        // A linked Shedinja replaces Ninjask as the sole member of its group.
+        if (SoulLink_IsActive()
+         && SoulLink_GetBoxMonGroupId(&shedinja->box) != SOUL_LINK_GROUP_NONE)
+        {
+            PurgeMonOrBoxMon(TOTAL_BOXES_COUNT, partyId);
+            CompactPartySlots();
+            CalculatePlayerPartyCount();
+        }
     }
 }
 
@@ -828,7 +839,10 @@ static void Task_EvolutionScene(u8 taskId)
                 Overworld_PlaySpecialMapMusic();
             }
             if (!gTasks[taskId].tEvoWasStopped)
-                CreateShedinja(gTasks[taskId].tPreEvoSpecies, mon);
+            {
+                CreateShedinja(gTasks[taskId].tPreEvoSpecies, mon, gTasks[taskId].tPartyId);
+                SoulLink_RefreshLocalSnapshot();
+            }
 
             DestroyTask(taskId);
             FreeMonSpritesGfx();
