@@ -12,7 +12,7 @@ local EWRAM_BASE = 0x02000000
 local EWRAM_END = 0x02040000
 
 local MAILBOX_MAGIC = 0x4B4E4C53
-local MAILBOX_VERSION = 12
+local MAILBOX_VERSION = 13
 local SAVE_FORMAT_VERSION = 4
 local MAILBOX_SIZE = 68
 local MAILBOX_OUTGOING_OFFSET = 12
@@ -41,6 +41,8 @@ local EVENT_SNAPSHOT_END = 11
 local EVENT_REGISTRY_REQUEST = 12
 local EVENT_REGISTRY_RESULT = 13
 local EVENT_ENCOUNTER_FAILED = 14
+local EVENT_DEATH = 15
+local EVENT_LINK_DIED = 16
 local REGISTRY_REQUEST_COUNT = 1
 local REGISTRY_REQUEST_MEMBER = 2
 local REGISTRY_REQUEST_PLAYER_NAME = 3
@@ -162,6 +164,7 @@ local pendingRomEvents = {}
 local snapshotBuilders = {}
 local playerSnapshots = {}
 local mergedLinkRegistry = {}
+local resolvedDeathGroups = {}
 local pendingNetworkMessages = {}
 local pendingNetworkMessageIndex = 1
 
@@ -399,6 +402,16 @@ local function parseLinkCreated(payload)
     }
 end
 
+local function parseGroupId(payload)
+    local groupId = tonumber(payload)
+    if not groupId or groupId < 1 or groupId > STARTER_GROUP_ID
+        or groupId ~= math.floor(groupId)
+    then
+        return nil
+    end
+    return groupId
+end
+
 local function parseSnapshot(payload, valueCount)
     local pattern = "^" .. string.rep("(%d+),", valueCount - 1) .. "(%d+)$"
     local values = {payload:match(pattern)}
@@ -574,6 +587,38 @@ local function queueLinkCreated(link)
         link.groupId, link.otId, link.personality))
 end
 
+local function markRegistryGroupDead(groupId)
+    local group = mergedLinkRegistry[groupId]
+    if group then
+        for _, member in pairs(group.members) do
+            member.dead = true
+        end
+    end
+end
+
+local function queueLinkDied(groupId)
+    markRegistryGroupDead(groupId)
+    pendingRomEvents[#pendingRomEvents + 1] = {
+        type = EVENT_LINK_DIED, flags = 0,
+        payload = {pairId = groupId},
+    }
+end
+
+local function resolveLinkDeath(sender, groupId)
+    local reporterMask = senderPlayerMask(sender)
+    if gateState ~= GATE_APPROVED
+        or math.floor(gatePlayerMask / reporterMask) % 2 ~= 1
+        or resolvedDeathGroups[groupId]
+    then
+        return
+    end
+    resolvedDeathGroups[groupId] = true
+    queueLinkDied(groupId)
+    sendNetworkMessage("LINK_DIED", tostring(groupId))
+    console.log(string.format(
+        "[SoulLink] group=%d died; reporter=%s", groupId, sender))
+end
+
 local function getHostLobbyFacts()
     local count = 0
     local allReady = true
@@ -633,6 +678,7 @@ local function applyGateState(state, playerMask, broadcast,
         snapshotBuilders = {}
         playerSnapshots = {}
         mergedLinkRegistry = {}
+        resolvedDeathGroups = {}
         if networkConfig.role == "host" then
             pendingCatchGroups = {}
             finalizedCatchGroups = {}
@@ -1065,6 +1111,7 @@ local function handleNetworkMessage(message)
         and messageType ~= "ENCOUNTER_FAILED"
         and messageType ~= "ENCOUNTER_CLOSED"
         and messageType ~= "LINK_CREATED"
+        and messageType ~= "DEATH" and messageType ~= "LINK_DIED"
         and messageType ~= "SNAPSHOT_BEGIN"
         and messageType ~= "SNAPSHOT_MEMBER"
         and messageType ~= "SNAPSHOT_END"
@@ -1163,6 +1210,14 @@ local function handleNetworkMessage(message)
         if networkConfig.role ~= "client" or not parseLinkCreated(payload) then
             return false, "invalid LINK_CREATED payload"
         end
+    elseif messageType == "DEATH" then
+        if networkConfig.role ~= "host" or not parseGroupId(payload) then
+            return false, "invalid DEATH payload"
+        end
+    elseif messageType == "LINK_DIED" then
+        if networkConfig.role ~= "client" or not parseGroupId(payload) then
+            return false, "invalid LINK_DIED payload"
+        end
     elseif messageType:match("^SNAPSHOT_") then
         local counts = {SNAPSHOT_BEGIN = 3, SNAPSHOT_MEMBER = 7, SNAPSHOT_END = 2}
         local values = parseSnapshot(payload, counts[messageType])
@@ -1233,6 +1288,15 @@ local function handleNetworkMessage(message)
         local link = parseLinkCreated(payload)
         if link.playerMask == localPlayerMask then
             queueLinkCreated(link)
+        end
+    elseif messageType == "DEATH" then
+        resolveLinkDeath(sender, parseGroupId(payload))
+    elseif messageType == "LINK_DIED" then
+        local groupId = parseGroupId(payload)
+        if not resolvedDeathGroups[groupId] then
+            resolvedDeathGroups[groupId] = true
+            queueLinkDied(groupId)
+            console.log(string.format("[SoulLink] LINK_DIED received: group=%d", groupId))
         end
     elseif messageType:match("^SNAPSHOT_") then
         -- Validated and recorded above; only sequence bookkeeping remains.
@@ -1452,6 +1516,16 @@ local function consumeMailboxOutgoing()
         if consumed then
             console.log(string.format(
                 "[SoulLink] local ENCOUNTER_FAILED: location=%d", location))
+        end
+    elseif eventType == EVENT_DEATH then
+        local groupId = memory.read_u16_le(offset + 14, EWRAM_DOMAIN)
+        if networkConfig.role == "client" then
+            consumed = sendNetworkMessage("DEATH", tostring(groupId))
+        else
+            resolveLinkDeath("host", groupId)
+        end
+        if consumed then
+            console.log(string.format("[SoulLink] local DEATH: group=%d", groupId))
         end
     elseif eventType == EVENT_SNAPSHOT_BEGIN then
         local slot = memory.read_u16_le(offset + 14, EWRAM_DOMAIN)

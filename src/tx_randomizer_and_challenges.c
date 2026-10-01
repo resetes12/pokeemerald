@@ -285,6 +285,10 @@ void NuzlockeDeleteFaintedPartyPokemon(void) // @Kurausukun
         {
             if (GetMonAilment(pokemon) == AILMENT_FNT)
             {
+                u16 groupId = SoulLink_GetBoxMonGroupId(&pokemon->box);
+
+                if (groupId != SOUL_LINK_GROUP_NONE)
+                    SoulLink_QueueDeath(groupId);
                 monItem = GetMonData(pokemon, MON_DATA_HELD_ITEM, NULL);
 
                 if (monItem != ITEM_NONE)

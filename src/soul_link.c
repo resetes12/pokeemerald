@@ -18,6 +18,8 @@ EWRAM_DATA volatile struct SoulLinkSaveData gSoulLinkPendingRun = {0};
 EWRAM_DATA u16 gSoulLinkPendingRandomizerSettings = 0;
 static EWRAM_DATA bool8 sEncounterEventPending = FALSE;
 static EWRAM_DATA struct SoulLinkMessage sPendingEncounterEvent = {0};
+static EWRAM_DATA u16 sPendingDeathGroups[PARTY_SIZE] = {0};
+static EWRAM_DATA u8 sPendingDeathCount = 0;
 static EWRAM_DATA bool8 sCemeteryCleanupPending = FALSE;
 static EWRAM_DATA u8 sLobbyIntent = SOUL_LINK_INTENT_NONE;
 static EWRAM_DATA u16 sSnapshotIndex = 0;
@@ -79,6 +81,7 @@ static void ResetMailbox(void)
     sRegistryResultReady = FALSE;
     sRegistryResultValid = FALSE;
     sRegistryGroupCount = 0;
+    sPendingDeathCount = 0;
     gSoulLinkMailbox.protocolVersion = SOUL_LINK_PROTOCOL_VERSION;
     gSoulLinkMailbox.size = sizeof(gSoulLinkMailbox);
 
@@ -100,7 +103,8 @@ static void UpgradeRunVersion(struct SoulLinkSaveData *run)
         run->protocolVersion = SOUL_LINK_PROTOCOL_VERSION;
     }
     else if (run->formatVersion == SOUL_LINK_SAVE_FORMAT_VERSION
-          && run->protocolVersion == SOUL_LINK_PREVIOUS_PROTOCOL_VERSION)
+          && run->protocolVersion > SOUL_LINK_LEGACY_PROTOCOL_VERSION
+          && run->protocolVersion < SOUL_LINK_PROTOCOL_VERSION)
         run->protocolVersion = SOUL_LINK_PROTOCOL_VERSION;
 }
 
@@ -502,6 +506,45 @@ static void ApplyEncounterClosed(const volatile struct SoulLinkMessage *message)
     BeginLocalSnapshot();
 }
 
+static void ApplyLinkDied(u16 groupId)
+{
+    u8 box, position;
+    bool8 dead = TRUE;
+    bool8 changed = FALSE;
+
+    if (groupId == SOUL_LINK_GROUP_NONE)
+        return;
+    for (position = 0; position < PARTY_SIZE; position++)
+    {
+        struct Pokemon *mon = &gPlayerParty[position];
+
+        if (GetMonData(mon, MON_DATA_SANITY_HAS_SPECIES)
+         && SoulLink_GetBoxMonGroupId(&mon->box) == groupId
+         && !GetMonData(mon, MON_DATA_NUZLOCKE_RIBBON))
+        {
+            SetMonData(mon, MON_DATA_NUZLOCKE_RIBBON, &dead);
+            sCemeteryCleanupPending = changed = TRUE;
+        }
+    }
+    for (box = 0; box < TOTAL_BOXES_COUNT; box++)
+    {
+        for (position = 0; position < IN_BOX_COUNT; position++)
+        {
+            struct BoxPokemon *boxMon = &gPokemonStoragePtr->boxes[box][position];
+
+            if (GetBoxMonData(boxMon, MON_DATA_SANITY_HAS_SPECIES)
+             && SoulLink_GetBoxMonGroupId(boxMon) == groupId
+             && !GetBoxMonData(boxMon, MON_DATA_NUZLOCKE_RIBBON))
+            {
+                SetBoxMonData(boxMon, MON_DATA_NUZLOCKE_RIBBON, &dead);
+                changed = TRUE;
+            }
+        }
+    }
+    if (changed)
+        BeginLocalSnapshot();
+}
+
 static void CleanupForfeitedPartyMons(void)
 {
     u8 position;
@@ -596,6 +639,29 @@ bool8 SoulLink_QueueEncounterFailed(u16 location)
         location);
 }
 
+bool8 SoulLink_QueueDeath(u16 groupId)
+{
+    struct SoulLinkSaveData *run = &gSaveBlock2Ptr->soulLink;
+    u8 i;
+
+    if (!(run->status & SOUL_LINK_RUN_STATUS_ACTIVE)
+     || groupId == SOUL_LINK_GROUP_NONE)
+        return FALSE;
+    UpgradeRunVersion(run);
+    if (run->protocolVersion != SOUL_LINK_PROTOCOL_VERSION)
+        return FALSE;
+    for (i = 0; i < sPendingDeathCount; i++)
+        if (sPendingDeathGroups[i] == groupId)
+            return TRUE;
+    if (sPendingDeathCount == 0
+     && TryPublishOutgoing(SOUL_LINK_EVENT_DEATH, 0, 0, groupId, 0, 0, 0, 0))
+        return TRUE;
+    if (sPendingDeathCount >= ARRAY_COUNT(sPendingDeathGroups))
+        return FALSE;
+    sPendingDeathGroups[sPendingDeathCount++] = groupId;
+    return TRUE;
+}
+
 void SoulLink_Update(void)
 {
     u32 sequence;
@@ -678,6 +744,10 @@ void SoulLink_Update(void)
         {
             ApplyEncounterClosed(&gSoulLinkMailbox.incoming);
         }
+        else if (gSoulLinkMailbox.incoming.type == SOUL_LINK_EVENT_LINK_DIED)
+        {
+            ApplyLinkDied(gSoulLinkMailbox.incoming.pairId);
+        }
         else if (gSoulLinkMailbox.incoming.type == SOUL_LINK_EVENT_REGISTRY_RESULT
               && sRegistryPendingRequest != 0
               && sRegistryPendingRequest == (flags & 0xFF))
@@ -727,6 +797,17 @@ void SoulLink_Update(void)
             sPendingEncounterEvent.location, sPendingEncounterEvent.flags,
             sPendingEncounterEvent.reserved))
         sEncounterEventPending = FALSE;
+
+    if (sPendingDeathCount
+     && TryPublishOutgoing(SOUL_LINK_EVENT_DEATH, 0, 0,
+            sPendingDeathGroups[0], 0, 0, 0, 0))
+    {
+        u8 i;
+
+        for (i = 1; i < sPendingDeathCount; i++)
+            sPendingDeathGroups[i - 1] = sPendingDeathGroups[i];
+        sPendingDeathCount--;
+    }
 
     CleanupForfeitedPartyMons();
     PublishLocalSnapshot();
