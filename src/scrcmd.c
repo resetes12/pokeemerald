@@ -31,6 +31,7 @@
 #include "mystery_event_script.h"
 #include "palette.h"
 #include "party_menu.h"
+#include "soul_link.h"
 #include "pokemon_storage_system.h"
 #include "pokemon.h"
 #include "random.h"
@@ -2040,7 +2041,9 @@ bool8 ScrCmd_updatecoinsbox(struct ScriptContext *ctx)
 
 bool8 ScrCmd_trainerbattle(struct ScriptContext *ctx)
 {
-    ctx->scriptPtr = BattleSetup_ConfigureTrainerBattle(ctx->scriptPtr);
+    ctx->scriptPtr = SoulLink_CanStartTrainerBattle()
+        ? BattleSetup_ConfigureTrainerBattle(ctx->scriptPtr)
+        : EventScript_SoulLinkPartyNotReady;
     return FALSE;
 }
 

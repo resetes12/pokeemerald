@@ -2,8 +2,8 @@
 #define GUARD_SOUL_LINK_H
 
 #define SOUL_LINK_MAILBOX_MAGIC 0x4B4E4C53 // "SLNK" in little-endian memory
-#define SOUL_LINK_PROTOCOL_VERSION 13
-#define SOUL_LINK_PREVIOUS_PROTOCOL_VERSION 12
+#define SOUL_LINK_PROTOCOL_VERSION 14
+#define SOUL_LINK_PREVIOUS_PROTOCOL_VERSION 13
 #define SOUL_LINK_LEGACY_PROTOCOL_VERSION 10
 #define SOUL_LINK_SAVE_FORMAT_VERSION 4
 #define SOUL_LINK_PREVIOUS_SAVE_FORMAT_VERSION 3
@@ -27,6 +27,7 @@
 #define SOUL_LINK_SNAPSHOT_FLAG_DEAD (1 << 0)
 #define SOUL_LINK_SNAPSHOT_FLAG_MISSED (1 << 1)
 #define SOUL_LINK_SNAPSHOT_FLAG_FAILED (1 << 2)
+#define SOUL_LINK_SNAPSHOT_FLAG_IN_PARTY (1 << 3)
 #define SOUL_LINK_REGISTRY_RESULT_VALID (1 << 8)
 #define SOUL_LINK_REGISTRY_RESULT_DEAD (1 << 9)
 #define SOUL_LINK_REGISTRY_RESULT_MISSED (1 << 10)
@@ -53,6 +54,7 @@ enum SoulLinkEventType
     SOUL_LINK_EVENT_ENCOUNTER_FAILED,
     SOUL_LINK_EVENT_DEATH,
     SOUL_LINK_EVENT_LINK_DIED,
+    SOUL_LINK_EVENT_PARTY_STATE,
 };
 
 enum SoulLinkRegistryRequest
@@ -132,6 +134,7 @@ extern volatile u8 gSoulLinkReadyPlayerMask;
 extern volatile u8 gSoulLinkLocalPlayerMask;
 extern volatile u8 gSoulLinkGateState;
 extern volatile u8 gSoulLinkLockedPlayerMask;
+extern volatile bool8 gSoulLinkPartyReady;
 extern volatile struct SoulLinkSaveData gSoulLinkPendingRun;
 extern u16 gSoulLinkPendingRandomizerSettings;
 
@@ -157,6 +160,7 @@ u8 SoulLink_GetActivePlayerMask(void);
 void SoulLink_CancelRegistryRequest(void);
 void SoulLink_LinkStarter(struct Pokemon *mon);
 void SoulLink_RefreshLocalSnapshot(void);
+bool8 SoulLink_CanStartTrainerBattle(void);
 u16 SoulLink_GetBoxMonGroupId(struct BoxPokemon *boxMon);
 void SoulLink_SetBoxMonGroupId(struct BoxPokemon *boxMon, u16 groupId);
 

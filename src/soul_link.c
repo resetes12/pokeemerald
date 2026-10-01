@@ -14,6 +14,7 @@ EWRAM_DATA volatile u8 gSoulLinkReadyPlayerMask = 0;
 EWRAM_DATA volatile u8 gSoulLinkLocalPlayerMask = 0;
 EWRAM_DATA volatile u8 gSoulLinkGateState = SOUL_LINK_GATE_IDLE;
 EWRAM_DATA volatile u8 gSoulLinkLockedPlayerMask = 0;
+EWRAM_DATA volatile bool8 gSoulLinkPartyReady = FALSE;
 EWRAM_DATA volatile struct SoulLinkSaveData gSoulLinkPendingRun = {0};
 EWRAM_DATA u16 gSoulLinkPendingRandomizerSettings = 0;
 static EWRAM_DATA bool8 sEncounterEventPending = FALSE;
@@ -68,6 +69,7 @@ static void ResetMailbox(void)
 {
     gSoulLinkLobbyState = SOUL_LINK_LOBBY_DISCONNECTED;
     gSoulLinkConnectedPlayerMask = 0;
+    gSoulLinkPartyReady = FALSE;
     gSoulLinkReadyPlayerMask = 0;
     gSoulLinkLocalPlayerMask = 0;
     gSoulLinkGateState = SOUL_LINK_GATE_IDLE;
@@ -168,6 +170,11 @@ bool8 SoulLink_IsActive(void)
 {
     return (gSoulLinkPendingRun.status & SOUL_LINK_RUN_STATUS_ACTIVE)
         || (gSaveBlock2Ptr->soulLink.status & SOUL_LINK_RUN_STATUS_ACTIVE);
+}
+
+bool8 SoulLink_CanStartTrainerBattle(void)
+{
+    return !SoulLink_IsActive() || gSoulLinkPartyReady;
 }
 
 bool8 SoulLink_RequestRegistryCount(void)
@@ -398,7 +405,17 @@ static void PublishLocalSnapshot(void)
     }
     if (groupId == SOUL_LINK_GROUP_NONE)
     {
-        sSnapshotIndex++;
+        if (sSnapshotIndex >= PARTY_SIZE
+         || TryPublishOutgoing(SOUL_LINK_EVENT_SNAPSHOT_MEMBER,
+                0, 0, SOUL_LINK_GROUP_NONE,
+                GetBoxMonData(boxMon, MON_DATA_SPECIES),
+                GetBoxMonData(boxMon, MON_DATA_MET_LOCATION),
+                SOUL_LINK_SNAPSHOT_FLAG_IN_PARTY, 0))
+        {
+            if (sSnapshotIndex < PARTY_SIZE)
+                sSnapshotMemberCount++;
+            sSnapshotIndex++;
+        }
         return;
     }
 
@@ -411,6 +428,8 @@ static void PublishLocalSnapshot(void)
     if (groupId != SOUL_LINK_STARTER_GROUP_ID
      && IsFailedLocation(groupId - 1))
         flags |= SOUL_LINK_SNAPSHOT_FLAG_FAILED;
+    if (sSnapshotIndex < PARTY_SIZE)
+        flags |= SOUL_LINK_SNAPSHOT_FLAG_IN_PARTY;
     if (TryPublishOutgoing(SOUL_LINK_EVENT_SNAPSHOT_MEMBER,
             word0, word1, groupId,
             GetBoxMonData(boxMon, MON_DATA_SPECIES),
@@ -629,8 +648,12 @@ static bool8 QueueEncounterEvent(u16 type, u32 personality, u32 otId,
 
 bool8 SoulLink_QueueCatch(u32 personality, u32 otId, u16 species, u16 location)
 {
-    return QueueEncounterEvent(SOUL_LINK_EVENT_CATCH, personality, otId,
-        species, location);
+    bool8 queued = QueueEncounterEvent(SOUL_LINK_EVENT_CATCH, personality,
+        otId, species, location);
+
+    if (queued)
+        BeginLocalSnapshot();
+    return queued;
 }
 
 bool8 SoulLink_QueueEncounterFailed(u16 location)
@@ -747,6 +770,10 @@ void SoulLink_Update(void)
         else if (gSoulLinkMailbox.incoming.type == SOUL_LINK_EVENT_LINK_DIED)
         {
             ApplyLinkDied(gSoulLinkMailbox.incoming.pairId);
+        }
+        else if (gSoulLinkMailbox.incoming.type == SOUL_LINK_EVENT_PARTY_STATE)
+        {
+            gSoulLinkPartyReady = flags == 1;
         }
         else if (gSoulLinkMailbox.incoming.type == SOUL_LINK_EVENT_REGISTRY_RESULT
               && sRegistryPendingRequest != 0

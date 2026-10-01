@@ -32,6 +32,7 @@
 #include "pokemon_storage_system.h"
 #include "script.h"
 #include "sound.h"
+#include "soul_link.h"
 #include "string_util.h"
 #include "strings.h"
 #include "text.h"
@@ -1703,6 +1704,7 @@ static void CreateMainMenu(u8 whichMenu, s16 *windowIdPtr)
 
 static void CB2_ExitPokeStorage(void)
 {
+    SoulLink_RefreshLocalSnapshot();
     // Reconcile designated follower: find the mon by identity in the current party
     if (sSavedFollowerPersonality != 0)
     {

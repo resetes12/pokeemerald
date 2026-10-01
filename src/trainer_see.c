@@ -8,6 +8,7 @@
 #include "pokemon.h"
 #include "script.h"
 #include "script_movement.h"
+#include "soul_link.h"
 #include "sprite.h"
 #include "task.h"
 #include "trainer_see.h"
@@ -339,6 +340,9 @@ static const struct SpriteTemplate sSpriteTemplate_Emote =
 bool8 CheckForTrainersWantingBattle(void)
 {
     u8 i;
+
+    if (!SoulLink_CanStartTrainerBattle())
+        return FALSE;
 
 #if TX_DEBUG_SYSTEM_ENABLE == TRUE
     if (FlagGet(FLAG_SYS_NO_TRAINER_SEE))

@@ -1,3 +1,12 @@
+EventScript_SoulLinkPartyNotReady::
+	lockall
+	msgbox SoulLink_Text_PartyNotReady, MSGBOX_DEFAULT
+	releaseall
+	end
+
+SoulLink_Text_PartyNotReady:
+	.string "Your Soul Link parties don't match.\nWait for the other players.$"
+
 EventScript_StartTrainerApproach::
 	selectapproachingtrainer
 	lockfortrainer

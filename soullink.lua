@@ -12,7 +12,7 @@ local EWRAM_BASE = 0x02000000
 local EWRAM_END = 0x02040000
 
 local MAILBOX_MAGIC = 0x4B4E4C53
-local MAILBOX_VERSION = 13
+local MAILBOX_VERSION = 14
 local SAVE_FORMAT_VERSION = 4
 local MAILBOX_SIZE = 68
 local MAILBOX_OUTGOING_OFFSET = 12
@@ -43,6 +43,7 @@ local EVENT_REGISTRY_RESULT = 13
 local EVENT_ENCOUNTER_FAILED = 14
 local EVENT_DEATH = 15
 local EVENT_LINK_DIED = 16
+local EVENT_PARTY_STATE = 17
 local REGISTRY_REQUEST_COUNT = 1
 local REGISTRY_REQUEST_MEMBER = 2
 local REGISTRY_REQUEST_PLAYER_NAME = 3
@@ -165,6 +166,7 @@ local snapshotBuilders = {}
 local playerSnapshots = {}
 local mergedLinkRegistry = {}
 local resolvedDeathGroups = {}
+local partyReady = false
 local pendingNetworkMessages = {}
 local pendingNetworkMessageIndex = 1
 
@@ -216,13 +218,14 @@ local function queueRegistrySnapshot(snapshot)
         local memberFlags = (member.dead and 1 or 0)
             + (member.missed and 2 or 0)
             + (member.failed and 4 or 0)
+            + (member.inParty and 8 or 0)
         queue("REGISTRY_MEMBER", string.format(
             "%d,%d,%d,%d,%d,%u,%u,%d", snapshot.slot, groupId,
             member.species, member.location, memberFlags,
             member.nicknameLow, member.nicknameHigh, member.nicknameTail))
     end
     queue("REGISTRY_END", string.format(
-        "%d,%d", snapshot.slot, snapshot.count))
+        "%d,%d", snapshot.slot, #groupIds))
 end
 
 local function packLobbyFlags(state, connectedMask, readyMask)
@@ -268,7 +271,27 @@ local function senderPlayerMask(sender)
     if sender == "host" then
         return 1
     end
+    local peer = remotePeers[sender]
+    if peer and peer.intent and peer.intent.playerSlot > 0 then
+        return 2 ^ (peer.intent.playerSlot - 1)
+    end
     return 2 ^ tonumber(sender:match("^client([1-3])$"))
+end
+
+local function setPartyReady(ready, broadcast)
+    local changed = partyReady ~= ready
+    partyReady = ready
+    if changed then
+        pendingRomEvents[#pendingRomEvents + 1] = {
+            type = EVENT_PARTY_STATE, flags = ready and 1 or 0,
+        }
+    end
+    if networkConfig.role == "host" and (changed or broadcast) then
+        sendNetworkMessage("PARTY_STATE", ready and "1" or "0")
+    end
+    if changed then
+        console.log("[SoulLink] matched party links: " .. tostring(ready))
+    end
 end
 
 local function encodeIntent(intent)
@@ -488,6 +511,33 @@ local function rebuildMergedRegistry()
             end
         end
     end
+
+    if networkConfig.role == "host" then
+        local baseline
+        local ready = completePlayers == gatePlayerMask
+        for slot = 1, 4 do
+            if math.floor(gatePlayerMask / (2 ^ (slot - 1))) % 2 == 1 then
+                local snapshot = playerSnapshots[slot]
+                local groups = {}
+                if not snapshot or snapshot.hasUnlinkedParty then
+                    ready = false
+                else
+                    for groupId, member in pairs(snapshot.members) do
+                        if member.inParty and not member.dead then
+                            groups[#groups + 1] = groupId
+                        end
+                    end
+                    table.sort(groups)
+                    local key = table.concat(groups, ",")
+                    if baseline and baseline ~= key then
+                        ready = false
+                    end
+                    baseline = baseline or key
+                end
+            end
+        end
+        setPartyReady(ready, true)
+    end
 end
 
 local function getCompleteRegistryGroupIds()
@@ -546,8 +596,16 @@ local function recordSnapshot(sender, messageType, values, expectedSlot)
         local dead = memberFlags % 2 == 1
         local missed = math.floor(memberFlags / 2) % 2 == 1
         local failed = math.floor(memberFlags / 4) % 2 == 1
+        local inParty = math.floor(memberFlags / 8) % 2 == 1
+        if groupId == 0 and memberFlags == 8
+            and values[2] >= 1 and values[2] <= 0xFFFF
+        then
+            builder.hasUnlinkedParty = true
+            builder.count = builder.count + 1
+            return true
+        end
         if groupId < 1 or groupId > STARTER_GROUP_ID
-            or values[2] > 0xFFFF or values[3] > 0xFFFF or memberFlags > 7
+            or values[2] > 0xFFFF or values[3] > 0xFFFF or memberFlags > 15
             or values[5] > 0xFFFFFFFF or values[6] > 0xFFFFFFFF
             or values[7] > 0xFFFF or builder.members[groupId]
             or (groupId ~= STARTER_GROUP_ID and groupId ~= values[3] + 1)
@@ -560,7 +618,7 @@ local function recordSnapshot(sender, messageType, values, expectedSlot)
         end
         builder.members[groupId] = {
             species = values[2], location = values[3], dead = dead,
-            missed = missed, failed = failed,
+            missed = missed, failed = failed, inParty = inParty,
             nicknameLow = values[5], nicknameHigh = values[6],
             nicknameTail = values[7],
         }
@@ -693,6 +751,7 @@ local function applyGateState(state, playerMask, broadcast,
         playerSnapshots = {}
         mergedLinkRegistry = {}
         resolvedDeathGroups = {}
+        partyReady = false
         if networkConfig.role == "host" then
             pendingCatchGroups = {}
             finalizedCatchGroups = {}
@@ -706,6 +765,11 @@ local function applyGateState(state, playerMask, broadcast,
         pendingGate = true
         console.log(string.format(
             "[SoulLink] gate state: %d players=0x%X", state, playerMask))
+    end
+    if state == GATE_APPROVED and localIntent
+        and localIntent.action == INTENT_CONTINUE
+    then
+        applyLocalPlayerMask(2 ^ (localIntent.playerSlot - 1))
     end
     if networkConfig.role == "host" and (changed or broadcast) then
         sendNetworkMessage("GATE", string.format("%d,%d,%u,%u,%d",
@@ -1070,8 +1134,15 @@ local function tryLockHostRoster()
 end
 
 local function removeRemotePeer(sender)
+    local playerMask = senderPlayerMask(sender)
     remotePeers[sender] = nil
     if networkConfig.role == "host" then
+        for slot = 1, 4 do
+            if playerMask == 2 ^ (slot - 1) then
+                playerSnapshots[slot] = nil
+            end
+        end
+        rebuildMergedRegistry()
         updateHostLobbyState(false)
         updateHostGateState(false)
     elseif sender == "host" then
@@ -1083,6 +1154,8 @@ end
 local function clearRemotePeers()
     remotePeers = {}
     localReadySent = false
+    playerSnapshots = {}
+    setPartyReady(false, false)
     if networkConfig.role == "host" then
         updateHostLobbyState(false)
         updateHostGateState(false)
@@ -1126,6 +1199,7 @@ local function handleNetworkMessage(message)
         and messageType ~= "ENCOUNTER_CLOSED"
         and messageType ~= "LINK_CREATED"
         and messageType ~= "DEATH" and messageType ~= "LINK_DIED"
+        and messageType ~= "PARTY_STATE"
         and messageType ~= "SNAPSHOT_BEGIN"
         and messageType ~= "SNAPSHOT_MEMBER"
         and messageType ~= "SNAPSHOT_END"
@@ -1232,6 +1306,12 @@ local function handleNetworkMessage(message)
         if networkConfig.role ~= "client" or not parseGroupId(payload) then
             return false, "invalid LINK_DIED payload"
         end
+    elseif messageType == "PARTY_STATE" then
+        if networkConfig.role ~= "client" or sender ~= "host"
+            or (payload ~= "0" and payload ~= "1")
+        then
+            return false, "invalid PARTY_STATE payload"
+        end
     elseif messageType:match("^SNAPSHOT_") then
         local counts = {SNAPSHOT_BEGIN = 3, SNAPSHOT_MEMBER = 7, SNAPSHOT_END = 2}
         local values = parseSnapshot(payload, counts[messageType])
@@ -1312,6 +1392,8 @@ local function handleNetworkMessage(message)
             queueLinkDied(groupId)
             console.log(string.format("[SoulLink] LINK_DIED received: group=%d", groupId))
         end
+    elseif messageType == "PARTY_STATE" then
+        setPartyReady(payload == "1", false)
     elseif messageType:match("^SNAPSHOT_") then
         -- Validated and recorded above; only sequence bookkeeping remains.
     elseif messageType:match("^REGISTRY_") then
@@ -1560,7 +1642,7 @@ local function consumeMailboxOutgoing()
             memory.read_u16_le(offset + 14, EWRAM_DOMAIN),
             memory.read_u16_le(offset + 16, EWRAM_DOMAIN),
             memory.read_u16_le(offset + 18, EWRAM_DOMAIN),
-            memory.read_u16_le(offset + 20, EWRAM_DOMAIN) % 8,
+            memory.read_u16_le(offset + 20, EWRAM_DOMAIN) % 16,
             memory.read_u32_le(offset + 4, EWRAM_DOMAIN),
             memory.read_u32_le(offset + 8, EWRAM_DOMAIN),
             memory.read_u16_le(offset + 22, EWRAM_DOMAIN),
@@ -1572,10 +1654,11 @@ local function consumeMailboxOutgoing()
                 "%d,%d,%d,%d,%u,%u,%d", table.unpack(values)))
         end
         console.log(string.format(
-            "[SoulLink] local snapshot member group=%d species=%d location=%d dead=%s missed=%s failed=%s nicknameWords=%08X:%08X:%04X",
+            "[SoulLink] local snapshot member group=%d species=%d location=%d dead=%s missed=%s failed=%s party=%s nicknameWords=%08X:%08X:%04X",
             values[1], values[2], values[3], values[4] % 2 == 1 and "yes" or "no",
             math.floor(values[4] / 2) % 2 == 1 and "yes" or "no",
             math.floor(values[4] / 4) % 2 == 1 and "yes" or "no",
+            math.floor(values[4] / 8) % 2 == 1 and "yes" or "no",
             values[5], values[6], values[7]))
     elseif eventType == EVENT_SNAPSHOT_END then
         local slot = memory.read_u16_le(offset + 14, EWRAM_DOMAIN)
