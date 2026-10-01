@@ -35,6 +35,7 @@
 #include "region_map.h"
 #include "scanline_effect.h"
 #include "sound.h"
+#include "soul_link.h"
 #include "sprite.h"
 #include "string_util.h"
 #include "strings.h"
@@ -296,6 +297,10 @@ static EWRAM_DATA struct PokemonSummaryScreenData
     s16 switchCounter; // Used for various switch statement cases that decompress/load graphics or Pokémon data
     u8 unk_filler4[6];
     u8 splitIconSpriteId;
+    u8 soulLinkNextSlot, soulLinkPlayerMask;
+    bool8 soulLinkDead;
+    u16 soulLinkGroupId;
+    struct SoulLinkRegistryMember soulLinkMembers[4];
 } *sMonSummaryScreen = NULL;
 EWRAM_DATA u8 gLastViewedMonIndex = 0;
 static EWRAM_DATA u8 sMoveSlotToReplace = 0;
@@ -325,6 +330,11 @@ static bool8 ExtractMonDataToSummaryStruct(struct Pokemon *);
 static void SetDefaultTilemaps(void);
 static void CloseSummaryScreen(u8);
 static void Task_HandleInput(u8);
+static bool8 IsCurrentMonSoulLinked(void);
+static void OpenSoulLinkSummary(u8);
+static void Task_LoadSoulLinkSummary(u8);
+static void CloseSoulLinkSummary(u8);
+static void DrawSoulLinkSummary(void);
 static void ChangeSummaryPokemon(u8, s8);
 static void Task_ChangeSummaryMon(u8);
 static s8 AdvanceMonIndex(s8);
@@ -364,6 +374,8 @@ static void DrawExperienceProgressBar(struct Pokemon *);
 static void DrawContestMoveHearts(u16);
 static void LimitEggSummaryPageDisplay(void);
 static void ResetWindows(void);
+static u8 AddWindowFromTemplateList(const struct WindowTemplate *, u8);
+static void PrintTextOnWindow(u8, const u8 *, u8, u8, u8, u8);
 static void PrintMonInfo(void);
 static void PrintNotEggInfo(void);
 static void PrintEggInfo(void);
@@ -737,6 +749,9 @@ static const struct WindowTemplate sPageInfoTemplate[] =
         .baseBlock = 557,
     },
 };
+static const u8 sText_SLTitle[] = _("SOUL LINK"), sText_SLPlayer[] = _("P");
+static const u8 sText_SLMissed[] = _("MISSED"), sText_SLSeparator[] = _(" / "), sText_SLRoute[] = _("Route: "), sText_SLStarter[] = _("Starter");
+static const u8 sText_SLStatus[] = _("Status: "), sText_SLDead[] = _("DEAD"), sText_SLAlive[] = _("ALIVE"), sText_SLBack[] = _("B: BACK");
 static const struct WindowTemplate sPageSkillsTemplate[] =
 {
     [PSS_DATA_WINDOW_SKILLS_HELD_ITEM] = {
@@ -1935,6 +1950,7 @@ static void CloseSummaryScreen(u8 taskId)
 {
     if (MenuHelpers_ShouldWaitForLinkRecv() != TRUE && !gPaletteFade.active)
     {
+        SoulLink_CancelRegistryRequest();
         SetMainCallback2(sMonSummaryScreen->callback);
         gLastViewedMonIndex = sMonSummaryScreen->curMonIndex;
         SummaryScreen_DestroyAnimDelayTask();
@@ -1948,6 +1964,142 @@ static void CloseSummaryScreen(u8 taskId)
         FreeSummaryScreen();
         DestroyTask(taskId);
     }
+}
+
+static bool8 IsCurrentMonSoulLinked(void)
+{
+    return SoulLink_IsActive() && !sMonSummaryScreen->summary.isEgg
+        && SoulLink_GetBoxMonGroupId(&sMonSummaryScreen->currentMon.box)
+            != SOUL_LINK_GROUP_NONE;
+}
+
+static void OpenSoulLinkSummary(u8 taskId)
+{
+    sMonSummaryScreen->soulLinkGroupId =
+        SoulLink_GetBoxMonGroupId(&sMonSummaryScreen->currentMon.box);
+    sMonSummaryScreen->soulLinkNextSlot = 1;
+    sMonSummaryScreen->soulLinkPlayerMask = SoulLink_GetActivePlayerMask();
+    sMonSummaryScreen->soulLinkDead = GetMonData(
+        &sMonSummaryScreen->currentMon, MON_DATA_NUZLOCKE_RIBBON);
+    SoulLink_CancelRegistryRequest();
+    gTasks[taskId].func = Task_LoadSoulLinkSummary;
+}
+
+static void Task_LoadSoulLinkSummary(u8 taskId)
+{
+    struct SoulLinkRegistryMember member;
+    bool8 valid;
+    u8 slot = sMonSummaryScreen->soulLinkNextSlot;
+
+    if (JOY_NEW(B_BUTTON))
+    {
+        CloseSoulLinkSummary(taskId);
+        return;
+    }
+    if (slot == 0)
+        return;
+    while (slot <= 4
+        && (!(sMonSummaryScreen->soulLinkPlayerMask & (1 << (slot - 1)))
+         || slot == SoulLink_GetPlayerSlot()))
+        slot++;
+    if (slot > 4)
+    {
+        DrawSoulLinkSummary();
+        sMonSummaryScreen->soulLinkNextSlot = 0;
+        return;
+    }
+    if (!SoulLink_TakeRegistryMember(&member, &valid))
+    {
+        SoulLink_RequestRegistryGroupMember(
+            sMonSummaryScreen->soulLinkGroupId, slot);
+        return;
+    }
+    if (!valid)
+    {
+        gTasks[taskId].func = Task_HandleInput;
+        return;
+    }
+    sMonSummaryScreen->soulLinkMembers[slot - 1] = member;
+    sMonSummaryScreen->soulLinkDead |= member.dead;
+    sMonSummaryScreen->soulLinkNextSlot = slot + 1;
+}
+
+static void DrawSoulLinkSummary(void)
+{
+    u8 slot, row = 0;
+    u8 titleWindow, membersWindow, footerWindow;
+
+    ClearPageWindowTilemaps(PSS_PAGE_INFO);
+    HidePageSpecificSprites();
+    titleWindow = AddWindowFromTemplateList(sPageInfoTemplate,
+        PSS_DATA_WINDOW_INFO_ORIGINAL_TRAINER);
+    membersWindow = AddWindowFromTemplateList(sPageInfoTemplate,
+        PSS_DATA_WINDOW_INFO_ABILITY);
+    footerWindow = AddWindowFromTemplateList(sPageInfoTemplate,
+        PSS_DATA_WINDOW_INFO_MEMO);
+    PrintTextOnWindow(titleWindow, sText_SLTitle, 0, 1, 0, 1);
+    for (slot = 1; slot <= 4; slot++)
+    {
+        struct SoulLinkRegistryMember *member;
+
+        if (!(sMonSummaryScreen->soulLinkPlayerMask & (1 << (slot - 1)))
+         || slot == SoulLink_GetPlayerSlot())
+            continue;
+        member = &sMonSummaryScreen->soulLinkMembers[slot - 1];
+        StringCopy(gStringVar4, sText_SLPlayer);
+        ConvertIntToDecimalStringN(gStringVar1, slot, STR_CONV_MODE_LEFT_ALIGN, 1);
+        StringAppend(gStringVar4, gStringVar1);
+        gStringVar1[0] = CHAR_COLON;
+        gStringVar1[1] = CHAR_SPACE;
+        gStringVar1[2] = EOS;
+        StringAppend(gStringVar4, gStringVar1);
+        if (member->missed)
+            StringAppend(gStringVar4, sText_SLMissed);
+        else
+        {
+            StringAppend(gStringVar4, gSpeciesNames[member->species]);
+            StringAppend(gStringVar4, sText_SLSeparator);
+            StringAppend(gStringVar4, member->nickname);
+        }
+        AddTextPrinterParameterized4(membersWindow, FONT_SMALL_NARROW,
+            0, row++ * 10, 0, 0, sTextColors[1], 0, gStringVar4);
+    }
+    StringCopy(gStringVar4, sText_SLRoute);
+    if (sMonSummaryScreen->soulLinkGroupId == SOUL_LINK_STARTER_GROUP_ID)
+        StringAppend(gStringVar4, sText_SLStarter);
+    else
+    {
+        GetMapName(gStringVar1, sMonSummaryScreen->summary.metLocation, 0);
+        StringAppend(gStringVar4, gStringVar1);
+    }
+    AddTextPrinterParameterized4(footerWindow, FONT_SMALL_NARROW,
+        0, 0, 0, 0, sTextColors[1], 0, gStringVar4);
+    StringCopy(gStringVar4, sText_SLStatus);
+    StringAppend(gStringVar4, sMonSummaryScreen->soulLinkDead
+        ? sText_SLDead : sText_SLAlive);
+    AddTextPrinterParameterized4(footerWindow, FONT_SMALL_NARROW,
+        0, 12, 0, 0, sTextColors[1], 0, gStringVar4);
+    AddTextPrinterParameterized4(footerWindow, FONT_SMALL_NARROW,
+        0, 28, 0, 0, sTextColors[1], 0, sText_SLBack);
+    PutWindowTilemap(titleWindow);
+    PutWindowTilemap(membersWindow);
+    PutWindowTilemap(footerWindow);
+    CopyWindowToVram(titleWindow, COPYWIN_FULL);
+    CopyWindowToVram(membersWindow, COPYWIN_FULL);
+    CopyWindowToVram(footerWindow, COPYWIN_FULL);
+    ScheduleBgCopyTilemapToVram(0);
+}
+
+static void CloseSoulLinkSummary(u8 taskId)
+{
+    SoulLink_CancelRegistryRequest();
+    ClearPageWindowTilemaps(PSS_PAGE_INFO);
+    PrintPageSpecificText(PSS_PAGE_INFO);
+    PrintPokedexOrCancel();
+    PutPageWindowTilemaps(PSS_PAGE_INFO);
+    SetTypeIcons();
+    TrySetInfoPageIcons();
+    gTasks[taskId].func = Task_HandleInput;
 }
 
 static void Task_HandleInput(u8 taskId)
@@ -1969,6 +2121,12 @@ static void Task_HandleInput(u8 taskId)
         else if ((JOY_NEW(DPAD_RIGHT)))
         {
             ChangePage(taskId, 1);
+        }
+        else if (JOY_NEW(SELECT_BUTTON) && sMonSummaryScreen->currPageIndex == PSS_PAGE_INFO
+              && IsCurrentMonSoulLinked())
+        {
+            PlaySE(SE_SELECT);
+            OpenSoulLinkSummary(taskId);
         }
         else if (JOY_NEW(A_BUTTON))
         {

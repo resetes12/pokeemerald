@@ -12,7 +12,7 @@ local EWRAM_BASE = 0x02000000
 local EWRAM_END = 0x02040000
 
 local MAILBOX_MAGIC = 0x4B4E4C53
-local MAILBOX_VERSION = 11
+local MAILBOX_VERSION = 12
 local SAVE_FORMAT_VERSION = 4
 local MAILBOX_SIZE = 68
 local MAILBOX_OUTGOING_OFFSET = 12
@@ -44,6 +44,7 @@ local EVENT_ENCOUNTER_FAILED = 14
 local REGISTRY_REQUEST_COUNT = 1
 local REGISTRY_REQUEST_MEMBER = 2
 local REGISTRY_REQUEST_PLAYER_NAME = 3
+local REGISTRY_REQUEST_GROUP_MEMBER = 4
 local REGISTRY_RESULT_VALID = 0x100
 local REGISTRY_RESULT_DEAD = 0x200
 local REGISTRY_RESULT_MISSED = 0x400
@@ -1506,15 +1507,22 @@ local function consumeMailboxOutgoing()
         if request == REGISTRY_REQUEST_COUNT
             or request == REGISTRY_REQUEST_MEMBER
             or request == REGISTRY_REQUEST_PLAYER_NAME
+            or request == REGISTRY_REQUEST_GROUP_MEMBER
         then
             local groupIds = getCompleteRegistryGroupIds()
             local member
             local groupId
             local playerSnapshot
             local slot = memory.read_u16_le(offset + 18, EWRAM_DOMAIN)
-            if request == REGISTRY_REQUEST_MEMBER and groupIds then
-                local row = memory.read_u16_le(offset + 14, EWRAM_DOMAIN)
-                groupId = groupIds[row + 1]
+            if (request == REGISTRY_REQUEST_MEMBER
+                or request == REGISTRY_REQUEST_GROUP_MEMBER) and groupIds
+            then
+                if request == REGISTRY_REQUEST_MEMBER then
+                    local row = memory.read_u16_le(offset + 14, EWRAM_DOMAIN)
+                    groupId = groupIds[row + 1]
+                else
+                    groupId = memory.read_u16_le(offset + 14, EWRAM_DOMAIN)
+                end
                 local group = groupId and mergedLinkRegistry[groupId]
                 member = group and group.members[slot]
                 if group and group.failed and not member then

@@ -2,8 +2,9 @@
 #define GUARD_SOUL_LINK_H
 
 #define SOUL_LINK_MAILBOX_MAGIC 0x4B4E4C53 // "SLNK" in little-endian memory
-#define SOUL_LINK_PROTOCOL_VERSION 11
-#define SOUL_LINK_PREVIOUS_PROTOCOL_VERSION 10
+#define SOUL_LINK_PROTOCOL_VERSION 12
+#define SOUL_LINK_PREVIOUS_PROTOCOL_VERSION 11
+#define SOUL_LINK_LEGACY_PROTOCOL_VERSION 10
 #define SOUL_LINK_SAVE_FORMAT_VERSION 4
 #define SOUL_LINK_PREVIOUS_SAVE_FORMAT_VERSION 3
 #define SOUL_LINK_RANDOMIZER_SETTING_COUNT 15
@@ -57,6 +58,7 @@ enum SoulLinkRegistryRequest
     SOUL_LINK_REGISTRY_REQUEST_COUNT = 1,
     SOUL_LINK_REGISTRY_REQUEST_MEMBER,
     SOUL_LINK_REGISTRY_REQUEST_PLAYER_NAME,
+    SOUL_LINK_REGISTRY_REQUEST_GROUP_MEMBER,
 };
 
 struct SoulLinkRegistryMember
@@ -142,6 +144,7 @@ bool8 SoulLink_IsActive(void);
 bool8 SoulLink_RequestRegistryCount(void);
 bool8 SoulLink_TakeRegistryCount(u16 *count, bool8 *valid);
 bool8 SoulLink_RequestRegistryMember(u16 row, u8 playerSlot);
+bool8 SoulLink_RequestRegistryGroupMember(u16 groupId, u8 playerSlot);
 bool8 SoulLink_TakeRegistryMember(struct SoulLinkRegistryMember *member,
                                   bool8 *valid);
 bool8 SoulLink_RequestRegistryPlayerName(u8 playerSlot);

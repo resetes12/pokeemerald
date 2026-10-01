@@ -94,11 +94,14 @@ static u16 GetRunRandomizerSettings(const struct SoulLinkSaveData *run)
 static void UpgradeRunVersion(struct SoulLinkSaveData *run)
 {
     if (run->formatVersion == SOUL_LINK_PREVIOUS_SAVE_FORMAT_VERSION
-     && run->protocolVersion == SOUL_LINK_PREVIOUS_PROTOCOL_VERSION)
+     && run->protocolVersion == SOUL_LINK_LEGACY_PROTOCOL_VERSION)
     {
         run->formatVersion = SOUL_LINK_SAVE_FORMAT_VERSION;
         run->protocolVersion = SOUL_LINK_PROTOCOL_VERSION;
     }
+    else if (run->formatVersion == SOUL_LINK_SAVE_FORMAT_VERSION
+          && run->protocolVersion == SOUL_LINK_PREVIOUS_PROTOCOL_VERSION)
+        run->protocolVersion = SOUL_LINK_PROTOCOL_VERSION;
 }
 
 static bool8 IsFailedLocation(u16 location)
@@ -188,6 +191,19 @@ bool8 SoulLink_RequestRegistryMember(u16 row, u8 playerSlot)
     return TRUE;
 }
 
+bool8 SoulLink_RequestRegistryGroupMember(u16 groupId, u8 playerSlot)
+{
+    if (sRegistryPendingRequest)
+        return sRegistryPendingRequest == SOUL_LINK_REGISTRY_REQUEST_GROUP_MEMBER;
+    if (groupId == SOUL_LINK_GROUP_NONE || playerSlot < 1 || playerSlot > 4
+     || !TryPublishOutgoing(SOUL_LINK_EVENT_REGISTRY_REQUEST, 0, 0, groupId,
+            0, playerSlot, SOUL_LINK_REGISTRY_REQUEST_GROUP_MEMBER, 0))
+        return FALSE;
+    sRegistryPendingRequest = SOUL_LINK_REGISTRY_REQUEST_GROUP_MEMBER;
+    sRegistryResultReady = FALSE;
+    return TRUE;
+}
+
 bool8 SoulLink_RequestRegistryPlayerName(u8 playerSlot)
 {
     if (sRegistryPendingRequest)
@@ -216,7 +232,8 @@ bool8 SoulLink_TakeRegistryMember(struct SoulLinkRegistryMember *member,
                                   bool8 *valid)
 {
     if (!sRegistryResultReady
-     || sRegistryResultType != SOUL_LINK_REGISTRY_REQUEST_MEMBER)
+     || (sRegistryResultType != SOUL_LINK_REGISTRY_REQUEST_MEMBER
+      && sRegistryResultType != SOUL_LINK_REGISTRY_REQUEST_GROUP_MEMBER))
         return FALSE;
     *member = sRegistryMember;
     *valid = sRegistryResultValid;
@@ -668,7 +685,8 @@ void SoulLink_Update(void)
             sRegistryResultType = sRegistryPendingRequest;
             if (sRegistryResultType == SOUL_LINK_REGISTRY_REQUEST_COUNT)
                 sRegistryGroupCount = gSoulLinkMailbox.incoming.species;
-            else if (sRegistryResultType == SOUL_LINK_REGISTRY_REQUEST_MEMBER)
+            else if (sRegistryResultType == SOUL_LINK_REGISTRY_REQUEST_MEMBER
+                  || sRegistryResultType == SOUL_LINK_REGISTRY_REQUEST_GROUP_MEMBER)
             {
                 sRegistryMember.groupId = gSoulLinkMailbox.incoming.pairId;
                 sRegistryMember.species = gSoulLinkMailbox.incoming.species;
