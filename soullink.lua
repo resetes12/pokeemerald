@@ -487,7 +487,7 @@ local function rebuildMergedRegistry()
     mergedLinkRegistry = rebuilt
 
     local groupCount, completeGroupCount = 0, 0
-    for _, group in pairs(rebuilt) do
+    for groupId, group in pairs(rebuilt) do
         groupCount = groupCount + 1
         local memberMask = 0
         for slot in pairs(group.members) do
