@@ -93,6 +93,7 @@ EWRAM_DATA static u8 (*sSaveDialogCallback)(void) = NULL;
 EWRAM_DATA static u8 sSaveDialogTimer = 0;
 EWRAM_DATA static bool8 sSavingComplete = FALSE;
 EWRAM_DATA static u8 sSaveInfoWindowId = 0;
+EWRAM_DATA static u16 sSoulLinkGroupCount = 0;
 
 // Menu action callbacks
 static bool8 StartMenuPokedexCallback(void);
@@ -110,6 +111,7 @@ static bool8 StartMenuBattlePyramidBagCallback(void);
 static bool8 StartMenuDebugCallback(void);
 static bool8 StartMenuSoulLinksCallback(void);
 static bool8 WaitForSoulLinkRegistryCount(void);
+static bool8 WaitForSoulLinkRegistryMember(void);
 static void Task_CloseSoulLinkCount(u8 taskId);
 
 // Menu callbacks
@@ -191,6 +193,7 @@ static const struct WindowTemplate sWindowTemplate_PyramidPeak = {
 static const u8 gText_MenuDebug[] = _("DEBUG");
 static const u8 sText_MenuSoulLinks[] = _("LINKS");
 static const u8 sText_SoulLinkCount[] = _("Linked groups: {STR_VAR_1}{PAUSE_UNTIL_PRESS}");
+static const u8 sText_SoulLinkFirst[] = _("Linked groups: {STR_VAR_1}\nFirst ID {STR_VAR_2}: species {STR_VAR_3}{PAUSE_UNTIL_PRESS}");
 static const u8 sText_SoulLinkUnavailable[] = _("Link registry is not ready.{PAUSE_UNTIL_PRESS}");
 
 static const struct MenuAction sStartMenuItems[] =
@@ -829,6 +832,13 @@ static bool8 WaitForSoulLinkRegistryCount(void)
     if (!SoulLink_TakeRegistryCount(&count, &valid))
         return FALSE;
 
+    if (valid && count > 0)
+    {
+        sSoulLinkGroupCount = count;
+        gMenuCallback = WaitForSoulLinkRegistryMember;
+        return FALSE;
+    }
+
     ClearStdWindowAndFrame(GetStartMenuWindowId(), TRUE);
     RemoveStartMenuWindow();
     taskId = FindTaskIdByFunc(Task_ShowStartMenu);
@@ -836,6 +846,46 @@ static bool8 WaitForSoulLinkRegistryCount(void)
     {
         ConvertIntToDecimalStringN(gStringVar1, count, STR_CONV_MODE_LEFT_ALIGN, 3);
         DisplayItemMessageOnField(taskId, sText_SoulLinkCount, Task_CloseSoulLinkCount);
+    }
+    else
+    {
+        DisplayItemMessageOnField(taskId, sText_SoulLinkUnavailable,
+            Task_CloseSoulLinkCount);
+    }
+    return FALSE;
+}
+
+static bool8 WaitForSoulLinkRegistryMember(void)
+{
+    struct SoulLinkRegistryMember member;
+    bool8 valid;
+    u8 taskId;
+
+    if (JOY_NEW(B_BUTTON))
+    {
+        SoulLink_CancelRegistryRequest();
+        HideStartMenu();
+        return TRUE;
+    }
+    if (!SoulLink_TakeRegistryMember(&member, &valid))
+    {
+        SoulLink_RequestRegistryMember(0, SoulLink_GetPlayerSlot());
+        return FALSE;
+    }
+
+    ClearStdWindowAndFrame(GetStartMenuWindowId(), TRUE);
+    RemoveStartMenuWindow();
+    taskId = FindTaskIdByFunc(Task_ShowStartMenu);
+    if (valid)
+    {
+        ConvertIntToDecimalStringN(gStringVar1, sSoulLinkGroupCount,
+            STR_CONV_MODE_LEFT_ALIGN, 3);
+        ConvertIntToDecimalStringN(gStringVar2, member.groupId,
+            STR_CONV_MODE_LEFT_ALIGN, 5);
+        ConvertIntToDecimalStringN(gStringVar3, member.species,
+            STR_CONV_MODE_LEFT_ALIGN, 4);
+        DisplayItemMessageOnField(taskId, sText_SoulLinkFirst,
+            Task_CloseSoulLinkCount);
     }
     else
     {

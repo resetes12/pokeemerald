@@ -41,7 +41,9 @@ local EVENT_SNAPSHOT_END = 11
 local EVENT_REGISTRY_REQUEST = 12
 local EVENT_REGISTRY_RESULT = 13
 local REGISTRY_REQUEST_COUNT = 1
+local REGISTRY_REQUEST_MEMBER = 2
 local REGISTRY_RESULT_VALID = 0x100
+local REGISTRY_RESULT_DEAD = 0x200
 local PING_INTERVAL_FRAMES = 300
 local NETWORK_KEEPALIVE_INTERVAL_FRAMES = 300
 local NETWORK_PEER_TIMEOUT_SECONDS = 600
@@ -195,7 +197,12 @@ local function queueRegistrySnapshot(snapshot)
     for groupId in pairs(snapshot.members) do
         groupIds[#groupIds + 1] = groupId
     end
-    table.sort(groupIds)
+    table.sort(groupIds, function(left, right)
+        if left == STARTER_GROUP_ID or right == STARTER_GROUP_ID then
+            return left == STARTER_GROUP_ID
+        end
+        return left < right
+    end)
     for _, groupId in ipairs(groupIds) do
         local member = snapshot.members[groupId]
         queue("REGISTRY_MEMBER", string.format(
@@ -417,7 +424,7 @@ local function rebuildMergedRegistry()
         completePlayers, gatePlayerMask, groupCount, completeGroupCount))
 end
 
-local function countCompleteRegistryGroups()
+local function getCompleteRegistryGroupIds()
     local playerMask = 0
     for slot in pairs(playerSnapshots) do
         playerMask = playerMask + 2 ^ (slot - 1)
@@ -426,17 +433,21 @@ local function countCompleteRegistryGroups()
         return nil
     end
 
-    local count = 0
-    for _, group in pairs(mergedLinkRegistry) do
+    local groupIds = {}
+    for groupId, group in pairs(mergedLinkRegistry) do
         local memberMask = 0
         for slot in pairs(group.members) do
             memberMask = memberMask + 2 ^ (slot - 1)
         end
         if memberMask == gatePlayerMask then
-            count = count + 1
+            groupIds[#groupIds + 1] = groupId
         end
     end
-    return count
+    table.sort(groupIds)
+    if groupIds[#groupIds] == STARTER_GROUP_ID then
+        table.insert(groupIds, 1, table.remove(groupIds))
+    end
+    return groupIds
 end
 
 local function recordSnapshot(sender, messageType, values, expectedSlot)
@@ -1342,16 +1353,31 @@ local function consumeMailboxOutgoing()
             slot, count))
     elseif eventType == EVENT_REGISTRY_REQUEST then
         local request = memory.read_u16_le(offset + 20, EWRAM_DOMAIN)
-        if request == REGISTRY_REQUEST_COUNT then
-            local count = countCompleteRegistryGroups()
+        if request == REGISTRY_REQUEST_COUNT or request == REGISTRY_REQUEST_MEMBER then
+            local groupIds = getCompleteRegistryGroupIds()
+            local member
+            local groupId
+            if request == REGISTRY_REQUEST_MEMBER and groupIds then
+                local row = memory.read_u16_le(offset + 14, EWRAM_DOMAIN)
+                local slot = memory.read_u16_le(offset + 18, EWRAM_DOMAIN)
+                groupId = groupIds[row + 1]
+                member = groupId and mergedLinkRegistry[groupId].members[slot]
+            end
+            local valid = groupIds and (request == REGISTRY_REQUEST_COUNT or member)
             pendingRomEvents[#pendingRomEvents + 1] = {
                 type = EVENT_REGISTRY_RESULT,
-                flags = request + (count and REGISTRY_RESULT_VALID or 0),
-                payload = {species = count or 0},
+                flags = request + (valid and REGISTRY_RESULT_VALID or 0)
+                    + (member and member.dead and REGISTRY_RESULT_DEAD or 0),
+                payload = {
+                    pairId = groupId or 0,
+                    species = request == REGISTRY_REQUEST_COUNT
+                        and (groupIds and #groupIds or 0) or (member and member.species or 0),
+                    location = member and member.location or 0,
+                },
             }
             console.log(string.format(
-                "[SoulLink] registry count request: %s",
-                count and tostring(count) or "not ready"))
+                "[SoulLink] registry request=%d: %s", request,
+                valid and tostring(groupId or #groupIds) or "not ready"))
         end
     else
         console.log("[SoulLink] ignored unknown ROM event " .. eventType)

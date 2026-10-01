@@ -17,10 +17,12 @@ static EWRAM_DATA struct SoulLinkMessage sPendingCatch = {0};
 static EWRAM_DATA u16 sSnapshotIndex = 0;
 static EWRAM_DATA u16 sSnapshotMemberCount = 0;
 static EWRAM_DATA u8 sSnapshotState = 0;
-static EWRAM_DATA bool8 sRegistryRequestPending = FALSE;
+static EWRAM_DATA u8 sRegistryPendingRequest = 0;
+static EWRAM_DATA u8 sRegistryResultType = 0;
 static EWRAM_DATA bool8 sRegistryResultReady = FALSE;
 static EWRAM_DATA bool8 sRegistryResultValid = FALSE;
 static EWRAM_DATA u16 sRegistryGroupCount = 0;
+static EWRAM_DATA struct SoulLinkRegistryMember sRegistryMember = {0};
 
 enum
 {
@@ -62,7 +64,8 @@ static void ResetMailbox(void)
     memset((void *)&gSoulLinkPendingRun, 0, sizeof(gSoulLinkPendingRun));
     memset((void *)&gSoulLinkMailbox, 0, sizeof(gSoulLinkMailbox));
     sSnapshotState = SNAPSHOT_IDLE;
-    sRegistryRequestPending = FALSE;
+    sRegistryPendingRequest = 0;
+    sRegistryResultType = 0;
     sRegistryResultReady = FALSE;
     sRegistryResultValid = FALSE;
     sRegistryGroupCount = 0;
@@ -124,19 +127,33 @@ bool8 SoulLink_IsActive(void)
 
 bool8 SoulLink_RequestRegistryCount(void)
 {
-    if (sRegistryRequestPending)
-        return TRUE;
+    if (sRegistryPendingRequest)
+        return sRegistryPendingRequest == SOUL_LINK_REGISTRY_REQUEST_COUNT;
     if (!TryPublishOutgoing(SOUL_LINK_EVENT_REGISTRY_REQUEST, 0, 0, 0,
             0, 0, SOUL_LINK_REGISTRY_REQUEST_COUNT, 0))
         return FALSE;
-    sRegistryRequestPending = TRUE;
+    sRegistryPendingRequest = SOUL_LINK_REGISTRY_REQUEST_COUNT;
+    sRegistryResultReady = FALSE;
+    return TRUE;
+}
+
+bool8 SoulLink_RequestRegistryMember(u16 row, u8 playerSlot)
+{
+    if (sRegistryPendingRequest)
+        return sRegistryPendingRequest == SOUL_LINK_REGISTRY_REQUEST_MEMBER;
+    if (playerSlot < 1 || playerSlot > 4
+     || !TryPublishOutgoing(SOUL_LINK_EVENT_REGISTRY_REQUEST, 0, 0, row,
+            0, playerSlot, SOUL_LINK_REGISTRY_REQUEST_MEMBER, 0))
+        return FALSE;
+    sRegistryPendingRequest = SOUL_LINK_REGISTRY_REQUEST_MEMBER;
     sRegistryResultReady = FALSE;
     return TRUE;
 }
 
 bool8 SoulLink_TakeRegistryCount(u16 *count, bool8 *valid)
 {
-    if (!sRegistryResultReady)
+    if (!sRegistryResultReady
+     || sRegistryResultType != SOUL_LINK_REGISTRY_REQUEST_COUNT)
         return FALSE;
     *count = sRegistryGroupCount;
     *valid = sRegistryResultValid;
@@ -144,9 +161,27 @@ bool8 SoulLink_TakeRegistryCount(u16 *count, bool8 *valid)
     return TRUE;
 }
 
+bool8 SoulLink_TakeRegistryMember(struct SoulLinkRegistryMember *member,
+                                  bool8 *valid)
+{
+    if (!sRegistryResultReady
+     || sRegistryResultType != SOUL_LINK_REGISTRY_REQUEST_MEMBER)
+        return FALSE;
+    *member = sRegistryMember;
+    *valid = sRegistryResultValid;
+    sRegistryResultReady = FALSE;
+    return TRUE;
+}
+
+u8 SoulLink_GetPlayerSlot(void)
+{
+    return gSoulLinkPendingRun.playerSlot != 0
+        ? gSoulLinkPendingRun.playerSlot : gSaveBlock2Ptr->soulLink.playerSlot;
+}
+
 void SoulLink_CancelRegistryRequest(void)
 {
-    sRegistryRequestPending = FALSE;
+    sRegistryPendingRequest = 0;
     sRegistryResultReady = FALSE;
 }
 
@@ -435,12 +470,21 @@ void SoulLink_Update(void)
             ApplyLinkCreated(&gSoulLinkMailbox.incoming);
         }
         else if (gSoulLinkMailbox.incoming.type == SOUL_LINK_EVENT_REGISTRY_RESULT
-              && sRegistryRequestPending
-              && (flags & 0xFF) == SOUL_LINK_REGISTRY_REQUEST_COUNT)
+              && sRegistryPendingRequest != 0
+              && sRegistryPendingRequest == (flags & 0xFF))
         {
-            sRegistryGroupCount = gSoulLinkMailbox.incoming.species;
+            sRegistryResultType = sRegistryPendingRequest;
+            if (sRegistryResultType == SOUL_LINK_REGISTRY_REQUEST_COUNT)
+                sRegistryGroupCount = gSoulLinkMailbox.incoming.species;
+            else if (sRegistryResultType == SOUL_LINK_REGISTRY_REQUEST_MEMBER)
+            {
+                sRegistryMember.groupId = gSoulLinkMailbox.incoming.pairId;
+                sRegistryMember.species = gSoulLinkMailbox.incoming.species;
+                sRegistryMember.location = gSoulLinkMailbox.incoming.location;
+                sRegistryMember.dead = (flags & SOUL_LINK_REGISTRY_RESULT_DEAD) != 0;
+            }
             sRegistryResultValid = (flags & SOUL_LINK_REGISTRY_RESULT_VALID) != 0;
-            sRegistryRequestPending = FALSE;
+            sRegistryPendingRequest = 0;
             sRegistryResultReady = TRUE;
         }
 
