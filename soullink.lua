@@ -148,6 +148,9 @@ local localSettings = nil
 local pendingCatchGroups = {}
 local finalizedCatchGroups = {}
 local pendingRomEvents = {}
+local snapshotBuilders = {}
+local playerSnapshots = {}
+local mergedLinkRegistry = {}
 
 local STARTER_GROUP_ID = 0xFFFF
 
@@ -320,6 +323,126 @@ local function parseLinkCreated(payload)
     }
 end
 
+local function parseSnapshot(payload, valueCount)
+    local pattern = "^" .. string.rep("(%d+),", valueCount - 1) .. "(%d+)$"
+    local values = {payload:match(pattern)}
+    if #values ~= valueCount then
+        return nil
+    end
+    for i = 1, valueCount do
+        values[i] = tonumber(values[i])
+    end
+    return values
+end
+
+local function expectedSnapshotSlot(sender)
+    local intent = sender == "host" and localIntent
+        or (remotePeers[sender] and remotePeers[sender].intent)
+    if intent and intent.playerSlot > 0 then
+        return intent.playerSlot
+    end
+    return sender == "host" and 1
+        or tonumber(sender:match("^client([1-3])$")) + 1
+end
+
+local function rebuildMergedRegistry()
+    local rebuilt = {}
+    local completePlayers = 0
+    for slot = 1, 4 do
+        local snapshot = playerSnapshots[slot]
+        if snapshot then
+            completePlayers = completePlayers + 2 ^ (slot - 1)
+            for groupId, member in pairs(snapshot.members) do
+                local group = rebuilt[groupId]
+                if not group then
+                    group = {location = member.location, members = {}}
+                    rebuilt[groupId] = group
+                end
+                if group.location == member.location then
+                    group.members[slot] = member
+                else
+                    console.log(string.format(
+                        "[SoulLink] snapshot group=%d has conflicting locations %d/%d",
+                        groupId, group.location, member.location))
+                end
+            end
+        end
+    end
+    mergedLinkRegistry = rebuilt
+
+    local groupCount, completeGroupCount = 0, 0
+    for _, group in pairs(rebuilt) do
+        groupCount = groupCount + 1
+        local memberMask = 0
+        for slot in pairs(group.members) do
+            memberMask = memberMask + 2 ^ (slot - 1)
+        end
+        if memberMask == gatePlayerMask then
+            completeGroupCount = completeGroupCount + 1
+        end
+    end
+    console.log(string.format(
+        "[SoulLink] merged snapshots players=0x%X/0x%X groups=%d complete=%d",
+        completePlayers, gatePlayerMask, groupCount, completeGroupCount))
+end
+
+local function recordSnapshot(sender, messageType, values)
+    local slot = expectedSnapshotSlot(sender)
+    if gateState ~= GATE_APPROVED
+        or math.floor(gatePlayerMask / (2 ^ (slot - 1))) % 2 ~= 1
+    then
+        return false, "snapshot from inactive player"
+    end
+
+    if messageType == "SNAPSHOT_BEGIN" then
+        if values[1] ~= slot or values[2] > 0xFFFFFFFF
+            or values[3] > 0xFFFFFFFF
+        then
+            return false, "invalid snapshot begin"
+        end
+        snapshotBuilders[sender] = {
+            slot = slot, nameLow = values[2], nameHigh = values[3],
+            members = {}, count = 0,
+        }
+        return true
+    end
+
+    local builder = snapshotBuilders[sender]
+    if not builder then
+        return false, "snapshot record received before begin"
+    elseif messageType == "SNAPSHOT_MEMBER" then
+        local groupId = values[1]
+        if groupId < 1 or groupId > STARTER_GROUP_ID
+            or values[2] < 1 or values[2] > 0xFFFF
+            or values[3] > 0xFFFF or values[4] > 1
+            or values[5] > 0xFFFFFFFF or values[6] > 0xFFFFFFFF
+            or values[7] > 0xFFFF or builder.members[groupId]
+            or (groupId ~= STARTER_GROUP_ID and groupId ~= values[3] + 1)
+        then
+            snapshotBuilders[sender] = nil
+            return false, "invalid snapshot member"
+        end
+        builder.members[groupId] = {
+            species = values[2], location = values[3], dead = values[4] == 1,
+            nicknameLow = values[5], nicknameHigh = values[6],
+            nicknameTail = values[7],
+        }
+        builder.count = builder.count + 1
+        return true
+    end
+
+    if values[1] ~= slot or values[2] ~= builder.count then
+        snapshotBuilders[sender] = nil
+        return false, "snapshot end count mismatch"
+    end
+    playerSnapshots[slot] = builder
+    snapshotBuilders[sender] = nil
+    console.log(string.format(
+        "[SoulLink] accepted snapshot slot=%d members=%d", slot, builder.count))
+    rebuildMergedRegistry()
+    return true
+end
+
 local function queueLinkCreated(link)
     pendingRomEvents[#pendingRomEvents + 1] = {
         type = EVENT_LINK_CREATED,
@@ -394,6 +517,9 @@ local function applyGateState(state, playerMask, broadcast,
         pendingCatchGroups = {}
         finalizedCatchGroups = {}
         pendingRomEvents = {}
+        snapshotBuilders = {}
+        playerSnapshots = {}
+        mergedLinkRegistry = {}
     end
     if changed then
         pendingGate = true
@@ -749,6 +875,9 @@ local function handleNetworkMessage(message)
         and messageType ~= "INTENT" and messageType ~= "GATE"
         and messageType ~= "SETTINGS" and messageType ~= "CATCH"
         and messageType ~= "LINK_CREATED"
+        and messageType ~= "SNAPSHOT_BEGIN"
+        and messageType ~= "SNAPSHOT_MEMBER"
+        and messageType ~= "SNAPSHOT_END"
     then
         return false, "unsupported message type " .. tostring(messageType)
     end
@@ -833,6 +962,16 @@ local function handleNetworkMessage(message)
         if networkConfig.role ~= "client" or not parseLinkCreated(payload) then
             return false, "invalid LINK_CREATED payload"
         end
+    elseif messageType:match("^SNAPSHOT_") then
+        local counts = {SNAPSHOT_BEGIN = 3, SNAPSHOT_MEMBER = 7, SNAPSHOT_END = 2}
+        local values = parseSnapshot(payload, counts[messageType])
+        if networkConfig.role ~= "host" or not values then
+            return false, "invalid " .. messageType .. " payload"
+        end
+        local accepted, snapshotError = recordSnapshot(sender, messageType, values)
+        if not accepted then
+            return false, snapshotError
+        end
     end
 
     peer.lastSequence = sequence
@@ -871,6 +1010,8 @@ local function handleNetworkMessage(message)
         if link.playerMask == localPlayerMask then
             queueLinkCreated(link)
         end
+    elseif messageType:match("^SNAPSHOT_") then
+        -- Validated and recorded above; only sequence bookkeeping remains.
     elseif LOG_HEARTBEATS then
         console.log(string.format(
             "[SoulLink] KEEPALIVE %d received from %s", sequence, sender))
@@ -1060,26 +1201,52 @@ local function consumeMailboxOutgoing()
                 caught.personality, caught.otId, caught.species, caught.location))
         end
     elseif eventType == EVENT_SNAPSHOT_BEGIN then
+        local slot = memory.read_u16_le(offset + 14, EWRAM_DOMAIN)
+        local nameLow = memory.read_u32_le(offset + 4, EWRAM_DOMAIN)
+        local nameHigh = memory.read_u32_le(offset + 8, EWRAM_DOMAIN)
+        local values = {slot, nameLow, nameHigh}
+        if networkConfig.role == "host" then
+            consumed = recordSnapshot("host", "SNAPSHOT_BEGIN", values)
+        else
+            consumed = sendNetworkMessage("SNAPSHOT_BEGIN", string.format(
+                "%d,%u,%u", slot, nameLow, nameHigh))
+        end
         console.log(string.format(
             "[SoulLink] local snapshot begin slot=%d nameWords=%08X:%08X",
-            memory.read_u16_le(offset + 14, EWRAM_DOMAIN),
-            memory.read_u32_le(offset + 4, EWRAM_DOMAIN),
-            memory.read_u32_le(offset + 8, EWRAM_DOMAIN)))
+            slot, nameLow, nameHigh))
     elseif eventType == EVENT_SNAPSHOT_MEMBER then
-        console.log(string.format(
-            "[SoulLink] local snapshot member group=%d species=%d location=%d dead=%s nicknameWords=%08X:%08X:%04X",
+        local values = {
             memory.read_u16_le(offset + 14, EWRAM_DOMAIN),
             memory.read_u16_le(offset + 16, EWRAM_DOMAIN),
             memory.read_u16_le(offset + 18, EWRAM_DOMAIN),
-            memory.read_u16_le(offset + 20, EWRAM_DOMAIN) % 2 == 1 and "yes" or "no",
+            memory.read_u16_le(offset + 20, EWRAM_DOMAIN) % 2,
             memory.read_u32_le(offset + 4, EWRAM_DOMAIN),
             memory.read_u32_le(offset + 8, EWRAM_DOMAIN),
-            memory.read_u16_le(offset + 22, EWRAM_DOMAIN)))
+            memory.read_u16_le(offset + 22, EWRAM_DOMAIN),
+        }
+        if networkConfig.role == "host" then
+            consumed = recordSnapshot("host", "SNAPSHOT_MEMBER", values)
+        else
+            consumed = sendNetworkMessage("SNAPSHOT_MEMBER", string.format(
+                "%d,%d,%d,%d,%u,%u,%d", table.unpack(values)))
+        end
+        console.log(string.format(
+            "[SoulLink] local snapshot member group=%d species=%d location=%d dead=%s nicknameWords=%08X:%08X:%04X",
+            values[1], values[2], values[3], values[4] == 1 and "yes" or "no",
+            values[5], values[6], values[7]))
     elseif eventType == EVENT_SNAPSHOT_END then
+        local slot = memory.read_u16_le(offset + 14, EWRAM_DOMAIN)
+        local count = memory.read_u16_le(offset + 16, EWRAM_DOMAIN)
+        local values = {slot, count}
+        if networkConfig.role == "host" then
+            consumed = recordSnapshot("host", "SNAPSHOT_END", values)
+        else
+            consumed = sendNetworkMessage("SNAPSHOT_END", string.format(
+                "%d,%d", slot, count))
+        end
         console.log(string.format(
             "[SoulLink] local snapshot end slot=%d members=%d",
-            memory.read_u16_le(offset + 14, EWRAM_DOMAIN),
-            memory.read_u16_le(offset + 16, EWRAM_DOMAIN)))
+            slot, count))
     else
         console.log("[SoulLink] ignored unknown ROM event " .. eventType)
     end
