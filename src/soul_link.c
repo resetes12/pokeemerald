@@ -24,6 +24,7 @@ static EWRAM_DATA bool8 sRegistryResultReady = FALSE;
 static EWRAM_DATA bool8 sRegistryResultValid = FALSE;
 static EWRAM_DATA u16 sRegistryGroupCount = 0;
 static EWRAM_DATA struct SoulLinkRegistryMember sRegistryMember = {0};
+static EWRAM_DATA u8 sRegistryPlayerName[PLAYER_NAME_LENGTH + 1] = {0};
 
 enum
 {
@@ -151,6 +152,19 @@ bool8 SoulLink_RequestRegistryMember(u16 row, u8 playerSlot)
     return TRUE;
 }
 
+bool8 SoulLink_RequestRegistryPlayerName(u8 playerSlot)
+{
+    if (sRegistryPendingRequest)
+        return sRegistryPendingRequest == SOUL_LINK_REGISTRY_REQUEST_PLAYER_NAME;
+    if (playerSlot < 1 || playerSlot > 4
+     || !TryPublishOutgoing(SOUL_LINK_EVENT_REGISTRY_REQUEST, 0, 0, 0,
+            0, playerSlot, SOUL_LINK_REGISTRY_REQUEST_PLAYER_NAME, 0))
+        return FALSE;
+    sRegistryPendingRequest = SOUL_LINK_REGISTRY_REQUEST_PLAYER_NAME;
+    sRegistryResultReady = FALSE;
+    return TRUE;
+}
+
 bool8 SoulLink_TakeRegistryCount(u16 *count, bool8 *valid)
 {
     if (!sRegistryResultReady
@@ -169,6 +183,17 @@ bool8 SoulLink_TakeRegistryMember(struct SoulLinkRegistryMember *member,
      || sRegistryResultType != SOUL_LINK_REGISTRY_REQUEST_MEMBER)
         return FALSE;
     *member = sRegistryMember;
+    *valid = sRegistryResultValid;
+    sRegistryResultReady = FALSE;
+    return TRUE;
+}
+
+bool8 SoulLink_TakeRegistryPlayerName(u8 *name, bool8 *valid)
+{
+    if (!sRegistryResultReady
+     || sRegistryResultType != SOUL_LINK_REGISTRY_REQUEST_PLAYER_NAME)
+        return FALSE;
+    memcpy(name, sRegistryPlayerName, sizeof(sRegistryPlayerName));
     *valid = sRegistryResultValid;
     sRegistryResultReady = FALSE;
     return TRUE;
@@ -490,6 +515,14 @@ void SoulLink_Update(void)
                 memcpy(sRegistryMember.nickname + 2 * sizeof(u32),
                     (const void *)&gSoulLinkMailbox.incoming.reserved, sizeof(u16));
                 sRegistryMember.nickname[POKEMON_NAME_LENGTH] = EOS;
+            }
+            else if (sRegistryResultType == SOUL_LINK_REGISTRY_REQUEST_PLAYER_NAME)
+            {
+                memcpy(sRegistryPlayerName,
+                    (const void *)&gSoulLinkMailbox.incoming.personality, sizeof(u32));
+                memcpy(sRegistryPlayerName + sizeof(u32),
+                    (const void *)&gSoulLinkMailbox.incoming.otId, sizeof(u32));
+                sRegistryPlayerName[PLAYER_NAME_LENGTH] = EOS;
             }
             sRegistryResultValid = (flags & SOUL_LINK_REGISTRY_RESULT_VALID) != 0;
             sRegistryPendingRequest = 0;

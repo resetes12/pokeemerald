@@ -113,6 +113,7 @@ static bool8 StartMenuDebugCallback(void);
 static bool8 StartMenuSoulLinksCallback(void);
 static bool8 WaitForSoulLinkRegistryCount(void);
 static bool8 WaitForSoulLinkRegistryMember(void);
+static bool8 WaitForSoulLinkRegistryPlayerName(void);
 static void Task_CloseSoulLinkCount(u8 taskId);
 
 // Menu callbacks
@@ -194,7 +195,7 @@ static const struct WindowTemplate sWindowTemplate_PyramidPeak = {
 static const u8 gText_MenuDebug[] = _("DEBUG");
 static const u8 sText_MenuSoulLinks[] = _("LINKS");
 static const u8 sText_SoulLinkCount[] = _("Linked groups: {STR_VAR_1}{PAUSE_UNTIL_PRESS}");
-static const u8 sText_SoulLinkFirst[] = _("Group {STR_VAR_1}\n{STR_VAR_2} / {STR_VAR_3}{PAUSE_UNTIL_PRESS}");
+static const u8 sText_SoulLinkFirst[] = _("{STR_VAR_1}'s group\n{STR_VAR_2} / {STR_VAR_3}{PAUSE_UNTIL_PRESS}");
 static const u8 sText_SoulLinkUnavailable[] = _("Link registry is not ready.{PAUSE_UNTIL_PRESS}");
 
 static const struct MenuAction sStartMenuItems[] =
@@ -874,15 +875,45 @@ static bool8 WaitForSoulLinkRegistryMember(void)
         return FALSE;
     }
 
+    if (valid)
+    {
+        StringCopy(gStringVar2, member.nickname);
+        StringCopy(gStringVar3, gSpeciesNames[member.species]);
+        gMenuCallback = WaitForSoulLinkRegistryPlayerName;
+        return FALSE;
+    }
+    ClearStdWindowAndFrame(GetStartMenuWindowId(), TRUE);
+    RemoveStartMenuWindow();
+    taskId = FindTaskIdByFunc(Task_ShowStartMenu);
+    DisplayItemMessageOnField(taskId, sText_SoulLinkUnavailable,
+        Task_CloseSoulLinkCount);
+    return FALSE;
+}
+
+static bool8 WaitForSoulLinkRegistryPlayerName(void)
+{
+    u8 playerName[PLAYER_NAME_LENGTH + 1];
+    bool8 valid;
+    u8 taskId;
+
+    if (JOY_NEW(B_BUTTON))
+    {
+        SoulLink_CancelRegistryRequest();
+        HideStartMenu();
+        return TRUE;
+    }
+    if (!SoulLink_TakeRegistryPlayerName(playerName, &valid))
+    {
+        SoulLink_RequestRegistryPlayerName(SoulLink_GetPlayerSlot());
+        return FALSE;
+    }
+
     ClearStdWindowAndFrame(GetStartMenuWindowId(), TRUE);
     RemoveStartMenuWindow();
     taskId = FindTaskIdByFunc(Task_ShowStartMenu);
     if (valid)
     {
-        ConvertIntToDecimalStringN(gStringVar1, member.groupId,
-            STR_CONV_MODE_LEFT_ALIGN, 5);
-        StringCopy(gStringVar2, member.nickname);
-        StringCopy(gStringVar3, gSpeciesNames[member.species]);
+        StringCopy(gStringVar1, playerName);
         DisplayItemMessageOnField(taskId, sText_SoulLinkFirst,
             Task_CloseSoulLinkCount);
     }

@@ -42,6 +42,7 @@ local EVENT_REGISTRY_REQUEST = 12
 local EVENT_REGISTRY_RESULT = 13
 local REGISTRY_REQUEST_COUNT = 1
 local REGISTRY_REQUEST_MEMBER = 2
+local REGISTRY_REQUEST_PLAYER_NAME = 3
 local REGISTRY_RESULT_VALID = 0x100
 local REGISTRY_RESULT_DEAD = 0x200
 local PING_INTERVAL_FRAMES = 300
@@ -1353,24 +1354,35 @@ local function consumeMailboxOutgoing()
             slot, count))
     elseif eventType == EVENT_REGISTRY_REQUEST then
         local request = memory.read_u16_le(offset + 20, EWRAM_DOMAIN)
-        if request == REGISTRY_REQUEST_COUNT or request == REGISTRY_REQUEST_MEMBER then
+        if request == REGISTRY_REQUEST_COUNT
+            or request == REGISTRY_REQUEST_MEMBER
+            or request == REGISTRY_REQUEST_PLAYER_NAME
+        then
             local groupIds = getCompleteRegistryGroupIds()
             local member
             local groupId
+            local playerSnapshot
+            local slot = memory.read_u16_le(offset + 18, EWRAM_DOMAIN)
             if request == REGISTRY_REQUEST_MEMBER and groupIds then
                 local row = memory.read_u16_le(offset + 14, EWRAM_DOMAIN)
-                local slot = memory.read_u16_le(offset + 18, EWRAM_DOMAIN)
                 groupId = groupIds[row + 1]
                 member = groupId and mergedLinkRegistry[groupId].members[slot]
+            elseif request == REGISTRY_REQUEST_PLAYER_NAME and groupIds then
+                playerSnapshot = playerSnapshots[slot]
             end
-            local valid = groupIds and (request == REGISTRY_REQUEST_COUNT or member)
+            local valid = groupIds and (request == REGISTRY_REQUEST_COUNT
+                or member or playerSnapshot)
+            local result = request == REGISTRY_REQUEST_COUNT
+                and groupIds and #groupIds or groupId or slot
             pendingRomEvents[#pendingRomEvents + 1] = {
                 type = EVENT_REGISTRY_RESULT,
                 flags = request + (valid and REGISTRY_RESULT_VALID or 0)
                     + (member and member.dead and REGISTRY_RESULT_DEAD or 0),
                 payload = {
-                    personality = member and member.nicknameLow or 0,
-                    otId = member and member.nicknameHigh or 0,
+                    personality = member and member.nicknameLow
+                        or playerSnapshot and playerSnapshot.nameLow or 0,
+                    otId = member and member.nicknameHigh
+                        or playerSnapshot and playerSnapshot.nameHigh or 0,
                     pairId = groupId or 0,
                     species = request == REGISTRY_REQUEST_COUNT
                         and (groupIds and #groupIds or 0) or (member and member.species or 0),
@@ -1380,7 +1392,7 @@ local function consumeMailboxOutgoing()
             }
             console.log(string.format(
                 "[SoulLink] registry request=%d: %s", request,
-                valid and tostring(groupId or #groupIds) or "not ready"))
+                valid and tostring(result) or "not ready"))
         end
     else
         console.log("[SoulLink] ignored unknown ROM event " .. eventType)

@@ -51,6 +51,7 @@ enum SoulLinkRegistryRequest
 {
     SOUL_LINK_REGISTRY_REQUEST_COUNT = 1,
     SOUL_LINK_REGISTRY_REQUEST_MEMBER,
+    SOUL_LINK_REGISTRY_REQUEST_PLAYER_NAME,
 };
 
 struct SoulLinkRegistryMember
@@ -136,6 +137,8 @@ bool8 SoulLink_TakeRegistryCount(u16 *count, bool8 *valid);
 bool8 SoulLink_RequestRegistryMember(u16 row, u8 playerSlot);
 bool8 SoulLink_TakeRegistryMember(struct SoulLinkRegistryMember *member,
                                   bool8 *valid);
+bool8 SoulLink_RequestRegistryPlayerName(u8 playerSlot);
+bool8 SoulLink_TakeRegistryPlayerName(u8 *name, bool8 *valid);
 u8 SoulLink_GetPlayerSlot(void);
 void SoulLink_CancelRegistryRequest(void);
 void SoulLink_LinkStarter(struct Pokemon *mon);
