@@ -157,6 +157,16 @@ static void BeginLocalSnapshot(void)
     sSnapshotState = SNAPSHOT_BEGIN;
 }
 
+void SoulLink_LinkStarter(struct Pokemon *mon)
+{
+    if (!SoulLink_IsActive()
+     || SoulLink_GetBoxMonGroupId(&mon->box) != SOUL_LINK_GROUP_NONE)
+        return;
+
+    SoulLink_SetBoxMonGroupId(&mon->box, SOUL_LINK_STARTER_GROUP_ID);
+    BeginLocalSnapshot();
+}
+
 static struct BoxPokemon *GetSnapshotBoxMon(u16 index)
 {
     if (index < PARTY_SIZE)

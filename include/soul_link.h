@@ -26,6 +26,7 @@
 #define SOUL_LINK_REGISTRY_RESULT_VALID (1 << 8)
 
 struct BoxPokemon;
+struct Pokemon;
 
 enum SoulLinkEventType
 {
@@ -122,6 +123,7 @@ bool8 SoulLink_IsActive(void);
 bool8 SoulLink_RequestRegistryCount(void);
 bool8 SoulLink_TakeRegistryCount(u16 *count, bool8 *valid);
 void SoulLink_CancelRegistryRequest(void);
+void SoulLink_LinkStarter(struct Pokemon *mon);
 u16 SoulLink_GetBoxMonGroupId(struct BoxPokemon *boxMon);
 void SoulLink_SetBoxMonGroupId(struct BoxPokemon *boxMon, u16 groupId);
 

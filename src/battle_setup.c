@@ -21,6 +21,7 @@
 #include "trainer_see.h"
 #include "field_message_box.h"
 #include "sound.h"
+#include "soul_link.h"
 #include "strings.h"
 #include "trainer_hill.h"
 #include "secret_base.h"
@@ -41,6 +42,7 @@
 #include "constants/battle_setup.h"
 #include "constants/game_stat.h"
 #include "constants/items.h"
+#include "constants/pokemon.h"
 #include "constants/songs.h"
 #include "constants/map_types.h"
 #include "constants/trainers.h"
@@ -1107,7 +1109,8 @@ static void CB2_GiveStarter(void)
 
     *GetVarPointer(VAR_STARTER_MON) = gSpecialVar_Result;
     starterMon = GetStarterPokemon(gSpecialVar_Result);
-    ScriptGiveMon(starterMon, 5, ITEM_NONE, 0, 0, 0);
+    if (ScriptGiveMon(starterMon, 5, ITEM_NONE, 0, 0, 0) == MON_GIVEN_TO_PARTY)
+        SoulLink_LinkStarter(&gPlayerParty[gPlayerPartyCount - 1]);
     ResetTasks();
     PlayBattleBGM();
     SetMainCallback2(CB2_StartFirstBattle);
