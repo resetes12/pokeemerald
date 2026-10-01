@@ -12,7 +12,7 @@ local EWRAM_BASE = 0x02000000
 local EWRAM_END = 0x02040000
 
 local MAILBOX_MAGIC = 0x4B4E4C53
-local MAILBOX_VERSION = 8
+local MAILBOX_VERSION = 9
 local SAVE_FORMAT_VERSION = 3
 local MAILBOX_SIZE = 68
 local MAILBOX_OUTGOING_OFFSET = 12
@@ -35,6 +35,9 @@ local EVENT_GATE_STATE = 5
 local EVENT_SETTINGS = 6
 local EVENT_CATCH = 7
 local EVENT_LINK_CREATED = 8
+local EVENT_SNAPSHOT_BEGIN = 9
+local EVENT_SNAPSHOT_MEMBER = 10
+local EVENT_SNAPSHOT_END = 11
 local PING_INTERVAL_FRAMES = 300
 local NETWORK_KEEPALIVE_INTERVAL_FRAMES = 300
 local NETWORK_PEER_TIMEOUT_SECONDS = 600
@@ -1056,6 +1059,27 @@ local function consumeMailboxOutgoing()
                 "[SoulLink] local CATCH: personality=%08X otId=%08X species=%d location=%d",
                 caught.personality, caught.otId, caught.species, caught.location))
         end
+    elseif eventType == EVENT_SNAPSHOT_BEGIN then
+        console.log(string.format(
+            "[SoulLink] local snapshot begin slot=%d nameWords=%08X:%08X",
+            memory.read_u16_le(offset + 14, EWRAM_DOMAIN),
+            memory.read_u32_le(offset + 4, EWRAM_DOMAIN),
+            memory.read_u32_le(offset + 8, EWRAM_DOMAIN)))
+    elseif eventType == EVENT_SNAPSHOT_MEMBER then
+        console.log(string.format(
+            "[SoulLink] local snapshot member group=%d species=%d location=%d dead=%s nicknameWords=%08X:%08X:%04X",
+            memory.read_u16_le(offset + 14, EWRAM_DOMAIN),
+            memory.read_u16_le(offset + 16, EWRAM_DOMAIN),
+            memory.read_u16_le(offset + 18, EWRAM_DOMAIN),
+            memory.read_u16_le(offset + 20, EWRAM_DOMAIN) % 2 == 1 and "yes" or "no",
+            memory.read_u32_le(offset + 4, EWRAM_DOMAIN),
+            memory.read_u32_le(offset + 8, EWRAM_DOMAIN),
+            memory.read_u16_le(offset + 22, EWRAM_DOMAIN)))
+    elseif eventType == EVENT_SNAPSHOT_END then
+        console.log(string.format(
+            "[SoulLink] local snapshot end slot=%d members=%d",
+            memory.read_u16_le(offset + 14, EWRAM_DOMAIN),
+            memory.read_u16_le(offset + 16, EWRAM_DOMAIN)))
     else
         console.log("[SoulLink] ignored unknown ROM event " .. eventType)
     end

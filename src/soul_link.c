@@ -14,6 +14,19 @@ EWRAM_DATA volatile struct SoulLinkSaveData gSoulLinkPendingRun = {0};
 EWRAM_DATA u16 gSoulLinkPendingRandomizerSettings = 0;
 static EWRAM_DATA bool8 sCatchPending = FALSE;
 static EWRAM_DATA struct SoulLinkMessage sPendingCatch = {0};
+static EWRAM_DATA u16 sSnapshotIndex = 0;
+static EWRAM_DATA u16 sSnapshotMemberCount = 0;
+static EWRAM_DATA u8 sSnapshotState = 0;
+
+enum
+{
+    SNAPSHOT_IDLE,
+    SNAPSHOT_BEGIN,
+    SNAPSHOT_MEMBERS,
+    SNAPSHOT_END,
+};
+
+#define SNAPSHOT_MON_COUNT (PARTY_SIZE + TOTAL_BOXES_COUNT * IN_BOX_COUNT)
 
 STATIC_ASSERT(sizeof(struct SoulLinkMessage) == 24, SoulLinkMessageSize);
 STATIC_ASSERT(sizeof(struct SoulLinkMailbox) == 68, SoulLinkMailboxSize);
@@ -44,6 +57,7 @@ static void ResetMailbox(void)
     gSoulLinkLockedPlayerMask = 0;
     memset((void *)&gSoulLinkPendingRun, 0, sizeof(gSoulLinkPendingRun));
     memset((void *)&gSoulLinkMailbox, 0, sizeof(gSoulLinkMailbox));
+    sSnapshotState = SNAPSHOT_IDLE;
     gSoulLinkMailbox.protocolVersion = SOUL_LINK_PROTOCOL_VERSION;
     gSoulLinkMailbox.size = sizeof(gSoulLinkMailbox);
 
@@ -92,6 +106,92 @@ static bool8 TryPublishOutgoing(u16 type, u32 personality, u32 otId,
     message->reserved = data;
     message->sequence = sequence;
     return TRUE;
+}
+
+static void BeginLocalSnapshot(void)
+{
+    sSnapshotIndex = 0;
+    sSnapshotMemberCount = 0;
+    sSnapshotState = SNAPSHOT_BEGIN;
+}
+
+static struct BoxPokemon *GetSnapshotBoxMon(u16 index)
+{
+    if (index < PARTY_SIZE)
+        return &gPlayerParty[index].box;
+
+    index -= PARTY_SIZE;
+    return &gPokemonStoragePtr->boxes[index / IN_BOX_COUNT][index % IN_BOX_COUNT];
+}
+
+static u8 GetSnapshotPlayerSlot(void)
+{
+    if (gSoulLinkPendingRun.playerSlot != 0)
+        return gSoulLinkPendingRun.playerSlot;
+    return gSaveBlock2Ptr->soulLink.playerSlot;
+}
+
+static void PublishLocalSnapshot(void)
+{
+    struct BoxPokemon *boxMon;
+    u8 stringBytes[POKEMON_NAME_LENGTH + 1];
+    u32 word0 = 0;
+    u32 word1 = 0;
+    u16 word2 = 0;
+    u16 groupId;
+    u16 flags;
+
+    if (sSnapshotState == SNAPSHOT_IDLE)
+        return;
+
+    if (sSnapshotState == SNAPSHOT_BEGIN)
+    {
+        memcpy(&word0, gSaveBlock2Ptr->playerName, sizeof(word0));
+        memcpy(&word1, gSaveBlock2Ptr->playerName + sizeof(word0), sizeof(word1));
+        if (TryPublishOutgoing(SOUL_LINK_EVENT_SNAPSHOT_BEGIN,
+                word0, word1, GetSnapshotPlayerSlot(), 0, 0, 0, 0))
+            sSnapshotState = SNAPSHOT_MEMBERS;
+        return;
+    }
+
+    if (sSnapshotState == SNAPSHOT_END)
+    {
+        if (TryPublishOutgoing(SOUL_LINK_EVENT_SNAPSHOT_END, 0, 0,
+                GetSnapshotPlayerSlot(), sSnapshotMemberCount, 0, 0, 0))
+            sSnapshotState = SNAPSHOT_IDLE;
+        return;
+    }
+
+    if (sSnapshotIndex >= SNAPSHOT_MON_COUNT)
+    {
+        sSnapshotState = SNAPSHOT_END;
+        return;
+    }
+
+    boxMon = GetSnapshotBoxMon(sSnapshotIndex);
+    groupId = SoulLink_GetBoxMonGroupId(boxMon);
+    if (!GetBoxMonData(boxMon, MON_DATA_SANITY_HAS_SPECIES)
+     || groupId == SOUL_LINK_GROUP_NONE)
+    {
+        sSnapshotIndex++;
+        return;
+    }
+
+    GetBoxMonData(boxMon, MON_DATA_NICKNAME, stringBytes);
+    memcpy(&word0, stringBytes, sizeof(word0));
+    memcpy(&word1, stringBytes + sizeof(word0), sizeof(word1));
+    memcpy(&word2, stringBytes + sizeof(word0) + sizeof(word1), sizeof(word2));
+    flags = GetBoxMonData(boxMon, MON_DATA_NUZLOCKE_RIBBON)
+        ? SOUL_LINK_SNAPSHOT_FLAG_DEAD : 0;
+    if (TryPublishOutgoing(SOUL_LINK_EVENT_SNAPSHOT_MEMBER,
+            word0, word1, groupId,
+            GetBoxMonData(boxMon, MON_DATA_SPECIES),
+            GetBoxMonData(boxMon, MON_DATA_MET_LOCATION),
+            flags, word2))
+    {
+        sSnapshotIndex++;
+        sSnapshotMemberCount++;
+    }
 }
 
 static struct BoxPokemon *FindOwnedBoxMon(u32 personality, u32 otId)
@@ -143,6 +243,8 @@ static void ApplyLinkCreated(const volatile struct SoulLinkMessage *message)
     currentGroup = SoulLink_GetBoxMonGroupId(boxMon);
     if (currentGroup == SOUL_LINK_GROUP_NONE)
         SoulLink_SetBoxMonGroupId(boxMon, message->pairId);
+    if (currentGroup == SOUL_LINK_GROUP_NONE || currentGroup == message->pairId)
+        BeginLocalSnapshot();
 }
 
 bool8 SoulLink_SendLobbyIntent(u8 intent)
@@ -268,6 +370,7 @@ void SoulLink_Update(void)
                         gSoulLinkMailbox.incoming.reserved >> 8;
                     gSoulLinkPendingRun.status = SOUL_LINK_RUN_STATUS_ACTIVE
                         | (CountPlayers(playerMask) << SOUL_LINK_RUN_PLAYER_COUNT_SHIFT);
+                    BeginLocalSnapshot();
                 }
                 else
                 {
@@ -290,4 +393,6 @@ void SoulLink_Update(void)
             sPendingCatch.personality, sPendingCatch.otId, 0,
             sPendingCatch.species, sPendingCatch.location, 0, 0))
         sCatchPending = FALSE;
+
+    PublishLocalSnapshot();
 }
