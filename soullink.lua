@@ -151,6 +151,8 @@ local pendingRomEvents = {}
 local snapshotBuilders = {}
 local playerSnapshots = {}
 local mergedLinkRegistry = {}
+local pendingNetworkMessages = {}
+local pendingNetworkMessageIndex = 1
 
 local STARTER_GROUP_ID = 0xFFFF
 
@@ -174,6 +176,31 @@ local function sendNetworkMessage(messageType, payload)
 
     nextNetworkSequence = nextNetworkSequence + 1
     return true
+end
+
+local function queueRegistrySnapshot(snapshot)
+    local function queue(messageType, payload)
+        pendingNetworkMessages[#pendingNetworkMessages + 1] = {
+            type = messageType, payload = payload,
+        }
+    end
+
+    queue("REGISTRY_BEGIN", string.format("%d,%u,%u", snapshot.slot,
+        snapshot.nameLow, snapshot.nameHigh))
+    local groupIds = {}
+    for groupId in pairs(snapshot.members) do
+        groupIds[#groupIds + 1] = groupId
+    end
+    table.sort(groupIds)
+    for _, groupId in ipairs(groupIds) do
+        local member = snapshot.members[groupId]
+        queue("REGISTRY_MEMBER", string.format(
+            "%d,%d,%d,%d,%d,%u,%u,%d", snapshot.slot, groupId,
+            member.species, member.location, member.dead and 1 or 0,
+            member.nicknameLow, member.nicknameHigh, member.nicknameTail))
+    end
+    queue("REGISTRY_END", string.format(
+        "%d,%d", snapshot.slot, snapshot.count))
 end
 
 local function packLobbyFlags(state, connectedMask, readyMask)
@@ -386,8 +413,8 @@ local function rebuildMergedRegistry()
         completePlayers, gatePlayerMask, groupCount, completeGroupCount))
 end
 
-local function recordSnapshot(sender, messageType, values)
-    local slot = expectedSnapshotSlot(sender)
+local function recordSnapshot(sender, messageType, values, expectedSlot)
+    local slot = expectedSlot or expectedSnapshotSlot(sender)
     if gateState ~= GATE_APPROVED
         or math.floor(gatePlayerMask / (2 ^ (slot - 1))) % 2 ~= 1
     then
@@ -440,6 +467,9 @@ local function recordSnapshot(sender, messageType, values)
     console.log(string.format(
         "[SoulLink] accepted snapshot slot=%d members=%d", slot, builder.count))
     rebuildMergedRegistry()
+    if networkConfig.role == "host" then
+        queueRegistrySnapshot(builder)
+    end
     return true
 end
 
@@ -513,13 +543,17 @@ local function applyGateState(state, playerMask, broadcast,
     gateRunIdLow = runIdLow
     gateRunIdHigh = runIdHigh
     gateSettings = settings
-    if networkConfig.role == "host" and runChanged then
-        pendingCatchGroups = {}
-        finalizedCatchGroups = {}
-        pendingRomEvents = {}
+    if runChanged then
         snapshotBuilders = {}
         playerSnapshots = {}
         mergedLinkRegistry = {}
+        if networkConfig.role == "host" then
+            pendingCatchGroups = {}
+            finalizedCatchGroups = {}
+            pendingRomEvents = {}
+            pendingNetworkMessages = {}
+            pendingNetworkMessageIndex = 1
+        end
     end
     if changed then
         pendingGate = true
@@ -878,6 +912,9 @@ local function handleNetworkMessage(message)
         and messageType ~= "SNAPSHOT_BEGIN"
         and messageType ~= "SNAPSHOT_MEMBER"
         and messageType ~= "SNAPSHOT_END"
+        and messageType ~= "REGISTRY_BEGIN"
+        and messageType ~= "REGISTRY_MEMBER"
+        and messageType ~= "REGISTRY_END"
     then
         return false, "unsupported message type " .. tostring(messageType)
     end
@@ -972,6 +1009,22 @@ local function handleNetworkMessage(message)
         if not accepted then
             return false, snapshotError
         end
+    elseif messageType:match("^REGISTRY_") then
+        local counts = {REGISTRY_BEGIN = 3, REGISTRY_MEMBER = 8, REGISTRY_END = 2}
+        local values = parseSnapshot(payload, counts[messageType])
+        if networkConfig.role ~= "client" or not values then
+            return false, "invalid " .. messageType .. " payload"
+        end
+        local slot = values[1]
+        if messageType == "REGISTRY_MEMBER" then
+            table.remove(values, 1)
+        end
+        local snapshotType = messageType:gsub("REGISTRY", "SNAPSHOT")
+        local accepted, snapshotError = recordSnapshot(
+            "registry" .. slot, snapshotType, values, slot)
+        if not accepted then
+            return false, snapshotError
+        end
     end
 
     peer.lastSequence = sequence
@@ -1011,6 +1064,8 @@ local function handleNetworkMessage(message)
             queueLinkCreated(link)
         end
     elseif messageType:match("^SNAPSHOT_") then
+        -- Validated and recorded above; only sequence bookkeeping remains.
+    elseif messageType:match("^REGISTRY_") then
         -- Validated and recorded above; only sequence bookkeeping remains.
     elseif LOG_HEARTBEATS then
         console.log(string.format(
@@ -1055,6 +1110,18 @@ local function updateNetwork()
     if frame >= nextKeepaliveFrame then
         sendNetworkMessage("KEEPALIVE", tostring(frame))
         nextKeepaliveFrame = frame + NETWORK_KEEPALIVE_INTERVAL_FRAMES
+    end
+    if networkConfig.role == "host"
+        and pendingNetworkMessageIndex <= #pendingNetworkMessages
+    then
+        local queued = pendingNetworkMessages[pendingNetworkMessageIndex]
+        if sendNetworkMessage(queued.type, queued.payload) then
+            pendingNetworkMessageIndex = pendingNetworkMessageIndex + 1
+            if pendingNetworkMessageIndex > #pendingNetworkMessages then
+                pendingNetworkMessages = {}
+                pendingNetworkMessageIndex = 1
+            end
+        end
     end
 
     local ok, message = pcall(function()
