@@ -289,8 +289,8 @@ These programs rely on knowing where to find the data on the savefile, and Moder
 # 🤷‍♂️ AI DISCLAIMER
 
 * 99,9% of my code has been made by hand.
-    - Currently, only one commit has had some help from an AI.
-    - Contributors do not count towards this percetange. I do not control or limit any contributor.
+    - Currently, only one commit has had some help from an AI (bd4b18c).
+    - Contributors do not count towards this percentage. I do not control or limit any contributor.
 * Some text strings have been corrected or had their wording improved using AI tools.
 
 # 🪪 CREDITS
