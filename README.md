@@ -4,16 +4,19 @@ This is a decompilation of Pokémon Emerald, edited to be "Pokémon Modern Emera
 You can get more information about Modern Emerald at [Pokecommunity](https://www.pokecommunity.com/showthread.php?t=494005)
 
 
-# 🦀MODERN EMERALD EXPANDS!
+# 🦀 MODERN EMERALD EXPANDS!
 
 Official releases:
-* [Pokémon Modern Heart and Soul](https://github.com/resetes12/HNS_modern) by myself
-    * Experience Johto and Kanto, but now with enhancements, bug fixes, and other stuff.
+* [Pokémon Modern Heart and Soul 1.2.1m2](https://github.com/resetes12/HNS_modern) by myself
+    * Experience Heart and Soul 1.2.1, but now with enhancements, bug fixes, and other stuff.
+        * You are better off playing Heart and Soul 2.0 unless you want trading.
+        * Saves from 1.2.1 are compatible with 1.2.1m2 only.
 * Pokémon Modern FireRed & LeafGreen by myself
-    * _Soon_ ™️. Experience FRLG, but Modernized.
+    * _Soon_ ™️. Experience FRLG using Modern Emerald and Heart and Soul as base, with all its features.
 
 Modern Emerald has been used as a base to create other hacks:
-* [Pokémon Heart and Soul](https://github.com/PokemonHnS-Development/pokemonHnS) by @lildill31
+* [Pokémon Heart and Soul (up to 1.2.1)](https://github.com/PokemonHnS-Development/pokemonHnS) by @lildill31
+    * **NOTE** Heart and Soul 2.0 does not use Modern Emerald as base.
     * Experience Johto and Kanto, but for the GBA!
 * [Pokémon Emerald Worped](https://github.com/worpbane/pokeemerald-worped/) by @worpbane
 
@@ -30,7 +33,7 @@ Includes:
 - New item locations (only includes new locations, old locations still work unless told otherwise).
 - Other information that could be relevant.
 
-# ✨FEATURES
+# ✨ FEATURES
 
 **Selectable options (at the start of the game):**
 Check which options are enabled or disabled by going to any Pokécenter PC and opening the "CHALLENGES" option.
@@ -286,12 +289,16 @@ Decompilation hack-roms may crash or have strange bugs if you are using other em
 **Help! PkHex / PKSM / Similar tools or apps can't open the savefile!**
 These programs rely on knowing where to find the data on the savefile, and Modern Emerald has modified certain parts of the savedata which makes it incompatible with these apps or tools. Use the debug menu to cheat, as it provides the same options, mostly.
 
-# 🤷‍♂️ AI DISCLAIMER
-
-* 99,9% of my code has been made by hand.
-    - Currently, only one commit has had some help from an AI (bd4b18c).
-    - Contributors do not count towards this percentage. I do not control or limit any contributor.
-* Some text strings have been corrected or had their wording improved using AI tools.
+# 🤷‍♂️ AI disclosure
+- Code: 
+    - Modern Emerald code is AI free except one commit (check commit [bd4b18c](https://github.com/resetes12/pokeemerald/commit/bd4b18c50c5b1b4d2c972aead8603934bb5711d6))
+        - Contributor commits do not count towards this percentage. I do not control or limit any Modern Emerald contributor.
+- Text: 
+    - Some text strings have been corrected or had their wording improved using AI tools.
+- Graphics:
+    - No AI usage at all.
+- Music:
+    - No AI usage at all.
 
 # 🪪 CREDITS
 
