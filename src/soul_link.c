@@ -397,6 +397,7 @@ static void PublishLocalSnapshot(void)
     }
 
     if (groupId != SOUL_LINK_STARTER_GROUP_ID
+     && groupId != SOUL_LINK_EXEMPT_SHINY_GROUP_ID
      && (groupId & SOUL_LINK_PENDING_GROUP_FLAG))
     {
         u16 location = (groupId & ~SOUL_LINK_PENDING_GROUP_FLAG) - 1;
@@ -411,6 +412,12 @@ static void PublishLocalSnapshot(void)
             return;
         }
         groupId = SOUL_LINK_GROUP_NONE;
+    }
+
+    if (groupId == SOUL_LINK_EXEMPT_SHINY_GROUP_ID)
+    {
+        sSnapshotIndex++;
+        return;
     }
 
     if (groupId == SOUL_LINK_GROUP_NONE
@@ -558,7 +565,8 @@ static void ApplyLinkDied(u16 groupId)
     bool8 dead = TRUE;
     bool8 changed = FALSE;
 
-    if (groupId == SOUL_LINK_GROUP_NONE)
+    if (groupId == SOUL_LINK_GROUP_NONE
+     || groupId == SOUL_LINK_EXEMPT_SHINY_GROUP_ID)
         return;
     for (position = 0; position < PARTY_SIZE; position++)
     {
@@ -676,7 +684,22 @@ static bool8 QueueEncounterEvent(u16 type, u32 personality, u32 otId,
 bool8 SoulLink_QueueCatch(u32 personality, u32 otId, u16 species, u16 location)
 {
     struct BoxPokemon *boxMon;
-    bool8 queued = QueueEncounterEvent(SOUL_LINK_EVENT_CATCH, personality,
+    bool8 queued;
+
+    if (SoulLink_IsActive() && location <= MAPSEC_SAFARI_ZONE_AREA6
+     && gSaveBlock1Ptr->tx_Nuzlocke_ShinyClause
+     && IsShinyOtIdPersonality(otId, personality)
+     && NuzlockeFlagGet(location))
+    {
+        boxMon = FindOwnedBoxMon(personality, otId);
+        if (boxMon == NULL)
+            return FALSE;
+        SoulLink_SetBoxMonGroupId(boxMon, SOUL_LINK_EXEMPT_SHINY_GROUP_ID);
+        BeginLocalSnapshot();
+        return TRUE;
+    }
+
+    queued = QueueEncounterEvent(SOUL_LINK_EVENT_CATCH, personality,
         otId, species, location);
 
     if (queued && location <= MAPSEC_SAFARI_ZONE_AREA6)
@@ -706,6 +729,7 @@ bool8 SoulLink_QueueDeath(u16 groupId)
 
     if (!(run->status & SOUL_LINK_RUN_STATUS_ACTIVE)
      || groupId == SOUL_LINK_GROUP_NONE
+     || groupId == SOUL_LINK_EXEMPT_SHINY_GROUP_ID
      || (groupId != SOUL_LINK_STARTER_GROUP_ID && (groupId & SOUL_LINK_PENDING_GROUP_FLAG)))
         return FALSE;
     UpgradeRunVersion(run);

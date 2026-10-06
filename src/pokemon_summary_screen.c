@@ -749,7 +749,7 @@ static const struct WindowTemplate sPageInfoTemplate[] =
         .baseBlock = 557,
     },
 };
-static const u8 sText_SLTitle[] = _("SOUL LINK"), sText_SLPlayer[] = _("P");
+static const u8 sText_SLTitle[] = _("SOUL LINK"), sText_SLExemptShiny[] = _("EXEMPT SHINY"), sText_SLPlayer[] = _("P");
 static const u8 sText_SLMissed[] = _("MISSED"), sText_SLSeparator[] = _(" / "), sText_SLRoute[] = _("Route: "), sText_SLStarter[] = _("Starter");
 static const u8 sText_SLStatus[] = _("Status: "), sText_SLDead[] = _("DEAD"), sText_SLAlive[] = _("ALIVE"), sText_SLBack[] = _("B: BACK");
 static const struct WindowTemplate sPageSkillsTemplate[] =
@@ -1977,8 +1977,17 @@ static void OpenSoulLinkSummary(u8 taskId)
 {
     sMonSummaryScreen->soulLinkGroupId =
         SoulLink_GetBoxMonGroupId(&sMonSummaryScreen->currentMon.box);
-    sMonSummaryScreen->soulLinkNextSlot = 1;
-    sMonSummaryScreen->soulLinkPlayerMask = SoulLink_GetActivePlayerMask();
+    if (sMonSummaryScreen->soulLinkGroupId == SOUL_LINK_EXEMPT_SHINY_GROUP_ID)
+    {
+        sMonSummaryScreen->soulLinkNextSlot = 5;
+        sMonSummaryScreen->soulLinkPlayerMask =
+            1 << (SoulLink_GetPlayerSlot() - 1);
+    }
+    else
+    {
+        sMonSummaryScreen->soulLinkNextSlot = 1;
+        sMonSummaryScreen->soulLinkPlayerMask = SoulLink_GetActivePlayerMask();
+    }
     sMonSummaryScreen->soulLinkDead = GetMonData(
         &sMonSummaryScreen->currentMon, MON_DATA_NUZLOCKE_RIBBON);
     SoulLink_CancelRegistryRequest();
@@ -1994,6 +2003,13 @@ static void Task_LoadSoulLinkSummary(u8 taskId)
     if (JOY_NEW(B_BUTTON))
     {
         CloseSoulLinkSummary(taskId);
+        return;
+    }
+    if (sMonSummaryScreen->soulLinkGroupId == SOUL_LINK_EXEMPT_SHINY_GROUP_ID
+     && slot == 5)
+    {
+        DrawSoulLinkSummary();
+        sMonSummaryScreen->soulLinkNextSlot = 0;
         return;
     }
     if (slot == 0)
@@ -2037,7 +2053,9 @@ static void DrawSoulLinkSummary(void)
         PSS_DATA_WINDOW_INFO_ABILITY);
     footerWindow = AddWindowFromTemplateList(sPageInfoTemplate,
         PSS_DATA_WINDOW_INFO_MEMO);
-    PrintTextOnWindow(titleWindow, sText_SLTitle, 0, 1, 0, 1);
+    PrintTextOnWindow(titleWindow,
+        sMonSummaryScreen->soulLinkGroupId == SOUL_LINK_EXEMPT_SHINY_GROUP_ID
+            ? sText_SLExemptShiny : sText_SLTitle, 0, 1, 0, 1);
     for (slot = 1; slot <= 4; slot++)
     {
         struct SoulLinkRegistryMember *member;

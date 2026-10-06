@@ -595,7 +595,9 @@ static void CreateShedinja(u16 preEvoSpecies, struct Pokemon *mon, u8 partyId)
 
         // A linked Shedinja replaces Ninjask as the sole member of its group.
         if (SoulLink_IsActive()
-         && SoulLink_GetBoxMonGroupId(&shedinja->box) != SOUL_LINK_GROUP_NONE)
+         && SoulLink_GetBoxMonGroupId(&shedinja->box) != SOUL_LINK_GROUP_NONE
+         && SoulLink_GetBoxMonGroupId(&shedinja->box)
+             != SOUL_LINK_EXEMPT_SHINY_GROUP_ID)
         {
             PurgeMonOrBoxMon(TOTAL_BOXES_COUNT, partyId);
             CompactPartySlots();
