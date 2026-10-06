@@ -1679,6 +1679,10 @@ static void DrawSoulLinkNewGameLobby(void)
 
 static void Task_SoulLinkNewGameLobbyInit(u8 taskId)
 {
+#if SOUL_LINK_STANDALONE
+    gTasks[taskId].func = Task_NewGameBirchSpeech_Init;
+    return;
+#endif
     FillBgTilemapBufferRect_Palette0(0, 0, 0, 0,
         DISPLAY_TILE_WIDTH, DISPLAY_TILE_HEIGHT);
     CopyBgTilemapBufferToVram(0);
@@ -1750,6 +1754,12 @@ static void DrawSoulLinkContinueGate(void)
 
 static void Task_SoulLinkContinueGateInit(u8 taskId)
 {
+#if SOUL_LINK_STANDALONE
+    FreeAllWindowBuffers();
+    SetMainCallback2(CB2_ContinueSavedGame);
+    DestroyTask(taskId);
+    return;
+#endif
     FillBgTilemapBufferRect_Palette0(0, 0, 0, 0,
         DISPLAY_TILE_WIDTH, DISPLAY_TILE_HEIGHT);
     CopyBgTilemapBufferToVram(0);
@@ -1810,6 +1820,10 @@ void CB2_InitSoulLinkSettingsGate(void)
 {
     u8 taskId;
 
+#if SOUL_LINK_STANDALONE
+    CB2_CompleteSoulLinkNewGame();
+    return;
+#endif
     SetVBlankCallback(NULL);
     SetGpuReg(REG_OFFSET_DISPCNT, 0);
     DmaFill16(3, 0, (void *)VRAM, VRAM_SIZE);

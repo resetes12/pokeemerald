@@ -41,6 +41,7 @@ GAME_CODE   := BPEE
 MAKER_CODE  := 01
 REVISION    := 0
 MODERN      ?= 0
+SOUL_LINK_STANDALONE ?= 0
 
 ifeq (modern,$(MAKECMDGOALS))
   MODERN := 1
@@ -68,10 +69,15 @@ ELF_NAME := $(ROM_NAME:.gba=.elf)
 MAP_NAME := $(ROM_NAME:.gba=.map)
 OBJ_DIR_NAME := build/emerald
 
+ifeq ($(SOUL_LINK_STANDALONE),1)
+MODERN_ROM_NAME := pokeemerald_modern_standalone.gba
+MODERN_OBJ_DIR_NAME := build/modern-standalone
+else
 MODERN_ROM_NAME := pokeemerald_modern.gba
+MODERN_OBJ_DIR_NAME := build/modern
+endif
 MODERN_ELF_NAME := $(MODERN_ROM_NAME:.gba=.elf)
 MODERN_MAP_NAME := $(MODERN_ROM_NAME:.gba=.map)
-MODERN_OBJ_DIR_NAME := build/modern
 
 SHELL := /bin/bash -o pipefail
 
@@ -114,7 +120,7 @@ LIBPATH := -L "$(dir $(shell $(PATH_MODERNCC) -mthumb -print-file-name=libgcc.a)
 LIB := $(LIBPATH) -lc -lnosys -lgcc -L../../libagbsyscall -lagbsyscall
 endif
 
-CPPFLAGS := -iquote include -iquote $(GFLIB_SUBDIR) -Wno-trigraphs -DMODERN=$(MODERN)
+CPPFLAGS := -iquote include -iquote $(GFLIB_SUBDIR) -Wno-trigraphs -DMODERN=$(MODERN) -DSOUL_LINK_STANDALONE=$(SOUL_LINK_STANDALONE)
 ifneq ($(MODERN),1)
 CPPFLAGS += -I tools/agbcc/include -I tools/agbcc -nostdinc -undef -std=gnu89
 endif
@@ -250,8 +256,9 @@ tidynonmodern:
 	rm -rf $(OBJ_DIR_NAME)
 
 tidymodern:
-	rm -f $(MODERN_ROM_NAME) $(MODERN_ELF_NAME) $(MODERN_MAP_NAME)
-	rm -rf $(MODERN_OBJ_DIR_NAME)
+	rm -f pokeemerald_modern.gba pokeemerald_modern.elf pokeemerald_modern.map
+	rm -f pokeemerald_modern_standalone.gba pokeemerald_modern_standalone.elf pokeemerald_modern_standalone.map
+	rm -rf build/modern build/modern-standalone
 
 ifneq ($(MODERN),0)
 $(C_BUILDDIR)/berry_crush.o: override CFLAGS += -Wno-address-of-packed-member
