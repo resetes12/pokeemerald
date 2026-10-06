@@ -1615,7 +1615,7 @@ static u8 CountSoulLinkPlayers(u8 mask)
 static bool8 CanHostStartSoulLink(void)
 {
     return gSoulLinkLocalPlayerMask == 1
-        && CountSoulLinkPlayers(gSoulLinkConnectedPlayerMask) >= 2
+        && gSoulLinkLobbyState == SOUL_LINK_LOBBY_APPROVED
         && gSoulLinkReadyPlayerMask == gSoulLinkConnectedPlayerMask
         && gSoulLinkLockedPlayerMask == gSoulLinkConnectedPlayerMask;
 }

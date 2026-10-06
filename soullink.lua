@@ -115,9 +115,13 @@ local function loadNetworkConfig()
         or type(config.host) ~= "string"
         or type(config.port) ~= "number"
         or config.port < 1 or config.port > 65535
+        or (config.allowSinglePlayer ~= nil
+            and type(config.allowSinglePlayer) ~= "boolean")
+        or (config.role ~= "host" and config.allowSinglePlayer == true)
     then
         return nil, "invalid network config in " .. configPath
     end
+    config.allowSinglePlayer = config.allowSinglePlayer == true
     return config
 end
 
@@ -731,7 +735,7 @@ local function updateHostLobbyState(forceBroadcast)
     local state
     if anyPeerRejected then
         state = LOBBY_REJECTED
-    elseif peerCount == 0 then
+    elseif peerCount == 0 and not networkConfig.allowSinglePlayer then
         state = LOBBY_WAITING
     elseif mailboxReady and allPeersReady then
         state = LOBBY_APPROVED
@@ -1005,7 +1009,9 @@ local function validateContinueIntent(intent)
         or intent.formatVersion ~= SAVE_FORMAT_VERSION
     then
         return false, "save protocol or format is incompatible"
-    elseif playerCount < 2 or playerCount > 4 then
+    elseif playerCount < (networkConfig.allowSinglePlayer and 1 or 2)
+        or playerCount > 4
+    then
         return false, "saved roster size is invalid"
     elseif intent.playerSlot < 1
         or math.floor(intent.activePlayerMask / (2 ^ (intent.playerSlot - 1))) % 2 ~= 1
@@ -1177,7 +1183,8 @@ end
 
 local function tryLockHostRoster()
     local intentMask, allNewGame = getHostIntentFacts()
-    if bitCount(lobbyConnectedMask) >= 2
+    local minimumPlayers = networkConfig.allowSinglePlayer and 1 or 2
+    if bitCount(lobbyConnectedMask) >= minimumPlayers
         and lobbyReadyMask == lobbyConnectedMask
         and intentMask == lobbyConnectedMask and allNewGame
     then
