@@ -1557,7 +1557,14 @@ static void Task_HandleMainMenuAPressed(u8 taskId)
             case ACTION_CONTINUE:
                 gPlttBufferUnfaded[0] = RGB_BLACK;
                 gPlttBufferFaded[0] = RGB_BLACK;
-                gTasks[taskId].func = Task_SoulLinkContinueGateInit;
+                if (SoulLink_RequiresContinueGate())
+                    gTasks[taskId].func = Task_SoulLinkContinueGateInit;
+                else
+                {
+                    FreeAllWindowBuffers();
+                    SetMainCallback2(CB2_ContinueSavedGame);
+                    DestroyTask(taskId);
+                }
                 break;
             case ACTION_OPTION:
                 gMain.savedCallback = CB2_ReinitMainMenu;

@@ -12,7 +12,7 @@ local EWRAM_BASE = 0x02000000
 local EWRAM_END = 0x02040000
 
 local MAILBOX_MAGIC = 0x4B4E4C53
-local MAILBOX_VERSION = 16
+local MAILBOX_VERSION = 17
 local SAVE_FORMAT_VERSION = 4
 local MAILBOX_SIZE = 68
 local MAILBOX_OUTGOING_OFFSET = 12
@@ -44,6 +44,8 @@ local EVENT_ENCOUNTER_FAILED = 14
 local EVENT_DEATH = 15
 local EVENT_LINK_DIED = 16
 local EVENT_PARTY_STATE = 17
+local EVENT_PLAYER_COMPLETED = 18
+local EVENT_RUN_COMPLETED = 19
 local REGISTRY_REQUEST_COUNT = 1
 local REGISTRY_REQUEST_MEMBER = 2
 local REGISTRY_REQUEST_PLAYER_NAME = 3
@@ -160,6 +162,8 @@ local gatePlayerMask = 0
 local gateRunIdLow = 0
 local gateRunIdHigh = 0
 local gateSettings = 0
+local completedPlayerMask = 0
+local runCompletionBroadcast = false
 local pendingGate = false
 local localSettings = nil
 local pendingCatchGroups = {}
@@ -282,6 +286,22 @@ local function senderPlayerMask(sender)
     return 2 ^ tonumber(sender:match("^client([1-3])$"))
 end
 
+local function maskContains(mask, required)
+    for bit = 0, 3 do
+        local value = 2 ^ bit
+        if math.floor(required / value) % 2 == 1
+            and math.floor(mask / value) % 2 ~= 1
+        then
+            return false
+        end
+    end
+    return true
+end
+
+local function gameplayPlayerMask()
+    return gatePlayerMask - completedPlayerMask
+end
+
 local function setPartyReady(ready, broadcast)
     local changed = partyReady ~= ready
     partyReady = ready
@@ -299,16 +319,16 @@ local function setPartyReady(ready, broadcast)
 end
 
 local function encodeIntent(intent)
-    return string.format("%d,%u,%u,%d,%d,%d,%d,%d,%d", intent.action,
+    return string.format("%d,%u,%u,%d,%d,%d,%d,%d,%d,%d", intent.action,
         intent.runIdLow, intent.runIdHigh, intent.protocolVersion,
         intent.formatVersion, intent.playerSlot, intent.activePlayerMask,
-        intent.settings, intent.status)
+        intent.settings, intent.status, intent.completed and 1 or 0)
 end
 
 local function parseIntent(payload)
     local values = {payload:match(
-        "^(%d+),(%d+),(%d+),(%d+),(%d+),(%d+),(%d+),(%d+),(%d+)$")}
-    if #values ~= 9 then
+        "^(%d+),(%d+),(%d+),(%d+),(%d+),(%d+),(%d+),(%d+),(%d+),(%d+)$")}
+    if #values ~= 10 then
         return nil
     end
     for i = 1, #values do
@@ -319,7 +339,7 @@ local function parseIntent(payload)
         or values[4] > 0xFFFF or values[5] > 0xFFFF
         or values[6] > 4 or values[7] > LOBBY_PLAYER_MASK
         or values[8] > RANDOMIZER_SETTINGS_MASK
-        or values[9] > RUN_STATUS_MASK
+        or values[9] > RUN_STATUS_MASK or values[10] > 1
     then
         return nil
     end
@@ -327,13 +347,13 @@ local function parseIntent(payload)
         action = values[1], runIdLow = values[2], runIdHigh = values[3],
         protocolVersion = values[4], formatVersion = values[5],
         playerSlot = values[6], activePlayerMask = values[7], settings = values[8],
-        status = values[9],
+        status = values[9], completed = values[10] == 1,
     }
 end
 
 local function parseGate(payload)
-    local values = {payload:match("^(%d+),(%d+),(%d+),(%d+),(%d+)$")}
-    if #values ~= 5 then
+    local values = {payload:match("^(%d+),(%d+),(%d+),(%d+),(%d+),(%d+)$")}
+    if #values ~= 6 then
         return nil
     end
     for i = 1, #values do
@@ -342,15 +362,19 @@ local function parseGate(payload)
     if values[1] > GATE_REJECTED or values[2] > LOBBY_PLAYER_MASK
         or values[3] > 0xFFFFFFFF or values[4] > 0xFFFFFFFF
         or values[5] > RANDOMIZER_SETTINGS_MASK
+        or values[6] > LOBBY_PLAYER_MASK
+        or not maskContains(values[2], values[6])
         or (values[1] == GATE_APPROVED and values[3] == 0 and values[4] == 0)
         or (values[1] ~= GATE_APPROVED
-            and (values[3] ~= 0 or values[4] ~= 0 or values[5] ~= 0))
+            and (values[3] ~= 0 or values[4] ~= 0 or values[5] ~= 0
+                or values[6] ~= 0))
     then
         return nil
     end
     return {
         state = values[1], playerMask = values[2], runIdLow = values[3],
         runIdHigh = values[4], settings = values[5],
+        completedPlayerMask = values[6],
     }
 end
 
@@ -497,7 +521,7 @@ local function rebuildMergedRegistry()
         for slot in pairs(group.members) do
             memberMask = memberMask + 2 ^ (slot - 1)
         end
-        if memberMask == gatePlayerMask or group.failed then
+        if maskContains(memberMask, gameplayPlayerMask()) or group.failed then
             completeGroupCount = completeGroupCount + 1
             if not group.failed and groupId ~= STARTER_GROUP_ID then
                 finalizedCatchGroups[group.location] = groupId
@@ -532,9 +556,10 @@ local function rebuildMergedRegistry()
 
     if networkConfig.role == "host" then
         local baseline
-        local ready = completePlayers == gatePlayerMask
+        local activeMask = gameplayPlayerMask()
+        local ready = maskContains(completePlayers, activeMask)
         for slot = 1, 4 do
-            if math.floor(gatePlayerMask / (2 ^ (slot - 1))) % 2 == 1 then
+            if math.floor(activeMask / (2 ^ (slot - 1))) % 2 == 1 then
                 local snapshot = playerSnapshots[slot]
                 local groups = {}
                 if not snapshot or snapshot.hasUnlinkedParty then
@@ -573,7 +598,7 @@ local function getCompleteRegistryGroupIds()
         for slot in pairs(group.members) do
             memberMask = memberMask + 2 ^ (slot - 1)
         end
-        if memberMask == gatePlayerMask or group.failed then
+        if maskContains(memberMask, gameplayPlayerMask()) or group.failed then
             groupIds[#groupIds + 1] = groupId
         end
     end
@@ -697,7 +722,7 @@ end
 resolveLinkDeath = function(sender, groupId)
     local reporterMask = senderPlayerMask(sender)
     if gateState ~= GATE_APPROVED
-        or math.floor(gatePlayerMask / reporterMask) % 2 ~= 1
+        or math.floor(gameplayPlayerMask() / reporterMask) % 2 ~= 1
         or resolvedDeathGroups[groupId]
     then
         return
@@ -750,13 +775,14 @@ local function updateHostLobbyState(forceBroadcast)
 end
 
 local function applyGateState(state, playerMask, broadcast,
-        runIdLow, runIdHigh, settings)
+        runIdLow, runIdHigh, settings, completedMask)
     runIdLow = runIdLow or 0
     runIdHigh = runIdHigh or 0
     settings = settings or 0
+    completedMask = completedMask or 0
     local changed = state ~= gateState or playerMask ~= gatePlayerMask
         or runIdLow ~= gateRunIdLow or runIdHigh ~= gateRunIdHigh
-        or settings ~= gateSettings
+        or settings ~= gateSettings or completedMask ~= completedPlayerMask
     local runChanged = state == GATE_APPROVED
         and (runIdLow ~= gateRunIdLow or runIdHigh ~= gateRunIdHigh)
     gateState = state
@@ -764,12 +790,14 @@ local function applyGateState(state, playerMask, broadcast,
     gateRunIdLow = runIdLow
     gateRunIdHigh = runIdHigh
     gateSettings = settings
+    completedPlayerMask = completedMask
     if runChanged then
         snapshotBuilders = {}
         playerSnapshots = {}
         mergedLinkRegistry = {}
         resolvedDeathGroups = {}
         partyReady = false
+        runCompletionBroadcast = false
         if networkConfig.role == "host" then
             pendingCatchGroups = {}
             finalizedCatchGroups = {}
@@ -782,7 +810,8 @@ local function applyGateState(state, playerMask, broadcast,
     if changed then
         pendingGate = true
         console.log(string.format(
-            "[SoulLink] gate state: %d players=0x%X", state, playerMask))
+            "[SoulLink] gate state: %d players=0x%X completed=0x%X",
+            state, playerMask, completedMask))
     end
     if state == GATE_APPROVED and localIntent
         and localIntent.action == INTENT_CONTINUE
@@ -790,8 +819,8 @@ local function applyGateState(state, playerMask, broadcast,
         applyLocalPlayerMask(2 ^ (localIntent.playerSlot - 1))
     end
     if networkConfig.role == "host" and (changed or broadcast) then
-        sendNetworkMessage("GATE", string.format("%d,%d,%u,%u,%d",
-            state, playerMask, runIdLow, runIdHigh, settings))
+        sendNetworkMessage("GATE", string.format("%d,%d,%u,%u,%d,%d",
+            state, playerMask, runIdLow, runIdHigh, settings, completedMask))
     end
 end
 
@@ -833,7 +862,7 @@ local function formatCatchMembers(members)
 end
 
 tryFinalizePendingCatch = function(location, pending)
-    if not pending then
+    if not pending or gameplayPlayerMask() == 0 then
         return
     end
 
@@ -847,7 +876,7 @@ tryFinalizePendingCatch = function(location, pending)
             end
         end
     end
-    if combinedMask ~= gatePlayerMask then
+    if not maskContains(combinedMask, gameplayPlayerMask()) then
         return
     end
 
@@ -905,7 +934,7 @@ end
 local function resolveEncounterFailure(sender, location)
     local reporterMask = senderPlayerMask(sender)
     if gateState ~= GATE_APPROVED
-        or math.floor(gatePlayerMask / reporterMask) % 2 ~= 1
+        or math.floor(gameplayPlayerMask() / reporterMask) % 2 ~= 1
         or finalizedCatchGroups[location] or failedEncounterLocations[location]
     then
         console.log(string.format(
@@ -919,7 +948,7 @@ local function resolveEncounterFailure(sender, location)
     pendingCatchGroups[location] = nil
     for slot = 1, 4 do
         local playerMask = 2 ^ (slot - 1)
-        if math.floor(gatePlayerMask / playerMask) % 2 == 1 then
+        if math.floor(gameplayPlayerMask() / playerMask) % 2 == 1 then
             local caught = pending and pending.members[playerMask]
             deliverEncounterClosed({
                 location = location, playerMask = playerMask,
@@ -936,7 +965,7 @@ end
 local function recordPendingCatch(sender, caught)
     local playerMask = senderPlayerMask(sender)
     if gateState ~= GATE_APPROVED
-        or math.floor(gatePlayerMask / playerMask) % 2 ~= 1
+        or math.floor(gameplayPlayerMask() / playerMask) % 2 ~= 1
     then
         console.log(string.format(
             "[SoulLink] ignored CATCH from inactive %s", sender))
@@ -987,7 +1016,7 @@ local function recordPendingCatch(sender, caught)
     setPartyReady(false, true)
     console.log(string.format(
         "[SoulLink] pending catches location=%d players=0x%X/0x%X",
-        caught.location, pending.playerMask, gatePlayerMask))
+        caught.location, pending.playerMask, gameplayPlayerMask()))
     tryFinalizePendingCatch(caught.location, pending)
 end
 
@@ -1070,6 +1099,7 @@ local function tryApproveContinue(forceBroadcast)
     end
 
     local savedSlotMask = 2 ^ (baseline.playerSlot - 1)
+    local completedMask = baseline.completed and savedSlotMask or 0
     for sender, peer in pairs(remotePeers) do
         if peer.rejected then
             rejectContinue(sender .. " uses an incompatible protocol",
@@ -1105,6 +1135,9 @@ local function tryApproveContinue(forceBroadcast)
             return
         end
         savedSlotMask = savedSlotMask + slotBit
+        if intent.completed then
+            completedMask = completedMask + slotBit
+        end
     end
 
     if savedSlotMask ~= baseline.activePlayerMask then
@@ -1116,14 +1149,14 @@ local function tryApproveContinue(forceBroadcast)
     console.log(string.format("[SoulLink] linked saves match; approving run %08X%08X",
         baseline.runIdHigh, baseline.runIdLow))
     applyGateState(GATE_APPROVED, baseline.activePlayerMask, true,
-        baseline.runIdLow, baseline.runIdHigh, baseline.settings)
+        baseline.runIdLow, baseline.runIdHigh, baseline.settings, completedMask)
 end
 
 local function updateHostGateState(forceBroadcast)
     if gateState >= GATE_LOCKED then
         if forceBroadcast then
             applyGateState(gateState, gatePlayerMask, true,
-                gateRunIdLow, gateRunIdHigh, gateSettings)
+                gateRunIdLow, gateRunIdHigh, gateSettings, completedPlayerMask)
         end
         return
     end
@@ -1134,6 +1167,33 @@ local function updateHostGateState(forceBroadcast)
     local intentMask = getHostIntentFacts()
     applyGateState(intentMask == 0 and GATE_IDLE or GATE_WAITING,
         intentMask, forceBroadcast)
+end
+
+local function markPlayerCompleted(sender)
+    local playerMask = senderPlayerMask(sender)
+    if gateState ~= GATE_APPROVED
+        or math.floor(gatePlayerMask / playerMask) % 2 ~= 1
+        or math.floor(completedPlayerMask / playerMask) % 2 == 1
+    then
+        return
+    end
+
+    completedPlayerMask = completedPlayerMask + playerMask
+    sendNetworkMessage("PLAYER_COMPLETED", tostring(completedPlayerMask))
+    console.log(string.format(
+        "[SoulLink] %s completed the run; completed=0x%X/0x%X",
+        sender, completedPlayerMask, gatePlayerMask))
+
+    if completedPlayerMask == gatePlayerMask and not runCompletionBroadcast then
+        runCompletionBroadcast = true
+        pendingCatchGroups = {}
+        setPartyReady(true, true)
+        pendingRomEvents[#pendingRomEvents + 1] = {type = EVENT_RUN_COMPLETED, flags = 0}
+        sendNetworkMessage("RUN_COMPLETED", "1")
+        console.log("[SoulLink] every player completed the run")
+    else
+        rebuildMergedRegistry()
+    end
 end
 
 local function generateRunId()
@@ -1267,6 +1327,8 @@ local function handleNetworkMessage(message)
         and messageType ~= "LINK_CREATED"
         and messageType ~= "DEATH" and messageType ~= "LINK_DIED"
         and messageType ~= "PARTY_STATE"
+        and messageType ~= "PLAYER_COMPLETED"
+        and messageType ~= "RUN_COMPLETED"
         and messageType ~= "SNAPSHOT_BEGIN"
         and messageType ~= "SNAPSHOT_MEMBER"
         and messageType ~= "SNAPSHOT_END"
@@ -1387,6 +1449,19 @@ local function handleNetworkMessage(message)
         then
             return false, "invalid PARTY_STATE payload"
         end
+    elseif messageType == "PLAYER_COMPLETED" then
+        local mask = tonumber(payload)
+        if not mask or (networkConfig.role == "host" and payload ~= "1")
+            or (networkConfig.role == "client"
+                and (sender ~= "host" or mask < 0 or mask > gatePlayerMask
+                    or not maskContains(gatePlayerMask, mask)))
+        then
+            return false, "invalid PLAYER_COMPLETED payload"
+        end
+    elseif messageType == "RUN_COMPLETED" then
+        if networkConfig.role ~= "client" or sender ~= "host" or payload ~= "1" then
+            return false, "invalid RUN_COMPLETED payload"
+        end
     elseif messageType:match("^SNAPSHOT_") then
         local counts = {SNAPSHOT_BEGIN = 3, SNAPSHOT_MEMBER = 7, SNAPSHOT_END = 2}
         local values = parseSnapshot(payload, counts[messageType])
@@ -1442,7 +1517,8 @@ local function handleNetworkMessage(message)
     elseif messageType == "GATE" then
         local gate = parseGate(payload)
         applyGateState(gate.state, gate.playerMask, false,
-            gate.runIdLow, gate.runIdHigh, gate.settings)
+            gate.runIdLow, gate.runIdHigh, gate.settings,
+            gate.completedPlayerMask)
     elseif messageType == "SETTINGS" then
         peer.settings = tonumber(payload)
         console.log(string.format(
@@ -1477,6 +1553,17 @@ local function handleNetworkMessage(message)
         end
     elseif messageType == "PARTY_STATE" then
         setPartyReady(payload == "1", false)
+    elseif messageType == "PLAYER_COMPLETED" then
+        if networkConfig.role == "host" then
+            markPlayerCompleted(sender)
+        else
+            completedPlayerMask = tonumber(payload)
+        end
+    elseif messageType == "RUN_COMPLETED" then
+        completedPlayerMask = gatePlayerMask
+        pendingRomEvents[#pendingRomEvents + 1] = {
+            type = EVENT_RUN_COMPLETED, flags = 0,
+        }
     elseif messageType:match("^SNAPSHOT_") then
         -- Validated and recorded above; only sequence bookkeeping remains.
     elseif messageType:match("^REGISTRY_") then
@@ -1604,7 +1691,8 @@ local function readOutgoingIntent()
     local offset = mailboxOffset + MAILBOX_OUTGOING_OFFSET
     local flags = memory.read_u16_le(offset + 20, EWRAM_DOMAIN)
     return {
-        action = flags % 256,
+        action = flags % 4,
+        completed = math.floor(flags / 4) % 2 == 1,
         runIdLow = memory.read_u32_le(offset + 4, EWRAM_DOMAIN),
         runIdHigh = memory.read_u32_le(offset + 8, EWRAM_DOMAIN),
         protocolVersion = memory.read_u16_le(offset + 14, EWRAM_DOMAIN),
@@ -1634,12 +1722,15 @@ local function consumeMailboxOutgoing()
         if not parseIntent(encodeIntent(intent)) then
             console.log("[SoulLink] ignored invalid ROM lobby intent")
         else
-            if gateState >= GATE_LOCKED then
+            if gateState >= GATE_LOCKED
+                and not (gateState == GATE_APPROVED
+                    and intent.action == INTENT_CONTINUE)
+            then
                 applyGateState(GATE_WAITING, 0, networkConfig.role == "host")
             end
             localIntent = intent
             if networkConfig.role == "host" then
-                updateHostGateState(false)
+                updateHostGateState(gateState == GATE_APPROVED)
             else
                 consumed = sendNetworkMessage("INTENT", encodeIntent(intent))
             end
@@ -1705,6 +1796,12 @@ local function consumeMailboxOutgoing()
         end
         if consumed then
             console.log(string.format("[SoulLink] local DEATH: group=%d", groupId))
+        end
+    elseif eventType == EVENT_PLAYER_COMPLETED then
+        if networkConfig.role == "client" then
+            consumed = sendNetworkMessage("PLAYER_COMPLETED", "1")
+        else
+            markPlayerCompleted("host")
         end
     elseif eventType == EVENT_SNAPSHOT_BEGIN then
         local slot = memory.read_u16_le(offset + 14, EWRAM_DOMAIN)
@@ -1910,7 +2007,11 @@ local function updateMailbox()
         if approved and localIntent and localIntent.action == INTENT_CONTINUE then
             approvedSlot = localIntent.playerSlot
         end
-        writeMailboxEvent(EVENT_GATE_STATE, gateState + gatePlayerMask * 16, {
+        local gateFlags = gateState + gatePlayerMask * 16
+        if approved and completedPlayerMask == gatePlayerMask then
+            gateFlags = gateFlags + 256
+        end
+        writeMailboxEvent(EVENT_GATE_STATE, gateFlags, {
             runIdLow = approved and gateRunIdLow or 0,
             runIdHigh = approved and gateRunIdHigh or 0,
             protocolVersion = approved and MAILBOX_VERSION or 0,

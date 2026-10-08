@@ -1,6 +1,8 @@
 #include "global.h"
 #include "characters.h"
+#include "constants/flags.h"
 #include "constants/region_map_sections.h"
+#include "event_data.h"
 #include "main.h"
 #include "pokemon.h"
 #include "pokemon_storage_system.h"
@@ -27,6 +29,7 @@ static EWRAM_DATA u16 sSnapshotIndex = 0;
 static EWRAM_DATA u16 sSnapshotMemberCount = 0;
 static EWRAM_DATA u8 sSnapshotState = 0;
 static EWRAM_DATA bool8 sSnapshotPendingReplay = FALSE;
+static EWRAM_DATA bool8 sCompletionPublished = FALSE;
 static EWRAM_DATA u8 sSnapshotPublishedLocations[SOUL_LINK_FAILED_LOCATION_BYTES] = {0};
 static EWRAM_DATA u8 sRegistryPendingRequest = 0;
 static EWRAM_DATA u8 sRegistryResultType = 0;
@@ -81,6 +84,7 @@ static void ResetMailbox(void)
     memset((void *)&gSoulLinkPendingRun, 0, sizeof(gSoulLinkPendingRun));
     memset((void *)&gSoulLinkMailbox, 0, sizeof(gSoulLinkMailbox));
     sSnapshotState = SNAPSHOT_IDLE;
+    sCompletionPublished = FALSE;
     sLobbyIntent = SOUL_LINK_INTENT_NONE;
     sRegistryPendingRequest = 0;
     sRegistryResultType = 0;
@@ -170,10 +174,15 @@ static bool8 TryPublishOutgoing(u16 type, u32 personality, u32 otId,
     return TRUE;
 }
 
-bool8 SoulLink_IsActive(void)
+bool8 SoulLink_RequiresContinueGate(void)
 {
     return (gSoulLinkPendingRun.status & SOUL_LINK_RUN_STATUS_ACTIVE)
         || (gSaveBlock2Ptr->soulLink.status & SOUL_LINK_RUN_STATUS_ACTIVE);
+}
+
+bool8 SoulLink_IsActive(void)
+{
+    return SoulLink_RequiresContinueGate() && !FlagGet(FLAG_IS_CHAMPION);
 }
 
 bool8 SoulLink_CanStartTrainerBattle(void)
@@ -628,6 +637,8 @@ bool8 SoulLink_SendLobbyIntent(u8 intent)
     {
         run = &gSaveBlock2Ptr->soulLink;
         UpgradeRunVersion(run);
+        if (FlagGet(FLAG_IS_CHAMPION))
+            flags |= SOUL_LINK_INTENT_PLAYER_COMPLETED;
         flags |= run->activePlayerMask << SOUL_LINK_INTENT_ACTIVE_MASK_SHIFT;
         flags |= (run->status & SOUL_LINK_RUN_STATUS_MASK)
             << SOUL_LINK_INTENT_STATUS_SHIFT;
@@ -659,7 +670,7 @@ static bool8 QueueEncounterEvent(u16 type, u32 personality, u32 otId,
 {
     struct SoulLinkSaveData *run = &gSaveBlock2Ptr->soulLink;
 
-    if (!(run->status & SOUL_LINK_RUN_STATUS_ACTIVE))
+    if (!SoulLink_IsActive())
         return FALSE;
     UpgradeRunVersion(run);
     if (run->protocolVersion != SOUL_LINK_PROTOCOL_VERSION)
@@ -727,7 +738,7 @@ bool8 SoulLink_QueueDeath(u16 groupId)
     struct SoulLinkSaveData *run = &gSaveBlock2Ptr->soulLink;
     u8 i;
 
-    if (!(run->status & SOUL_LINK_RUN_STATUS_ACTIVE)
+    if (!SoulLink_IsActive()
      || groupId == SOUL_LINK_GROUP_NONE
      || groupId == SOUL_LINK_EXEMPT_SHINY_GROUP_ID
      || (groupId != SOUL_LINK_STARTER_GROUP_ID && (groupId & SOUL_LINK_PENDING_GROUP_FLAG)))
@@ -811,9 +822,21 @@ void SoulLink_Update(void)
                         gSoulLinkMailbox.incoming.reserved;
                     gSoulLinkPendingRun.randomizerSettings[1] =
                         gSoulLinkMailbox.incoming.reserved >> 8;
-                    gSoulLinkPendingRun.status = SOUL_LINK_RUN_STATUS_ACTIVE
-                        | (CountPlayers(playerMask) << SOUL_LINK_RUN_PLAYER_COUNT_SHIFT);
-                    BeginLocalSnapshot();
+                    if ((flags & SOUL_LINK_GATE_RUN_COMPLETE)
+                     && sLobbyIntent == SOUL_LINK_INTENT_CONTINUE)
+                    {
+                        gSoulLinkPendingRun.status = SOUL_LINK_RUN_STATUS_COMPLETE
+                            | (CountPlayers(playerMask) << SOUL_LINK_RUN_PLAYER_COUNT_SHIFT);
+                        memcpy(&gSaveBlock2Ptr->soulLink,
+                            (const void *)&gSoulLinkPendingRun,
+                            sizeof(gSaveBlock2Ptr->soulLink));
+                    }
+                    else
+                    {
+                        gSoulLinkPendingRun.status = SOUL_LINK_RUN_STATUS_ACTIVE
+                            | (CountPlayers(playerMask) << SOUL_LINK_RUN_PLAYER_COUNT_SHIFT);
+                        BeginLocalSnapshot();
+                    }
                 }
                 else
                 {
@@ -821,21 +844,32 @@ void SoulLink_Update(void)
                 }
             }
         }
-        else if (gSoulLinkMailbox.incoming.type == SOUL_LINK_EVENT_LINK_CREATED)
+        else if (gSoulLinkMailbox.incoming.type == SOUL_LINK_EVENT_LINK_CREATED
+              && SoulLink_IsActive())
         {
             ApplyLinkCreated(&gSoulLinkMailbox.incoming);
         }
-        else if (gSoulLinkMailbox.incoming.type == SOUL_LINK_EVENT_ENCOUNTER_FAILED)
+        else if (gSoulLinkMailbox.incoming.type == SOUL_LINK_EVENT_ENCOUNTER_FAILED
+              && SoulLink_IsActive())
         {
             ApplyEncounterClosed(&gSoulLinkMailbox.incoming);
         }
-        else if (gSoulLinkMailbox.incoming.type == SOUL_LINK_EVENT_LINK_DIED)
+        else if (gSoulLinkMailbox.incoming.type == SOUL_LINK_EVENT_LINK_DIED
+              && SoulLink_IsActive())
         {
             ApplyLinkDied(gSoulLinkMailbox.incoming.pairId);
         }
         else if (gSoulLinkMailbox.incoming.type == SOUL_LINK_EVENT_PARTY_STATE)
         {
             gSoulLinkPartyReady = flags == 1;
+        }
+        else if (gSoulLinkMailbox.incoming.type == SOUL_LINK_EVENT_RUN_COMPLETED
+              && SoulLink_RequiresContinueGate())
+        {
+            gSaveBlock2Ptr->soulLink.status &= ~SOUL_LINK_RUN_STATUS_ACTIVE;
+            gSaveBlock2Ptr->soulLink.status |= SOUL_LINK_RUN_STATUS_COMPLETE;
+            gSoulLinkPendingRun.status &= ~SOUL_LINK_RUN_STATUS_ACTIVE;
+            gSoulLinkPendingRun.status |= SOUL_LINK_RUN_STATUS_COMPLETE;
         }
         else if (gSoulLinkMailbox.incoming.type == SOUL_LINK_EVENT_REGISTRY_RESULT
               && sRegistryPendingRequest != 0
@@ -877,6 +911,27 @@ void SoulLink_Update(void)
         // Unknown messages are consumed so malformed input cannot wedge the
         // single-message slot.
         gSoulLinkMailbox.incomingAck = sequence;
+    }
+
+    if (SoulLink_RequiresContinueGate() && FlagGet(FLAG_IS_CHAMPION)
+     && !sCompletionPublished
+     && gSoulLinkGateState == SOUL_LINK_GATE_APPROVED
+     && TryPublishOutgoing(SOUL_LINK_EVENT_PLAYER_COMPLETED, 0, 0,
+            SoulLink_GetPlayerSlot(), 0, 0, 0, 0))
+        sCompletionPublished = TRUE;
+    else if (!FlagGet(FLAG_IS_CHAMPION))
+        sCompletionPublished = FALSE;
+
+    if (!SoulLink_IsActive())
+    {
+        sEncounterEventPending = FALSE;
+        sPendingDeathCount = 0;
+        sCemeteryCleanupPending = FALSE;
+        if (SoulLink_RequiresContinueGate())
+            PublishLocalSnapshot();
+        else
+            sSnapshotState = SNAPSHOT_IDLE;
+        return;
     }
 
     if (sEncounterEventPending

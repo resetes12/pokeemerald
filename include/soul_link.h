@@ -2,8 +2,8 @@
 #define GUARD_SOUL_LINK_H
 
 #define SOUL_LINK_MAILBOX_MAGIC 0x4B4E4C53 // "SLNK" in little-endian memory
-#define SOUL_LINK_PROTOCOL_VERSION 16
-#define SOUL_LINK_PREVIOUS_PROTOCOL_VERSION 15
+#define SOUL_LINK_PROTOCOL_VERSION 17
+#define SOUL_LINK_PREVIOUS_PROTOCOL_VERSION 16
 #define SOUL_LINK_LEGACY_PROTOCOL_VERSION 10
 #define SOUL_LINK_SAVE_FORMAT_VERSION 4
 #define SOUL_LINK_PREVIOUS_SAVE_FORMAT_VERSION 3
@@ -16,9 +16,12 @@
 #define SOUL_LINK_LOBBY_PLAYER_MASK 0x000F
 #define SOUL_LINK_INTENT_ACTIVE_MASK_SHIFT 8
 #define SOUL_LINK_INTENT_STATUS_SHIFT 12
+#define SOUL_LINK_INTENT_PLAYER_COMPLETED (1 << 2)
 #define SOUL_LINK_GATE_STATE_MASK 0x000F
 #define SOUL_LINK_GATE_PLAYER_MASK_SHIFT 4
+#define SOUL_LINK_GATE_RUN_COMPLETE (1 << 8)
 #define SOUL_LINK_RUN_STATUS_ACTIVE (1 << 0)
+#define SOUL_LINK_RUN_STATUS_COMPLETE (1 << 4)
 #define SOUL_LINK_RUN_PLAYER_COUNT_SHIFT 1
 #define SOUL_LINK_RUN_PLAYER_COUNT_MASK (7 << SOUL_LINK_RUN_PLAYER_COUNT_SHIFT)
 #define SOUL_LINK_RUN_STATUS_MASK 0x0F
@@ -57,6 +60,8 @@ enum SoulLinkEventType
     SOUL_LINK_EVENT_DEATH,
     SOUL_LINK_EVENT_LINK_DIED,
     SOUL_LINK_EVENT_PARTY_STATE,
+    SOUL_LINK_EVENT_PLAYER_COMPLETED,
+    SOUL_LINK_EVENT_RUN_COMPLETED,
 };
 
 enum SoulLinkRegistryRequest
@@ -149,6 +154,7 @@ bool8 SoulLink_QueueCatch(u32 personality, u32 otId, u16 species, u16 location);
 bool8 SoulLink_QueueEncounterFailed(u16 location);
 bool8 SoulLink_QueueDeath(u16 groupId);
 bool8 SoulLink_IsActive(void);
+bool8 SoulLink_RequiresContinueGate(void);
 bool8 SoulLink_RequestRegistryCount(void);
 bool8 SoulLink_TakeRegistryCount(u16 *count, bool8 *valid);
 bool8 SoulLink_RequestRegistryMember(u16 row, u8 playerSlot);
