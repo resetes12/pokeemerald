@@ -311,3 +311,159 @@ These programs rely on knowing where to find the data on the savefile, and Moder
 * Contributors:
    - Decap by @fanyx
    - Tweaks and commits by [@aloven](https://github.com/aloven), [@pinkshellos](https://github.com/PinkShellos), [@insertCreativeName5](https://github.com/InsertCreativeName5). [@davidgfnet](https://github.com/davidgfnet), [@unique-github-username](https://github.com/unique-github-username), [@TixoRebel](https://github.com/TixoRebel), [@bfedie5](https://github.com/bfedie518) and [@deepCeadeus](https://github.com/deepCeadeus)
+
+# 🔗 SOUL LINK INSTRUCTIONS
+
+## Requirements
+
+Every player needs:
+
+* The same release of the Soul Link ROM and Lua scripts. The ROM and scripts
+  must come from the same release; do not fix version errors by editing their
+  protocol constants.
+* On Windows, BizHawk 2.11.1 with the GBA core configured.
+* On macOS, mGBA 0.10 or newer with Lua scripting support.
+* A mesh VPN or similar private-network service that gives every player a
+  mutually reachable private IP address. Every player must join the same
+  private network before starting Soul Link.
+
+Player 1 may host from either Windows or macOS and additionally needs Python
+3.12. The host runs the relay; every emulator connects to it over TCP port
+7777.
+
+## Configure each player
+
+Create `soullink-config.lua` by copying `soullink-config.example.lua`. Keep it
+in the same directory as `soullink.lua`. macOS players must also keep
+`soullink-mgba.lua` in that directory; the mGBA wrapper loads `soullink.lua`
+automatically.
+
+Player 1 uses:
+
+```lua
+return {
+    role = "host",
+    host = "127.0.0.1",
+    port = 7777,
+    allowSinglePlayer = false,
+}
+```
+
+Every other player uses:
+
+```lua
+return {
+    role = "client",
+    host = "<Player 1's private-network IP>",
+    port = 7777,
+    allowSinglePlayer = false,
+}
+```
+
+Only enable `allowSinglePlayer` in the host configuration when intentionally
+starting a solo Soul Link run.
+
+## Start the host
+
+Connect the private-network service first. On Windows, Player 1 can start the
+relay and BizHawk together from the release directory:
+
+```powershell
+py -3.12 soullink_bridge.py --emuhawk "C:\path\to\EmuHawk.exe"
+```
+
+Alternatively, start the relay by itself:
+
+```powershell
+py -3.12 soullink_bridge.py
+```
+
+Then launch BizHawk with:
+
+```powershell
+EmuHawk.exe --socket-ip=127.0.0.1 --socket-port=7777
+```
+
+If Windows asks for firewall permission, allow Python to accept connections
+on the private network.
+
+Player 1 can also host from macOS. Start the relay natively from Terminal:
+
+```bash
+python3.12 soullink_bridge.py
+```
+
+Then open the Soul Link ROM in mGBA and load `soullink-mgba.lua` as described
+below. If macOS asks for network permission, allow Python to accept incoming
+connections. The Mac host keeps `host = "127.0.0.1"` in its configuration;
+remote players connect using the Mac's private-network IP.
+
+## Start each client
+
+After the host relay is listening, each Windows client launches BizHawk with
+Player 1's private-network IP:
+
+```powershell
+EmuHawk.exe --socket-ip=<Player 1's private-network IP> --socket-port=7777
+```
+
+Windows players then:
+
+1. Open the same Soul Link ROM in BizHawk.
+2. Open **Tools → Lua Console**.
+3. Load `soullink.lua` from the Lua Console.
+4. Wait for the Lua log to confirm the ROM mailbox and network connection.
+
+macOS players do not use the BizHawk command-line arguments. Instead:
+
+1. Open the same Soul Link ROM in mGBA.
+2. Open **Tools → Scripting…**.
+3. Select **File → Load Script** and load `soullink-mgba.lua`.
+4. Wait for the scripting console to confirm the ROM mailbox and network
+   connection.
+
+The mGBA wrapper connects directly to the `host` and `port` in
+`soullink-config.lua`. mGBA's Lua scripting and TCP socket APIs are available
+in mGBA 0.10 and newer; see the
+[mGBA scripting documentation](https://mgba.io/docs/scripting.html).
+
+## Start a new linked run
+
+1. Every player selects **New Game** and waits in the Soul Link lobby.
+2. After every player is connected and ready, Player 1 presses **Start** to
+   lock the roster.
+3. Every player completes the opening game and randomizer configuration.
+4. Randomizer selections must match across every player. Other local options
+   may differ.
+5. The host verifies the settings, assigns player slots, and releases every
+   player into the game.
+
+The locked roster remains associated with the run's save files. Late players
+cannot join an existing run.
+
+## Continue a linked run
+
+Start the relay on the host, then start each player's emulator, ROM, and
+platform-specific Lua script as above. Every player from the saved roster must
+connect and select **Continue**. The host validates the run ID, roster, player
+slots, settings, and protocol versions before loading.
+
+Do not replace a participant's save or attempt to continue with only part of
+the roster. Saves can be made independently, but the exact roster must return
+to resume the linked run.
+
+## Troubleshooting
+
+* **Incompatible protocol:** One player is using a different ROM or Lua
+  script. Redistribute the ROM and scripts from the same release, then restart
+  the emulator and Lua script.
+* **Socket is not initialized:** Start the relay first and launch BizHawk with
+  the required `--socket-ip` and `--socket-port` arguments.
+* **mGBA connection failed:** Start the relay first, verify `host` and `port`
+  in `soullink-config.lua`, then reload `soullink-mgba.lua`.
+* **Client cannot connect:** Confirm the host's private-network IP, TCP port
+  7777, the private-network connection, and the host firewall rules.
+* **Settings differ:** Restart the new-run setup and choose identical
+  randomizer selections on every game.
+* **Continue is rejected:** Confirm that every original participant is using
+  the correct save and that no two players exchanged save files.
