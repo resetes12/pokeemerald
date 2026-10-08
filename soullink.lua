@@ -12,7 +12,7 @@ local EWRAM_BASE = 0x02000000
 local EWRAM_END = 0x02040000
 
 local MAILBOX_MAGIC = 0x4B4E4C53
-local MAILBOX_VERSION = 17
+local MAILBOX_VERSION = 18
 local SAVE_FORMAT_VERSION = 4
 local MAILBOX_SIZE = 68
 local MAILBOX_OUTGOING_OFFSET = 12
@@ -45,7 +45,7 @@ local EVENT_DEATH = 15
 local EVENT_LINK_DIED = 16
 local EVENT_PARTY_STATE = 17
 local EVENT_PLAYER_COMPLETED = 18
-local EVENT_RUN_COMPLETED = 19
+local EVENT_RUN_RELEASED = 19
 local REGISTRY_REQUEST_COUNT = 1
 local REGISTRY_REQUEST_MEMBER = 2
 local REGISTRY_REQUEST_PLAYER_NAME = 3
@@ -163,7 +163,7 @@ local gateRunIdLow = 0
 local gateRunIdHigh = 0
 local gateSettings = 0
 local completedPlayerMask = 0
-local runCompletionBroadcast = false
+local runReleaseBroadcast = false
 local pendingGate = false
 local localSettings = nil
 local pendingCatchGroups = {}
@@ -797,7 +797,7 @@ local function applyGateState(state, playerMask, broadcast,
         mergedLinkRegistry = {}
         resolvedDeathGroups = {}
         partyReady = false
-        runCompletionBroadcast = false
+        runReleaseBroadcast = false
         if networkConfig.role == "host" then
             pendingCatchGroups = {}
             finalizedCatchGroups = {}
@@ -1184,13 +1184,13 @@ local function markPlayerCompleted(sender)
         "[SoulLink] %s completed the run; completed=0x%X/0x%X",
         sender, completedPlayerMask, gatePlayerMask))
 
-    if completedPlayerMask == gatePlayerMask and not runCompletionBroadcast then
-        runCompletionBroadcast = true
+    if bitCount(gameplayPlayerMask()) <= 1 and not runReleaseBroadcast then
+        runReleaseBroadcast = true
         pendingCatchGroups = {}
         setPartyReady(true, true)
-        pendingRomEvents[#pendingRomEvents + 1] = {type = EVENT_RUN_COMPLETED, flags = 0}
-        sendNetworkMessage("RUN_COMPLETED", "1")
-        console.log("[SoulLink] every player completed the run")
+        pendingRomEvents[#pendingRomEvents + 1] = {type = EVENT_RUN_RELEASED, flags = 0}
+        sendNetworkMessage("RUN_RELEASED", "1")
+        console.log("[SoulLink] one or fewer unfinished players remain; releasing run")
     else
         rebuildMergedRegistry()
     end
@@ -1328,7 +1328,7 @@ local function handleNetworkMessage(message)
         and messageType ~= "DEATH" and messageType ~= "LINK_DIED"
         and messageType ~= "PARTY_STATE"
         and messageType ~= "PLAYER_COMPLETED"
-        and messageType ~= "RUN_COMPLETED"
+        and messageType ~= "RUN_RELEASED"
         and messageType ~= "SNAPSHOT_BEGIN"
         and messageType ~= "SNAPSHOT_MEMBER"
         and messageType ~= "SNAPSHOT_END"
@@ -1458,9 +1458,9 @@ local function handleNetworkMessage(message)
         then
             return false, "invalid PLAYER_COMPLETED payload"
         end
-    elseif messageType == "RUN_COMPLETED" then
+    elseif messageType == "RUN_RELEASED" then
         if networkConfig.role ~= "client" or sender ~= "host" or payload ~= "1" then
-            return false, "invalid RUN_COMPLETED payload"
+            return false, "invalid RUN_RELEASED payload"
         end
     elseif messageType:match("^SNAPSHOT_") then
         local counts = {SNAPSHOT_BEGIN = 3, SNAPSHOT_MEMBER = 7, SNAPSHOT_END = 2}
@@ -1559,10 +1559,9 @@ local function handleNetworkMessage(message)
         else
             completedPlayerMask = tonumber(payload)
         end
-    elseif messageType == "RUN_COMPLETED" then
-        completedPlayerMask = gatePlayerMask
+    elseif messageType == "RUN_RELEASED" then
         pendingRomEvents[#pendingRomEvents + 1] = {
-            type = EVENT_RUN_COMPLETED, flags = 0,
+            type = EVENT_RUN_RELEASED, flags = 0,
         }
     elseif messageType:match("^SNAPSHOT_") then
         -- Validated and recorded above; only sequence bookkeeping remains.
@@ -2008,7 +2007,7 @@ local function updateMailbox()
             approvedSlot = localIntent.playerSlot
         end
         local gateFlags = gateState + gatePlayerMask * 16
-        if approved and completedPlayerMask == gatePlayerMask then
+        if approved and bitCount(gameplayPlayerMask()) <= 1 then
             gateFlags = gateFlags + 256
         end
         writeMailboxEvent(EVENT_GATE_STATE, gateFlags, {

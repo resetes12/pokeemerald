@@ -822,10 +822,10 @@ void SoulLink_Update(void)
                         gSoulLinkMailbox.incoming.reserved;
                     gSoulLinkPendingRun.randomizerSettings[1] =
                         gSoulLinkMailbox.incoming.reserved >> 8;
-                    if ((flags & SOUL_LINK_GATE_RUN_COMPLETE)
+                    if ((flags & SOUL_LINK_GATE_RUN_RELEASED)
                      && sLobbyIntent == SOUL_LINK_INTENT_CONTINUE)
                     {
-                        gSoulLinkPendingRun.status = SOUL_LINK_RUN_STATUS_COMPLETE
+                        gSoulLinkPendingRun.status = SOUL_LINK_RUN_STATUS_RELEASED
                             | (CountPlayers(playerMask) << SOUL_LINK_RUN_PLAYER_COUNT_SHIFT);
                         memcpy(&gSaveBlock2Ptr->soulLink,
                             (const void *)&gSoulLinkPendingRun,
@@ -863,13 +863,13 @@ void SoulLink_Update(void)
         {
             gSoulLinkPartyReady = flags == 1;
         }
-        else if (gSoulLinkMailbox.incoming.type == SOUL_LINK_EVENT_RUN_COMPLETED
+        else if (gSoulLinkMailbox.incoming.type == SOUL_LINK_EVENT_RUN_RELEASED
               && SoulLink_RequiresContinueGate())
         {
             gSaveBlock2Ptr->soulLink.status &= ~SOUL_LINK_RUN_STATUS_ACTIVE;
-            gSaveBlock2Ptr->soulLink.status |= SOUL_LINK_RUN_STATUS_COMPLETE;
+            gSaveBlock2Ptr->soulLink.status |= SOUL_LINK_RUN_STATUS_RELEASED;
             gSoulLinkPendingRun.status &= ~SOUL_LINK_RUN_STATUS_ACTIVE;
-            gSoulLinkPendingRun.status |= SOUL_LINK_RUN_STATUS_COMPLETE;
+            gSoulLinkPendingRun.status |= SOUL_LINK_RUN_STATUS_RELEASED;
         }
         else if (gSoulLinkMailbox.incoming.type == SOUL_LINK_EVENT_REGISTRY_RESULT
               && sRegistryPendingRequest != 0
