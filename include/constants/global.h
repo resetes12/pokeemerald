@@ -29,8 +29,9 @@
 // saveblock layout or adds features needing migration.
 // =====================================================================
 #define ME_SAVE_VERSION_NONE    0  // Pre-tracking (3.5 and earlier)
-#define ME_SAVE_VERSION_3_6    36  // First version with save version tracking
-#define ME_SAVE_VERSION_CURRENT ME_SAVE_VERSION_3_6
+#define ME_SAVE_VERSION_3_6    36  // Release number 36. First version with save version tracking
+#define ME_SAVE_VERSION_3_6_1  37  // Release number 37
+#define ME_SAVE_VERSION_CURRENT ME_SAVE_VERSION_3_6_1
 
 // Alias used by maintainer's script-level version updater (vars.h / new_game.c)
 #define MODERN_EMERALD_RELEASE_NUMBER ME_SAVE_VERSION_CURRENT
