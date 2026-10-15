@@ -2102,7 +2102,7 @@ u8 NuzlockeIsCaptureBlockedBySpeciesClause(u16 species) // @Kurausukun
     if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(species), FLAG_GET_CAUGHT))
         return 2; //player already has this exact pokemon
 
-    for (i = 0; i < EVOS_PER_LINE; i++)
+    for (i = 0; i < EVOS_PER_LINE && gEvolutionLines[species][i] != SPECIES_NONE; i++)
     {
         if (GetSetPokedexFlag(SpeciesToNationalPokedexNum(gEvolutionLines[species][i]), FLAG_GET_CAUGHT))
             return TRUE;
