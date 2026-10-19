@@ -540,7 +540,7 @@ struct SaveBlock2
              u16 optionsFishing:1;
              u16 optionsFastIntro:1;
              u16 optionsfollowerLargeEnable:1;
-             u16 optionsFastBattle:1;
+             u16 optionsSkipDelays:1;
              u16 optionsEvenFasterJoy:1;
              u16 optionsBikeMusic:1;
              u16 optionsSurfMusic:1;

@@ -2668,7 +2668,7 @@ static void Cmd_waitmessage(void)
         else
         {
             u16 toWait = T2_READ_16(gBattlescriptCurrInstr + 1);
-            if (gSaveBlock2Ptr->optionsFastBattle == 0)
+            if (gSaveBlock2Ptr->optionsSkipDelays == 0)
             {
                 gPauseCounterBattle = 0;
                 gBattlescriptCurrInstr += 3;
@@ -4602,7 +4602,7 @@ static void Cmd_pause(void)
     if (gBattleControllerExecFlags == 0)
     {
         u16 value = T2_READ_16(gBattlescriptCurrInstr + 1);
-        if (gSaveBlock2Ptr->optionsFastBattle == 0)
+        if (gSaveBlock2Ptr->optionsSkipDelays == 0)
         {
             gPauseCounterBattle = 0;
             gBattlescriptCurrInstr += 3;
