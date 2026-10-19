@@ -1722,12 +1722,26 @@ void CB2_OverworldBasic(void)
     }
 }
 
+// 1 means x2, 2 means x3
+// I chose 1, as 2 and up is pretty glitchy
+#define OVERWORLD_SPEED 1
+
 void CB2_Overworld(void)
 {
     bool32 fading = (gPaletteFade.active != 0);
+    u8 loops;
     if (fading)
         SetVBlankCallback(NULL);
     OverworldBasic();
+    if (gSaveBlock2Ptr->optionsOWSpeed == 1)
+    {
+        for (loops = 0; loops < OVERWORLD_SPEED; loops++)
+        {
+            AnimateSprites();
+            CameraUpdate();
+            UpdateCameraPanning();
+        }
+    }
     if (fading) {
         SetFieldVBlankCallback();
         return;

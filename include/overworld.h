@@ -180,6 +180,7 @@ bool32 Overworld_SendKeysToLinkIsRunning(void);
 bool32 IsSendingKeysOverCable(void);
 void ClearLinkPlayerObjectEvents(void);
 u8 NuzlockeGetCurrentRegionMapSectionId(void); //tx_randomizer_and_challenges
+u8 OverworldSpeedup_AdditionalIterations(u16 speed, bool32 overworld);
 
 
 #endif // GUARD_OVERWORLD_H

@@ -587,8 +587,8 @@ struct SaveBlock2
               u8 padding_savecompat[3]; // Remaining padding for save compatibility
               // ------- END FROZEN BOUNDARY -------
               // New fields may be added below here safely (with a version bump + migration).
-              u8 shinySeen[NUM_DEX_FLAG_BYTES]; // Tracks whether trainer has ever seen/caught a shiny of each species. Stays the last one in case of
-                                                // overflow.
+              u8 shinySeen[NUM_DEX_FLAG_BYTES]; // Tracks whether trainer has ever seen/caught a shiny of each species. 
+              u8 optionsOWSpeed:1;
 }; // sizeof=0xF2C + NUM_DEX_FLAG_BYTES
 
 extern struct SaveBlock2 *gSaveBlock2Ptr;
