@@ -5,8 +5,9 @@
 
 // Recognized save versions. Add new entries here as releases ship.
 static const u8 sRecognizedVersions[] = {
-    ME_SAVE_VERSION_NONE,    // Pre-tracking (3.5 and earlier)
-    ME_SAVE_VERSION_3_6,     // 3.6 (first tracked version)
+    ME_SAVE_VERSION_NONE,      // Pre-tracking (3.5 and earlier)
+    ME_SAVE_VERSION_3_6,       // 3.6 (first tracked version)
+    ME_SAVE_VERSION_3_6_1,     // 3.6.1
 };
 
 u8 GetSaveVersion(void)

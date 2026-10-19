@@ -564,6 +564,7 @@ static const struct MenuAction sMenuActions_VersionSelect[] = {
 #define FROM_VERSION_24  0
 #define FROM_VERSION_30  1
 #define FROM_VERSION_35  2
+#define FROM_VERSION_36  3
 
 // Migration step: a question to ask the player during version update.
 // minimumFrom: step is asked only if player's origin <= this value.
@@ -999,6 +1000,33 @@ static void Task_VersionUpdater_ShowIntroMessage(u8 taskId)
         // Pre-tracking save — we don't know the origin, ask the player
         CreateMainMenuErrorWindow(sText_VersionUpdater_Intro);
         gTasks[taskId].func = Task_VersionUpdater_WaitIntroMessage;
+    }
+    else if (version == ME_SAVE_VERSION_3_6)
+    {
+        u8 origin = FROM_VERSION_36;
+        u16 step;
+        bool8 hasQuestions = FALSE;
+
+        for (step = 0; step < NUM_VERSION_UPDATER_STEPS; step++)
+        {
+            if (origin <= sVersionUpdaterSteps[step].minimumFrom)
+            {
+                hasQuestions = TRUE;
+                break;
+            }
+        }
+
+        if (!hasQuestions)
+        {
+            // No questions needed — silently stamp and continue
+            StampCurrentSaveVersion();
+            gTasks[taskId].func = Task_MainMenuCheckBattery;
+            return;
+        }
+
+        gTasks[taskId].tUpdaterOrigin = origin;
+        gTasks[taskId].tUpdaterStep = 0;
+        gTasks[taskId].func = Task_VersionUpdater_ShowNextQuestion;
     }
     else
     {
