@@ -4312,15 +4312,46 @@ static void BattleIntroSafariQuickRun(void)
     }
 }
 
+// Attempts a quick-run during the intro using the player's battler explicitly.
+// Returns TRUE if the run succeeded (caller should switch to HandleEndTurn_RanFromBattle);
+// FALSE if it failed (caller should fall through to the normal intro path / cant-escape message).
+static bool8 TryIntroQuickRunFromBattle(void)
+{
+    // During the intro, gActiveBattler / gBattlerAttacker are not reliably the
+    // player's battler, so resolve it explicitly.
+    u8 playerBattler = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
+
+    // Preserve/restore the intro's active-battler bookkeeping so nothing
+    // downstream (switch-in ability effects, etc.) observes a transient value.
+    u8 savedActiveBattler = gActiveBattler;
+    u8 savedBattlerAttacker = gBattlerAttacker;
+
+    gActiveBattler = playerBattler;
+    gBattlerAttacker = playerBattler;
+
+    bool8 ran = FALSE;
+    if (IsRunningFromBattleImpossibleForBattler(playerBattler) == BATTLE_RUN_SUCCESS
+        && TryRunFromBattle(playerBattler))
+    {
+        ran = TRUE;
+    }
+
+    gActiveBattler = savedActiveBattler;
+    gBattlerAttacker = savedBattlerAttacker;
+    return ran;
+}
+
 static void BattleIntroQuickRun(void)
 {
     if (gSaveBlock2Ptr->optionsRunType == 1)
-        {
+    {
         if (gBattleControllerExecFlags == 0)
         {
-            if ((JOY_HELD(R_BUTTON))&&(JOY_HELD(L_BUTTON)))
+            if ((JOY_HELD(R_BUTTON)) && (JOY_HELD(L_BUTTON)))
             {
-                if (!IsRunningFromBattleImpossible() && TryRunFromBattle(gBattlerAttacker)){
+                if (TryIntroQuickRunFromBattle())
+                {
+                    gBattlerAttacker = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
                     gBattleMainFunc = HandleEndTurn_RanFromBattle;
                     return;
                 }
@@ -4348,8 +4379,9 @@ static void BattleIntroQuickRun(void)
                 // Threshold reached: try to run once, then reset.
                 sRunHoldCounter = 0;
 
-                if (!IsRunningFromBattleImpossible() && TryRunFromBattle(gBattlerAttacker))
+                if (TryIntroQuickRunFromBattle())
                 {
+                    gBattlerAttacker = GetBattlerAtPosition(B_POSITION_PLAYER_LEFT);
                     gBattleMainFunc = HandleEndTurn_RanFromBattle;
                     return;
                 }
@@ -4793,27 +4825,27 @@ void BattleTurnPassed(void)
         BattleScriptExecute(BattleScript_ArenaTurnBeginning);
 }
 
-u8 IsRunningFromBattleImpossible(void)
+u8 IsRunningFromBattleImpossibleForBattler(u8 battler)
 {
     u8 holdEffect;
     u8 side;
     s32 i;
 
-    if (gBattleMons[gActiveBattler].item == ITEM_ENIGMA_BERRY)
-        holdEffect = gEnigmaBerries[gActiveBattler].holdEffect;
+    if (gBattleMons[battler].item == ITEM_ENIGMA_BERRY)
+        holdEffect = gEnigmaBerries[battler].holdEffect;
     else
-        holdEffect = ItemId_GetHoldEffect(gBattleMons[gActiveBattler].item);
+        holdEffect = ItemId_GetHoldEffect(gBattleMons[battler].item);
 
-    gPotentialItemEffectBattler = gActiveBattler;
+    gPotentialItemEffectBattler = battler;
 
     if (holdEffect == HOLD_EFFECT_CAN_ALWAYS_RUN)
         return BATTLE_RUN_SUCCESS;
     if (gBattleTypeFlags & BATTLE_TYPE_LINK)
         return BATTLE_RUN_SUCCESS;
-    if (gBattleMons[gActiveBattler].ability == ABILITY_RUN_AWAY)
+    if (gBattleMons[battler].ability == ABILITY_RUN_AWAY)
         return BATTLE_RUN_SUCCESS;
 
-    side = GetBattlerSide(gActiveBattler);
+    side = GetBattlerSide(battler);
 
     for (i = 0; i < gBattlersCount; i++)
     {
@@ -4826,8 +4858,8 @@ u8 IsRunningFromBattleImpossible(void)
             return BATTLE_RUN_FAILURE;
         }
         if (side != GetBattlerSide(i)
-         && gBattleMons[gActiveBattler].ability != ABILITY_LEVITATE
-         && !IS_BATTLER_OF_TYPE(gActiveBattler, TYPE_FLYING)
+         && gBattleMons[battler].ability != ABILITY_LEVITATE
+         && !IS_BATTLER_OF_TYPE(battler, TYPE_FLYING)
          && gBattleMons[i].ability == ABILITY_ARENA_TRAP)
         {
             gBattleScripting.battler = i;
@@ -4836,16 +4868,16 @@ u8 IsRunningFromBattleImpossible(void)
             return BATTLE_RUN_FAILURE;
         }
     }
-    i = AbilityBattleEffects(ABILITYEFFECT_CHECK_FIELD_EXCEPT_BATTLER, gActiveBattler, ABILITY_MAGNET_PULL, 0, 0);
-    if (i != 0 && IS_BATTLER_OF_TYPE(gActiveBattler, TYPE_STEEL))
+    i = AbilityBattleEffects(ABILITYEFFECT_CHECK_FIELD_EXCEPT_BATTLER, battler, ABILITY_MAGNET_PULL, 0, 0);
+    if (i != 0 && IS_BATTLER_OF_TYPE(battler, TYPE_STEEL))
     {
         gBattleScripting.battler = i - 1;
         gLastUsedAbility = gBattleMons[i - 1].ability;
         gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_PREVENTS_ESCAPE;
         return BATTLE_RUN_FAILURE;
     }
-    if ((gBattleMons[gActiveBattler].status2 & (STATUS2_ESCAPE_PREVENTION | STATUS2_WRAPPED))
-        || (gStatuses3[gActiveBattler] & STATUS3_ROOTED))
+    if ((gBattleMons[battler].status2 & (STATUS2_ESCAPE_PREVENTION | STATUS2_WRAPPED))
+        || (gStatuses3[battler] & STATUS3_ROOTED))
     {
         gBattleCommunication[MULTISTRING_CHOOSER] = B_MSG_CANT_ESCAPE;
         return BATTLE_RUN_FORBIDDEN;
@@ -4856,6 +4888,11 @@ u8 IsRunningFromBattleImpossible(void)
         return BATTLE_RUN_FORBIDDEN;
     }
     return BATTLE_RUN_SUCCESS;
+}
+
+u8 IsRunningFromBattleImpossible(void)
+{
+    return IsRunningFromBattleImpossibleForBattler(gActiveBattler);
 }
 
 void SwitchPartyOrder(u8 battler)
