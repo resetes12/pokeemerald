@@ -121,6 +121,7 @@ Challenges page:
 * All the trainer rematches scale up a lot more than in the original game, and their parties have been changed.
 * All the trainers in the Battle Frontier have new Pokémon in their teams and have been buffed or modified. Includes all the new Post-Gen 3 Pokémon.
 * All the gym leaders, Elite Four, the 2 champions, Wally, Magma / Aqua leaders, and Red and Leaf will appear during the Battle Frontier challenges.
+* x2 Overworld speed! No need for emulation speed-up on real hardware.
 
 
 **Pokémon related:**
@@ -291,8 +292,9 @@ These programs rely on knowing where to find the data on the savefile, and Moder
 
 # 🤷‍♂️ AI disclosure
 - Code: 
-    - Modern Emerald code is AI free except one commit (check commit [bd4b18c](https://github.com/resetes12/pokeemerald/commit/bd4b18c50c5b1b4d2c972aead8603934bb5711d6))
-        - Contributor commits do not count towards this percentage. I do not control or limit any Modern Emerald contributor.
+    - Modern Emerald code is AI free except a couple commits. You can manually check if this AI usage is a deal-breaker for you. Newer commits with AI usage will be marked as "AI assisted", if needed.
+        - Commit [bd4b18c](https://github.com/resetes12/pokeemerald/commit/bd4b18c50c5b1b4d2c972aead8603934bb5711d6) and Commit [e03b17a](https://github.com/resetes12/pokeemerald/commit/e03b17a6c8f0748f1fc677045ec949532101fb00)
+    - Contributor commits do not count towards this percentage. I do not control or limit any Modern Emerald contributor. Contributors must mark their commits as AI assisted.
 - Text: 
     - Some text strings have been corrected or had their wording improved using AI tools.
 - Graphics:
